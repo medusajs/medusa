@@ -20,7 +20,7 @@ You'll need the following resources for the taxes calculation:
 ```ts
 // other imports...
 import {
-  ModuleRegistrationName
+  ModuleRegistrationName,
 } from "@medusajs/utils"
 
 // In an API route, workflow step, etc...
@@ -48,19 +48,19 @@ const query = remoteQueryObjectFromString({
   fields: [
     "*",
     "variants.*",
-    "variants.calculated_price.*"
+    "variants.calculated_price.*",
   ],
   variables: {
     filters: {
-      id
+      id,
     },
     "variants.calculated_price": {
       context: {
         region_id,
         currency_code,
-      }
-    }
-  }
+      },
+    },
+  },
 })
 
 const products = await remoteQuery(query)
@@ -82,7 +82,7 @@ To retrieve the tax line of each product, first, add the following utility metho
 // other imports...
 import {
   HttpTypes,
-  TaxableItemDTO
+  TaxableItemDTO,
 } from "@medusajs/types"
 
 // ...
@@ -118,7 +118,7 @@ Then, use it when retrieving the tax lines of the products retrieved earlier:
 ```ts
 // other imports...
 import {
-  ItemTaxLineDTO
+  ItemTaxLineDTO,
 } from "@medusajs/types"
 
 // ...
@@ -128,7 +128,7 @@ const taxLines = (await taxModuleService.getTaxLines(
     // example of context properties. You can pass other ones.
     address: {
       country_code,
-    }
+    },
   }
 )) as unknown as ItemTaxLineDTO[]
 ```
@@ -181,7 +181,7 @@ export const calculateTaxHighlights = [
 ```ts highlights={calculateTaxHighlights}
 // other imports...
 import {
-  calculateAmountsWithTax
+  calculateAmountsWithTax,
 } from "@medusajs/utils"
 
 // ...

@@ -135,7 +135,7 @@ export const generatedEditDates = {
   "app/deployment/storefront/vercel/page.mdx": "2024-07-26T07:21:31+00:00",
   "app/deployment/page.mdx": "2024-07-25T09:55:22+03:00",
   "app/integrations/page.mdx": "2024-07-19T08:49:08+00:00",
-  "app/medusa-cli/page.mdx": "2024-08-05T11:10:55+03:00",
+  "app/medusa-cli/page.mdx": "2024-08-28T11:25:32.382Z",
   "app/medusa-container-resources/page.mdx": "2024-08-05T07:24:27+00:00",
   "app/medusa-workflows-reference/page.mdx": "2024-08-15T12:13:13+03:00",
   "app/nextjs-starter/page.mdx": "2024-07-01T10:21:19+03:00",
@@ -561,5 +561,13 @@ export const generatedEditDates = {
   "references/types/interfaces/types.BaseReturn/page.mdx": "2024-08-28T00:11:05.678Z",
   "references/types/types.DmlTypes/page.mdx": "2024-08-28T00:11:04.914Z",
   "references/types/types.ModulesSdkTypes/page.mdx": "2024-08-28T00:11:05.834Z",
-  "references/types/types/types.FlowRunOptions/page.mdx": "2024-08-28T00:11:06.110Z"
+  "references/types/types/types.FlowRunOptions/page.mdx": "2024-08-28T00:11:06.110Z",
+  "app/medusa-cli/commands/db/page.mdx": "2024-08-28T11:26:33.889Z",
+  "app/medusa-cli/commands/develop/page.mdx": "2024-08-28T10:43:45.452Z",
+  "app/medusa-cli/commands/exec/page.mdx": "2024-08-28T10:45:31.229Z",
+  "app/medusa-cli/commands/new/page.mdx": "2024-08-28T10:43:34.110Z",
+  "app/medusa-cli/commands/start-cluster/page.mdx": "2024-08-28T11:25:05.257Z",
+  "app/medusa-cli/commands/start/page.mdx": "2024-08-28T10:44:19.952Z",
+  "app/medusa-cli/commands/telemtry/page.mdx": "2024-08-28T11:25:08.553Z",
+  "app/medusa-cli/commands/user/page.mdx": "2024-08-28T10:44:52.489Z"
 }
