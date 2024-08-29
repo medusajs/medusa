@@ -175,6 +175,26 @@ medusaIntegrationTestRunner({
           })
         )
       })
+
+      it('gets the metadata of a category', async () => {
+        await api.post(
+          `/admin/product-categories/${productCategory.id}`,
+          {
+            metadata: {
+              test: "test"
+            },
+          },
+          adminHeaders
+        )
+
+        const response = await api.get(
+          `/admin/product-categories/${productCategory.id}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product_category.metadata).toEqual({ test: "test" })
+      })
     })
 
     describe("GET /admin/product-categories", () => {

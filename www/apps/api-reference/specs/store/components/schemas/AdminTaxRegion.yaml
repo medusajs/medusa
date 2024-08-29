@@ -87,11 +87,11 @@ properties:
     type: array
     description: The tax region's tax rates.
     items:
-      $ref: ./AdminTaxRate.yaml
+      type: object
   parent:
-    $ref: ./AdminTaxRegion.yaml
+    type: object
   children:
     type: array
     description: The tax region's children.
     items:
-      $ref: ./AdminTaxRegion.yaml
+      type: object

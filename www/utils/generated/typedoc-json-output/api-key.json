@@ -3255,7 +3255,7 @@
 			]
 		},
 		{
-			"id": 249,
+			"id": 250,
 			"name": "EventMetadata",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -3285,14 +3285,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 250,
+							"id": 251,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 251,
+									"id": 252,
 									"name": "eventGroupId",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3309,7 +3309,7 @@
 								{
 									"title": "Properties",
 									"children": [
-										251
+										252
 									]
 								}
 							]
@@ -3319,14 +3319,14 @@
 			}
 		},
 		{
-			"id": 243,
+			"id": 244,
 			"name": "Event",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"typeParameters": [
 				{
-					"id": 248,
+					"id": 249,
 					"name": "TData",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -3340,14 +3340,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 244,
+					"id": 245,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 245,
+							"id": 246,
 							"name": "name",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3358,7 +3358,7 @@
 							}
 						},
 						{
-							"id": 246,
+							"id": 247,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3367,20 +3367,20 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 249,
+								"target": 250,
 								"name": "EventMetadata",
 								"package": "@medusajs/types"
 							}
 						},
 						{
-							"id": 247,
+							"id": 248,
 							"name": "data",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 248,
+								"target": 249,
 								"name": "TData",
 								"package": "@medusajs/types",
 								"refersToTypeParameter": true
@@ -3391,9 +3391,9 @@
 						{
 							"title": "Properties",
 							"children": [
-								245,
 								246,
-								247
+								247,
+								248
 							]
 						}
 					]
@@ -3424,7 +3424,7 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 243,
+						"target": 244,
 						"typeArguments": [
 							{
 								"type": "reference",
@@ -3489,14 +3489,14 @@
 			}
 		},
 		{
-			"id": 221,
+			"id": 222,
 			"name": "RawMessageFormat",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"typeParameters": [
 				{
-					"id": 230,
+					"id": 231,
 					"name": "TData",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -3510,14 +3510,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 222,
+					"id": 223,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 223,
+							"id": 224,
 							"name": "eventName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3528,21 +3528,21 @@
 							}
 						},
 						{
-							"id": 224,
+							"id": 225,
 							"name": "data",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 230,
+								"target": 231,
 								"name": "TData",
 								"package": "@medusajs/types",
 								"refersToTypeParameter": true
 							}
 						},
 						{
-							"id": 225,
+							"id": 226,
 							"name": "source",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3553,7 +3553,7 @@
 							}
 						},
 						{
-							"id": 226,
+							"id": 227,
 							"name": "object",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3564,7 +3564,7 @@
 							}
 						},
 						{
-							"id": 227,
+							"id": 228,
 							"name": "action",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3577,7 +3577,7 @@
 							}
 						},
 						{
-							"id": 228,
+							"id": 229,
 							"name": "context",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3607,7 +3607,7 @@
 							}
 						},
 						{
-							"id": 229,
+							"id": 230,
 							"name": "options",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3639,13 +3639,13 @@
 						{
 							"title": "Properties",
 							"children": [
-								223,
 								224,
 								225,
 								226,
 								227,
 								228,
-								229
+								229,
+								230
 							]
 						}
 					]
@@ -3653,7 +3653,7 @@
 			}
 		},
 		{
-			"id": 234,
+			"id": 235,
 			"name": "JoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -3661,14 +3661,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 235,
+					"id": 236,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 236,
+							"id": 237,
 							"name": "alias",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3679,7 +3679,7 @@
 							}
 						},
 						{
-							"id": 237,
+							"id": 238,
 							"name": "foreignKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3690,7 +3690,7 @@
 							}
 						},
 						{
-							"id": 238,
+							"id": 239,
 							"name": "primaryKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3701,7 +3701,7 @@
 							}
 						},
 						{
-							"id": 239,
+							"id": 240,
 							"name": "serviceName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3712,7 +3712,7 @@
 							}
 						},
 						{
-							"id": 240,
+							"id": 241,
 							"name": "inverse",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3733,7 +3733,7 @@
 							}
 						},
 						{
-							"id": 241,
+							"id": 242,
 							"name": "isList",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3754,7 +3754,7 @@
 							}
 						},
 						{
-							"id": 242,
+							"id": 243,
 							"name": "args",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3794,13 +3794,13 @@
 						{
 							"title": "Properties",
 							"children": [
-								236,
 								237,
 								238,
 								239,
 								240,
 								241,
-								242
+								242,
+								243
 							]
 						}
 					]
@@ -3808,14 +3808,14 @@
 			}
 		},
 		{
-			"id": 231,
+			"id": 232,
 			"name": "JoinerServiceConfigAlias",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 232,
+					"id": 233,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3838,7 +3838,7 @@
 					}
 				},
 				{
-					"id": 233,
+					"id": 234,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3878,8 +3878,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						232,
-						233
+						233,
+						234
 					]
 				}
 			]
@@ -3923,7 +3923,7 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 231,
+								"target": 232,
 								"name": "JoinerServiceConfigAlias",
 								"package": "@medusajs/types"
 							},
@@ -3931,7 +3931,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 231,
+									"target": 232,
 									"name": "JoinerServiceConfigAlias",
 									"package": "@medusajs/types"
 								}
@@ -4052,7 +4052,7 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 234,
+							"target": 235,
 							"name": "JoinerRelationship",
 							"package": "@medusajs/types"
 						}
@@ -4096,7 +4096,7 @@
 										"flags": {},
 										"type": {
 											"type": "reference",
-											"target": 234,
+											"target": 235,
 											"name": "JoinerRelationship",
 											"package": "@medusajs/types"
 										}
@@ -4871,7 +4871,7 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 234,
+						"target": 235,
 						"name": "JoinerRelationship",
 						"package": "@medusajs/types"
 					},
@@ -5195,7 +5195,7 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 221,
+												"target": 222,
 												"typeArguments": [
 													{
 														"type": "reference",
@@ -5212,7 +5212,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 221,
+													"target": 222,
 													"typeArguments": [
 														{
 															"type": "reference",
@@ -5613,7 +5613,7 @@
 				1,
 				129,
 				184,
-				231,
+				232,
 				188,
 				73,
 				215,
@@ -5625,11 +5625,11 @@
 			"title": "Type Aliases",
 			"children": [
 				169,
-				249,
-				243,
+				250,
+				244,
 				211,
-				221,
-				234,
+				222,
+				235,
 				205,
 				145,
 				202
@@ -6410,127 +6410,127 @@
 			"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"221": {
+		"222": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "RawMessageFormat"
 		},
-		"222": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type"
-		},
 		"223": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.eventName"
+			"qualifiedName": "__type"
 		},
 		"224": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.data"
+			"qualifiedName": "__type.eventName"
 		},
 		"225": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.source"
+			"qualifiedName": "__type.data"
 		},
 		"226": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.object"
+			"qualifiedName": "__type.source"
 		},
 		"227": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.action"
+			"qualifiedName": "__type.object"
 		},
 		"228": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.context"
+			"qualifiedName": "__type.action"
 		},
 		"229": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.options"
+			"qualifiedName": "__type.context"
 		},
 		"230": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "TData"
+			"qualifiedName": "__type.options"
 		},
 		"231": {
-			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias"
+			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+			"qualifiedName": "TData"
 		},
 		"232": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.name"
+			"qualifiedName": "JoinerServiceConfigAlias"
 		},
 		"233": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.args"
+			"qualifiedName": "JoinerServiceConfigAlias.name"
 		},
 		"234": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerRelationship"
+			"qualifiedName": "JoinerServiceConfigAlias.args"
 		},
 		"235": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "JoinerRelationship"
 		},
 		"236": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "__type.alias"
+			"qualifiedName": "__type"
 		},
 		"237": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "__type.foreignKey"
+			"qualifiedName": "__type.alias"
 		},
 		"238": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "__type.primaryKey"
+			"qualifiedName": "__type.foreignKey"
 		},
 		"239": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"qualifiedName": "__type.primaryKey"
 		},
 		"240": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "__type.inverse"
+			"qualifiedName": "__type.serviceName"
 		},
 		"241": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "__type.isList"
+			"qualifiedName": "__type.inverse"
 		},
 		"242": {
 			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
-			"qualifiedName": "__type.args"
+			"qualifiedName": "__type.isList"
 		},
 		"243": {
-			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "Event"
+			"sourceFileName": "../../../../packages/core/types/src/joiner/index.ts",
+			"qualifiedName": "__type.args"
 		},
 		"244": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "Event"
 		},
 		"245": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.name"
+			"qualifiedName": "__type"
 		},
 		"246": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.metadata"
+			"qualifiedName": "__type.name"
 		},
 		"247": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type.data"
+			"qualifiedName": "__type.metadata"
 		},
 		"248": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "TData"
+			"qualifiedName": "__type.data"
 		},
 		"249": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "EventMetadata"
+			"qualifiedName": "TData"
 		},
 		"250": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "EventMetadata"
 		},
 		"251": {
+			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
+			"qualifiedName": "__type"
+		},
+		"252": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",
 			"qualifiedName": "__type.eventGroupId"
 		}

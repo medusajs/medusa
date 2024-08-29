@@ -238,12 +238,24 @@ export const confirmReturnReceiveWorkflow = createWorkflow(
               itemUpdates[itemId].received_quantity,
               act.details!.quantity as BigNumberInput
             )
+
+            if (act.action === ChangeActionType.RECEIVE_DAMAGED_RETURN_ITEM) {
+              itemUpdates[itemId].damaged_quantity = MathBN.add(
+                itemUpdates[itemId].damaged_quantity,
+                act.details!.quantity as BigNumberInput
+              )
+            }
+
             return
           }
 
           itemUpdates[itemId] = {
             id: itemMap[itemId],
             received_quantity: act.details!.quantity,
+            damaged_quantity:
+              act.action === ChangeActionType.RECEIVE_DAMAGED_RETURN_ITEM
+                ? act.details!.quantity
+                : 0,
           }
         })
 

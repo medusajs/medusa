@@ -136,7 +136,7 @@ describe("Email password auth provider", () => {
       }),
     }
 
-    const resp = await emailpassService.authenticate(
+    const resp = await emailpassService.register(
       { body: { email: "test@admin.com", password: "test" } },
       authServiceSpies
     )
@@ -150,5 +150,53 @@ describe("Email password auth provider", () => {
         provider_metadata: {},
       })
     )
+  })
+
+  it("throw if auth identity with email already exists", async () => {
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        return { success: true }
+      }),
+      create: jest.fn().mockImplementation(() => {
+        return {
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "emailpass",
+              provider_metadata: {
+                password: "somehash",
+              },
+            },
+          ],
+        }
+      }),
+    }
+
+    const resp = await emailpassService.register(
+      { body: { email: "test@admin.com", password: "test" } },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.retrieve).toHaveBeenCalled()
+
+    expect(resp.error).toEqual("Identity with email already exists")
+  })
+
+  it("throws if auth identity with email doesn't exist", async () => {
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation(() => {}),
+    }
+
+    const resp = await emailpassService.authenticate(
+      { body: { email: "test@admin.com", password: "test" } },
+      authServiceSpies
+    )
+
+    expect(authServiceSpies.retrieve).toHaveBeenCalled()
+
+    expect(resp.error).toEqual("Invalid email or password")
   })
 })

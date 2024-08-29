@@ -1092,6 +1092,58 @@ medusaIntegrationTestRunner({
             }),
           ])
         })
+
+        it("should get product variants filtered by manage_inventory", async () => {
+          const payload = {
+            title: "Test product - 1",
+            handle: "test-1",
+            variants: [
+              {
+                title: "Custom inventory 1",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: true,
+                inventory_items: [],
+              },
+              {
+                title: "Custom inventory 2",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: false,
+              },
+            ],
+          }
+
+          const product = (
+            await api.post(`/admin/products`, payload, adminHeaders)
+          ).data.product
+
+          let variants = (
+            await api.get(
+              `/admin/products/${product.id}/variants?manage_inventory=true`,
+              adminHeaders
+            )
+          ).data.variants
+
+          expect(variants).toEqual([
+            expect.objectContaining({
+              title: "Custom inventory 1",
+              product_id: product.id,
+            }),
+          ])
+
+          variants = (
+            await api.get(
+              `/admin/products/${product.id}/variants?manage_inventory=false`,
+              adminHeaders
+            )
+          ).data.variants
+
+          expect(variants).toEqual([
+            expect.objectContaining({
+              title: "Custom inventory 2",
+              product_id: product.id,
+            }),
+          ])
+        })
       })
 
       describe("POST /admin/products", () => {

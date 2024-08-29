@@ -94,7 +94,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         children: [
           {
             type: "link",
-            path: "/commerce-modules/api-key",
+            path: "/commerce-modules/auth",
             title: "Overview",
           },
           {
@@ -129,14 +129,20 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 ],
               },
               {
-                type: "link",
-                path: "/commerce-modules/auth/authentication-route",
-                title: "Authentication Route",
-              },
-              {
-                type: "link",
-                path: "/commerce-modules/auth/auth-flows",
+                type: "sub-category",
                 title: "Auth Flows",
+                children: [
+                  {
+                    type: "link",
+                    path: "/commerce-modules/auth/authentication-route",
+                    title: "Using API Routes",
+                  },
+                  {
+                    type: "link",
+                    path: "/commerce-modules/auth/auth-flows",
+                    title: "Using Module's Service",
+                  },
+                ],
               },
             ],
           },
@@ -554,7 +560,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 type: "link",
-                path: "/references/inventory_next",
+                path: "/references/inventory-next",
                 title: "Main Service Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Inventory Module's Main Service Reference",
@@ -569,7 +575,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/references/inventory_next/models",
+                path: "/references/inventory-next/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle: "Inventory Module Data Models Reference",
@@ -1241,7 +1247,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 type: "link",
-                path: "/references/stock-location",
+                path: "/references/stock-location-next",
                 title: "Main Service Reference",
                 isChildSidebar: true,
                 childSidebarTitle:
@@ -1257,7 +1263,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/references/stock-location/models",
+                path: "/references/stock-location-next/models",
                 title: "Data Models Reference",
                 isChildSidebar: true,
                 childSidebarTitle:
@@ -1565,6 +1571,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/recipes/marketplace/examples/vendors",
             title: "Example: Vendors",
           },
+          {
+            type: "link",
+            path: "/recipes/marketplace/examples/restaurant-delivery",
+            title: "Example: Restaurant-Delivery",
+          },
         ],
       },
       {
@@ -1654,6 +1665,23 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         type: "link",
         path: "/medusa-cli",
         title: "Medusa CLI",
+        isChildSidebar: true,
+        childSidebarTitle: "Medusa CLI Reference",
+        children: [
+          {
+            type: "link",
+            path: "/medusa-cli",
+            title: "Overview",
+          },
+          {
+            type: "separator",
+          },
+          {
+            type: "category",
+            title: "Commands",
+            autogenerate_path: "medusa-cli/commands",
+          },
+        ],
       },
       {
         type: "link",
@@ -2157,6 +2185,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/troubleshooting/database-errors",
                 title: "Database Errors",
+              },
+            ],
+          },
+          {
+            type: "category",
+            title: "Admin Development",
+            children: [
+              {
+                type: "link",
+                path: "/troubleshooting/medusa-admin/no-widget-route",
+                title: "Widget or Route not Showing",
               },
             ],
           },

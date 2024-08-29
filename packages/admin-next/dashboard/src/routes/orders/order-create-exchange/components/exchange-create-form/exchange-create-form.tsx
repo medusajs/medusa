@@ -8,6 +8,7 @@ import {
   IconButton,
   Switch,
   toast,
+  usePrompt,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -54,7 +55,9 @@ export const ExchangeCreateForm = ({
    * STATE
    */
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
-  const [customShippingAmount, setCustomShippingAmount] = useState(0)
+  const [customShippingAmount, setCustomShippingAmount] = useState<
+    number | string
+  >(0)
 
   /**
    * MUTATIONS
@@ -98,15 +101,15 @@ export const ExchangeCreateForm = ({
   const form = useForm<CreateExchangeSchemaType>({
     defaultValues: () => {
       const inboundShippingMethod = preview.shipping_methods.find((s) => {
-        const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-        return !!action?.return?.id
+        return !!s.actions?.find(
+          (a) => a.action === "SHIPPING_ADD" && !!a.return_id
+        )
       })
 
       const outboundShippingMethod = preview.shipping_methods.find((s) => {
-        const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-        return action && !!!action?.return?.id
+        return !!s.actions?.find(
+          (a) => a.action === "SHIPPING_ADD" && !a.return_id
+        )
       })
 
       return Promise.resolve({
@@ -142,15 +145,26 @@ export const ExchangeCreateForm = ({
   })
 
   const outboundShipping = preview.shipping_methods.find((s) => {
-    const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-    return action && !!!action?.return?.id
+    return !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
   })
 
   const shippingOptionId = form.watch("inbound_option_id")
+  const prompt = usePrompt()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
+      const res = await prompt({
+        title: t("general.areYouSure"),
+        description: t("orders.exchanges.confirmText"),
+        confirmText: t("actions.continue"),
+        cancelText: t("actions.cancel"),
+        variant: "confirmation",
+      })
+
+      if (!res) {
+        return
+      }
+
       await confirmExchangeRequest({ no_notification: !data.send_notification })
 
       handleSuccess()
@@ -189,9 +203,10 @@ export const ExchangeCreateForm = ({
     }
   }, [])
 
-  const shippingTotal = useMemo(() => {
+  const inboundShippingTotal = useMemo(() => {
     const method = preview.shipping_methods.find(
-      (sm) => !!sm.actions?.find((a) => a.action === "SHIPPING_ADD")
+      (sm) =>
+        !!sm.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
     )
 
     return (method?.total as number) || 0
@@ -290,22 +305,27 @@ export const ExchangeCreateForm = ({
 
                         preview.shipping_methods.forEach((s) => {
                           if (s.actions) {
-                            for (let a of s.actions) {
-                              if (a.action === "SHIPPING_ADD") {
+                            for (const a of s.actions) {
+                              if (
+                                a.action === "SHIPPING_ADD" &&
+                                !!a.return_id
+                              ) {
                                 actionId = a.id
                               }
                             }
                           }
                         })
 
+                        const customPrice =
+                          customShippingAmount === ""
+                            ? null
+                            : parseInt(customShippingAmount)
+
                         if (actionId) {
                           updateInboundShipping(
                             {
                               actionId,
-                              custom_price:
-                                typeof customShippingAmount === "string"
-                                  ? null
-                                  : customShippingAmount,
+                              custom_price: customPrice,
                             },
                             {
                               onError: (error) => {
@@ -321,14 +341,12 @@ export const ExchangeCreateForm = ({
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={(value) =>
-                        value && setCustomShippingAmount(parseInt(value))
-                      }
+                      onValueChange={setCustomShippingAmount}
                       value={customShippingAmount}
                       disabled={!inboundPreviewItems?.length}
                     />
                   ) : (
-                    getStylizedAmount(shippingTotal, order.currency_code)
+                    getStylizedAmount(inboundShippingTotal, order.currency_code)
                   )}
                 </span>
               </div>
@@ -390,6 +408,8 @@ export const ExchangeCreateForm = ({
                 }}
               />
             </div>
+
+            <div className="p-8" />
           </div>
         </RouteFocusModal.Body>
         <RouteFocusModal.Footer>
@@ -402,9 +422,10 @@ export const ExchangeCreateForm = ({
                   variant="secondary"
                   size="small"
                 >
-                  {t("actions.cancel")}
+                  {t("orders.exchanges.cancel")}
                 </Button>
               </RouteFocusModal.Close>
+
               <Button
                 key="submit-button"
                 type="submit"
@@ -412,7 +433,7 @@ export const ExchangeCreateForm = ({
                 size="small"
                 isLoading={isRequestLoading}
               >
-                {t("actions.save")}
+                {t("orders.exchanges.confirm")}
               </Button>
             </div>
           </div>

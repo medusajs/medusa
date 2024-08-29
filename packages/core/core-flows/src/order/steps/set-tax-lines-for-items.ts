@@ -28,23 +28,25 @@ export const setOrderTaxLinesForItemsStep = createStep(
     )
 
     const getShippingTaxLinesPromise =
-      await orderService.listShippingMethodTaxLines({
+      await orderService.listOrderShippingMethodTaxLines({
         shipping_method_id: shipping_tax_lines.map((t) => t.shipping_line_id),
       })
 
-    const getItemTaxLinesPromise = await orderService.listLineItemTaxLines({
-      item_id: item_tax_lines.map((t) => t.line_item_id),
-    })
+    const getItemTaxLinesPromise = await orderService.listOrderLineItemTaxLines(
+      {
+        item_id: item_tax_lines.map((t) => t.line_item_id),
+      }
+    )
 
     const itemsTaxLinesData = normalizeItemTaxLinesForOrder(item_tax_lines)
     const setItemTaxLinesPromise = itemsTaxLinesData.length
-      ? orderService.setLineItemTaxLines(order.id, itemsTaxLinesData)
+      ? orderService.setOrderLineItemTaxLines(order.id, itemsTaxLinesData)
       : void 0
 
     const shippingTaxLinesData =
       normalizeShippingTaxLinesForOrder(shipping_tax_lines)
     const setShippingTaxLinesPromise = shippingTaxLinesData.length
-      ? await orderService.setShippingMethodTaxLines(
+      ? await orderService.setOrderShippingMethodTaxLines(
           order.id,
           shippingTaxLinesData
         )
@@ -77,7 +79,7 @@ export const setOrderTaxLinesForItemsStep = createStep(
     )
 
     if (existingLineItemTaxLines) {
-      await orderService.setLineItemTaxLines(
+      await orderService.setOrderLineItemTaxLines(
         order.id,
         existingLineItemTaxLines.map((taxLine) => ({
           description: taxLine.description,
@@ -90,7 +92,7 @@ export const setOrderTaxLinesForItemsStep = createStep(
       )
     }
 
-    await orderService.setShippingMethodTaxLines(
+    await orderService.setOrderShippingMethodTaxLines(
       order.id,
       existingShippingMethodTaxLines.map((taxLine) => ({
         description: taxLine.description,

@@ -32,7 +32,24 @@ const optionalBooleanMapper = new Map([
   ["false", false],
 ])
 
+/**
+ * @deprecated Use `booleanString` instead
+ * It support the chainable API of zod. Please note it does not come with `.optional()` by default
+ */
 export const OptionalBooleanValidator = z.preprocess(
   (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
   z.boolean().optional()
 )
+
+/**
+ * Validates that a value is a boolean when it is passed as a string.
+ */
+export const booleanString = () =>
+  z
+    .union([z.boolean(), z.string()])
+    .refine((value) => {
+      return ["true", "false"].includes(value.toString().toLowerCase())
+    })
+    .transform((value) => {
+      return value.toString().toLowerCase() === "true"
+    })

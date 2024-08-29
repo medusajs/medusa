@@ -1,4 +1,10 @@
-import { Job, JobsOptions, QueueOptions, WorkerOptions } from "bullmq"
+import {
+  BulkJobOptions,
+  Job,
+  JobsOptions,
+  QueueOptions,
+  WorkerOptions,
+} from "bullmq"
 import { RedisOptions } from "ioredis"
 
 export type JobData<T> = {
@@ -7,8 +13,14 @@ export type JobData<T> = {
   completedSubscriberIds?: string[] | undefined
 }
 
+export type Options = BulkJobOptions & {
+  groupedEventsTTL?: number
+  internal?: boolean
+}
+
 export type BullJob<T> = {
   data: JobData<T>
+  opts: Job["opts"] & Options
 } & Job
 
 export type EmitOptions = JobsOptions

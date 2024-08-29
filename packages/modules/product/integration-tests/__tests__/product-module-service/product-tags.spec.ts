@@ -278,14 +278,19 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(productTag.value).toEqual("UK")
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-          expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
-              data: { id: productTag.id },
-              object: "product_tag",
-              source: Modules.PRODUCT,
-              action: CommonEvents.UPDATED,
-            }),
-          ])
+          expect(eventBusEmitSpy).toHaveBeenCalledWith(
+            [
+              composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
+                data: { id: productTag.id },
+                object: "product_tag",
+                source: Modules.PRODUCT,
+                action: CommonEvents.UPDATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
         })
 
         it("should throw an error when an id does not exist", async () => {
@@ -320,14 +325,19 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(productTag[0]?.value).toEqual("UK")
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-          expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.PRODUCT_TAG_CREATED, {
-              data: { id: productTag[0].id },
-              object: "product_tag",
-              source: Modules.PRODUCT,
-              action: CommonEvents.CREATED,
-            }),
-          ])
+          expect(eventBusEmitSpy).toHaveBeenCalledWith(
+            [
+              composeMessage(ProductEvents.PRODUCT_TAG_CREATED, {
+                data: { id: productTag[0].id },
+                object: "product_tag",
+                source: Modules.PRODUCT,
+                action: CommonEvents.CREATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
         })
       })
 
@@ -374,20 +384,25 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const updatedTag = productTags.find((t) => t.value === "updated")!
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
-          expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.PRODUCT_TAG_CREATED, {
-              data: { id: newTag.id },
-              object: "product_tag",
-              source: Modules.PRODUCT,
-              action: CommonEvents.CREATED,
-            }),
-            composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
-              data: { id: updatedTag.id },
-              object: "product_tag",
-              source: Modules.PRODUCT,
-              action: CommonEvents.UPDATED,
-            }),
-          ])
+          expect(eventBusEmitSpy).toHaveBeenCalledWith(
+            [
+              composeMessage(ProductEvents.PRODUCT_TAG_CREATED, {
+                data: { id: newTag.id },
+                object: "product_tag",
+                source: Modules.PRODUCT,
+                action: CommonEvents.CREATED,
+              }),
+              composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
+                data: { id: updatedTag.id },
+                object: "product_tag",
+                source: Modules.PRODUCT,
+                action: CommonEvents.UPDATED,
+              }),
+            ],
+            {
+              internal: true,
+            }
+          )
         })
       })
     })

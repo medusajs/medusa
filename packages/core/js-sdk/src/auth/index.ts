@@ -10,6 +10,24 @@ export class Auth {
     this.config = config
   }
 
+  register = async (
+    actor: "customer" | "user",
+    method: "emailpass",
+    payload: { email: string; password: string }
+  ) => {
+    const { token } = await this.client.fetch<{ token: string }>(
+      `/auth/${actor}/${method}/register`,
+      {
+        method: "POST",
+        body: payload,
+      }
+    )
+
+    this.client.setToken(token)
+
+    return token
+  }
+
   login = async (
     actor: "customer" | "user",
     method: "emailpass",

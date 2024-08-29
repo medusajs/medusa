@@ -1,0 +1,468 @@
+---
+sidebar_label: "db"
+sidebar_position: 5
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `db Commands - Medusa CLI Reference`,
+}
+
+# {metadata.title}
+
+Commands starting with `db:` perform actions on the database.
+
+## db\:setup
+
+Creates a database for the Medusa application with the specified name, if it doesn't exit. Then, it runs migrations and syncs links.
+
+It also updates your `.env` file with the database name.
+
+```bash
+npx medusa db:setup --db <name>
+```
+
+<Note title="Tip">
+
+Use this command if you're setting up a Medusa project or database manually.
+
+</Note>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db <name>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database name.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--skip-links`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip syncing links to the database.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Links are synced by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-safe-links`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when syncing links and execute only safe actions.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-all-links`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when syncing links and execute all (including unsafe) actions.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--no-interactive`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Disable the command's prompts.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## db\:create
+
+Creates a database for the Medusa application with the specified name, if it doesn't exit.
+
+It also updates your `.env` file with the database name.
+
+```bash
+npx medusa db:create --db <name>
+```
+
+<Note title="Tip">
+
+Use this command if you want to only create a database.
+
+</Note>
+
+## Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db <name>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database name.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--no-interactive`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Disable the command's prompts.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## db\:generate
+
+Generate a migration file for the latest changes in one or more modules.
+
+```bash
+npx medusa db:generate <module_names...>
+```
+
+## Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `module_names`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of one or more module (separated by spaces) to generate migrations for. For example, `helloModuleService`.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## db\:migrate
+
+Run the latest migrations to reflect changes on the database, and sync link definitions with the database.
+
+```bash
+npx medusa db:migrate
+```
+
+<Note title="Tip">
+
+Use this command if you've updated the Medusa packages, or you've created customizations and want to reflect them in the database.
+
+</Note>
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--skip-links`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip syncing links to the database.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Links are synced by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-safe-links`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when syncing links and execute only safe actions.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-all-links`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when syncing links and execute all (including unsafe) actions.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## db\:rollback
+
+Revert the last migrations ran on one or more modules.
+
+```bash
+npx medusa db:rollback <module_names...>
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `module_names`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of one or more module (separated by spaces) to rollback their migrations for. For example, `helloModuleService`.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## db\:sync-links
+
+Sync the database with the link definitions in your application, including the definitions in Medusa's modules.
+
+```bash
+npx medusa db:sync-links
+```
+
+### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-safe`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when syncing links and execute only safe actions.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--execute-all`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip prompts when syncing links and execute all (including unsafe) actions.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Prompts are shown for unsafe actions, by default.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

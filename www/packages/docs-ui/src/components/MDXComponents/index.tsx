@@ -153,6 +153,7 @@ export const MDXComponents: MDXComponentsType = {
       <li
         className={clsx(
           "text-medusa-fg-subtle [&:not(:last-child)]:mb-docs_0.5",
+          "[&_ol]:mt-docs_0.5 [&_ul]:mt-docs_0.5",
           className
         )}
         {...props}

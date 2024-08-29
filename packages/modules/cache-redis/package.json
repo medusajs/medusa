@@ -28,7 +28,6 @@
   },
   "scripts": {
     "watch": "tsc --build --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "test": "jest --passWithNoTests"
   },
@@ -38,6 +37,6 @@
     "ioredis": "^5.4.1"
   },
   "peerDependencies": {
-    "awilix": "*"
+    "awilix": "^8.0.1"
   }
 }

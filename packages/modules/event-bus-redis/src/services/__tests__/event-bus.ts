@@ -307,6 +307,8 @@ describe("RedisEventBusService", () => {
               JSON.stringify(testGroup2Event2),
             ])
           }
+
+          return
         })
 
         queue = (eventBus as any).queue_
@@ -337,7 +339,7 @@ describe("RedisEventBusService", () => {
   })
 
   describe("worker_", () => {
-    let result
+    let result!: any
 
     describe("Successfully processes the jobs", () => {
       beforeEach(async () => {
@@ -421,12 +423,16 @@ describe("RedisEventBusService", () => {
       })
 
       it("should retry processing when subcribers fail, if configured - final attempt", async () => {
-        eventBus.subscribe("eventName", async () => Promise.resolve(), {
+        eventBus.subscribe("eventName", async () => await Promise.resolve(), {
           subscriberId: "1",
         })
-        eventBus.subscribe("eventName", async () => Promise.reject("fail1"), {
-          subscriberId: "2",
-        })
+        eventBus.subscribe(
+          "eventName",
+          async () => await Promise.reject("fail1"),
+          {
+            subscriberId: "2",
+          }
+        )
 
         result = await eventBus
           .worker_({
@@ -456,12 +462,16 @@ describe("RedisEventBusService", () => {
       })
 
       it("should retry processing when subcribers fail, if configured", async () => {
-        eventBus.subscribe("eventName", async () => Promise.resolve(), {
+        eventBus.subscribe("eventName", async () => await Promise.resolve(), {
           subscriberId: "1",
         })
-        eventBus.subscribe("eventName", async () => Promise.reject("fail1"), {
-          subscriberId: "2",
-        })
+        eventBus.subscribe(
+          "eventName",
+          async () => await Promise.reject("fail1"),
+          {
+            subscriberId: "2",
+          }
+        )
 
         result = await eventBus
           .worker_({

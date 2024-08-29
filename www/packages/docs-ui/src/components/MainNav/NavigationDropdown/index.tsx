@@ -4,12 +4,13 @@ import clsx from "clsx"
 import React, { useMemo, useRef, useState } from "react"
 import { MainNavigationDropdownSelected } from "./Selected"
 import { MainNavigationDropdownMenu } from "./Menu"
-import { useClickOutside, useMainNav } from "../../.."
+import { useAnalytics, useClickOutside, useMainNav } from "../../.."
 
 export const MainNavigationDropdown = () => {
   const { navItems: items } = useMainNav()
   const navigationRef = useRef<HTMLDivElement>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { track } = useAnalytics()
   useClickOutside({
     elmRef: navigationRef,
     onClickOutside: () => {
@@ -33,7 +34,14 @@ export const MainNavigationDropdown = () => {
       {selectedItem && (
         <MainNavigationDropdownSelected
           item={selectedItem}
-          onClick={() => setMenuOpen((prev) => !prev)}
+          onClick={() => {
+            setMenuOpen((prev) => !prev)
+            if (!menuOpen) {
+              track("nav_main_open", {
+                url: window.location.href,
+              })
+            }
+          }}
           isActive={menuOpen}
         />
       )}

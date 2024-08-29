@@ -45,14 +45,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             )
 
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-            expect(eventBusEmitSpy).toHaveBeenCalledWith([
-              buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.SHIPPING_PROFILE_CREATED,
-                action: "created",
-                object: "shipping_profile",
-                data: { id: createdShippingProfile.id },
-              }),
-            ])
+            expect(eventBusEmitSpy).toHaveBeenCalledWith(
+              [
+                buildExpectedEventMessageShape({
+                  eventName: FulfillmentEvents.SHIPPING_PROFILE_CREATED,
+                  action: "created",
+                  object: "shipping_profile",
+                  data: { id: createdShippingProfile.id },
+                }),
+              ],
+              {
+                internal: true,
+              }
+            )
           })
 
           it("should create multiple new shipping profiles", async function () {
@@ -90,7 +95,10 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                     object: "shipping_profile",
                     data: { id: createdShippingProfiles[i].id },
                   }),
-                ])
+                ]),
+                {
+                  internal: true,
+                }
               )
 
               ++i

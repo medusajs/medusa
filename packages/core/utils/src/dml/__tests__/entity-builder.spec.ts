@@ -2,13 +2,12 @@ import { ArrayType, EntityMetadata, MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"
+import { DuplicateIdPropertyError } from "../errors"
 import {
   createMikrORMEntity,
   toMikroOrmEntities,
   toMikroORMEntity,
 } from "../helpers/create-mikro-orm-entity"
-import { User } from "@medusajs/icons"
-import { DuplicateIdPropertyError } from "../errors"
 
 describe("Entity builder", () => {
   beforeEach(() => {
@@ -2362,6 +2361,7 @@ describe("Entity builder", () => {
           setter: false,
           type: "string",
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
@@ -3243,6 +3243,7 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
@@ -3423,6 +3424,7 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
@@ -4027,6 +4029,7 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",
@@ -4215,6 +4218,7 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
           isForeignKey: true,
+          persist: false,
         },
         created_at: {
           reference: "scalar",

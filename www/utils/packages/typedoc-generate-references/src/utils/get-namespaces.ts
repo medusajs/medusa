@@ -70,15 +70,5 @@ export function getCoreFlowNamespaces(): NamespaceGenerateDetails[] {
 export function getNamespaceNames(
   namespaces: NamespaceGenerateDetails[]
 ): string[] {
-  const names: string[] = []
-
-  namespaces.forEach((namespace) => {
-    names.push(namespace.name)
-
-    if (namespace.children) {
-      names.push(...getNamespaceNames(namespace.children))
-    }
-  })
-
-  return names
+  return namespaces.map((namespace) => namespace.name)
 }

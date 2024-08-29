@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
+import { HttpTypes } from "@medusajs/types"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
@@ -28,6 +29,7 @@ import {
 import { sdk } from "../../../../../lib/client"
 import {
   transformNullableFormData,
+  transformNullableFormNumber,
   transformNullableFormNumbers,
 } from "../../../../../lib/form-helpers"
 import { queryClient } from "../../../../../lib/query-client"
@@ -43,7 +45,11 @@ type StepStatus = {
   [key in Tab]: ProgressStatus
 }
 
-export function InventoryCreateForm() {
+type InventoryCreateFormProps = {
+  locations: HttpTypes.AdminStockLocation[]
+}
+
+export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
@@ -63,6 +69,9 @@ export function InventoryCreateForm() {
       description: "",
       requires_shipping: true,
       thumbnail: "",
+      locations: Object.fromEntries(
+        locations.map((location) => [location.id, ""])
+      ),
     },
     resolver: zodResolver(CreateInventoryItemSchema),
   })
@@ -108,7 +117,10 @@ export function InventoryCreateForm() {
           .filter(([_, quantiy]) => !!quantiy)
           .map(([location_id, stocked_quantity]) => ({
             location_id,
-            stocked_quantity,
+            stocked_quantity: transformNullableFormNumber(
+              stocked_quantity,
+              false
+            ),
           })),
       })
       .then(async () => {
@@ -124,6 +136,7 @@ export function InventoryCreateForm() {
       })
       .finally(() => {
         handleSuccess()
+        toast.success(t("inventory.create.successToast"))
       })
   })
 
@@ -220,13 +233,13 @@ export function InventoryCreateForm() {
 
           <RouteFocusModal.Body
             className={clx(
-              "flex h-full w-full flex-col items-center divide-y overflow-hidden px-3",
+              "flex h-full w-full flex-col items-center divide-y overflow-hidden",
               { "mx-auto": tab === Tab.DETAILS }
             )}
           >
             <ProgressTabs.Content
               value={Tab.DETAILS}
-              className="h-full w-full overflow-auto"
+              className="h-full w-full overflow-auto px-3"
             >
               <div className="mx-auto flex w-full max-w-[720px] flex-col gap-y-8 px-px py-16">
                 <div className="flex flex-col gap-y-8">
@@ -470,7 +483,7 @@ export function InventoryCreateForm() {
               value={Tab.AVAILABILITY}
               className="size-full"
             >
-              <InventoryAvailabilityForm form={form} />
+              <InventoryAvailabilityForm form={form} locations={locations} />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
           <RouteFocusModal.Footer>

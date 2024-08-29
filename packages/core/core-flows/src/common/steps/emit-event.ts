@@ -15,7 +15,7 @@ type Input = {
    */
   options?: Record<string, any>
   /**
-   * Metadata that the subscriber receives in the `metadata` property 
+   * Metadata that the subscriber receives in the `metadata` property
    * of its first parameter.
    */
   metadata?: Record<string, any>
@@ -33,15 +33,15 @@ export const emitEventStepId = "emit-event-step"
 
 /**
  * Emit an event.
- * 
+ *
  * @example
- * import { 
+ * import {
  *   createWorkflow
  * } from "@medusajs/workflows-sdk"
  * import {
  *   emitEventStep
  * } from "@medusajs/core-flows"
- * 
+ *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",
  *   () => {
@@ -57,7 +57,7 @@ export const emitEventStepId = "emit-event-step"
 export const emitEventStep = createStep(
   emitEventStepId,
   async (input: Input, context) => {
-    if (!input) {
+    if (!input?.data) {
       return
     }
 
@@ -78,11 +78,16 @@ export const emitEventStep = createStep(
       metadata.eventGroupId = context.eventGroupId
     }
 
-    const message: EventBusTypes.Message = {
+    const dataArray = Array.isArray(data_) ? data_ : [data_]
+    const message: EventBusTypes.Message[] = dataArray.map((dt) => ({
       name: input.eventName,
-      data: data_,
+      data: dt,
       options: input.options,
       metadata,
+    }))
+
+    if (!message.length) {
+      return
     }
 
     await eventBus.emit(message)

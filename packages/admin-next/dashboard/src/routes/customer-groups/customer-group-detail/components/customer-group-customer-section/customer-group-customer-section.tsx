@@ -78,16 +78,11 @@ export const CustomerGroupCustomerSection = ({
       return
     }
 
-    await mutateAsync(
-      {
-        customer_ids: keys.map((k) => ({ id: k })),
+    await mutateAsync(keys, {
+      onSuccess: () => {
+        setRowSelection({})
       },
-      {
-        onSuccess: () => {
-          setRowSelection({})
-        },
-      }
-    )
+    })
   }
 
   return (
@@ -162,9 +157,7 @@ const CustomerActions = ({
       return
     }
 
-    await mutateAsync({
-      customer_ids: [{ id: customer.id }],
-    })
+    await mutateAsync([customer.id])
   }
 
   return (

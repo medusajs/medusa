@@ -64,12 +64,6 @@ export const EditRegionForm = ({
         is_tax_inclusive: values.is_tax_inclusive,
       },
       {
-        onError: (e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("actions.close"),
-          })
-        },
         onSuccess: () => {
           toast.success(t("regions.toast.edit"))
           handleSuccess()

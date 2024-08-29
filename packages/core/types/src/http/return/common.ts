@@ -2,6 +2,7 @@ export interface BaseReturnItem {
   id: string
   quantity: number
   received_quantity: number
+  damaged_quantity: number
   reason_id?: string
   note?: string
   item_id: string
@@ -23,4 +24,5 @@ export interface BaseReturn {
   items: BaseReturnItem[]
   received_at: string
   created_at: string
+  canceled_at: string
 }

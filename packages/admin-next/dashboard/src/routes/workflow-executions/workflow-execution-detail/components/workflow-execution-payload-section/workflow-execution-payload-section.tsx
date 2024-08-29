@@ -1,8 +1,8 @@
+import { HttpTypes } from "@medusajs/types"
 import { JsonViewSection } from "../../../../../components/common/json-view-section"
-import { WorkflowExecutionDTO } from "../../../types"
 
 type WorkflowExecutionPayloadSectionProps = {
-  execution: WorkflowExecutionDTO
+  execution: HttpTypes.AdminWorkflowExecution
 }
 
 export const WorkflowExecutionPayloadSection = ({

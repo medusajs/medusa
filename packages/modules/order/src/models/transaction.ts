@@ -77,7 +77,7 @@ const OrderIdVersionIndex = createPsqlIndexStatementHelper({
 @Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 @OrderIdVersionIndex.MikroORMIndex()
-export default class Transaction {
+export default class OrderTransaction {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
