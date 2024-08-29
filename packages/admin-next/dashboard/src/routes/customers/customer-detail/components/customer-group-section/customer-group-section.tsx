@@ -26,7 +26,7 @@ import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns
 import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters.tsx"
 import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query.tsx"
 import { useDataTable } from "../../../../../hooks/use-data-table.tsx"
-import { client } from "../../../../../lib/client/index.ts"
+import { client, sdk } from "../../../../../lib/client/index.ts"
 import { queryClient } from "../../../../../lib/query-client.ts"
 
 type CustomerGroupSectionProps = {
@@ -98,8 +98,8 @@ export const CustomerGroupSection = ({
        * TODO: use this for now until add customer groups to customers batch is implemented
        */
       const promises = customerGroupIds.map((id) =>
-        client.customerGroups.removeCustomers(id, {
-          customer_ids: [customer.id],
+        sdk.admin.customerGroup.batchCustomers(id, {
+          remove: [customer.id],
         })
       )
 
@@ -180,14 +180,11 @@ const CustomerGroupRowActions = ({
       return
     }
 
-    await mutateAsync(
-      { customer_ids: [customerId] },
-      {
-        onError: (error) => {
-          toast.error(error.message)
-        },
-      }
-    )
+    await mutateAsync([customerId], {
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })
   }
 
   return (

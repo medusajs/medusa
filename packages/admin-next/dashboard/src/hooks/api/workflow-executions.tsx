@@ -1,10 +1,8 @@
 import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  WorkflowExecutionListRes,
-  WorkflowExecutionRes,
-} from "../../types/api-responses"
+import { HttpTypes } from "@medusajs/types"
+import { FetchError } from "@medusajs/js-sdk"
 
 const WORKFLOW_EXECUTIONS_QUERY_KEY = "workflow_executions" as const
 export const workflowExecutionsQueryKeys = queryKeysFactory(
@@ -12,19 +10,19 @@ export const workflowExecutionsQueryKeys = queryKeysFactory(
 )
 
 export const useWorkflowExecutions = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminGetWorkflowExecutionsParams,
   options?: Omit<
     UseQueryOptions<
-      WorkflowExecutionListRes,
-      Error,
-      WorkflowExecutionListRes,
+      HttpTypes.AdminGetWorkflowExecutionsParams,
+      FetchError,
+      HttpTypes.AdminWorkflowExecutionListResponse,
       QueryKey
     >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.workflowExecutions.list(query),
+    queryFn: () => sdk.admin.workflowExecution.list(query),
     queryKey: workflowExecutionsQueryKeys.list(query),
     ...options,
   })
@@ -34,19 +32,18 @@ export const useWorkflowExecutions = (
 
 export const useWorkflowExecution = (
   id: string,
-  query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      WorkflowExecutionRes,
-      Error,
-      WorkflowExecutionRes,
+      HttpTypes.AdminWorkflowExecutionResponse,
+      FetchError,
+      HttpTypes.AdminWorkflowExecutionResponse,
       QueryKey
     >,
     "queryKey" | "queryFn"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.workflowExecutions.retrieve(id, query),
+    queryFn: () => sdk.admin.workflowExecution.retrieve(id),
     queryKey: workflowExecutionsQueryKeys.detail(id),
     ...options,
   })

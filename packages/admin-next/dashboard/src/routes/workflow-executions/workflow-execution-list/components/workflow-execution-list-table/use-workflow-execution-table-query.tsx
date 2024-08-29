@@ -1,4 +1,4 @@
-import { AdminGetWorkflowExecutionsParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export const useWorkflowExecutionTableQuery = ({
@@ -12,7 +12,7 @@ export const useWorkflowExecutionTableQuery = ({
 
   const { offset, ...rest } = raw
 
-  const searchParams: AdminGetWorkflowExecutionsParams = {
+  const searchParams: HttpTypes.AdminGetWorkflowExecutionsParams = {
     limit: pageSize,
     offset: offset ? parseInt(offset) : 0,
     ...rest,

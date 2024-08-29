@@ -1,5 +1,5 @@
 import { Container, Heading } from "@medusajs/ui"
-import { AdminInventoryItemResponse } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 import { ActionMenu } from "../../../../components/common/action-menu"
 import { PencilSquare } from "@medusajs/icons"
@@ -7,7 +7,7 @@ import { SectionRow } from "../../../../components/common/section"
 import { useTranslation } from "react-i18next"
 
 type InventoryItemGeneralSectionProps = {
-  inventoryItem: AdminInventoryItemResponse["inventory_item"]
+  inventoryItem: HttpTypes.AdminInventoryItemResponse["inventory_item"]
 }
 export const InventoryItemGeneralSection = ({
   inventoryItem,

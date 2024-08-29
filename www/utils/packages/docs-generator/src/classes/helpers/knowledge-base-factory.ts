@@ -547,6 +547,78 @@ class KnowledgeBaseFactory {
       },
     },
     {
+      exact: "$eq",
+      template: `Filter by an exact match.`,
+    },
+    {
+      exact: "$ne",
+      template: `Filter by values not equal to this parameter.`,
+    },
+    {
+      exact: "$in",
+      template: `Filter by values in this array.`,
+    },
+    {
+      exact: "$nin",
+      template: `Filter by values not in this array.`,
+    },
+    {
+      exact: "$not",
+      template: `Filter by values not matching the conditions in this parameter.`,
+    },
+    {
+      exact: "$gt",
+      template: `Filter by values greater than this parameter. Useful for numbers and dates only.`,
+    },
+    {
+      exact: "$gte",
+      template: `Filter by values greater than or equal to this parameter. Useful for numbers and dates only.`,
+    },
+    {
+      exact: "$lt",
+      template: `Filter by values less than this parameter. Useful for numbers and dates only.`,
+    },
+    {
+      exact: "$lte",
+      template: `Filter by values less than or equal to this parameter. Useful for numbers and dates only.`,
+    },
+    {
+      exact: "$like",
+      template: "Apply a `like` filter. Useful for strings only.",
+    },
+    {
+      exact: "$re",
+      template: "Apply a regex filter. Useful for strings only.",
+    },
+    {
+      exact: "$ilike",
+      template:
+        "Apply a case-insensitive `like` filter. Useful for strings only.",
+    },
+    {
+      exact: "$fulltext",
+      template: "Filter to apply on full-text properties.",
+    },
+    {
+      exact: "$overlap",
+      template:
+        "Filter arrays that have overlapping values with this parameter.",
+    },
+    {
+      exact: "$contains",
+      template:
+        "Filter arrays that contain some of the values of this parameter.",
+    },
+    {
+      exact: "$contained",
+      template: "Filter arrays that contain all values of this parameter.",
+    },
+    {
+      exact: "$exists",
+      template:
+        "Filter by whether a value for this parameter exists (not `null`).",
+    },
+    {
       pattern: /.*/,
       template(str, options) {
         if (!options?.parentName) {
