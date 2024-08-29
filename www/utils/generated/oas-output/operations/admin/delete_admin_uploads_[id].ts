@@ -1,13 +1,13 @@
 /**
  * @oas [delete] /admin/uploads/{id}
  * operationId: DeleteUploadsId
- * summary: Delete a Upload
- * description: Delete a upload.
+ * summary: Delete a File
+ * description: Delete a file. Uses the installed file module provider to delete the file.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The upload's ID.
+ *     description: The file's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -89,15 +89,16 @@
  *             id:
  *               type: string
  *               title: id
- *               description: The upload's ID.
+ *               description: The file's ID.
  *             object:
  *               type: string
  *               title: object
- *               description: The upload's object.
+ *               description: The name of the deleted object.
+ *               default: file
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The upload's deleted.
+ *               description: Whether the file was deleted.
  *             parent:
  *               type: object
  *               description: The upload's parent.

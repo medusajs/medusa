@@ -1,9 +1,9 @@
 /**
  * @oas [delete] /admin/tax-rates/{id}/rules/{rule_id}
  * operationId: DeleteTaxRatesIdRulesRule_id
- * summary: Remove Rules from Tax Rate
- * description: Remove a list of rules from a tax rate. This doesn't delete the
- *   Rule, only the association between the Rule and the tax rate.
+ * summary: Remove Rule of Tax Rate
+ * x-sidebar-summary: Remove Rule
+ * description: Remove a tax rate's rule.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -14,7 +14,7 @@
  *       type: string
  *   - name: rule_id
  *     in: path
- *     description: The tax rate's rule id.
+ *     description: The tax rate rule's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -100,14 +100,15 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The tax rate's object.
+ *               description: The name of the deleted object.
+ *               default: "tax_rate_rule"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The tax rate's deleted.
+ *               description: Whether the tax rate rule was deleted.
  *             parent:
  *               type: object
- *               description: The tax rate's parent.
+ *               description: The parent tax rate.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

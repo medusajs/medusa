@@ -1,10 +1,14 @@
 /**
  * @oas [delete] /admin/returns/{id}/shipping-method/{action_id}
  * operationId: DeleteReturnsIdShippingMethodAction_id
- * summary: Remove Shipping Methods from Return
- * description: Remove a list of shipping methods from a return. This doesn't
- *   delete the Shipping Method, only the association between the Shipping Method
- *   and the return.
+ * summary: Remove Shipping Method from Return
+ * x-sidebar-summary: Remove Shipping Method
+ * description: >
+ *   Remove a shipping method of the return by the ID of the item's `SHIPPING_ADD` action.
+ * 
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's
+ *   name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -15,7 +19,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The return's action id.
+ *     description: The ID of the shipping method's `SHIPPING_ADD` action.
  *     required: true
  *     schema:
  *       type: string

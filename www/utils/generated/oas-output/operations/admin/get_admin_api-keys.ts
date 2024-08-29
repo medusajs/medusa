@@ -1,9 +1,9 @@
 /**
  * @oas [get] /admin/api-keys
  * operationId: GetApiKeys
- * summary: List Api Keys
- * description: Retrieve a list of api keys. The api keys can be filtered by fields
- *   such as `id`. The api keys can also be sorted or paginated.
+ * summary: List API Keys
+ * description: Retrieve a list of API keys. The API keys can be filtered by fields
+ *   such as `id`. The API keys can also be sorted or paginated.
  * x-authenticated: true
  * parameters:
  *   - name: expand
@@ -76,7 +76,6 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
  *               required:
  *                 - limit
  *                 - offset
@@ -85,23 +84,22 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The api key's limit.
+ *                   description: The maximum number of items returned in the list.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The api key's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The api key's count.
+ *                   description: The total count of items.
  *             - type: object
- *               description: SUMMARY
  *               required:
  *                 - api_keys
  *               properties:
  *                 api_keys:
  *                   type: array
- *                   description: The api key's api keys.
+ *                   description: The list of API keys.
  *                   items:
  *                     $ref: "#/components/schemas/ApiKeyResponse"
  *   "400":
