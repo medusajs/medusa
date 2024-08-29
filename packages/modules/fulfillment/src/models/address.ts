@@ -21,7 +21,7 @@ const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "fulfillment_address" })
-export default class Address {
+export default class FulfillmentAddress {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })

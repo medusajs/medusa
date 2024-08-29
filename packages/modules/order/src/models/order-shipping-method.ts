@@ -17,7 +17,7 @@ import Claim from "./claim"
 import Exchange from "./exchange"
 import Order from "./order"
 import Return from "./return"
-import ShippingMethod from "./shipping-method"
+import OrderShippingMethod from "./shipping-method"
 
 type OptionalShippingMethodProps = DAL.ModelDateColumns
 
@@ -65,7 +65,7 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName })
-export default class OrderShippingMethod {
+export default class OrderShipping {
   [OptionalProps]?: OptionalShippingMethodProps
 
   @PrimaryKey({ columnType: "text" })
@@ -138,7 +138,7 @@ export default class OrderShippingMethod {
   version: number
 
   @ManyToOne({
-    entity: () => ShippingMethod,
+    entity: () => OrderShippingMethod,
     fieldName: "shipping_method_id",
     mapToPk: true,
     columnType: "text",
@@ -146,10 +146,10 @@ export default class OrderShippingMethod {
   @ItemIdIndex.MikroORMIndex()
   shipping_method_id: string
 
-  @ManyToOne(() => ShippingMethod, {
+  @ManyToOne(() => OrderShippingMethod, {
     persist: false,
   })
-  shipping_method: Rel<ShippingMethod>
+  shipping_method: Rel<OrderShippingMethod>
 
   @Property({
     onCreate: () => new Date(),

@@ -4,7 +4,7 @@ import {
 } from "@medusajs/utils"
 import { BeforeCreate, Entity, ManyToOne, OnInit, Rel } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
-import ShippingMethod from "./shipping-method"
+import OrderShippingMethod from "./shipping-method"
 
 const ShippingMethodIdIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_shipping_method_adjustment",
@@ -12,14 +12,14 @@ const ShippingMethodIdIdIndex = createPsqlIndexStatementHelper({
 })
 
 @Entity({ tableName: "order_shipping_method_adjustment" })
-export default class ShippingMethodAdjustment extends AdjustmentLine {
-  @ManyToOne(() => ShippingMethod, {
+export default class OrderShippingMethodAdjustment extends AdjustmentLine {
+  @ManyToOne(() => OrderShippingMethod, {
     persist: false,
   })
-  shipping_method: Rel<ShippingMethod>
+  shipping_method: Rel<OrderShippingMethod>
 
   @ManyToOne({
-    entity: () => ShippingMethod,
+    entity: () => OrderShippingMethod,
     columnType: "text",
     fieldName: "shipping_method_id",
     mapToPk: true,

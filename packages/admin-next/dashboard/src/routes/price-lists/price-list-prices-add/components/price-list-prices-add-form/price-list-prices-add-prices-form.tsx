@@ -79,6 +79,7 @@ export const PriceListPricesAddPricesForm = ({
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
       <DataGrid
+        isLoading={isLoading}
         columns={columns}
         data={products}
         getSubRows={(row) => {

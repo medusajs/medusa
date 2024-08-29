@@ -1,7 +1,7 @@
 import {
-  AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityProviderService,
   IAuthProvider,
 } from "@medusajs/types"
 
@@ -74,6 +74,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * @ignore
    */
   private static DISPLAY_NAME: string
+
   /**
    * @ignore
    */
@@ -90,6 +91,12 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   public get displayName() {
     return (this.constructor as typeof AbstractAuthModuleProvider).DISPLAY_NAME
   }
+
+  /**
+   * Override this static method in order for the loader to validate the options provided to the module provider.
+   * @param options
+   */
+  static validateOptions(options: Record<any, any>): void | never {}
 
   /**
    * @ignore

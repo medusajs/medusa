@@ -524,6 +524,29 @@ class KnowledgeBaseFactory {
         "Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.",
     },
     {
+      exact: "object",
+      template: (_, options) => {
+        if (!options?.rawParentName?.includes("DeleteResponse")) {
+          return
+        }
+
+        return "The name of the deleted object."
+      },
+    },
+    {
+      exact: "deleted",
+      template: (_, options) => {
+        if (
+          !options?.rawParentName?.includes("DeleteResponse") ||
+          !options.parentName
+        ) {
+          return
+        }
+
+        return `Whether the ${singular(options.parentName)} was deleted.`
+      },
+    },
+    {
       pattern: /.*/,
       template(str, options) {
         if (!options?.parentName) {
@@ -799,6 +822,7 @@ class KnowledgeBaseFactory {
             : kebabToTitle(splitOasPath[splitOasPath.length - 1])
         // retrieve different formatted versions of the entity name for the summary/description
         const pluralEndingEntityName = pluralize.plural(endingEntityName)
+        const singularEndingEntityName = pluralize.singular(endingEntityName)
         const lowerEndingEntityName = pluralEndingEntityName.toLowerCase()
         const singularLowerEndingEntityName =
           pluralize.singular(endingEntityName)
@@ -808,11 +832,19 @@ class KnowledgeBaseFactory {
           result.summary = `List ${pluralEndingEntityName}`
           result.description = `Retrieve a list of ${lowerEndingEntityName} in a ${singularLowerTag}. The ${lowerEndingEntityName} can be filtered by fields like FILTER FIELDS. The ${lowerEndingEntityName} can also be paginated.`
         } else if (httpMethod === "post") {
-          result.summary = `Add ${pluralEndingEntityName} to ${singularTag}`
-          result.description = `Add a list of ${lowerEndingEntityName} to a ${singularLowerTag}.`
+          result.summary = `Add ${
+            isBulk ? pluralEndingEntityName : singularEndingEntityName
+          } to ${singularTag}`
+          result.description = isBulk
+            ? `Add a list of ${lowerEndingEntityName} to a ${singularLowerTag}.`
+            : `Add a ${singularLowerEndingEntityName} to a ${singularLowerTag}`
         } else {
-          result.summary = `Remove ${pluralEndingEntityName} from ${singularTag}`
-          result.description = `Remove a list of ${lowerEndingEntityName} from a ${singularLowerTag}. This doesn't delete the ${singularLowerEndingEntityName}, only the association between the ${singularLowerEndingEntityName} and the ${singularLowerTag}.`
+          result.summary = `Remove ${
+            isBulk ? pluralEndingEntityName : singularEndingEntityName
+          } from ${singularTag}`
+          result.description = isBulk
+            ? `Remove a list of ${lowerEndingEntityName} from a ${singularLowerTag}.`
+            : `Remove a ${singularLowerEndingEntityName} from a ${singularLowerTag}.`
         }
       } else {
         // the OAS operation is applied on a single entity that is the main entity (denoted by the tag).

@@ -8,15 +8,12 @@ import {
   clx,
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import {
-  TransactionStepState,
-  WorkflowExecutionDTO,
-  WorkflowExecutionStep,
-} from "../../../types"
 import { getTransactionState, getTransactionStateColor } from "../../../utils"
+import { HttpTypes } from "@medusajs/types"
+import { TransactionState, TransactionStepState } from "../../../types"
 
 type WorkflowExecutionGeneralSectionProps = {
-  execution: WorkflowExecutionDTO
+  execution: HttpTypes.AdminWorkflowExecution
 }
 
 export const WorkflowExecutionGeneralSection = ({
@@ -25,8 +22,13 @@ export const WorkflowExecutionGeneralSection = ({
   const { t } = useTranslation()
 
   const cleanId = execution.id.replace("wf_exec_", "")
-  const translatedState = getTransactionState(t, execution.state)
-  const stateColor = getTransactionStateColor(execution.state)
+  const translatedState = getTransactionState(
+    t,
+    execution.state as TransactionState
+  )
+  const stateColor = getTransactionStateColor(
+    execution.state as TransactionState
+  )
 
   return (
     <Container className="divide-y p-0">
@@ -68,7 +70,7 @@ const ROOT_PREFIX = "_root"
 const Progress = ({
   steps,
 }: {
-  steps?: Record<string, WorkflowExecutionStep> | null
+  steps?: Record<string, HttpTypes.AdminWorkflowExecutionStep> | null
 }) => {
   const { t } = useTranslation()
 
