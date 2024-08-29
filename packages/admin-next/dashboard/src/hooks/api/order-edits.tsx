@@ -5,12 +5,13 @@ import { HttpTypes } from "@medusajs/types"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { ordersQueryKeys } from "./orders"
+import { FetchError } from "@medusajs/js-sdk"
 
 export const useCreateOrderEdit = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminInitiateOrderEditRequest
   >
 ) => {
@@ -35,7 +36,7 @@ export const useRequestOrderEdit = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
-    Error,
+    FetchError,
     void
   >
 ) => {
@@ -59,7 +60,7 @@ export const useConfirmOrderEdit = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
-    Error,
+    FetchError,
     void
   >
 ) => {
@@ -81,7 +82,7 @@ export const useConfirmOrderEdit = (
 
 export const useCancelOrderEdit = (
   orderId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.orderEdit.cancelRequest(orderId),
@@ -103,7 +104,7 @@ export const useAddOrderEditItems = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminAddOrderEditItems
   >
 ) => {
@@ -127,7 +128,7 @@ export const useUpdateOrderEditOriginalItem = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateOrderEditItem & { itemId: string }
   >
 ) => {
@@ -155,7 +156,7 @@ export const useUpdateOrderEditAddedItem = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateOrderEditItem & { actionId: string }
   >
 ) => {
@@ -184,7 +185,7 @@ export const useRemoveOrderEditItem = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderEditPreviewResponse,
-    Error,
+    FetchError,
     string
   >
 ) => {
