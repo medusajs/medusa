@@ -1,10 +1,6 @@
-import {
-  BaseCustomer,
-  BaseCustomerAddress,
-  BaseCustomerGroup,
-} from "../common"
+import { AdminCustomerGroup } from "../../customer-group"
+import { BaseCustomer, BaseCustomerAddress } from "../common"
 
-export interface AdminCustomerGroup extends BaseCustomerGroup {}
 export interface AdminCustomer extends BaseCustomer {
   has_account: boolean
   groups?: AdminCustomerGroup[]

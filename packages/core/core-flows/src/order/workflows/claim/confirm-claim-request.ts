@@ -16,12 +16,12 @@ import {
   ReturnStatus,
 } from "@medusajs/utils"
 import {
+  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
   transform,
   when,
-  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
@@ -39,6 +39,7 @@ import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-updat
 
 export type ConfirmClaimRequestWorkflowInput = {
   claim_id: string
+  confirmed_by?: string
 }
 
 /**

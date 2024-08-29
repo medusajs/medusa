@@ -1,4 +1,4 @@
-import { AdminGetReservationsParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export const useReservationTableQuery = ({
@@ -15,13 +15,12 @@ export const useReservationTableQuery = ({
 
   const { location_id, created_at, updated_at, quantity, offset, ...rest } = raw
 
-  const searchParams: AdminGetReservationsParams = {
+  const searchParams: HttpTypes.AdminGetReservationsParams = {
     limit: pageSize,
     offset: offset ? parseInt(offset) : undefined,
     location_id: location_id,
     created_at: created_at ? JSON.parse(created_at) : undefined,
     updated_at: updated_at ? JSON.parse(updated_at) : undefined,
-    quantity: quantity ? JSON.parse(quantity) : undefined,
     ...rest,
   }
 

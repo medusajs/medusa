@@ -5,6 +5,7 @@ import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 export type ConfirmOrderChangesInput = {
   orderId: string
   changes: OrderChangeDTO[]
+  confirmed_by?: string
 }
 
 /**
@@ -15,7 +16,10 @@ export const confirmOrderChanges = createStep(
   async (input: ConfirmOrderChangesInput, { container }) => {
     const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
     await orderModuleService.confirmOrderChange(
-      input.changes.map((action) => action.id)
+      input.changes.map((action) => ({
+        id: action.id,
+        confirmed_by: input.confirmed_by,
+      }))
     )
 
     return new StepResponse(null, input.orderId)
