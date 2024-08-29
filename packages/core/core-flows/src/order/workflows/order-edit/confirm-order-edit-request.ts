@@ -11,9 +11,9 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../../common"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
+import { useRemoteQueryStep } from "../../../common"
 import { previewOrderChangeStep } from "../../steps"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import {
@@ -24,6 +24,7 @@ import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-updat
 
 export type ConfirmOrderEditRequestWorkflowInput = {
   order_id: string
+  confirmed_by?: string
 }
 
 /**
@@ -99,7 +100,11 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
 
     const orderPreview = previewOrderChangeStep(order.id)
 
-    confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+    confirmOrderChanges({
+      changes: [orderChange],
+      orderId: order.id,
+      confirmed_by: input.confirmed_by,
+    })
 
     const orderItems = useRemoteQueryStep({
       entry_point: "order",

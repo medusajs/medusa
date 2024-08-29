@@ -52,6 +52,7 @@ import {
 import { getTotalCaptured } from "../../../../../lib/payment"
 import { getReturnableQuantity } from "../../../../../lib/rma"
 import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link"
+import ReturnInfoPopover from "./return-info-popover"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -565,6 +566,61 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   )
 }
 
+const ReturnBreakdownWithDamages = ({
+  orderReturn,
+  itemId,
+}: {
+  orderReturn: AdminReturn
+  itemId: string
+}) => {
+  const { t } = useTranslation()
+
+  const item = orderReturn?.items?.find((ri) => ri.item_id === itemId)
+  const damagedQuantity = item?.damaged_quantity || 0
+
+  return (
+    item && (
+      <div
+        key={orderReturn.id}
+        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-t-2 border-dotted px-6 py-4"
+      >
+        <div className="flex items-center gap-2">
+          <ArrowDownRightMini className="text-ui-fg-muted" />
+          <Text size="small">
+            {t(`orders.returns.damagedItemsReturned`, {
+              quantity: damagedQuantity,
+            })}
+          </Text>
+
+          {item?.note && (
+            <Tooltip content={item.note}>
+              <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+            </Tooltip>
+          )}
+
+          {item?.reason && (
+            <Badge
+              size="2xsmall"
+              className="cursor-default select-none capitalize"
+              rounded="full"
+            >
+              {item?.reason?.label}
+            </Badge>
+          )}
+        </div>
+
+        <Text size="small" leading="compact" className="text-ui-fg-muted">
+          {t(`orders.returns.damagedItemReceived`)}
+
+          <span className="ml-2">
+            <ReturnInfoPopover orderReturn={orderReturn} />
+          </span>
+        </Text>
+      </div>
+    )
+  )
+}
+
 const ReturnBreakdown = ({
   orderReturn,
   itemId,
@@ -585,52 +641,72 @@ const ReturnBreakdown = ({
 
   const isRequested = orderReturn.status === "requested"
   const item = orderReturn?.items?.find((ri) => ri.item_id === itemId)
+  const damagedQuantity = item?.damaged_quantity || 0
 
   return (
     item && (
-      <div
-        key={orderReturn.id}
-        className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-t-2 border-dotted px-6 py-4"
-      >
-        <div className="flex items-center gap-2">
-          <ArrowDownRightMini className="text-ui-fg-muted" />
-          <Text>
-            {t(
-              `orders.returns.${
-                isRequested ? "returnRequestedInfo" : "returnReceivedInfo"
-              }`,
-              {
-                requestedItemsCount:
-                  item?.[isRequested ? "quantity" : "received_quantity"],
-              }
-            )}
-          </Text>
+      <>
+        {damagedQuantity > 0 && (
+          <ReturnBreakdownWithDamages
+            orderReturn={orderReturn}
+            itemId={itemId}
+          />
+        )}
+        <div
+          key={item.id}
+          className="txt-compact-small-plus text-ui-fg-subtle bg-ui-bg-subtle flex flex-row justify-between gap-y-2 border-t-2 border-dotted px-6 py-4"
+        >
+          <div className="flex items-center gap-2">
+            <ArrowDownRightMini className="text-ui-fg-muted" />
+            <Text size="small">
+              {t(
+                `orders.returns.${
+                  isRequested ? "returnRequestedInfo" : "returnReceivedInfo"
+                }`,
+                {
+                  requestedItemsCount:
+                    item?.[isRequested ? "quantity" : "received_quantity"],
+                }
+              )}
+            </Text>
 
-          {item?.note && (
-            <Tooltip content={item.note}>
-              <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
-            </Tooltip>
+            {item?.note && (
+              <Tooltip content={item.note}>
+                <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
+              </Tooltip>
+            )}
+
+            {item?.reason && (
+              <Badge
+                size="2xsmall"
+                className="cursor-default select-none capitalize"
+                rounded="full"
+              >
+                {item?.reason?.label}
+              </Badge>
+            )}
+          </div>
+
+          {orderReturn && isRequested && (
+            <Text size="small" leading="compact" className="text-ui-fg-muted">
+              {getRelativeDate(orderReturn.created_at)}
+              <span className="ml-2">
+                <ReturnInfoPopover orderReturn={orderReturn} />
+              </span>
+            </Text>
           )}
 
-          {item?.reason && (
-            <Badge
-              size="2xsmall"
-              className="cursor-default select-none capitalize"
-              rounded="full"
-            >
-              {item?.reason?.label}
-            </Badge>
+          {orderReturn && !isRequested && (
+            <Text size="small" leading="compact" className="text-ui-fg-muted">
+              {t(`orders.returns.itemReceived`)}
+
+              <span className="ml-2">
+                <ReturnInfoPopover orderReturn={orderReturn} />
+              </span>
+            </Text>
           )}
         </div>
-
-        {orderReturn && (
-          <Text size="small" leading="compact" className="text-ui-fg-muted">
-            {getRelativeDate(
-              isRequested ? orderReturn.created_at : orderReturn.received_at
-            )}
-          </Text>
-        )}
-      </div>
+      </>
     )
   )
 }
@@ -657,7 +733,7 @@ const ClaimBreakdown = ({
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
 
-          <Text>
+          <Text size="small">
             {t(`orders.claims.outboundItemAdded`, {
               itemsCount: items.reduce(
                 (acc, item) => (acc = acc + item.quantity),
@@ -696,7 +772,7 @@ const ExchangeBreakdown = ({
       >
         <div className="flex items-center gap-2">
           <ArrowDownRightMini className="text-ui-fg-muted" />
-          <Text>
+          <Text size="small">
             {t(`orders.exchanges.outboundItemAdded`, {
               itemsCount: items.reduce(
                 (acc, item) => (acc = acc + item.quantity),
@@ -720,19 +796,39 @@ const Total = ({ order }: { order: AdminOrder }) => {
   return (
     <div className=" flex flex-col gap-y-2 px-6 py-4">
       <div className="text-ui-fg-base flex items-center justify-between">
-        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+        <Text
+          weight="plus"
+          className="text-ui-fg-subtle"
+          size="small"
+          leading="compact"
+        >
           {t("fields.total")}
         </Text>
-        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+        <Text
+          weight="plus"
+          className="text-ui-fg-subtle"
+          size="small"
+          leading="compact"
+        >
           {getStylizedAmount(order.total, order.currency_code)}
         </Text>
       </div>
 
       <div className="text-ui-fg-base flex items-center justify-between">
-        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+        <Text
+          weight="plus"
+          className="text-ui-fg-subtle"
+          size="small"
+          leading="compact"
+        >
           {t("fields.paidTotal")}
         </Text>
-        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+        <Text
+          weight="plus"
+          className="text-ui-fg-subtle"
+          size="small"
+          leading="compact"
+        >
           {getStylizedAmount(
             getTotalCaptured(order.payment_collections || []),
             order.currency_code
@@ -745,6 +841,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
           className="text-ui-fg-subtle text-semibold"
           size="small"
           leading="compact"
+          weight="plus"
         >
           {t("orders.returns.outstandingAmount")}
         </Text>
@@ -752,6 +849,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
           className="text-ui-fg-subtle text-bold"
           size="small"
           leading="compact"
+          weight="plus"
         >
           {getStylizedAmount(
             order.summary.pending_difference || 0,

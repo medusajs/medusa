@@ -2,6 +2,7 @@ import {
   cancelBeginOrderClaimWorkflow,
   confirmClaimRequestWorkflow,
 } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -11,7 +12,6 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { defaultAdminDetailsReturnFields } from "../../../returns/query-config"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -22,7 +22,10 @@ export const POST = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const { result } = await confirmClaimRequestWorkflow(req.scope).run({
-    input: { claim_id: id },
+    input: {
+      claim_id: id,
+      confirmed_by: req.auth_context.actor_id,
+    },
   })
 
   const queryObject = remoteQueryObjectFromString({

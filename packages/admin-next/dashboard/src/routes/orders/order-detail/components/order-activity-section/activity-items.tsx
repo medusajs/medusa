@@ -44,6 +44,7 @@ function ActivityItems(props: ActivityItemsProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         autoFocus={false}
+        className="focus-visible:outline-none"
       >
         <Text size="small" leading="compact" weight="plus">
           {title}
@@ -53,7 +54,7 @@ function ActivityItems(props: ActivityItemsProps) {
       <Popover.Content
         align="center"
         side="top"
-        className="bg-ui-bg-component p-0 max-w-[200px]"
+        className="bg-ui-bg-component p-0 max-w-[200px] focus-visible:outline-none"
       >
         <div className="flex flex-col">
           {!!itemsToSend?.length && (

@@ -2,6 +2,7 @@ import {
   cancelBeginOrderExchangeWorkflow,
   confirmExchangeRequestWorkflow,
 } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -11,7 +12,6 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { defaultAdminDetailsReturnFields } from "../../../returns/query-config"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -22,7 +22,10 @@ export const POST = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const { result } = await confirmExchangeRequestWorkflow(req.scope).run({
-    input: { exchange_id: id },
+    input: {
+      exchange_id: id,
+      confirmed_by: req.auth_context.actor_id,
+    },
   })
 
   const queryObject = remoteQueryObjectFromString({
