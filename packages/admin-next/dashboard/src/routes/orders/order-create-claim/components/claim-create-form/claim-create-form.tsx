@@ -168,15 +168,15 @@ export const ClaimCreateForm = ({
   const form = useForm<CreateClaimSchemaType>({
     defaultValues: () => {
       const inboundShippingMethod = preview.shipping_methods.find((s) => {
-        const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-        return !!action?.return_id
+        return !!s.actions?.find(
+          (a) => a.action === "SHIPPING_ADD" && !!a.return_id
+        )
       })
 
       const outboundShippingMethod = preview.shipping_methods.find((s) => {
-        const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-        return action && !action.return_id
+        return !!s.actions?.find(
+          (a) => a.action === "SHIPPING_ADD" && !a.return_id
+        )
       })
 
       return Promise.resolve({
@@ -236,9 +236,7 @@ export const ClaimCreateForm = ({
   )
 
   const outboundShipping = preview.shipping_methods.find((s) => {
-    const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-    return action && !action.return_id
+    return !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
   })
 
   const {
@@ -294,7 +292,8 @@ export const ClaimCreateForm = ({
 
   useEffect(() => {
     const method = preview.shipping_methods.find(
-      (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
+      (s) =>
+        !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
     )
 
     if (method) {
@@ -476,9 +475,10 @@ export const ClaimCreateForm = ({
     }
   }, [])
 
-  const shippingTotal = useMemo(() => {
+  const inboundShippingTotal = useMemo(() => {
     const method = preview.shipping_methods.find(
-      (sm) => !!sm.actions?.find((a) => a.action === "SHIPPING_ADD")
+      (sm) =>
+        !!sm.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
     )
 
     return (method?.total as number) || 0
@@ -775,7 +775,10 @@ export const ClaimCreateForm = ({
                         preview.shipping_methods.forEach((s) => {
                           if (s.actions) {
                             for (const a of s.actions) {
-                              if (a.action === "SHIPPING_ADD" && a.return_id) {
+                              if (
+                                a.action === "SHIPPING_ADD" &&
+                                !!a.return_id
+                              ) {
                                 actionId = a.id
                               }
                             }
@@ -812,7 +815,7 @@ export const ClaimCreateForm = ({
                       disabled={showInboundItemsPlaceholder}
                     />
                   ) : (
-                    getStylizedAmount(shippingTotal, order.currency_code)
+                    getStylizedAmount(inboundShippingTotal, order.currency_code)
                   )}
                 </span>
               </div>
