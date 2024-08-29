@@ -58,7 +58,7 @@ export const confirmReturnRequestValidationStep = createStep(
 )
 
 /**
- * This step confirms that a requested return has atleast one item
+ * This step confirms that a requested return has at least one item
  */
 const confirmIfReturnItemsArePresent = createStep(
   "confirm-if-return-items-are-present",
@@ -69,7 +69,7 @@ const confirmIfReturnItemsArePresent = createStep(
 
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Order return request should have atleast 1 item`
+      `Order return request should have at least 1 item`
     )
   }
 )

@@ -399,10 +399,7 @@ export default class TaxModuleService
 
     const parentRegion = regions.find((r) => r.province_code === null)
     if (!parentRegion) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "No parent region found for country"
-      )
+      return []
     }
 
     const toReturn = await promiseAll(

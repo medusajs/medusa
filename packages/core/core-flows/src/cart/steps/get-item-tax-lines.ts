@@ -17,11 +17,13 @@ export interface GetItemTaxLinesStepInput {
   items: CartLineItemDTO[]
   shipping_methods: CartShippingMethodDTO[]
   force_tax_calculation?: boolean
+  is_return?: boolean
 }
 
 function normalizeTaxModuleContext(
   cart: CartWorkflowDTO,
-  forceTaxCalculation: boolean
+  forceTaxCalculation: boolean,
+  isReturn?: boolean
 ): TaxCalculationContext | null {
   const address = cart.shipping_address
   const shouldCalculateTax = forceTaxCalculation || cart.region?.automatic_taxes
@@ -59,8 +61,7 @@ function normalizeTaxModuleContext(
       postal_code: address.postal_code,
     },
     customer,
-    // TODO: Should probably come in from order module, defaulting to false
-    is_return: false,
+    is_return: isReturn ?? false,
   }
 }
 
@@ -105,13 +106,18 @@ export const getItemTaxLinesStep = createStep(
       items,
       shipping_methods: shippingMethods,
       force_tax_calculation: forceTaxCalculation = false,
+      is_return: isReturn = false,
     } = data
 
     const taxService = container.resolve<ITaxModuleService>(
       ModuleRegistrationName.TAX
     )
 
-    const taxContext = normalizeTaxModuleContext(cart, forceTaxCalculation)
+    const taxContext = normalizeTaxModuleContext(
+      cart,
+      forceTaxCalculation,
+      isReturn
+    )
 
     if (!taxContext) {
       return new StepResponse({

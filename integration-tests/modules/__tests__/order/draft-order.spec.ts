@@ -226,7 +226,7 @@ medusaIntegrationTestRunner({
           shipping_methods: [
             {
               name: "test-method",
-              option_id: "test-option",
+              shipping_option_id: "test-option",
               amount: 100,
             },
           ],
@@ -268,7 +268,13 @@ medusaIntegrationTestRunner({
                     value: "3000",
                   }),
                   metadata: {},
-                  tax_lines: [],
+                  tax_lines: [
+                    expect.objectContaining({
+                      code: "US_DEF",
+                      provider_id: "system",
+                      rate: 2,
+                    }),
+                  ],
                   adjustments: [],
                   unit_price: 3000,
                   quantity: 2,
@@ -360,9 +366,15 @@ medusaIntegrationTestRunner({
                     value: "100",
                   }),
                   is_tax_inclusive: false,
-                  shipping_option_id: null,
+                  shipping_option_id: "test-option",
                   data: null,
-                  tax_lines: [],
+                  tax_lines: [
+                    expect.objectContaining({
+                      code: "US_DEF",
+                      provider_id: "system",
+                      rate: 2,
+                    }),
+                  ],
                   adjustments: [],
                   amount: 100,
                 }),
