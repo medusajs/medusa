@@ -42,9 +42,9 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       }
 
       if (strategy === LoadStrategy.JOINED) {
-        config.options.populate.push("shipping_methods")
         config.options.populate.push("order.shipping_methods")
         config.options.populate.push("order.summary")
+        config.options.populate.push("shipping_methods")
       }
 
       if (!config.options.populate.includes("order.items")) {
@@ -84,7 +84,6 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       popWhere.order ??= {}
 
       popWhere.shipping_methods ??= {}
-      popWhere.shipping_methods.version = version
       popWhere.shipping_methods.deleted_at ??= null
 
       popWhere.shipping_methods.shipping_method ??= {}
