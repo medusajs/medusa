@@ -2,12 +2,12 @@ import { AdminProductCategoryResponse } from "@medusajs/types"
 import { LoaderFunctionArgs } from "react-router-dom"
 
 import { categoriesQueryKeys } from "../../../hooks/api/categories"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
 
 const categoryDetailQuery = (id: string) => ({
   queryKey: categoriesQueryKeys.detail(id),
-  queryFn: async () => client.categories.retrieve(id),
+  queryFn: async () => sdk.admin.productCategory.retrieve(id),
 })
 
 export const categoryLoader = async ({ params }: LoaderFunctionArgs) => {

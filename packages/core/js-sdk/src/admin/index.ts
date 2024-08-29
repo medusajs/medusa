@@ -1,5 +1,6 @@
 import { Client } from "../client"
 import { ApiKey } from "./api-key"
+import { Campaign } from "./campaign"
 import { Claim } from "./claim"
 import { Currency } from "./currency"
 import { Customer } from "./customer"
@@ -23,6 +24,7 @@ import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { ProductVariant } from "./product-variant"
+import { Promotion } from "./promotion"
 import { RefundReason } from "./refund-reasons"
 import { Region } from "./region"
 import Reservation from "./reservation"
@@ -79,6 +81,8 @@ export class Admin {
   public workflowExecution: WorkflowExecution
   public reservation: Reservation
   public customerGroup: CustomerGroup
+  public promotion: Promotion
+  public campaign: Campaign
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -120,5 +124,7 @@ export class Admin {
     this.workflowExecution = new WorkflowExecution(client)
     this.reservation = new Reservation(client)
     this.customerGroup = new CustomerGroup(client)
+    this.promotion = new Promotion(client)
+    this.campaign = new Campaign(client)
   }
 }
