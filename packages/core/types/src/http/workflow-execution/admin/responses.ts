@@ -1,5 +1,5 @@
-import { PaginatedResponse } from "../../common/response";
-import { AdminWorkflowExecution } from "./entities";
+import { PaginatedResponse } from "../../common/response"
+import { AdminWorkflowExecution } from "./entities"
 
 export interface AdminWorkflowExecutionResponse {
   workflow_execution: AdminWorkflowExecution

@@ -37,6 +37,7 @@ import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
 import { User } from "./user"
+import { WorkflowExecution } from "./workflow-execution"
 
 export class Admin {
   public invite: Invite
@@ -75,6 +76,7 @@ export class Admin {
   public refundReason: RefundReason
   public paymentCollection: PaymentCollection
   public apiKey: ApiKey
+  public workflowExecution: WorkflowExecution
   public reservation: Reservation
   public customerGroup: CustomerGroup
 
@@ -115,6 +117,7 @@ export class Admin {
     this.exchange = new Exchange(client)
     this.paymentCollection = new PaymentCollection(client)
     this.apiKey = new ApiKey(client)
+    this.workflowExecution = new WorkflowExecution(client)
     this.reservation = new Reservation(client)
     this.customerGroup = new CustomerGroup(client)
   }
