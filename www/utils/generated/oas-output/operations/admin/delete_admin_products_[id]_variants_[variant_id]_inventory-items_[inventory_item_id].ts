@@ -1,10 +1,9 @@
 /**
  * @oas [delete] /admin/products/{id}/variants/{variant_id}/inventory-items/{inventory_item_id}
  * operationId: DeleteProductsIdVariantsVariant_idInventoryItemsInventory_item_id
- * summary: Remove Inventory Items from Product
- * description: Remove a list of inventory items from a product. This doesn't
- *   delete the Inventory Item, only the association between the Inventory Item and
- *   the product.
+ * summary: Remove Inventory Item Association with Product Variant
+ * x-sidebar-summary: Remove Inventory Item
+ * description: Remove the association between an inventory item and its product variant.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -15,13 +14,13 @@
  *       type: string
  *   - name: variant_id
  *     in: path
- *     description: The product's variant id.
+ *     description: The products variant's ID.
  *     required: true
  *     schema:
  *       type: string
  *   - name: inventory_item_id
  *     in: path
- *     description: The product's inventory item id.
+ *     description: The inventory item's ID.
  *     required: true
  *     schema:
  *       type: string

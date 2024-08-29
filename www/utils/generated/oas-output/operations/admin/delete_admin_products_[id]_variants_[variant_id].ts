@@ -1,9 +1,9 @@
 /**
  * @oas [delete] /admin/products/{id}/variants/{variant_id}
  * operationId: DeleteProductsIdVariantsVariant_id
- * summary: Remove Variants from Product
- * description: Remove a list of variants from a product. This doesn't delete the
- *   Variant, only the association between the Variant and the product.
+ * summary: Delete Product Variant
+ * x-sidebar-summary: Delete Variant
+ * description: Delete a variant of a product.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -14,7 +14,7 @@
  *       type: string
  *   - name: variant_id
  *     in: path
- *     description: The product's variant id.
+ *     description: The product variant's ID.
  *     required: true
  *     schema:
  *       type: string

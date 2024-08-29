@@ -1,9 +1,8 @@
 /**
  * @oas [delete] /admin/returns/{id}/receive
  * operationId: DeleteReturnsIdReceive
- * summary: Remove Receives from Return
- * description: Remove a list of receives from a return. This doesn't delete the
- *   Receive, only the association between the Receive and the return.
+ * summary: Cancel Return Receival
+ * description: Cancel the receival process previously started, and hasn't been confirmed, of a return.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -94,11 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The return's object.
+ *               description: The name of the returned object.
+ *               default: "return"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The return's deleted.
+ *               description: Whether the return was deleted.
  *             parent:
  *               type: object
  *               description: The return's parent.

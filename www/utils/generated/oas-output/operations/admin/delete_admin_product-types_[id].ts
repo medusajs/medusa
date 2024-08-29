@@ -2,7 +2,7 @@
  * @oas [delete] /admin/product-types/{id}
  * operationId: DeleteProductTypesId
  * summary: Delete a Product Type
- * description: Delete a product type.
+ * description: Delete a product type. This doesn't delete products of this type.
  * x-authenticated: true
  * parameters:
  *   - name: id

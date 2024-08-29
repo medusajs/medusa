@@ -1,9 +1,8 @@
 /**
  * @oas [delete] /admin/returns/{id}/request
  * operationId: DeleteReturnsIdRequest
- * summary: Remove Requests from Return
- * description: Remove a list of requests from a return. This doesn't delete the
- *   Request, only the association between the Request and the return.
+ * summary: Cancel Return Request
+ * description: Cancel a requested return.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -94,11 +93,12 @@
  *             object:
  *               type: string
  *               title: object
- *               description: The return's object.
+ *               description: The name of the deleted object.
+ *               default: "return"
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The return's deleted.
+ *               description: Whether the return was deleted.
  *             parent:
  *               type: object
  *               description: The return's parent.
