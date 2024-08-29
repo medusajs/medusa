@@ -86,6 +86,7 @@ export const cancelOrderClaimWorkflow = createWorkflow(
       cancelOrderClaimStep({
         claim_id: orderClaim.id,
         order_id: orderClaim.order_id,
+        canceled_by: input.canceled_by,
       }),
       deleteReservationsByLineItemsStep(lineItemIds)
     )
