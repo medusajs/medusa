@@ -1,16 +1,16 @@
-import { Address, Cart, Order } from "@medusajs/medusa"
 import { Avatar, Copy, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+import { HttpTypes } from "@medusajs/types"
 import { getFormattedAddress, isSameAddress } from "../../../lib/addresses"
 
-const ID = ({ data }: { data: Cart | Order }) => {
+const ID = ({ data }: { data: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   const id = data.customer_id
   const name = getCartOrOrderCustomer(data)
   const email = data.email
-  const fallback = (name || email).charAt(0).toUpperCase()
+  const fallback = (name ?? email ?? "").charAt(0).toUpperCase()
 
   return (
     <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
@@ -36,7 +36,7 @@ const ID = ({ data }: { data: Cart | Order }) => {
   )
 }
 
-const Company = ({ data }: { data: Order | Cart }) => {
+const Company = ({ data }: { data: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
   const company =
     data.shipping_address?.company || data.billing_address?.company
@@ -57,11 +57,11 @@ const Company = ({ data }: { data: Order | Cart }) => {
   )
 }
 
-const Contact = ({ data }: { data: Cart | Order }) => {
+const Contact = ({ data }: { data: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   const phone = data.shipping_address?.phone || data.billing_address?.phone
-  const email = data.email
+  const email = data.email || ""
 
   return (
     <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
@@ -106,7 +106,9 @@ const AddressPrint = ({
   address,
   type,
 }: {
-  address: Address | null
+  address:
+    | HttpTypes.AdminOrder["shipping_address"]
+    | HttpTypes.AdminOrder["billing_address"]
   type: "shipping" | "billing"
 }) => {
   const { t } = useTranslation()
@@ -146,7 +148,7 @@ const AddressPrint = ({
   )
 }
 
-const Addresses = ({ data }: { data: Cart | Order }) => {
+const Addresses = ({ data }: { data: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -183,7 +185,7 @@ export const CustomerInfo = Object.assign(
   }
 )
 
-const getCartOrOrderCustomer = (obj: Cart | Order) => {
+const getCartOrOrderCustomer = (obj: HttpTypes.AdminOrder) => {
   const { first_name: sFirstName, last_name: sLastName } =
     obj.shipping_address || {}
   const { first_name: bFirstName, last_name: bLastName } =

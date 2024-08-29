@@ -1,4 +1,4 @@
-import { AdminGetOrdersParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UseOrderTableQueryProps = {
@@ -37,7 +37,7 @@ export const useOrderTableQuery = ({
     order,
   } = queryObject
 
-  const searchParams: AdminGetOrdersParams = {
+  const searchParams: HttpTypes.AdminOrderFilters = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     sales_channel_id: sales_channel_id?.split(","),
