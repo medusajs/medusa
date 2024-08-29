@@ -1,13 +1,13 @@
+import { HttpTypes } from "@medusajs/types"
 import { LoaderFunctionArgs } from "react-router-dom"
 import { productsQueryKeys } from "../../../hooks/api/products"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
-import { HttpTypes } from "@medusajs/types"
 
 const customerGroupDetailQuery = (id: string) => ({
   queryKey: productsQueryKeys.detail(id),
   queryFn: async () =>
-    client.customerGroups.retrieve(id, {
+    sdk.admin.customerGroup.retrieve(id, {
       fields: "+customers.id",
     }),
 })

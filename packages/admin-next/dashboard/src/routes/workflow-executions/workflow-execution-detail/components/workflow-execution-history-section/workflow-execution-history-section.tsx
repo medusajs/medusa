@@ -19,17 +19,11 @@ import {
   STEP_OK_STATES,
   STEP_SKIPPED_STATES,
 } from "../../../constants"
-import {
-  StepError,
-  StepInvoke,
-  TransactionStepState,
-  TransactionStepStatus,
-  WorkflowExecutionDTO,
-  WorkflowExecutionStep,
-} from "../../../types"
+import { TransactionStepState, TransactionStepStatus } from "../../../types"
+import { HttpTypes } from "@medusajs/types"
 
 type WorkflowExecutionHistorySectionProps = {
-  execution: WorkflowExecutionDTO
+  execution: HttpTypes.AdminWorkflowExecution
 }
 
 export const WorkflowExecutionHistorySection = ({
@@ -98,9 +92,9 @@ const Event = ({
   isLast,
   isUnreachable,
 }: {
-  step: WorkflowExecutionStep
-  stepInvokeContext: StepInvoke | undefined
-  stepError?: StepError | undefined
+  step: HttpTypes.AdminWorkflowExecutionStep
+  stepInvokeContext: HttpTypes.StepInvoke | undefined
+  stepError?: HttpTypes.StepError | undefined
   isLast: boolean
   isUnreachable?: boolean
 }) => {
@@ -288,7 +282,7 @@ const StepState = ({
   startedAt,
   isUnreachable,
 }: {
-  state: TransactionStepState
+  state: HttpTypes.TransactionStepState
   startedAt?: number | null
   isUnreachable?: boolean
 }) => {

@@ -1,0 +1,3319 @@
+import { WorkflowDiagram, Prerequisites } from "docs-ui"
+import { Github, PlaySolid } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Marketplace Recipe: Restaurant-Delivery Example`,
+}
+
+# {metadata.title}
+
+This document provides an example of implementing the marketplace recipe for a restaurant-delivery platform, similar to Uber Eats.
+
+<Note>
+
+You can implement the marketplace as you see fit for your use case. This is only an example of one way to implement it.
+
+</Note>
+
+## Features
+
+By following this example, you’ll have a restaurant-delivery platform with the following features:
+
+1. Multiple restaurants with their own admin users and products.
+2. Drivers that handle the delivery of orders from restaurants to customers.
+3. Delivery handling, from the restaurant accepting the order to the driver delivering the order to the customer.
+4. Real-time tracking of the order’s delivery status.
+
+- Example Repository
+- OpenAPI Spec for Postman
+
+<CardList items={[
+  {
+    href: "https://github.com/medusajs/examples/tree/main/restaurant-marketplace",
+    title: "Example Repository",
+    text: "Find the full code for this recipe example in this repository.",
+    icon: Github,
+  },
+  {
+    href: "https://res.cloudinary.com/dza7lstvk/raw/upload/v1724757329/OpenApi/Restaurant-Delivery-Marketplace_vxao2l.yml",
+    title: "OpenApi Specs for Postman",
+    text: "Imported this OpenApi Specs file into tools like Postman.",
+    icon: PlaySolid,
+  },
+]} />
+
+<Note>
+
+This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eats), which offers more implementation details including a custom storefront to place and track orders.
+
+</Note>
+
+---
+
+## Prerequisites
+
+<Prerequisites items={[
+  {
+    text: "A new Medusa application installed.",
+    link: "!docs!#get-started"
+  },
+  {
+    text: "Recommended: Use the Redis Workflow Engine Module for improved tracking and storage of workflow executions."
+  }
+]} />
+
+## Step 1: Create a Restaurant Module
+
+In this step, you’ll create a Restaurant Module that defines the models related to a restaurant.
+
+Create the directory `src/modules/restaurant`.
+
+### Create Restaurant Data Models
+
+Create the file `src/modules/restaurant/models/restaurant.ts` with the following content:
+
+```ts title="src/modules/restaurant/models/restaurant.ts"
+import { model } from "@medusajs/utils"
+import { RestaurantAdmin } from "./restaurant-admin"
+
+export const Restaurant = model.define("restaurant", {
+  id: model
+    .id()
+    .primaryKey(),
+  handle: model.text(),
+  is_open: model.boolean().default(false),
+  name: model.text(),
+  description: model.text().nullable(),
+  phone: model.text(),
+  email: model.text(),
+  address: model.text(),
+  image_url: model.text().nullable(),
+  admins: model.hasMany(() => RestaurantAdmin),
+})
+```
+
+This defines a `Restaurant` data model with properties like `is_open` to track whether a restaurant is open, and `address` to show the restaurant’s address.
+
+It also has a relation to the `RestaurantAdmin` data model that you’ll define next.
+
+Create the file `src/modules/restaurant/models/restaurant-admin.ts` with the following content:
+
+```ts title="src/modules/restaurant/models/restaurant-admin.ts"
+import { model } from "@medusajs/utils"
+import { Restaurant } from "./restaurant"
+
+export const RestaurantAdmin = model.define("restaurant_admin", {
+  id: model
+    .id()
+    .primaryKey(),
+  first_name: model.text(),
+  last_name: model.text(),
+  email: model.text(),
+  avatar_url: model.text().nullable(),
+  restaurant: model.belongsTo(() => Restaurant, {
+    mappedBy: "admins",
+  }),
+})
+```
+
+This defines a `RestaurantAdmin` data model, which belongs to a restaurant. It represents an admin that can manage a restaurant and its data.
+
+### Create Main Service for Restaurant Module
+
+Next, create the main service of the module at `src/modules/restaurant/service.ts` with the following content:
+
+```ts title="src/modules/restaurant/service.ts"
+import { MedusaService } from "@medusajs/utils"
+import { Restaurant } from "./models/restaurant"
+import { RestaurantAdmin } from "./models/restaurant-admin"
+
+class RestaurantModuleService extends MedusaService({
+  Restaurant,
+  RestaurantAdmin,
+}) {}
+
+export default RestaurantModuleService
+```
+
+The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
+
+### Create Restaurant Module Definition
+
+Then, create the file `src/modules/restaurant/index.ts` that holds the module definition:
+
+```ts title="src/modules/restaurant/index.ts"
+import Service from "./service"
+import { Module } from "@medusajs/utils"
+
+export const RESTAURANT_MODULE = "restaurantModuleService"
+
+export default Module(RESTAURANT_MODULE, {
+  service: Service,
+})
+```
+
+### Add Restaurant Module to Medusa Configuration
+
+Finally, add the module to the list of modules in `medusa-config.js`:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  modules: {
+    restaurantModuleService: {
+      resolve: "./modules/restaurant",
+    },
+  },
+})
+```
+
+### Further Reads
+
+- [How to Create a Module](!docs!/basics/modules-and-services)
+- [How to Create a Data Model](!docs!/basics/data-models)
+
+---
+
+## Step 2: Create a Delivery Module
+
+In this step, you’ll create the Delivery Module that defines delivery-related data models.
+
+Create the directory `src/modules/delivery`.
+
+### Create Types
+
+Before creating the data models,  create the file `src/modules/delivery/types/index.ts` with the following content:
+
+```ts title="src/modules/delivery/types/index.ts"
+export enum DeliveryStatus {
+  PENDING = "pending",
+  RESTAURANT_DECLINED = "restaurant_declined",
+  RESTAURANT_ACCEPTED = "restaurant_accepted",
+  PICKUP_CLAIMED = "pickup_claimed",
+  RESTAURANT_PREPARING = "restaurant_preparing",
+  READY_FOR_PICKUP = "ready_for_pickup",
+  IN_TRANSIT = "in_transit",
+  DELIVERED = "delivered",
+}
+
+declare module "@medusajs/types" {
+  export interface ModuleImplementations {
+    deliveryModuleService: DeliveryModuleService;
+  }
+}
+```
+
+This adds an enum that is used by the data models. It also adds a type for `deliveryModuleService` in `ModuleImplementations` so that when you resolve it from the Medusa container, it has the correct typing.
+
+### Create Delivery Data Models
+
+Create the file `src/modules/delivery/models/driver.ts` with the following content:
+
+```ts title="src/modules/delivery/models/driver.ts"
+import { model } from "@medusajs/utils"
+import { Delivery } from "./delivery"
+
+export const Driver = model.define("driver", {
+  id: model
+    .id()
+    .primaryKey(),
+  first_name: model.text(),
+  last_name: model.text(),
+  email: model.text(),
+  phone: model.text(),
+  avatar_url: model.text().nullable(),
+  deliveries: model.hasMany(() => Delivery, {
+    mappedBy: "driver",
+  }),
+})
+
+```
+
+This defines a `Driver` data model with properties related to a driver user.
+
+It has a relation to a `Delivery` data model that you’ll create next.
+
+Create the file `src/modules/delivery/models/delivery.ts` with the following content:
+
+```ts title="src/modules/delivery/models/delivery.ts"
+import { model } from "@medusajs/utils"
+import { DeliveryStatus } from "../types/common"
+import { Driver } from "./driver"
+
+export const Delivery = model.define("delivery", {
+  id: model
+    .id()
+    .primaryKey(),
+  transaction_id: model.text().nullable(),
+  delivery_status: model.enum(DeliveryStatus).default(DeliveryStatus.PENDING),
+  eta: model.dateTime().nullable(),
+  delivered_at: model.dateTime().nullable(),
+  driver: model.belongsTo(() => Driver, {
+    mappedBy: "deliveries",
+  }).nullable(),
+})
+
+```
+
+This defines a `Delivery` data model with notable properties including:
+
+- `transaction_id`: The ID of the workflow transaction that’s handling this delivery. This makes it easier to track the workflow’s execution and update its status later.
+- `delivery_status`: The current status of the delivery.
+
+It also has a relation to the `Driver` data model, indicating the driver handling the delivery.
+
+### Create Main Service for Delivery Module
+
+Then, create the main service of the Delivery Module at `src/modules/delivery/service.ts` with the following content:
+
+```ts title="src/modules/delivery/service.ts"
+import { MedusaService } from "@medusajs/utils"
+import { Delivery } from "./models/delivery"
+import { Driver } from "./models/driver"
+
+class DeliveryModuleService extends MedusaService({
+  Delivery,
+  Driver,
+}) {}
+
+export default DeliveryModuleService
+```
+
+The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
+
+### Create Delivery Module Definition
+
+Next, create the file `src/modules/delivery/index.ts` holding the module’s definition:
+
+```ts title="src/modules/delivery/index.ts"
+import Service from "./service"
+import { Module } from "@medusajs/utils"
+
+export const DELIVERY_MODULE = "deliveryModuleService"
+
+export default Module(DELIVERY_MODULE, {
+  service: Service,
+})
+```
+
+### Add Delivery Module to Medusa Configuration
+
+Finally, add the module to the list of modules in `medusa-config.js`:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  modules: {
+    deliveryModuleService: {
+      resolve: "./modules/delivery",
+    },
+    // ...
+  },
+})
+
+```
+
+---
+
+## Step 3: Define Links
+
+In this step, you’ll define links between the Restaurant and Delivery modules, and other modules.
+
+### Restaurant \<> Product Link
+
+Create the file `src/links/restaurant-products.ts` with the following content:
+
+```ts title="src/links/restaurant-products.ts"
+import RestaurantModule from "../modules/restaurant"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  RestaurantModule.linkable.restaurant,
+  {
+    linkable: ProductModule.linkable.product,
+    isList: true,
+  }
+)
+```
+
+This defines a link between the Restaurant Module’s `restaurant` data model and the Product Module’s `product` data model, indicating that a restaurant is associated with its products.
+
+Since a restaurant has multiple products, `isList` is enabled on the product’s side.
+
+### Restaurant \<> Delivery Link
+
+Create the file `src/links/restaurant-delivery.ts` with the following content:
+
+```ts title="src/links/restaurant-delivery.ts"
+import RestaurantModule from "../modules/restaurant"
+import DeliveryModule from "../modules/delivery"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  RestaurantModule.linkable.restaurant, 
+  {
+    linkable: DeliveryModule.linkable.delivery,
+    isList: true,
+  }
+)
+
+```
+
+This defines a link between the Restaurant Module’s `restaurant` data model and the Delivery Module’s `delivery` data model, indicating that a restaurant is associated with the deliveries created for it.
+
+Since a restaurant has multiple deliveries, `isList` is enabled on the delivery’s side.
+
+### Delivery \<> Cart
+
+Create the file `src/links/delivery-cart.ts` with the following content:
+
+```ts title="src/links/delivery-cart.ts"
+import DeliveryModule from "../modules/delivery"
+import CartModule from "@medusajs/cart"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  DeliveryModule.linkable.delivery,
+  CartModule.linkable.cart
+)
+```
+
+This defines a link between the Delivery Module’s `delivery` data model and the Cart Module’s `cart` data model, indicating that delivery is associated with the cart it’s created from.
+
+### Delivery \<> Order
+
+Create the file `src/links/delivery-order.ts` with the following content:
+
+```ts title="src/links/delivery-order.ts"
+import DeliveryModule from "../modules/delivery"
+import OrderModule from "@medusajs/order"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  DeliveryModule.linkable.delivery,
+  OrderModule.linkable.order
+)
+```
+
+This defines a link between the Delivery Module’s `delivery` data model and the Order Module’s `order` data model, indicating that a delivery is associated with the order created by the customer.
+
+### Further Reads
+
+- [How to Define Links](!docs!/advanced-development/modules/module-links)
+
+---
+
+## Step 4: Run Migrations and Sync Links
+
+To create tables for the above data models in the database, start by generating the migrations for the Restaurant and Delivery Modules with the following commands:
+
+```bash
+npx medusa migrations generate restaurantModuleService
+npx medusa migrations generate deliveryModuleService
+```
+
+This generates migrations in the `src/modules/restaurant/migrations` and `src/modules/delivery/migrations` directories.
+
+Then, to reflect the migration in the database, run the following command:
+
+```bash
+npx medusa migrations run
+```
+
+Next, to reflect your links in the database, run the `links sync` command:
+
+```bash
+npx medusa links sync
+```
+
+---
+
+## Step 5: Create Restaurant API Route
+
+In this step, you’ll create the API route used to create a restaurant. This route requires no authentication, as anyone can create a restaurant.
+
+### Create Types
+
+Before implementing the functionalities, you’ll create type files in the Restaurant Module useful in the next steps.
+
+Create the file `src/modules/restaurant/types/index.ts` with the following content:
+
+```ts title="src/modules/restaurant/types/index.ts"
+import RestaurantModuleService from "../service"
+
+export interface CreateRestaurant {
+  name: string;
+  handle: string;
+  address: string;
+  phone: string;
+  email: string;
+  image_url?: string;
+  is_open?: boolean;
+}
+
+declare module "@medusajs/types" {
+  export interface ModuleImplementations {
+    restaurantModuleService: RestaurantModuleService;
+  }
+}
+```
+
+This adds a type used for inputs in creating a restaurant. It also adds a type for `restaurantModuleService` in `ModuleImplementations` so that when you resolve it from the Medusa container, it has the correct typing.
+
+### Create Workflow
+
+To implement the functionality of creating a restaurant, create a workflow and execute it in the API route.
+
+The workflow only has one step that creates a restaurant.
+
+To implement the step, create the file `src/workflows/restaurant/steps/create-restaurant.ts` with the following content:
+
+export const createRestaurantHighlight = [
+  ["14", "createRestaurants", "Create the restaurant."],
+  ["23", "deleteRestaurants", "Delete the restaurant if an error occurs in the workflow."]
+]
+
+```ts title="src/workflows/restaurant/steps/create-restaurant.ts" highlights={createRestaurantHighlight} collapsibleLines="1-6" expandMoreLabel="Show Imports"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { 
+  CreateRestaurantDTO,
+} from "../../../modules/restaurant/types/mutations"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+
+export const createRestaurantStep = createStep(
+  "create-restaurant-step",
+  async function (data: CreateRestaurantDTO, { container }) {
+    const restaurantModuleService = container.resolve(
+      RESTAURANT_MODULE
+    )
+
+    const restaurant = await restaurantModuleService.createRestaurants(data)
+
+    return new StepResponse(restaurant, restaurant.id)
+  },
+  function (id: string, { container }) {
+    const restaurantModuleService = container.resolve(
+      RESTAURANT_MODULE
+    )
+
+    return restaurantModuleService.deleteRestaurants(id)
+  }
+)
+```
+
+This creates a step that creates a restaurant. The step’s compensation function, which executes if an error occurs, deletes the created restaurant.
+
+Next, create the workflow at `src/workflows/restaurant/workflows/create-restaurant.ts`:
+
+```ts title="src/workflows/restaurant/workflows/create-restaurant.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
+import { createRestaurantStep } from "../steps/create-restaurant"
+import { CreateRestaurant } from "../../../modules/restaurant/types"
+
+type WorkflowInput = {
+  restaurant: CreateRestaurant;
+};
+
+export const createRestaurantWorkflow = createWorkflow(
+  "create-restaurant-workflow",
+  function (input: WorkflowInput) {
+    const restaurant = createRestaurantStep(input.restaurant)
+
+    return new WorkflowResponse(restaurant)
+  }
+)
+```
+
+The workflow executes the step and returns the created restaurant.
+
+### Create Route
+
+You’ll now create the API route that executes the workflow.
+
+Start by creating the file `src/api/restaurants/validation-schemas.ts` that holds the schema to validate the request body:
+
+```ts title="src/api/restaurants/validation-schemas.ts"
+import { z } from "zod"
+
+export const restaurantSchema = z.object({
+  name: z.string(),
+  handle: z.string(),
+  address: z.string(),
+  phone: z.string(),
+  email: z.string(),
+  image_url: z.string().optional(),
+})
+```
+
+Then, create the file `src/api/restaurants/route.ts` with the following content:
+
+export const createRestaurantRouteHighlights = [
+  ["18", "createRestaurantWorkflow", "Use the workflow to create the restaurant."]
+]
+
+```ts title="src/api/restaurants/route.ts" highlights={createRestaurantRouteHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { 
+  CreateRestaurantDTO,
+  } from "../../modules/restaurant/types/mutations"
+import { 
+  createRestaurantWorkflow,
+  } from "../../workflows/restaurant/workflows/create-restaurant"
+import { restaurantSchema } from "./validation-schemas"
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const validatedBody = restaurantSchema.parse(req.body) as CreateRestaurantDTO
+
+  if (!validatedBody) {
+    return MedusaError.Types.INVALID_DATA
+  }
+
+  const { result: restaurant } = await createRestaurantWorkflow(req.scope)
+	  .run({
+	    input: {
+	      restaurant: validatedBody,
+	    },
+	  })
+
+  return res.status(200).json({ restaurant })
+}
+```
+
+This creates a `POST` API route at `/restaurants`. It executes the `createRestaurantWorkflow` to create a restaurant and returns it in the response.
+
+### Test it Out
+
+To test the API route out, start the Medusa application:
+
+```bash
+npm run dev
+```
+
+Then, send a `POST` request to `/restaurants` :
+
+```bash
+curl -X POST 'http://localhost:9000/restaurants' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Acme",
+    "handle": "acme",
+    "address": "1st street",
+    "phone": "1234567",
+    "email": "acme@restaurant.com"
+}'
+```
+
+The API route creates a restaurant and returns it.
+
+<Note>
+
+If you’re calling this API route from a frontend client, make sure to set the [CORS middleware](!docs!/advanced-development/api-routes/cors) on it since it’s not under the `/store` or `/admin` route prefixes.
+
+</Note>
+
+### Further Reads
+
+- [How to Create a Workflow](!docs!/basics/workflows)
+- [What is a Compensation Function](!docs!/advanced-development/workflows/compensation-function)
+- [How to Create an API route](!docs!/basics/api-routes)
+
+---
+
+## Step 6: List Restaurants API Route
+
+In this step, you’ll create the API routes that retrieves a list of restaurants.
+
+In the file `src/api/restaurants/route.ts` add the following API route:
+
+```ts title="src/api/restaurants/route.ts"
+// other imports...
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { remoteQueryObjectFromString } from "@medusajs/utils"
+
+// ...
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const { currency_code = "eur", ...queryFilters } = req.query
+
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const restaurantsQuery = remoteQueryObjectFromString({
+    entryPoint: "restaurants",
+    fields: [
+      "id",
+      "handle",
+      "name",
+      "address",
+      "phone",
+      "email",
+      "image_url",
+      "is_open",
+      "products.*",
+      "products.categories.*",
+      "products.variants.*",
+      "products.variants.calculated_price.*",
+    ],
+    variables: {
+      filters: queryFilters,
+      "products.variants.calculated_price": {
+        context: {
+          currency_code,
+        },
+      },
+    },
+  })
+
+  const restaurants = await remoteQuery(restaurantsQuery)
+
+  return res.status(200).json({ restaurants })
+}
+```
+
+This creates a `GET` API route at `/restaurants`. It uses remote query to retrieve a restaurant, its products, and the product variant’s prices for a specified currency.
+
+### Test it Out
+
+To test this API route out, send a `GET` request to `/restaurants`:
+
+```bash
+curl 'http://localhost:9000/restaurants'
+```
+
+This returns the list of restaurants in the response.
+
+### Further Reads
+
+- [What is Remote Query and how to use it](!docs!/advanced-development/modules/remote-query)
+- [How to Retrieve Prices for Product Variants](../../../../commerce-modules/product/guides/price/page.mdx)
+
+---
+
+## Step 7: Create User API Route
+
+In this step, you’ll create the API route that creates a driver or a restaurant admin user.
+
+Medusa provides an authentication flow that allows you to authenticate custom user types:
+
+1. Use the `/auth/{actor_type}/{provider}/register` route to obtain an authentication token for registration. `{actor_type}` is the custom user type, such as `driver`, and `{provider}` is the provider used for authentication, such as `emailpass`.
+2. Use a custom route to create the user. You pass in the request header the authentication token from the previous request to associate your custom user with the authentication identity created for it in the previous request.
+3. After that, you can retrieve an authenticated token for the user using the `/auth/{actor_type}/provider` API route.
+
+### Create Workflow
+
+Start by implementing the functionality to create a user in a workflow. The workflow has two steps:
+
+1. Create the user in the database.
+2. Set the actor type of the user’s authentication identity (created by the `/auth/{actor_type}/{provider}/register` API route). For this step, you’ll use the `setAuthAppMetadataStep` step imported from the `@medusajs/core-flows` package.
+
+To implement the first step, create the file `src/workflows/user/steps/create-user.ts` with the following content:
+
+```ts title="src/workflows/user/steps/create-user.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import { MedusaError } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import {
+  CreateDriverInput,
+  CreateRestaurantAdminInput,
+} from "../workflows/create-user"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+
+export type CreateRestaurantAdminInput = {
+  restaurant_id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+};
+
+export type CreateDriverInput = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  avatar_url?: string;
+};
+
+type CreateUserStepInput = (CreateRestaurantAdminInput | CreateDriverInput) & {
+  actor_type: "restaurant" | "driver";
+};
+
+export const createUserStep = createStep(
+  "create-user-step",
+  async (
+    { actor_type, ...data }: CreateUserStepInput,
+    { container }
+  ) => {
+    if (actor_type === "restaurant") {
+      // TODO create restaurant admin
+    } else if (actor_type === "driver") {
+      // TODO create driver
+    }
+
+    throw MedusaError.Types.INVALID_DATA
+  },
+  function ({ id, actor_type }, { container }) {
+    // TODO add compensation actions
+  }
+)
+```
+
+This creates a step that accepts as input the data of the user to create and its type. If the type is `restaurant`, then a restaurant admin is created. If the type is a `driver`, then a driver is created. Otherwise, an error is thrown.
+
+Replace the first `TODO` with the following to create a restaurant admin:
+
+```ts title="src/workflows/user/steps/create-user.ts"
+const service = container.resolve(RESTAURANT_MODULE)
+
+const restaurantAdmin = await service.createRestaurantAdmins(
+  data
+)
+
+return new StepResponse(restaurantAdmin, {
+  id: restaurantAdmin.id,
+  actor_type: actor_type as string,
+})
+```
+
+This resolves the Restaurant Module’s main service, creates the restaurant admin, and returns it.
+
+Then, replace the second `TODO` with the following to create a driver:
+
+```ts title="src/workflows/user/steps/create-user.ts"
+const service = container.resolve(DELIVERY_MODULE)
+
+const driver = await service.createDrivers(data)
+
+return new StepResponse(driver, {
+  id: driver.id,
+  actor_type: actor_type as string,
+})
+```
+
+This resolves the Driver Module’s main service, creates the driver, and returns it.
+
+Finally, replace the remaining `TODO` with the following compensation action:
+
+```ts title="src/workflows/user/steps/create-user.ts"
+if (actor_type === "restaurant") {
+  const service = container.resolve(RESTAURANT_MODULE)
+
+  return service.deleteRestaurantAdmins(id)
+} else {
+  const service = container.resolve(DELIVERY_MODULE)
+
+  return service.deleteDrivers(id)
+}
+```
+
+In the compensation function, if the `actor_type` is a restaurant, you delete the created restaurant admin. Otherwise, you delete the created driver.
+
+Next, create the workflow in the file `src/workflows/user/workflows/create-user.ts`:
+
+```ts title="src/workflows/user/workflows/create-user.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
+import { setAuthAppMetadataStep } from "@medusajs/core-flows"
+import {
+  createWorkflow,
+  transform,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
+import { 
+  CreateDriverInput, 
+  CreateRestaurantAdminInput, 
+  createUserStep,
+} from "../steps/create-user"
+
+type WorkflowInput = {
+  user: (CreateRestaurantAdminInput | CreateDriverInput) & {
+    actor_type: "restaurant" | "driver";
+  };
+  auth_identity_id: string;
+};
+
+export type CreateUserWorkflowInput = {
+  user: (CreateRestaurantAdminInput | CreateDriverInput) & {
+    actor_type: "restaurant" | "driver";
+  };
+  auth_identity_id: string;
+};
+
+export const createUserWorkflow = createWorkflow(
+  "create-user-workflow",
+  function (input: CreateUserWorkflowInput) {
+    // TODO create user
+  }
+)
+
+```
+
+In this file, you create the necessary types and the workflow with a `TODO`.
+
+Replace the `TODO` with the following:
+
+export const createUserHighlights = [
+  ["1", "createUserStep", "Create the user."],
+  ["3", "transform", "Define the input for the next step."],
+  ["6", "key", "Set the key based on whether the user is a restaurant admin or a driver."],
+  ["13", "setAuthAppMetadataStep", "Update the authentication identity with to associate it with the new user."]
+]
+
+```ts title="src/workflows/user/workflows/create-user.ts" highlights={createUserHighlights}
+const user = createUserStep(input.user)
+
+const authUserInput = transform({ input, user }, (data) => ({
+  authIdentityId: data.input.auth_identity_id,
+  actorType: data.input.user.actor_type,
+  key:
+    data.input.user.actor_type === "restaurant"
+      ? "restaurant_id"
+      : "driver_id",
+  value: user.id,
+}))
+
+setAuthAppMetadataStep(authUserInput)
+
+return new WorkflowResponse(user)
+```
+
+In the workflow, you:
+
+1. Use the `createUserStep` to create the user.
+2. Use the `transform` utility function to create the input to be passed to the next step.
+3. Use the `setAuthAppMetadataStep` imported from `@medusajs/core-flows` to update the authentication identity and associate it with the new user.
+4. Return the created user.
+
+### Create API Route
+
+You’ll now create the API route to create a new user.
+
+Start by creating the file `src/api/users/validation-schemas.ts` that holds the schema necessary to validate the request body:
+
+```ts title="src/api/users/validation-schemas.ts"
+import { z } from "zod"
+
+export const createUserSchema = z
+  .object({
+    email: z.string().email(),
+    first_name: z.string(),
+    last_name: z.string(),
+    phone: z.string(),
+    avatar_url: z.string().optional(),
+    restaurant_id: z.string().optional(),
+    actor_type: z.ZodEnum.create(["restaurant", "driver"]),
+  })
+```
+
+Then, create the file `src/api/users/route.ts` with the following content:
+
+```ts title="src/api/users/route.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { 
+  AuthenticatedMedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import {
+  createUserWorkflow,
+  CreateUserWorkflowInput,
+} from "../../workflows/user/workflows/create-user"
+import { createUserSchema } from "./validation-schemas"
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const { auth_identity_id } = req.auth_context
+
+  const validatedBody = createUserSchema.parse(req.body)
+
+  const { result } = await createUserWorkflow(req.scope).run({
+    input: {
+      user: validatedBody,
+      auth_identity_id,
+    } as CreateUserWorkflowInput,
+  })
+
+  res.status(201).json({ user: result })
+}
+
+```
+
+This creates a `POST` API route at `/users` that creates a driver or a restaurant admin.
+
+### Add Authentication Middleware
+
+The `/users` API route must only be accessed with the authentication token in the header. So, you must add an authentication middleware on the route.
+
+Create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { 
+  authenticate, 
+  defineMiddlewares,
+} from "@medusajs/medusa"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      method: ["POST"],
+      matcher: "/users",
+      middlewares: [
+        authenticate(["driver", "restaurant"], "bearer", {
+          allowUnregistered: true,
+        }),
+      ],
+    },
+  ],
+})
+```
+
+This applies the `authenticate` middleware imported from `@medusajs/medusa` on the `POST /users` API routes.
+
+### Test it Out: Create Restaurant Admin
+
+To create a restaurant admin:
+
+1. Send a `POST` request to `/auth/restaurant/emailpass` to retrieve the token for the next request:
+
+```bash
+curl -X POST 'http://localhost:9000/auth/restaurant/emailpass/register' \
+--data-raw '{
+    "email": "admin@restaurant.com",
+    "password": "supersecret"
+}'
+```
+
+2. Send a `POST` request to `/users`, passing the token received from the previous request in the header:
+
+```bash
+curl -X POST 'http://localhost:9000/users' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+    "email": "admin@restaurant.com",
+    "first_name": "admin",
+    "last_name": "restaurant",
+    "phone": "1234566",
+    "actor_type": "restaurant",
+    "restaurant_id": "res_01J5ZWMY48JWFY4W5Y8B3NER7S"
+}' 
+```
+
+Notice that you must also pass the restaurant ID in the request body.
+
+This returns the created restaurant admin user.
+
+### Test it Out: Create Driver
+
+To create a driver:
+
+1. Send a `POST` request to `/auth/driver/emailpass` to retrieve the token for the next request:
+
+```bash
+curl -X POST 'http://localhost:9000/auth/driver/emailpass/register' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "email": "driver@gmail.com",
+    "password": "supersecret"
+}'
+```
+
+2. Send a `POST` request to `/users`, passing the token received from the previous request in the header:
+
+```bash
+curl --location 'http://localhost:9000/users' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+    "email": "driver@gmail.com",
+    "first_name": "driver",
+    "last_name": "test",
+    "phone": "1234566",
+    "actor_type": "driver"
+}'
+```
+
+This returns the created driver user.
+
+### Further Reads
+
+- [How to Create an Actor Type](../../../../commerce-modules/auth/create-actor-type/page.mdx)
+
+---
+
+## Step 8: Create Restaurant Product API Route
+
+In this step, you’ll create the API route that creates a product for a restaurant.
+
+### Create Workflow
+
+You’ll start by creating a workflow that creates the restaurant’s products. It has two steps:
+
+1. Create the product using Medusa’s `createProductsWorkflow` as a step. It’s imported from the `@medusajs/core-flows` package.
+2. Create a link between the restaurant and the products using the `createRemoateLinkStep` imported from the `@medusajs/core-flows` package.
+
+So, create the workflow in the file `src/workflows/restaurant/workflows/create-restaurant-products.ts` with the following content:
+
+export const createProductHighlights = [
+  ["22", "createProductsWorkflow", "Create the product."],
+  ["28", "transform", "Define an object of links to create."],
+  ["40", "createRemoteLinkStep", "Create the links between the products and restaurant."]
+]
+
+```ts title="src/workflows/restaurant/workflows/create-restaurant-products.ts" highlights={createProductHighlights} collapsibleLines="13" expandButtonLabel="Show Imports"
+import { 
+  createProductsWorkflow,
+  createRemoteLinkStep,
+} from "@medusajs/core-flows"
+import { CreateProductDTO } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
+import {
+  WorkflowResponse,
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+
+type WorkflowInput = {
+  products: CreateProductDTO[];
+  restaurant_id: string;
+};
+
+export const createRestaurantProductsWorkflow = createWorkflow(
+  "create-restaurant-products-workflow",
+  function (input: WorkflowInput) {
+    const products = createProductsWorkflow.runAsStep({
+      input: {
+        products: input.products,
+      },
+    })
+
+    const links = transform({
+      products,
+      input,
+    }, (data) => data.products.map((product) => ({
+      [RESTAURANT_MODULE]: {
+        restaurant_id: data.input.restaurant_id,
+      },
+      [Modules.PRODUCT]: {
+        product_id: product.id,
+      },
+    })))
+
+    createRemoteLinkStep(links)
+
+    return new WorkflowResponse(products)
+  }
+)
+
+```
+
+In the workflow, you:
+
+1. Execute the `createProductsWorkflow` as a step, passing the workflow’s input as the details of the product.
+2. Use the `transform` utility to create a `links` object used to specify the links to create in the next step.
+3. Use the `createRemoteLinkStep` to create the links between the restaurant and the products.
+4. Return the created products.
+
+### Create API Route
+
+Create the file `src/api/restaurants/[id]/products/route.ts` with the following content:
+
+```ts title="src/api/restaurants/[id]/products/route.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { 
+  AdminCreateProduct,
+} from "@medusajs/medusa/dist/api/admin/products/validators"
+import { z } from "zod"
+import { 
+  createRestaurantProductsWorkflow,
+} from "../../../../workflows/restaurant/workflows/create-restaurant-products"
+
+const createSchema = z.object({
+  products: AdminCreateProduct().array(),
+})
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const validatedBody = createSchema.parse(req.body)
+
+  const { result: restaurantProducts } = await createRestaurantProductsWorkflow(
+    req.scope
+  ).run({
+    input: {
+      products: validatedBody.products as any[],
+      restaurant_id: req.params.id,
+    },
+  })
+
+  return res.status(200).json({ restaurant_products: restaurantProducts })
+}
+```
+
+The creates a `POST` API route at `/restaurants/[id]/products`. It accepts the products’ details in the request body, executes the `createRestaurantProductsWorkflow` to create the products, and returns the created products in the response.
+
+### Add Authentication Middleware
+
+This API route should only be accessible by restaurant admins.
+
+So, in the file `src/api/middlewares.ts`, add a new middleware:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      method: ["POST", "DELETE"],
+      matcher: "/restaurants/:id/**",
+      middlewares: [
+        authenticate(["restaurant", "admin"], "bearer"),
+      ],
+    },
+  ],
+})
+```
+
+This allows only restaurant admins and Medusa Admin users to access routes under the `/restaurants/[id]` prefix if the request method is `POST` or `DELETE`.
+
+### Test it Out
+
+To create a product using the above API route, send a `POST` request to `/restaurants/[id]/products`, replacing `[id]` with the restaurant’s ID:
+
+```bash
+curl -X POST 'http://localhost:9000/restaurants/res_01J5X704WQTFSZMRC7Z6S3YAC7/products' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data '{
+    "products": [
+        {
+            "title": "Sushi",
+            "status": "published",
+            "variants": [
+                {
+                    "title": "Default",
+                    "prices": [
+                        {
+                            "currency_code": "eur",
+                            "amount": 20
+                        }
+                    ],
+                    "manage_inventory": false
+                }
+            ],
+            "sales_channels": [
+                {
+                    
+                    "id": "sc_01J5ZWK4MKJF85PM8KTW0BWMCK"
+                }
+            ]
+        }
+    ]
+}'
+```
+
+Make sure to replace the sales channel’s ID with the ID of a sales channel in your store. This is necessary when you later create an order, as the cart must have the same sales channel as the product.
+
+The request returns the created product in the response.
+
+---
+
+## Step 9: Create Order Delivery Workflow
+
+In this step, you’ll create the workflow that creates a delivery. You’ll use it at a later step once a customer places their order.
+
+The workflow to create a delivery has three steps:
+
+1. `validateRestaurantStep` that checks whether a restaurant with the specified ID exists.
+2. `createDeliveryStep` that creates the delivery.
+3. `createRemoteLinkStep` that creates links between the different data model records. This step is imported from `@medusajs/core-flows`.
+
+### Create validateRestaurantStep
+
+To create the first step, create the file `src/workflows/delivery/steps/validate-restaurant.ts` with the following content:
+
+```ts title="src/workflows/delivery/steps/validate-restaurant.ts"
+import { 
+  createStep,
+} from "@medusajs/workflows-sdk"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+
+type ValidateRestaurantStepInput = {
+  restaurant_id: string
+}
+
+export const validateRestaurantStep = createStep(
+  "validate-restaurant",
+  async ({ restaurant_id }: ValidateRestaurantStepInput, { container }) => {
+    const restaurantModuleService = container.resolve(
+      RESTAURANT_MODULE
+    )
+
+    // if a restaurant with the ID doesn't exist, an error is thrown
+    await restaurantModuleService.retrieveRestaurant(
+      restaurant_id
+    )
+  }
+)
+```
+
+This step tries to retrieve the restaurant using the Restaurant Module’s main service. If the restaurant doesn’t exist, and error is thrown and the workflow stops execution.
+
+### Create createDeliveryStep
+
+Next, create the file `src/workflows/delivery/steps/create-delivery.ts` with the following content to create the second step:
+
+export const createDeliveryStepHighlights = [
+  ["9", "createDeliveries", "Create the delivery."],
+  ["18", "softDeleteDeliveries", "Delete the delivery if an error occurs in the workflow."]
+]
+
+```ts title="src/workflows/delivery/steps/create-delivery.ts" highlights={createDeliveryStepHighlights}
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+
+export const createDeliveryStep = createStep(
+  "create-delivery-step",
+  async function (_, { container }) {
+    const service = container.resolve(DELIVERY_MODULE)
+
+    const delivery = await service.createDeliveries()
+
+    return new StepResponse(delivery, {
+      delivery_id: delivery.id,
+    })
+  },
+  async function ({ delivery_id }, { container }) {
+    const service = container.resolve(DELIVERY_MODULE)
+
+    service.softDeleteDeliveries(delivery_id)
+  }
+)
+```
+
+This step creates a delivery and returns it. In the compensation function, it deletes the delivery.
+
+### Create createDeliveryWorkflow
+
+Finally, create the workflow in `src/workflows/delivery/workflows/create-delivery.ts`:
+
+export const createDeliveryWorkflowHighlights = [
+  ["23", "validateRestaurantStep", "Ensure that the specified restaurant exists before creating the delivery."],
+  ["26", "createDeliveryStep", "Create the delivery."],
+  ["28", "transform", "Define an array of link objects to create."],
+  ["50", "createRemoteLinkStep", "Create the links between the delivery and cart and restaurant."]
+]
+
+```ts title="src/workflows/delivery/workflows/create-delivery.ts" highlights={createDeliveryWorkflowHighlights} collapsibleLines="1-13" expandButtonLabel="Show Imports"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
+import { Modules } from "@medusajs/utils"
+import { createRemoteLinkStep } from "@medusajs/core-flows"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+import { validateRestaurantStep } from "../steps/validate-restaurant"
+import { createDeliveryStep } from "../steps/create-delivery"
+
+type WorkflowInput = {
+  cart_id: string;
+  restaurant_id: string;
+};
+
+export const createDeliveryWorkflowId = "create-delivery-workflow"
+export const createDeliveryWorkflow = createWorkflow(
+  createDeliveryWorkflowId,
+  function (input: WorkflowInput) {
+    validateRestaurantStep({
+      restaurant_id: input.restaurant_id,
+    })
+    const delivery = createDeliveryStep()
+
+    const links = transform({
+      input,
+      delivery,
+    }, (data) => ([
+      {
+        [DELIVERY_MODULE]: {
+          delivery_id: data.delivery.id,
+        },
+        [Modules.CART]: {
+          cart_id: data.input.cart_id,
+        },
+      },
+      {
+        [RESTAURANT_MODULE]: {
+          restaurant_id: data.input.restaurant_id,
+        },
+        [DELIVERY_MODULE]: {
+          delivery_id: data.delivery.id,
+        },
+      },
+    ]))
+
+    createRemoteLinkStep(links)
+
+    return new WorkflowResponse(delivery)
+  }
+)
+```
+
+In the workflow, you:
+
+1. Use the `validateRestaurantStep` to validate that the restaurant exists.
+2. Use the `createDeliveryStep` to create the delivery.
+3. Use the `transform` utility to specify the links to be created in the next step. You specify links between the delivery and cart, and between the restaurant and delivery.
+4. Use the `createRemoteLinkStep` to create the links.
+5. Return the created delivery.
+
+---
+
+## Step 10: Handle Delivery Workflow
+
+In this step, you’ll create the workflow that handles the different stages of the delivery. This workflow needs to run in the background to update the delivery when an action occurs.
+
+For example, when a restaurant finishes preparing the order’s items, this workflow creates a fulfillment for the order.
+
+This workflow will be a [long-running workflow](!docs!/advanced-development/workflows/long-running-workflow) that runs asynchronously in the background. Its async steps only succeed once an outside action sets its status, allowing the workflow to move to the next step.
+
+API routes that perform actions related to the delivery, which you’ll create later, will trigger the workflow to move to the next step.
+
+### Workflow’s Steps
+
+The workflow has the following steps:
+
+<Note title="Tip">
+
+Steps that have a `*` next to their names are async steps.
+
+</Note>
+
+<WorkflowDiagram 
+  type="list" 
+  workflow={{
+    name: "handleDeliveryWorkflow",
+    steps: [
+      {
+        type: "step",
+        name: "setTransactionIdStep",
+        description: "Sets the ID of the workflow’s transaction in the delivery’s `transaction_id` property. This is useful for moving the steps of the",
+        link: "#create-setTransactionIdStep"
+      },
+      {
+        type: "step",
+        name: "notifyRestaurantStep*",
+        description: "An async step that omits an event to notify restaurants of the new order.",
+        link: "#create-notifyRestaurantStep"
+      },
+      {
+        type: "step",
+        name: "awaitDriverClaimStep*",
+        description: "An async step that’s executed once the restaurant accepts the order. It waits until a driver claims the delivery.",
+        link: "#create-awaitDriverClaimStep"
+      },
+      {
+        type: "step",
+        name: "createOrderStep",
+        description: "Creates an order once a driver claims the delivery. It also returns links to be created by the next step.",
+        link: "#create-createOrderStep"
+      },
+      {
+        type: "step",
+        name: "createRemoteLinkStep",
+        description: "Creates the links returned by the previous step between the order and delivery. This is imported from `@medusajs/core-flows`.",
+        link: "/references/helper-steps/createRemoteLinkStep"
+      },
+      {
+        type: "step",
+        name: "awaitStartPreparationStep*",
+        description: "An async step that waits until the restaurant changes the delivery’s status to `restaurant_preparing`.",
+        link: "#create-awaitStartPreparationStep"
+      },
+      {
+        type: "step",
+        name: "awaitPreparationStep*",
+        description: "An async step that once the restaurant changes the delivery’s status to preparing, waits until the restaurant changes the delivery’s status to `ready_for_pickup`.",
+        link: "#create-awaitPreparationStep"
+      },
+      {
+        type: "step",
+        name: "createFulfillmentStep",
+        description: "Creates a fulfillment after the restaurant changes the delivery’s status to `ready_for_pickup`.",
+        link: "#create-createFulfillmentStep"
+      },
+      {
+        type: "step",
+        name: "awaitPickUpStep*",
+        description: "An async step that waits until the driver changes the delivery’s status to `in_transit`.",
+        link: "#create-awaitPickUpStep"
+      },
+      {
+        type: "step",
+        name: "awaitDeliveryStep*",
+        description: "An async step that waits until the driver changes the delivery’s status to `delivered`.",
+        link: "#create-awaitDeliveryStep"
+      },
+    ]
+  }}
+/>
+
+You’ll implement these steps next.
+
+### create setTransactionIdStep
+
+Create the file `src/workflows/delivery/steps/set-transaction-id.ts` with the following content:
+
+export const setTransactionIdStepHighlights = [
+  ["9", "updateDeliveries", "Update the delivery with the workflow's transaction ID."],
+  ["19", "updateDeliveries", "Update the delivery to remove the transaction ID if an error occurs."]
+]
+
+```ts title="src/workflows/delivery/steps/set-transaction-id.ts" highlights={setTransactionIdStepHighlights}
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+
+export const setTransactionIdStep = createStep(
+  "create-delivery-step",
+  async function (deliveryId: string, { container, context }) {
+    const service = container.resolve(DELIVERY_MODULE)
+
+    const delivery = await service.updateDeliveries({
+      id: deliveryId,
+      transaction_id: context.transactionId,
+    })
+
+    return new StepResponse(delivery, delivery.id)
+  },
+  async function (delivery_id: string, { container }) {
+    const service = container.resolve(DELIVERY_MODULE)
+
+    await service.updateDeliveries({
+      id: delivery_id,
+      transaction_id: null,
+    })
+  }
+)
+
+```
+
+In this step, you update the `transaction_id` property of the delivery to the current workflow execution’s transaction ID. It can be found in the `context` property passed in the second object parameter of the step.
+
+In the compensation function, you set the `transaction_id` to `null`.
+
+### create notifyRestaurantStep
+
+Create the file `src/workflows/delivery/steps/notify-restaurant.ts` with the following content:
+
+export const notifyRestaurantStepHighlights = [
+  ["11", "async", "Set the step as async."],
+  ["18", "deliveryQuery", "Retrieve the delivery and its restaurant."],
+  ["32", "emit", "Emit a custom event that can be used to notify the restaurant that a new delivery is created."]
+]
+
+```ts title="src/workflows/delivery/steps/notify-restaurant.ts" highlights={notifyRestaurantStepHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import {
+  ModuleRegistrationName,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { createStep } from "@medusajs/workflows-sdk"
+
+export const notifyRestaurantStepId = "notify-restaurant-step"
+export const notifyRestaurantStep = createStep(
+  {
+    name: notifyRestaurantStepId,
+    async: true,
+    timeout: 60 * 15,
+    maxRetries: 2,
+  },
+  async function (deliveryId: string, { container }) {
+    const remoteQuery = container.resolve("remoteQuery")
+
+    const deliveryQuery = remoteQueryObjectFromString({
+      entryPoint: "deliveries",
+      variables: {
+        filters: {
+          id: deliveryId,
+        },
+      },
+      fields: ["id", "restaurant.id"],
+    })
+
+    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0])
+
+    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
+
+    await eventBus.emit({
+      name: "notify.restaurant",
+      data: {
+        restaurant_id: delivery.restaurant.id,
+        delivery_id: delivery.id,
+      },
+    })
+  }
+)
+
+```
+
+In this step, you:
+
+- Retrieve the delivery with its linked restaurant.
+- Emit a `notify.restaurant` event using the event bus module’s service.
+
+Since the step is async, the workflow only removes past it once it’s marked as successful, which will happen when the restaurant accepts the order.
+
+<Note title="Tip">
+
+A step is async if the `async` option is specified in the first object parameter of `createStep`.
+
+</Note>
+
+### Create awaitDriverClaimStep
+
+Create the file `src/workflows/delivery/steps/await-driver-claim.ts` with the following content:
+
+```ts title="src/workflows/delivery/steps/await-driver-claim.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+
+export const awaitDriverClaimStepId = "await-driver-claim-step"
+export const awaitDriverClaimStep = createStep(
+  { 
+    name: awaitDriverClaimStepId, 
+    async: true, 
+    timeout: 60 * 15, 
+    maxRetries: 2,
+  },
+  async function (_, { container }) {
+    const logger = container.resolve("logger")
+    logger.info("Awaiting driver to claim...")
+  }
+)
+```
+
+This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the driver claims the delivery.
+
+### Create createOrderStep
+
+Create the file `src/workflows/delivery/steps/create-order.ts` with the following content:
+
+export const createOrderStepHighlights1 = [
+  ["15", "deliveryQuery", "Retrieve the delivery with its linked cart's details."]
+]
+
+```ts title="src/workflows/delivery/steps/create-order.ts" highlights={createOrderStepHighlights1} collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import { CreateOrderShippingMethodDTO } from "@medusajs/types"
+import {
+  ModuleRegistrationName,
+  Modules,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+
+export const createOrderStep = createStep(
+  "create-order-step",
+  async function (deliveryId: string, { container }) {
+    const remoteQuery = container.resolve("remoteQuery")
+
+    const deliveryQuery = remoteQueryObjectFromString({
+      entryPoint: "deliveries",
+      variables: {
+        filters: {
+          id: deliveryId,
+        },
+      },
+      fields: [
+        "id", 
+        "cart.*",
+        "cart.shipping_address.*",
+        "cart.billing_address.*",
+        "cart.items.*",
+        "cart.shipping_methods.*",
+      ],
+    })
+
+    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0])
+
+    // TODO create order
+  },
+  async ({ orderId }, { container }) => {
+    // TODO add compensation
+  }
+)
+
+```
+
+This creates the `createOrderStep`, which so far only retrieves the delivery with its linked cart.
+
+Replace the `TODO` with the following to create the order:
+
+export const createOrderStepHighlights2 = [
+  ["5", "createOrders", "Create the order."],
+  ["18", "linkDef", "Define an array of links to be created."]
+]
+
+```ts title="src/workflows/delivery/steps/create-order.ts" highlights={createOrderStepHighlights2}
+const { cart } = delivery
+
+const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
+
+const order = await orderModuleService.createOrders({
+  currency_code: cart.currency_code,
+  email: cart.email,
+  shipping_address: cart.shipping_address,
+  billing_address: cart.billing_address,
+  items: cart.items,
+  region_id: cart.region_id,
+  customer_id: cart.customer_id,
+  sales_channel_id: cart.sales_channel_id,
+  shipping_methods:
+    cart.shipping_methods as unknown as CreateOrderShippingMethodDTO[],
+})
+
+const linkDef = [{
+  [DELIVERY_MODULE]: {
+    delivery_id: delivery.id as string,
+  },
+  [Modules.ORDER]: {
+    order_id: order.id,
+  },
+}]
+
+return new StepResponse({ 
+  order,
+  linkDef,
+}, {
+  orderId: order.id,
+})
+```
+
+You create the order using the Order Module’s main service. Then, you create an object holding the links to return. The `createRemoteLinkStep` is used later to create those links.
+
+Then, replace the `TODO` in the compensation function with the following:
+
+```ts title="src/workflows/delivery/steps/create-order.ts"
+const orderService = container.resolve(ModuleRegistrationName.ORDER)
+
+await orderService.softDeleteOrders([orderId])
+```
+
+You delete the order in the compensation function.
+
+### create awaitStartPreparationStep
+
+Create the file `src/workflows/delivery/steps/await-start-preparation.ts` with the following content:
+
+```ts title="src/workflows/delivery/steps/await-start-preparation.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+
+export const awaitStartPreparationStepId = "await-start-preparation-step"
+export const awaitStartPreparationStep = createStep(
+  { name: awaitStartPreparationStepId, async: true, timeout: 60 * 15 },
+  async function (_, { container }) {
+    const logger = container.resolve("logger")
+    logger.info("Awaiting start of preparation...")
+  }
+)
+```
+
+This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the restaurant sets the delivery’s status as `restaurant_preparing`.
+
+### create awaitPreparationStep
+
+Create the file `src/workflows/delivery/steps/await-preparation.ts` with the following content:
+
+```ts title="src/workflows/delivery/steps/await-preparation.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+
+export const awaitPreparationStepId = "await-preparation-step"
+export const awaitPreparationStep = createStep(
+  { name: awaitPreparationStepId, async: true, timeout: 60 * 15 },
+  async function (_, { container }) {
+    const logger = container.resolve("logger")
+    logger.info("Awaiting preparation...")
+  }
+)
+```
+
+This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the restaurant sets the delivery’s status as `ready_for_pickup`.
+
+### create createFulfillmentStep
+
+Create the file `src/workflows/delivery/steps/create-fulfillment.ts` with the following content:
+
+export const createFulfillmentStepHighlights = [
+  ["20", "createFulfillment", "Create the fulfillment."],
+  ["36", "cancelFulfillment", "Cancel the fulfillment."]
+]
+
+```ts title="src/workflows/delivery/steps/create-fulfillment.ts" highlights={createFulfillmentStepHighlights}
+import { OrderDTO } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+
+export const createFulfillmentStep = createStep(
+  "create-fulfillment-step",
+  async function (order: OrderDTO, { container }) {
+    const fulfillmentModuleService = container.resolve(
+      ModuleRegistrationName.FULFILLMENT
+    )
+
+    const items = order.items?.map((lineItem) => ({
+      title: lineItem.title,
+      sku: lineItem.variant_sku || "",
+      quantity: lineItem.quantity,
+      barcode: lineItem.variant_barcode || "",
+      line_item_id: lineItem.id,
+    }))
+
+    const fulfillment = await fulfillmentModuleService.createFulfillment({
+      provider_id: "manual_manual",
+      location_id: "1",
+      delivery_address: order.shipping_address!,
+      items: items || [],
+      labels: [],
+      order,
+    })
+
+    return new StepResponse(fulfillment, fulfillment.id)
+  },
+  function (id: string, { container }) {
+    const fulfillmentModuleService = container.resolve(
+      ModuleRegistrationName.FULFILLMENT
+    )
+
+    return fulfillmentModuleService.cancelFulfillment(id)
+  }
+)
+```
+
+In this step, you retrieve the order’s items as required to create the fulfillment, then create the fulfillment and return it.
+
+In the compensation function, you cancel the fulfillment.
+
+### create awaitPickUpStep
+
+Create the file `src/workflows/delivery/steps/await-pick-up.ts` with the following content:
+
+```ts title="src/workflows/delivery/steps/await-pick-up.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+
+export const awaitPickUpStepId = "await-pick-up-step"
+export const awaitPickUpStep = createStep(
+  { name: awaitPickUpStepId, async: true, timeout: 60 * 15 },
+  async function (_, { container }) {
+    const logger = container.resolve("logger")
+    logger.info("Awaiting pick up by driver...")
+  }
+)
+
+```
+
+This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the driver sets the delivery’s status as `in_transit`.
+
+### create awaitDeliveryStep
+
+Create the file `src/workflows/delivery/steps/await-delivery.ts` with the following content:
+
+```ts title="src/workflows/delivery/steps/await-delivery.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+
+export const awaitDeliveryStepId = "await-delivery-step"
+export const awaitDeliveryStep = createStep(
+  { name: awaitDeliveryStepId, async: true, timeout: 60 * 15 },
+  async function (_, { container }) {
+    const logger = container.resolve("logger")
+    logger.info("Awaiting delivery by driver...")
+  }
+)
+```
+
+This step is async and its only purpose is to wait until it’s marked as successful, which will happen when the driver sets the delivery’s status as `delivered`.
+
+### create handleDeliveryWorkflow
+
+Finally, create the workflow at `src/workflows/delivery/workflows/handle-delivery.ts`:
+
+export const handleDeliveryWorkflowHighlights = [
+  ["25", "store", "Indicate that the workflow's execution should be stored."],
+  ["26", "retentionTime", "Specify the time to keep the workflow's execution stored."]
+]
+
+```ts title="src/workflows/delivery/workflows/handle-delivery.ts" highlights={handleDeliveryWorkflowHighlights} collapsibleLines="1-15" expandButtonLabel="Show Imports"
+import {
+  WorkflowResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
+import { createRemoteLinkStep } from "@medusajs/core-flows"
+import { setTransactionIdStep } from "../steps/set-transaction-id"
+import { notifyRestaurantStep } from "../steps/notify-restaurant"
+import { awaitDriverClaimStep } from "../steps/await-driver-claim"
+import { createOrderStep } from "../steps/create-order"
+import { awaitStartPreparationStep } from "../steps/await-start-preparation"
+import { awaitPreparationStep } from "../steps/await-preparation"
+import { createFulfillmentStep } from "../steps/create-fulfillment"
+import { awaitPickUpStep } from "../steps/await-pick-up"
+import { awaitDeliveryStep } from "../steps/await-delivery"
+
+type WorkflowInput = {
+  delivery_id: string;
+};
+
+const TWO_HOURS = 60 * 60 * 2
+export const handleDeliveryWorkflowId = "handle-delivery-workflow"
+export const handleDeliveryWorkflow = createWorkflow(
+  {
+    name: handleDeliveryWorkflowId,
+    store: true,
+    retentionTime: TWO_HOURS,
+  },
+  function (input: WorkflowInput) {
+    setTransactionIdStep(input.delivery_id)
+
+    notifyRestaurantStep(input.delivery_id)
+
+    awaitDriverClaimStep()
+
+    const { 
+      order,
+      linkDef,
+    } = createOrderStep(input.delivery_id)
+
+    createRemoteLinkStep(linkDef)
+
+    awaitStartPreparationStep()
+
+    awaitPreparationStep()
+
+    createFulfillmentStep(order)
+
+    awaitPickUpStep()
+
+    awaitDeliveryStep()
+
+    return new WorkflowResponse("Delivery completed")
+  }
+)
+
+```
+
+In the workflow, you execute the steps in the same order mentioned earlier. The workflow has the following options:
+
+- `store` set to `true` to indicate that this workflow’s executions should be stored.
+- `retentionTime` which indicates how long the workflow should be stored. It’s set to two hours.
+
+In the next steps, you’ll execute the workflow and see it in action as you add more API routes to handle the delivery.
+
+### Further Reads
+
+- [Long-Running Workflows](!docs!/advanced-development/workflows/long-running-workflow)
+
+---
+
+## Step 11: Create Order Delivery API Route
+
+In this step, you’ll create the API route that executes the workflows created by the previous two steps. This API route is used when a customer places their order.
+
+Create the file `src/api/store/deliveries/route.ts` with the following content:
+
+export const createDeliveryRouteHighlights = [
+  ["16", "createDeliveryWorkflow", "Create the delivery."],
+  ["23", "handleDeliveryWorkflow", "Execute the long-running workflow, which will continue running in the background."]
+]
+
+```ts title="src/api/store/deliveries/route.ts" highlights={createDeliveryRouteHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import zod from "zod"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+import { createDeliveryWorkflow } from "../../../workflows/delivery/workflows/create-delivery"
+import { handleDeliveryWorkflow } from "../../../workflows/delivery/workflows/handle-delivery"
+
+const schema = zod.object({
+  cart_id: zod.string().startsWith("cart_"),
+  restaurant_id: zod.string().startsWith("res_"),
+})
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const validatedBody = schema.parse(req.body)
+
+  const { result: delivery } = await createDeliveryWorkflow(req.scope).run({
+    input: {
+      cart_id: validatedBody.cart_id,
+      restaurant_id: validatedBody.restaurant_id,
+    },
+  })
+
+  await handleDeliveryWorkflow(req.scope).run({
+    input: {
+      delivery_id: delivery.id,
+    },
+  })
+
+  return res
+    .status(200)
+    .json({ delivery })
+}
+```
+
+This adds a `POST` API route at `/deliveries`. It first executes the `createDeliveryWorkflow`, which returns the delivery. Then, it executes the `handleDeliveryWorkflow`.
+
+ In the response, it returns the created delivery.
+
+<Note>
+
+Long-running workflows don’t return the data until it finishes the execution. That’s why you use two workflows instead of one in this API route, as you need to return the created delivery.
+
+</Note>
+
+### Test it Out
+
+Before using the API route, you must have a cart with at least one product from a restaurant, and with the payment and shipping details set.
+    
+<Details summaryContent="Simplified Steps to Create a Cart">
+
+  To create a cart:
+    
+  1. Send a `POST` request to `/store/carts`  to create a cart:
+  
+```bash
+curl -X POST 'http://localhost:9000/store/carts' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "region_id": "reg_01J66SWSSWFZPQV0GWR2W7P1SB",
+    "sales_channel_id": "sc_01J66SWSRK95F2P2KTFHMYR7VC",
+    "email": "customer@gmail.com",
+    "shipping_address": {
+        "first_name": "customer",
+        "last_name": "test",
+        "address_1": "first street",
+        "country_code": "dk",
+        "city": "Copenhagen",
+        "postal_code": "1234"
+    },
+    "billing_address": {
+        "first_name": "customer",
+        "last_name": "test",
+        "address_1": "first street",
+        "country_code": "dk",
+        "city": "Copenhagen",
+        "postal_code": "1234"
+    }
+}'
+```
+  
+  Make sure to replace the value of `region_id` and `sales_channel_id` with IDs from your store.
+  
+  2. Send a `POST` request to `/store/carts/[id]/line-items` to add a product variant to the cart:
+  
+```bash
+curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/line-items' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "variant_id": "variant_01J66T0VC2S0NB4BNDBCZN8P9F",
+    "quantity": 1
+}'
+```
+  
+  Make sure to replace the cart’s ID in the path parameter, and the variant ID with the ID of a restaurant’s product variant.
+  
+  3. Send a `GET` request to `/store/shipping-options` to retrieve the shipping options of the cart:
+  
+```bash
+curl 'http://localhost:9000/store/shipping-options?cart_id=cart_01J67JT10B3RCWKT9NFEFYA2XG' \
+```
+  
+  Make sure to replace the value of the `cart_id` query parameter with the cart’s ID.
+  
+  4. Copy an ID of a shipping option from the previous request, then send a `POST` request to `/store/carts/[id]/shipping-methods` to set the cart’s shipping method:
+  
+```bash
+curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/shipping-methods' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "option_id": "so_01J66SWSVQG7S1BSJKR7PYWH6C",
+    "data": {}
+}'
+```
+  
+  Make sure to replace the cart’s ID in the path parameter, and the shipping option’s ID in the request body.
+  
+  5. Send a `POST` request to `/store/payment-collections` to create a payment collection for your cart:
+  
+```bash
+curl -X POST 'http://localhost:9000/store/payment-collections' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "cart_id": "cart_01J67MS5WPH2CE5R84BENJCGSW"
+}'
+```
+  
+  Make sure to replace the cart’s ID in the request body.
+  
+  6. Send a `POST` request to `/store/payment-collections/[id]/payment-sessions` to initialize a payment session in the payment collection:
+  
+```bash
+curl -X POST 'http://localhost:9000/store/payment-collections/pay_col_01J67MSK397M3BKD3RDVDMJSRE/payment-sessions' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "provider_id": "pp_system_default"
+}'
+```
+  
+  Make sure to replace the payment collection’s ID in the path parameter.
+  
+  After following these steps, you can test out the API route.
+
+</Details>
+    
+
+Then, send a `POST` request to `/store/deliveries` to create the order delivery:
+
+```bash
+curl -X POST 'http://localhost:9000/store/deliveries' \
+-H 'Content-Type: application/json' \
+--data '{
+    "cart_id": "cart_01J67MS5WPH2CE5R84BENJCGSW",
+    "restaurant_id": "res_01J66SYN5DSRR0R6QM3A4SYRFZ"
+}'
+```
+
+Make sure to replace the cart and restaurant’s IDs.
+
+The created delivery is returned in the response. The `handleDeliveryWorkflow` only executes the first two steps, then waits until the `notifyRestaurantStep` is set as successful before continuing.
+
+In the upcoming steps, you’ll add functionalities to update the delivery’s status, which triggers the long-running workflow to continue executing its steps.
+
+---
+
+## Step 12: Accept Delivery API Route
+
+In this step, you’ll create an API route that a restaurant admin uses to accept a delivery. This moves the `handleDeliveryWorkflow` execution from `notifyRestaurantStep` to the next step.
+
+### Add Types
+
+Before implementing the necessary functionalities, add the following types to `src/modules/delivery/types/index.ts`:
+
+```ts title="src/modules/delivery/types/index.ts"
+// other imports...
+import {
+  CartLineItemDTO,
+  OrderLineItemDTO,
+  CartDTO,
+  OrderDTO,
+} from "@medusajs/types"
+
+// ...
+
+export interface Delivery {
+  id: string;
+  transaction_id: string;
+  driver_id?: string;
+  delivered_at?: Date;
+  delivery_status: DeliveryStatus;
+  created_at: Date;
+  updated_at: Date;
+  eta?: Date;
+  items: DeliveryItem[];
+  cart?: CartDTO;
+  order?: OrderDTO;
+}
+
+export type DeliveryItem = (CartLineItemDTO | OrderLineItemDTO) & {
+  quantity: number;
+}
+
+export interface UpdateDelivery extends Partial<Delivery> {
+  id: string;
+}
+```
+
+These types are useful in the upcoming implementation steps. 
+
+### Create Workflow
+
+As the API route should update the delivery’s status, you’ll create a new workflow to implement that functionality.
+
+The workflow has the following steps:
+
+1. `updateDeliveryStep`: A step that updates the delivery’s data, such as updating its status.
+2. `setStepSuccessStep`: A step that changes the status of a step in the delivery’s `handleDeliveryWorkflow` execution to successful. This is useful to move to the next step in the long-running workflow. This step is only used if the necessary input is provided.
+3. `setStepFailedStep`: A step that changes the status of a step in the delivery’s `handleDeliveryWorkflow` execution to failed. This step is only used if the necessary input is provided.
+
+So, start by creating the first step at `src/workflows/delivery/steps/update-delivery.ts`:
+
+export const updateDeliveryStepHighlights = [
+  ["14", "prevDeliveryData", "Retrieve the previous data of the delivery for the compensation."],
+  ["17", "updateDeliveries", "Update the delivery."],
+  ["27", "updateDeliveries", "Update the delivery with the old data if an error occurs in the workflow."]
+]
+
+```ts title="src/workflows/delivery/steps/update-delivery.ts" highlights={updateDeliveryStepHighlights}
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { DELIVERY_MODULE } from "../../../modules/delivery"
+import { UpdateDelivery } from "../../../modules/delivery/types"
+
+type UpdateDeliveryStepInput = {
+  data: UpdateDelivery;
+};
+
+export const updateDeliveryStep = createStep(
+  "update-delivery-step",
+  async function ({ data }: UpdateDeliveryStepInput, { container }) {
+    const deliveryService = container.resolve(DELIVERY_MODULE)
+
+    const prevDeliveryData = await deliveryService.retrieveDelivery(data.id)
+
+    const delivery = await deliveryService
+      .updateDeliveries([data])
+      .then((res) => res[0])
+
+    return new StepResponse(delivery, {
+      prevDeliveryData,
+    })
+  },
+  async ({ prevDeliveryData }, { container }) => {
+    const deliveryService = container.resolve(DELIVERY_MODULE)
+
+    await deliveryService.updateDeliveries(prevDeliveryData)
+  }
+)
+```
+
+This step updates a delivery using the provided data. In the compensation function, it reverts the data to its previous state.
+
+Then, create the second step in `src/workflows/delivery/steps/set-step-success.ts`:
+
+export const setStepSuccessStepHighlights = [
+  ["24", "setStepSuccess", "Set the status of a workflow execution's step to successful."]
+]
+
+```ts title="src/workflows/delivery/steps/set-step-success.ts" highlights={setStepSuccessStepHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
+import {
+  ModuleRegistrationName,
+  TransactionHandlerType,
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { Delivery } from "../../../modules/delivery/types"
+import { handleDeliveryWorkflowId } from "../workflows/handle-delivery"
+
+type SetStepSuccessStepInput = {
+  stepId: string;
+  updatedDelivery: Delivery;
+};
+
+export const setStepSuccessStep = createStep(
+  "set-step-success-step",
+  async function (
+    { stepId, updatedDelivery }: SetStepSuccessStepInput,
+    { container }
+  ) {
+    const engineService = container.resolve(
+      ModuleRegistrationName.WORKFLOW_ENGINE
+    )
+
+    await engineService.setStepSuccess({
+      idempotencyKey: {
+        action: TransactionHandlerType.INVOKE,
+        transactionId: updatedDelivery.transaction_id,
+        stepId,
+        workflowId: handleDeliveryWorkflowId,
+      },
+      stepResponse: new StepResponse(updatedDelivery, updatedDelivery.id),
+      options: {
+        container,
+      },
+    })
+  }
+)
+
+```
+
+This step receives as an input the step’s ID and the associated delivery.
+
+In the step, you resolve the Workflow Engine Module’s service. You then use its `setStepSuccess` method to change the step’s status to success. It accepts details related to the workflow execution’s transaction ID, which is stored in the delivery record, and the step’s response, which is the updated delivery.
+
+Finally, create the last step in `src/workflows/delivery/steps/set-step-failed.ts`:
+
+export const setStepFailedStepHighlights = [
+  ["24", "setStepFailure", "Set the status of a workflow execution's step to failed."]
+]
+
+```ts title="src/workflows/delivery/steps/set-step-failed.ts" highlights={setStepFailedStepHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
+import {
+  ModuleRegistrationName,
+  TransactionHandlerType,
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { Delivery } from "../../../modules/delivery/types"
+import { handleDeliveryWorkflowId } from "../../delivery/workflows/handle-delivery"
+
+type SetStepFailedtepInput = {
+  stepId: string;
+  updatedDelivery: Delivery;
+};
+
+export const setStepFailedStep = createStep(
+  "set-step-failed-step",
+  async function (
+    { stepId, updatedDelivery }: SetStepFailedtepInput,
+    { container }
+  ) {
+    const engineService = container.resolve(
+      ModuleRegistrationName.WORKFLOW_ENGINE
+    )
+
+    await engineService.setStepFailure({
+      idempotencyKey: {
+        action: TransactionHandlerType.INVOKE,
+        transactionId: updatedDelivery.transaction_id,
+        stepId,
+        workflowId: handleDeliveryWorkflowId,
+      },
+      stepResponse: new StepResponse(updatedDelivery, updatedDelivery.id),
+      options: {
+        container,
+      },
+    })
+  }
+)
+```
+
+This step is similar to the last one, except it uses the `setStepFailure` method of the Workflow Engine Module’s service to set the status of the step as failed.
+
+You can now create the workflow. Create the file `src/workflows/delivery/workflows/update-delivery.ts` with the following content:
+
+export const updateDeliveryWorkflowHighlights = [
+  ["21", "updateDeliveryStep", "Update the delivery."],
+  ["26", "when", "Check if the `stepIdToSucceed` is passed in the input."],
+  ["28", "setStepSuccessStep", "Execute the step if `stepIdToSucceed` is passed in the input."],
+  ["35", "when", "Check if the `stepIdToSucceed` is passed in the input."],
+  ["37", "setStepFailedStep", "Execute the step if `stepIdToFail` is passed in the input."]
+]
+
+```ts title="src/workflows/delivery/workflows/update-delivery.ts" highlights={updateDeliveryWorkflowHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import {
+  createWorkflow,
+  WorkflowResponse,
+  when,
+} from "@medusajs/workflows-sdk"
+import { setStepSuccessStep } from "../steps/set-step-success"
+import { setStepFailedStep } from "../steps/set-step-failed"
+import { updateDeliveryStep } from "../steps/update-delivery"
+import { UpdateDelivery } from "../../../modules/delivery/types"
+
+export type WorkflowInput = {
+  data: UpdateDelivery;
+  stepIdToSucceed?: string;
+  stepIdToFail?: string;
+};
+
+export const updateDeliveryWorkflow = createWorkflow(
+  "update-delivery-workflow",
+  function (input: WorkflowInput) {
+    // Update the delivery with the provided data
+    const updatedDelivery = updateDeliveryStep({
+      data: input.data,
+    })
+
+    // If a stepIdToSucceed is provided, we will set that step as successful
+    when(input, ({ stepIdToSucceed }) => stepIdToSucceed !== undefined)
+      .then(() => {
+        setStepSuccessStep({
+          stepId: input.stepIdToSucceed,
+          updatedDelivery,
+        })
+      })
+
+    // If a stepIdToFail is provided, we will set that step as failed
+    when(input, ({ stepIdToFail }) => stepIdToFail !== undefined)
+      .then(() => {
+        setStepFailedStep({
+          stepId: input.stepIdToFail,
+          updatedDelivery,
+        })
+      })
+
+    // Return the updated delivery
+    return new WorkflowResponse(updatedDelivery)
+  }
+)
+```
+
+In this workflow, you:
+
+1. Use the `updateDeliveryStep` to update the workflow with the provided data.
+2. If `stepIdToSucceed` is provided in the input, you use the `setStepSuccessStep` to set the status of the step to successful.
+3. If `stepIdToFail` is provided in the input, you use the `setStepFailedStep` to set the status of the step to failed.
+
+### Create Accept Route
+
+You’ll now use the workflow in the API route that allows restaurant admins to accept an order delivery.
+
+Create the file `src/api/deliveries/[id]/accept/route.ts` with the following content:
+
+export const acceptRouteHighlights = [
+  ["12", "eta", "Set the estimated time for delivery to thirty minutes later."],
+  ["24", "stepIdToSucceed", "Set the `notifyRestaurantStep` as successful."]
+]
+
+```ts title="src/api/deliveries/[id]/accept/route.ts" highlights={acceptRouteHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
+import { notifyRestaurantStepId } from "../../../../workflows/delivery/steps/notify-restaurant"
+import { updateDeliveryWorkflow } from "../../../../workflows/delivery/workflows/update-delivery"
+
+const DEFAULT_PROCESSING_TIME = 30 * 60 * 1000 // 30 minutes
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const { id } = req.params
+
+  const eta = new Date(new Date().getTime() + DEFAULT_PROCESSING_TIME)
+
+  const data = {
+    id,
+    delivery_status: DeliveryStatus.RESTAURANT_ACCEPTED,
+    eta,
+  }
+
+  const updatedDeliveryResult = await updateDeliveryWorkflow(req.scope)
+    .run({
+      input: {
+        data,
+        stepIdToSucceed: notifyRestaurantStepId,
+      },
+    })
+    .catch((error) => {
+      console.log(error)
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
+
+  if (typeof updatedDeliveryResult === "string") {
+    throw new MedusaError(updatedDeliveryResult, "An error occurred")
+  }
+
+  return res.status(200).json({ delivery: updatedDeliveryResult.result })
+}
+
+```
+
+This creates a `POST` API route at `/deliveries/[id]/accept`.
+
+In this route, you calculate an estimated time of arrival (ETA), which is 30 minutes after the current time. You then update the delivery’s `eta` and `status` properties using the `updateDeliveryWorkflow`. 
+
+Along with the delivery’s update details, you set the `stepIdToSucceed`'s value to `notifyRestaurantStepId`. This indicates that the `notifyRestaurantStep` should be marked as successful, and the `handleDeliveryWorkflow` workflow execution should move to the next step.
+
+The API route returns the updated delivery.
+
+### Add Middlewares
+
+The above API route should only be accessed by the admin of the restaurant associated with the delivery. So, you must add a middleware that applies an authentication guard on the route.
+
+Start by creating the file `src/api/utils/is-delivery-restaurant.ts` with the following content:
+
+export const isDeliveryRestaurantHighlights = [
+  ["21", "restaurantAdmin", "Retrieve the logged-in restaurant admin."],
+  ["28", "query", "Retrieve the delivery based on the ID in the path parameter."],
+  ["42", "", "If the restaurant admin doesn't belong to the delivery's restaurant, return an unauthorized response."]
+]
+
+```ts title="src/api/utils/is-delivery-restaurant.ts" highlights={isDeliveryRestaurantHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { 
+  AuthenticatedMedusaRequest, 
+  MedusaNextFunction, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import {
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { RESTAURANT_MODULE } from "../../modules/restaurant"
+
+export const isDeliveryRestaurant = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) => {
+  const remoteQuery = req.scope.resolve("remoteQuery")
+  const restaurantModuleService = req.scope.resolve(
+    RESTAURANT_MODULE
+  )
+
+  const restaurantAdmin = await restaurantModuleService.retrieveRestaurantAdmin(
+    req.auth_context.actor_id,
+    {
+      relations: ["restaurant"],
+    }
+  )
+
+  const query = remoteQueryObjectFromString({
+    entryPoint: "delivery",
+    fields: [
+      "restaurant.*",
+    ],
+    variables: {
+      filters: {
+        id: req.params.id,
+      },
+    },
+  })
+
+  const result = await remoteQuery(query)
+
+  if (result[0].restaurant.id !== restaurantAdmin.restaurant.id) {
+    return res.status(403).json({
+      message: "unauthorized",
+    })
+  }
+
+  next()
+}
+```
+
+You define a middleware function that retrieves the currently logged-in restaurant admin and their associated restaurant, and the delivery (whose ID is a path parameter) and its linked restaurant.
+
+The middleware returns an unauthorized response if the delivery’s restaurant isn’t the same as the admin’s restaurant.
+
+Then, create the file `src/api/deliveries/[id]/middlewares.ts` with the following content:
+
+```ts title="src/api/deliveries/[id]/middlewares.ts"
+import { 
+  authenticate, 
+  defineMiddlewares, 
+} from "@medusajs/medusa"
+import { isDeliveryRestaurant } from "../../utils/is-delivery-restaurant"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/deliveries/:id/accept",
+      middlewares: [
+        authenticate("restaurant", "bearer"),
+        isDeliveryRestaurant,
+      ],
+    },
+  ],
+})
+```
+
+This applies two middlewares on the `/deliveries/[id]/accept` API route:
+
+1. The `authenticate` middleware to ensure that only restaurant admins can access this API route.
+2. The `isDeliveryRestaurant` middleware that you created above to ensure that only admins of the restaurant associated with the delivery can access the route.
+
+Finally, import and use these middlewares in the main `src/api/middlewares.ts` file:
+
+```ts title="src/api/middlewares.ts"
+// other imports...
+import deliveriesMiddlewares from "./deliveries/[id]/middlewares"
+
+export default defineMiddlewares({
+  routes: [
+    // ...
+	  ...deliveriesMiddlewares.routes,
+  ],
+})
+```
+
+### Test it Out
+
+To test the API route out, send a `POST` request to `/deliveries/[id]/accept` as an authenticated restaurant admin:
+
+```bash
+curl -X POST 'http://localhost:9000/deliveries/01J67MSXQE59KRBA3C7CJSQM0A/accept' \
+-H 'Authorization: Bearer {token}'
+```
+
+<Note title="Tip">
+
+Make sure to replace the delivery ID in the path and pass the restaurant admin’s authenticated token in the header.
+
+</Note>
+
+This request returns the updated delivery. If you also check the Medusa application’s logs, you’ll find the following message:
+
+```
+Awaiting driver to claim...
+```
+
+Meaning that the `handleDeliveryWorkflow`'s execution has moved to the `awaitDriverClaimStep`.
+
+---
+
+## Step 13: Claim Delivery API Route
+
+In this step, you’ll add the API route that allows a driver to claim a delivery.
+
+### Create Workflow
+
+You’ll implement the functionality of claiming a delivery in a workflow that has two steps:
+
+1. `updateDeliveryStep` that updates the delivery’s status to `pickup_claimed` and sets the driver of the delivery.
+2. `setStepSuccessStep` that sets the status of the `awaitDriverClaimStep` to successful, moving the `handleDeliveryWorkflow`'s execution to the next step.
+
+So, create the workflow in the file `src/workflows/delivery/workflows/claim-delivery.ts` with the following content:
+
+export const claimDeliveryWorkflowHighlights = [
+  ["19", "updateDeliveryStep", "Update the delivery's driver and status."],
+  ["28", "setStepSuccessStep", "Set the status of the `awaitDriverClaimStep` to successful."]
+]
+
+```ts title="src/workflows/delivery/workflows/claim-delivery.ts" highlights={claimDeliveryWorkflowHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
+import { DeliveryStatus } from "../../../modules/delivery/types"
+import { awaitDriverClaimStepId } from "../steps/await-driver-claim"
+import { setStepSuccessStep } from "../steps/set-step-success"
+import { updateDeliveryStep } from "../steps/update-delivery"
+
+export type ClaimWorkflowInput = {
+  driver_id: string;
+  delivery_id: string;
+};
+
+export const claimDeliveryWorkflow = createWorkflow(
+  "claim-delivery-workflow",
+  function (input: ClaimWorkflowInput) {
+    // Update the delivery with the provided data
+    const claimedDelivery = updateDeliveryStep({
+      data: {
+        id: input.delivery_id,
+        driver_id: input.driver_id,
+        delivery_status: DeliveryStatus.PICKUP_CLAIMED,
+      },
+    })
+
+    // Set the step success for the find driver step
+    setStepSuccessStep({
+      stepId: awaitDriverClaimStepId,
+      updatedDelivery: claimedDelivery,
+    })
+
+    // Return the updated delivery
+    return new WorkflowResponse(claimedDelivery)
+  }
+)
+```
+
+In the workflow, you execute the steps as mentioned above and return the updated delivery.
+
+### Create Claim Route
+
+To create the API route to claim the delivery, create the file `src/api/deliveries/[id]/claim/route.ts` with the following content:
+
+```ts title="src/api/deliveries/[id]/claim/route.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import { 
+  AuthenticatedMedusaRequest, 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { 
+  claimDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/claim-delivery"
+
+export async function POST(req: AuthenticatedMedusaRequest, res: MedusaResponse) {
+  const deliveryId = req.params.id
+
+  const claimedDelivery = await claimDeliveryWorkflow(req.scope).run({
+    input: {
+      driver_id: req.auth_context.actor_id,
+      delivery_id: deliveryId,
+    },
+  })
+
+  return res.status(200).json({ delivery: claimedDelivery })
+}
+```
+
+The creates a `POST` API route at `/deliveries/[id]/claim`. In the route, you execute the workflow and return the updated delivery.
+
+### Add Middleware
+
+The above API route should only be accessed by drivers. So, add the following middleware to `src/api/deliveries/[id]/middlewares.ts`:
+
+```ts title="src/api/deliveries/[id]/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/deliveries/:id/claim",
+      middlewares: [
+        authenticate("driver", "bearer"),
+      ],
+    },
+  ],
+})
+```
+
+This middleware ensures only drivers can access the API route.
+
+### Test it Out
+
+To test it out, first, get the authentication token of a registered driver user:
+
+```bash
+curl --location 'http://localhost:9000/auth/driver/emailpass' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "driver@gmail.com",
+    "password": "supersecret"
+}'
+```
+
+Then, send a `POST` request to `/deliveries/[id]/claim`:
+
+```bash
+curl -X POST 'http://localhost:9000/deliveries/01J67MSXQE59KRBA3C7CJSQM0A/claim' \
+-H 'Authorization: Bearer {token}'
+```
+
+<Note title="Tip">
+
+Make sure to replace the delivery’s ID in the path parameter and set the driver’s authentication token in the header.
+
+</Note>
+
+The request returns the updated delivery. If you check the Medusa application’s logs, you’ll find the following message:
+
+```
+Awaiting start of preparation...
+```
+
+This indicates that the `handleDeliveryWorkflow`'s execution continued past the `awaitDriverClaimStep` until it reached the next async step, which is `awaitStartPreparationStep`.
+
+---
+
+## Step 14: Prepare API Route
+
+In this step, you’ll add the API route that restaurants use to indicate they’re preparing the order.
+
+Create the file `src/api/deliveries/[id]/prepare/route.ts` with the following content:
+
+export const prepareRouteHighlights = [
+  ["23", "stepIdToSucceed", "Set the `awaitStartPreparationStep` as successful."]
+]
+
+```ts title="src/api/deliveries/[id]/prepare/route.ts" highlights={prepareRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
+import { 
+  updateDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/update-delivery"
+import { 
+  awaitStartPreparationStepId,
+} from "../../../../workflows/delivery/steps/await-start-preparation"
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const { id } = req.params
+
+  const data = {
+    id,
+    delivery_status: DeliveryStatus.RESTAURANT_PREPARING,
+  }
+
+  const updatedDelivery = await updateDeliveryWorkflow(req.scope)
+    .run({
+      input: {
+        data,
+        stepIdToSucceed: awaitStartPreparationStepId,
+      },
+    })
+    .catch((error) => {
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
+
+  return res.status(200).json({ delivery: updatedDelivery })
+}
+```
+
+This creates a `POST` API route at `/deliveries/[id]/prepare`. In this API route, you use the  `updateDeliveryWorkflow` to update the delivery’s status to `restaurant_preparing`, and set the status of the `awaitStartPreparationStep` to successful, moving the `handleDeliveryWorkflow`'s execution to the next step.
+
+### Add Middleware
+
+Since this API route should only be accessed by the admin of a restaurant associated with the delivery, add the following middleware to `src/api/deliveries/[id]/middlewares.ts`:
+
+```ts title="src/api/deliveries/[id]/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/deliveries/:id/prepare",
+      middlewares: [
+        authenticate("restaurant", "bearer"),
+        isDeliveryRestaurant,
+      ],
+    },
+  ],
+})
+```
+
+### Test it Out
+
+Send a `POST` request to `/deliveries/[id]/prepare` as an authenticated restaurant admin:
+
+```bash
+curl -X POST 'http://localhost:9000/deliveries/01J67MSXQE59KRBA3C7CJSQM0A/prepare' \
+-H 'Authorization: Bearer {token}'
+```
+
+<Note title="Tip">
+
+Make sure to replace the delivery’s ID in the path parameter and use the restaurant admin’s authentication token in the header.
+
+</Note>
+
+The request returns the updated delivery. If you check the Medusa application’s logs, you’ll find the following message:
+
+```
+Awaiting preparation...
+```
+
+This message indicates that the `handleDeliveryWorkflow`'s execution has moved to the next step, which is `awaitPreparationStep`.
+
+---
+
+## Step 15: Ready API Route
+
+In this step, you’ll create the API route that restaurants use to indicate that a delivery is ready for pick up.
+
+Create the file `src/api/deliveries/[id]/ready/route.ts` with the following content:
+
+export const readyRouteHighlights = [
+  ["23", "stepIdToSucceed", "Set the `awaitPreparationStep`'s status to successful."]
+]
+
+```ts title="src/api/deliveries/[id]/ready/route.ts" highlights={readyRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
+import { 
+  updateDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/update-delivery"
+import { 
+  awaitPreparationStepId,
+} from "../../../../workflows/delivery/steps/await-preparation"
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const { id } = req.params
+
+  const data = {
+    id,
+    delivery_status: DeliveryStatus.READY_FOR_PICKUP,
+  }
+
+  const updatedDelivery = await updateDeliveryWorkflow(req.scope)
+    .run({
+      input: {
+        data,
+        stepIdToSucceed: awaitPreparationStepId,
+      },
+    })
+    .catch((error) => {
+      console.log(error)
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
+
+  return res.status(200).json({ delivery: updatedDelivery })
+}
+
+```
+
+This creates a `POST` API route at `/deliveries/[id]/ready`. In the route, you use the  `updateDeliveryWorkflow` to update the delivery’s status to `ready_for_pickup` and sets the `awaitPreparationStep`'s status to successful, moving the  `handleDeliveryWorkflow`'s execution to the next step.
+
+### Add Middleware
+
+The above API route should only be accessed by restaurant admins. So, add the following middleware to `src/api/deliveries/[id]/middlewares.ts`:
+
+```ts title="src/api/deliveries/[id]/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/deliveries/:id/ready",
+      middlewares: [
+        authenticate("restaurant", "bearer"),
+        isDeliveryRestaurant,
+      ],
+    },
+  ],
+})
+```
+
+### Test it Out
+
+Send a `POST` request to `/deliveries/[id]/ready` as an authenticated restaurant admin:
+
+```bash
+curl -X POST 'http://localhost:9000/deliveries/01J67MSXQE59KRBA3C7CJSQM0A/ready' \
+-H 'Authorization: Bearer {token}'
+```
+
+<Note title="Tip">
+
+Make sure to replace the delivery’s ID in the path parameter and use the restaurant admin’s authentication token in the header.
+
+</Note>
+
+The request returns the updated delivery. If you check the Medusa application’s logs, you’ll find the following message:
+
+```
+Awaiting pick up by driver...
+```
+
+This message indicates that the `handleDeliveryWorkflow`'s execution has moved to the next step, which is `awaitPickUpStep`.
+
+---
+
+## Step 18: Pick Up Delivery API Route
+
+In this step, you’ll add the API route that the driver uses to indicate they’ve picked up the delivery.
+
+Create the file `src/api/deliveries/[id]/pick-up/route.ts` with the following content:
+
+export const pickUpRouteHighlights = [
+  ["23", "stepIdToSucceed", "Set the `awaitPickUpStep`'s status to successful."]
+]
+
+```ts title="src/api/deliveries/[id]/pick-up/route.ts" highlights={pickUpRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
+import { 
+  updateDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/update-delivery"
+import { 
+  awaitPickUpStepId,
+} from "../../../../workflows/delivery/steps/await-pick-up"
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const { id } = req.params
+
+  const data = {
+    id,
+    delivery_status: DeliveryStatus.IN_TRANSIT,
+  }
+
+  const updatedDelivery = await updateDeliveryWorkflow(req.scope)
+    .run({
+      input: {
+        data,
+        stepIdToSucceed: awaitPickUpStepId,
+      },
+    })
+    .catch((error) => {
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
+
+  return res.status(200).json({ delivery: updatedDelivery })
+}
+```
+
+This creates a `POST` API route at `/deliveries/[id]/pick-up`. In this route, you update the delivery’s status to `in_transit` and set the status of the `awaitPickUpStep` to successful, moving the `handleDeliveryWorkflow`'s execution to the next step.
+
+### Add Middleware
+
+The above route should only be accessed by the driver associated with the delivery.
+
+So, create the file `src/api/utils/is-delivery-driver.ts` holding the middleware function that performs the check:
+
+export const isDeliveryDriverHighlights = [
+  ["17", "retrieveDelivery", "Retrieve the delivery using the ID in the path parameter."],
+  ["24", "", "If the currently logged-in driver isn't associated with the delivery, return an unauthorized response."]
+]
+
+```ts title="src/api/utils/is-delivery-driver.ts" highlights={isDeliveryDriverHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import { 
+  AuthenticatedMedusaRequest, 
+  MedusaNextFunction, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { DELIVERY_MODULE } from "../../modules/delivery"
+
+export const isDeliveryDriver = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) => {
+  const deliveryModuleService = req.scope.resolve(
+    DELIVERY_MODULE
+  )
+
+  const delivery = await deliveryModuleService.retrieveDelivery(
+    req.params.id,
+    {
+      relations: ["driver"],
+    }
+  )
+
+  if (delivery.driver.id !== req.auth_context.actor_id) {
+    return res.status(403).json({
+      message: "unauthorized",
+    })
+  }
+
+  next()
+}
+```
+
+In this middleware function, you check that the driver is associated with the delivery. If not, you return an unauthorized response.
+
+Then, import and use the middleware function in `src/api/deliveries/[id]/middlewares.ts`:
+
+```ts title="src/api/deliveries/[id]/middlewares.ts"
+// other imports...
+import { isDeliveryDriver } from "../../utils/is-delivery-driver"
+
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/deliveries/:id/pick-up",
+      middlewares: [
+        authenticate("driver", "bearer"),
+        isDeliveryDriver,
+      ],
+    },
+  ],
+})
+```
+
+This applies the `authenticate` middleware on the `/deliveries/[id]/pick-up` route to ensure only drivers access it, and the `isDeliveryDriver` middleware to ensure only the driver associated with the delivery can access the route.
+
+### Test it Out
+
+Send a `POST` request to `/deliveries/[id]/pick-up` as the authenticated driver that claimed the delivery:
+
+```bash
+curl -X POST 'http://localhost:9000/deliveries/01J67MSXQE59KRBA3C7CJSQM0A/pick-up' \
+-H 'Authorization: Bearer {token}'
+```
+
+<Note title="Tip">
+
+Make sure to replace the delivery’s ID in the path parameter and use the driver’s authentication token in the header.
+
+</Note>
+
+The request returns the updated delivery. If you check the Medusa application’s logs, you’ll find the following message:
+
+```
+Awaiting delivery by driver...
+```
+
+This message indicates that the `handleDeliveryWorkflow`'s execution has moved to the next step, which is `awaitDeliveryStep`.
+
+---
+
+## Step 19: Complete Delivery API Route
+
+In this step, you’ll create the API route that the driver uses to indicate that they completed the delivery.
+
+Create the file `src/api/deliveries/[id]/complete/route.ts` with the following content:
+
+export const completeRouteHighlights = [
+  ["24", "stepIdToSucceed", "Set the `awaitDeliveryStep`'s status to successful."]
+]
+
+```ts title="src/api/deliveries/[id]/complete/route.ts" highlights={completeRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import { DeliveryStatus } from "../../../../modules/delivery/types"
+import { 
+  updateDeliveryWorkflow,
+} from "../../../../workflows/delivery/workflows/update-delivery"
+import { 
+  awaitDeliveryStepId,
+} from "../../../../workflows/delivery/steps/await-delivery"
+
+export async function POST(req: MedusaRequest, res: MedusaResponse) {
+  const { id } = req.params
+
+  const data = {
+    id,
+    delivery_status: DeliveryStatus.DELIVERED,
+    delivered_at: new Date(),
+  }
+
+  const updatedDelivery = await updateDeliveryWorkflow(req.scope)
+    .run({
+      input: {
+        data,
+        stepIdToSucceed: awaitDeliveryStepId,
+      },
+    })
+    .catch((error) => {
+      return MedusaError.Types.UNEXPECTED_STATE
+    })
+
+  return res.status(200).json({ delivery: updatedDelivery })
+}
+
+```
+
+This adds a `POST` API route at `/deliveries/[id]/complete`. In the API route, you update the delivery’s status to `delivered` and set the status of the `awaitDeliveryStep` to successful, moving the `handleDeliveryWorkflow`'s execution to the next step.
+
+### Add Middleware
+
+The above middleware should only be accessed by the driver associated with the delivery.
+
+So, add the following middlewares to `src/api/deliveries/[id]/middlewares.ts`:
+
+```ts title="src/api/deliveries/[id]/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      matcher: "/deliveries/:id/complete",
+      middlewares: [
+        authenticate("driver", "bearer"),
+        isDeliveryDriver,
+      ],
+    },
+  ],
+})
+```
+
+### Test it Out
+
+Send a `POST` request to `/deliveries/[id]/complete` as the authenticated driver that claimed the delivery:
+
+```bash
+curl -X POST 'http://localhost:9000/deliveries/01J67MSXQE59KRBA3C7CJSQM0A/complete' \
+-H 'Authorization: Bearer {token}'
+```
+
+<Note title="Tip">
+
+Make sure to replace the delivery’s ID in the path parameter and use the driver’s authentication token in the header.
+
+</Note>
+
+The request returns the updated delivery.
+
+As the route sets the status of the `awaitDeliveryStep` to successful in the `handleDeliveryWorkflow`'s execution, this finishes the workflow’s execution.
+
+---
+
+## Step 20: Real-Time Tracking in the Storefront
+
+In this step, you’ll learn how to implement real-time tracking of a delivery in a Next.js-based storefront.
+
+### Subscribe Route
+
+Before adding the storefront UI, you need an API route that allows a client to stream delivery changes.
+
+So, create the file `src/api/store/deliveries/subscribe/route.ts` with the following content:
+
+```ts title="src/api/store/deliveries/subscribe/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
+import { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import {
+  ModuleRegistrationName,
+} from "@medusajs/utils"
+import { 
+  handleDeliveryWorkflowId,
+} from "../../../../../workflows/delivery/workflows/handle-delivery"
+import { DELIVERY_MODULE } from "../../../../../modules/delivery"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const deliveryModuleService = req.scope.resolve(
+    DELIVERY_MODULE
+  )
+
+  const { id } = req.params
+  
+  const delivery = await deliveryModuleService.retrieveDelivery(id)
+
+  // TODO stream changes
+}
+```
+
+This creates a `GET` API route at `/store/deliveries/[id]/subscribe`. Currently, you only retrieve the delivery by its ID.
+
+Next, you’ll stream the changes in the delivery. To do that, replace the `TODO` with the following:
+
+```ts title="src/api/store/deliveries/subscribe/route.ts"
+const headers = {
+  "Content-Type": "text/event-stream",
+  Connection: "keep-alive",
+  "Cache-Control": "no-cache",
+}
+
+res.writeHead(200, headers)
+
+// TODO listen to workflow changes
+
+res.write(
+  "data: " +
+    JSON.stringify({
+      message: "Subscribed to workflow",
+      transactionId: delivery.transaction_id,
+    }) +
+    "\n\n"
+)
+```
+
+In the above snippet, you set the response to a stream and write an initial message saying that the client is now subscribed to the workflow.
+
+To listen to the workflow changes, replace the new `TODO` with the following:
+
+```ts title="src/api/store/deliveries/subscribe/route.ts"
+const workflowEngine = req.scope.resolve(
+  ModuleRegistrationName.WORKFLOW_ENGINE
+)
+
+const workflowSubHandler = (data: any) => {
+  res.write("data: " + JSON.stringify(data) + "\n\n")
+}
+
+await workflowEngine.subscribe({
+  workflowId: handleDeliveryWorkflowId,
+  transactionId: delivery.transaction_id,
+  subscriber: workflowSubHandler,
+})
+```
+
+In this snippet, you resolve the Workflow Engine Module’s main service. Then, you use the `subscribe` method of the service to subscribe to the `handleDeliveryWorkflow` ’s execution. You indicate the execution using the transaction ID stored in the delivery.
+
+### Retrieve Delivery API Route
+
+The storefront UI will also need to retrieve the delivery. So, you’ll create an API route that retrieves the delivery’s details.
+
+Create the file `src/api/store/deliveries/[id]/route.ts` with the following content:
+
+```ts title="src/api/store/deliveries/[id]/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { DELIVERY_MODULE } from "../../../../modules/delivery"
+
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const deliveryModuleService = req.scope.resolve(DELIVERY_MODULE)
+
+  const delivery = await deliveryModuleService.retrieveDelivery(
+    req.params.id
+  )
+
+  res.json({
+    delivery,
+  })
+}
+```
+
+### Storefront Tracking Page
+
+To implement real-time tracking in a Next.js-based storefront, create the following page:
+
+```tsx title="Storefront Page"
+"use client"
+
+import { useRouter } from "next/navigation"
+import { useEffect, useState, useTransition } from "react"
+
+type Props = {
+  params: { id: string }
+}
+
+export default function Delivery({ params: { id } }: Props) {
+  const [delivery, setDelivery] = useState<
+    Record<string, string> | undefined
+  >()
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+
+  useEffect(() => {
+    // TODO retrieve the delivery
+  }, [id])
+
+  useEffect(() => {
+    // TODO subscribe to the delivery updates
+  }, [])
+
+  return (
+    <div>
+      {isPending && <span>Syncing....</span>}
+      {!isPending && delivery && (
+        <span>Delivery status: {delivery.delivery_status}</span>
+      )}
+    </div>
+  )
+}
+```
+
+In this page, you create a `delivery` state variable that you’ll store the delivery in. You also use [React’s useTransition](https://react.dev/reference/react/useTransition) hook to, later, refresh the page when there are changes in the delivery.
+
+To retrieve the delivery from the Medusa application, replace the first `TODO` with the following:
+
+```tsx title="Storefront Page"
+// retrieve the delivery
+fetch(`http://localhost:9000/store/deliveries/${id}`, {
+  credentials: "include",
+})
+.then((res) => res.json())
+.then((data) => {
+  setDelivery(data.delivery)
+})
+.catch((e) => console.error(e))
+```
+
+This sends a `GET` request to `/store/deliveries/[id]` to retrieve and set the delivery’s details.
+
+Next, to subscribe to the delivery’s changes in real-time, replace the remaining `TODO` with the following:
+
+```tsx title="Storefront Page"
+// subscribe to the delivery updates
+const source = new EventSource(
+  `http://localhost:9000/store/deliveries/${id}/subscribe`
+)
+
+source.onmessage = (message) => {
+  const data = JSON.parse(message.data) as {
+    response?: Record<string, unknown>
+  }
+
+  if (data.response && "delivery_status" in data.response) {
+    setDelivery(data.response as Record<string, string>)
+  }
+
+  startTransition(() => {
+    router.refresh()
+  })
+}
+
+return () => {
+  source.close()
+}
+```
+
+You use the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to receive the stream from the `/store/deliveries/[id]/subscribe` API route.
+
+When a new message is set, the new delivery update is extracted from `message.data.response`, if `response` is available and has a `delivery_status` property.
+
+### Test it Out
+
+To test it out, create a delivery order as mentioned in this section. Then, open the page in your storefront.
+
+As you change the delivery’s status using API routes such as `accept` and `claim`, the delivery’s status is updated in the storefront page as well.
+
+---
+
+## Next Steps
+
+The next steps of this example depend on your use case. This section provides some insight into implementing them.
+
+### Admin Development
+
+The Medusa Admin is extendable, allowing you to add widgets to existing pages or create new pages. Learn more about it in [this documentation](!docs!/advanced-development/admin).
+
+### Storefront Development
+
+Medusa provides a Next.js Starter storefront that you can customize to your use case.
+
+You can also create a custom storefront. Check out the [Storefront Development](../../../../storefront-development/page.mdx) section to learn how to create a storefront.
