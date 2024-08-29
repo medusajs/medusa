@@ -9,13 +9,9 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchShippingOption } from "./helpers"
-import {
-  AdminCreateShippingOptionType,
-  AdminGetShippingOptionsParamsType,
-} from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetShippingOptionsParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminShippingOptionListParams>,
   res: MedusaResponse<HttpTypes.AdminShippingOptionListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -40,7 +36,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateShippingOptionType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateShippingOption>,
   res: MedusaResponse<HttpTypes.AdminShippingOptionResponse>
 ) => {
   const shippingOptionPayload = req.validatedBody

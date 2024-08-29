@@ -5,7 +5,7 @@ import { refetchEntities } from "../../utils/refetch-entity"
 import { remapKeysForVariant, remapVariantResponse } from "../products/helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminProductVariantParams>,
   res: MedusaResponse<HttpTypes.AdminProductVariantListResponse>
 ) => {
   const withInventoryQuantity = req.remoteQueryConfig.fields.some((field) =>

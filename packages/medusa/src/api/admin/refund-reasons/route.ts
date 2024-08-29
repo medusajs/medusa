@@ -1,15 +1,16 @@
 import { createRefundReasonsWorkflow } from "@medusajs/core-flows"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
 import {
+  AdminCreateRefundReason,
+  HttpTypes,
   PaginatedResponse,
   RefundReasonResponse,
   RefundReasonsResponse,
 } from "@medusajs/types"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
-import { AdminCreatePaymentRefundReasonType } from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.RefundReasonFilters>,
   res: MedusaResponse<PaginatedResponse<RefundReasonsResponse>>
 ) => {
   const { rows: refund_reasons, metadata } = await refetchEntities(
@@ -29,7 +30,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreatePaymentRefundReasonType>,
+  req: AuthenticatedMedusaRequest<AdminCreateRefundReason>,
   res: MedusaResponse<RefundReasonResponse>
 ) => {
   const {
