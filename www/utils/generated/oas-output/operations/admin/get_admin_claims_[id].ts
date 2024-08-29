@@ -3,7 +3,7 @@
  * operationId: GetClaimsId
  * summary: Get a Claim
  * description: Retrieve a claim by its ID. You can expand the claim's relations or
- *   select the fields that should be returned.
+ *   select the fields that should be returned using the query parameters.
  * x-authenticated: true
  * parameters:
  *   - name: id

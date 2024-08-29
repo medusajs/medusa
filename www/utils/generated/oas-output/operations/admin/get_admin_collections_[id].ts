@@ -3,7 +3,7 @@
  * operationId: GetCollectionsId
  * summary: Get a Collection
  * description: Retrieve a collection by its ID. You can expand the collection's
- *   relations or select the fields that should be returned.
+ *   relations or select the fields that should be returned using the query parameters.
  * x-authenticated: true
  * parameters:
  *   - name: id
