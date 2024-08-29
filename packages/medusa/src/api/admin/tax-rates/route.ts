@@ -8,14 +8,10 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchTaxRate } from "./helpers"
-import {
-  AdminCreateTaxRateType,
-  AdminGetTaxRatesParamsType,
-} from "./validators"
 import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateTaxRateType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateTaxRate>,
   res: MedusaResponse<HttpTypes.AdminTaxRateResponse>
 ) => {
   const { result } = await createTaxRatesWorkflow(req.scope).run({
@@ -36,7 +32,7 @@ export const POST = async (
 }
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetTaxRatesParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminTaxRateListParams>,
   res: MedusaResponse<HttpTypes.AdminTaxRateListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

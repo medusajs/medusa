@@ -1,13 +1,12 @@
 import { createAndCompleteReturnOrderWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { StorePostReturnsReqSchemaType } from "./validators"
 import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
-  req: MedusaRequest<StorePostReturnsReqSchemaType>,
+  req: MedusaRequest<HttpTypes.StoreCreateReturn>,
   res: MedusaResponse<HttpTypes.StoreReturnResponse>
 ) => {
-  const input = req.validatedBody as StorePostReturnsReqSchemaType
+  const input = req.validatedBody as HttpTypes.StoreCreateReturn
 
   const workflow = createAndCompleteReturnOrderWorkflow(req.scope)
   const { result } = await workflow.run({

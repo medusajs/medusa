@@ -9,7 +9,7 @@ import {
 } from "../../../types/routing"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUserListParams>,
   res: MedusaResponse<HttpTypes.AdminUserListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

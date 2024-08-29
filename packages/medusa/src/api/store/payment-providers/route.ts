@@ -7,12 +7,11 @@ import {
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { StoreGetPaymentProvidersParamsType } from "./validators"
 import { HttpTypes } from "@medusajs/types"
 
 // TODO: Add more fields to provider, such as default name and maybe logo.
 export const GET = async (
-  req: AuthenticatedMedusaRequest<StoreGetPaymentProvidersParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.StorePaymentProviderFilters>,
   res: MedusaResponse<HttpTypes.StorePaymentProviderListResponse>
 ) => {
   if (!req.filterableFields.region_id) {
