@@ -9,24 +9,6 @@ class SchemaFactory {
    * The pre-defined schemas.
    */
   private schemas: Record<string, OpenApiSchema> = {
-    BigNumberInput: {
-      type: "string",
-    },
-    BigNumber: {
-      type: "string",
-    },
-    created_at: {
-      type: "string",
-      format: "date-time",
-    },
-    updated_at: {
-      type: "string",
-      format: "date-time",
-    },
-    deleted_at: {
-      type: "string",
-      format: "date-time",
-    },
     $and: {
       type: "array",
       description:
@@ -43,6 +25,29 @@ class SchemaFactory {
         type: "object",
       },
     },
+    BigNumberInput: {
+      type: "string",
+    },
+    BigNumber: {
+      type: "string",
+    },
+  }
+  /**
+   * Schemas used only for response types.
+   */
+  private schemasForResponse: Record<string, OpenApiSchema> = {
+    created_at: {
+      type: "string",
+      format: "date-time",
+    },
+    updated_at: {
+      type: "string",
+      format: "date-time",
+    },
+    deleted_at: {
+      type: "string",
+      format: "date-time",
+    },
   }
 
   /**
@@ -54,19 +59,33 @@ class SchemaFactory {
    */
   public tryGetSchema(
     name: string,
-    additionalData?: Partial<OpenApiSchema>
+    additionalData?: Partial<OpenApiSchema>,
+    type: "request" | "response" | "all" = "all"
   ): OpenApiSchema | undefined {
-    if (!Object.hasOwn(this.schemas, name)) {
+    const schemasFactory =
+      type === "response"
+        ? this.mergeSchemas(this.schemasForResponse, this.schemas)
+        : this.schemas
+    if (!Object.hasOwn(schemasFactory, name)) {
       return
     }
 
-    let schema = Object.assign({}, this.schemas[name])
+    let schema = Object.assign({}, schemasFactory[name])
 
     if (additionalData) {
       schema = Object.assign(schema, additionalData)
     }
 
     return schema
+  }
+
+  private mergeSchemas(
+    main: Record<string, OpenApiSchema>,
+    other: Record<string, OpenApiSchema>
+  ): Record<string, OpenApiSchema> {
+    const clonedMain = Object.assign({}, main)
+
+    return Object.assign(clonedMain, other)
   }
 }
 

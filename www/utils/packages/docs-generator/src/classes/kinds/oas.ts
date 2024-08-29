@@ -978,6 +978,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 itemType: propertyType,
                 title: property.getName(),
                 descriptionOptions,
+                context: "request",
               }),
             })
           )
@@ -999,6 +1000,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             rawParentName: this.checker.typeToString(requestTypeArguments[0]),
           },
           zodObjectTypeName: zodObjectTypeName,
+          context: "request",
         })
 
         // If function is a GET function, add the type parameter to the
@@ -1105,6 +1107,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             typeReferenceNode: node.parameters[1].type,
             itemType: responseTypeArguments[0],
           }),
+          context: "response",
         })
       }
     }
@@ -1126,6 +1129,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     allowedChildren,
     disallowedChildren,
     zodObjectTypeName,
+    ...rest
   }: {
     /**
      * The TypeScript type.
@@ -1159,6 +1163,10 @@ class OasKindGenerator extends FunctionKindGenerator {
      * generated type name.
      */
     zodObjectTypeName?: string
+    /**
+     * Whether the type is in a request / response
+     */
+    context?: "request" | "response"
   }): OpenApiSchema {
     if (level > this.MAX_LEVEL) {
       return {}
@@ -1183,7 +1191,8 @@ class OasKindGenerator extends FunctionKindGenerator {
       {
         title: title || typeAsString,
         description,
-      }
+      },
+      rest.context
     )
 
     if (schemaFromFactory) {
@@ -1268,6 +1277,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                     parentName: title || descriptionOptions?.parentName,
                   }
                 : undefined,
+            ...rest,
           }),
         }
       case itemType.isUnion():
@@ -1294,6 +1304,7 @@ class OasKindGenerator extends FunctionKindGenerator {
               level,
               title,
               descriptionOptions,
+              ...rest,
             })
           ),
         }
@@ -1309,6 +1320,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 level,
                 title,
                 descriptionOptions,
+                ...rest,
               })
             }
           ),
@@ -1332,6 +1344,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           level,
           descriptionOptions,
           allowedChildren: pickedProperties,
+          ...rest,
         })
       case typeAsString.startsWith("Omit"):
         const omitTypeArgs =
@@ -1352,6 +1365,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           level,
           descriptionOptions,
           disallowedChildren: omitProperties,
+          ...rest,
         })
       case typeAsString.startsWith("Partial"):
         const typeArg =
@@ -1368,6 +1382,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           descriptionOptions,
           disallowedChildren,
           allowedChildren,
+          ...rest,
         })
 
         // remove all required items
@@ -1405,6 +1420,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 typeStr: property.name,
                 parentName: title || descriptionOptions?.parentName,
               },
+              ...rest,
             })
 
             if (isDeleteResponse && property.name === "object") {
