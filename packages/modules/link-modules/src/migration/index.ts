@@ -239,64 +239,64 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     const tableName = entity.meta.collection
     const orm = await this.createORM([entity])
 
-    const generator = orm.getSchemaGenerator()
-    const platform = orm.em.getPlatform()
-    const connection = orm.em.getConnection()
-    const schemaName = this.#dbConfig.schema || "public"
-
-    /**
-     * If the table name for the entity has not been
-     * managed by us earlier, then we should create
-     * it.
-     */
-    if (!trackedLinksTables.includes(tableName)) {
-      return {
-        action: "create",
-        linkDescriptor,
-        tableName,
-        sql: await generator.getCreateSchemaSQL(),
-      }
-    }
-
-    /**
-     * Pre-fetching information schema from the database and using that
-     * as the way to compute the update diff.
-     *
-     * @note
-     * The "loadInformationSchema" mutates the "dbSchema" argument provided
-     * to it as the first argument.
-     */
-    const dbSchema = new DatabaseSchema(platform, schemaName)
-    await platform
-      .getSchemaHelper?.()
-      ?.loadInformationSchema(dbSchema, connection, [
-        {
-          table_name: tableName,
-          schema_name: schemaName,
-        },
-      ])
-
-    const updateSQL = await generator.getUpdateSchemaSQL({
-      fromSchema: dbSchema,
-    })
-
-    /**
-     * Entity is upto-date and hence we do not have to perform
-     * any updates on it.
-     */
-    if (!updateSQL.length) {
-      return {
-        action: "noop",
-        linkDescriptor,
-        tableName,
-      }
-    }
-
-    const usesUnsafeCommands = this.#unsafeSQLCommands.some((fragment) => {
-      return updateSQL.match(new RegExp(`${fragment}`, "ig"))
-    })
-
     try {
+      const generator = orm.getSchemaGenerator()
+      const platform = orm.em.getPlatform()
+      const connection = orm.em.getConnection()
+      const schemaName = this.#dbConfig.schema || "public"
+
+      /**
+       * If the table name for the entity has not been
+       * managed by us earlier, then we should create
+       * it.
+       */
+      if (!trackedLinksTables.includes(tableName)) {
+        return {
+          action: "create",
+          linkDescriptor,
+          tableName,
+          sql: await generator.getCreateSchemaSQL(),
+        }
+      }
+
+      /**
+       * Pre-fetching information schema from the database and using that
+       * as the way to compute the update diff.
+       *
+       * @note
+       * The "loadInformationSchema" mutates the "dbSchema" argument provided
+       * to it as the first argument.
+       */
+      const dbSchema = new DatabaseSchema(platform, schemaName)
+      await platform
+        .getSchemaHelper?.()
+        ?.loadInformationSchema(dbSchema, connection, [
+          {
+            table_name: tableName,
+            schema_name: schemaName,
+          },
+        ])
+
+      const updateSQL = await generator.getUpdateSchemaSQL({
+        fromSchema: dbSchema,
+      })
+
+      /**
+       * Entity is upto-date and hence we do not have to perform
+       * any updates on it.
+       */
+      if (!updateSQL.length) {
+        return {
+          action: "noop",
+          linkDescriptor,
+          tableName,
+        }
+      }
+
+      const usesUnsafeCommands = this.#unsafeSQLCommands.some((fragment) => {
+        return updateSQL.match(new RegExp(`${fragment}`, "ig"))
+      })
+
       return {
         action: usesUnsafeCommands ? "notify" : "update",
         linkDescriptor,
@@ -317,48 +317,54 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
    */
   async createPlan() {
     const orm = await this.createORM()
-    await this.ensureMigrationsTable(orm)
-
-    const executionActions: LinkMigrationsPlannerAction[] = []
-
-    await this.ensureMigrationsTableUpToDate(orm)
-
-    const trackedTables = await this.getTrackedLinksTables(orm)
-    const trackedTablesNames = trackedTables.map(({ table_name }) => table_name)
-
-    /**
-     * Looping through the new set of entities and generating
-     * execution plan for them
-     */
-    for (let { entity, linkDescriptor } of this.#linksEntities) {
-      executionActions.push(
-        await this.getEntityMigrationPlan(
-          linkDescriptor,
-          entity,
-          trackedTablesNames
-        )
-      )
-    }
-
-    const linksTableNames = this.#linksEntities.map(
-      ({ entity }) => entity.meta.collection
-    )
-
-    /**
-     * Finding the tables to be removed
-     */
-    const tablesToRemove = arrayDifference(trackedTablesNames, linksTableNames)
-    tablesToRemove.forEach((tableToRemove) => {
-      executionActions.push({
-        action: "delete",
-        tableName: tableToRemove,
-        linkDescriptor: trackedTables.find(
-          ({ table_name }) => tableToRemove === table_name
-        )!.link_descriptor,
-      })
-    })
 
     try {
+      await this.ensureMigrationsTable(orm)
+
+      const executionActions: LinkMigrationsPlannerAction[] = []
+
+      await this.ensureMigrationsTableUpToDate(orm)
+
+      const trackedTables = await this.getTrackedLinksTables(orm)
+      const trackedTablesNames = trackedTables.map(
+        ({ table_name }) => table_name
+      )
+
+      /**
+       * Looping through the new set of entities and generating
+       * execution plan for them
+       */
+      for (let { entity, linkDescriptor } of this.#linksEntities) {
+        executionActions.push(
+          await this.getEntityMigrationPlan(
+            linkDescriptor,
+            entity,
+            trackedTablesNames
+          )
+        )
+      }
+
+      const linksTableNames = this.#linksEntities.map(
+        ({ entity }) => entity.meta.collection
+      )
+
+      /**
+       * Finding the tables to be removed
+       */
+      const tablesToRemove = arrayDifference(
+        trackedTablesNames,
+        linksTableNames
+      )
+      tablesToRemove.forEach((tableToRemove) => {
+        executionActions.push({
+          action: "delete",
+          tableName: tableToRemove,
+          linkDescriptor: trackedTables.find(
+            ({ table_name }) => tableToRemove === table_name
+          )!.link_descriptor,
+        })
+      })
+
       return executionActions
     } finally {
       await orm.close(true)
