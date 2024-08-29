@@ -1213,6 +1213,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         })
         return {
           type: "string",
+          description,
           enum: enumMembers,
         }
       case itemType.isLiteral() || typeAsString === "RegExp":
@@ -1291,6 +1292,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         if (allLiteral) {
           return {
             type: "string",
+            description,
             enum: (itemType as ts.UnionType).types.map(
               (unionType) => (unionType as ts.LiteralType).value
             ),
