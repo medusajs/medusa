@@ -38,6 +38,17 @@ export const POST = async (
 ) => {
   const { additional_data, ...update } = req.validatedBody
 
+  /**
+   * Check 1
+   *
+   * Check if the product exists with the id or not before calling the workflow.
+   * Please look at the Check 2 as well. If we have Check 2, then do we need
+   * Check 1?
+   */
+  if (!(await refetchEntity("product", req.params.id, req.scope, ["id"]))) {
+    throw new MedusaError(MedusaError.Types.NOT_FOUND, "Product not found")
+  }
+
   const { result } = await updateProductsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
@@ -45,6 +56,20 @@ export const POST = async (
       additional_data,
     },
   })
+
+  /**
+   * Check 2
+   *
+   * In order to prevent ourselves from reading the `results[0].id`, we
+   * should first check if the workflow returned an array with items
+   * or not.
+   *
+   * If not, should we consider that the product was not found? Or
+   * how do we handle this case.
+   */
+  if (!result.length) {
+    throw new MedusaError(MedusaError.Types.NOT_FOUND, "Product not found")
+  }
 
   const product = await refetchEntity(
     "product",
