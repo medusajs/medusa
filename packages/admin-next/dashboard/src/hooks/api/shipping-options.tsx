@@ -42,7 +42,7 @@ export const useShippingOptions = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminShippingOptionListResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminShippingOptionListResponse,
       QueryKey
     >,

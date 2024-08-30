@@ -10,6 +10,7 @@ import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { ordersQueryKeys } from "./orders"
+import { FetchError } from "@medusajs/js-sdk"
 
 const PAYMENT_QUERY_KEY = "payment" as const
 export const paymentQueryKeys = queryKeysFactory(PAYMENT_QUERY_KEY)
@@ -19,7 +20,7 @@ export const usePaymentProviders = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminGetPaymentProvidersParams,
-      Error,
+      FetchError,
       HttpTypes.AdminPaymentProviderListResponse,
       QueryKey
     >,
@@ -41,7 +42,7 @@ export const usePayment = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminPaymentResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminPaymentResponse,
       QueryKey
     >,
@@ -62,7 +63,7 @@ export const useCapturePayment = (
   paymentId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCapturePayment
   >
 ) => {
@@ -88,7 +89,7 @@ export const useRefundPayment = (
   paymentId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminRefundPayment
   >
 ) => {

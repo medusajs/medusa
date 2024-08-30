@@ -1,7 +1,6 @@
 import { UseMutationOptions, useMutation } from "@tanstack/react-query"
-
-import { sdk } from "../../lib/client"
 import { FetchError } from "@medusajs/js-sdk"
+import { sdk } from "../../lib/client"
 import { HttpTypes } from "@medusajs/types"
 
 export const useSignInWithEmailPassword = (
