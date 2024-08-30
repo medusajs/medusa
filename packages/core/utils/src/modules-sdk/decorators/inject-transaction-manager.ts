@@ -29,7 +29,7 @@ export function InjectTransactionManager(
       : () => false
     managerProperty = isString(shouldForceTransactionOrManagerProperty)
       ? shouldForceTransactionOrManagerProperty
-      : managerProperty
+      : managerProperty ?? "baseRepository_"
 
     const argIndex = target.MedusaContextIndex_[propertyKey]
     descriptor.value = async function (...args: any[]) {
