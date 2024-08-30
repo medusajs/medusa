@@ -10,7 +10,7 @@ In this chapter, you’ll learn about path, query, and request body parameters.
 
 To create an API route that accepts a path parameter, create a directory within the route file's path whose name is of the format `[param]`.
 
-For example, to create an API Route at the path `/message/{id}`, where `{id}` is a path parameter, create the file `src/api/store/hello-world/[id]/route.ts` with the following content:
+For example, to create an API Route at the path `/hello-world/{id}`, where `{id}` is a path parameter, create the file `src/api/store/hello-world/[id]/route.ts` with the following content:
 
 export const singlePathHighlights = [
   ["11", "req.params.id", "Access the path parameter `id`"]
