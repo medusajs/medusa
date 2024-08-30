@@ -11,7 +11,7 @@ import { AdminCreateApiKeyType } from "./validators"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetApiKeysParams>,
   res: MedusaResponse<HttpTypes.AdminApiKeyListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

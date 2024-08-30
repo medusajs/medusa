@@ -17,7 +17,7 @@ A migration is a class created in a TypeScript or JavaScript file under a module
 
 ## How to Write a Migration?
 
-The Medusa CLI tool provides a [migrations generate](!resources!/medusa-cli#migrations-generate) command to generate a migration for the specified modules' data models.
+The Medusa CLI tool provides a [db:generate](!resources!/medusa-cli/commands/db#dbgenerate) command to generate a migration for the specified modules' data models.
 
 Alternatively, you can manually create a migration file under the `migrations` directory of your module.
 
@@ -51,8 +51,14 @@ In the example above, the `up` method creates the table `my_custom`, and the `do
 
 To run your migration, run the following command:
 
+<Note>
+
+This command also syncs module links. If you don't want that, use the `--skip-links` option.
+
+</Note>
+
 ```bash
-npx medusa migrations run
+npx medusa db:migrate
 ```
 
 This reflects the changes in the database as implemented in the migration's `up` method.

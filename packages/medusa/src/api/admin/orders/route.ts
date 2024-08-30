@@ -6,7 +6,7 @@ import {
 } from "../../../types/routing"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminOrderFilters>,
   res: MedusaResponse<HttpTypes.AdminOrderListResponse>
 ) => {
   const variables = {

@@ -6,7 +6,7 @@ import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: MedusaRequest<HttpTypes.AdminCurrencyListParams>,
   res: MedusaResponse<HttpTypes.AdminCurrencyListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

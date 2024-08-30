@@ -1,7 +1,7 @@
 import { FindParams } from "../../common"
-import { OperatorMap } from "../../../dal"
+import { BaseFilterable, OperatorMap } from "../../../dal"
 
-export interface AdminInventoryItemParams extends FindParams {
+export interface AdminInventoryItemParams extends FindParams, BaseFilterable<AdminInventoryItemParams> {
   id?: string | string[]
   q?: string
   sku?: string | string[]
