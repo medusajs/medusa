@@ -305,13 +305,22 @@ export const ClaimCreateForm = ({
   }, [previewItems])
 
   useEffect(() => {
-    const method = preview.shipping_methods.find(
+    let method = preview.shipping_methods.find(
       (s) =>
         !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
     )
 
     if (method) {
       form.setValue("inbound_option_id", method.shipping_option_id)
+    }
+
+    method = preview.shipping_methods.find(
+      (s) =>
+        !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
+    )
+
+    if (method) {
+      form.setValue("outbound_option_id", method.shipping_option_id)
     }
   }, [preview.shipping_methods])
 
