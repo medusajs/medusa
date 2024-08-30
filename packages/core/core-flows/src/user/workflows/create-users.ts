@@ -1,11 +1,13 @@
-import { CreateUserDTO, UserDTO } from "@medusajs/types"
+import { UserDTO, UserWorkflow } from "@medusajs/types"
+import { UserWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { createUsersStep } from "../steps"
-import { UserWorkflow } from "@medusajs/types"
 
 export const createUsersWorkflowId = "create-users-workflow"
 /**
@@ -16,6 +18,19 @@ export const createUsersWorkflow = createWorkflow(
   (
     input: WorkflowData<UserWorkflow.CreateUsersWorkflowInputDTO>
   ): WorkflowResponse<UserDTO[]> => {
-    return new WorkflowResponse(createUsersStep(input.users))
+    const createdUsers = createUsersStep(input.users)
+
+    const userIdEvents = transform({ createdUsers }, ({ createdUsers }) => {
+      return createdUsers.map((v) => {
+        return { id: v.id }
+      })
+    })
+
+    emitEventStep({
+      eventName: UserWorkflowEvents.CREATED,
+      data: userIdEvents,
+    })
+
+    return new WorkflowResponse(createdUsers)
   }
 )

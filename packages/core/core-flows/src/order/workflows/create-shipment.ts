@@ -120,13 +120,12 @@ export const createOrderShipmentWorkflow = createWorkflow(
       createShipmentWorkflow.runAsStep({
         input: fulfillmentData,
       }),
-      registerOrderShipmentStep(shipmentData)
+      registerOrderShipmentStep(shipmentData),
+      emitEventStep({
+        eventName: FulfillmentEvents.SHIPMENT_CREATED,
+        data: { id: shipment.id },
+      })
     )
-
-    emitEventStep({
-      eventName: FulfillmentEvents.SHIPMENT_CREATED,
-      data: { id: shipment.id },
-    })
 
     const shipmentCreated = createHook("shipmentCreated", {
       shipment,

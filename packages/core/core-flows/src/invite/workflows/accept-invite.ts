@@ -1,14 +1,17 @@
 import { InviteWorkflow, UserDTO } from "@medusajs/types"
+import { InviteWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createUsersStep } from "../../user"
+import { setAuthAppMetadataStep } from "../../auth"
+import { emitEventStep } from "../../common/steps/emit-event"
+import { createUsersWorkflow } from "../../user"
 import { deleteInvitesStep } from "../steps"
 import { validateTokenStep } from "../steps/validate-token"
-import { setAuthAppMetadataStep } from "../../auth"
 
 export const acceptInviteWorkflowId = "accept-invite-workflow"
 /**
@@ -33,7 +36,11 @@ export const acceptInviteWorkflow = createWorkflow(
       }
     )
 
-    const users = createUsersStep(createUserInput)
+    const users = createUsersWorkflow.runAsStep({
+      input: {
+        users: createUserInput,
+      },
+    })
 
     const authUserInput = transform({ input, users }, ({ input, users }) => {
       const createdUser = users[0]
@@ -45,8 +52,14 @@ export const acceptInviteWorkflow = createWorkflow(
       }
     })
 
-    setAuthAppMetadataStep(authUserInput)
-    deleteInvitesStep([invite.id])
+    parallelize(
+      setAuthAppMetadataStep(authUserInput),
+      deleteInvitesStep([invite.id]),
+      emitEventStep({
+        eventName: InviteWorkflowEvents.ACCEPTED,
+        data: { id: invite.id },
+      })
+    )
 
     return new WorkflowResponse(users)
   }

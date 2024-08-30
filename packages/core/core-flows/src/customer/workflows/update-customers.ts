@@ -3,12 +3,15 @@ import {
   CustomerUpdatableFields,
   FilterableCustomerProps,
 } from "@medusajs/types"
+import { CustomerWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { updateCustomersStep } from "../steps"
 
 export type UpdateCustomersWorkflowInput = {
@@ -27,6 +30,20 @@ export const updateCustomersWorkflow = createWorkflow(
     const customersUpdated = createHook("customersUpdated", {
       customers: updatedCustomers,
       additional_data: input.additional_data,
+    })
+
+    const customerIdEvents = transform(
+      { updatedCustomers },
+      ({ updatedCustomers }) => {
+        return updatedCustomers.map((customer) => {
+          return { id: customer.id }
+        })
+      }
+    )
+
+    emitEventStep({
+      eventName: CustomerWorkflowEvents.UPDATED,
+      data: customerIdEvents,
     })
 
     return new WorkflowResponse(updatedCustomers, {
