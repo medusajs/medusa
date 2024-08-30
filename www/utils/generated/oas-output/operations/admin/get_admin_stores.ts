@@ -49,12 +49,12 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: q
  *     in: query
- *     description: The store's q.
+ *     description: Search term to filter the store's searchable properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The store's q.
+ *       description: Search term to filter the store's searchable properties.
  *   - name: id
  *     in: query
  *     required: false
@@ -62,13 +62,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The store's ID.
+ *           description: Filter by a store ID.
  *         - type: array
- *           description: The store's ID.
+ *           description: Filter by store IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: A store ID.
  *   - name: name
  *     in: query
  *     required: false
@@ -76,19 +76,19 @@
  *       oneOf:
  *         - type: string
  *           title: name
- *           description: The store's name.
+ *           description: Filter by a store name.
  *         - type: array
- *           description: The store's name.
+ *           description: Filter by store names.
  *           items:
  *             type: string
  *             title: name
- *             description: The name's details.
+ *             description: A store name.
  *   - name: $and
  *     in: query
  *     required: false
  *     schema:
  *       type: array
- *       description: The store's $and.
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
  *       items:
  *         type: object
  *       title: $and
@@ -97,7 +97,7 @@
  *     required: false
  *     schema:
  *       type: array
- *       description: The store's $or.
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
  *       items:
  *         type: object
  *       title: $or

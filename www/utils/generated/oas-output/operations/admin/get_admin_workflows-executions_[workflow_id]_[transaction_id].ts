@@ -1,8 +1,9 @@
 /**
  * @oas [get] /admin/workflows-executions/{workflow_id}/{transaction_id}
  * operationId: GetWorkflowsExecutionsWorkflow_idTransaction_id
- * summary: "List "
- * description: Retrieve a list of  in a workflows execution. The  can be filtered by fields like FILTER FIELDS. The  can also be paginated.
+ * summary: Get Workflow Execution's Details
+ * x-sidebar-summary: Get Exection
+ * description: Get the details of the workflow's execution.
  * x-authenticated: true
  * parameters:
  *   - name: workflow_id
