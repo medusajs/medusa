@@ -5,4 +5,4 @@ required:
   - reservation
 properties:
   reservation:
-    $ref: ./ReservationResponse.yaml
+    $ref: ./AdminReservation.yaml

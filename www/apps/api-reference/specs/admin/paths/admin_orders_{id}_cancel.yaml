@@ -99,3 +99,4 @@ post:
     content:
       application/json:
         schema: {}
+  x-workflow: cancelOrderWorkflow

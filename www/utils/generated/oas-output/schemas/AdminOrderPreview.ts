@@ -202,14 +202,14 @@
  *               $ref: "#/components/schemas/BaseOrderItemDetail"
  *             created_at:
  *               type: string
+ *               format: date-time
  *               title: created_at
  *               description: The item's created at.
- *               format: date-time
  *             updated_at:
  *               type: string
+ *               format: date-time
  *               title: updated_at
  *               description: The item's updated at.
- *               format: date-time
  *             metadata:
  *               type: object
  *               description: The item's metadata.
@@ -507,6 +507,7 @@
  *       $ref: "#/components/schemas/AdminPaymentCollection"
  *   payment_status:
  *     type: string
+ *     description: The order preview's payment status.
  *     enum:
  *       - canceled
  *       - not_paid
@@ -525,6 +526,7 @@
  *       $ref: "#/components/schemas/BaseOrderFulfillment"
  *   fulfillment_status:
  *     type: string
+ *     description: The order preview's fulfillment status.
  *     enum:
  *       - canceled
  *       - not_fulfilled

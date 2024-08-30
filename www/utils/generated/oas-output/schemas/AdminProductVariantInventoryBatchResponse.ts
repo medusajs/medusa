@@ -78,10 +78,10 @@
  *     oneOf:
  *       - $ref: "#/components/schemas/AdminProductVariantInventoryLink"
  *       - type: array
- *         description: The product's deleted.
+ *         description: SUMMARY
  *         items:
  *           type: object
- *           description: The deleted's details.
+ *           description: SUMMARY
  *           x-schemaName: AdminProductVariantInventoryLink
  *           required:
  *             - productService

@@ -15,12 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The price preference's object.
+ *     description: The name of the deleted object.
  *     default: price_preference
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: The price preference's deleted.
+ *     description: Whether the Price Preference was deleted.
  *   parent:
  *     type: object
  *     description: The price preference's parent.

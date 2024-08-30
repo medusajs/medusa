@@ -47,6 +47,7 @@
  *     description: The update's handle.
  *   status:
  *     type: string
+ *     description: The update's status.
  *     enum:
  *       - draft
  *       - proposed

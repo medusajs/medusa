@@ -57,6 +57,7 @@
  *     description: The product's is giftcard.
  *   status:
  *     type: string
+ *     description: The product's status.
  *     enum:
  *       - draft
  *       - proposed

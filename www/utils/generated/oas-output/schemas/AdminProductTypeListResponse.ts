@@ -25,7 +25,7 @@
  *     type: array
  *     description: The product type's product types.
  *     items:
- *       $ref: "#/components/schemas/AdminProduct"
+ *       $ref: "#/components/schemas/AdminProductType"
  * 
 */
 

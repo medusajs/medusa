@@ -44,6 +44,7 @@
  *     description: The product's title.
  *   status:
  *     type: string
+ *     description: The product's status.
  *     enum:
  *       - draft
  *       - proposed

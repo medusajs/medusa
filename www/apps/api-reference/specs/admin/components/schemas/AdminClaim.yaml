@@ -113,6 +113,7 @@ properties:
       $ref: ./BasePaymentCollection.yaml
   payment_status:
     type: string
+    description: The claim's payment status.
     enum:
       - canceled
       - not_paid
@@ -131,6 +132,7 @@ properties:
       $ref: ./BaseOrderFulfillment.yaml
   fulfillment_status:
     type: string
+    description: The claim's fulfillment status.
     enum:
       - canceled
       - not_fulfilled
