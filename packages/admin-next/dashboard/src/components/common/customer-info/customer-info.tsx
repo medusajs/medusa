@@ -8,7 +8,7 @@ const ID = ({ data }: { data: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   const id = data.customer_id
-  const name = getCartOrOrderCustomer(data)
+  const name = getOrderCustomer(data)
   const email = data.email
   const fallback = (name ?? email ?? "").charAt(0).toUpperCase()
 
@@ -185,7 +185,7 @@ export const CustomerInfo = Object.assign(
   }
 )
 
-const getCartOrOrderCustomer = (obj: HttpTypes.AdminOrder) => {
+const getOrderCustomer = (obj: HttpTypes.AdminOrder) => {
   const { first_name: sFirstName, last_name: sLastName } =
     obj.shipping_address || {}
   const { first_name: bFirstName, last_name: bLastName } =

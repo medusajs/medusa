@@ -3,8 +3,8 @@ import { HttpTypes } from "@medusajs/types"
 import { countries, getCountryByIso2 } from "./data/countries"
 
 export const isSameAddress = (
-  a: HttpTypes.AdminAddress | null,
-  b: HttpTypes.AdminOrderAddress | null
+  a?: HttpTypes.AdminOrderAddress | null,
+  b?: HttpTypes.AdminOrderAddress | null
 ) => {
   if (!a || !b) {
     return false
@@ -40,6 +40,7 @@ export const getFormattedAddress = ({
     city,
     postal_code,
     province,
+    country,
     country_code,
   } = address
 
@@ -71,7 +72,9 @@ export const getFormattedAddress = ({
     formattedAddress.push(cityProvincePostal)
   }
 
-  if (country_code) {
+  if (country) {
+    formattedAddress.push(country.display_name!)
+  } else if (country_code) {
     const country = getCountryByIso2(country_code)
 
     if (country) {

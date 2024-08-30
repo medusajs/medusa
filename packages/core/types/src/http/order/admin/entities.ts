@@ -18,8 +18,8 @@ export interface AdminOrder extends BaseOrder {
   fulfillments?: BaseOrderFulfillment[]
   sales_channel?: AdminSalesChannel
   customer?: AdminCustomer
-  shipping_address?: AdminOrderAddress
-  billing_address?: AdminOrderAddress
+  shipping_address?: AdminOrderAddress | null
+  billing_address?: AdminOrderAddress | null
 }
 
 export interface AdminOrderLineItem extends BaseOrderLineItem {

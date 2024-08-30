@@ -6,12 +6,13 @@ import { Control } from "react-hook-form"
 import { AddressSchema } from "../../../lib/schemas"
 import { Form } from "../../common/form"
 import { CountrySelect } from "../../inputs/country-select"
+import { HttpTypes } from "@medusajs/types"
 
 type AddressFieldValues = z.infer<typeof AddressSchema>
 
 type AddressFormProps = {
   control: Control<AddressFieldValues>
-  countries?: HttpTypes.AdminCo[]
+  countries?: HttpTypes.AdminRegionCountry[]
   layout: "grid" | "stack"
 }
 
