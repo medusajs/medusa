@@ -12,17 +12,20 @@
  *     description: The application method's ID.
  *   type:
  *     type: string
+ *     description: The application method's type.
  *     enum:
  *       - fixed
  *       - percentage
  *   target_type:
  *     type: string
+ *     description: The application method's target type.
  *     enum:
  *       - items
  *       - shipping_methods
  *       - order
  *   allocation:
  *     type: string
+ *     description: The application method's allocation.
  *     enum:
  *       - each
  *       - across

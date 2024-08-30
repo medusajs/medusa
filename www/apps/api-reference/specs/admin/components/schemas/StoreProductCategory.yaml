@@ -60,6 +60,9 @@ properties:
     description: The category's category children.
     items:
       $ref: ./BaseProductCategory.yaml
+  metadata:
+    type: object
+    description: The category's metadata.
   created_at:
     type: string
     format: date-time

@@ -9,7 +9,7 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
-import { client, sdk } from "../../../../../lib/client"
+import { sdk } from "../../../../../lib/client"
 import { CategoryCombobox } from "../../../common/components/category-combobox"
 
 type ProductOrganizationFormProps = {
@@ -41,7 +41,7 @@ export const ProductOrganizationForm = ({
 
   const types = useComboboxData({
     queryKey: ["product_types"],
-    queryFn: sdk.admin.productType.list,
+    queryFn: (params) => sdk.admin.productType.list(params),
     getOptions: (data) =>
       data.product_types.map((type) => ({
         label: type.value,
@@ -51,7 +51,7 @@ export const ProductOrganizationForm = ({
 
   const tags = useComboboxData({
     queryKey: ["product_tags"],
-    queryFn: sdk.admin.productTag.list,
+    queryFn: (params) => sdk.admin.productTag.list(params),
     getOptions: (data) =>
       data.product_tags.map((tag) => ({
         label: tag.value,

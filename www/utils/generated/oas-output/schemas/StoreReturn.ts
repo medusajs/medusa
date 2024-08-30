@@ -11,6 +11,7 @@
  *   - items
  *   - received_at
  *   - created_at
+ *   - canceled_at
  * properties:
  *   id:
  *     type: string
@@ -66,6 +67,10 @@
  *     format: date-time
  *     title: created_at
  *     description: The return's created at.
+ *   canceled_at:
+ *     type: string
+ *     title: canceled_at
+ *     description: The return's canceled at.
  * 
 */
 

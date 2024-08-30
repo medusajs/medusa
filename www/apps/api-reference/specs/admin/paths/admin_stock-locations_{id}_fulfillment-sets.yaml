@@ -114,3 +114,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createLocationFulfillmentSetWorkflow

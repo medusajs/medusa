@@ -15,12 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The collection's object.
+ *     description: The name of the deleted object.
  *     default: collection
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: The collection's deleted.
+ *     description: Whether the Collection was deleted.
  *   parent:
  *     type: object
  *     description: The collection's parent.

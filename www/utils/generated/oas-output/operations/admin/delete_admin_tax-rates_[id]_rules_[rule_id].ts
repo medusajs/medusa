@@ -2,8 +2,7 @@
  * @oas [delete] /admin/tax-rates/{id}/rules/{rule_id}
  * operationId: DeleteTaxRatesIdRulesRule_id
  * summary: Remove Rules from Tax Rate
- * description: Remove a list of rules from a tax rate. This doesn't delete the
- *   Rule, only the association between the Rule and the tax rate.
+ * description: Remove a list of rules from a tax rate. This doesn't delete the Rule, only the association between the Rule and the tax rate.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -28,18 +27,14 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -58,16 +53,12 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: The field to sort the data by. By default, the sort order is
- *       ascending. To change the order to descending, prefix the field name with
- *       `-`.
+ *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: The field to sort the data by. By default, the sort order is
- *         ascending. To change the order to descending, prefix the field name with
- *         `-`.
+ *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -120,6 +111,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: deleteTaxRateRulesWorkflow
  * 
 */
 

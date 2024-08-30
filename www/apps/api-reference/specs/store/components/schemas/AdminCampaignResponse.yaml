@@ -5,4 +5,4 @@ required:
   - campaign
 properties:
   campaign:
-    $ref: ./CampaignResponse.yaml
+    $ref: ./AdminCampaign.yaml

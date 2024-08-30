@@ -24,6 +24,7 @@
  *           description: The item's quantity.
  *         reason:
  *           type: string
+ *           description: The item's reason.
  *           enum:
  *             - missing_item
  *             - wrong_item

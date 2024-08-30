@@ -121,6 +121,7 @@
  *     description: The order change's version.
  *   change_type:
  *     type: string
+ *     description: The order change's change type.
  *     enum:
  *       - return
  *       - exchange

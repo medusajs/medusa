@@ -2,7 +2,7 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 /**
  * The remote query's details.
@@ -26,7 +26,7 @@ export interface RemoteStepInput {
   throw_if_relation_not_found?: boolean | string[]
   /**
    * Whether to retrieve the records as an array. If disabled, only one record is retrieved as an object.
-   * 
+   *
    * @defaultValue true
    */
   list?: boolean
@@ -49,21 +49,21 @@ export interface ServiceStepInput extends RemoteStepInput {
 export const useRemoteQueryStepId = "use-remote-query"
 /**
  * This step fetches data across modules using the remote query.
- * 
+ *
  * Learn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).
- * 
+ *
  * @example
- * 
+ *
  * To retrieve a list of records of a data model:
- * 
+ *
  * ```ts
- * import { 
+ * import {
  *   createWorkflow
  * } from "@medusajs/workflows-sdk"
  * import {
  *   useRemoteQueryStep
  * } from "@medusajs/core-flows"
- * 
+ *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",
  *   () => {
@@ -77,17 +77,17 @@ export const useRemoteQueryStepId = "use-remote-query"
  *   }
  * )
  * ```
- * 
+ *
  * To retrieve a single item instead of a an array:
- * 
+ *
  * ```ts
- * import { 
+ * import {
  *   createWorkflow
  * } from "@medusajs/workflows-sdk"
  * import {
  *   useRemoteQueryStep
  * } from "@medusajs/core-flows"
- * 
+ *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",
  *   () => {
@@ -107,17 +107,17 @@ export const useRemoteQueryStepId = "use-remote-query"
  *   }
  * )
  * ```
- * 
+ *
  * To throw an error if a record isn't found matching the specified ID:
- * 
+ *
  * ```ts
- * import { 
+ * import {
  *   createWorkflow
  * } from "@medusajs/workflows-sdk"
  * import {
  *   useRemoteQueryStep
  * } from "@medusajs/core-flows"
- * 
+ *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",
  *   () => {

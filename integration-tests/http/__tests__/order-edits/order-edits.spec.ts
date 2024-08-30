@@ -16,6 +16,7 @@ jest.setTimeout(30000)
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     let order
+    let taxLine
     let shippingOption
     let shippingProfile
     let fulfillmentSet
@@ -50,6 +51,30 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.customer
+
+      const taxRegion = (
+        await api.post(
+          "/admin/tax-regions",
+          {
+            country_code: "US",
+          },
+          adminHeaders
+        )
+      ).data.tax_region
+
+      taxLine = (
+        await api.post(
+          "/admin/tax-rates",
+          {
+            rate: 10,
+            code: "standard",
+            name: "Taxation is theft",
+            is_default: true,
+            tax_region_id: taxRegion.id,
+          },
+          adminHeaders
+        )
+      ).data.tax_rate
 
       const salesChannel = (
         await api.post(
@@ -384,6 +409,12 @@ medusaIntegrationTestRunner({
         expect(result.summary.original_order_total).toEqual(60)
         expect(result.items.length).toEqual(2)
 
+        const newItem = result.items.find(
+          (i) => i.variant_id === productExtra.variants[0].id
+        )
+        expect(newItem.tax_lines[0].tax_rate_id).toEqual(taxLine.id)
+        expect(newItem.tax_lines[0].rate).toEqual(10)
+
         result = (
           await api.post(
             `/admin/order-edits/${orderId}/confirm`,
@@ -395,7 +426,7 @@ medusaIntegrationTestRunner({
         result = (await api.get(`/admin/orders/${orderId}`, adminHeaders)).data
           .order
 
-        expect(result.total).toEqual(34)
+        expect(result.total).toEqual(36.4)
         expect(result.items.length).toEqual(1)
 
         result = (

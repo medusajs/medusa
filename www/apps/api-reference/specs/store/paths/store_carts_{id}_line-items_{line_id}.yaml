@@ -102,6 +102,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateLineItemInCartWorkflow
 delete:
   operationId: DeleteCartsIdLineItemsLine_id
   summary: Remove Line Items from Cart
@@ -224,3 +225,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteLineItemsWorkflow

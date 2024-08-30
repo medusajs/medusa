@@ -15,12 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The stock location's object.
+ *     description: The name of the deleted object.
  *     default: stock_location
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: The stock location's deleted.
+ *     description: Whether the Stock Location was deleted.
  *   parent:
  *     type: object
  *     description: The stock location's parent.
