@@ -1,10 +1,12 @@
 /**
  * @oas [delete] /admin/exchanges/{id}/inbound/shipping-method/{action_id}
  * operationId: DeleteExchangesIdInboundShippingMethodAction_id
- * summary: Remove Shipping Methods from Exchange
- * description: Remove a list of shipping methods from a exchange. This doesn't
- *   delete the Shipping Method, only the association between the Shipping Method
- *   and the exchange.
+ * summary: Remove Inbound Shipping Method from Exchange
+ * x-sidebar-summary: Remove Inbound Shipping Method
+ * description: |
+ *   Remove the shipping method for returning items in the exchange using the `ID` of the method's `SHIPPING_ADD` action.
+ * 
+ *   Every shipping method has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -15,60 +17,10 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The exchange's action id.
+ *     description: The ID of the shipping method's `SHIPPING_ADD` action.
  *     required: true
  *     schema:
  *       type: string
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: The field to sort the data by. By default, the sort order is
- *       ascending. To change the order to descending, prefix the field name with
- *       `-`.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: The field to sort the data by. By default, the sort order is
- *         ascending. To change the order to descending, prefix the field name with
- *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -76,11 +28,7 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl -X DELETE
- *       '{backend_url}/admin/exchanges/{id}/inbound/shipping-method/{action_id}' \
- * 
- *       -H 'x-medusa-access-token: {api_token}'
+ *     source: "curl -X DELETE '{backend_url}/admin/exchanges/{id}/inbound/shipping-method/{action_id}' \\ -H 'x-medusa-access-token: {api_token}'"
  * tags:
  *   - Exchanges
  * responses:

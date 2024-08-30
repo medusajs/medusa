@@ -7,7 +7,7 @@
  *   - reservation
  * properties:
  *   reservation:
- *     $ref: "#/components/schemas/ReservationResponse"
+ *     $ref: "#/components/schemas/AdminReservation"
  * 
 */
 

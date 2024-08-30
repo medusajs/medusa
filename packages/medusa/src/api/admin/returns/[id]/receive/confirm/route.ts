@@ -1,4 +1,5 @@
 import { confirmReturnReceiveWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -8,7 +9,6 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { AdminPostReturnsConfirmRequestReqSchemaType } from "../../../validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsConfirmRequestReqSchemaType>,
@@ -19,7 +19,10 @@ export const POST = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const { result } = await confirmReturnReceiveWorkflow(req.scope).run({
-    input: { return_id: id },
+    input: {
+      return_id: id,
+      confirmed_by: req.auth_context.actor_id,
+    },
   })
 
   const queryObject = remoteQueryObjectFromString({

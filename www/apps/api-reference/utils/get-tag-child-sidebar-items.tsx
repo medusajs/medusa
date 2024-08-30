@@ -23,7 +23,10 @@ export default function getTagChildSidebarItems(
           ...(definedOperation.tags || []),
           definedOperation.operationId,
         ]),
-        title: definedOperation.summary || definedOperation.operationId,
+        title:
+          definedOperation["x-sidebar-summary"] ||
+          definedOperation.summary ||
+          definedOperation.operationId,
         additionalElms: (
           <MethodLabel method={definedMethod} className="h-fit" />
         ),

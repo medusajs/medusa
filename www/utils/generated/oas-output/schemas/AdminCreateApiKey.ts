@@ -13,6 +13,7 @@
  *     description: The api key's title.
  *   type:
  *     type: string
+ *     description: The api key's type.
  *     enum:
  *       - publishable
  *       - secret

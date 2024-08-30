@@ -89,6 +89,7 @@ export const cancelReturnWorkflow = createWorkflow(
     cancelOrderReturnStep({
       return_id: orderReturn.id,
       order_id: orderReturn.order_id,
+      canceled_by: input.canceled_by,
     })
   }
 )

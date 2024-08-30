@@ -21,6 +21,7 @@
  *     description: The updated's attribute.
  *   operator:
  *     type: string
+ *     description: The updated's operator.
  *     enum:
  *       - gt
  *       - lt

@@ -214,14 +214,14 @@
  *               $ref: "#/components/schemas/OrderItem"
  *             created_at:
  *               type: string
+ *               format: date-time
  *               title: created_at
  *               description: The item's created at.
- *               format: date-time
  *             updated_at:
  *               type: string
+ *               format: date-time
  *               title: updated_at
  *               description: The item's updated at.
- *               format: date-time
  *             metadata:
  *               type: object
  *               description: The item's metadata.
@@ -661,6 +661,7 @@
  *                 x-schemaName: OrderChangeAction
  *   status:
  *     type: string
+ *     description: The order preview's status.
  *     enum:
  *       - canceled
  *       - requires_action

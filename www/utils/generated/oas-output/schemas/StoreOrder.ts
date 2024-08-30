@@ -96,6 +96,7 @@
  *       $ref: "#/components/schemas/BasePaymentCollection"
  *   payment_status:
  *     type: string
+ *     description: The order's payment status.
  *     enum:
  *       - canceled
  *       - not_paid
@@ -114,6 +115,7 @@
  *       $ref: "#/components/schemas/BaseOrderFulfillment"
  *   fulfillment_status:
  *     type: string
+ *     description: The order's fulfillment status.
  *     enum:
  *       - canceled
  *       - not_fulfilled

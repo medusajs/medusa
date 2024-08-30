@@ -11,6 +11,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
+import { setupTaxStructure } from "../../../modules/__tests__/fixtures"
 
 jest.setTimeout(30000)
 
@@ -399,6 +400,8 @@ medusaIntegrationTestRunner({
       ).data.shipping_option
 
       item = order.items[0]
+
+      await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
     })
 
     describe("Claims lifecycle", () => {
@@ -698,7 +701,7 @@ medusaIntegrationTestRunner({
           expect(paymentCollections[0]).toEqual(
             expect.objectContaining({
               status: "not_paid",
-              amount: 110.5,
+              amount: 109.5,
               currency_code: "usd",
             })
           )
@@ -742,7 +745,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create a payment collection successfully & mark as paid", async () => {
-          const paymentDelta = 110.5
+          const paymentDelta = 109.5
           const orderForPayment = (
             await api.get(`/admin/orders/${order.id}`, adminHeaders)
           ).data.order
@@ -1100,9 +1103,9 @@ medusaIntegrationTestRunner({
 
           expect(orderCheck.summary).toEqual(
             expect.objectContaining({
-              pending_difference: -10,
-              current_order_total: 51,
-              original_order_total: 61,
+              pending_difference: -11,
+              current_order_total: 50,
+              original_order_total: 60,
               temporary_difference: 15,
             })
           )
