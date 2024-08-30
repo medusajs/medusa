@@ -252,21 +252,15 @@ This defines a list link to the `Order` data model since a subscription has mult
 To create a table for the `Subscription` data model in the database, start by generating the migrations for the Subscription Module with the following command:
 
 ```bash
-npx medusa migrations generate subscriptionModuleService
+npx medusa db:generate subscriptionModuleService
 ```
 
 This generates a migration in the `src/modules/subscriptions/migrations` directory.
 
-Then, to reflect the migration in the database, run the following command:
+Then, to reflect the migration and links in the database, run the following command:
 
 ```bash
-npx medusa migrations run
-```
-
-Next, to reflect your links in the database, run the `links sync` command:
-
-```bash
-npx medusa links sync
+npx medusa db:migrate
 ```
 
 ---
