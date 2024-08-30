@@ -76,7 +76,11 @@ class SchemaFactory {
     let schema = Object.assign({}, schemasFactory[key])
 
     if (additionalData) {
-      schema = Object.assign(schema, additionalData)
+      schema = Object.assign(schema, {
+        ...additionalData,
+        // keep the description
+        description: schema.description || additionalData.description
+      })
     }
 
     return schema
