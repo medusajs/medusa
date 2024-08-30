@@ -51,10 +51,10 @@ A migration defines changes to be made in the database, such as create or update
 To generate a migration for the data models in your module, run the following command:
 
 ```bash
-npx medusa migrations generate helloModuleService
+npx medusa db:generate helloModuleService
 ```
 
-The `migrations generate` command of the Medusa CLI accepts one or more module names (for example, `helloModuleService`) to generate the migration for.
+The `db:generate` command of the Medusa CLI accepts one or more module names (for example, `helloModuleService`) to generate the migration for.
 
 The above command creates a migration file at the directory `src/modules/hello/migrations` similar to the following:
 
@@ -81,7 +81,7 @@ In the migration class, the `up` method creates the table `my_custom` and define
 To reflect the changes in the generated migration file, run the `migration` command:
 
 ```bash
-npx medusa migrations run
+npx medusa db:migrate
 ```
 
 If ran successfully, the `my_custom` table will be created in the database.

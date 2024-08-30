@@ -111,7 +111,7 @@ So, add the following script in `package.json`:
 ```json
 "scripts": {
   // ...
-  "predeploy": "medusa migrations run && medusa links sync"
+  "predeploy": "medusa db:migrate"
 },
 ```
 
