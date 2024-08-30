@@ -207,7 +207,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             expect(err).toBeTruthy()
             expect(err.message).toContain(
-              `Cannot delete shipping profiles with associated shipping options. the following shipping profiles cannot be deleted ${createdShippingProfile.id}`
+              `Cannot delete Shipping Profiles ${createdShippingProfile.id} with associated Shipping Options. Delete Shipping Options first and try again.`
             )
           })
         })

@@ -2000,11 +2000,13 @@ export default class FulfillmentModuleService
       (profile) => profile.shipping_options.length > 0
     )
     if (undeletableShippingProfiles.length) {
+      const undeletableShippingProfileIds = undeletableShippingProfiles.map(
+        (profile) => profile.id
+      )
+
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Cannot delete shipping profiles with associated shipping options. the following shipping profiles cannot be deleted ${undeletableShippingProfiles
-          .map((profile) => profile.id)
-          .join(", ")}`
+        `Cannot delete Shipping Profiles ${undeletableShippingProfileIds} with associated Shipping Options. Delete Shipping Options first and try again.`
       )
     }
   }
