@@ -10,6 +10,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   ShippingOptionDTO,
+  SoftDeleteReturn,
   UpdateFulfillmentSetDTO,
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
@@ -1951,6 +1952,61 @@ export default class FulfillmentModuleService
     )
 
     return !!shippingOptions.length
+  }
+
+  @InjectTransactionManager()
+  // @ts-expect-error
+  async deleteShippingProfiles(
+    ids: string | string[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const shippingProfileIds = Array.isArray(ids) ? ids : [ids]
+    await this.validateShippingProfileDeletion(
+      shippingProfileIds,
+      sharedContext
+    )
+
+    return await super.deleteShippingProfiles(shippingProfileIds, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  // @ts-expect-error
+  async softDeleteShippingProfiles<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<string, string[]> | void> {
+    await this.validateShippingProfileDeletion(ids, sharedContext)
+
+    return await super.softDeleteShippingProfiles(ids, config, sharedContext)
+  }
+
+  protected async validateShippingProfileDeletion(
+    ids: string[],
+    sharedContext: Context
+  ) {
+    const shippingProfileIds = Array.isArray(ids) ? ids : [ids]
+    const shippingProfiles = await this.shippingProfileService_.list(
+      { id: shippingProfileIds },
+      {
+        relations: ["shipping_options.id"],
+      },
+      sharedContext
+    )
+
+    const undeletableShippingProfiles = shippingProfiles.filter(
+      (profile) => profile.shipping_options.length > 0
+    )
+    if (undeletableShippingProfiles.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cannot delete shipping profiles with associated shipping options. the following shipping profiles cannot be deleted ${undeletableShippingProfiles
+          .map((profile) => profile.id)
+          .join(", ")}`
+      )
+    }
   }
 
   protected static canCancelFulfillmentOrThrow(fulfillment: Fulfillment) {

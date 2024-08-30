@@ -21,6 +21,10 @@ export function InjectTransactionManager(
       )
     }
 
+    if (!shouldForceTransactionOrManagerProperty) {
+      shouldForceTransactionOrManagerProperty = "baseRepository_"
+    }
+
     const originalMethod = descriptor.value
     const shouldForceTransaction = !isString(
       shouldForceTransactionOrManagerProperty
