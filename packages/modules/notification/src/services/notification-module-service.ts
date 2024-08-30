@@ -191,16 +191,22 @@ export default class NotificationModuleService
             notificationToUpdate.push(entry.data)
 
             const errorMessage = !provider
-              ? `Could not find a notification provider for channel: ${entry.data.channel}`
+              ? `Could not find a notification provider for channel: ${entry.data.channel} for notification id ${entry.data.id}`
               : `Notification provider ${provider.id} is not enabled. To enable it, configure it as a provider in the notification module options.`
 
             throw new MedusaError(MedusaError.Types.NOT_FOUND, errorMessage)
           }
 
-          const res = await this.notificationProviderService_.send(
-            provider,
-            entry.data
-          )
+          const res = await this.notificationProviderService_
+            .send(provider, entry.data)
+            .catch((e) => {
+              entry.data.status = NotificationStatus.FAILURE
+              notificationToUpdate.push(entry.data)
+              throw new MedusaError(
+                MedusaError.Types.UNEXPECTED_STATE,
+                `Failed to send notification with id ${entry.data.id}:\n${e.message}`
+              )
+            })
 
           entry.data.external_id = res.id
           entry.data.status = NotificationStatus.SUCCESS

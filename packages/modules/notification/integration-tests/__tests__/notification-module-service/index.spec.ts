@@ -157,18 +157,26 @@ moduleIntegrationTestRunner<INotificationModuleService>({
           idempotency_key: "idempotency-key-3",
         }
 
-        const err = await service
-          .createNotifications([notification1, notification2, notification3])
-          .catch((e) => e)
+        const notification4 = {
+          to: "fail",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "idempotency-key-4",
+        }
 
-        expect(err).toBeTruthy()
-        expect(err.message).toEqual(
-          "Could not find a notification provider for channel: sms"
-        )
+        const err = await service
+          .createNotifications([
+            notification1,
+            notification2,
+            notification3,
+            notification4,
+          ])
+          .catch((e) => e)
 
         const notifications = await service.listNotifications()
 
-        expect(notifications).toHaveLength(3)
+        expect(notifications).toHaveLength(4)
 
         const notification1Result = notifications.find(
           (n) => n.idempotency_key === "idempotency-key"
@@ -184,6 +192,18 @@ moduleIntegrationTestRunner<INotificationModuleService>({
           (n) => n.idempotency_key === "idempotency-key-3"
         )!
         expect(notification3Result.status).toEqual(NotificationStatus.SUCCESS)
+
+        const notification4Result = notifications.find(
+          (n) => n.idempotency_key === "idempotency-key-4"
+        )!
+        expect(notification4Result.status).toEqual(NotificationStatus.FAILURE)
+
+        expect(err).toBeTruthy()
+        expect(err.message).toEqual(
+          `Could not find a notification provider for channel: sms for notification id ${notification2Result.id}
+Failed to send notification with id ${notification4Result.id}:
+Failed to send notification`
+        )
       })
     }),
 })
