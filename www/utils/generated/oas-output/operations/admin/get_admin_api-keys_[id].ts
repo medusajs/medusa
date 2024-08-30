@@ -1,13 +1,14 @@
 /**
  * @oas [get] /admin/api-keys/{id}
  * operationId: GetApiKeysId
- * summary: Get a Api Key
- * description: Retrieve a api key by its ID. You can expand the api key's relations or select the fields that should be returned.
+ * summary: Get API Key
+ * description: Retrieve an API key by its ID. You can expand the API key's
+ *   relations or select the fields that should be returned using the query parameters.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The api key's ID.
+ *     description: The API key's ID.
  *     required: true
  *     schema:
  *       type: string

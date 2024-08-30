@@ -71,7 +71,7 @@ export class CustomerGroup {
   }
 
   async delete(id: string, headers?: ClientHeaders) {
-    return await this.client.fetch<HttpTypes.DeleteResponse<"customer_group">>(
+    return await this.client.fetch<HttpTypes.AdminCustomerGroupDeleteResponse>(
       `/admin/customer-groups/${id}`,
       {
         method: "DELETE",

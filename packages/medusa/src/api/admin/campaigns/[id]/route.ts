@@ -10,7 +10,7 @@ import {
 import { refetchCampaign } from "../helpers"
 import { AdminUpdateCampaignType } from "../validators"
 import { MedusaError } from "@medusajs/utils"
-import { AdditionalData, DeleteResponse, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -59,7 +59,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"campaign">>
+  res: MedusaResponse<HttpTypes.AdminCampaignDeleteResponse>
 ) => {
   const id = req.params.id
   const deleteCampaigns = deleteCampaignsWorkflow(req.scope)

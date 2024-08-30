@@ -1,5 +1,5 @@
 import { BatchMethodResponse } from "../../../common";
-import { PaginatedResponse } from "../../common";
+import { DeleteResponse, PaginatedResponse } from "../../common";
 import { 
   AdminPromotion, 
   AdminPromotionRule, 
@@ -55,3 +55,5 @@ export type AdminRuleValueOptionsListResponse = {
 }
 
 export type AdminPromotionRuleBatchResponse = BatchMethodResponse<AdminPromotionRule>
+
+export type AdminPromotionDeleteResponse = DeleteResponse<"promotion">

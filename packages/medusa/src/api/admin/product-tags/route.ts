@@ -4,15 +4,11 @@ import {
 } from "../../../types/routing"
 
 import { createProductTagsWorkflow } from "@medusajs/core-flows"
-import {
-  AdminCreateProductTagType,
-  AdminGetProductTagsParamsType,
-} from "./validators"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetProductTagsParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminProductTagListParams>,
   res: MedusaResponse<HttpTypes.AdminProductTagListResponse>
 ) => {
   const { rows: product_tags, metadata } = await refetchEntities(
@@ -32,7 +28,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateProductTagType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateProductTag>,
   res: MedusaResponse<HttpTypes.AdminProductTagResponse>
 ) => {
   const input = [req.validatedBody]

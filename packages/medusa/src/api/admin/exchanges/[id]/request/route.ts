@@ -2,7 +2,7 @@ import {
   cancelBeginOrderExchangeWorkflow,
   confirmExchangeRequestWorkflow,
 } from "@medusajs/core-flows"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -66,7 +66,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"exchange">>
+  res: MedusaResponse<HttpTypes.AdminExchangeDeleteResponse>
 ) => {
   const { id } = req.params
 

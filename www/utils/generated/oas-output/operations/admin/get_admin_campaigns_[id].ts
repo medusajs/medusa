@@ -2,7 +2,8 @@
  * @oas [get] /admin/campaigns/{id}
  * operationId: GetCampaignsId
  * summary: Get a Campaign
- * description: Retrieve a campaign by its ID. You can expand the campaign's relations or select the fields that should be returned.
+ * description: Retrieve a campaign by its ID. You can expand the campaign's
+ *   relations or select the fields that should be returned using the query parameters.
  * x-authenticated: true
  * parameters:
  *   - name: id

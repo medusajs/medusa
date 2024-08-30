@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "../../common";
+import { DeleteResponse, PaginatedResponse } from "../../common";
 import { AdminRegion } from "./entities";
 
 export interface AdminRegionResponse {
@@ -8,3 +8,5 @@ export interface AdminRegionResponse {
 export type AdminRegionListResponse = PaginatedResponse<{
   regions: AdminRegion[]
 }>
+
+export type AdminRegionDeleteResponse = DeleteResponse<"region">

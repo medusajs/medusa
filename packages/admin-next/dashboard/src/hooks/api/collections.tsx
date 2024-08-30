@@ -129,7 +129,7 @@ export const useCreateCollection = (
 export const useDeleteCollection = (
   id: string,
   options?: UseMutationOptions<
-    HttpTypes.DeleteResponse<"collection">,
+    HttpTypes.AdminCollectionDeleteResponse,
     FetchError,
     void
   >

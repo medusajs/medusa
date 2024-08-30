@@ -1,5 +1,5 @@
 import { ApiKeyType } from "../../../api-key"
-import { PaginatedResponse } from "../../common"
+import { DeleteResponse, PaginatedResponse } from "../../common"
 
 interface AdminApiKey {
   id: string
@@ -21,3 +21,5 @@ export interface AdminApiKeyResponse {
 export type AdminApiKeyListResponse = PaginatedResponse<{
   api_keys: AdminApiKey[]
 }>
+
+export type AdminApiKeyDeleteResponse = DeleteResponse<"api_key">

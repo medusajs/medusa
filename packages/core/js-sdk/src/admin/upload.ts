@@ -1,4 +1,4 @@
-import { DeleteResponse, HttpTypes, SelectParams } from "@medusajs/types"
+import { HttpTypes, SelectParams } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -59,7 +59,7 @@ export class Upload {
   }
 
   async delete(id: string, headers?: ClientHeaders) {
-    return this.client.fetch<DeleteResponse<"file">>(`/admin/uploads/${id}`, {
+    return this.client.fetch<HttpTypes.AdminFileDeleteResponse>(`/admin/uploads/${id}`, {
       method: "DELETE",
       headers,
     })

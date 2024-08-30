@@ -4,7 +4,7 @@ import {
 } from "@medusajs/core-flows"
 import {
   AdminReturnReasonResponse,
-  DeleteResponse,
+  HttpTypes,
   UpdateOrderReturnReasonDTO,
 } from "@medusajs/types"
 import {
@@ -69,7 +69,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"return_reason">>
+  res: MedusaResponse<HttpTypes.AdminReturnReasonDeleteResponse>
 ) => {
   const { id } = req.params
 
