@@ -134,9 +134,8 @@ export default class NotificationModuleService
             !entry.idempotency_key ||
             !existsMap.has(entry.idempotency_key) ||
             (existsMap.has(entry.idempotency_key) &&
-              [NotificationStatus.PENDING, NotificationStatus.FAILURE].includes(
-                existsMap.get(entry.idempotency_key)!.status
-              ))
+              existsMap.get(entry.idempotency_key)!.status ===
+                NotificationStatus.FAILURE)
         )
 
         const channels = notificationsToProcess.map((not) => not.channel)
@@ -154,9 +153,6 @@ export default class NotificationModuleService
 
             return {
               provider,
-              alreadyExists: !!(
-                entry.idempotency_key && existsMap.has(entry.idempotency_key)
-              ),
               data: {
                 id: generateEntityId(undefined, "noti"),
                 ...entry,
@@ -166,12 +162,16 @@ export default class NotificationModuleService
           }
         )
 
-        const createdNotifications = await this.notificationService_.create(
-          normalizedNotificationsToProcess
-            .filter((e) => !e.alreadyExists)
-            .map((e) => e.data),
-          context
-        )
+        const toCreate = normalizedNotificationsToProcess
+          .filter(
+            (e) =>
+              !e.data.idempotency_key || !existsMap.has(e.data.idempotency_key)
+          )
+          .map((e) => e.data)
+
+        const createdNotifications = toCreate.length
+          ? await this.notificationService_.create(toCreate, context)
+          : []
 
         return {
           notificationsToProcess: normalizedNotificationsToProcess,
