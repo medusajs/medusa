@@ -166,7 +166,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(shippingProfile).toBeUndefined()
           })
 
-          it("should not allow to delete a shipping profile that have shipping options", async function () {
+          it("should not allow to delete a shipping profile that is associated to any shipping options", async function () {
             const createData: CreateShippingProfileDTO = {
               name: "test-default-profile",
               type: "default",
