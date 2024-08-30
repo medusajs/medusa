@@ -2,9 +2,7 @@
  * @oas [get] /admin/return-reasons
  * operationId: GetReturnReasons
  * summary: List Return Reasons
- * description: Retrieve a list of return reasons. The return reasons can be
- *   filtered by fields such as `id`. The return reasons can also be sorted or
- *   paginated.
+ * description: Retrieve a list of return reasons. The return reasons can be filtered by fields such as `id`. The return reasons can also be sorted or paginated.
  * x-authenticated: true
  * parameters:
  *   - name: expand
@@ -17,18 +15,14 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -47,16 +41,12 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: The field to sort the data by. By default, the sort order is
- *       ascending. To change the order to descending, prefix the field name with
- *       `-`.
+ *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: The field to sort the data by. By default, the sort order is
- *         ascending. To change the order to descending, prefix the field name with
- *         `-`.
+ *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: q
  *     in: query
  *     description: The return reason's q.
@@ -139,29 +129,17 @@
  *     in: query
  *     description: The return reason's created at.
  *     required: false
- *     schema:
- *       type: string
- *       format: date-time
- *       title: created_at
- *       description: The return reason's created at.
+ *     schema: {}
  *   - name: updated_at
  *     in: query
  *     description: The return reason's updated at.
  *     required: false
- *     schema:
- *       type: string
- *       format: date-time
- *       title: updated_at
- *       description: The return reason's updated at.
+ *     schema: {}
  *   - name: deleted_at
  *     in: query
  *     description: The return reason's deleted at.
  *     required: false
- *     schema:
- *       type: string
- *       format: date-time
- *       title: deleted_at
- *       description: The return reason's deleted at.
+ *     schema: {}
  *   - name: $and
  *     in: query
  *     description: The return reason's $and.

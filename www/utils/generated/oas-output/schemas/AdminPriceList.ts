@@ -42,11 +42,13 @@
  *     description: The price list's ends at.
  *   status:
  *     type: string
+ *     description: The price list's status.
  *     enum:
  *       - draft
  *       - active
  *   type:
  *     type: string
+ *     description: The price list's type.
  *     enum:
  *       - sale
  *       - override

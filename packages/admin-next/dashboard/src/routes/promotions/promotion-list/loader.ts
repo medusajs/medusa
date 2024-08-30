@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query"
 import { promotionsQueryKeys } from "../../../hooks/api/promotions"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
 import { PromotionListRes } from "../../../types/api-responses"
 
@@ -11,7 +11,7 @@ const params = {
 
 const promotionsListQuery = () => ({
   queryKey: promotionsQueryKeys.list(params),
-  queryFn: async () => client.promotions.list(params),
+  queryFn: async () => sdk.admin.promotion.list(params),
 })
 
 export const promotionsLoader = (client: QueryClient) => {

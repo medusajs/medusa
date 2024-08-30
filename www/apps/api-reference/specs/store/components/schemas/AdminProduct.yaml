@@ -47,7 +47,7 @@ properties:
     items:
       $ref: ./AdminProductVariant.yaml
   type:
-    type: object
+    $ref: ./AdminProductType.yaml
   tags:
     type: array
     description: The parent's tags.
@@ -59,6 +59,7 @@ properties:
     description: The parent's title.
   status:
     type: string
+    description: The parent's status.
     enum:
       - draft
       - proposed

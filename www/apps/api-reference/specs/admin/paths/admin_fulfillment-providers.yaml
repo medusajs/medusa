@@ -79,7 +79,7 @@ get:
     - name: is_enabled
       in: query
       description: The fulfillment provider's is enabled.
-      required: true
+      required: false
       schema:
         type: boolean
         title: is_enabled

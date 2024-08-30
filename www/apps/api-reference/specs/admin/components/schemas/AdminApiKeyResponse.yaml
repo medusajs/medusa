@@ -5,4 +5,4 @@ required:
   - api_key
 properties:
   api_key:
-    $ref: ./ApiKeyResponse.yaml
+    $ref: ./AdminApiKey.yaml

@@ -13,12 +13,12 @@ properties:
   object:
     type: string
     title: object
-    description: The sales channel's object.
+    description: The name of the deleted object.
     default: sales-channel
   deleted:
     type: boolean
     title: deleted
-    description: The sales channel's deleted.
+    description: Whether the Sales Channel was deleted.
   parent:
     type: object
     description: The sales channel's parent.

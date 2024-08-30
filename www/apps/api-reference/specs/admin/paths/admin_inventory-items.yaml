@@ -156,7 +156,7 @@ get:
     - name: requires_shipping
       in: query
       description: The inventory item's requires shipping.
-      required: true
+      required: false
       schema:
         type: boolean
         title: requires_shipping
