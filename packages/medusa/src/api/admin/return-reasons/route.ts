@@ -8,10 +8,9 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { AdminGetReturnReasonsParamsType } from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetReturnReasonsParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminReturnReasonListParams>,
   res: MedusaResponse<HttpTypes.AdminReturnReasonListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
