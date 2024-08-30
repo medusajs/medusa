@@ -64,20 +64,14 @@
  *     type: array
  *     description: The variant's $and.
  *     items:
- *       type: array
- *       description: The $and's details.
- *       items:
- *         type: object
- *       title: $and
+ *       type: object
+ *     title: $and
  *   $or:
  *     type: array
  *     description: The variant's $or.
  *     items:
- *       type: array
- *       description: The $or's details.
- *       items:
- *         type: object
- *       title: $or
+ *       type: object
+ *     title: $or
  * 
 */
 

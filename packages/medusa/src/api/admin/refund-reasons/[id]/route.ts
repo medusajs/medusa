@@ -2,7 +2,7 @@ import {
   deleteReturnReasonsWorkflow,
   updateRefundReasonsWorkflow,
 } from "@medusajs/core-flows"
-import { DeleteResponse, RefundReasonResponse } from "@medusajs/types"
+import { HttpTypes, RefundReasonResponse } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -51,7 +51,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"refund_reason">>
+  res: MedusaResponse<HttpTypes.AdminRefundReasonDeleteResponse>
 ) => {
   const { id } = req.params
   const input = { ids: [id] }

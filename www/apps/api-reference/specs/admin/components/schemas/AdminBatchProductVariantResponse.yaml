@@ -18,7 +18,7 @@ properties:
       $ref: ./AdminProductVariant.yaml
   deleted:
     type: object
-    description: The product's deleted.
+    description: SUMMARY
     required:
       - ids
       - object
@@ -34,8 +34,8 @@ properties:
       object:
         type: string
         title: object
-        description: The deleted's object.
+        description: SUMMARY
       deleted:
         type: boolean
         title: deleted
-        description: The deleted's details.
+        description: SUMMARY

@@ -4,11 +4,11 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { refetchTaxRate } from "../../../helpers"
-import { DeleteResponse } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"tax_rate_rule">>
+  res: MedusaResponse<HttpTypes.AdminTaxRateRuleDeleteResponse>
 ) => {
   await deleteTaxRateRulesWorkflow(req.scope).run({
     input: { ids: [req.params.rule_id] },

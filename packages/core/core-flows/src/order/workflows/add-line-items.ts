@@ -7,7 +7,6 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
 import { findOneOrAnyRegionStep } from "../../cart/steps/find-one-or-any-region"
 import { findOrCreateCustomerStep } from "../../cart/steps/find-or-create-customer"
 import { findSalesChannelStep } from "../../cart/steps/find-sales-channel"
@@ -15,6 +14,7 @@ import { getVariantPriceSetsStep } from "../../cart/steps/get-variant-price-sets
 import { validateVariantPricesStep } from "../../cart/steps/validate-variant-prices"
 import { prepareLineItemData } from "../../cart/utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "../../cart/workflows/confirm-variant-inventory"
+import { useRemoteQueryStep } from "../../common"
 import { createOrderLineItemsStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
 import { prepareCustomLineItemData } from "../utils/prepare-custom-line-item-data"
@@ -29,9 +29,13 @@ function prepareLineItems(data) {
           ...item,
         },
         unitPrice: MathBN.max(0, item.unit_price),
-        isTaxInclusive: item.is_tax_inclusive,
+        isTaxInclusive:
+          item.is_tax_inclusive ??
+          data.priceSets[item.variant_id!]?.is_calculated_price_tax_inclusive,
         quantity: item.quantity as number,
-        metadata: item?.metadata ?? {},
+        metadata: item?.metadata,
+        taxLines: item.tax_lines || [],
+        adjustments: item.adjustments || [],
       })
     }
 
@@ -46,7 +50,7 @@ function prepareLineItems(data) {
         item.is_tax_inclusive ??
         data.priceSets[item.variant_id!]?.is_calculated_price_tax_inclusive,
       quantity: item.quantity as number,
-      metadata: item?.metadata ?? {},
+      metadata: item?.metadata,
       taxLines: item.tax_lines || [],
       adjustments: item.adjustments || [],
     })

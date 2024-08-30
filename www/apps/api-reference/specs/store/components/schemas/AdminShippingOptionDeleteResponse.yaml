@@ -13,12 +13,12 @@ properties:
   object:
     type: string
     title: object
-    description: The shipping option's object.
+    description: The name of the deleted object.
     default: shipping_option
   deleted:
     type: boolean
     title: deleted
-    description: The shipping option's deleted.
+    description: Whether the Shipping Option was deleted.
   parent:
     type: object
     description: The shipping option's parent.

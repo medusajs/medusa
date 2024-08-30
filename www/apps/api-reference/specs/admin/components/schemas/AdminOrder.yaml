@@ -100,6 +100,7 @@ properties:
       $ref: ./BaseOrderShippingMethod.yaml
   payment_status:
     type: string
+    description: The order's payment status.
     enum:
       - canceled
       - not_paid
@@ -113,6 +114,7 @@ properties:
       - requires_action
   fulfillment_status:
     type: string
+    description: The order's fulfillment status.
     enum:
       - canceled
       - not_fulfilled

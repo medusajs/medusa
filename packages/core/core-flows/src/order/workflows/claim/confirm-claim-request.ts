@@ -63,7 +63,7 @@ export const confirmClaimRequestValidationStep = createStep(
 )
 
 /**
- * This step confirms that a requested claim has atleast one item to return or send
+ * This step confirms that a requested claim has at least one item to return or send
  */
 const confirmIfClaimItemsArePresent = createStep(
   "confirm-if-items-are-present",
@@ -80,7 +80,7 @@ const confirmIfClaimItemsArePresent = createStep(
 
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Order claim request should have atleast 1 item`
+      `Order claim request should have at least 1 item`
     )
   }
 )

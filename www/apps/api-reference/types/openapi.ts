@@ -19,6 +19,7 @@ export type Operation = OpenAPIV3.OperationObject<{
   parameters: Parameter[]
   "x-featureFlag"?: string
   "x-workflow"?: string
+  "x-sidebar-summary"?: string
 }>
 
 export type RequestObject = OpenAPIV3.RequestBodyObject & {

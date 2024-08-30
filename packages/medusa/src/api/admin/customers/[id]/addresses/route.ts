@@ -12,7 +12,7 @@ import { refetchCustomer } from "../../helpers"
 import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCustomerAddressFilters>,
   res: MedusaResponse<HttpTypes.AdminCustomerAddressListResponse>
 ) => {
   const customerId = req.params.id

@@ -122,7 +122,7 @@ export const useCreateReservationItem = (
 export const useDeleteReservationItem = (
   id: string,
   options?: UseMutationOptions<
-    HttpTypes.DeleteResponse<"reservation">,
+    HttpTypes.AdminReservationDeleteResponse,
     FetchError,
     void
   >

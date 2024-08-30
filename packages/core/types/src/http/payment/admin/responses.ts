@@ -45,3 +45,5 @@ export type RefundReasonsResponse = PaginatedResponse<{
 export type AdminPaymentProviderListResponse = PaginatedResponse<{
   payment_providers: AdminPaymentProvider[]
 }>
+
+export type AdminRefundReasonDeleteResponse = DeleteResponse<"refund_reason">

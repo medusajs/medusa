@@ -115,104 +115,17 @@ get:
       in: query
       description: The region's created at.
       required: false
-      schema:
-        type: string
-        description: The region's created at.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
-        properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
-        title: created_at
+      schema: {}
     - name: updated_at
       in: query
       description: The region's updated at.
       required: false
-      schema:
-        type: string
-        description: The region's updated at.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
-        properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
-        title: updated_at
+      schema: {}
     - name: deleted_at
       in: query
       description: The region's deleted at.
       required: false
-      schema:
-        type: string
-        description: The region's deleted at.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
-        properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
-        title: deleted_at
+      schema: {}
     - name: $and
       in: query
       required: false

@@ -223,12 +223,12 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateProductVariantsWorkflow
 delete:
   operationId: DeleteProductsIdVariantsVariant_id
-  summary: Remove Variants from Product
-  description: >-
-    Remove a list of variants from a product. This doesn't delete the Variant,
-    only the association between the Variant and the product.
+  summary: Delete Product Variant
+  x-sidebar-summary: Delete Variant
+  description: Delete a variant of a product.
   x-authenticated: true
   parameters:
     - name: id
@@ -239,7 +239,7 @@ delete:
         type: string
     - name: variant_id
       in: path
-      description: The product's variant id.
+      description: The product variant's ID.
       required: true
       schema:
         type: string
@@ -329,3 +329,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteProductVariantsWorkflow

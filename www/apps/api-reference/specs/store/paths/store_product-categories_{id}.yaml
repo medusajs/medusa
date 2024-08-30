@@ -70,7 +70,7 @@ get:
     - name: include_ancestors_tree
       in: query
       description: The product category's include ancestors tree.
-      required: true
+      required: false
       schema:
         type: boolean
         title: include_ancestors_tree
@@ -78,7 +78,7 @@ get:
     - name: include_descendants_tree
       in: query
       description: The product category's include descendants tree.
-      required: true
+      required: false
       schema:
         type: boolean
         title: include_descendants_tree

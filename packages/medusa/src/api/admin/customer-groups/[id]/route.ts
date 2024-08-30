@@ -10,7 +10,7 @@ import {
 import { MedusaError } from "@medusajs/utils"
 import { refetchCustomerGroup } from "../helpers"
 import { AdminUpdateCustomerGroupType } from "../validators"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -53,7 +53,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"customer_group">>
+  res: MedusaResponse<HttpTypes.AdminCustomerGroupDeleteResponse>
 ) => {
   const id = req.params.id
   const deleteCustomerGroups = deleteCustomerGroupsWorkflow(req.scope)

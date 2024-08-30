@@ -14,6 +14,7 @@ properties:
     description: The promotion's code.
   type:
     type: string
+    description: The promotion's type.
     enum:
       - standard
       - buyget
@@ -33,4 +34,4 @@ properties:
     title: campaign_id
     description: The promotion's campaign id.
   campaign:
-    $ref: ./CampaignResponse.yaml
+    $ref: ./AdminCampaign.yaml

@@ -7,7 +7,7 @@ import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
 import { createPricePreferencesWorkflow } from "@medusajs/core-flows"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminPricePreferenceListParams>,
   res: MedusaResponse<HttpTypes.AdminPricePreferenceListResponse>
 ) => {
   const { rows: price_preferences, metadata } = await refetchEntities(

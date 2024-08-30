@@ -20,7 +20,7 @@
  *       $ref: "#/components/schemas/AdminProductVariant"
  *   deleted:
  *     type: object
- *     description: The product's deleted.
+ *     description: SUMMARY
  *     required:
  *       - ids
  *       - object
@@ -36,11 +36,11 @@
  *       object:
  *         type: string
  *         title: object
- *         description: The deleted's object.
+ *         description: SUMMARY
  *       deleted:
  *         type: boolean
  *         title: deleted
- *         description: The deleted's details.
+ *         description: SUMMARY
  * 
 */
 

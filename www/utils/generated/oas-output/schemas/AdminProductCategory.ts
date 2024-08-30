@@ -42,6 +42,9 @@
  *     type: string
  *     title: id
  *     description: The category's ID.
+ *   metadata:
+ *     type: object
+ *     description: The category's metadata.
  *   created_at:
  *     type: string
  *     format: date-time

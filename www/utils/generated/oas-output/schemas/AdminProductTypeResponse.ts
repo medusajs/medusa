@@ -7,7 +7,7 @@
  *   - product_type
  * properties:
  *   product_type:
- *     $ref: "#/components/schemas/AdminProduct"
+ *     $ref: "#/components/schemas/AdminProductType"
  * 
 */
 
