@@ -107,7 +107,7 @@ export const useDeleteReturnReason = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnReasonDeleteResponse,
-    Error,
+    FetchError,
     void
   >
 ) => {

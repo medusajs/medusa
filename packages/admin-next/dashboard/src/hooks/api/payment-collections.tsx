@@ -15,7 +15,7 @@ export const useCreatePaymentCollection = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentCollectionResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCreatePaymentCollection
   >
 ) => {
@@ -45,7 +45,7 @@ export const useMarkPaymentCollectionAsPaid = (
   paymentCollectionId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminPaymentCollectionResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminMarkPaymentCollectionAsPaid
   >
 ) => {

@@ -23,7 +23,7 @@ export const optionsQueryKeys = queryKeysFactory(OPTIONS_QUERY_KEY)
 
 export const useCreateProductOption = (
   productId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateProductOption) =>
@@ -42,7 +42,7 @@ export const useCreateProductOption = (
 export const useUpdateProductOption = (
   productId: string,
   optionId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminUpdateProductOption) =>
@@ -65,7 +65,7 @@ export const useUpdateProductOption = (
 export const useDeleteProductOption = (
   productId: string,
   optionId: string,
-  options?: UseMutationOptions<any, Error, void>
+  options?: UseMutationOptions<any, FetchError, void>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.product.deleteOption(productId, optionId),
@@ -89,7 +89,7 @@ export const useProductVariant = (
   variantId: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<any, FetchError, any, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -107,7 +107,7 @@ export const useProductVariants = (
   productId: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<any, FetchError, any, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -122,7 +122,7 @@ export const useProductVariants = (
 
 export const useCreateProductVariant = (
   productId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateProductVariant) =>
@@ -141,7 +141,7 @@ export const useCreateProductVariant = (
 export const useUpdateProductVariant = (
   productId: string,
   variantId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminUpdateProductVariant) =>
@@ -163,7 +163,7 @@ export const useUpdateProductVariant = (
 
 export const useUpdateProductVariantsBatch = (
   productId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: (
@@ -187,7 +187,7 @@ export const useUpdateProductVariantsBatch = (
 
 export const useProductVariantsInventoryItemsBatch = (
   productId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: (
@@ -209,7 +209,7 @@ export const useProductVariantsInventoryItemsBatch = (
 export const useDeleteVariant = (
   productId: string,
   variantId: string,
-  options?: UseMutationOptions<any, Error, void>
+  options?: UseMutationOptions<any, FetchError, void>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.product.deleteVariant(productId, variantId),
@@ -232,7 +232,7 @@ export const useProduct = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<any, FetchError, any, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
