@@ -13,7 +13,7 @@ import { refetchCustomer } from "./helpers"
 import { AdminCreateCustomerType } from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCustomerFilters>,
   res: MedusaResponse<HttpTypes.AdminCustomerListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

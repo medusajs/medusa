@@ -12,7 +12,7 @@ import { refetchCustomerGroup } from "./helpers"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetCustomerGroupsParams>,
   res: MedusaResponse<HttpTypes.AdminCustomerGroupListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
