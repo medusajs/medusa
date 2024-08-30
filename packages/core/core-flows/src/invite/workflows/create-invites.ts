@@ -1,11 +1,13 @@
+import { InviteDTO, InviteWorkflow } from "@medusajs/types"
+import { InviteWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { createInviteStep } from "../steps"
-import { InviteDTO, InviteWorkflow } from "@medusajs/types"
-
 export const createInvitesWorkflowId = "create-invite-step"
 /**
  * This workflow creates one or more invites.
@@ -15,6 +17,22 @@ export const createInvitesWorkflow = createWorkflow(
   (
     input: WorkflowData<InviteWorkflow.CreateInvitesWorkflowInputDTO>
   ): WorkflowResponse<InviteDTO[]> => {
-    return new WorkflowResponse(createInviteStep(input.invites))
+    const createdInvites = createInviteStep(input.invites)
+
+    const invitesIdEvents = transform(
+      { createdInvites },
+      ({ createdInvites }) => {
+        return createdInvites.map((v) => {
+          return { id: v.id }
+        })
+      }
+    )
+
+    emitEventStep({
+      eventName: InviteWorkflowEvents.CREATED,
+      data: invitesIdEvents,
+    })
+
+    return new WorkflowResponse(createdInvites)
   }
 )

@@ -16,6 +16,7 @@ import {
   WorkflowResponse,
   createHook,
   createWorkflow,
+  parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
 import {
@@ -282,21 +283,23 @@ export const updateProductsWorkflow = createWorkflow(
     })
 
     dismissRemoteLinkStep(toDeleteSalesChannelLinks)
-    createRemoteLinkStep(salesChannelLinks)
 
     const productIdEvents = transform(
       { updatedProductIds },
       ({ updatedProductIds }) => {
-        return updatedProductIds.map((id) => {
+        return updatedProductIds?.map((id) => {
           return { id }
         })
       }
     )
 
-    emitEventStep({
-      eventName: ProductWorkflowEvents.UPDATED,
-      data: productIdEvents,
-    })
+    parallelize(
+      createRemoteLinkStep(salesChannelLinks),
+      emitEventStep({
+        eventName: ProductWorkflowEvents.UPDATED,
+        data: productIdEvents,
+      })
+    )
 
     const productsUpdated = createHook("productsUpdated", {
       products: updatedProducts,

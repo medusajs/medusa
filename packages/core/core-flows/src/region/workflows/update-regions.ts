@@ -1,4 +1,5 @@
 import { WorkflowTypes } from "@medusajs/types"
+import { RegionWorkflowEvents } from "@medusajs/utils"
 import {
   createWorkflow,
   parallelize,
@@ -7,9 +8,10 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
+import { updatePricePreferencesWorkflow } from "../../pricing"
 import { updateRegionsStep } from "../steps"
 import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
-import { updatePricePreferencesWorkflow } from "../../pricing"
 
 export const updateRegionsWorkflowId = "update-regions"
 /**
@@ -72,9 +74,21 @@ export const updateRegionsWorkflow = createWorkflow(
       })
     })
 
-    setRegionsPaymentProvidersStep({
-      input: upsertProvidersNormalizedInput,
+    const regionIdEvents = transform({ regions }, ({ regions }) => {
+      return regions?.map((region) => {
+        return { id: region.id }
+      })
     })
+
+    parallelize(
+      setRegionsPaymentProvidersStep({
+        input: upsertProvidersNormalizedInput,
+      }),
+      emitEventStep({
+        eventName: RegionWorkflowEvents.UPDATED,
+        data: regionIdEvents,
+      })
+    )
 
     return new WorkflowResponse(regions)
   }
