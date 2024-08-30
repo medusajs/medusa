@@ -75,7 +75,7 @@ export const updateRegionsWorkflow = createWorkflow(
     })
 
     const regionIdEvents = transform({ regions }, ({ regions }) => {
-      return regions.map((region) => {
+      return regions?.map((region) => {
         return { id: region.id }
       })
     })

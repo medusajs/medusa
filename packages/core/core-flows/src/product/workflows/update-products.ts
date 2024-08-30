@@ -287,7 +287,7 @@ export const updateProductsWorkflow = createWorkflow(
     const productIdEvents = transform(
       { updatedProductIds },
       ({ updatedProductIds }) => {
-        return updatedProductIds.map((id) => {
+        return updatedProductIds?.map((id) => {
           return { id }
         })
       }

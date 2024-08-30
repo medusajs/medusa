@@ -21,7 +21,9 @@ export const updateUsersWorkflow = createWorkflow(
     const updatedUsers = updateUsersStep(input.updates)
 
     const userIdEvents = transform({ updatedUsers }, ({ updatedUsers }) => {
-      return updatedUsers.map((user) => {
+      const arr = Array.isArray(updatedUsers) ? updatedUsers : [updatedUsers]
+
+      return arr?.map((user) => {
         return { id: user.id }
       })
     })

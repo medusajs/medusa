@@ -35,7 +35,11 @@ export const updateCustomersWorkflow = createWorkflow(
     const customerIdEvents = transform(
       { updatedCustomers },
       ({ updatedCustomers }) => {
-        return updatedCustomers.map((customer) => {
+        const arr = Array.isArray(updatedCustomers)
+          ? updatedCustomers
+          : [updatedCustomers]
+
+        return arr?.map((customer) => {
           return { id: customer.id }
         })
       }

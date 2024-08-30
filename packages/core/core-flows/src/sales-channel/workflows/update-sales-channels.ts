@@ -32,7 +32,10 @@ export const updateSalesChannelsWorkflow = createWorkflow(
     const salesChannelIdEvents = transform(
       { updatedSalesChannels },
       ({ updatedSalesChannels }) => {
-        return updatedSalesChannels.map((salesChannel) => {
+        const arr = Array.isArray(updatedSalesChannels)
+          ? updatedSalesChannels
+          : [updatedSalesChannels]
+        return arr?.map((salesChannel) => {
           return { id: salesChannel.id }
         })
       }
