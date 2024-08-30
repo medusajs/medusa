@@ -98,8 +98,11 @@ medusaIntegrationTestRunner({
           const error = await service
             .createNotifications(notification)
             .catch((e) => e)
+
+          const [notificationResult] = await service.listNotifications()
+
           expect(error.message).toEqual(
-            "Could not find a notification provider for channel: sms"
+            `Could not find a notification provider for channel: sms for notification: ${notificationResult.id}`
           )
         })
 
