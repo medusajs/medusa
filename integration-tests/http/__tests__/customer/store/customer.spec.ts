@@ -1,5 +1,4 @@
 import { MedusaContainer } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -57,13 +56,6 @@ medusaIntegrationTestRunner({
         expect(customer.data).toEqual({
           customer: expect.objectContaining({
             email: "newcustomer@medusa.js",
-          }),
-        })
-
-        expect(customer.status).toEqual(200)
-        expect(customer.data).toEqual({
-          customer: expect.objectContaining({
-            email: "newcustomer@medusa.js",
             first_name: "John",
             last_name: "Doe",
             has_account: true,
@@ -72,14 +64,24 @@ medusaIntegrationTestRunner({
       })
 
       it("should successfully create a customer with an identity even if the email is already taken by a non-registered customer", async () => {
-        const customerService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
+        const nonRegisteredCustomer = await api.post(
+          "/admin/customers",
+          {
+            email: "newcustomer@medusa.js",
+            first_name: "John",
+            last_name: "Doe",
+          },
+          adminHeaders
         )
-        // Can't create a customer via the Rest API, so will have to use the module here
-        await customerService.createCustomers({
-          email: "newcustomer@medusa.js",
-          first_name: "John",
-          last_name: "Doe",
+
+        expect(nonRegisteredCustomer.status).toEqual(200)
+        expect(nonRegisteredCustomer.data).toEqual({
+          customer: expect.objectContaining({
+            email: "newcustomer@medusa.js",
+            first_name: "John",
+            last_name: "Doe",
+            has_account: false,
+          }),
         })
 
         const signup = await api.post("/auth/customer/emailpass/register", {
