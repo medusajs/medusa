@@ -32,7 +32,7 @@ export const ReservationItemTable = ({
     id: (reservations || []).map((r) => r.location_id),
   })
 
-  const data = useMemo(() => {
+  const data = useMemo<ExtendedReservationItem[]>(() => {
     const locationMap = new Map((stock_locations || []).map((l) => [l.id, l]))
 
     return (reservations || []).map((r) => ({
@@ -44,7 +44,7 @@ export const ReservationItemTable = ({
   const columns = useReservationTableColumn({ sku: inventoryItem.sku! })
 
   const { table } = useDataTable({
-    data: (data as unknown as ExtendedReservationItem[]) ?? [],
+    data: data ?? [],
     columns,
     count,
     enablePagination: true,
