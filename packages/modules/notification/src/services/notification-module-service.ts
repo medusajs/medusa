@@ -212,10 +212,18 @@ export default class NotificationModuleService
         }
       )
     } finally {
-      createdNotifications = await this.notificationService_.update(
+      const updatedNotifications = await this.notificationService_.update(
         notificationToUpdate,
         sharedContext
       )
+      const updatedNotificationsMap = new Map(
+        updatedNotifications.map((n) => [n.id, n])
+      )
+
+      // Maintain the order of the notifications
+      createdNotifications = createdNotifications.map((notification) => {
+        return updatedNotificationsMap.get(notification.id) || notification
+      })
     }
 
     return createdNotifications
