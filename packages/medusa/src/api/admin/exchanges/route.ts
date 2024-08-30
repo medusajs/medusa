@@ -13,7 +13,7 @@ import {
 import { AdminPostOrderExchangesReqSchemaType } from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminExchangeListParams>,
   res: MedusaResponse<HttpTypes.AdminExchangeListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

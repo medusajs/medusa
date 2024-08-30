@@ -12,7 +12,7 @@ import { refetchCampaign } from "./helpers"
 import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetCampaignParams>,
   res: MedusaResponse<HttpTypes.AdminCampaignListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

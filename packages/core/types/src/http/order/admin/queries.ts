@@ -1,7 +1,10 @@
-import { OperatorMap } from "../../../dal";
-import { BaseOrderFilters } from "../common";
+import { OperatorMap } from "../../../dal"
+import { FindParams } from "../../common"
+import { BaseOrderFilters } from "../common"
 
-export interface AdminOrderFilters extends BaseOrderFilters {
+export interface AdminOrderFilters extends FindParams, BaseOrderFilters {
+  id?: string[] | string
+  name?: string[] | string
   sales_channel_id?: string[]
   fulfillment_status?: string[]
   payment_status?: string[]
