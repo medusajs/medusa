@@ -409,22 +409,16 @@ This defines a link between the Delivery Module’s `delivery` data model and th
 To create tables for the above data models in the database, start by generating the migrations for the Restaurant and Delivery Modules with the following commands:
 
 ```bash
-npx medusa migrations generate restaurantModuleService
-npx medusa migrations generate deliveryModuleService
+npx medusa db:generate restaurantModuleService
+npx medusa db:generate deliveryModuleService
 ```
 
 This generates migrations in the `src/modules/restaurant/migrations` and `src/modules/delivery/migrations` directories.
 
-Then, to reflect the migration in the database, run the following command:
+Then, to reflect the migration and links in the database, run the following command:
 
 ```bash
-npx medusa migrations run
-```
-
-Next, to reflect your links in the database, run the `links sync` command:
-
-```bash
-npx medusa links sync
+npx medusa db:migrate
 ```
 
 ---
