@@ -138,6 +138,59 @@ medusaIntegrationTestRunner({
           ])
         )
       })
+
+      it("should fail to create a customer with an identity when the email is already taken by a registered customer", async () => {
+        const firstSignup = await api.post(
+          "/auth/customer/emailpass/register",
+          {
+            email: "newcustomer@medusa.js",
+            password: "secret_password",
+          }
+        )
+
+        expect(firstSignup.status).toEqual(200)
+        expect(firstSignup.data).toEqual({ token: expect.any(String) })
+
+        await api.post(
+          "/store/customers",
+          {
+            email: "newcustomer@medusa.js",
+            first_name: "John",
+            last_name: "Doe",
+          },
+          {
+            headers: {
+              authorization: `Bearer ${firstSignup.data.token}`,
+            },
+          }
+        )
+
+        const firstSignin = await api.post("/auth/customer/emailpass", {
+          email: "newcustomer@medusa.js",
+          password: "secret_password",
+        })
+
+        const customer = await api
+          .post(
+            "/store/customers",
+            {
+              email: "newcustomer@medusa.js",
+              first_name: "Jane",
+              last_name: "Doe",
+            },
+            {
+              headers: {
+                authorization: `Bearer ${firstSignin.data.token}`,
+              },
+            }
+          )
+          .catch((e) => e)
+
+        expect(customer.response.status).toEqual(400)
+        expect(customer.response.data.message).toEqual(
+          "Request already authenticated as a customer."
+        )
+      })
     })
   },
 })
