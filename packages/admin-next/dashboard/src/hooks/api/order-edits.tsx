@@ -50,6 +50,10 @@ export const useRequestOrderEdit = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.changes(id),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -74,6 +78,10 @@ export const useConfirmOrderEdit = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.changes(id),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -93,6 +101,10 @@ export const useCancelOrderEdit = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.changes(id),
       })
       options?.onSuccess?.(data, variables, context)
     },
