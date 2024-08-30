@@ -1,13 +1,12 @@
-import { Order } from "@medusajs/medusa"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-
 import { ArrowPath, CurrencyDollar, Envelope, FlyingBox } from "@medusajs/icons"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { CustomerInfo } from "../../../../../components/common/customer-info"
+import { HttpTypes } from "@medusajs/types"
 
 type OrderCustomerSectionProps = {
-  order: Order
+  order: HttpTypes.AdminOrder
 }
 
 export const OrderCustomerSection = ({ order }: OrderCustomerSectionProps) => {

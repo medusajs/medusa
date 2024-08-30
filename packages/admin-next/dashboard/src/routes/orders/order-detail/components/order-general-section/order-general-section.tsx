@@ -1,5 +1,4 @@
 import { XCircle } from "@medusajs/icons"
-import { Order } from "@medusajs/medusa"
 import {
   Container,
   Copy,
@@ -16,9 +15,10 @@ import {
   getOrderFulfillmentStatus,
   getOrderPaymentStatus,
 } from "../../../../../lib/order-helpers"
+import { HttpTypes } from "@medusajs/types"
 
 type OrderGeneralSectionProps = {
-  order: Order
+  order: HttpTypes.AdminOrder
 }
 
 export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
@@ -82,7 +82,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
   )
 }
 
-const FulfillmentBadge = ({ order }: { order: Order }) => {
+const FulfillmentBadge = ({ order }: { order: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   const { label, color } = getOrderFulfillmentStatus(
@@ -97,7 +97,7 @@ const FulfillmentBadge = ({ order }: { order: Order }) => {
   )
 }
 
-const PaymentBadge = ({ order }: { order: Order }) => {
+const PaymentBadge = ({ order }: { order: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   /**

@@ -1,4 +1,3 @@
-import { Country } from "@medusajs/medusa"
 import { Heading, Input, Select, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -7,12 +6,13 @@ import { Control } from "react-hook-form"
 import { AddressSchema } from "../../../lib/schemas"
 import { Form } from "../../common/form"
 import { CountrySelect } from "../../inputs/country-select"
+import { HttpTypes } from "@medusajs/types"
 
 type AddressFieldValues = z.infer<typeof AddressSchema>
 
 type AddressFormProps = {
   control: Control<AddressFieldValues>
-  countries?: Country[]
+  countries?: HttpTypes.AdminRegionCountry[]
   layout: "grid" | "stack"
 }
 
