@@ -6,7 +6,7 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-
+import { FetchError } from "@medusajs/js-sdk"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
@@ -22,7 +22,7 @@ export const useExchange = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminExchangeResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminExchangeResponse,
       QueryKey
     >,
@@ -43,7 +43,7 @@ export const useExchanges = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminExchangeListParams,
-      Error,
+      FetchError,
       HttpTypes.AdminExchangeListResponse,
       QueryKey
     >,
@@ -63,7 +63,7 @@ export const useCreateExchange = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCreateExchange
   >
 ) => {
@@ -92,7 +92,7 @@ export const useCreateExchange = (
 export const useCancelExchange = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, FetchError>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.exchange.cancel(id),
@@ -121,7 +121,10 @@ export const useCancelExchange = (
 export const useDeleteExchange = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminExchangeDeleteResponse, Error>
+  options?: UseMutationOptions<
+    HttpTypes.AdminExchangeDeleteResponse,
+    FetchError
+  >
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.exchange.delete(id),
@@ -151,7 +154,7 @@ export const useAddExchangeItems = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminAddExchangeItems
   >
 ) => {
@@ -173,7 +176,7 @@ export const useUpdateExchangeItems = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateExchangeItem & { actionId: string }
   >
 ) => {
@@ -197,7 +200,11 @@ export const useUpdateExchangeItems = (
 export const useRemoveExchangeItem = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
@@ -217,7 +224,7 @@ export const useAddExchangeInboundItems = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminAddExchangeInboundItems
   >
 ) => {
@@ -239,7 +246,7 @@ export const useUpdateExchangeInboundItem = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateExchangeInboundItem & { actionId: string }
   >
 ) => {
@@ -263,7 +270,11 @@ export const useUpdateExchangeInboundItem = (
 export const useRemoveExchangeInboundItem = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminExchangeResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
@@ -287,7 +298,7 @@ export const useAddExchangeInboundShipping = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminExchangeAddInboundShipping
   >
 ) => {
@@ -309,7 +320,7 @@ export const useUpdateExchangeInboundShipping = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminExchangeUpdateInboundShipping
   >
 ) => {
@@ -332,7 +343,11 @@ export const useUpdateExchangeInboundShipping = (
 export const useDeleteExchangeInboundShipping = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminExchangeResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
@@ -352,7 +367,7 @@ export const useAddExchangeOutboundItems = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminAddExchangeOutboundItems
   >
 ) => {
@@ -374,7 +389,7 @@ export const useUpdateExchangeOutboundItems = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateExchangeOutboundItem & { actionId: string }
   >
 ) => {
@@ -398,7 +413,11 @@ export const useUpdateExchangeOutboundItems = (
 export const useRemoveExchangeOutboundItem = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminExchangeResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
@@ -418,7 +437,7 @@ export const useAddExchangeOutboundShipping = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminExchangeAddOutboundShipping
   >
 ) => {
@@ -440,7 +459,7 @@ export const useUpdateExchangeOutboundShipping = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminExchangeUpdateOutboundShipping
   >
 ) => {
@@ -463,7 +482,11 @@ export const useUpdateExchangeOutboundShipping = (
 export const useDeleteExchangeOutboundShipping = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminExchangeResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
@@ -483,7 +506,7 @@ export const useExchangeConfirmRequest = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminExchangeResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminRequestExchange
   >
 ) => {
@@ -516,7 +539,7 @@ export const useExchangeConfirmRequest = (
 export const useCancelExchangeRequest = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminExchangeResponse, FetchError>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.exchange.cancelRequest(id),
