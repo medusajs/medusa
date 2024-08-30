@@ -324,11 +324,13 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           editId: edit.id.slice(-7),
         }),
         timestamp:
-          edit.status === "crated"
-            ? edit.created_at
-            : edit.status === "requested"
+          edit.status === "requested"
             ? edit.requested_at
-            : edit.canceled_at,
+            : edit.status === "declined"
+            ? edit.declined_at
+            : edit.status === "canceled"
+            ? edit.canceled_at
+            : edit.created_at,
         children: isConfirmed ? (
           <OrderEditBody edit={edit} itemsMap={itemsMap} />
         ) : null,
