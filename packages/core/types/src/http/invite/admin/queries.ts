@@ -1,6 +1,7 @@
 import { BaseFilterable, OperatorMap } from "../../../dal"
+import { FindParams } from "../../common"
 
-export interface AdminGetInvitesParams extends BaseFilterable<AdminGetInvitesParams> {
+export interface AdminGetInvitesParams extends FindParams, BaseFilterable<AdminGetInvitesParams> {
   q?: string
   id?: string | string[]
   email?: string | string[]
