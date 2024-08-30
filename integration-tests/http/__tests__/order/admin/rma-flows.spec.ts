@@ -424,7 +424,6 @@ medusaIntegrationTestRunner({
             pending_difference: 0,
             current_order_total: 61,
             original_order_total: 61,
-            temporary_difference: 0,
           })
         )
 
@@ -456,7 +455,6 @@ medusaIntegrationTestRunner({
             pending_difference: 0,
             current_order_total: 61,
             original_order_total: 61,
-            temporary_difference: 0,
           })
         )
 
@@ -492,7 +490,6 @@ medusaIntegrationTestRunner({
             pending_difference: 70,
             current_order_total: 131,
             original_order_total: 61,
-            temporary_difference: 70,
           })
         )
 
@@ -548,7 +545,6 @@ medusaIntegrationTestRunner({
             pending_difference: 0,
             current_order_total: 131,
             original_order_total: 61,
-            temporary_difference: 70,
           })
         )
 
@@ -579,7 +575,6 @@ medusaIntegrationTestRunner({
             pending_difference: 10,
             current_order_total: 131,
             original_order_total: 61,
-            temporary_difference: 70,
           })
         )
 
@@ -622,7 +617,6 @@ medusaIntegrationTestRunner({
             current_order_total: 131,
             // Note: When all items are fulfilled, the original_order_total goes to the new total
             original_order_total: 131,
-            temporary_difference: 0,
           })
         )
 
@@ -656,7 +650,6 @@ medusaIntegrationTestRunner({
             pending_difference: 10,
             current_order_total: 131,
             original_order_total: 131,
-            temporary_difference: 0,
           })
         )
 
@@ -702,7 +695,6 @@ medusaIntegrationTestRunner({
             current_order_total: 111,
             original_order_total: 131,
             // This is now positive as we have an item to be fulfilled
-            temporary_difference: 15,
           })
         )
 
@@ -732,7 +724,6 @@ medusaIntegrationTestRunner({
             pending_difference: -10,
             current_order_total: 111,
             original_order_total: 131,
-            temporary_difference: 15,
           })
         )
 
@@ -780,7 +771,6 @@ medusaIntegrationTestRunner({
             // TODO: This looks wrong
             original_order_total: 146,
             // TODO: This looks wrong
-            temporary_difference: 15,
           })
         )
 
