@@ -264,21 +264,15 @@ This defines a link between `DigitalProductOrder` and the Order Module’s `Orde
 To create tables for the digital product data models in the database, start by generating the migrations for the Digital Product Module with the following command:
 
 ```bash
-npx medusa migrations generate digitalProductModuleService
+npx medusa db:generate digitalProductModuleService
 ```
 
 This generates a migration in the `src/modules/digital-product/migrations` directory.
 
-Then, reflect the migrations in the database with the following command:
+Then, reflect the migrations and links in the database with the following command:
 
 ```bash
-npx medusa migrations run
-```
-
-Next, to reflect your links in the database, run the `links sync` command:
-
-```bash
-npx medusa links sync
+npx medusa db:migrate
 ```
 
 ---
