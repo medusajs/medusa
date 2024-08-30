@@ -15,12 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The fulfillment set's object.
+ *     description: The name of the deleted object.
  *     default: fulfillment_set
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: The fulfillment set's deleted.
+ *     description: Whether the Fulfillment Set was deleted.
  *   parent:
  *     type: object
  *     description: The fulfillment set's parent.

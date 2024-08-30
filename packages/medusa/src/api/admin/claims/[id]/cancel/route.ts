@@ -1,10 +1,10 @@
 import { cancelOrderClaimWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
 import { AdminPostCancelClaimReqSchemaType } from "../../validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostCancelClaimReqSchemaType>,
@@ -17,6 +17,7 @@ export const POST = async (
     input: {
       ...req.validatedBody,
       claim_id: id,
+      canceled_by: req.auth_context.actor_id,
     },
   })
 

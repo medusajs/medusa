@@ -28,6 +28,7 @@
  *     description: The shipping option's name.
  *   price_type:
  *     type: string
+ *     description: The shipping option's price type.
  *     enum:
  *       - flat
  *       - calculated

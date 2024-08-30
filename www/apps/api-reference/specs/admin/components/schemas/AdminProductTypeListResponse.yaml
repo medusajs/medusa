@@ -23,4 +23,4 @@ properties:
     type: array
     description: The product type's product types.
     items:
-      $ref: ./AdminProduct.yaml
+      $ref: ./AdminProductType.yaml

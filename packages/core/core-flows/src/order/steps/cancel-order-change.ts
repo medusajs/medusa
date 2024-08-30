@@ -33,7 +33,7 @@ export const cancelOrderChangeStep = createStep(
       "exchange_id",
       "version",
       "canceled_at",
-      "cancelled_by"
+      "canceled_by"
     )
 
     const dataBeforeUpdate = await service.retrieveOrderChange(data.id, {
