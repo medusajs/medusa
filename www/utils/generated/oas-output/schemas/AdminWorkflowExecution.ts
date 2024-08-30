@@ -12,7 +12,6 @@
  *   - state
  *   - created_at
  *   - updated_at
- *   - deleted_at
  * properties:
  *   id:
  *     type: string
@@ -27,29 +26,35 @@
  *     title: transaction_id
  *     description: The workflow execution's transaction id.
  *   execution:
- *     type: string
- *     title: execution
- *     description: The workflow execution's execution.
+ *     $ref: "#/components/schemas/AdminWorkflowExecutionExecution"
  *   context:
+ *     $ref: "#/components/schemas/WorkflowExecutionContext"
+ *   state:
  *     type: string
- *     title: context
- *     description: The workflow execution's context.
- *   state: {}
+ *     description: The workflow execution's state.
+ *     enum:
+ *       - not_started
+ *       - invoking
+ *       - waiting_to_compensate
+ *       - compensating
+ *       - done
+ *       - reverted
+ *       - failed
  *   created_at:
  *     type: string
+ *     format: date-time
  *     title: created_at
  *     description: The workflow execution's created at.
- *     format: date-time
  *   updated_at:
  *     type: string
+ *     format: date-time
  *     title: updated_at
  *     description: The workflow execution's updated at.
- *     format: date-time
  *   deleted_at:
  *     type: string
+ *     format: date-time
  *     title: deleted_at
  *     description: The workflow execution's deleted at.
- *     format: date-time
  * 
 */
 

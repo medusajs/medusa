@@ -268,6 +268,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateCustomerAddressesWorkflow
 delete:
   operationId: DeleteCustomersMeAddressesAddress_id
   summary: Remove Addresses from Customer
@@ -388,3 +389,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteCustomerAddressesWorkflow

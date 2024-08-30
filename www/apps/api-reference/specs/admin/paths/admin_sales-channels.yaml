@@ -108,7 +108,7 @@ get:
     - name: is_disabled
       in: query
       description: The sales channel's is disabled.
-      required: true
+      required: false
       schema:
         type: boolean
         title: is_disabled
@@ -117,104 +117,17 @@ get:
       in: query
       description: The sales channel's created at.
       required: false
-      schema:
-        type: string
-        description: The sales channel's created at.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
-        properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
-        title: created_at
+      schema: {}
     - name: updated_at
       in: query
       description: The sales channel's updated at.
       required: false
-      schema:
-        type: string
-        description: The sales channel's updated at.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
-        properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
-        title: updated_at
+      schema: {}
     - name: deleted_at
       in: query
       description: The sales channel's deleted at.
       required: false
-      schema:
-        type: string
-        description: The sales channel's deleted at.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
-        properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
-        title: deleted_at
+      schema: {}
     - name: location_id
       in: query
       required: false

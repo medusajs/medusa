@@ -110,11 +110,16 @@ post:
   x-workflow: updateClaimShippingMethodWorkflow
 delete:
   operationId: DeleteClaimsIdOutboundShippingMethodAction_id
-  summary: Remove Shipping Methods from Claim
-  description: >-
-    Remove a list of shipping methods from a claim. This doesn't delete the
-    Shipping Method, only the association between the Shipping Method and the
-    claim.
+  summary: Remove Outbound Shipping Method from Claim
+  x-sidebar-summary: Remove Outbound Shipping Method
+  description: >
+    Remove the shipping method for delivering outbound items in the claim using
+    the `ID` of the method's `SHIPPING_ADD` action.
+
+
+    Every shipping method has an `actions` property, whose value is an array of
+    actions. You can check the action's name using its `action` property, and
+    use the value of the `id` property.
   x-authenticated: true
   parameters:
     - name: id
@@ -125,7 +130,7 @@ delete:
         type: string
     - name: action_id
       in: path
-      description: The claim's action id.
+      description: The ID of the shipping method's `SHIPPING_ADD` action.
       required: true
       schema:
         type: string
