@@ -24,7 +24,7 @@ export const Notification = model.define("notification", {
   idempotency_key: model.text().unique().nullable(),
   // The ID of the notification in the external system, if applicable
   external_id: model.text().nullable(),
-  // Th status of the notification
+  // The status of the notification
   status: model.enum(NotificationStatus).default(NotificationStatus.PENDING),
 
   provider: model
