@@ -3,7 +3,6 @@ import { BigNumberValue } from "../../totals"
 import { BaseClaim } from "../claim/common"
 import { BasePaymentCollection } from "../payment/common"
 import { BaseProduct, BaseProductVariant } from "../product/common"
-import { createOperatorMap } from "@medusajs/medusa/dist/api/utils/validators"
 
 export interface BaseOrderSummary {
   total: number
