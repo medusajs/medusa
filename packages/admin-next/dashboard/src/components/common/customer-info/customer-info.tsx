@@ -10,7 +10,7 @@ const ID = ({ data }: { data: HttpTypes.AdminOrder }) => {
   const id = data.customer_id
   const name = getOrderCustomer(data)
   const email = data.email
-  const fallback = (name ?? email ?? "").charAt(0).toUpperCase()
+  const fallback = (name || email || "").charAt(0).toUpperCase()
 
   return (
     <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
