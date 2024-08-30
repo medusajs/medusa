@@ -1,9 +1,9 @@
 /**
  * @oas [get] /admin/inventory-items/{id}/location-levels
  * operationId: GetInventoryItemsIdLocationLevels
- * summary: List Location Levels
- * description: Retrieve a list of location levels in a inventory item. The
- *   location levels can be filtered by fields like FILTER FIELDS. The location
+ * summary: List Inventory Levels
+ * description: Retrieve a list of inventory levels associated with an inventory item. The
+ *   inventory levels can be filtered by fields like `location_id`. The inventory
  *   levels can also be paginated.
  * x-authenticated: true
  * parameters:
@@ -70,19 +70,19 @@
  *       oneOf:
  *         - type: string
  *           title: location_id
- *           description: The inventory item's location id.
+ *           description: Filter by an associated location's ID.
  *         - type: array
- *           description: The inventory item's location id.
+ *           description: Filter by associated location IDs.
  *           items:
  *             type: string
  *             title: location_id
- *             description: The location id's details.
+ *             description: An associated location ID.
  *   - name: $and
  *     in: query
  *     required: false
  *     schema:
  *       type: array
- *       description: The inventory item's $and.
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
  *       items:
  *         type: object
  *       title: $and
@@ -91,7 +91,7 @@
  *     required: false
  *     schema:
  *       type: array
- *       description: The inventory item's $or.
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
  *       items:
  *         type: object
  *       title: $or
