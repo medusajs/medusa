@@ -9,15 +9,11 @@ import {
 
 import { createStockLocationsWorkflow } from "@medusajs/core-flows"
 import { refetchStockLocation } from "./helpers"
-import {
-  AdminCreateStockLocationType,
-  AdminGetStockLocationsParamsType,
-} from "./validators"
 import { HttpTypes } from "@medusajs/types"
 
 // Create stock location
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateStockLocationType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateStockLocation>,
   res: MedusaResponse<HttpTypes.AdminStockLocationResponse>
 ) => {
   const { result } = await createStockLocationsWorkflow(req.scope).run({
@@ -34,7 +30,7 @@ export const POST = async (
 }
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetStockLocationsParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminStockLocationListParams>,
   res: MedusaResponse<HttpTypes.AdminStockLocationListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
