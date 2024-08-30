@@ -28,6 +28,7 @@ import {
   useCancelExchangeRequest,
   useExchangeConfirmRequest,
   useUpdateExchangeInboundShipping,
+  useUpdateExchangeOutboundShipping,
 } from "../../../../../hooks/api/exchanges"
 import { currencies } from "../../../../../lib/data/currencies"
 import { ExchangeInboundSection } from "./exchange-inbound-section.tsx"
@@ -54,10 +55,14 @@ export const ExchangeCreateForm = ({
   /**
    * STATE
    */
-  const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
-  const [customShippingAmount, setCustomShippingAmount] = useState<
-    number | string
-  >(0)
+  const [isInboundShippingPriceEdit, setIsInboundShippingPriceEdit] =
+    useState(false)
+  const [isOutboundShippingPriceEdit, setIsOutboundShippingPriceEdit] =
+    useState(false)
+  const [customInboundShippingAmount, setCustomInboundShippingAmount] =
+    useState<number | string>(0)
+  const [customOutboundShippingAmount, setCustomOutboundShippingAmount] =
+    useState<number | string>(0)
 
   /**
    * MUTATIONS
@@ -70,11 +75,19 @@ export const ExchangeCreateForm = ({
 
   const {
     mutateAsync: updateInboundShipping,
-    isPending: isUpdatingInboundShipping,
+    isPending: isUpdatingOutboundShipping,
   } = useUpdateExchangeInboundShipping(exchange.id, order.id)
 
+  const {
+    mutateAsync: updateOutboundShipping,
+    isPending: isUpdatingInboundShipping,
+  } = useUpdateExchangeOutboundShipping(exchange.id, order.id)
+
   const isRequestLoading =
-    isConfirming || isCanceling || isUpdatingInboundShipping
+    isConfirming ||
+    isCanceling ||
+    isUpdatingInboundShipping ||
+    isUpdatingOutboundShipping
 
   /**
    * Only consider items that belong to this exchange.
@@ -148,7 +161,9 @@ export const ExchangeCreateForm = ({
     return !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
   })
 
-  const shippingOptionId = form.watch("inbound_option_id")
+  const inboundShippingOptionId = form.watch("inbound_option_id")
+  const outboundShippingOptionId = form.watch("outbound_option_id")
+
   const prompt = usePrompt()
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -176,10 +191,16 @@ export const ExchangeCreateForm = ({
   })
 
   useEffect(() => {
-    if (isShippingPriceEdit) {
-      document.getElementById("js-shipping-input")?.focus()
+    if (isInboundShippingPriceEdit) {
+      document.getElementById("js-inbound-shipping-input")?.focus()
     }
-  }, [isShippingPriceEdit])
+  }, [isInboundShippingPriceEdit])
+
+  useEffect(() => {
+    if (isOutboundShippingPriceEdit) {
+      document.getElementById("js-outbound-shipping-input")?.focus()
+    }
+  }, [isOutboundShippingPriceEdit])
 
   useEffect(() => {
     /**
@@ -284,22 +305,22 @@ export const ExchangeCreateForm = ({
                 </span>
 
                 <span className="txt-small text-ui-fg-subtle flex items-center">
-                  {!isShippingPriceEdit && (
+                  {!isInboundShippingPriceEdit && (
                     <IconButton
-                      onClick={() => setIsShippingPriceEdit(true)}
+                      onClick={() => setIsInboundShippingPriceEdit(true)}
                       variant="transparent"
                       className="text-ui-fg-muted"
                       disabled={
-                        !inboundPreviewItems?.length || !shippingOptionId
+                        !inboundPreviewItems?.length || !inboundShippingOptionId
                       }
                     >
                       <PencilSquare />
                     </IconButton>
                   )}
 
-                  {isShippingPriceEdit ? (
+                  {isInboundShippingPriceEdit ? (
                     <CurrencyInput
-                      id="js-shipping-input"
+                      id="js-inbound-shipping-input"
                       onBlur={() => {
                         let actionId
 
@@ -317,9 +338,9 @@ export const ExchangeCreateForm = ({
                         })
 
                         const customPrice =
-                          customShippingAmount === ""
+                          customInboundShippingAmount === ""
                             ? null
-                            : parseFloat(customShippingAmount)
+                            : parseFloat(customInboundShippingAmount)
 
                         if (actionId) {
                           updateInboundShipping(
@@ -334,15 +355,15 @@ export const ExchangeCreateForm = ({
                             }
                           )
                         }
-                        setIsShippingPriceEdit(false)
+                        setIsInboundShippingPriceEdit(false)
                       }}
                       symbol={
                         currencies[order.currency_code.toUpperCase()]
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={setCustomShippingAmount}
-                      value={customShippingAmount}
+                      onValueChange={setCustomInboundShippingAmount}
+                      value={customInboundShippingAmount}
                       disabled={!inboundPreviewItems?.length}
                     />
                   ) : (
@@ -357,9 +378,70 @@ export const ExchangeCreateForm = ({
                 </span>
 
                 <span className="txt-small text-ui-fg-subtle flex items-center">
-                  {getStylizedAmount(
-                    outboundShipping?.amount ?? 0,
-                    order.currency_code
+                  {!isOutboundShippingPriceEdit && (
+                    <IconButton
+                      onClick={() => setIsOutboundShippingPriceEdit(true)}
+                      variant="transparent"
+                      className="text-ui-fg-muted"
+                      disabled={
+                        !outboundPreviewItems?.length ||
+                        !outboundShippingOptionId
+                      }
+                    >
+                      <PencilSquare />
+                    </IconButton>
+                  )}
+
+                  {isOutboundShippingPriceEdit ? (
+                    <CurrencyInput
+                      id="js-outbound-shipping-input"
+                      onBlur={() => {
+                        let actionId
+
+                        preview.shipping_methods.forEach((s) => {
+                          if (s.actions) {
+                            for (const a of s.actions) {
+                              if (a.action === "SHIPPING_ADD" && !a.return_id) {
+                                actionId = a.id
+                              }
+                            }
+                          }
+                        })
+
+                        const customPrice =
+                          customOutboundShippingAmount === ""
+                            ? null
+                            : parseFloat(customOutboundShippingAmount)
+
+                        if (actionId) {
+                          updateOutboundShipping(
+                            {
+                              actionId,
+                              custom_price: customPrice,
+                            },
+                            {
+                              onError: (error) => {
+                                toast.error(error.message)
+                              },
+                            }
+                          )
+                        }
+                        setIsOutboundShippingPriceEdit(false)
+                      }}
+                      symbol={
+                        currencies[order.currency_code.toUpperCase()]
+                          .symbol_native
+                      }
+                      code={order.currency_code}
+                      onValueChange={setCustomOutboundShippingAmount}
+                      value={customOutboundShippingAmount}
+                      disabled={!outboundPreviewItems?.length}
+                    />
+                  ) : (
+                    getStylizedAmount(
+                      outboundShipping?.amount ?? 0,
+                      order.currency_code
+                    )
                   )}
                 </span>
               </div>
