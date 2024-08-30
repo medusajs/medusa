@@ -8,9 +8,10 @@ import {
   NotificationTypes,
 } from "@medusajs/types"
 import {
+  arrayDifference,
   EmitEvents,
+  generateEntityId,
   InjectManager,
-  InjectTransactionManager,
   MedusaContext,
   MedusaError,
   MedusaService,
@@ -94,7 +95,7 @@ export default class NotificationModuleService
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectManager("baseRepository_")
   protected async createNotifications_(
     data: NotificationTypes.CreateNotificationDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -108,57 +109,118 @@ export default class NotificationModuleService
     const idempotencyKeys = data
       .map((entry) => entry.idempotency_key)
       .filter(Boolean)
-    const alreadySentNotifications = await this.notificationService_.list(
-      {
-        idempotency_key: idempotencyKeys,
-      },
-      { take: null },
-      sharedContext
-    )
 
-    const existsMap = new Map(
-      alreadySentNotifications.map((n) => [n.idempotency_key as string, true])
-    )
-
-    const notificationsToProcess = data.filter(
-      (entry) => !entry.idempotency_key || !existsMap.has(entry.idempotency_key)
-    )
-
-    const notificationsToCreate = await promiseAll(
-      notificationsToProcess.map(async (entry) => {
-        const provider =
-          await this.notificationProviderService_.getProviderForChannel(
-            entry.channel
-          )
-
-        if (!provider) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Could not find a notification provider for channel: ${entry.channel}`
-          )
+    let { notificationsToProcess, createdNotifications } =
+      await this.baseRepository_.transaction(async (txManager) => {
+        const context = {
+          ...sharedContext,
+          transactionManager: txManager,
         }
 
-        if (!provider.is_enabled) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Notification provider ${provider.id} is not enabled. To enable it, configure it as a provider in the notification module options.`
-          )
-        }
-
-        const res = await this.notificationProviderService_.send(
-          provider,
-          entry
+        const alreadySentNotifications = await this.notificationService_.list(
+          {
+            idempotency_key: idempotencyKeys,
+          },
+          { take: null },
+          context
         )
-        return { ...entry, provider_id: provider.id, external_id: res.id }
-      })
-    )
 
-    // Currently we store notifications after they are sent, which might result in a notification being sent that is not registered in the database.
-    // If necessary, we can switch to a two-step process where we first create the notification, send it, and update it after it being sent.
-    const createdNotifications = await this.notificationService_.create(
-      notificationsToCreate,
-      sharedContext
-    )
+        const existsMap = new Map(
+          alreadySentNotifications.map((n) => [
+            n.idempotency_key as string,
+            true,
+          ])
+        )
+
+        const notificationsToProcess = data.filter(
+          (entry) =>
+            !entry.idempotency_key || !existsMap.has(entry.idempotency_key)
+        )
+
+        const channels = notificationsToProcess.map((not) => not.channel)
+        const providers =
+          await this.notificationProviderService_.getProviderForChannels(
+            channels
+          )
+
+        // Create the notifications to be sent to prevent concurrent actions listing the same notifications
+        const normalizedNotificationsToProcess = notificationsToProcess.map(
+          (entry) => {
+            const provider = providers.find((provider) =>
+              provider.channels.includes(entry.channel)
+            )
+
+            return {
+              provider,
+              data: {
+                id: generateEntityId(undefined, "noti"),
+                ...entry,
+                provider_id: provider?.id,
+              },
+            }
+          }
+        )
+
+        const createdNotifications = await this.notificationService_.create(
+          normalizedNotificationsToProcess
+            .filter((entry) => entry.provider?.is_enabled)
+            .map((e) => e.data),
+          context
+        )
+
+        return {
+          notificationsToProcess: normalizedNotificationsToProcess,
+          createdNotifications,
+        }
+      })
+
+    const notificationToUpdate: { id: string; external_id?: string }[] = []
+
+    try {
+      await promiseAll(
+        notificationsToProcess.map(async (entry) => {
+          const provider = entry.provider
+
+          if (!provider) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_FOUND,
+              `Could not find a notification provider for channel: ${entry.channel}`
+            )
+          }
+
+          if (!provider.is_enabled) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_FOUND,
+              `Notification provider ${provider.id} is not enabled. To enable it, configure it as a provider in the notification module options.`
+            )
+          }
+
+          const res = await this.notificationProviderService_.send(
+            provider,
+            entry.data
+          )
+
+          entry.data.external_id = res.id
+          notificationToUpdate.push(entry.data)
+        })
+      )
+    } catch (e) {
+      const notificationIdsToDelete = arrayDifference(
+        createdNotifications.map((n) => n.id),
+        notificationToUpdate.map((n) => n.id)
+      )
+      await this.notificationService_.delete(
+        { id: notificationIdsToDelete },
+        sharedContext
+      )
+
+      throw e
+    } finally {
+      createdNotifications = await this.notificationService_.update(
+        notificationToUpdate,
+        sharedContext
+      )
+    }
 
     return createdNotifications
   }
