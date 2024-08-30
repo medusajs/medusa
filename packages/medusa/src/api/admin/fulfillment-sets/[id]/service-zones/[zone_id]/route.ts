@@ -106,7 +106,7 @@ export const DELETE = async (
   const fulfillmentSet = await fulfillmentModuleService.retrieveFulfillmentSet(
     id,
     {
-      relations: ["service_zones", "location"],
+      relations: ["service_zones"],
     }
   )
 
