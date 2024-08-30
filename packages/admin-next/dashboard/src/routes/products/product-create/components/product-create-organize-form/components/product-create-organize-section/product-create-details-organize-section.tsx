@@ -34,7 +34,7 @@ export const ProductCreateOrganizationSection = ({
 
   const types = useComboboxData({
     queryKey: ["product_types"],
-    queryFn: sdk.admin.productType.list,
+    queryFn: (params) => sdk.admin.productType.list(params),
     getOptions: (data) =>
       data.product_types.map((type) => ({
         label: type.value,
@@ -44,7 +44,7 @@ export const ProductCreateOrganizationSection = ({
 
   const tags = useComboboxData({
     queryKey: ["product_tags"],
-    queryFn: sdk.admin.productTag.list,
+    queryFn: (params) => sdk.admin.productTag.list(params),
     getOptions: (data) =>
       data.product_tags.map((tag) => ({
         label: tag.value,

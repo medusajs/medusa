@@ -4,6 +4,7 @@ import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export type CancelOrdersStepInput = {
   orderIds: string[]
+  canceled_by?: string
 }
 
 export const cancelOrdersStepId = "cancel-orders"
@@ -35,6 +36,7 @@ export const cancelOrdersStep = createStep(
           id: order.id,
           status: prevData.status,
           canceled_at: null,
+          canceled_by: null,
         }
       })
     )

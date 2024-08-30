@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { useCustomer } from "../../../hooks/api/customers"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { getStylizedAmount } from "../../../lib/money-amount-helpers"
 import {
   getOrderFulfillmentStatus,
@@ -74,7 +74,7 @@ export const TransferOwnerShipForm = ({
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ["customers", debouncedQuery],
     queryFn: async ({ pageParam = 0 }) => {
-      const res = await client.customers.list({
+      const res = await sdk.admin.customer.list({
         q: debouncedQuery,
         limit: 10,
         offset: pageParam,

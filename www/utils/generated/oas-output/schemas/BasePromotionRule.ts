@@ -21,6 +21,7 @@
  *     description: The rule's attribute.
  *   operator:
  *     type: string
+ *     description: The rule's operator.
  *     enum:
  *       - gt
  *       - lt

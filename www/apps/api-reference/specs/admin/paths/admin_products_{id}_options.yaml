@@ -125,10 +125,8 @@ get:
         type: array
         description: The product's $and.
         items:
-          type: array
-          items:
-            type: object
-          title: $and
+          type: object
+        title: $and
     - name: $or
       in: query
       description: The product's $or.
@@ -137,10 +135,8 @@ get:
         type: array
         description: The product's $or.
         items:
-          type: array
-          items:
-            type: object
-          title: $or
+          type: object
+        title: $or
   security:
     - api_token: []
     - cookie_auth: []
@@ -313,3 +309,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createProductOptionsWorkflow

@@ -1,4 +1,5 @@
 import { cancelOrderWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -7,7 +8,6 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
@@ -19,6 +19,7 @@ export const POST = async (
 
   const input = {
     order_id: req.params.id,
+    canceled_by: req.auth_context.actor_id,
   }
 
   await cancelOrderWorkflow(req.scope).run({

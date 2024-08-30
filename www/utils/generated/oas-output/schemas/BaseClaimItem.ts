@@ -34,6 +34,7 @@
  *     description: The claim item's quantity.
  *   reason:
  *     type: string
+ *     description: The claim item's reason.
  *     enum:
  *       - missing_item
  *       - wrong_item

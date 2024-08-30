@@ -16,6 +16,7 @@
  *     description: The promotion's code.
  *   type:
  *     type: string
+ *     description: The promotion's type.
  *     enum:
  *       - standard
  *       - buyget
@@ -35,7 +36,7 @@
  *     title: campaign_id
  *     description: The promotion's campaign id.
  *   campaign:
- *     $ref: "#/components/schemas/CampaignResponse"
+ *     $ref: "#/components/schemas/AdminCampaign"
  * 
 */
 

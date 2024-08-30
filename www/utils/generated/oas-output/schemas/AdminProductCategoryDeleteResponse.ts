@@ -15,12 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The product category's object.
+ *     description: The name of the deleted object.
  *     default: product_category
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: The product category's deleted.
+ *     description: Whether the Product Category was deleted.
  *   parent:
  *     type: object
  *     description: The product category's parent.

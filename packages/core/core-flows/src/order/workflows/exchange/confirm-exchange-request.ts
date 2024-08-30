@@ -39,6 +39,7 @@ import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-updat
 
 export type ConfirmExchangeRequestWorkflowInput = {
   exchange_id: string
+  confirmed_by?: string
 }
 
 /**
@@ -62,7 +63,7 @@ export const confirmExchangeRequestValidationStep = createStep(
 )
 
 /**
- * This step confirms that a requested exchange has atleast one item to return or send
+ * This step confirms that a requested exchange has at least one item to return or send
  */
 const confirmIfExchangeItemsArePresent = createStep(
   "confirm-if-exchange-items-are-present",
@@ -79,7 +80,7 @@ const confirmIfExchangeItemsArePresent = createStep(
 
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Order exchange request should have atleast 1 item inbound and 1 item outbound`
+      `Order exchange request should have at least 1 item inbound and 1 item outbound`
     )
   }
 )

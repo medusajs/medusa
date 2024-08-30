@@ -20,6 +20,7 @@ import {
 } from "../../utils/order-validation"
 import { addOrderLineItemsWorkflow } from "../add-line-items"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
+import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 
 /**
  * This step validates that new items can be added to an order edit.
@@ -76,6 +77,17 @@ export const orderEditAddNewItemWorkflow = createWorkflow(
       input: {
         order_id: order.id,
         items: input.items,
+      },
+    })
+
+    const lineItemIds = transform(lineItems, (lineItems) => {
+      return lineItems.map((item) => item.id)
+    })
+
+    updateOrderTaxLinesWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+        item_ids: lineItemIds,
       },
     })
 

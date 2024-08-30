@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useMemo, useState } from "react"
 import { HeartBroken } from "@medusajs/icons"
 import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -14,7 +14,7 @@ import {
   useUpdateDismissItem,
 } from "../../../../../hooks/api/returns"
 
-type WriteOffQuantityProps = {
+type DismissedQuantityProps = {
   returnId: string
   orderId: string
   index: number
@@ -22,13 +22,13 @@ type WriteOffQuantityProps = {
   form: UseFormReturn<typeof ReceiveReturnSchema>
 }
 
-function WrittenOffQuantity({
+function DismissedQuantity({
   form,
   item,
   index,
   returnId,
   orderId,
-}: WriteOffQuantityProps) {
+}: DismissedQuantityProps) {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -47,6 +47,18 @@ function WrittenOffQuantity({
     orderId
   )
 
+  // quantities only for this return
+  const [receivedQuantity, dismissedQuantity] = useMemo(() => {
+    const receivedAction = item.actions?.find(
+      (a) => a.action === "RECEIVE_RETURN_ITEM"
+    )
+    const dismissedAction = item.actions?.find(
+      (a) => a.action === "RECEIVE_DAMAGED_RETURN_ITEM"
+    )
+
+    return [receivedAction?.details.quantity, dismissedAction?.details.quantity]
+  }, [item])
+
   const onDismissedQuantityChanged = async (value: number | null) => {
     // TODO: if out of bounds prevent sending and notify user
 
@@ -55,11 +67,10 @@ function WrittenOffQuantity({
     )
 
     if (typeof value === "number" && value < 0) {
-      form.setValue(
-        `items.${index}.written_off_quantity`,
-        item.detail.written_off_quantity,
-        { shouldTouch: true, shouldDirty: true }
-      )
+      form.setValue(`items.${index}.dismissed_quantity`, dismissedQuantity, {
+        shouldTouch: true,
+        shouldDirty: true,
+      })
 
       toast.error(t("orders.returns.receive.toast.errorNegativeValue"))
 
@@ -68,13 +79,12 @@ function WrittenOffQuantity({
 
     if (
       typeof value === "number" &&
-      value > item.quantity - item.detail.return_received_quantity
+      value > item.quantity - item.detail.return_received_quantity // total received quantity across multiple returns
     ) {
-      form.setValue(
-        `items.${index}.written_off_quantity`,
-        item.detail.written_off_quantity,
-        { shouldTouch: true, shouldDirty: true }
-      )
+      form.setValue(`items.${index}.dismissed_quantity`, dismissedQuantity, {
+        shouldTouch: true,
+        shouldDirty: true,
+      })
 
       toast.error(t("orders.returns.receive.toast.errorLargeDamagedValue"))
 
@@ -108,9 +118,7 @@ function WrittenOffQuantity({
           <div>
             <HeartBroken />
           </div>
-          {!!item.detail.written_off_quantity && (
-            <span>{item.detail.written_off_quantity}</span>
-          )}
+          {!!dismissedQuantity && <span>{dismissedQuantity}</span>}
         </Button>
       </Popover.Trigger>
       <Popover.Content align="center">
@@ -120,7 +128,7 @@ function WrittenOffQuantity({
           </span>
           <Form.Field
             control={form.control}
-            name={`items.${index}.written_off_quantity`}
+            name={`items.${index}.dismissed_quantity`}
             render={({ field: { onChange, value, ...field } }) => {
               return (
                 <Form.Item className="w-full">
@@ -156,4 +164,4 @@ function WrittenOffQuantity({
   )
 }
 
-export default WrittenOffQuantity
+export default DismissedQuantity

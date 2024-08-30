@@ -49,6 +49,7 @@
  *     description: The create's handle.
  *   status:
  *     type: string
+ *     description: The create's status.
  *     enum:
  *       - draft
  *       - proposed
