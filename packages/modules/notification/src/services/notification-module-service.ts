@@ -8,13 +8,13 @@ import {
   NotificationTypes,
 } from "@medusajs/types"
 import {
-  arrayDifference,
   EmitEvents,
   generateEntityId,
   InjectManager,
   MedusaContext,
   MedusaError,
   MedusaService,
+  NotificationStatus,
   promiseAll,
 } from "@medusajs/utils"
 import { Notification } from "@models"
@@ -126,15 +126,17 @@ export default class NotificationModuleService
         )
 
         const existsMap = new Map(
-          alreadySentNotifications.map((n) => [
-            n.idempotency_key as string,
-            true,
-          ])
+          alreadySentNotifications.map((n) => [n.idempotency_key as string, n])
         )
 
         const notificationsToProcess = data.filter(
           (entry) =>
-            !entry.idempotency_key || !existsMap.has(entry.idempotency_key)
+            !entry.idempotency_key ||
+            !existsMap.has(entry.idempotency_key) ||
+            (existsMap.has(entry.idempotency_key) &&
+              [NotificationStatus.PENDING, NotificationStatus.FAILURE].includes(
+                existsMap.get(entry.idempotency_key)!.status
+              ))
         )
 
         const channels = notificationsToProcess.map((not) => not.channel)
@@ -147,11 +149,14 @@ export default class NotificationModuleService
         const normalizedNotificationsToProcess = notificationsToProcess.map(
           (entry) => {
             const provider = providers.find((provider) =>
-              provider.channels.includes(entry.channel)
+              provider?.channels.includes(entry.channel)
             )
 
             return {
               provider,
+              alreadyExists: !!(
+                entry.idempotency_key && existsMap.has(entry.idempotency_key)
+              ),
               data: {
                 id: generateEntityId(undefined, "noti"),
                 ...entry,
@@ -163,7 +168,7 @@ export default class NotificationModuleService
 
         const createdNotifications = await this.notificationService_.create(
           normalizedNotificationsToProcess
-            .filter((entry) => entry.provider?.is_enabled)
+            .filter((e) => !e.alreadyExists)
             .map((e) => e.data),
           context
         )
@@ -181,18 +186,15 @@ export default class NotificationModuleService
         notificationsToProcess.map(async (entry) => {
           const provider = entry.provider
 
-          if (!provider) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_FOUND,
-              `Could not find a notification provider for channel: ${entry.channel}`
-            )
-          }
+          if (!provider?.is_enabled) {
+            entry.data.status = NotificationStatus.FAILURE
+            notificationToUpdate.push(entry.data)
 
-          if (!provider.is_enabled) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_FOUND,
-              `Notification provider ${provider.id} is not enabled. To enable it, configure it as a provider in the notification module options.`
-            )
+            const errorMessage = !provider
+              ? `Could not find a notification provider for channel: ${entry.data.channel}`
+              : `Notification provider ${provider.id} is not enabled. To enable it, configure it as a provider in the notification module options.`
+
+            throw new MedusaError(MedusaError.Types.NOT_FOUND, errorMessage)
           }
 
           const res = await this.notificationProviderService_.send(
@@ -201,20 +203,14 @@ export default class NotificationModuleService
           )
 
           entry.data.external_id = res.id
-          notificationToUpdate.push(entry.data)
-        })
-      )
-    } catch (e) {
-      const notificationIdsToDelete = arrayDifference(
-        createdNotifications.map((n) => n.id),
-        notificationToUpdate.map((n) => n.id)
-      )
-      await this.notificationService_.delete(
-        { id: notificationIdsToDelete },
-        sharedContext
-      )
+          entry.data.status = NotificationStatus.SUCCESS
 
-      throw e
+          notificationToUpdate.push(entry.data)
+        }),
+        {
+          aggregateErrors: true,
+        }
+      )
     } finally {
       createdNotifications = await this.notificationService_.update(
         notificationToUpdate,

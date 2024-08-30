@@ -63,9 +63,9 @@ export default class NotificationProviderService extends ModulesSdkUtils.MedusaI
     }
 
     const normalizedChannels = Array.isArray(channels) ? channels : [channels]
-    const results = normalizedChannels.map((channel) =>
-      this.providersCache.get(channel)
-    )
+    const results = normalizedChannels
+      .map((channel) => this.providersCache.get(channel))
+      .filter(Boolean)
 
     return (Array.isArray(channels) ? results : results[0]) as TOutput
   }
