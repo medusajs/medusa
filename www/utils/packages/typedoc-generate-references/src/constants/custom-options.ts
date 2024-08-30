@@ -123,7 +123,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     enableInternalResolve: true,
     exclude: [
       ...(baseOptions.exclude || []),
-      ...modules.map((moduleName) => `**/${moduleName}/**/*.ts`),
+      ...modules.map((moduleName) => `**/${moduleName}/**/!(workflows).ts`),
     ],
   }),
   "modules-sdk": getOptions({

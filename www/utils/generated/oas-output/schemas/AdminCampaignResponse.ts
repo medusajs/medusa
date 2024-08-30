@@ -7,7 +7,7 @@
  *   - campaign
  * properties:
  *   campaign:
- *     $ref: "#/components/schemas/CampaignResponse"
+ *     $ref: "#/components/schemas/AdminCampaign"
  * 
 */
 

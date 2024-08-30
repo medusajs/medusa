@@ -19,6 +19,7 @@
  *   compensate_input: {}
  *   action:
  *     type: string
+ *     description: The workflows execution's action.
  *     enum:
  *       - invoke
  *       - compensate

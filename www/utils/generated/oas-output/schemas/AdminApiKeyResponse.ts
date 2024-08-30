@@ -7,7 +7,7 @@
  *   - api_key
  * properties:
  *   api_key:
- *     $ref: "#/components/schemas/ApiKeyResponse"
+ *     $ref: "#/components/schemas/AdminApiKey"
  * 
 */
 

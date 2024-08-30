@@ -15,12 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The claim's object.
+ *     description: The name of the deleted object.
  *     default: claim
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: The claim's deleted.
+ *     description: Whether the Claim was deleted.
  *   parent:
  *     type: object
  *     description: The claim's parent.

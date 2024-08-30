@@ -13,12 +13,12 @@ properties:
   object:
     type: string
     title: object
-    description: The price list's object.
+    description: The name of the deleted object.
     default: price_list
   deleted:
     type: boolean
     title: deleted
-    description: The price list's deleted.
+    description: Whether the Price List was deleted.
   parent:
     type: object
     description: The price list's parent.

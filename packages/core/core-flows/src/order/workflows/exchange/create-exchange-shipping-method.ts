@@ -20,6 +20,7 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
+import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 
 /**
  * This step validates that a shipping method can be created for an exchange.
@@ -134,6 +135,22 @@ export const createExchangeShippingMethodWorkflow = createWorkflow(
 
     const createdMethods = createOrderShippingMethods({
       shipping_methods: [shippingMethodInput],
+    })
+
+    const shippingMethodIds = transform(createdMethods, (createdMethods) => {
+      return createdMethods.map((item) => item.id)
+    })
+
+    const isReturn = transform(input, (data) => {
+      return !!data.return_id
+    })
+
+    updateOrderTaxLinesWorkflow.runAsStep({
+      input: {
+        order_id: order.id,
+        shipping_method_ids: shippingMethodIds,
+        is_return: isReturn,
+      },
     })
 
     const orderChangeActionInput = transform(

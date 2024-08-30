@@ -8,8 +8,8 @@ import { SearchSuggestions, type SearchSuggestionType } from "./Suggestions"
 import { AlgoliaProps, useSearch } from "@/providers"
 import { checkArraySameElms } from "@/utils"
 import { SearchHitsWrapper } from "./Hits"
-import { Button, Kbd, SelectBadge, SpinnerLoading } from "@/components"
-import { MagnifyingGlass, XMark } from "@medusajs/icons"
+import { Button, SelectBadge, SpinnerLoading } from "@/components"
+import { XMark } from "@medusajs/icons"
 import { useSearchNavigation, type OptionType } from "@/hooks"
 import { SearchFooter } from "./Footer"
 
@@ -150,7 +150,10 @@ export const Search = ({
           >
             <SearchHitsWrapper
               configureProps={{
-                tagRefinements: filters,
+                // filters array has to be wrapped
+                // in another array for an OR condition
+                // to be applied between the items.
+                tagFilters: [filters],
               }}
               indices={algolia.indices}
               checkInternalPattern={checkInternalPattern}

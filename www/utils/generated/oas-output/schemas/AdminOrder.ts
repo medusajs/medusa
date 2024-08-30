@@ -102,6 +102,7 @@
  *       $ref: "#/components/schemas/BaseOrderShippingMethod"
  *   payment_status:
  *     type: string
+ *     description: The order's payment status.
  *     enum:
  *       - canceled
  *       - not_paid
@@ -115,6 +116,7 @@
  *       - requires_action
  *   fulfillment_status:
  *     type: string
+ *     description: The order's fulfillment status.
  *     enum:
  *       - canceled
  *       - not_fulfilled

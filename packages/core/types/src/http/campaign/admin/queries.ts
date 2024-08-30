@@ -1,15 +1,16 @@
+import { BaseFilterable } from "../../../dal"
+import { FindParams, SelectParams } from "../../common"
 
-import { BaseFilterable, OperatorMap } from "../../../dal"
-import { FindParams } from "../../common"
-
-export interface AdminGetCampaignParams
+export interface AdminGetCampaignsParams
   extends FindParams,
-    BaseFilterable<AdminGetCampaignParams> {
+    BaseFilterable<AdminGetCampaignsParams> {
   q?: string
   campaign_identifier?: string
   budget?: {
     currency_code?: string
   }
-  $and?: AdminGetCampaignParams[]
-  $or?: AdminGetCampaignParams[]
+  $and?: AdminGetCampaignsParams[]
+  $or?: AdminGetCampaignsParams[]
 }
+
+export interface AdminGetCampaignParams extends SelectParams {}

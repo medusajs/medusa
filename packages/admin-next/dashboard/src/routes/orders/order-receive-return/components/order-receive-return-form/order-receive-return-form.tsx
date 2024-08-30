@@ -20,7 +20,7 @@ import {
 } from "../../../../../hooks/api/returns"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { ReceiveReturnSchema } from "./constants"
-import WrittenOffQuantity from "./written-off-quantity"
+import DismissedQuantity from "./dismissed-quantity"
 
 type OrderAllocateItemsFormProps = {
   order: AdminOrder
@@ -90,8 +90,6 @@ export function OrderReceiveReturnForm({
         ?.sort((i1, i2) => i1.id.localeCompare(i2.id))
         .map((i) => ({
           item_id: i.id,
-          quantity: i.detail.return_received_quantity,
-          written_off_quantity: i.detail.written_off_quantity,
         })),
       send_notification: false,
     },
@@ -102,14 +100,21 @@ export function OrderReceiveReturnForm({
     previewItems
       ?.sort((i1, i2) => i1.id.localeCompare(i2.id))
       .forEach((item, index) => {
+        const receivedAction = item.actions?.find(
+          (a) => a.action === "RECEIVE_RETURN_ITEM"
+        )
+        const dismissedAction = item.actions?.find(
+          (a) => a.action === "RECEIVE_DAMAGED_RETURN_ITEM"
+        )
+
         form.setValue(
           `items.${index}.quantity`,
-          item.detail.return_received_quantity,
+          receivedAction?.details.quantity,
           { shouldTouch: true, shouldDirty: true }
         )
         form.setValue(
-          `items.${index}.written_off_quantity`,
-          item.detail.written_off_quantity,
+          `items.${index}.dismissed_quantity`,
+          dismissedAction?.details.quantity,
           { shouldTouch: true, shouldDirty: true }
         )
       })
@@ -255,7 +260,7 @@ export function OrderReceiveReturnForm({
                   </div>
 
                   <div className="flex flex-1 flex-row items-center gap-2">
-                    <WrittenOffQuantity
+                    <DismissedQuantity
                       form={form}
                       item={item}
                       index={ind}

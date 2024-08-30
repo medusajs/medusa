@@ -34,6 +34,7 @@ import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-updat
 
 export type ConfirmReturnRequestWorkflowInput = {
   return_id: string
+  confirmed_by?: string
 }
 
 /**
@@ -57,7 +58,7 @@ export const confirmReturnRequestValidationStep = createStep(
 )
 
 /**
- * This step confirms that a requested return has atleast one item
+ * This step confirms that a requested return has at least one item
  */
 const confirmIfReturnItemsArePresent = createStep(
   "confirm-if-return-items-are-present",
@@ -68,7 +69,7 @@ const confirmIfReturnItemsArePresent = createStep(
 
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Order return request should have atleast 1 item`
+      `Order return request should have at least 1 item`
     )
   }
 )
@@ -278,7 +279,11 @@ export const confirmReturnRequestWorkflow = createWorkflow(
           requested_at: new Date(),
         },
       ]),
-      confirmOrderChanges({ changes: [orderChange], orderId: order.id })
+      confirmOrderChanges({
+        changes: [orderChange],
+        orderId: order.id,
+        confirmed_by: input.confirmed_by,
+      })
     )
 
     createOrUpdateOrderPaymentCollectionWorkflow.runAsStep({
