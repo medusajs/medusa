@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "../../common";
+import { DeleteResponse, PaginatedResponse } from "../../common";
 import { AdminUser } from "../../user";
 import { AdminInvite } from "./entities";
 
@@ -15,3 +15,5 @@ export type AdminAcceptInviteResponse = {
 } | {
   message: string
 }
+
+export type AdminInviteDeleteResponse = DeleteResponse<"invite">

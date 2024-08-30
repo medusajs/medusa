@@ -73,7 +73,7 @@ export class ApiKey {
   }
 
   async delete(id: string, headers?: ClientHeaders) {
-    return await this.client.fetch<HttpTypes.DeleteResponse<"api_key">>(
+    return await this.client.fetch<HttpTypes.AdminApiKeyDeleteResponse>(
       `/admin/api-keys/${id}`,
       {
         method: "DELETE",

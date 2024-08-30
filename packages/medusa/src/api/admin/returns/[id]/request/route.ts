@@ -2,7 +2,7 @@ import {
   cancelReturnRequestWorkflow,
   confirmReturnRequestWorkflow,
 } from "@medusajs/core-flows"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -49,7 +49,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"return">>
+  res: MedusaResponse<HttpTypes.AdminReturnDeleteResponse>
 ) => {
   const { id } = req.params
 

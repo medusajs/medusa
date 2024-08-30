@@ -1,5 +1,5 @@
 import { CampaignBudgetTypeValues } from "../../../promotion"
-import { PaginatedResponse } from "../../common"
+import { DeleteResponse, PaginatedResponse } from "../../common"
 
 export interface AdminCampaign {
   id: string
@@ -25,3 +25,5 @@ export type AdminCampaignListResponse = PaginatedResponse<{
 export interface AdminCampaignResponse {
   campaign: AdminCampaign
 }
+
+export type AdminCampaignDeleteResponse = DeleteResponse<"campaign">

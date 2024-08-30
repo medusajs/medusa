@@ -9,7 +9,7 @@ import {
 } from "../../../../types/routing"
 import { refetchRegion } from "../helpers"
 import { AdminGetRegionParamsType, AdminUpdateRegionType } from "../validators"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetRegionParamsType>,
@@ -53,7 +53,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"region">>
+  res: MedusaResponse<HttpTypes.AdminRegionDeleteResponse>
 ) => {
   const id = req.params.id
 
