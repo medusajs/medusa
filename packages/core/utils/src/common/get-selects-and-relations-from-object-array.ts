@@ -1,6 +1,8 @@
 import { deduplicate } from "./deduplicate"
 import { isObject } from "./is-object"
 
+const KEYS_THAT_ARE_NOT_RELATIONS = ["metadata"]
+
 export function getSelectsAndRelationsFromObjectArray(
   dataArray: object[],
   options: { objectFields: string[] } = {
@@ -17,23 +19,29 @@ export function getSelectsAndRelationsFromObjectArray(
   for (const data of dataArray) {
     for (const [key, value] of Object.entries(data)) {
       if (isObject(value) && !options.objectFields.includes(key)) {
-        relations.push(setKey(key, prefix))
         const res = getSelectsAndRelationsFromObjectArray(
           [value],
           options,
           setKey(key, prefix)
         )
         selects.push(...res.selects)
-        relations.push(...res.relations)
+
+        if (!KEYS_THAT_ARE_NOT_RELATIONS.includes(key)) {
+          relations.push(setKey(key, prefix))
+          relations.push(...res.relations)
+        }
       } else if (Array.isArray(value)) {
-        relations.push(setKey(key, prefix))
         const res = getSelectsAndRelationsFromObjectArray(
           value,
           options,
           setKey(key, prefix)
         )
         selects.push(...res.selects)
-        relations.push(...res.relations)
+
+        if (!KEYS_THAT_ARE_NOT_RELATIONS.includes(key)) {
+          relations.push(setKey(key, prefix))
+          relations.push(...res.relations)
+        }
       } else {
         selects.push(setKey(key, prefix))
       }
