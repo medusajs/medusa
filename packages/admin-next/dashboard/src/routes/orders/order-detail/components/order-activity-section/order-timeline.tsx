@@ -313,6 +313,11 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
 
     for (const edit of orderChanges) {
       const isConfirmed = edit.status === "confirmed"
+      const isPending = edit.status === "pending"
+
+      if (isPending) {
+        continue
+      }
 
       items.push({
         title: t(`orders.activity.events.edit.${edit.status}`, {
