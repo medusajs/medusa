@@ -161,19 +161,19 @@
  *     description: The item's metadata.
  *   created_at:
  *     type: string
+ *     format: date-time
  *     title: created_at
  *     description: The item's created at.
- *     format: date-time
  *   updated_at:
  *     type: string
+ *     format: date-time
  *     title: updated_at
  *     description: The item's updated at.
- *     format: date-time
  *   deleted_at:
  *     type: string
+ *     format: date-time
  *     title: deleted_at
  *     description: The item's deleted at.
- *     format: date-time
  *   original_total:
  *     oneOf:
  *       - type: string

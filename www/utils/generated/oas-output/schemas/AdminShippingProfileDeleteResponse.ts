@@ -15,12 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The shipping profile's object.
+ *     description: The name of the deleted object.
  *     default: shipping_profile
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: The shipping profile's deleted.
+ *     description: Whether the Shipping Profile was deleted.
  *   parent:
  *     type: object
  *     description: The shipping profile's parent.

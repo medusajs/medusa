@@ -6,12 +6,6 @@ info:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
 tags:
-  - name: Auth
-    description: >
-      Auth API routes allow you to manage a customer's authentication.
-    externalDocs:
-      description: How to register a customer in a storefront.
-      url: https://docs.medusajs.com/v2/resources/storefront-development/customers/register
   - name: Carts
     description: >
       A cart is a virtual shopping bag that customers can use to add items they
@@ -29,7 +23,8 @@ tags:
       $ref: "#/components/schemas/StoreCart"
   - name: Collections
     description: >
-      A product collection organizes products into a collection for marketing purposes. For example, a summer collection.
+      A product collection organizes products into a collection for marketing
+      purposes. For example, a summer collection.
 
 
       These API routes allow customers to browse collections and their products.
@@ -40,7 +35,8 @@ tags:
       $ref: "#/components/schemas/StoreCollection"
   - name: Currencies
     description: >
-      A store has multiple currencies, and product prices can be different for each currency.
+      A store has multiple currencies, and product prices can be different for
+      each currency.
 
 
       When retrieving product variant prices, you specify either the ID of a region or a currency that the customer selected.
@@ -67,9 +63,8 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/StoreCustomer"
   - name: Orders
-    description: >
+    description: |
       Guest and registered customers can view orders they placed.
-
 
       These API routes allow customers to view their orders.
     x-associatedSchema:
@@ -79,8 +74,7 @@ tags:
       A cart must have a payment collection with an authorized payment session.
 
 
-      Use these API routes during checkout to set the cart's payment provider and authorize its
-      payment session.
+      Use these API routes during checkout to set the cart's payment provider and authorize its payment session.
     externalDocs:
       description: How to implement payment during checkout.
       url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment
@@ -91,9 +85,7 @@ tags:
       Each region has a set of payment providers enabled.
 
 
-      During checkout, you retrieve the available payment providers in the customer's region to
-      show them to the customer. Customers then choose their preferred provider to authorize their
-      payment and place their order.
+      During checkout, you retrieve the available payment providers in the customer's region to show them to the customer. Customers then choose their preferred provider to authorize their payment and place their order.
 
 
       These API routes allow customers to view available payment providers in their region.
@@ -103,9 +95,8 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/StorePaymentProvider"
   - name: Product Categories
-    description: >
+    description: |
       Products can be categorized into categories.
-
 
       These API routes allow customers to browse categories and their products.
     externalDocs:
@@ -118,8 +109,7 @@ tags:
       Customers browse products for their purchase.
 
 
-      A product has variants for different option values. The customer chooses from these variants
-      before adding it to the cart.
+      A product has variants for different option values. The customer chooses from these variants before adding it to the cart.
 
 
       These API routes allow customers to browse products.
@@ -145,7 +135,8 @@ tags:
       $ref: "#/components/schemas/StoreRegion"
   - name: Return
     description: >
-      Customers can request to return items in their order. The admin user then receives and handles the return.
+      Customers can request to return items in their order. The admin user then
+      receives and handles the return.
 
 
       These API routes allows customers to create a return.
@@ -156,8 +147,7 @@ tags:
       A return reason is a possible reason a customer wants to return an item.
 
 
-      Use these API routes when implementing return creation flow in your storefront to allow customers to
-      select their return reason.
+      Use these API routes when implementing return creation flow in your storefront to allow customers to select their return reason.
     x-associatedSchema:
       $ref: "#/components/schemas/StoreReturnReason"
   - name: Shipping Options

@@ -6,8 +6,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-
-import { DeleteResponse, HttpTypes, MedusaContainer } from "@medusajs/types"
+import { HttpTypes, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -71,7 +70,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"address">>
+  res: MedusaResponse<HttpTypes.StoreCustomerAddressDeleteResponse>
 ) => {
   const id = req.auth_context.actor_id
   await validateCustomerAddress(req.scope, id, req.params.address_id)

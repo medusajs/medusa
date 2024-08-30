@@ -10,7 +10,7 @@ import { MedusaError } from "@medusajs/utils"
 import { deleteReservationsWorkflow } from "@medusajs/core-flows"
 import { updateReservationsWorkflow } from "@medusajs/core-flows"
 import { refetchReservation } from "../helpers"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetReservationParamsType>,
@@ -55,7 +55,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"reservation">>
+  res: MedusaResponse<HttpTypes.AdminReservationDeleteResponse>
 ) => {
   const id = req.params.id
 

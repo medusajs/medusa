@@ -294,12 +294,11 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: updateCustomerAddressesWorkflow
 delete:
   operationId: DeleteCustomersIdAddressesAddress_id
-  summary: Remove Addresses from Customer
-  description: >-
-    Remove a list of addresses from a customer. This doesn't delete the Address,
-    only the association between the Address and the customer.
+  summary: Remove an Address from Customer
+  description: Remove a customer's address.
   x-authenticated: true
   parameters:
     - name: id
@@ -310,7 +309,7 @@ delete:
         type: string
     - name: address_id
       in: path
-      description: The customer's address id.
+      description: The customer address's ID.
       required: true
       schema:
         type: string
@@ -421,3 +420,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: deleteCustomerAddressesWorkflow

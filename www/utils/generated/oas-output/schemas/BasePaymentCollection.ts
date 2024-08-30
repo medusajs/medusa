@@ -95,6 +95,7 @@
  *     description: The payment collection's metadata.
  *   status:
  *     type: string
+ *     description: The payment collection's status.
  *     enum:
  *       - canceled
  *       - not_paid

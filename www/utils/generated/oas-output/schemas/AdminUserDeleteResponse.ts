@@ -15,12 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The user's object.
+ *     description: The name of the deleted object.
  *     default: user
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: The user's deleted.
+ *     description: Whether the User was deleted.
  *   parent:
  *     type: object
  *     description: The user's parent.

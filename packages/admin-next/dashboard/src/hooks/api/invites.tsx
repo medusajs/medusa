@@ -1,6 +1,5 @@
 import {
   AdminInviteResponse,
-  DeleteResponse,
   HttpTypes,
   PaginatedResponse,
 } from "@medusajs/types"
@@ -99,7 +98,11 @@ export const useResendInvite = (
 
 export const useDeleteInvite = (
   id: string,
-  options?: UseMutationOptions<DeleteResponse<"invite">, FetchError, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminInviteDeleteResponse,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.invite.delete(id),

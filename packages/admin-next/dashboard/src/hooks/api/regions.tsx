@@ -1,4 +1,4 @@
-import { DeleteResponse, HttpTypes, PaginatedResponse } from "@medusajs/types"
+import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -112,7 +112,11 @@ export const useUpdateRegion = (
 
 export const useDeleteRegion = (
   id: string,
-  options?: UseMutationOptions<DeleteResponse<"region">, FetchError, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminRegionDeleteResponse,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.region.delete(id),

@@ -1,3 +1,4 @@
+import { DeleteResponseWithParent } from "../../common"
 import { StoreOrder } from "../../order"
 import { StoreCart } from "./entities"
 
@@ -17,3 +18,5 @@ export type StoreCompleteCartResponse = {
   type: "order"
   order: StoreOrder
 }
+
+export type StoreLineItemDeleteResponse = DeleteResponseWithParent<"line-item", StoreCart>

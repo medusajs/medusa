@@ -143,29 +143,17 @@ get:
       in: query
       description: The return reason's created at.
       required: false
-      schema:
-        type: string
-        format: date-time
-        title: created_at
-        description: The return reason's created at.
+      schema: {}
     - name: updated_at
       in: query
       description: The return reason's updated at.
       required: false
-      schema:
-        type: string
-        format: date-time
-        title: updated_at
-        description: The return reason's updated at.
+      schema: {}
     - name: deleted_at
       in: query
       description: The return reason's deleted at.
       required: false
-      schema:
-        type: string
-        format: date-time
-        title: deleted_at
-        description: The return reason's deleted at.
+      schema: {}
     - name: $and
       in: query
       description: The return reason's $and.
@@ -312,3 +300,4 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  x-workflow: createReturnReasonsWorkflow

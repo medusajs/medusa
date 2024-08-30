@@ -105,7 +105,7 @@ export const useUpdateCustomerGroup = (
 export const useDeleteCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
-    HttpTypes.DeleteResponse<"customer_group">,
+    HttpTypes.AdminCustomerGroupDeleteResponse,
     FetchError,
     void
   >
