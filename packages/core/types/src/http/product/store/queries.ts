@@ -11,4 +11,5 @@ export interface StoreProductParams extends BaseProductListParams {
   region_id?: string
   currency_code?: string
   variants?: StoreProductVariantParams
+  province?: string
 }

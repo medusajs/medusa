@@ -4,7 +4,7 @@ import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: MedusaRequest<HttpTypes.StoreGetShippingOptionList>,
   res: MedusaResponse<HttpTypes.StoreShippingOptionListResponse>
 ) => {
   const { cart_id } = req.filterableFields as { cart_id: string }

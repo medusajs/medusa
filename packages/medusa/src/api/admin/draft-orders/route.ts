@@ -14,7 +14,7 @@ import { refetchOrder } from "./helpers"
 import { AdditionalData, CreateOrderDTO, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: MedusaRequest,
+  req: MedusaRequest<HttpTypes.AdminOrderFilters>,
   res: MedusaResponse<HttpTypes.AdminDraftOrderListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

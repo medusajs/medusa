@@ -16,7 +16,7 @@ import {
   AdminGetPromotionParamsType,
   AdminUpdatePromotionType,
 } from "../validators"
-import { AdditionalData, DeleteResponse, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetPromotionParamsType>,
@@ -71,7 +71,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"promotion">>
+  res: MedusaResponse<HttpTypes.AdminPromotionDeleteResponse>
 ) => {
   const id = req.params.id
   const deletePromotions = deletePromotionsWorkflow(req.scope)

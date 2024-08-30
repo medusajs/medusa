@@ -27,7 +27,7 @@ export class Order {
 
   async retrievePreview(
     id: string,
-    query?: SelectParams,
+    query?: HttpTypes.AdminOrderFilters,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminOrderPreviewResponse>(

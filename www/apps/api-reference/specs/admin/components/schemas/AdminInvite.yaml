@@ -34,11 +34,11 @@ properties:
     description: The invite's metadata.
   created_at:
     type: string
+    format: date-time
     title: created_at
     description: The invite's created at.
-    format: date-time
   updated_at:
     type: string
+    format: date-time
     title: updated_at
     description: The invite's updated at.
-    format: date-time

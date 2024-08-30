@@ -14,6 +14,7 @@ import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { productsQueryKeys } from "./products"
+import { FetchError } from "@medusajs/js-sdk"
 
 const SALES_CHANNELS_QUERY_KEY = "sales-channels" as const
 export const salesChannelsQueryKeys = queryKeysFactory(SALES_CHANNELS_QUERY_KEY)
@@ -23,7 +24,7 @@ export const useSalesChannel = (
   options?: Omit<
     UseQueryOptions<
       AdminSalesChannelResponse,
-      Error,
+      FetchError,
       AdminSalesChannelResponse,
       QueryKey
     >,
@@ -44,7 +45,7 @@ export const useSalesChannels = (
   options?: Omit<
     UseQueryOptions<
       AdminSalesChannelListResponse,
-      Error,
+      FetchError,
       AdminSalesChannelListResponse,
       QueryKey
     >,
@@ -63,7 +64,7 @@ export const useSalesChannels = (
 export const useCreateSalesChannel = (
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCreateSalesChannel
   >
 ) => {
@@ -83,7 +84,7 @@ export const useUpdateSalesChannel = (
   id: string,
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateSalesChannel
   >
 ) => {
@@ -107,7 +108,7 @@ export const useDeleteSalesChannel = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminSalesChannelDeleteResponse,
-    Error,
+    FetchError,
     void
   >
 ) => {
@@ -136,7 +137,7 @@ export const useSalesChannelRemoveProducts = (
   id: string,
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminBatchLink["remove"]
   >
 ) => {
@@ -173,7 +174,7 @@ export const useSalesChannelAddProducts = (
   id: string,
   options?: UseMutationOptions<
     AdminSalesChannelResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminBatchLink["add"]
   >
 ) => {

@@ -9,7 +9,7 @@ import {
   AdminUpdateInventoryItemType,
 } from "../validators"
 import { refetchInventoryItem } from "../helpers"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: MedusaRequest<AdminGetInventoryItemParamsType>,
@@ -59,7 +59,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: MedusaRequest,
-  res: MedusaResponse<DeleteResponse<"inventory_item">>
+  res: MedusaResponse<HttpTypes.AdminInventoryItemDeleteResponse>
 ) => {
   const id = req.params.id
   const deleteInventoryItems = deleteInventoryItemWorkflow(req.scope)

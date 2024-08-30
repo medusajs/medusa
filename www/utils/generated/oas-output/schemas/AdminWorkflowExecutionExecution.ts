@@ -1,0 +1,14 @@
+/**
+ * @schema AdminWorkflowExecutionExecution
+ * type: object
+ * description: The workflow execution's execution.
+ * x-schemaName: AdminWorkflowExecutionExecution
+ * required:
+ *   - steps
+ * properties:
+ *   steps:
+ *     type: object
+ *     description: The execution's steps.
+ * 
+*/
+

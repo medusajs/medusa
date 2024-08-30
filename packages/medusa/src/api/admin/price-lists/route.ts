@@ -12,7 +12,7 @@ import { AdminCreatePriceListType } from "./validators"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminPriceListListParams>,
   res: MedusaResponse<HttpTypes.AdminPriceListListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

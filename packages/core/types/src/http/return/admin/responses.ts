@@ -1,5 +1,5 @@
 import { OrderDTO } from "../../../order"
-import { PaginatedResponse } from "../../common"
+import { DeleteResponse, PaginatedResponse } from "../../common"
 import { AdminOrderPreview } from "../../order"
 import { AdminReturn } from "./entities"
 
@@ -20,3 +20,5 @@ export interface AdminReturnPreviewResponse {
   order_preview: AdminOrderPreview
   return: AdminReturn
 }
+
+export type AdminReturnDeleteResponse = DeleteResponse<"return">

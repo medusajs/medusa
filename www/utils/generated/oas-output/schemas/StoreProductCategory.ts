@@ -62,6 +62,9 @@
  *     description: The category's category children.
  *     items:
  *       $ref: "#/components/schemas/BaseProductCategory"
+ *   metadata:
+ *     type: object
+ *     description: The category's metadata.
  *   created_at:
  *     type: string
  *     format: date-time

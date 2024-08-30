@@ -17,13 +17,17 @@ export interface GetOrderItemTaxLinesStepInput {
   items: OrderLineItemDTO[]
   shipping_methods: OrderShippingMethodDTO[]
   force_tax_calculation?: boolean
+  is_return?: boolean
+  shipping_address?: OrderWorkflowDTO["shipping_address"]
 }
 
 function normalizeTaxModuleContext(
   order: OrderWorkflowDTO,
-  forceTaxCalculation: boolean
+  forceTaxCalculation: boolean,
+  isReturn?: boolean,
+  shippingAddress?: OrderWorkflowDTO["shipping_address"]
 ): TaxCalculationContext | null {
-  const address = order.shipping_address
+  const address = shippingAddress ?? order.shipping_address
   const shouldCalculateTax =
     forceTaxCalculation || order.region?.automatic_taxes
 
@@ -58,7 +62,7 @@ function normalizeTaxModuleContext(
       postal_code: address.postal_code,
     },
     customer,
-    is_return: false,
+    is_return: isReturn ?? false,
   }
 }
 
@@ -109,12 +113,19 @@ export const getOrderItemTaxLinesStep = createStep(
       items = [],
       shipping_methods: shippingMethods = [],
       force_tax_calculation: forceTaxCalculation = false,
+      is_return: isReturn = false,
+      shipping_address: shippingAddress,
     } = data
     const taxService = container.resolve<ITaxModuleService>(
       ModuleRegistrationName.TAX
     )
 
-    const taxContext = normalizeTaxModuleContext(order, forceTaxCalculation)
+    const taxContext = normalizeTaxModuleContext(
+      order,
+      forceTaxCalculation,
+      isReturn,
+      shippingAddress
+    )
 
     const stepResponseData = {
       lineItemTaxLines: [] as ItemTaxLineDTO[],

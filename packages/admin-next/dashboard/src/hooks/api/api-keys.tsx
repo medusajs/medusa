@@ -114,7 +114,7 @@ export const useRevokeApiKey = (
 export const useDeleteApiKey = (
   id: string,
   options?: MutationOptions<
-    HttpTypes.DeleteResponse<"api_key">,
+    HttpTypes.AdminApiKeyDeleteResponse,
     FetchError,
     void
   >

@@ -1,10 +1,12 @@
 /**
  * @oas [delete] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: DeleteInventoryItemsIdLocationLevelsLocation_id
- * summary: Remove Location Levels from Inventory Item
- * description: Remove a list of location levels from a inventory item. This
- *   doesn't delete the Location Level, only the association between the Location
- *   Level and the inventory item.
+ * summary: Remove Inventory Level of Inventory Item
+ * x-sidebar-summary: Remove Inventory Level
+ * description: |
+ *   Remove the inventory level of an inventory item.
+ * 
+ *   If the inventory level has reserved quantity greater than `0`, an error is thrown.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -29,18 +31,14 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned
- *       data. if a field is prefixed with `+` it will be added to the default
- *       fields, using `-` will remove it from the default fields. without prefix
- *       it will replace the entire default fields.
+ *     description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *       fields. without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned
- *         data. if a field is prefixed with `+` it will be added to the default
- *         fields, using `-` will remove it from the default fields. without prefix
- *         it will replace the entire default fields.
+ *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *         fields. without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -59,16 +57,12 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: The field to sort the data by. By default, the sort order is
- *       ascending. To change the order to descending, prefix the field name with
- *       `-`.
+ *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: The field to sort the data by. By default, the sort order is
- *         ascending. To change the order to descending, prefix the field name with
- *         `-`.
+ *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -76,11 +70,7 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: >-
- *       curl -X DELETE
- *       '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \
- * 
- *       -H 'x-medusa-access-token: {api_token}'
+ *     source: "curl -X DELETE '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \\ -H 'x-medusa-access-token: {api_token}'"
  * tags:
  *   - Inventory Items
  * responses:
@@ -99,18 +89,19 @@
  *             id:
  *               type: string
  *               title: id
- *               description: The inventory item's ID.
+ *               description: The inventory level's ID.
  *             object:
  *               type: string
  *               title: object
- *               description: The inventory item's object.
+ *               description: The name of the deleted object.
+ *               default: inventory-level
  *             deleted:
  *               type: boolean
  *               title: deleted
- *               description: The inventory item's deleted.
+ *               description: Whether the inventory level was deleted.
  *             parent:
  *               type: object
- *               description: The inventory item's parent.
+ *               description: The inventory item of the level.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -123,6 +114,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * x-workflow: deleteInventoryLevelsWorkflow
  * 
 */
 

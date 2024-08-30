@@ -7,6 +7,7 @@
  *   - id
  *   - quantity
  *   - received_quantity
+ *   - damaged_quantity
  *   - item_id
  *   - return_id
  * properties:
@@ -22,6 +23,10 @@
  *     type: number
  *     title: received_quantity
  *     description: The return item's received quantity.
+ *   damaged_quantity:
+ *     type: number
+ *     title: damaged_quantity
+ *     description: The return item's damaged quantity.
  *   reason_id:
  *     type: string
  *     title: reason_id

@@ -8,12 +8,11 @@ import {
 } from "@medusajs/utils"
 
 import { createInvitesWorkflow } from "@medusajs/core-flows"
-import { AdminCreateInviteType, AdminGetInvitesParamsType } from "./validators"
 import { refetchInvite } from "./helpers"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetInvitesParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetInvitesParams>,
   res: MedusaResponse<HttpTypes.AdminInviteListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -37,7 +36,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateInviteType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateInvite>,
   res: MedusaResponse<HttpTypes.AdminInviteResponse>
 ) => {
   const workflow = createInvitesWorkflow(req.scope)

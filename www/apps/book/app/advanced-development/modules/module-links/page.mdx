@@ -58,13 +58,19 @@ In this example, you define a module link between the `hello` module's `MyCustom
 
 ### 2. Sync Links
 
-Medusa stores links as pivot tables in the database. So, to reflect your link in the database, run the `links sync` command:
+Medusa stores links as pivot tables in the database. So, to reflect your link in the database, run the `db:sync-links` command:
 
 ```bash
-npx medusa links sync
+npx medusa db:sync-links
 ```
 
 Use this command whenever you make changes to your links. For example, run this command if you remove your link definition file.
+
+<Note title="Tip">
+
+You can also use the `db:migrate` command, which both runs the migrations and syncs the links.
+
+</Note>
 
 ---
 

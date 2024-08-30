@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "../../common";
+import { DeleteResponseWithParent, PaginatedResponse } from "../../common";
 import { StoreCustomer, StoreCustomerAddress } from "./entities";
 
 export interface StoreCustomerResponse {
@@ -11,3 +11,5 @@ export interface StoreCustomerAddressResponse {
 
 export interface StoreCustomerAddressListResponse
   extends PaginatedResponse<{ addresses: StoreCustomerAddress[] }> {}
+
+export type StoreCustomerAddressDeleteResponse = DeleteResponseWithParent<"address", StoreCustomer>

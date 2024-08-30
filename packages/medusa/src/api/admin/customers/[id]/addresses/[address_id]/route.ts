@@ -13,7 +13,7 @@ import {
 } from "@medusajs/utils"
 import { AdminCreateCustomerAddressType } from "../../../validators"
 import { refetchCustomer } from "../../../helpers"
-import { AdditionalData, DeleteResponse, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -61,7 +61,7 @@ export const POST = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"customer_address">>
+  res: MedusaResponse<HttpTypes.AdminCustomerAddressDeleteResponse>
 ) => {
   const id = req.params.address_id
   const deleteAddress = deleteCustomerAddressesWorkflow(req.scope)

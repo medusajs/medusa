@@ -11,6 +11,7 @@
  * properties:
  *   type:
  *     type: string
+ *     description: The claim's type.
  *     enum:
  *       - refund
  *       - replace

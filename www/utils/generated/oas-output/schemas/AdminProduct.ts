@@ -49,7 +49,7 @@
  *     items:
  *       $ref: "#/components/schemas/AdminProductVariant"
  *   type:
- *     $ref: "#/components/schemas/AdminProduct"
+ *     $ref: "#/components/schemas/AdminProductType"
  *   tags:
  *     type: array
  *     description: The parent's tags.
@@ -61,6 +61,7 @@
  *     description: The parent's title.
  *   status:
  *     type: string
+ *     description: The parent's status.
  *     enum:
  *       - draft
  *       - proposed

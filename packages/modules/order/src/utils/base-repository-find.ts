@@ -34,15 +34,17 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     config.options ??= {}
     config.options.populate ??= []
 
+    const strategy = config.options.strategy ?? LoadStrategy.JOINED
     let orderAlias = "o0"
     if (isRelatedEntity) {
       if (entity === OrderClaim) {
-        if (
-          config.options.populate.includes("additional_items") &&
-          !config.options.populate.includes("claim_items")
-        ) {
-          config.options.populate.push("claim_items")
-        }
+        config.options.populate.push("claim_items")
+      }
+
+      if (strategy === LoadStrategy.JOINED) {
+        config.options.populate.push("order.shipping_methods")
+        config.options.populate.push("order.summary")
+        config.options.populate.push("shipping_methods")
       }
 
       if (!config.options.populate.includes("order.items")) {
@@ -60,7 +62,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     }
 
     let defaultVersion = knex.raw(`"${orderAlias}"."version"`)
-    const strategy = config.options.strategy ?? LoadStrategy.JOINED
+
     if (strategy === LoadStrategy.SELECT_IN) {
       const sql = manager
         .qb(Order, "_sub0")
@@ -82,7 +84,6 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       popWhere.order ??= {}
 
       popWhere.shipping_methods ??= {}
-      popWhere.shipping_methods.version = version
       popWhere.shipping_methods.deleted_at ??= null
 
       popWhere.shipping_methods.shipping_method ??= {}

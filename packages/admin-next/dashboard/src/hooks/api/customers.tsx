@@ -1,5 +1,5 @@
 import { FetchError } from "@medusajs/js-sdk"
-import { DeleteResponse, HttpTypes, PaginatedResponse } from "@medusajs/types"
+import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -96,7 +96,11 @@ export const useUpdateCustomer = (
 
 export const useDeleteCustomer = (
   id: string,
-  options?: UseMutationOptions<DeleteResponse<"customer">, FetchError, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminCustomerDeleteResponse,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.customer.delete(id),

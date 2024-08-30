@@ -1,9 +1,9 @@
 import { z } from "zod"
 import { AddressPayload, BigNumberInput } from "../../utils/common-validators"
 import {
+  WithAdditionalData,
   createFindParams,
   createSelectParams,
-  WithAdditionalData,
 } from "../../utils/validators"
 
 export type AdminGetOrderParamsType = z.infer<typeof AdminGetOrderParams>
@@ -30,7 +30,7 @@ const ShippingMethod = z.object({
   shipping_method_id: z.string().nullish(),
   order_id: z.string().nullish(),
   name: z.string(),
-  option_id: z.string(),
+  shipping_option_id: z.string(),
   data: z.record(z.string(), z.unknown()).optional(),
   amount: BigNumberInput,
 })
