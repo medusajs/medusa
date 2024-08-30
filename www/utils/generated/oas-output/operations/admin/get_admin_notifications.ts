@@ -49,12 +49,12 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: q
  *     in: query
- *     description: The notification's q.
+ *     description: Search term to apply on the notification's searchable properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The notification's q.
+ *       description: Search term to apply on the notification's searchable properties.
  *   - name: id
  *     in: query
  *     required: false
@@ -62,13 +62,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The notification's ID.
+ *           description: Filter by a notification ID.
  *         - type: array
- *           description: The notification's ID.
+ *           description: Filter by notification IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: A notification ID.
  *   - name: channel
  *     in: query
  *     required: false
@@ -76,19 +76,21 @@
  *       oneOf:
  *         - type: string
  *           title: channel
- *           description: The notification's channel.
+ *           description: Filter by a notification channel.
+ *           example: "email"
  *         - type: array
- *           description: The notification's channel.
+ *           description: Filter by notification channels.
  *           items:
  *             type: string
  *             title: channel
- *             description: The channel's details.
+ *             description: A notification channel.
+ *             example: "email"
  *   - name: $and
  *     in: query
  *     required: false
  *     schema:
  *       type: array
- *       description: The notification's $and.
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
  *       items:
  *         type: object
  *       title: $and
@@ -97,7 +99,7 @@
  *     required: false
  *     schema:
  *       type: array
- *       description: The notification's $or.
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
  *       items:
  *         type: object
  *       title: $or
