@@ -506,8 +506,11 @@ class OasKindGenerator extends FunctionKindGenerator {
       }
       updatedResponseSchema = newResponseSchema
     } else if (oas.responses && !newResponseSchema) {
-      // remove response schema by only keeping the default responses
-      oas.responses = DEFAULT_OAS_RESPONSES
+      // check if it has a success response of a type other than JSON
+      if (!this.hasResponseType(node, oas)) {
+        // remove response schema by only keeping the default responses
+        oas.responses = DEFAULT_OAS_RESPONSES
+      }
     } else {
       // check if response status should be changed
       const oldResponseStatus = Object.keys(oas.responses!).find(
@@ -2068,6 +2071,24 @@ class OasKindGenerator extends FunctionKindGenerator {
     return queryParamsUsageIndicators.some((indicator) =>
       fnText.includes(indicator)
     )
+  }
+
+  hasResponseType(node: FunctionNode, oas: OpenApiOperation): boolean {
+    const oldResponseStatus = Object.keys(oas.responses!).find(
+      (status) => !Object.keys(DEFAULT_OAS_RESPONSES).includes(status)
+    )
+    if (!oldResponseStatus) {
+      return false
+    }
+
+    const responseContent = (oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject).content
+    if (!responseContent) {
+      return false
+    }
+
+    const fnText = node.getText()
+
+    return Object.keys(responseContent).some((responseType) => fnText.includes(responseType))
   }
 
   private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
