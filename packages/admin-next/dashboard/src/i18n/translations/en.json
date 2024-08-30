@@ -1162,6 +1162,11 @@
           "created": "Exchange #{{exchangeId}} requested",
           "itemsInbound": "{{count}} item to return",
           "itemsOutbound": "{{count}} item to send"
+        },
+        "edit": {
+          "requested": "Order edit #{{editId}} requested",
+          "requested": "Order edit #{{editId}} requested",
+          "confirmed": "Order edit #{{editId}} confirmed"
         }
       }
     }

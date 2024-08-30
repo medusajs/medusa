@@ -22,8 +22,8 @@ import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../order-payment-section"
-import ActivityItems from "./activity-items"
 import { useOrderChanges } from "../../../../../hooks/api"
+import ActivityItems from "./activity-items"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -108,6 +108,7 @@ type Activity = {
 
 const useActivityItems = (order: AdminOrder): Activity[] => {
   const { t } = useTranslation()
+
   const itemsMap = useMemo(
     () => new Map(order?.items?.map((i) => [i.id, i])),
     [order.items]
@@ -311,6 +312,8 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     }
 
     for (const edit of orderChanges) {
+      const isConfirmed = edit.status === "confirmed"
+
       items.push({
         title: t(`orders.activity.events.edit.${edit.status}`, {
           editId: edit.id.slice(-7),
@@ -321,7 +324,9 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
             : edit.status === "requested"
             ? edit.requested_at
             : edit.canceled_at,
-        children: <OrderEditBody edit={edit} />,
+        children: isConfirmed ? (
+          <OrderEditBody edit={edit} itemsMap={itemsMap} />
+        ) : null,
       })
     }
 
@@ -355,7 +360,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     }
 
     return [...sortedActivities, createdAt]
-  }, [order, notes, isLoading, t])
+  }, [order, payments, returns, exchanges, orderChanges, notes, isLoading])
 }
 
 type OrderActivityItemProps = PropsWithChildren<{
@@ -708,29 +713,67 @@ const ExchangeBody = ({
   )
 }
 
-const OrderEditBody = ({ edit }: { edit: AdminOrderChange }) => {
+const OrderEditBody = ({
+  edit,
+  itemsMap,
+}: {
+  edit: AdminOrderChange
+  isRequested: boolean
+  itemsMap: Record<string, AdminOrderLineItem>
+}) => {
   const { t } = useTranslation()
 
-  const itemsAdded = 0
-  const itemsRemoved = 0
+  const [itemsAdded, itemsRemoved] = useMemo(
+    () => countItemsChange(edit.actions, itemsMap),
+    [edit]
+  )
 
   return (
     <div>
       {itemsAdded > 0 && (
         <Text size="small" className="text-ui-fg-subtle">
-          {t("orders.activity.events.edit.itemsAdded", {
-            count: 0,
-          })}
+          {t("labels.added")}: {itemsAdded}
         </Text>
       )}
 
       {itemsRemoved > 0 && (
         <Text size="small" className="text-ui-fg-subtle">
-          {t("orders.activity.events.exchange.itemsRemoved", {
-            count: itemsRemoved,
-          })}
+          {t("labels.removed")}: {itemsRemoved}
         </Text>
       )}
     </div>
   )
+}
+
+function countItemsChange(
+  actions: AdminOrderChange["actions"],
+  itemsMap: Record<string, AdminOrderLineItem>
+) {
+  let added = 0
+  let removed = 0
+
+  actions.forEach((action) => {
+    if (action.action === "ITEM_ADD") {
+      added += action.details.quantity
+    }
+    if (action.action === "ITEM_UPDATE") {
+      const newQuantity: number = action.details!.quantity
+      const originalQuantity: number | undefined = itemsMap.get(
+        action.details!.reference_id
+      )?.quantity
+
+      if (typeof originalQuantity === "number") {
+        const diff = Math.abs(newQuantity - originalQuantity)
+
+        if (newQuantity > originalQuantity) {
+          added += diff
+        }
+        if (newQuantity < originalQuantity) {
+          removed += diff
+        }
+      }
+    }
+  })
+
+  return [added, removed]
 }

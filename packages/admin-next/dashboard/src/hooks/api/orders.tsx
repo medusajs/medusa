@@ -18,6 +18,7 @@ const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY) as TQueryKey<
   string
 > & {
   preview: (orderId: string) => any
+  changes: (orderId: string) => any
 }
 
 _orderKeys.preview = function (id: string) {
@@ -100,7 +101,7 @@ export const useOrderChanges = (
 ) => {
   const { data, ...rest } = useQuery({
     queryFn: async () => sdk.admin.order.listChanges(id, query),
-    queryKey: ordersQueryKeys.changes(query),
+    queryKey: ordersQueryKeys.changes(id),
     ...options,
   })
 
