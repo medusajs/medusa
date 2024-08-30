@@ -22,6 +22,7 @@ export default class JobSchedulerService {
   protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]> =
     new Map()
   protected readonly queue_: Queue
+  protected readonly worker_: Worker
 
   constructor(
     { logger }: InjectedDependencies,
@@ -50,10 +51,14 @@ export default class JobSchedulerService {
       })
 
       // Register scheduled job worker
-      new Worker("scheduled-jobs:queue", this.scheduledJobsWorker, {
-        connection,
-        prefix,
-      })
+      this.worker_ = new Worker(
+        "scheduled-jobs:queue",
+        this.scheduledJobsWorker,
+        {
+          connection,
+          prefix,
+        }
+      )
     }
   }
 
