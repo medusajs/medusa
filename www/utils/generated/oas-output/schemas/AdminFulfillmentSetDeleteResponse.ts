@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Fulfillment Set was deleted.
- *   parent:
- *     type: object
- *     description: The fulfillment set's parent.
  * 
 */
 

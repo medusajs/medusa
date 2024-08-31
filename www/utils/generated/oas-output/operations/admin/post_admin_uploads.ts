@@ -13,7 +13,34 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminGetUploadParams"
+ *         oneOf:
+ *           - type: object
+ *             description: SUMMARY
+ *             required:
+ *               - files
+ *             properties:
+ *               files:
+ *                 type: array
+ *                 description: The upload's files.
+ *                 items:
+ *                   oneOf:
+ *                     - type: object
+ *                       description: The file's files.
+ *                       required:
+ *                         - name
+ *                         - content
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           title: name
+ *                           description: The file's name.
+ *                         content:
+ *                           type: string
+ *                           title: content
+ *                           description: The file's content.
+ *                     - $ref: "#/components/schemas/File"
+ *           - $ref: "#/components/schemas/FileList"
+ *         description: SUMMARY
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

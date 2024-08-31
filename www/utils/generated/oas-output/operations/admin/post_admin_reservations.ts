@@ -55,39 +55,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - line_item_id
- *           - location_id
- *           - inventory_item_id
- *           - quantity
- *           - description
- *           - metadata
- *         properties:
- *           line_item_id:
- *             type: string
- *             title: line_item_id
- *             description: The reservation's line item id.
- *           location_id:
- *             type: string
- *             title: location_id
- *             description: The reservation's location id.
- *           inventory_item_id:
- *             type: string
- *             title: inventory_item_id
- *             description: The reservation's inventory item id.
- *           quantity:
- *             type: number
- *             title: quantity
- *             description: The reservation's quantity.
- *           description:
- *             type: string
- *             title: description
- *             description: The reservation's description.
- *           metadata:
- *             type: object
- *             description: The reservation's metadata.
+ *         $ref: "#/components/schemas/AdminCreateReservation"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

@@ -19,6 +19,3 @@ properties:
     type: boolean
     title: deleted
     description: Whether the Price List was deleted.
-  parent:
-    type: object
-    description: The price list's parent.

@@ -66,6 +66,11 @@
  *   metadata:
  *     type: object
  *     description: The inventory item's metadata.
+ *   location_levels:
+ *     type: array
+ *     description: The inventory item's location levels.
+ *     items:
+ *       $ref: "#/components/schemas/AdminInventoryLevel"
  * 
 */
 
