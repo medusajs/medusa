@@ -1,4 +1,4 @@
-import { AdminGetCustomersParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UseCustomerTableQueryProps = {
@@ -26,7 +26,7 @@ export const useCustomerTableQuery = ({
   const { offset, groups, created_at, updated_at, has_account, q, order } =
     queryObject
 
-  const searchParams: AdminGetCustomersParams = {
+  const searchParams: HttpTypes.AdminCustomerFilters = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     groups: groups?.split(","),

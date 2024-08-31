@@ -6,6 +6,8 @@ export interface AdminShippingOptionListParams extends FindParams {
   q?: string
   service_zone_id?: string | string[]
   stock_location_id?: string | string[]
+  is_return?: boolean
+  admin_only?: boolean
   shipping_profile_id?: string | string[]
   provider_id?: string | string[]
   shipping_option_type_id?: string | string[]

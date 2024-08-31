@@ -1,14 +1,16 @@
-import { CreateRegionDTO, WorkflowTypes } from "@medusajs/types"
+import { WorkflowTypes } from "@medusajs/types"
+import { RegionWorkflowEvents } from "@medusajs/utils"
 import {
+  WorkflowData,
+  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
-  WorkflowData,
-  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
+import { createPricePreferencesWorkflow } from "../../pricing"
 import { createRegionsStep } from "../steps"
 import { setRegionsPaymentProvidersStep } from "../steps/set-regions-payment-providers"
-import { createPricePreferencesWorkflow } from "../../pricing"
 
 export const createRegionsWorkflowId = "create-regions"
 /**
@@ -76,12 +78,22 @@ export const createRegionsWorkflow = createWorkflow(
       }
     )
 
+    const regionsIdEvents = transform({ regions }, ({ regions }) => {
+      return regions.map((v) => {
+        return { id: v.id }
+      })
+    })
+
     parallelize(
       setRegionsPaymentProvidersStep({
         input: normalizedRegionProviderData,
       }),
       createPricePreferencesWorkflow.runAsStep({
         input: normalizedRegionPricePreferencesData,
+      }),
+      emitEventStep({
+        eventName: RegionWorkflowEvents.CREATED,
+        data: regionsIdEvents,
       })
     )
 
