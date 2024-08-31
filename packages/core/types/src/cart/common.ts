@@ -783,6 +783,11 @@ export interface CartDTO {
   metadata?: Record<string, unknown> | null
 
   /**
+   * When the cart was completed.
+   */
+  completed_at?: string | Date
+
+  /**
    * When the cart was created.
    */
   created_at?: string | Date
