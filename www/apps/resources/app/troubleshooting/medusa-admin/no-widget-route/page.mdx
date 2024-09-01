@@ -35,3 +35,20 @@ export const config = defineWidgetConfig({
 Any other usage leads to the widget not being shown.
 
 Refer to the [Admin Development Constraints](!docs!/advanced-development/admin/constraints) documentation for more details.
+
+---
+
+## Errors in Docker
+
+If you're using a Docker image to host your Medusa application, make sure that the image's root path is different than the Medusa Admin's `path` configuration.
+
+For example, if your Docker image's root path is `/app`, make sure to change the `path` configuration in `medusa-config.js`, as it's `/app` by default:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  admin: {
+    path: `/dashboard`,
+  },
+  // ...
+})
+```
