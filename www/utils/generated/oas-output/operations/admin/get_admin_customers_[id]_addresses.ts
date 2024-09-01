@@ -53,6 +53,104 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - name: q
+ *     in: query
+ *     description: The customer's q.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: q
+ *       description: The customer's q.
+ *   - name: company
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: company
+ *           description: The customer's company.
+ *         - type: array
+ *           description: The customer's company.
+ *           items:
+ *             type: string
+ *             title: company
+ *             description: The company's details.
+ *   - name: city
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: city
+ *           description: The customer's city.
+ *         - type: array
+ *           description: The customer's city.
+ *           items:
+ *             type: string
+ *             title: city
+ *             description: The city's details.
+ *   - name: country_code
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: country_code
+ *           description: The customer's country code.
+ *         - type: array
+ *           description: The customer's country code.
+ *           items:
+ *             type: string
+ *             title: country_code
+ *             description: The country code's details.
+ *   - name: province
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: province
+ *           description: The customer's province.
+ *         - type: array
+ *           description: The customer's province.
+ *           items:
+ *             type: string
+ *             title: province
+ *             description: The province's details.
+ *   - name: postal_code
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: postal_code
+ *           description: The customer's postal code.
+ *         - type: array
+ *           description: The customer's postal code.
+ *           items:
+ *             type: string
+ *             title: postal_code
+ *             description: The postal code's details.
+ *   - name: $and
+ *     in: query
+ *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $and
+ *   - name: $or
+ *     in: query
+ *     description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []

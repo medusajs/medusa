@@ -12,7 +12,34 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminGetUploadParams.yaml
+          oneOf:
+            - type: object
+              description: SUMMARY
+              required:
+                - files
+              properties:
+                files:
+                  type: array
+                  description: The upload's files.
+                  items:
+                    oneOf:
+                      - type: object
+                        description: The file's files.
+                        required:
+                          - name
+                          - content
+                        properties:
+                          name:
+                            type: string
+                            title: name
+                            description: The file's name.
+                          content:
+                            type: string
+                            title: content
+                            description: The file's content.
+                      - $ref: ../components/schemas/File.yaml
+            - $ref: ../components/schemas/FileList.yaml
+          description: SUMMARY
   x-codeSamples:
     - lang: Shell
       label: cURL

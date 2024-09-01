@@ -50,9 +50,6 @@
  *               type: boolean
  *               title: deleted
  *               description: Whether the campaign was deleted.
- *             parent:
- *               type: object
- *               description: The campaign's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

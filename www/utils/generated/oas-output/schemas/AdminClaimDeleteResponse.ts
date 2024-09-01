@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Claim was deleted.
- *   parent:
- *     type: object
- *     description: The claim's parent.
  * 
 */
 

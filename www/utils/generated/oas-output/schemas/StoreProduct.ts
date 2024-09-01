@@ -4,9 +4,9 @@
  * description: The product's details.
  * x-schemaName: StoreProduct
  * required:
+ *   - length
  *   - title
  *   - status
- *   - length
  *   - options
  *   - description
  *   - id
@@ -38,6 +38,10 @@
  *       $ref: "#/components/schemas/StoreProductCategory"
  *   type:
  *     $ref: "#/components/schemas/StoreProduct"
+ *   length:
+ *     type: number
+ *     title: length
+ *     description: The product's length.
  *   title:
  *     type: string
  *     title: title
@@ -50,10 +54,6 @@
  *       - proposed
  *       - published
  *       - rejected
- *   length:
- *     type: number
- *     title: length
- *     description: The product's length.
  *   options:
  *     type: array
  *     description: The product's options.

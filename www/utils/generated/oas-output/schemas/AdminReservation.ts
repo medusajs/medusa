@@ -26,7 +26,7 @@
  *     title: location_id
  *     description: The reservation's location id.
  *   quantity:
- *     type: string
+ *     type: number
  *     title: quantity
  *     description: The reservation's quantity.
  *   external_id:

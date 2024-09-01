@@ -1,7 +1,7 @@
 /**
  * @schema BaseRegion
  * type: object
- * description: The cart's region.
+ * description: The parent's region.
  * x-schemaName: BaseRegion
  * required:
  *   - id

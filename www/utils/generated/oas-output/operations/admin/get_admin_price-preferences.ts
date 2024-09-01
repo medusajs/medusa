@@ -47,6 +47,76 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: The price preference's ID.
+ *         - type: array
+ *           description: The price preference's ID.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: The id's ID.
+ *   - name: attribute
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: attribute
+ *           description: The price preference's attribute.
+ *         - type: array
+ *           description: The price preference's attribute.
+ *           items:
+ *             type: string
+ *             title: attribute
+ *             description: The attribute's details.
+ *   - name: value
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: value
+ *           description: The price preference's value.
+ *         - type: array
+ *           description: The price preference's value.
+ *           items:
+ *             type: string
+ *             title: value
+ *             description: The value's details.
+ *   - name: q
+ *     in: query
+ *     description: The price preference's q.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: q
+ *       description: The price preference's q.
+ *   - name: $and
+ *     in: query
+ *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $and
+ *   - name: $or
+ *     in: query
+ *     description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
