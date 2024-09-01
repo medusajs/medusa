@@ -23,7 +23,14 @@ export const createCustomerAccountWorkflow = createWorkflow(
   (
     input: WorkflowData<CreateCustomerAccountWorkflowInput>
   ): WorkflowResponse<CustomerDTO> => {
-    const customerData = validateCustomerAccountCreation(input)
+    validateCustomerAccountCreation(input)
+
+    const customerData = transform({ input }, (data) => {
+      return {
+        ...data.input.customerData,
+        has_account: !!data.input.authIdentityId,
+      }
+    })
 
     const customers = createCustomersStep([customerData])
 

@@ -1,5 +1,5 @@
 import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { createStep } from "@medusajs/workflows-sdk"
 import { CreateCustomerAccountWorkflowInput } from "../workflows"
 
 export const validateCustomerAccountCreationStepId =
@@ -41,9 +41,5 @@ export const validateCustomerAccountCreation = createStep(
         )
       }
     }
-
-    input.customerData.has_account = !!input.authIdentityId
-
-    return new StepResponse(input.customerData)
   }
 )
