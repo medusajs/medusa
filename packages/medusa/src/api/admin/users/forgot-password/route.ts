@@ -15,5 +15,7 @@ export const POST = async (
     input: { email },
   })
 
-  res.status(201)
+  res.sendStatus(201)
 }
+
+export const AUTHENTICATE = false

@@ -1,4 +1,4 @@
-import { UserWorkflowEvents } from "@medusajs/utils"
+import { MedusaError, UserWorkflowEvents } from "@medusajs/utils"
 import { createWorkflow, transform } from "@medusajs/workflows-sdk"
 import jwt from "jsonwebtoken"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
@@ -30,26 +30,44 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     })
 
-    const authIdentity = useRemoteQueryStep({
-      entry_point: "auth_identity",
-      fields: ["id", "app_metadata"],
+    const providerIdentities = useRemoteQueryStep({
+      entry_point: "provider_identity",
+      fields: ["id", "provider_metadata"],
       variables: {
         filters: {
-          email: input.email,
+          entity_id: input.email,
+          provider: "emailpass",
         },
       },
       throw_if_key_not_found: true,
-    }).config({ name: "get-auth-identity" })
+    }).config({ name: "get-provider-identities" })
+
+    const passwordHash = transform(
+      { providerIdentities, input },
+      ({ providerIdentities, input }) => {
+        const providerIdentity = providerIdentities[0]
+
+        if (!providerIdentity) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Emailpass auth identity with email ${input.email} not found`
+          )
+        }
+
+        return providerIdentity?.provider_metadata.password
+      }
+    )
 
     const token = transform(
       {
         userId: user.id,
         email: user.email,
-        passwordHash: authIdentity.provider_metadata.password,
+        passwordHash,
       },
       generateResetPasswordToken
     )
 
+    // Question: Would it be more reasonable to send a notification here?
     emitEventStep({
       eventName: UserWorkflowEvents.PASSWORD_RESET,
       data: { email: user.email, token },
