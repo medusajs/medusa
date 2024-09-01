@@ -7,6 +7,9 @@ export class NotificationProviderServiceFixtures extends AbstractNotificationPro
   async send(
     notification: NotificationTypes.ProviderSendNotificationDTO
   ): Promise<NotificationTypes.ProviderSendNotificationResultsDTO> {
+    if (notification.to === "fail") {
+      throw new Error("Failed to send notification")
+    }
     return { id: "external_id" }
   }
 }
