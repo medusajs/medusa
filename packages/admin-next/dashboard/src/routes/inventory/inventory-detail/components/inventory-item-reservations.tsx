@@ -1,12 +1,11 @@
 import { Button, Container, Heading } from "@medusajs/ui"
-
-import { InventoryItemRes } from "../../../../types/api-responses"
 import { Link } from "react-router-dom"
 import { ReservationItemTable } from "./reservations-table/reservation-list-table"
 import { useTranslation } from "react-i18next"
+import { HttpTypes } from "@medusajs/types"
 
 type InventoryItemLocationLevelsSectionProps = {
-  inventoryItem: InventoryItemRes["inventory_item"]
+  inventoryItem: HttpTypes.AdminInventoryItemResponse["inventory_item"]
 }
 export const InventoryItemReservationsSection = ({
   inventoryItem,

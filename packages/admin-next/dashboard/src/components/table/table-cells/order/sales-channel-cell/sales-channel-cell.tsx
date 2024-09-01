@@ -1,10 +1,10 @@
-import { SalesChannel } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 
 export const SalesChannelCell = ({
   channel,
 }: {
-  channel: SalesChannel | null
+  channel: HttpTypes.AdminSalesChannel | null
 }) => {
   if (!channel) {
     return <span className="text-ui-fg-muted">-</span>

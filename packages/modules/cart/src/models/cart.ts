@@ -147,6 +147,9 @@ export default class Cart {
   })
   shipping_methods = new Collection<Rel<ShippingMethod>>(this)
 
+  @Property({ columnType: "timestamptz", nullable: true })
+  completed_at: Date | null = null
+
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",

@@ -16,6 +16,7 @@ import {
   refreshCartShippingMethodsStep,
   updateLineItemsStep,
 } from "../steps"
+import { validateCartStep } from "../steps/validate-cart"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import {
   cartFieldsForRefreshSteps,
@@ -34,6 +35,8 @@ export const addToCartWorkflowId = "add-to-cart"
 export const addToCartWorkflow = createWorkflow(
   addToCartWorkflowId,
   (input: WorkflowData<AddToCartWorkflowInputDTO>) => {
+    validateCartStep(input)
+
     const variantIds = transform({ input }, (data) => {
       return (data.input.items ?? []).map((i) => i.variant_id)
     })
@@ -67,9 +70,10 @@ export const addToCartWorkflow = createWorkflow(
 
         return prepareLineItemData({
           variant: variant,
-          unitPrice: item.unit_price || 
-            variant.calculated_price.calculated_amount,
-          isTaxInclusive: item.is_tax_inclusive || 
+          unitPrice:
+            item.unit_price || variant.calculated_price.calculated_amount,
+          isTaxInclusive:
+            item.is_tax_inclusive ||
             variant.calculated_price.is_calculated_price_tax_inclusive,
           quantity: item.quantity,
           metadata: item?.metadata ?? {},

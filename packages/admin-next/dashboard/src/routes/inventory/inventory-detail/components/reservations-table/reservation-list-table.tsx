@@ -1,10 +1,13 @@
 import { useMemo } from "react"
-import { InventoryTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
-import { useReservationTableColumn } from "./use-reservation-list-table-columns"
+import {
+  ExtendedReservationItem,
+  useReservationTableColumn,
+} from "./use-reservation-list-table-columns"
 import { useReservationsTableQuery } from "./use-reservation-list-table-query"
 import { useStockLocations } from "../../../../../hooks/api"
 
@@ -13,7 +16,7 @@ const PAGE_SIZE = 20
 export const ReservationItemTable = ({
   inventoryItem,
 }: {
-  inventoryItem: InventoryTypes.InventoryItemDTO
+  inventoryItem: HttpTypes.AdminInventoryItemResponse["inventory_item"]
 }) => {
   const { searchParams, raw } = useReservationsTableQuery({
     pageSize: PAGE_SIZE,
@@ -29,7 +32,7 @@ export const ReservationItemTable = ({
     id: (reservations || []).map((r) => r.location_id),
   })
 
-  const data = useMemo(() => {
+  const data = useMemo<ExtendedReservationItem[]>(() => {
     const locationMap = new Map((stock_locations || []).map((l) => [l.id, l]))
 
     return (reservations || []).map((r) => ({
@@ -45,7 +48,7 @@ export const ReservationItemTable = ({
     columns,
     count,
     enablePagination: true,
-    getRowId: (row: InventoryTypes.ReservationItemDTO) => row.id,
+    getRowId: (row: ExtendedReservationItem) => row.id,
     pageSize: PAGE_SIZE,
   })
 

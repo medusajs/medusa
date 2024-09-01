@@ -1,5 +1,5 @@
-import { OperatorMap } from "../../../dal"
-import { SelectParams } from "../../common"
+import { BaseFilterable, OperatorMap } from "../../../dal"
+import { FindParams, SelectParams } from "../../common"
 
 export interface AdminCustomerInGroupFilters {
   id?: string | string[]
@@ -15,7 +15,9 @@ export interface AdminCustomerInGroupFilters {
   deleted_at?: OperatorMap<string>
 }
 
-export interface AdminGetCustomerGroupsParams {
+export interface AdminGetCustomerGroupsParams
+  extends FindParams,
+    BaseFilterable<AdminGetCustomerGroupsParams> {
   limit?: number
   offset?: number
   q?: string
