@@ -25,6 +25,7 @@ export interface AdminOrder extends BaseOrder {
 export interface AdminOrderLineItem extends BaseOrderLineItem {
   variant?: AdminProductVariant
 }
+export interface AdminOrderChange extends BaseOrderChange {}
 
 export interface AdminOrderFulfillment extends BaseOrderFulfillment {}
 

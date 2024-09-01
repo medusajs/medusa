@@ -10,6 +10,7 @@ import {
   AdminExchange,
   AdminFulfillment,
   AdminOrder,
+  AdminOrderChange,
   AdminReturn,
 } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
@@ -21,6 +22,7 @@ import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../order-payment-section"
+import { useOrderChanges } from "../../../../../hooks/api"
 import ActivityItems from "./activity-items"
 
 type OrderTimelineProps = {
@@ -106,10 +108,15 @@ type Activity = {
 
 const useActivityItems = (order: AdminOrder): Activity[] => {
   const { t } = useTranslation()
+
   const itemsMap = useMemo(
     () => new Map(order?.items?.map((i) => [i.id, i])),
     [order.items]
   )
+
+  const { order_changes: orderChanges = [] } = useOrderChanges(order.id, {
+    change_type: "edit",
+  })
 
   const { returns = [] } = useReturns({
     order_id: order.id,
@@ -304,6 +311,32 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
       })
     }
 
+    for (const edit of orderChanges) {
+      const isConfirmed = edit.status === "confirmed"
+      const isPending = edit.status === "pending"
+
+      if (isPending) {
+        continue
+      }
+
+      items.push({
+        title: t(`orders.activity.events.edit.${edit.status}`, {
+          editId: edit.id.slice(-7),
+        }),
+        timestamp:
+          edit.status === "requested"
+            ? edit.requested_at
+            : edit.status === "declined"
+            ? edit.declined_at
+            : edit.status === "canceled"
+            ? edit.canceled_at
+            : edit.created_at,
+        children: isConfirmed ? (
+          <OrderEditBody edit={edit} itemsMap={itemsMap} />
+        ) : null,
+      })
+    }
+
     // for (const note of notes || []) {
     //   items.push({
     //     title: t("orders.activity.events.note.comment"),
@@ -334,7 +367,7 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
     }
 
     return [...sortedActivities, createdAt]
-  }, [order, notes, isLoading, t])
+  }, [order, payments, returns, exchanges, orderChanges, notes, isLoading])
 }
 
 type OrderActivityItemProps = PropsWithChildren<{
@@ -685,4 +718,69 @@ const ExchangeBody = ({
       )}
     </div>
   )
+}
+
+const OrderEditBody = ({
+  edit,
+  itemsMap,
+}: {
+  edit: AdminOrderChange
+  isRequested: boolean
+  itemsMap: Record<string, AdminOrderLineItem>
+}) => {
+  const { t } = useTranslation()
+
+  const [itemsAdded, itemsRemoved] = useMemo(
+    () => countItemsChange(edit.actions, itemsMap),
+    [edit]
+  )
+
+  return (
+    <div>
+      {itemsAdded > 0 && (
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("labels.added")}: {itemsAdded}
+        </Text>
+      )}
+
+      {itemsRemoved > 0 && (
+        <Text size="small" className="text-ui-fg-subtle">
+          {t("labels.removed")}: {itemsRemoved}
+        </Text>
+      )}
+    </div>
+  )
+}
+
+function countItemsChange(
+  actions: AdminOrderChange["actions"],
+  itemsMap: Record<string, AdminOrderLineItem>
+) {
+  let added = 0
+  let removed = 0
+
+  actions.forEach((action) => {
+    if (action.action === "ITEM_ADD") {
+      added += action.details.quantity
+    }
+    if (action.action === "ITEM_UPDATE") {
+      const newQuantity: number = action.details!.quantity
+      const originalQuantity: number | undefined = itemsMap.get(
+        action.details!.reference_id
+      )?.quantity
+
+      if (typeof originalQuantity === "number") {
+        const diff = Math.abs(newQuantity - originalQuantity)
+
+        if (newQuantity > originalQuantity) {
+          added += diff
+        }
+        if (newQuantity < originalQuantity) {
+          removed += diff
+        }
+      }
+    }
+  })
+
+  return [added, removed]
 }
