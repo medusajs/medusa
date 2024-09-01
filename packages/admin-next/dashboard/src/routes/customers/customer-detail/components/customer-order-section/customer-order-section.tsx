@@ -1,5 +1,4 @@
 import { ArrowPath } from "@medusajs/icons"
-import { Customer, Order } from "@medusajs/medusa"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
@@ -12,9 +11,10 @@ import { useOrderTableColumns } from "../../../../../hooks/table/columns/use-ord
 import { useOrderTableFilters } from "../../../../../hooks/table/filters/use-order-table-filters"
 import { useOrderTableQuery } from "../../../../../hooks/table/query/use-order-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { HttpTypes } from "@medusajs/types"
 
 type CustomerGeneralSectionProps = {
-  customer: Customer
+  customer: HttpTypes.AdminCustomer
 }
 
 const PAGE_SIZE = 10
@@ -83,7 +83,7 @@ export const CustomerOrderSection = ({
   )
 }
 
-const CustomerOrderActions = ({ order }: { order: Order }) => {
+const CustomerOrderActions = ({ order }: { order: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -103,7 +103,7 @@ const CustomerOrderActions = ({ order }: { order: Order }) => {
   )
 }
 
-const columnHelper = createColumnHelper<Order>()
+const columnHelper = createColumnHelper<HttpTypes.AdminOrder>()
 
 const useColumns = () => {
   const base = useOrderTableColumns({ exclude: ["customer"] })

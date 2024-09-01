@@ -1,9 +1,13 @@
-import { Country } from "@medusajs/medusa"
 import { Tooltip } from "@medusajs/ui"
 import ReactCountryFlag from "react-country-flag"
 import { PlaceholderCell } from "../../common/placeholder-cell"
+import { HttpTypes } from "@medusajs/types"
 
-export const CountryCell = ({ country }: { country?: Country | null }) => {
+export const CountryCell = ({
+  country,
+}: {
+  country?: HttpTypes.AdminRegionCountry | null
+}) => {
   if (!country) {
     return <PlaceholderCell />
   }
@@ -13,7 +17,7 @@ export const CountryCell = ({ country }: { country?: Country | null }) => {
       <Tooltip content={country.display_name}>
         <div className="flex size-4 items-center justify-center overflow-hidden rounded-sm">
           <ReactCountryFlag
-            countryCode={country.iso_2.toUpperCase()}
+            countryCode={country.iso_2!.toUpperCase()}
             svg
             style={{
               width: "16px",

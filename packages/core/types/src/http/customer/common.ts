@@ -1,4 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
+import { FindParams } from "../common"
 
 export interface BaseCustomerGroup {
   id: string
@@ -56,7 +57,8 @@ export interface CustomerGroupInCustomerFilters {
 }
 
 export interface BaseCustomerFilters
-  extends BaseFilterable<BaseCustomerFilters> {
+  extends FindParams,
+    BaseFilterable<BaseCustomerFilters> {
   q?: string
   id?: string[] | string | OperatorMap<string | string[]>
   email?: string[] | string | OperatorMap<string>

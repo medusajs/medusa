@@ -4,6 +4,7 @@ export const defaultStoreCartFields = [
   "email",
   "created_at",
   "updated_at",
+  "completed_at",
   "total",
   "subtotal",
   "tax_total",

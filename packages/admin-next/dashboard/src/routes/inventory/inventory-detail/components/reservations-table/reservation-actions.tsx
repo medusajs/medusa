@@ -1,7 +1,7 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { toast, usePrompt } from "@medusajs/ui"
 
-import { InventoryTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
@@ -9,7 +9,7 @@ import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
 export const ReservationActions = ({
   reservation,
 }: {
-  reservation: InventoryTypes.ReservationItemDTO
+  reservation: HttpTypes.AdminReservation
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()

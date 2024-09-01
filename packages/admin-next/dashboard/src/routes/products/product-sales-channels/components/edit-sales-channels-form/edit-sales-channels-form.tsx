@@ -1,4 +1,3 @@
-import { SalesChannel } from "@medusajs/medusa"
 import { Button, Checkbox } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
@@ -153,7 +152,8 @@ export const EditSalesChannelsForm = ({
   )
 }
 
-const columnHelper = createColumnHelper<SalesChannel>()
+const columnHelper =
+  createColumnHelper<HttpTypes.AdminSalesChannelResponse["sales_channel"]>()
 
 const useColumns = () => {
   const columns = useSalesChannelTableColumns()

@@ -9,10 +9,10 @@ import { Divider } from "../../components/common/divider"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { useSignInWithEmailPassword } from "../../hooks/api/auth"
-import { isAxiosError } from "../../lib/is-axios-error"
 
 import after from "virtual:medusa/widgets/login/after"
 import before from "virtual:medusa/widgets/login/before"
+import { isFetchError } from "../../lib/is-fetch-error"
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -45,8 +45,8 @@ export const Login = () => {
 
       navigate(from, { replace: true })
     } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === 401) {
+      if (isFetchError(error)) {
+        if (error.status === 401) {
           form.setError("email", {
             type: "manual",
           })

@@ -1,14 +1,53 @@
 export const metadata = {
-  title: `Authentication Route`,
+  title: `How to Use Authentication Routes`,
 }
 
 # {metadata.title}
 
 In this document, you'll learn about the authentication routes and how to use them to create or log-in users.
 
+<Note>
+
+These routes are added by Medusa's application layer, not the Auth Module.
+
+</Note>
+
+## Types of Authentication Flows
+
+### 1. Basic Authentication Flow
+
+This authentication flow doesn't require validation with third-party services.
+
+It requires the following steps:
+
+1. Registering the user with the [Register Route](#register-route).
+2. Authenticating the user with the [Auth Route](#auth-route).
+
+### 2. Third-Party Service Authenticate Flow
+
+This authentication flow authenticates the user with a third-party service, such as Google.
+
+It requires the following steps:
+
+1. Authenticate the user with the [Auth Route](#auth-route).
+2. If the authentication requires more action with the third-party service:
+    1. The auth route redirects to the third-party service's authentication portal. The URL is returned by the Auth Module Provider.
+    2. Once the authentication with the third-party service finishes, it redirects back to the [Callback Route](#callback-route). So, make sure your third-party service is configured to redirect to the [Callback Route](#callback-route).
+    3. If the callback validation is successful, you'll receive the authentication token.
+
+You may then use the [Auth Route](#auth-route) for subsequent authentication.
+
+---
+
 ## Register Route
 
 The Medusa application defines an API route at `/auth/{actor_type}/{provider}/register` that creates an auth identity for an actor type, such as a `customer`. It returns a JWT token that you pass to an API route that creates the user.
+
+<Note>
+
+This API route is useful for providers like `emailpass` that uses custom logic to authenticate a user. For authentication providers that authenticate with third-party services, such as Google, use the [Auth Route](#auth-route) instead.
+
+</Note>
 
 For example, if you're registering a customer, you:
 
@@ -80,3 +119,40 @@ If the authentication is successful, you'll receive a `token` field in the respo
 [How to login Customers using the authentication route](../../../storefront-development/customers/login/page.mdx).
 
 </Note>
+
+---
+
+## Validate Callback Route
+
+The Medusa application defines an API route at `/auth/{actor_type}/{provider}/callback` that's useful for authenticating users with third-party services, such as Google.
+
+When integrating with a third-party service, you use [Auth Route](#auth-route) first to authenticate the user. If the authentication requires more action with the third-party provider, the request redirects to the authentication provider's authentication portal.
+
+<Note title="Tip">
+
+The URL of the authentication portal is received from the Auth Module Provider.
+
+</Note>
+
+Once the authentication with the third-party provider finishes, it should redirect back to this API route. So, make sure to add the necessary configuration in your provider to ensure this flow.
+
+### Path Parameters
+
+Its path parameters are:
+
+- `{actor_type}`: the actor type of the user you're authenticating. For example, `customer`.
+- `{provider}`: the auth provider to handle the authentication. For example, `google`.
+
+### Request Body Parameters
+
+This route accepts in the request body the data from the third-party service, and passes it along to the authentication provider to validate whether the customer was authenticated.
+
+### Response Fields
+
+If the authentication is successful, you'll receive a `token` field in the response body object:
+
+```json
+{
+  "token": "..."
+}
+```

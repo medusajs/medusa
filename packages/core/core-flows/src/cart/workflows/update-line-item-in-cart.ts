@@ -8,6 +8,7 @@ import {
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { updateLineItemsStepWithSelector } from "../../line-item/steps"
 import { refreshCartShippingMethodsStep } from "../steps"
+import { validateCartStep } from "../steps/validate-cart"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import {
   cartFieldsForRefreshSteps,
@@ -27,6 +28,8 @@ export const updateLineItemInCartWorkflowId = "update-line-item-in-cart"
 export const updateLineItemInCartWorkflow = createWorkflow(
   updateLineItemInCartWorkflowId,
   (input: WorkflowData<UpdateLineItemInCartWorkflowInputDTO>) => {
+    validateCartStep(input)
+
     const variantIds = transform({ input }, (data) => {
       return [data.input.item.variant_id]
     })

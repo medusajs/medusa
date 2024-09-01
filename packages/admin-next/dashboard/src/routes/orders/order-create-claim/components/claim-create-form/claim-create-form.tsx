@@ -788,7 +788,7 @@ export const ClaimCreateForm = ({
                         const customPrice =
                           customShippingAmount === ""
                             ? null
-                            : parseInt(customShippingAmount)
+                            : parseFloat(customShippingAmount)
 
                         if (actionId) {
                           updateInboundShipping(
