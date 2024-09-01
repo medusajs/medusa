@@ -1,6 +1,7 @@
 import { OperatorMap } from "../../../dal"
 import { FindParams } from "../../common"
 import { BaseOrderFilters } from "../common"
+import { BaseOrderChangesFilters } from "../common"
 
 export interface AdminOrderFilters extends FindParams, BaseOrderFilters {
   id?: string[] | string
@@ -13,3 +14,6 @@ export interface AdminOrderFilters extends FindParams, BaseOrderFilters {
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
 }
+
+
+export interface AdminOrderChangesFilters extends BaseOrderChangesFilters {}

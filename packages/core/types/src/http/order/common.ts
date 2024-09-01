@@ -310,6 +310,13 @@ export interface BaseOrderFilters
   status?: string[] | string | OperatorMap<string | string[]>
 }
 
+export interface BaseOrderChangesFilters
+  extends BaseFilterable<BaseOrderChangesFilters> {
+  id?: string[] | string | OperatorMap<string | string[]>
+  status?: string[] | string | OperatorMap<string | string[]>
+  change_type?: string[] | string | OperatorMap<string | string[]>
+}
+
 export interface BaseOrderChange {
   /**
    * The ID of the order change

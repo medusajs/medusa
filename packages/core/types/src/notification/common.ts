@@ -99,6 +99,10 @@ export interface NotificationDTO {
    * The date and time the notification was created.
    */
   created_at: Date
+  /**
+   * The status of the notification
+   */
+  status: "pending" | "success" | "failure"
 }
 
 /**

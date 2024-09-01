@@ -4,6 +4,8 @@ import {
   PaginatedResponse,
   SelectParams,
 } from "@medusajs/types"
+import { AdminOrderChangesResponse } from "@medusajs/types/src/http/order/admin/responses"
+
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -108,5 +110,18 @@ export class Order {
         query,
       }
     )
+  }
+
+  async listChanges(
+    id: string,
+    queryParams?: FindParams & HttpTypes.AdminOrderChangesFilters,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<
+      PaginatedResponse<AdminOrderChangesResponse>
+    >(`/admin/orders/${id}/changes`, {
+      query: queryParams,
+      headers,
+    })
   }
 }

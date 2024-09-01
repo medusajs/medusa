@@ -5,11 +5,11 @@ import {
   Module,
   Modules,
   NotificationEvents,
+  NotificationStatus,
 } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
 import { resolve } from "path"
 import { NotificationModuleService } from "@services"
@@ -32,10 +32,10 @@ let moduleOptions = {
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<INotificationModuleService>({
   moduleName: Modules.NOTIFICATION,
   moduleOptions,
-  testSuite: ({ service }: SuiteOptions<INotificationModuleService>) =>
+  testSuite: ({ service }) =>
     describe("Notification Module Service", () => {
       let eventBusEmitSpy
 
@@ -66,7 +66,7 @@ moduleIntegrationTestRunner({
         })
       })
 
-      it("sends a notification and stores it in the database", async () => {
+      it("should send a notification and stores it in the database", async () => {
         const notification = {
           to: "admin@medusa.com",
           template: "some-template",
@@ -79,11 +79,12 @@ moduleIntegrationTestRunner({
           expect.objectContaining({
             provider_id: "test-provider",
             external_id: "external_id",
+            status: NotificationStatus.SUCCESS,
           })
         )
       })
 
-      it("emits an event when a notification is created", async () => {
+      it("should emit an event when a notification is created", async () => {
         const notification = {
           to: "admin@medusa.com",
           template: "some-template",
@@ -109,7 +110,7 @@ moduleIntegrationTestRunner({
         )
       })
 
-      it("ensures the same notification is not sent twice", async () => {
+      it("should ensures the same notification is not sent twice", async () => {
         const notification = {
           to: "admin@medusa.com",
           template: "some-template",
@@ -123,11 +124,86 @@ moduleIntegrationTestRunner({
           expect.objectContaining({
             provider_id: "test-provider",
             external_id: "external_id",
+            status: NotificationStatus.SUCCESS,
           })
         )
 
         const secondResult = await service.createNotifications(notification)
         expect(secondResult).toBe(undefined)
+      })
+
+      it("should manage the status of multiple notification properly in any scenarios", async () => {
+        const notification1 = {
+          to: "admin@medusa.com",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "idempotency-key",
+        }
+
+        const notification2 = {
+          to: "0000000000",
+          template: "some-template",
+          channel: "sms",
+          data: {},
+          idempotency_key: "idempotency-key-2",
+        }
+
+        const notification3 = {
+          to: "admin@medusa.com",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "idempotency-key-3",
+        }
+
+        const notification4 = {
+          to: "fail",
+          template: "some-template",
+          channel: "email",
+          data: {},
+          idempotency_key: "idempotency-key-4",
+        }
+
+        const err = await service
+          .createNotifications([
+            notification1,
+            notification2,
+            notification3,
+            notification4,
+          ])
+          .catch((e) => e)
+
+        const notifications = await service.listNotifications()
+
+        expect(notifications).toHaveLength(4)
+
+        const notification1Result = notifications.find(
+          (n) => n.idempotency_key === "idempotency-key"
+        )!
+        expect(notification1Result.status).toEqual(NotificationStatus.SUCCESS)
+
+        const notification2Result = notifications.find(
+          (n) => n.idempotency_key === "idempotency-key-2"
+        )!
+        expect(notification2Result.status).toEqual(NotificationStatus.FAILURE)
+
+        const notification3Result = notifications.find(
+          (n) => n.idempotency_key === "idempotency-key-3"
+        )!
+        expect(notification3Result.status).toEqual(NotificationStatus.SUCCESS)
+
+        const notification4Result = notifications.find(
+          (n) => n.idempotency_key === "idempotency-key-4"
+        )!
+        expect(notification4Result.status).toEqual(NotificationStatus.FAILURE)
+
+        expect(err).toBeTruthy()
+        expect(err.message).toEqual(
+          `Could not find a notification provider for channel: sms for notification id ${notification2Result.id}
+Failed to send notification with id ${notification4Result.id}:
+Failed to send notification`
+        )
       })
     }),
 })

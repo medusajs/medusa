@@ -285,6 +285,10 @@ const Header = ({
   )
 
   const isOrderEditActive = orderPreview?.order_change?.change_type === "edit"
+  // State where creation of order edit was interrupted i.e. order edit is drafted but not confirmed
+  const isOrderEditPending =
+    orderPreview?.order_change?.change_type === "edit" &&
+    orderPreview?.order_change?.status === "pending"
 
   return (
     <div className="flex items-center justify-between px-6 py-4">
@@ -294,7 +298,11 @@ const Header = ({
           {
             actions: [
               {
-                label: t("orders.summary.editOrder"),
+                label: t(
+                  isOrderEditPending
+                    ? "orders.summary.editOrderContinue"
+                    : "orders.summary.editOrder"
+                ),
                 to: `/orders/${order.id}/edits`,
                 icon: <PencilSquare />,
                 disabled:
@@ -557,6 +565,7 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
         )
         .map((sm, i) => (
           <Cost
+            key={sm.id}
             label={t("fields.shipping") + (i ? ` ${i + 1}` : "")}
             secondaryValue={sm.name}
             value={getLocaleAmount(sm.total, order.currency_code)}
