@@ -40,6 +40,8 @@ const InviteUserSchema = zod.object({
 
 const PAGE_SIZE = 10
 const PREFIX = "usr_invite"
+const INVITE_URL = `${backendUrl}${__BASE__ === "/" ? "" : __BASE__}/invite?token=`
+
 
 export const InviteUserForm = () => {
   const { t } = useTranslation()
@@ -206,7 +208,7 @@ const InviteActions = ({ invite }: { invite: InviteDTO }) => {
   }
 
   const handleCopyInviteLink = () => {
-    const inviteUrl = `${backendUrl}/app/invite?token=${invite.token}`
+    const inviteUrl = `${INVITE_URL}${invite.token}`
     copy(inviteUrl)
   }
 
