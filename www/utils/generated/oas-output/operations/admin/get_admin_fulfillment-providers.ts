@@ -54,29 +54,29 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The fulfillment provider's ID.
+ *           description: Filter by a fulfillment provider's ID.
  *         - type: array
- *           description: The fulfillment provider's ID.
+ *           description: Filter by fulfillment provider IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: A fulfillment provider ID.
  *   - name: is_enabled
  *     in: query
- *     description: The fulfillment provider's is enabled.
- *     required: false
+ *     description: Filter by whether the fulfillment provider is enabled.
+ *     required: true
  *     schema:
  *       type: boolean
  *       title: is_enabled
- *       description: The fulfillment provider's is enabled.
+ *       description: Filter by whether the fulfillment provider is enabled.
  *   - name: q
  *     in: query
- *     description: The fulfillment provider's q.
+ *     description: Search term to filter a fulfillment provider's searchable properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The fulfillment provider's q.
+ *       description: Search term to filter a fulfillment provider's searchable properties.
  *   - name: stock_location_id
  *     in: query
  *     required: false
@@ -84,13 +84,13 @@
  *       oneOf:
  *         - type: string
  *           title: stock_location_id
- *           description: The fulfillment provider's stock location id.
+ *           description: Filter by associated stock location's ID.
  *         - type: array
- *           description: The fulfillment provider's stock location id.
+ *           description: Filter by associated stock location IDs.
  *           items:
  *             type: string
  *             title: stock_location_id
- *             description: The stock location id's details.
+ *             description: A stock location's ID.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -493,13 +493,13 @@
  *     description: The order preview's email.
  *     format: email
  *   display_id:
- *     type: string
+ *     type: number
  *     title: display_id
  *     description: The order preview's display id.
  *   shipping_address:
- *     $ref: "#/components/schemas/BaseOrderAddress"
+ *     $ref: "#/components/schemas/AdminOrderAddress"
  *   billing_address:
- *     $ref: "#/components/schemas/BaseOrderAddress"
+ *     $ref: "#/components/schemas/AdminOrderAddress"
  *   payment_collections:
  *     type: array
  *     description: The order preview's payment collections.
@@ -644,6 +644,10 @@
  *     type: number
  *     title: original_shipping_tax_total
  *     description: The order preview's original shipping tax total.
+ *   customer:
+ *     $ref: "#/components/schemas/AdminCustomer"
+ *   sales_channel:
+ *     $ref: "#/components/schemas/AdminSalesChannel"
  * 
 */
 

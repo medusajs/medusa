@@ -75,28 +75,32 @@
  *     content:
  *       application/json:
  *         schema:
- *           type: object
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - id
+ *                 - object
+ *                 - deleted
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   title: id
+ *                   description: The customer's ID.
+ *                 object:
+ *                   type: string
+ *                   title: object
+ *                   description: The name of the deleted object.
+ *                 deleted:
+ *                   type: boolean
+ *                   title: deleted
+ *                   description: Whether the Customer was deleted.
+ *             - type: object
+ *               description: SUMMARY
+ *               properties:
+ *                 parent:
+ *                   $ref: "#/components/schemas/AdminCustomer"
  *           description: SUMMARY
- *           required:
- *             - id
- *             - object
- *             - deleted
- *           properties:
- *             id:
- *               type: string
- *               title: id
- *               description: The customer's ID.
- *             object:
- *               type: string
- *               title: object
- *               description: The customer's object.
- *             deleted:
- *               type: boolean
- *               title: deleted
- *               description: The customer's deleted.
- *             parent:
- *               type: object
- *               description: The customer's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

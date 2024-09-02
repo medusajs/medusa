@@ -49,9 +49,6 @@
  *               type: boolean
  *               title: deleted
  *               description: Whether the inventory item was deleted.
- *             parent:
- *               type: object
- *               description: The inventory item's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

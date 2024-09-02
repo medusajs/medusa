@@ -17,7 +17,7 @@ import {
 } from "../../helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminProductVariantParams>,
   res: MedusaResponse<HttpTypes.AdminProductVariantListResponse>
 ) => {
   const productId = req.params.id
