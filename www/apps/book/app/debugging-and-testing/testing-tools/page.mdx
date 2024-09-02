@@ -35,13 +35,15 @@ If your Medusa project was created after September 2nd, Jest is already installe
 Run the following command to install the required Jest dependencies:
 
 ```bash npm2yarn
-npm install --save-dev jest ts-jest @swc/jest
+npm install --save-dev jest @types/jest @swc/jest
 ```
 
 Then, create the file `jest.config.js` with the following content:
 
 ```js title="jest.config.js"
-/** @type {import('ts-jest').JestConfigWithTsJest} **/
+const { loadEnv } = require('@medusajs/utils')
+loadEnv('test', process.cwd())
+
 module.exports = {
   transform: {
     "^.+\\.[jt]s$": [
@@ -53,15 +55,17 @@ module.exports = {
       },
     ],
   },
-  testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `ts`, "json"],
+  testEnvironment: "node",
+  moduleFileExtensions: ["js", "ts", "json"],
   modulePathIgnorePatterns: ["dist/"],
 }
 
-if (process.env.TEST_TYPE === "integration") {
-  module.exports.testMatch = ["**/src/integration-tests/*.spec.[jt]s"]
-} else if (process.env.TEST_TYPE === "modules") {
-  module.exports.testMatch = ["**/src/modules/**/__tests__/*.spec.[jt]s"]
+if (process.env.TEST_TYPE === "integration:http") {
+  module.exports.testMatch = ["**/integration-tests/http/*.spec.[jt]s"]
+} else if (process.env.TEST_TYPE === "integration:modules") {
+  module.exports.testMatch = ["**/src/modules/*/__tests__/**/*.[jt]s"]
+} else if (process.env.TEST_TYPE === "unit") {
+  module.exports.testMatch = ["**/src/**/__tests__/**/*.unit.spec.[jt]s"]
 }
 ```
 
@@ -74,15 +78,23 @@ Finally, add the following scripts to `package.json`:
 ```json title="package.json"
 "scripts": {
   // ...
-  "test:integration": "npm run build && NODE_OPTIONS=--experimental-vm-modules TEST_TYPE=integration jest --runInBand --forceExit",
-  "test:modules": "npm run build && NODE_OPTIONS=--experimental-vm-modules TEST_TYPE=modules jest --runInBand --forceExit"
+  "test:integration:http": "TEST_TYPE=integration:http NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",
+  "test:integration:modules": "TEST_TYPE=integration:modules NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit",
+  "test:unit": "TEST_TYPE=unit NODE_OPTIONS=--experimental-vm-modules jest --silent --runInBand --forceExit"
 },
 ```
 
 You now have two commands:
 
-- `test:integration` to run integration tests (for example, for API routes and workflows) available under the `src/integration-tests` directory.
-- `test:modules` to run integration tests for modules available in any `__tests__` directory under `src/modules`.
+- `test:integration:http` to run integration tests (for example, for API routes and workflows) available under the `integration-tests/http` directory.
+- `test:integration:modules` to run integration tests for modules available in any `__tests__` directory under `src/modules`.
+- `test:unit` to run unit tests in any `__tests` directory under the `src` directory.
+
+<Note>
+
+Unit tests aren't covered by Medusa's testing tools.
+
+</Note>
 
 ---
 
