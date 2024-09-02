@@ -81,7 +81,7 @@ const validateVariantsDuplicateInventoryItemIds = (
   if (erroredVariantIds.length) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `Cannot associate duplicate inventory items to a variant(s) ${erroredVariantIds.join(
+      `Cannot associate duplicate inventory items to variant(s) ${erroredVariantIds.join(
         "\n"
       )}`
     )
