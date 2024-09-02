@@ -150,7 +150,7 @@ export const CampaignGeneralSection = ({
         </Text>
 
         <Text size="small" leading="compact">
-          {campaign.starts_at ? formatDate(campaign.ends_at) : "-"}
+          {campaign.ends_at ? formatDate(campaign.ends_at) : "-"}
         </Text>
       </div>
     </Container>

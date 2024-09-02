@@ -36,6 +36,18 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCustomerGroupType>,
   res: MedusaResponse<HttpTypes.AdminCustomerGroupResponse>
 ) => {
+  const existingCustomerGroup = await refetchCustomerGroup(
+    req.params.id,
+    req.scope,
+    ["id"]
+  )
+  if (!existingCustomerGroup) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Customer group with id "${req.params.id}" not found`
+    )
+  }
+
   await updateCustomerGroupsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },

@@ -16,7 +16,6 @@
  *     type: string
  *     title: object
  *     description: The name of the deleted object.
- *     default: variant
  *   deleted:
  *     type: boolean
  *     title: deleted

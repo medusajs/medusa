@@ -49,9 +49,6 @@
  *               type: boolean
  *               title: deleted
  *               description: Whether the order edit was deleted.
- *             parent:
- *               type: object
- *               description: The order edit's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

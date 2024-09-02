@@ -36,6 +36,16 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCampaignType & AdditionalData>,
   res: MedusaResponse<HttpTypes.AdminCampaignResponse>
 ) => {
+  const existingCampaign = await refetchCampaign(req.params.id, req.scope, [
+    "id",
+  ])
+  if (!existingCampaign) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Campaign with id "${req.params.id}" not found`
+    )
+  }
+
   const { additional_data, ...rest } = req.validatedBody
   const updateCampaigns = updateCampaignsWorkflow(req.scope)
   const campaignsData = [

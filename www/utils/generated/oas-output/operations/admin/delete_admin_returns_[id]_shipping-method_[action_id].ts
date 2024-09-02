@@ -3,12 +3,10 @@
  * operationId: DeleteReturnsIdShippingMethodAction_id
  * summary: Remove Shipping Method from Return
  * x-sidebar-summary: Remove Shipping Method
- * description: >
+ * description: |
  *   Remove a shipping method of the return by the ID of the item's `SHIPPING_ADD` action.
  * 
- * 
- *   Every item has an `actions` property, whose value is an array of actions. You can check the action's
- *   name using its `action` property, and use the value of the `id` property.
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id

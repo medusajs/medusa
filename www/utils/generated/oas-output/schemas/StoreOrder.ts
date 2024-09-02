@@ -72,7 +72,7 @@
  *     title: currency_code
  *     description: The order's currency code.
  *   display_id:
- *     type: string
+ *     type: number
  *     title: display_id
  *     description: The order's display id.
  *   shipping_address:

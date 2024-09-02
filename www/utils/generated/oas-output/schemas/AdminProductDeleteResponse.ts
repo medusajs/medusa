@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Product was deleted.
- *   parent:
- *     type: object
- *     description: The product's parent.
  * 
 */
 

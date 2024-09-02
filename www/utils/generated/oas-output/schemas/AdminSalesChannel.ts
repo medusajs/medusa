@@ -1,7 +1,7 @@
 /**
  * @schema AdminSalesChannel
  * type: object
- * description: The sales channel's sales channels.
+ * description: The order's sales channel.
  * x-schemaName: AdminSalesChannel
  * required:
  *   - id

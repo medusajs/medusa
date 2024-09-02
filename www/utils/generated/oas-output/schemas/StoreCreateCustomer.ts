@@ -5,10 +5,6 @@
  * x-schemaName: StoreCreateCustomer
  * required:
  *   - email
- *   - company_name
- *   - first_name
- *   - last_name
- *   - phone
  * properties:
  *   email:
  *     type: string
@@ -31,6 +27,9 @@
  *     type: string
  *     title: phone
  *     description: The customer's phone.
+ *   metadata:
+ *     type: object
+ *     description: The customer's metadata.
  * 
 */
 

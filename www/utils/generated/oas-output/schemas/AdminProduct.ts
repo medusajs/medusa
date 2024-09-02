@@ -5,9 +5,9 @@
  * x-schemaName: AdminProduct
  * required:
  *   - type
+ *   - length
  *   - title
  *   - status
- *   - length
  *   - options
  *   - description
  *   - id
@@ -55,6 +55,10 @@
  *     description: The parent's tags.
  *     items:
  *       $ref: "#/components/schemas/AdminProductTag"
+ *   length:
+ *     type: number
+ *     title: length
+ *     description: The parent's length.
  *   title:
  *     type: string
  *     title: title
@@ -67,10 +71,6 @@
  *       - proposed
  *       - published
  *       - rejected
- *   length:
- *     type: number
- *     title: length
- *     description: The parent's length.
  *   options:
  *     type: array
  *     description: The parent's options.

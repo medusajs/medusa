@@ -38,6 +38,22 @@ export const POST = async (
 ) => {
   const { additional_data, ...update } = req.validatedBody
 
+  const existingProduct = await refetchEntity(
+    "product",
+    req.params.id,
+    req.scope,
+    ["id"]
+  )
+  /**
+   * Check if the product exists with the id or not before calling the workflow.
+   */
+  if (!existingProduct) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product with id "${req.params.id}" not found`
+    )
+  }
+
   const { result } = await updateProductsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },

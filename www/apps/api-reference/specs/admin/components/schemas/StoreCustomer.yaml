@@ -1,5 +1,5 @@
 type: object
-description: The customer's details.
+description: The customer's parent.
 x-schemaName: StoreCustomer
 required:
   - id
@@ -14,60 +14,60 @@ properties:
   id:
     type: string
     title: id
-    description: The customer's ID.
+    description: The parent's ID.
   email:
     type: string
     title: email
-    description: The customer's email.
+    description: The parent's email.
     format: email
   default_billing_address_id:
     type: string
     title: default_billing_address_id
-    description: The customer's default billing address id.
+    description: The parent's default billing address id.
   default_shipping_address_id:
     type: string
     title: default_shipping_address_id
-    description: The customer's default shipping address id.
+    description: The parent's default shipping address id.
   company_name:
     type: string
     title: company_name
-    description: The customer's company name.
+    description: The parent's company name.
   first_name:
     type: string
     title: first_name
-    description: The customer's first name.
+    description: The parent's first name.
   last_name:
     type: string
     title: last_name
-    description: The customer's last name.
+    description: The parent's last name.
   addresses:
     type: array
-    description: The customer's addresses.
+    description: The parent's addresses.
     items:
       $ref: ./BaseCustomerAddress.yaml
   phone:
     type: string
     title: phone
-    description: The customer's phone.
+    description: The parent's phone.
   metadata:
     type: object
-    description: The customer's metadata.
+    description: The parent's metadata.
   created_by:
     type: string
     title: created_by
-    description: The customer's created by.
+    description: The parent's created by.
   deleted_at:
     type: string
     format: date-time
     title: deleted_at
-    description: The customer's deleted at.
+    description: The parent's deleted at.
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The customer's created at.
+    description: The parent's created at.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The customer's updated at.
+    description: The parent's updated at.

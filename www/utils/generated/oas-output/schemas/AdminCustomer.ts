@@ -1,7 +1,7 @@
 /**
  * @schema AdminCustomer
  * type: object
- * description: The customer's details.
+ * description: The order's customer.
  * x-schemaName: AdminCustomer
  * required:
  *   - has_account
