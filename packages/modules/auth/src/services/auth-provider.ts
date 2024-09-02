@@ -64,6 +64,18 @@ export default class AuthProviderService {
     )
   }
 
+  async generateResetPasswordToken(
+    provider: string,
+    entityId: string,
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<string> {
+    const providerHandler = this.retrieveProviderRegistration(provider)
+    return await providerHandler.generateResetPasswordToken(
+      resetPasswordData,
+      authIdentityProviderService
+    )
+  }
+
   async validateCallback(
     provider: string,
     auth: AuthenticationInput,

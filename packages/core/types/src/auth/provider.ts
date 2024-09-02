@@ -2,6 +2,7 @@ import {
   AuthIdentityDTO,
   AuthenticationInput,
   AuthenticationResponse,
+  ProviderIdentityDTO,
 } from "./common"
 
 export type ResetPasswordInput = {
@@ -47,4 +48,8 @@ export interface IAuthProvider {
     data: ResetPasswordInput,
     authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse>
+  generateResetPasswordToken(
+    entityId: string,
+    providerIdentity: ProviderIdentityDTO
+  ): Promise<string>
 }

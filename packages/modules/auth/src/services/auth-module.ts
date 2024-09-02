@@ -238,6 +238,21 @@ export default class AuthModuleService
     }
   }
 
+  async generateResetPasswordToken(
+    provider: string,
+    generatePasswordTokenData: Record<string, unknown>
+  ): Promise<string> {
+    try {
+      return await this.authProviderService_.(
+        provider,
+        resetPasswordData,
+        this.getAuthIdentityProviderService(provider)
+      )
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
   getAuthIdentityProviderService(
     provider: string
   ): AuthIdentityProviderService {

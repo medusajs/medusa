@@ -1,13 +1,12 @@
 import { MedusaError } from "@medusajs/utils"
 import {
-  createStep,
   createWorkflow,
   transform,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk"
-import jwt from "jsonwebtoken"
 import { useRemoteQueryStep } from "../../common"
 import { resetPasswordStep } from "../steps/reset-password"
+import { validateResetPasswordTokenStep } from "../steps/validate-reset-password-token"
 
 type WorkflowInput = {
   provider: string
@@ -15,25 +14,6 @@ type WorkflowInput = {
   token: string
   password: string
 }
-
-type TokenPayload = {
-  entity_id: string
-  exp: number
-}
-
-const validateToken = createStep(
-  "validate-token",
-  async (input: { token: string; entityId: string; passwordHash: string }) => {
-    const verified = jwt.verify(input.token, input.passwordHash) as TokenPayload
-
-    const isExpired = verified.exp < Math.floor(Date.now() / 1000)
-    const isInvalid = verified.entity_id !== input.entityId
-
-    if (!verified || isExpired || isInvalid) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, `Invalid token`)
-    }
-  }
-)
 
 export const resetPasswordWorkflow = createWorkflow(
   "reset-password",
@@ -65,9 +45,10 @@ export const resetPasswordWorkflow = createWorkflow(
       }
     )
 
-    validateToken({
+    validateResetPasswordTokenStep({
       entityId: input.entityId,
       token: input.token,
+      providerIdentityId: providerIdentity.id,
       passwordHash: providerIdentity.provider_metadata.password,
     })
 

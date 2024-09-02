@@ -1,37 +1,23 @@
 import { MedusaError, UserWorkflowEvents } from "@medusajs/utils"
 import { createWorkflow, transform } from "@medusajs/workflows-sdk"
-import jwt from "jsonwebtoken"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
-
-const generateResetPasswordToken = async (input: {
-  entityId: string
-  email: string
-  passwordHash: string
-}) => {
-  const secret = input.passwordHash
-  const expiry = Math.floor(Date.now() / 1000) + 60 * 15
-  const payload = { entity_id: input.entityId, email: input.email, exp: expiry }
-  const token = jwt.sign(payload, secret)
-
-  return token
-}
 
 export const generateResetPasswordTokenWorkflow = createWorkflow(
   "generate-reset-password-token",
-  (input: { email: string }) => {
+  (input: { entityId: string; provider: string }) => {
     const providerIdentities = useRemoteQueryStep({
       entry_point: "provider_identity",
       fields: ["id", "provider_metadata"],
       variables: {
         filters: {
-          entity_id: input.email,
-          provider: "emailpass",
+          entity_id: input.entityId,
+          provider: input.provider,
         },
       },
       throw_if_key_not_found: true,
     }).config({ name: "get-provider-identities" })
 
-    const passwordHash = transform(
+    const providerIdentity = transform(
       { providerIdentities, input },
       ({ providerIdentities, input }) => {
         const providerIdentity = providerIdentities[0]
@@ -39,26 +25,26 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
         if (!providerIdentity) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Emailpass auth identity with email ${input.email} not found`
+            `Provider identity with entity_id ${input.entityId} and provider ${input.provider} not found`
           )
         }
 
-        return providerIdentity?.provider_metadata.password
+        return providerIdentity
       }
     )
 
     const token = transform(
       {
-        entityId: input.email,
-        email: input.email,
-        passwordHash,
+        entityId: input.entityId,
+        providerIdentityId: providerIdentity.id,
+        passwordHash: providerIdentity?.provider_metadata.password,
       },
       generateResetPasswordToken
     )
 
     emitEventStep({
       eventName: UserWorkflowEvents.PASSWORD_RESET,
-      data: { email: input.email, token },
+      data: { to: input.entityId, token },
     })
   }
 )

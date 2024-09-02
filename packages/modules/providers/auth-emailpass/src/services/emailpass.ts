@@ -5,13 +5,14 @@ import {
   AuthIdentityProviderService,
   EmailPassAuthProviderOptions,
   Logger,
-  ResetPasswordInput,
+  ResetPasswordInput
 } from "@medusajs/types"
 import {
   AbstractAuthModuleProvider,
   isString,
   MedusaError,
 } from "@medusajs/utils"
+import jwt from "jsonwebtoken"
 import Scrypt from "scrypt-kdf"
 
 type InjectedDependencies = {
@@ -40,6 +41,32 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     const hashConfig = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
     const passwordHash = await Scrypt.kdf(password, hashConfig)
     return passwordHash.toString("base64")
+  }
+
+  async generateResetPasswordToken(
+    entityId: string,
+    authIdentityService: AuthIdentityProviderService
+  ): Promise<string> {
+    const authIdentity = await authIdentityService.retrieve({
+      entity_id: entityId,
+    })
+
+    const providerIdentity = authIdentity.provider_identities?.find(
+      (pi) => pi.provider === this.provider
+    )!
+
+    const secret = providerIdentity.provider_metadata?.password as string
+    // TODO: Add config to provider module
+    const expiry = Math.floor(Date.now() / 1000) + 60 * 15
+    const payload = {
+      entity_id: entityId,
+      provider_identity_id: providerIdentity.id,
+      exp: expiry,
+    }
+
+    const token = jwt.sign(payload, secret)
+
+    return token
   }
 
   async resetPassword(

@@ -60,6 +60,11 @@ export interface IAuthModuleService extends IModuleService {
     resetPasswordData: ResetPasswordInput
   ): Promise<AuthenticationResponse>
 
+  generateResetPasswordToken(
+    provider: string,
+    generatePasswordTokenData: Record<string, unknown>
+  ): Promise<string>
+
   /**
    * When authenticating users with a third-party provider, such as Google, the user performs an
    * action to finish the authentication, such as enter their credentials in Google's sign-in
