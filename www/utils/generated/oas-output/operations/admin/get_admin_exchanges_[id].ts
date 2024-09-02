@@ -1,8 +1,9 @@
 /**
  * @oas [get] /admin/exchanges/{id}
  * operationId: GetExchangesId
- * summary: Get a Exchange
- * description: Retrieve a exchange by its ID. You can expand the exchange's relations or select the fields that should be returned.
+ * summary: Get an Exchange
+ * description: Retrieve an exchange by its ID. You can expand the exchange's
+ *   relations or select the fields that should be returned using query parameters.
  * x-authenticated: true
  * parameters:
  *   - name: id

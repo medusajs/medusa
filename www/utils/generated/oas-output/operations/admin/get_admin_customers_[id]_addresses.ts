@@ -2,7 +2,7 @@
  * @oas [get] /admin/customers/{id}/addresses
  * operationId: GetCustomersIdAddresses
  * summary: List Addresses
- * description: Retrieve a list of addresses in a customer. The addresses can be filtered by fields like FILTER FIELDS. The addresses can also be paginated.
+ * description: Retrieve a list of addresses in a customer. The addresses can be filtered by fields like `query`. The addresses can also be paginated.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -53,6 +53,104 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - name: q
+ *     in: query
+ *     description: Search term to apply on the address's searchable properties.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: q
+ *       description: Search term to apply on the address's searchable properties.
+ *   - name: company
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: company
+ *           description: Filter by a company.
+ *         - type: array
+ *           description: Filter by companies.
+ *           items:
+ *             type: string
+ *             title: company
+ *             description: A company's name.
+ *   - name: city
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: city
+ *           description: Filter by a city.
+ *         - type: array
+ *           description: Filter by cities.
+ *           items:
+ *             type: string
+ *             title: city
+ *             description: A city's name.
+ *   - name: country_code
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: country_code
+ *           description: Filter by a currency code.
+ *         - type: array
+ *           description: Filter by currency codes.
+ *           items:
+ *             type: string
+ *             title: country_code
+ *             description: A currency code.
+ *   - name: province
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: province
+ *           description: Filter by a province.
+ *         - type: array
+ *           description: Filter by provinces.
+ *           items:
+ *             type: string
+ *             title: province
+ *             description: A province code.
+ *   - name: postal_code
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: postal_code
+ *           description: Filter by a postal code.
+ *         - type: array
+ *           description: Filter by postal codes.
+ *           items:
+ *             type: string
+ *             title: postal_code
+ *             description: A postal code.
+ *   - name: $and
+ *     in: query
+ *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $and
+ *   - name: $or
+ *     in: query
+ *     description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -73,7 +171,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of customer addresses.
  *               required:
  *                 - limit
  *                 - offset
@@ -82,23 +180,23 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The customer's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The customer's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The customer's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of customer addresses
  *               required:
  *                 - addresses
  *               properties:
  *                 addresses:
  *                   type: array
- *                   description: The customer's addresses.
+ *                   description: The customer addresses.
  *                   items:
  *                     $ref: "#/components/schemas/AdminCustomerAddress"
  *   "400":
