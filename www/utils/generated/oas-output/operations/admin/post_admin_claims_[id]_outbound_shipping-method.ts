@@ -4,7 +4,7 @@
  * summary: Add Outbound Shipping Methods to a Claim
  * x-sidebar-summary: Add Outbound Shipping
  * description: |
- *   Add an outbound (or return) shipping method to a claim. The outbound shipping method will have a `SHIPPING_ADD` action.
+ *   Add an outbound shipping method to a claim. The outbound shipping method will have a `SHIPPING_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id
