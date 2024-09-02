@@ -47,6 +47,54 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: Filter by an order ID.
+ *         - type: array
+ *           description: Filter by order IDs.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: An order's ID.
+ *   - name: status
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: status
+ *           description: Filter by the order's status.
+ *         - type: array
+ *           description: Filter by order statuses.
+ *           items:
+ *             type: string
+ *             title: status
+ *             description: An order's status.
+ *   - name: $and
+ *     in: query
+ *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $and
+ *   - name: $or
+ *     in: query
+ *     description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -67,7 +115,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of orders
  *               required:
  *                 - limit
  *                 - offset
@@ -76,23 +124,23 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The order's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The order's offset.
+ *                   description: The number of items skipped before the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The order's count.
+ *                   description: The total count of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of orders.
  *               required:
  *                 - orders
  *               properties:
  *                 orders:
  *                   type: array
- *                   description: The order's orders.
+ *                   description: The list of orders.
  *                   items:
  *                     $ref: "#/components/schemas/AdminOrder"
  *   "400":

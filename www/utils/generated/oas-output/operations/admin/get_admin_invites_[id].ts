@@ -1,8 +1,8 @@
 /**
  * @oas [get] /admin/invites/{id}
  * operationId: GetInvitesId
- * summary: Get a Invite
- * description: Retrieve a invite by its ID. You can expand the invite's relations or select the fields that should be returned.
+ * summary: Get an Invite
+ * description: Retrieve an invite by its ID. You can expand the invite's relations or select the fields that should be returned.
  * x-authenticated: false
  * parameters:
  *   - name: id
