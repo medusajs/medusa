@@ -1,0 +1,36 @@
+/**
+ * @schema StoreCreateReturn
+ * type: object
+ * description: SUMMARY
+ * x-schemaName: StoreCreateReturn
+ * required:
+ *   - order_id
+ *   - items
+ *   - return_shipping
+ * properties:
+ *   order_id:
+ *     type: string
+ *     title: order_id
+ *     description: The return's order id.
+ *   items:
+ *     type: array
+ *     description: The return's items.
+ *     items:
+ *       $ref: "#/components/schemas/StoreCreateReturnItem"
+ *   return_shipping:
+ *     $ref: "#/components/schemas/StoreCreateReturnShipping"
+ *   note:
+ *     type: string
+ *     title: note
+ *     description: The return's note.
+ *   receive_now:
+ *     type: boolean
+ *     title: receive_now
+ *     description: The return's receive now.
+ *   location_id:
+ *     type: string
+ *     title: location_id
+ *     description: The return's location id.
+ * 
+*/
+

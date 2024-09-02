@@ -294,6 +294,8 @@
  *                 type: string
  *                 title: location_id
  *                 description: The location id's details.
+ *       required:
+ *         - location_id
  *   - name: $and
  *     in: query
  *     required: false

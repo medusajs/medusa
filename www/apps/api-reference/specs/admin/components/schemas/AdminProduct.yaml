@@ -3,9 +3,9 @@ description: The product's parent.
 x-schemaName: AdminProduct
 required:
   - type
+  - length
   - title
   - status
-  - length
   - options
   - description
   - id
@@ -53,6 +53,10 @@ properties:
     description: The parent's tags.
     items:
       $ref: ./AdminProductTag.yaml
+  length:
+    type: number
+    title: length
+    description: The parent's length.
   title:
     type: string
     title: title
@@ -65,10 +69,6 @@ properties:
       - proposed
       - published
       - rejected
-  length:
-    type: number
-    title: length
-    description: The parent's length.
   options:
     type: array
     description: The parent's options.

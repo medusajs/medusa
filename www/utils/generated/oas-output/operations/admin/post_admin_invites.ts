@@ -61,6 +61,9 @@
  *             title: email
  *             description: The invite's email.
  *             format: email
+ *           metadata:
+ *             type: object
+ *             description: The invite's metadata.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

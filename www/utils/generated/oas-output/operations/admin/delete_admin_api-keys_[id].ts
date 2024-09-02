@@ -50,9 +50,6 @@
  *               type: boolean
  *               title: deleted
  *               description: Whether the API key was deleted.
- *             parent:
- *               type: object
- *               description: The API key's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

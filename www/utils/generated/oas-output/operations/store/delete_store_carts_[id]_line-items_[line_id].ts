@@ -71,28 +71,32 @@
  *     content:
  *       application/json:
  *         schema:
- *           type: object
+ *           allOf:
+ *             - type: object
+ *               description: SUMMARY
+ *               required:
+ *                 - id
+ *                 - object
+ *                 - deleted
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   title: id
+ *                   description: The cart's ID.
+ *                 object:
+ *                   type: string
+ *                   title: object
+ *                   description: The name of the deleted object.
+ *                 deleted:
+ *                   type: boolean
+ *                   title: deleted
+ *                   description: Whether the Cart was deleted.
+ *             - type: object
+ *               description: SUMMARY
+ *               properties:
+ *                 parent:
+ *                   $ref: "#/components/schemas/StoreCart"
  *           description: SUMMARY
- *           required:
- *             - id
- *             - object
- *             - deleted
- *           properties:
- *             id:
- *               type: string
- *               title: id
- *               description: The cart's ID.
- *             object:
- *               type: string
- *               title: object
- *               description: The cart's object.
- *             deleted:
- *               type: boolean
- *               title: deleted
- *               description: The cart's deleted.
- *             parent:
- *               type: object
- *               description: The cart's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

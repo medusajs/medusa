@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Sales Channel was deleted.
- *   parent:
- *     type: object
- *     description: The sales channel's parent.
  * 
 */
 

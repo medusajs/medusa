@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Shipping Option was deleted.
- *   parent:
- *     type: object
- *     description: The shipping option's parent.
  * 
 */
 
