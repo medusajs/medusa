@@ -48,9 +48,6 @@
  *               type: boolean
  *               title: deleted
  *               description: The customer's deleted.
- *             parent:
- *               type: object
- *               description: The customer's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

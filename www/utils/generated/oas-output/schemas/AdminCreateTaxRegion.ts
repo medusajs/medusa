@@ -5,9 +5,6 @@
  * x-schemaName: AdminCreateTaxRegion
  * required:
  *   - country_code
- *   - province_code
- *   - parent_id
- *   - metadata
  * properties:
  *   country_code:
  *     type: string
@@ -26,7 +23,6 @@
  *     description: The tax region's default tax rate.
  *     required:
  *       - name
- *       - metadata
  *     properties:
  *       rate:
  *         type: number

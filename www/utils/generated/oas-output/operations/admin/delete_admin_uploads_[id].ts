@@ -49,9 +49,6 @@
  *               type: boolean
  *               title: deleted
  *               description: Whether the file was deleted.
- *             parent:
- *               type: object
- *               description: The upload's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

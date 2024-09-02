@@ -34,29 +34,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           description: SUMMARY
- *           required:
- *             - id
- *             - object
- *             - deleted
- *           properties:
- *             id:
- *               type: string
- *               title: id
- *               description: The service zone's ID.
- *             object:
- *               type: string
- *               title: object
- *               description: The name of the deleted object.
- *               default: service_zone
- *             deleted:
- *               type: boolean
- *               title: deleted
- *               description: Whether the service zone was deleted.
- *             parent:
- *               type: object
- *               description: The fulfillment set that the service zone belongs to.
+ *           $ref: "#/components/schemas/AdminServiceZoneDeleteResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

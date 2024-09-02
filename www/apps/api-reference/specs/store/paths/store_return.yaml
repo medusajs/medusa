@@ -8,7 +8,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/StorePostReturnsReqSchema.yaml
+          $ref: ../components/schemas/StoreCreateReturn.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL

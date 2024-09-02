@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Tax Rate was deleted.
- *   parent:
- *     type: object
- *     description: The tax rate's parent.
  * 
 */
 
