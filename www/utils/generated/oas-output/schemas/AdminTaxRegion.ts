@@ -1,7 +1,7 @@
 /**
  * @schema AdminTaxRegion
  * type: object
- * description: The tax rate's tax region.
+ * description: The parent's tax region.
  * x-schemaName: AdminTaxRegion
  * required:
  *   - id

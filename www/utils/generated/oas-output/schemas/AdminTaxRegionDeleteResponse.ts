@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Tax Region was deleted.
- *   parent:
- *     type: object
- *     description: The tax region's parent.
  * 
 */
 

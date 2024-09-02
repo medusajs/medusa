@@ -2,8 +2,7 @@
  * @oas [get] /admin/api-keys
  * operationId: GetApiKeys
  * summary: List API Keys
- * description: Retrieve a list of API keys. The API keys can be filtered by fields
- *   such as `id`. The API keys can also be sorted or paginated.
+ * description: Retrieve a list of API keys. The API keys can be filtered by fields such as `id`. The API keys can also be sorted or paginated.
  * x-authenticated: true
  * parameters:
  *   - name: expand

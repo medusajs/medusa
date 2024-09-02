@@ -80,7 +80,7 @@ get:
           schema:
             allOf:
               - type: object
-                description: SUMMARY
+                description: The paginated list of campaigns.
                 required:
                   - limit
                   - offset
@@ -89,23 +89,23 @@ get:
                   limit:
                     type: number
                     title: limit
-                    description: The campaign's limit.
+                    description: The maximum number of items retrieved.
                   offset:
                     type: number
                     title: offset
-                    description: The campaign's offset.
+                    description: The number of its skipped before the returned items.
                   count:
                     type: number
                     title: count
-                    description: The campaign's count.
+                    description: The total number of items.
               - type: object
-                description: SUMMARY
+                description: The list of campaigns
                 required:
                   - campaigns
                 properties:
                   campaigns:
                     type: array
-                    description: The campaign's campaigns.
+                    description: The list of campaigns.
                     items:
                       $ref: ../components/schemas/CampaignResponse.yaml
     '400':

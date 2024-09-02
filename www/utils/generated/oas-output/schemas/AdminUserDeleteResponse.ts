@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the User was deleted.
- *   parent:
- *     type: object
- *     description: The user's parent.
  * 
 */
 

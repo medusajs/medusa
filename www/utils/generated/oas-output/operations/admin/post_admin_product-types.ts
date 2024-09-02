@@ -55,19 +55,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - value
- *           - metadata
- *         properties:
- *           value:
- *             type: string
- *             title: value
- *             description: The product type's value.
- *           metadata:
- *             type: object
- *             description: The product type's metadata.
+ *         $ref: "#/components/schemas/AdminCreateProduct"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
