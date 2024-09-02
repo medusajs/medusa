@@ -4,13 +4,13 @@ import jwt from "jsonwebtoken"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 
 const generateResetPasswordToken = async (input: {
-  userId: string
+  entityId: string
   email: string
   passwordHash: string
 }) => {
   const secret = input.passwordHash
   const expiry = Math.floor(Date.now() / 1000) + 60 * 15
-  const payload = { user_id: input.userId, email: input.email, exp: expiry }
+  const payload = { entity_id: input.entityId, email: input.email, exp: expiry }
   const token = jwt.sign(payload, secret)
 
   return token
@@ -19,17 +19,6 @@ const generateResetPasswordToken = async (input: {
 export const generateResetPasswordTokenWorkflow = createWorkflow(
   "generate-reset-password-token",
   (input: { email: string }) => {
-    const user = useRemoteQueryStep({
-      entry_point: "user",
-      fields: ["id"],
-      variables: {
-        filters: {
-          email: input.email,
-        },
-      },
-      throw_if_key_not_found: true,
-    })
-
     const providerIdentities = useRemoteQueryStep({
       entry_point: "provider_identity",
       fields: ["id", "provider_metadata"],
@@ -60,17 +49,16 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
 
     const token = transform(
       {
-        userId: user.id,
-        email: user.email,
+        entityId: input.email,
+        email: input.email,
         passwordHash,
       },
       generateResetPasswordToken
     )
 
-    // Question: Would it be more reasonable to send a notification here?
     emitEventStep({
       eventName: UserWorkflowEvents.PASSWORD_RESET,
-      data: { email: user.email, token },
+      data: { email: input.email, token },
     })
   }
 )

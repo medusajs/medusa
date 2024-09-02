@@ -3,6 +3,7 @@ import {
   AuthenticationResponse,
   AuthIdentityProviderService,
   IAuthProvider,
+  ResetPasswordInput,
 } from "@medusajs/types"
 
 /**
@@ -235,6 +236,15 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   ): Promise<AuthenticationResponse> {
     throw new Error(
       `Method 'register' not implemented for provider ${this.provider}`
+    )
+  }
+
+  resetPassword(
+    data: ResetPasswordInput,
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    throw new Error(
+      `Method 'recover' not implemented for provider ${this.provider}`
     )
   }
 

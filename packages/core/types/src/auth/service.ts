@@ -13,6 +13,7 @@ import {
   UpdateAuthIdentityDTO,
   UpdateProviderIdentityDTO,
 } from "./common"
+import { ResetPasswordInput } from "./provider"
 
 /**
  * The main service interface for the Auth Module.
@@ -46,12 +47,17 @@ export interface IAuthModuleService extends IModuleService {
    */
   authenticate(
     provider: string,
-    providerData: AuthenticationInput,
+    providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
 
   register(
     provider: string,
-    providerData: AuthenticationInput,
+    providerData: AuthenticationInput
+  ): Promise<AuthenticationResponse>
+
+  resetPassword(
+    provider: string,
+    resetPasswordData: ResetPasswordInput
   ): Promise<AuthenticationResponse>
 
   /**
@@ -399,7 +405,7 @@ export interface IAuthModuleService extends IModuleService {
    *   },
    * ])
    */
-  updateProviderIdentites(
+  updateProviderIdentities(
     data: UpdateProviderIdentityDTO[],
     sharedContext?: Context
   ): Promise<ProviderIdentityDTO[]>
@@ -416,7 +422,7 @@ export interface IAuthModuleService extends IModuleService {
    *   id: "provider_123",
    * })
    */
-  updateProviderIdentites(
+  updateProviderIdentities(
     data: UpdateProviderIdentityDTO,
     sharedContext?: Context
   ): Promise<ProviderIdentityDTO>

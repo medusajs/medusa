@@ -5,6 +5,7 @@ import {
   AuthIdentityProviderService,
   EmailPassAuthProviderOptions,
   Logger,
+  ResetPasswordInput,
 } from "@medusajs/types"
 import {
   AbstractAuthModuleProvider,
@@ -35,14 +36,76 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     this.logger_ = logger
   }
 
-  protected async createAuthIdentity({ email, password, authIdentityService }) {
+  protected async hashPassword(password: string) {
     const hashConfig = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
     const passwordHash = await Scrypt.kdf(password, hashConfig)
+    return passwordHash.toString("base64")
+  }
+
+  async resetPassword(
+    resetPasswordData: ResetPasswordInput,
+    authIdentityService: AuthIdentityProviderService
+  ) {
+    const { email, password } = resetPasswordData.body as {
+      email: string
+      password: string
+    }
+
+    if (!password || !isString(password)) {
+      return {
+        success: false,
+        error: "Invalid password",
+      }
+    }
+
+    if (!email || !isString(email)) {
+      return {
+        success: false,
+        error: "Invalid email",
+      }
+    }
+
+    const passwordHash = await this.hashPassword(password)
+
+    let updatedAuthIdentity: AuthIdentityDTO | undefined
+
+    try {
+      const authIdentity = await authIdentityService.retrieve({
+        entity_id: email,
+      })
+
+      updatedAuthIdentity = await authIdentityService.update({
+        id: authIdentity.id,
+        provider_metadata: {
+          password: passwordHash,
+        },
+      })
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+      }
+    }
+
+    const copy = JSON.parse(JSON.stringify(updatedAuthIdentity))
+    const providerIdentity = copy.provider_identities?.find(
+      (pi) => pi.provider === this.provider
+    )!
+    delete providerIdentity.provider_metadata?.password
+
+    return {
+      success: true,
+      authIdentity: copy,
+    }
+  }
+
+  protected async createAuthIdentity({ email, password, authIdentityService }) {
+    const passwordHash = await this.hashPassword(password)
 
     const createdAuthIdentity = await authIdentityService.create({
       entity_id: email,
       provider_metadata: {
-        password: passwordHash.toString("base64"),
+        password: passwordHash,
       },
     })
 

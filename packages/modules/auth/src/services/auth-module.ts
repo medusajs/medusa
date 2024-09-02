@@ -8,6 +8,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  ResetPasswordInput,
 } from "@medusajs/types"
 
 import { AuthIdentity, ProviderIdentity } from "@models"
@@ -222,6 +223,21 @@ export default class AuthModuleService
     }
   }
 
+  async resetPassword(
+    provider: string,
+    resetPasswordData: ResetPasswordInput
+  ): Promise<AuthenticationResponse> {
+    try {
+      return await this.authProviderService_.resetPassword(
+        provider,
+        resetPasswordData,
+        this.getAuthIdentityProviderService(provider)
+      )
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
   getAuthIdentityProviderService(
     provider: string
   ): AuthIdentityProviderService {
@@ -280,6 +296,30 @@ export default class AuthModuleService
 
         return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
           createdAuthIdentity
+        )
+      },
+
+      update: async (data: {
+        id: string
+        provider_metadata?: Record<string, unknown>
+        user_metadata?: Record<string, unknown>
+      }) => {
+        const normalizedRequest = {
+          id: data.id,
+          provider_identities: [
+            {
+              provider_metadata: data.provider_metadata,
+              user_metadata: data.user_metadata,
+            },
+          ],
+        }
+
+        const updatedAuthIdentity = await this.authIdentityService_.update(
+          normalizedRequest
+        )
+
+        return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+          updatedAuthIdentity
         )
       },
     }
