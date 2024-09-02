@@ -1,5 +1,5 @@
 type: object
-description: The tax rate's details.
+description: The tax rate's parent.
 x-schemaName: AdminTaxRate
 required:
   - id
@@ -20,57 +20,57 @@ properties:
   id:
     type: string
     title: id
-    description: The tax rate's ID.
+    description: The parent's ID.
   rate:
     type: number
     title: rate
-    description: The tax rate's rate.
+    description: The parent's rate.
   code:
     type: string
     title: code
-    description: The tax rate's code.
+    description: The parent's code.
   name:
     type: string
     title: name
-    description: The tax rate's name.
+    description: The parent's name.
   metadata:
     type: object
-    description: The tax rate's metadata.
+    description: The parent's metadata.
   tax_region_id:
     type: string
     title: tax_region_id
-    description: The tax rate's tax region id.
+    description: The parent's tax region id.
   is_combinable:
     type: boolean
     title: is_combinable
-    description: The tax rate's is combinable.
+    description: The parent's is combinable.
   is_default:
     type: boolean
     title: is_default
-    description: The tax rate's is default.
+    description: The parent's is default.
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The tax rate's created at.
+    description: The parent's created at.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The tax rate's updated at.
+    description: The parent's updated at.
   deleted_at:
     type: string
     format: date-time
     title: deleted_at
-    description: The tax rate's deleted at.
+    description: The parent's deleted at.
   created_by:
     type: string
     title: created_by
-    description: The tax rate's created by.
+    description: The parent's created by.
   tax_region:
     $ref: ./AdminTaxRegion.yaml
   rules:
     type: array
-    description: The tax rate's rules.
+    description: The parent's rules.
     items:
       $ref: ./AdminTaxRateRule.yaml

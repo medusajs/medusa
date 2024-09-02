@@ -19,6 +19,3 @@ properties:
     type: boolean
     title: deleted
     description: Whether the Product Category was deleted.
-  parent:
-    type: object
-    description: The product category's parent.

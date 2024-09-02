@@ -1,7 +1,7 @@
 /**
  * @schema BaseCartAddress
  * type: object
- * description: The cart's billing address.
+ * description: The parent's billing address.
  * x-schemaName: BaseCartAddress
  * required:
  *   - id

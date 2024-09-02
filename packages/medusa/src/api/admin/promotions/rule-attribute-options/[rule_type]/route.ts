@@ -4,10 +4,9 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { getRuleAttributesMap, validateRuleType } from "../../utils"
-import { AdminGetPromotionRuleParamsType } from "../../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetPromotionRuleParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetPromotionRuleParams>,
   res: MedusaResponse<HttpTypes.AdminRuleAttributeOptionsListResponse>
 ) => {
   const { rule_type: ruleType } = req.params

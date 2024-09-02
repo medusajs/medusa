@@ -49,9 +49,6 @@
  *               type: boolean
  *               title: deleted
  *               description: Whether the refund reason was deleted.
- *             parent:
- *               type: object
- *               description: The refund reason's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -6,8 +6,15 @@
  * required:
  *   - name
  *   - tax_region_id
- *   - metadata
  * properties:
+ *   name:
+ *     type: string
+ *     title: name
+ *     description: The tax rate's name.
+ *   tax_region_id:
+ *     type: string
+ *     title: tax_region_id
+ *     description: The tax rate's tax region id.
  *   rate:
  *     type: number
  *     title: rate
@@ -20,24 +27,7 @@
  *     type: array
  *     description: The tax rate's rules.
  *     items:
- *       type: object
- *       description: The rule's rules.
- *       required:
- *         - reference
- *         - reference_id
- *       properties:
- *         reference:
- *           type: string
- *           title: reference
- *           description: The rule's reference.
- *         reference_id:
- *           type: string
- *           title: reference_id
- *           description: The rule's reference id.
- *   name:
- *     type: string
- *     title: name
- *     description: The tax rate's name.
+ *       $ref: "#/components/schemas/AdminCreateTaxRateRule"
  *   is_default:
  *     type: boolean
  *     title: is_default
@@ -46,10 +36,6 @@
  *     type: boolean
  *     title: is_combinable
  *     description: The tax rate's is combinable.
- *   tax_region_id:
- *     type: string
- *     title: tax_region_id
- *     description: The tax rate's tax region id.
  *   metadata:
  *     type: object
  *     description: The tax rate's metadata.

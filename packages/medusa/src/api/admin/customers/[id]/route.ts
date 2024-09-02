@@ -35,6 +35,16 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCustomerType & AdditionalData>,
   res: MedusaResponse<HttpTypes.AdminCustomerResponse>
 ) => {
+  const existingCustomer = await refetchCustomer(req.params.id, req.scope, [
+    "id",
+  ])
+  if (!existingCustomer) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Customer with id "${req.params.id}" not found`
+    )
+  }
+
   const { additional_data, ...rest } = req.validatedBody
 
   await updateCustomersWorkflow(req.scope).run({

@@ -4,6 +4,7 @@ import {
 } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
+  MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
@@ -21,6 +22,15 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateTaxRateType>,
   res: MedusaResponse<HttpTypes.AdminTaxRateResponse>
 ) => {
+  const existingTaxRate = await refetchTaxRate(req.params.id, req.scope, ["id"])
+
+  if (!existingTaxRate) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Tax rate with id "${req.params.id}" not found`
+    )
+  }
+
   await updateTaxRatesWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },

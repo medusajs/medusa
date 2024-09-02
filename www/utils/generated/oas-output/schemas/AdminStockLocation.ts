@@ -1,7 +1,7 @@
 /**
  * @schema AdminStockLocation
  * type: object
- * description: The fulfillment set's location.
+ * description: The parent's location.
  * x-schemaName: AdminStockLocation
  * required:
  *   - id

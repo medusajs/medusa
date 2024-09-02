@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Collection was deleted.
- *   parent:
- *     type: object
- *     description: The collection's parent.
  * 
 */
 

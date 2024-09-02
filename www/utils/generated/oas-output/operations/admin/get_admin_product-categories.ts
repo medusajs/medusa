@@ -518,6 +518,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: name
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: name
+ *           description: The product category's name.
+ *         - type: array
+ *           description: The product category's name.
+ *           items:
+ *             type: string
+ *             title: name
+ *             description: The name's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
