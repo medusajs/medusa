@@ -37,7 +37,6 @@
     "@mikro-orm/postgresql": "5.9.7",
     "axios": "^0.28.0",
     "express": "^4.18.3",
-    "get-port": "^5.1.0",
     "pg-god": "^1.0.12"
   },
   "peerDependenciesMeta": {
@@ -62,15 +61,13 @@
     "express": {
       "optional": true
     },
-    "get-port": {
-      "optional": true
-    },
     "pg-god": {
       "optional": true
     }
   },
   "dependencies": {
     "@medusajs/utils": "^1.11.9",
+    "get-port": "^5.1",
     "randomatic": "^3.1.1"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
