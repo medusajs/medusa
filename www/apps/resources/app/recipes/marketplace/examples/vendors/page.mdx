@@ -512,6 +512,12 @@ This route is available because you created the `vendor` actor type previously.
 
 3. Send a request to the `/vendors` API route, passing the token retrieved from the previous response in the request header:
 
+<Note>
+
+Don't include a trailing slash at the end of the URL. Learn more [here](!docs!/advanced-development/api-routes/middlewares).
+
+</Note>
+
 ```bash
 curl -X POST 'http://localhost:9000/vendors' \
 -H 'Content-Type: application/json' \

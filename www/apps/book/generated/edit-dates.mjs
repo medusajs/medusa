@@ -61,7 +61,7 @@ export const generatedEditDates = {
   "app/advanced-development/admin/tips/page.mdx": "2024-08-05T13:20:34+03:00",
   "app/advanced-development/api-routes/cors/page.mdx": "2024-07-25T17:14:06+02:00",
   "app/advanced-development/admin/ui-routes/page.mdx": "2024-08-06T09:44:22+02:00",
-  "app/advanced-development/api-routes/middlewares/page.mdx": "2024-07-25T17:14:06+02:00",
+  "app/advanced-development/api-routes/middlewares/page.mdx": "2024-09-02T13:52:00.236Z",
   "app/advanced-development/modules/isolation/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/advanced-development/data-models/configure-properties/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/advanced-development/data-models/index/page.mdx": "2024-07-04T17:26:03+03:00",
