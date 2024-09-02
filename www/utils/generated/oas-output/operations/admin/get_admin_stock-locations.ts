@@ -49,12 +49,12 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: q
  *     in: query
- *     description: The stock location's q.
+ *     description: Search term to filter the stock location's searchable properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The stock location's q.
+ *       description: Search term to filter the stock location's searchable properties.
  *   - name: id
  *     in: query
  *     required: false
@@ -62,13 +62,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The stock location's ID.
+ *           description: Filter by a stock location ID.
  *         - type: array
- *           description: The stock location's ID.
+ *           description:  Filter by stock location IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: A stock location ID.
  *   - name: name
  *     in: query
  *     required: false
@@ -76,13 +76,13 @@
  *       oneOf:
  *         - type: string
  *           title: name
- *           description: The stock location's name.
+ *           description: Filter by a stock location name.
  *         - type: array
- *           description: The stock location's name.
+ *           description: Filter by stock location names.
  *           items:
  *             type: string
  *             title: name
- *             description: The name's details.
+ *             description: A stock location name.
  *   - name: address_id
  *     in: query
  *     required: false
@@ -90,13 +90,13 @@
  *       oneOf:
  *         - type: string
  *           title: address_id
- *           description: The stock location's address id.
+ *           description: Filter by an address ID to retrieve its associated locations.
  *         - type: array
- *           description: The stock location's address id.
+ *           description: Filter by address IDs to retrieve their associated locations.
  *           items:
  *             type: string
  *             title: address_id
- *             description: The address id's details.
+ *             description: An address ID.
  *   - name: sales_channel_id
  *     in: query
  *     required: false
@@ -104,34 +104,376 @@
  *       oneOf:
  *         - type: string
  *           title: sales_channel_id
- *           description: The stock location's sales channel id.
+ *           description: Filter by a sales channel ID to retrieve its associated locations.
  *         - type: array
- *           description: The stock location's sales channel id.
+ *           description: Filter by sales channel IDs to retrieve their associated locations.
  *           items:
  *             type: string
  *             title: sales_channel_id
- *             description: The sales channel id's details.
+ *             description: A sales channel ID
  *   - name: created_at
  *     in: query
- *     description: The stock location's created at.
+ *     description: Filter by a stock location's creation date.
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: object
+ *       description: Filter by a stock location's creation date.
+ *       properties:
+ *         $and:
+ *           type: array
+ *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $and
+ *         $or:
+ *           type: array
+ *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $or
+ *         $eq:
+ *           oneOf:
+ *             - type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *             - type: array
+ *               description: Filter by an exact match.
+ *               items:
+ *                 type: string
+ *                 title: $eq
+ *                 description: Filter by an exact match.
+ *         $ne:
+ *           type: string
+ *           title: $ne
+ *           description: Filter by values not equal to this parameter.
+ *         $in:
+ *           type: array
+ *           description: Filter by values in this array.
+ *           items:
+ *             type: string
+ *             title: $in
+ *             description: Filter by values in this array.
+ *         $nin:
+ *           type: array
+ *           description: Filter by values not in this array.
+ *           items:
+ *             type: string
+ *             title: $nin
+ *             description: Filter by values not in this array.
+ *         $not:
+ *           oneOf:
+ *             - type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: object
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: array
+ *               description: Filter by values not matching the conditions in this parameter.
+ *               items:
+ *                 type: string
+ *                 title: $not
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *         $gt:
+ *           type: string
+ *           title: $gt
+ *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *         $gte:
+ *           type: string
+ *           title: $gte
+ *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *         $lt:
+ *           type: string
+ *           title: $lt
+ *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *         $lte:
+ *           type: string
+ *           title: $lte
+ *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *         $like:
+ *           type: string
+ *           title: $like
+ *           description: Apply a `like` filter. Useful for strings only.
+ *         $re:
+ *           type: string
+ *           title: $re
+ *           description: Apply a regex filter. Useful for strings only.
+ *         $ilike:
+ *           type: string
+ *           title: $ilike
+ *           description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *         $fulltext:
+ *           type: string
+ *           title: $fulltext
+ *           description: Filter to apply on full-text properties.
+ *         $overlap:
+ *           type: array
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *           items:
+ *             type: string
+ *             title: $overlap
+ *             description: Filter arrays that have overlapping values with this parameter.
+ *         $contains:
+ *           type: array
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contains
+ *             description: Filter arrays that contain some of the values of this parameter.
+ *         $contained:
+ *           type: array
+ *           description: Filter arrays that contain all values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contained
+ *             description: Filter arrays that contain all values of this parameter.
+ *         $exists:
+ *           type: boolean
+ *           title: $exists
+ *           description: Filter by whether a value for this parameter exists (not `null`).
  *   - name: updated_at
  *     in: query
- *     description: The stock location's updated at.
+ *     description: Filter by a stock location's update date.
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: object
+ *       description: Filter by a stock location's update date.
+ *       properties:
+ *         $and:
+ *           type: array
+ *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $and
+ *         $or:
+ *           type: array
+ *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $or
+ *         $eq:
+ *           oneOf:
+ *             - type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *             - type: array
+ *               description: Filter by an exact match.
+ *               items:
+ *                 type: string
+ *                 title: $eq
+ *                 description: Filter by an exact match.
+ *         $ne:
+ *           type: string
+ *           title: $ne
+ *           description: Filter by values not equal to this parameter.
+ *         $in:
+ *           type: array
+ *           description: Filter by values in this array.
+ *           items:
+ *             type: string
+ *             title: $in
+ *             description: Filter by values in this array.
+ *         $nin:
+ *           type: array
+ *           description: Filter by values not in this array.
+ *           items:
+ *             type: string
+ *             title: $nin
+ *             description: Filter by values not in this array.
+ *         $not:
+ *           oneOf:
+ *             - type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: object
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: array
+ *               description: Filter by values not matching the conditions in this parameter.
+ *               items:
+ *                 type: string
+ *                 title: $not
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *         $gt:
+ *           type: string
+ *           title: $gt
+ *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *         $gte:
+ *           type: string
+ *           title: $gte
+ *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *         $lt:
+ *           type: string
+ *           title: $lt
+ *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *         $lte:
+ *           type: string
+ *           title: $lte
+ *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *         $like:
+ *           type: string
+ *           title: $like
+ *           description: Apply a `like` filter. Useful for strings only.
+ *         $re:
+ *           type: string
+ *           title: $re
+ *           description: Apply a regex filter. Useful for strings only.
+ *         $ilike:
+ *           type: string
+ *           title: $ilike
+ *           description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *         $fulltext:
+ *           type: string
+ *           title: $fulltext
+ *           description: Filter to apply on full-text properties.
+ *         $overlap:
+ *           type: array
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *           items:
+ *             type: string
+ *             title: $overlap
+ *             description: Filter arrays that have overlapping values with this parameter.
+ *         $contains:
+ *           type: array
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contains
+ *             description: Filter arrays that contain some of the values of this parameter.
+ *         $contained:
+ *           type: array
+ *           description: Filter arrays that contain all values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contained
+ *             description: Filter arrays that contain all values of this parameter.
+ *         $exists:
+ *           type: boolean
+ *           title: $exists
+ *           description: Filter by whether a value for this parameter exists (not `null`).
  *   - name: deleted_at
  *     in: query
- *     description: The stock location's deleted at.
+ *     description: Filter by a stock location's deletion date.
  *     required: false
- *     schema: {}
+ *     schema:
+ *       type: object
+ *       description: Filter by a stock location's deletion date.
+ *       properties:
+ *         $and:
+ *           type: array
+ *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $and
+ *         $or:
+ *           type: array
+ *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $or
+ *         $eq:
+ *           oneOf:
+ *             - type: string
+ *               title: $eq
+ *               description: Filter by an exact match.
+ *             - type: array
+ *               description: Filter by an exact match.
+ *               items:
+ *                 type: string
+ *                 title: $eq
+ *                 description: Filter by an exact match.
+ *         $ne:
+ *           type: string
+ *           title: $ne
+ *           description: Filter by values not equal to this parameter.
+ *         $in:
+ *           type: array
+ *           description: Filter by values in this array.
+ *           items:
+ *             type: string
+ *             title: $in
+ *             description: Filter by values in this array.
+ *         $nin:
+ *           type: array
+ *           description: Filter by values not in this array.
+ *           items:
+ *             type: string
+ *             title: $nin
+ *             description: Filter by values not in this array.
+ *         $not:
+ *           oneOf:
+ *             - type: string
+ *               title: $not
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: object
+ *               description: Filter by values not matching the conditions in this parameter.
+ *             - type: array
+ *               description: Filter by values not matching the conditions in this parameter.
+ *               items:
+ *                 type: string
+ *                 title: $not
+ *                 description: Filter by values not matching the conditions in this parameter.
+ *         $gt:
+ *           type: string
+ *           title: $gt
+ *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *         $gte:
+ *           type: string
+ *           title: $gte
+ *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *         $lt:
+ *           type: string
+ *           title: $lt
+ *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *         $lte:
+ *           type: string
+ *           title: $lte
+ *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ *         $like:
+ *           type: string
+ *           title: $like
+ *           description: Apply a `like` filter. Useful for strings only.
+ *         $re:
+ *           type: string
+ *           title: $re
+ *           description: Apply a regex filter. Useful for strings only.
+ *         $ilike:
+ *           type: string
+ *           title: $ilike
+ *           description: Apply a case-insensitive `like` filter. Useful for strings only.
+ *         $fulltext:
+ *           type: string
+ *           title: $fulltext
+ *           description: Filter to apply on full-text properties.
+ *         $overlap:
+ *           type: array
+ *           description: Filter arrays that have overlapping values with this parameter.
+ *           items:
+ *             type: string
+ *             title: $overlap
+ *             description: Filter arrays that have overlapping values with this parameter.
+ *         $contains:
+ *           type: array
+ *           description: Filter arrays that contain some of the values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contains
+ *             description: Filter arrays that contain some of the values of this parameter.
+ *         $contained:
+ *           type: array
+ *           description: Filter arrays that contain all values of this parameter.
+ *           items:
+ *             type: string
+ *             title: $contained
+ *             description: Filter arrays that contain all values of this parameter.
+ *         $exists:
+ *           type: boolean
+ *           title: $exists
+ *           description: Filter by whether a value for this parameter exists (not `null`).
  *   - name: $and
  *     in: query
  *     required: false
  *     schema:
  *       type: array
- *       description: The stock location's $and.
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
  *       items:
  *         type: object
  *       title: $and
@@ -140,7 +482,7 @@
  *     required: false
  *     schema:
  *       type: array
- *       description: The stock location's $or.
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
  *       items:
  *         type: object
  *       title: $or
