@@ -212,6 +212,21 @@
           "nullable": true,
           "mappedType": "text"
         },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'pending'",
+          "enumItems": [
+            "pending",
+            "success",
+            "failure"
+          ],
+          "mappedType": "enum"
+        },
         "provider_id": {
           "name": "provider_id",
           "type": "text",

@@ -1,4 +1,4 @@
-import { model } from "@medusajs/utils"
+import { model, NotificationStatus } from "@medusajs/utils"
 import { NotificationProvider } from "./notification-provider"
 
 // We probably want to have a TTL for each entry, so we don't bloat the DB (and also for GDPR reasons if TTL < 30 days).
@@ -24,6 +24,9 @@ export const Notification = model.define("notification", {
   idempotency_key: model.text().unique().nullable(),
   // The ID of the notification in the external system, if applicable
   external_id: model.text().nullable(),
+  // The status of the notification
+  status: model.enum(NotificationStatus).default(NotificationStatus.PENDING),
+
   provider: model
     .belongsTo(() => NotificationProvider, { mappedBy: "notifications" })
     .nullable(),

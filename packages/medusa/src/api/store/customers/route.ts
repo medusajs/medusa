@@ -1,12 +1,12 @@
+import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { MedusaError } from "@medusajs/utils"
 
 import { createCustomerAccountWorkflow } from "@medusajs/core-flows"
-import { refetchCustomer } from "./helpers"
 import { HttpTypes } from "@medusajs/types"
+import { refetchCustomer } from "./helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.StoreCreateCustomer>,
@@ -21,10 +21,10 @@ export const POST = async (
   }
 
   const createCustomers = createCustomerAccountWorkflow(req.scope)
-  const customersData = req.validatedBody
+  const customerData = req.validatedBody
 
   const { result } = await createCustomers.run({
-    input: { customersData, authIdentityId: req.auth_context.auth_identity_id },
+    input: { customerData, authIdentityId: req.auth_context.auth_identity_id },
   })
 
   const customer = await refetchCustomer(

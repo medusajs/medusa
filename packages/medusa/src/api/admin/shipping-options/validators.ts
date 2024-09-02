@@ -3,6 +3,7 @@ import {
   ShippingOptionPriceType as ShippingOptionPriceTypeEnum,
 } from "@medusajs/utils"
 import { z } from "zod"
+import { booleanString } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -28,6 +29,8 @@ export const AdminGetShippingOptionsParams = createFindParams({
     shipping_profile_id: z.union([z.string(), z.array(z.string())]).optional(),
     provider_id: z.union([z.string(), z.array(z.string())]).optional(),
     stock_location_id: z.union([z.string(), z.array(z.string())]).optional(),
+    is_return: booleanString().optional(),
+    admin_only: booleanString().optional(),
     shipping_option_type_id: z
       .union([z.string(), z.array(z.string())])
       .optional(),

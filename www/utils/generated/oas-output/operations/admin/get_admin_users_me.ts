@@ -1,8 +1,8 @@
 /**
  * @oas [get] /admin/users/me
  * operationId: GetUsersMe
- * summary: List Users
- * description: Retrieve a list of users. The users can be filtered by fields such as `id`. The users can also be sorted or paginated.
+ * summary: Get Logged-In User
+ * description: Retrieve the logged-in user's details.
  * x-authenticated: false
  * parameters:
  *   - name: expand

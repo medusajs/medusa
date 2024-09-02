@@ -1,19 +1,17 @@
-import { InventoryTypes, StockLocationDTO } from "@medusajs/types"
-
+import { HttpTypes } from "@medusajs/types"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { ReservationActions } from "./reservation-actions"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { CreatedAtCell } from "../../../../../components/table/table-cells/common/created-at-cell"
 
 /**
  * Adds missing properties to the InventoryItemDTO type.
  */
-interface ExtendedReservationItem extends InventoryTypes.ReservationItemDTO {
-  line_item: { order_id: string }
-  location: StockLocationDTO
+export interface ExtendedReservationItem extends HttpTypes.AdminReservation {
+  line_item?: { order_id: string }
+  location?: HttpTypes.AdminStockLocation
 }
 
 const columnHelper = createColumnHelper<ExtendedReservationItem>()

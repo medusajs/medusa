@@ -14,8 +14,9 @@ import {
 } from "../../common"
 import { createOrdersStep } from "../../order/steps/create-orders"
 import { authorizePaymentSessionStep } from "../../payment/steps/authorize-payment-session"
-import { validateCartPaymentsStep } from "../steps"
+import { updateCartsStep, validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
+import { validateCartStep } from "../steps/validate-cart"
 import { completeCartFields } from "../utils/fields"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 import {
@@ -43,6 +44,8 @@ export const completeCartWorkflow = createWorkflow(
       variables: { id: input.id },
       list: false,
     })
+
+    validateCartStep({ cart })
 
     const paymentSessions = validateCartPaymentsStep({ cart })
 
@@ -158,23 +161,32 @@ export const completeCartWorkflow = createWorkflow(
       ({ createdOrders }) => createdOrders[0]
     )
 
-    createRemoteLinkStep([
-      {
-        [Modules.ORDER]: { order_id: order.id },
-        [Modules.CART]: { cart_id: finalCart.id },
-      },
-      {
-        [Modules.ORDER]: { order_id: order.id },
-        [Modules.PAYMENT]: {
-          payment_collection_id: cart.payment_collection.id,
-        },
-      },
-    ])
-
-    emitEventStep({
-      eventName: OrderWorkflowEvents.PLACED,
-      data: { id: order.id },
+    const updateCompletedAt = transform({ cart }, ({ cart }) => {
+      return {
+        id: cart.id,
+        completed_at: new Date(),
+      }
     })
+
+    parallelize(
+      createRemoteLinkStep([
+        {
+          [Modules.ORDER]: { order_id: order.id },
+          [Modules.CART]: { cart_id: finalCart.id },
+        },
+        {
+          [Modules.ORDER]: { order_id: order.id },
+          [Modules.PAYMENT]: {
+            payment_collection_id: cart.payment_collection.id,
+          },
+        },
+      ]),
+      updateCartsStep([updateCompletedAt]),
+      emitEventStep({
+        eventName: OrderWorkflowEvents.PLACED,
+        data: { id: order.id },
+      })
+    )
 
     return new WorkflowResponse(order)
   }

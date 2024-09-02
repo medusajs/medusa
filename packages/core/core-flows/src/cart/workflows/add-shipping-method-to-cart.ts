@@ -9,6 +9,7 @@ import {
   removeShippingMethodFromCartStep,
   validateCartShippingOptionsStep,
 } from "../steps"
+import { validateCartStep } from "../steps/validate-cart"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
@@ -36,6 +37,8 @@ export const addShippingMethodToWorkflow = createWorkflow(
       variables: { id: input.cart_id },
       list: false,
     })
+
+    validateCartStep({ cart })
 
     const optionIds = transform({ input }, (data) => {
       return (data.input.options ?? []).map((i) => i.id)

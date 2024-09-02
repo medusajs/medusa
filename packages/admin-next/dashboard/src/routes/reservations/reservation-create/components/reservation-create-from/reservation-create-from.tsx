@@ -7,7 +7,7 @@ import {
 } from "../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { InventoryTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -16,7 +16,6 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { useInventoryItems } from "../../../../../hooks/api/inventory"
 import { useCreateReservationItem } from "../../../../../hooks/api/reservations"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
-import { InventoryItemRes } from "../../../../../types/api-responses"
 
 export const CreateReservationSchema = zod.object({
   inventory_item_id: zod.string().min(1),
@@ -68,7 +67,7 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
   const inventoryItemId = form.watch("inventory_item_id")
   const selectedInventoryItem = inventory_items?.find(
     (it) => it.id === inventoryItemId
-  ) as InventoryItemRes["inventory_item"] | undefined
+  ) as HttpTypes.AdminInventoryItemResponse["inventory_item"] | undefined
 
   const locationId = form.watch("location_id")
   const selectedLocationLevel = selectedInventoryItem?.location_levels?.find(
@@ -81,7 +80,7 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
     {
       id:
         selectedInventoryItem?.location_levels?.map(
-          (level: InventoryTypes.InventoryLevelDTO) => level.location_id
+          (level: HttpTypes.AdminInventoryLevel) => level.location_id
         ) ?? [],
     },
     {
@@ -200,7 +199,7 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
               <AttributeGridRow
                 title={t("inventory.available")}
                 value={
-                  selectedLocationLevel
+                  selectedLocationLevel?.available_quantity
                     ? selectedLocationLevel.available_quantity - (quantity || 0)
                     : "-"
                 }
@@ -222,7 +221,7 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
                           )}
                           min={1}
                           max={
-                            selectedLocationLevel
+                            selectedLocationLevel?.available_quantity
                               ? selectedLocationLevel.available_quantity
                               : 0
                           }

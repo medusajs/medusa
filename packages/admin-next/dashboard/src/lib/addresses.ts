@@ -1,8 +1,11 @@
-import { AddressDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 import { countries, getCountryByIso2 } from "./data/countries"
 
-export const isSameAddress = (a: AddressDTO | null, b: AddressDTO | null) => {
+export const isSameAddress = (
+  a?: HttpTypes.AdminOrderAddress | null,
+  b?: HttpTypes.AdminOrderAddress | null
+) => {
   if (!a || !b) {
     return false
   }
@@ -22,7 +25,7 @@ export const isSameAddress = (a: AddressDTO | null, b: AddressDTO | null) => {
 export const getFormattedAddress = ({
   address,
 }: {
-  address?: Partial<AddressDTO> | null
+  address?: HttpTypes.AdminOrderAddress | null
 }) => {
   if (!address) {
     return []
@@ -70,7 +73,7 @@ export const getFormattedAddress = ({
   }
 
   if (country) {
-    formattedAddress.push(country.display_name)
+    formattedAddress.push(country.display_name!)
   } else if (country_code) {
     const country = getCountryByIso2(country_code)
 
