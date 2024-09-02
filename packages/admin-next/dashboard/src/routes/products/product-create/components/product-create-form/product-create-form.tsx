@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
@@ -9,7 +9,6 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { useCreateProduct } from "../../../../../hooks/api/products"
-import { useRegions } from "../../../../../hooks/api/regions"
 import { sdk } from "../../../../../lib/client"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
 import {
@@ -34,12 +33,18 @@ type TabState = Record<Tab, ProgressStatus>
 
 const SAVE_DRAFT_BUTTON = "save-draft-button"
 
-let LAST_VISITED_TAB: Tab | null = null
-
-type ProductCreateFormProps = { defaultChannel?: SalesChannelDTO }
+type ProductCreateFormProps = {
+  defaultChannel?: HttpTypes.AdminSalesChannel
+  regions: HttpTypes.AdminRegion[]
+  store: HttpTypes.AdminStore
+  pricePreferences: HttpTypes.AdminPricePreference[]
+}
 
 export const ProductCreateForm = ({
   defaultChannel,
+  regions,
+  store,
+  pricePreferences,
 }: ProductCreateFormProps) => {
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
   const [tabState, setTabState] = useState<TabState>({
@@ -63,17 +68,19 @@ export const ProductCreateForm = ({
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
-  const { regions } = useRegions({ limit: 9999 })
 
   const regionsCurrencyMap = useMemo(() => {
     if (!regions?.length) {
       return {}
     }
 
-    return regions.reduce((acc, reg) => {
-      acc[reg.id] = reg.currency_code
-      return acc
-    }, {} as Record<string, string>)
+    return regions.reduce(
+      (acc, reg) => {
+        acc[reg.id] = reg.currency_code
+        return acc
+      },
+      {} as Record<string, string>
+    )
   }, [regions])
 
   /**
@@ -197,8 +204,6 @@ export const ProductCreateForm = ({
     }
 
     setTabState({ ...currentState })
-
-    LAST_VISITED_TAB = tab
   }, [tab])
 
   return (
@@ -284,7 +289,12 @@ export const ProductCreateForm = ({
                 className="size-full overflow-y-auto"
                 value={Tab.VARIANTS}
               >
-                <ProductCreateVariantsForm form={form} />
+                <ProductCreateVariantsForm
+                  form={form}
+                  store={store}
+                  regions={regions}
+                  pricePreferences={pricePreferences}
+                />
               </ProgressTabs.Content>
               {showInventoryTab && (
                 <ProgressTabs.Content
