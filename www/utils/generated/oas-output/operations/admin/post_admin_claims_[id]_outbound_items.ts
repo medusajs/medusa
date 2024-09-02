@@ -4,7 +4,7 @@
  * summary: Add Outbound Items to a Claim
  * x-sidebar-summary: Add Outbound Items
  * description: |
- *   Add outbound (or return) items to a claim. These outbound items will have an `ITEM_ADD` action.
+ *   Add outbound (or new) items to a claim. These outbound items will have an `ITEM_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id
