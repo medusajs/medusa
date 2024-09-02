@@ -106,7 +106,6 @@ Next, create the main service of the module at `src/modules/marketplace/service.
 import { MedusaService } from "@medusajs/utils"
 import Vendor from "./models/vendor"
 import VendorAdmin from "./models/vendor-admin"
-import { CreateVendorData, VendorData } from "./types"
 
 class MarketplaceModuleService extends MedusaService({
   Vendor,
@@ -518,6 +517,7 @@ curl -X POST 'http://localhost:9000/vendors' \
 -H 'Authorization: Bearer {token}' \
 --data-raw '{
     "name": "Acme",
+    "handle": "acme",
     "admin": {
         "email": "admin@medusa-test.com",
         "first_name": "Admin",
