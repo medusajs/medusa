@@ -9,9 +9,6 @@ import {
   DataGrid,
 } from "../../../../../components/data-grid"
 import { useRouteModal } from "../../../../../components/modals"
-import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
-import { useRegions } from "../../../../../hooks/api/regions"
-import { useStore } from "../../../../../hooks/api/store"
 import {
   ProductCreateOptionSchema,
   ProductCreateVariantSchema,
@@ -20,32 +17,17 @@ import { ProductCreateSchemaType } from "../../types"
 
 type ProductCreateVariantsFormProps = {
   form: UseFormReturn<ProductCreateSchemaType>
+  regions: HttpTypes.AdminRegion[]
+  store: HttpTypes.AdminStore
+  pricePreferences: HttpTypes.AdminPricePreference[]
 }
 
 export const ProductCreateVariantsForm = ({
   form,
+  regions,
+  store,
+  pricePreferences,
 }: ProductCreateVariantsFormProps) => {
-  const {
-    regions,
-    isPending: isRegionsPending,
-    isError: isRegionError,
-    error: regionError,
-  } = useRegions({ limit: 9999 })
-
-  const {
-    store,
-    isPending: isStorePending,
-    isError: isStoreError,
-    error: storeError,
-  } = useStore()
-
-  const {
-    price_preferences,
-    isPending: isPricePreferencesPending,
-    isError: isPricePreferencesError,
-    error: pricePreferencesError,
-  } = usePricePreferences({})
-
   const { setCloseOnEscape } = useRouteModal()
 
   const currencyCodes = useMemo(
@@ -72,7 +54,7 @@ export const ProductCreateVariantsForm = ({
     options,
     currencies: currencyCodes,
     regions,
-    pricePreferences: price_preferences,
+    pricePreferences,
   })
 
   const variantData = useMemo(
@@ -80,30 +62,9 @@ export const ProductCreateVariantsForm = ({
     [variants]
   )
 
-  const isPending =
-    isRegionsPending ||
-    isStorePending ||
-    isPricePreferencesPending ||
-    !store ||
-    !regions ||
-    !price_preferences
-
-  if (isRegionError) {
-    throw regionError
-  }
-
-  if (isStoreError) {
-    throw storeError
-  }
-
-  if (isPricePreferencesError) {
-    throw pricePreferencesError
-  }
-
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
       <DataGrid
-        isLoading={isPending}
         columns={columns}
         data={variantData}
         state={form}
