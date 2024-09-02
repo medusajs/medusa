@@ -574,7 +574,9 @@
       "create": {
         "header": "Create Option",
         "successToast": "Option {{title}} was successfully created."
-      }
+      },
+      "deleteWarning": "You are about to delete the product option: {{title}}. This action cannot be undone."
+
     },
     "organization": {
       "header": "Organize",
