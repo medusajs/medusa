@@ -1,13 +1,19 @@
-import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
+import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
+import { TwoColumnPage } from "../../../components/layout/pages"
+import { useInventoryItem } from "../../../hooks/api/inventory"
 import { InventoryItemAttributeSection } from "./components/inventory-item-attributes/attributes-section"
 import { InventoryItemGeneralSection } from "./components/inventory-item-general-section"
 import { InventoryItemLocationLevelsSection } from "./components/inventory-item-location-levels"
 import { InventoryItemReservationsSection } from "./components/inventory-item-reservations"
-import { JsonViewSection } from "../../../components/common/json-view-section"
-import { useInventoryItem } from "../../../hooks/api/inventory"
 import { InventoryItemVariantsSection } from "./components/inventory-item-variants/variants-section"
 import { inventoryItemLoader } from "./loader"
+
+import after from "virtual:medusa/widgets/inventory_item/details/after"
+import before from "virtual:medusa/widgets/inventory_item/details/before"
+import sideAfter from "virtual:medusa/widgets/inventory_item/details/side/after"
+import sideBefore from "virtual:medusa/widgets/inventory_item/details/side/before"
 
 export const InventoryDetail = () => {
   const { id } = useParams()
@@ -31,37 +37,45 @@ export const InventoryDetail = () => {
     }
   )
 
-  if (isLoading) {
-    return <div>Loading...</div>
+  if (isLoading || !inventory_item) {
+    return (
+      <TwoColumnPageSkeleton
+        showJSON
+        showMetadata
+        mainSections={3}
+        sidebarSections={2}
+      />
+    )
   }
-  if (isError || !inventory_item) {
-    if (error) {
-      throw error
-    }
 
-    throw json("An unknown error occurred", 500)
+  if (isError) {
+    throw error
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      <div className="flex flex-col gap-x-4 lg:flex-row lg:items-start">
-        <div className="flex w-full flex-col gap-y-3">
-          <InventoryItemGeneralSection inventoryItem={inventory_item} />
-          <InventoryItemLocationLevelsSection inventoryItem={inventory_item} />
-          <InventoryItemReservationsSection inventoryItem={inventory_item} />
-          <div className="hidden lg:block">
-            <JsonViewSection data={inventory_item} />
-          </div>
-          <Outlet />
-        </div>
-        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 lg:mt-0 lg:max-w-[400px]">
-          <InventoryItemVariantsSection variants={inventory_item.variants} />
-          <InventoryItemAttributeSection inventoryItem={inventory_item} />
-          <div className="lg:hidden">
-            <JsonViewSection data={inventory_item} />
-          </div>
-        </div>
-      </div>
-    </div>
+    <TwoColumnPage
+      widgets={{
+        after,
+        before,
+        sideAfter,
+        sideBefore,
+      }}
+      data={inventory_item}
+      showJSON
+      showMetadata
+      hasOutlet
+    >
+      <TwoColumnPage.Main>
+        <InventoryItemGeneralSection inventoryItem={inventory_item} />
+        <InventoryItemLocationLevelsSection inventoryItem={inventory_item} />
+        <InventoryItemReservationsSection inventoryItem={inventory_item} />
+      </TwoColumnPage.Main>
+      <TwoColumnPage.Sidebar>
+        <InventoryItemVariantsSection
+          variants={(inventory_item as any).variants}
+        />
+        <InventoryItemAttributeSection inventoryItem={inventory_item as any} />
+      </TwoColumnPage.Sidebar>
+    </TwoColumnPage>
   )
 }
