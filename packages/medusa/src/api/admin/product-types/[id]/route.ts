@@ -13,6 +13,7 @@ import {
   AdminUpdateProductTypeType,
 } from "../validators"
 import { HttpTypes } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTypeParamsType>,
@@ -31,6 +32,19 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateProductTypeType>,
   res: MedusaResponse<HttpTypes.AdminProductTypeResponse>
 ) => {
+  const existingProductType = await refetchProductType(
+    req.params.id,
+    req.scope,
+    ["id"]
+  )
+
+  if (!existingProductType) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product type with id "${req.params.id}" not found`
+    )
+  }
+
   const { result } = await updateProductTypesWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
