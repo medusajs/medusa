@@ -1,8 +1,9 @@
 /**
  * @oas [get] /admin/products/{id}/variants/{variant_id}
  * operationId: GetProductsIdVariantsVariant_id
- * summary: List Variants
- * description: Retrieve a list of variants in a product. The variants can be filtered by fields like FILTER FIELDS. The variants can also be paginated.
+ * summary: Get Variant of a Product
+ * x-sidebar-summary: Get Variant
+ * description: Retrieve a product's variant by its ID.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +14,7 @@
  *       type: string
  *   - name: variant_id
  *     in: path
- *     description: The product's variant id.
+ *     description: The variant's ID.
  *     required: true
  *     schema:
  *       type: string
