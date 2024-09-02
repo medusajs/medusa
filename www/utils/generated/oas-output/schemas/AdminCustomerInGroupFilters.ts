@@ -33,13 +33,13 @@
  *         properties:
  *           $and:
  *             type: array
- *             description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *             description: The email's $and.
  *             items:
  *               type: object
  *             title: $and
  *           $or:
  *             type: array
- *             description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *             description: The email's $or.
  *             items:
  *               type: object
  *             title: $or
@@ -214,13 +214,13 @@
  *     properties:
  *       $and:
  *         type: array
- *         description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *         description: The created at's $and.
  *         items:
  *           type: object
  *         title: $and
  *       $or:
  *         type: array
- *         description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *         description: The created at's $or.
  *         items:
  *           type: object
  *         title: $or
@@ -329,13 +329,13 @@
  *     properties:
  *       $and:
  *         type: array
- *         description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *         description: The updated at's $and.
  *         items:
  *           type: object
  *         title: $and
  *       $or:
  *         type: array
- *         description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *         description: The updated at's $or.
  *         items:
  *           type: object
  *         title: $or
@@ -444,13 +444,13 @@
  *     properties:
  *       $and:
  *         type: array
- *         description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *         description: The deleted at's $and.
  *         items:
  *           type: object
  *         title: $and
  *       $or:
  *         type: array
- *         description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *         description: The deleted at's $or.
  *         items:
  *           type: object
  *         title: $or

@@ -54,13 +54,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The price preference's ID.
+ *           description: Filter by a price preference ID.
  *         - type: array
- *           description: The price preference's ID.
+ *           description: Filter by price preference IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: A price preference ID.
  *   - name: attribute
  *     in: query
  *     required: false
@@ -68,13 +68,13 @@
  *       oneOf:
  *         - type: string
  *           title: attribute
- *           description: The price preference's attribute.
+ *           description: Filter by a price preference's attribute.
  *         - type: array
- *           description: The price preference's attribute.
+ *           description: Filter by price preference attributes.
  *           items:
  *             type: string
  *             title: attribute
- *             description: The attribute's details.
+ *             description: A price preference's attribute.
  *   - name: value
  *     in: query
  *     required: false
@@ -82,21 +82,21 @@
  *       oneOf:
  *         - type: string
  *           title: value
- *           description: The price preference's value.
+ *           description: Filter by a price preference's value.
  *         - type: array
- *           description: The price preference's value.
+ *           description: Filter by price preference values.
  *           items:
  *             type: string
  *             title: value
- *             description: The value's details.
+ *             description: A price preference's value.
  *   - name: q
  *     in: query
- *     description: The price preference's q.
+ *     description: Search term to apply on the price preference's searchable properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The price preference's q.
+ *       description: Search term to apply on the price preference's searchable properties.
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.

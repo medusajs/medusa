@@ -54,21 +54,21 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The refund reason's ID.
+ *           description: Filter by a refund reason's ID.
  *         - type: array
- *           description: The refund reason's ID.
+ *           description: Filter by refund reason IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: A refund reason ID.
  *   - name: q
  *     in: query
- *     description: The refund reason's q.
+ *     description: Search term to filter the refund reason's searchable properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The refund reason's q.
+ *       description: Search term to filter the refund reason's searchable properties.
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
