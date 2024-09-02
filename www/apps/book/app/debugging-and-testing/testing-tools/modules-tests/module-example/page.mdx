@@ -1,12 +1,12 @@
 export const metadata = {
-  title: `${pageNumber} Example: Unit Tests for a Module`,
+  title: `${pageNumber} Example: Integration Tests for a Module`,
 }
 
 # {metadata.title}
 
-In this chapter, find an example of writing a unit test for a module using the [moduleIntegrationTestRunner utility function](../page.mdx).
+In this chapter, find an example of writing an integration test for a module using the [moduleIntegrationTestRunner utility function](../page.mdx).
 
-## Write Unit Test for Module
+## Write Integration Test for Module
 
 Consider a `hello` module with a `HelloModuleService` that has a `getMessage` method:
 
@@ -25,7 +25,7 @@ class HelloModuleService extends MedusaService({
 export default HelloModuleService
 ```
 
-To create a unit test for the method, create the file `src/modules/hello/__tests__/service.spec.ts` with the following content:
+To create an integration test for the method, create the file `src/modules/hello/__tests__/service.spec.ts` with the following content:
 
 ```ts title="src/modules/hello/__tests__/service.spec.ts"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
@@ -55,15 +55,15 @@ You use the `moduleIntegrationTestRunner` function to add tests for the `hello` 
 
 ## Run Test
 
-Run the following command to run your unit tests:
+Run the following command to run your module integration tests:
 
 ```bash npm2yarn
-npm run test:unit
+npm run test:modules
 ```
 
 <Note title="Tip">
 
-If you don't have a `test:unit` script in `package.json`, refer to the [Medusa Testing Tools chapter](../../page.mdx#add-test-commands).
+If you don't have a `test:modules` script in `package.json`, refer to the [Medusa Testing Tools chapter](../../page.mdx#add-test-commands).
 
 </Note>
 

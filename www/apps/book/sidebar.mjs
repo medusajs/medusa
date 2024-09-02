@@ -392,13 +392,13 @@ export const sidebar = numberSidebarItems(
         },
         {
           type: "link",
-          path: "/debugging-and-testing/testing-tools/unit-tests",
-          title: "Unit Tests",
+          path: "/debugging-and-testing/testing-tools/modules-tests",
+          title: "Modules Tests",
           children: [
             {
               type: "link",
               path: "/debugging-and-testing/testing-tools/unit-tests/module-example",
-              title: "Example: Module Tests",
+              title: "Example",
             },
           ],
         },

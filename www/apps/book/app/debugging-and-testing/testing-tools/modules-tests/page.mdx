@@ -1,14 +1,14 @@
 export const metadata = {
-  title: `${pageNumber} Write Unit Tests for Modules`,
+  title: `${pageNumber} Write Tests for Modules`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll learn about the `moduleIntegrationTestRunner` utility function and how to use it to write unit tests for a module's main service.
+In this chapter, you'll learn about the `moduleIntegrationTestRunner` utility function and how to use it to write integration tests for a module's main service.
 
 ## moduleIntegrationTestRunner Utility
 
-The `moduleIntegrationTestRunner` utility function is provided by the `medusa-test-utils` package to create unit tests for a module. The unit tests run on a test Medusa application with only the specified module enabled.
+The `moduleIntegrationTestRunner` utility function is provided by the `medusa-test-utils` package to create integration tests for a module. The integration tests run on a test Medusa application with only the specified module enabled.
 
 For example, assuming you have a `hello` module, create a test file at `src/modules/hello/__tests__/service.spec.ts`:
 
