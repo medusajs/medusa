@@ -38,6 +38,19 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateSalesChannelType>,
   res: MedusaResponse<HttpTypes.AdminSalesChannelResponse>
 ) => {
+  const existingSalesChannel = await refetchSalesChannel(
+    req.params.id,
+    req.scope,
+    ["id"]
+  )
+
+  if (!existingSalesChannel) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Sales channel with id "${req.params.id}" not found`
+    )
+  }
+
   await updateSalesChannelsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
