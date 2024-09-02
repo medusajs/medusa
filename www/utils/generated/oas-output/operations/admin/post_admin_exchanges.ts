@@ -2,7 +2,7 @@
  * @oas [post] /admin/exchanges
  * operationId: PostExchanges
  * summary: Create Exchange
- * description: Create a exchange.
+ * description: Create an exchange request. Its changes aren't applied on the order until the exchange is confirmed.
  * x-authenticated: true
  * parameters:
  *   - name: expand
