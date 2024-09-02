@@ -16,7 +16,6 @@ export const AdminGetOrdersParams = createFindParams({
 }).merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    name: z.union([z.string(), z.array(z.string())]).optional(),
     $and: z.lazy(() => AdminGetOrdersParams.array()).optional(),
     $or: z.lazy(() => AdminGetOrdersParams.array()).optional(),
   })
@@ -28,7 +27,6 @@ enum Status {
 
 const ShippingMethod = z.object({
   shipping_method_id: z.string().nullish(),
-  order_id: z.string().nullish(),
   name: z.string(),
   shipping_option_id: z.string(),
   data: z.record(z.string(), z.unknown()).optional(),
