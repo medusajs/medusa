@@ -12,6 +12,7 @@ import {
 import { createRemoteLinkStep } from "../../common/steps/create-remote-links"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { createPaymentCollectionsStep } from "../steps/create-payment-collection"
+import { validateCartStep } from "../steps/validate-cart"
 
 /**
  * This step validates that a cart doesn't have a payment collection.
@@ -40,6 +41,7 @@ export const createPaymentCollectionForCartWorkflow = createWorkflow(
       fields: [
         "id",
         "region_id",
+        "completed_at",
         "currency_code",
         "total",
         "raw_total",
@@ -49,6 +51,8 @@ export const createPaymentCollectionForCartWorkflow = createWorkflow(
       throw_if_key_not_found: true,
       list: false,
     })
+
+    validateCartStep({ cart })
 
     validateExistingPaymentCollectionStep({ cart })
 

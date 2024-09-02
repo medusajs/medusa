@@ -5,7 +5,7 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-
+import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
@@ -18,10 +18,15 @@ const _orderKeys = queryKeysFactory(ORDERS_QUERY_KEY) as TQueryKey<
   string
 > & {
   preview: (orderId: string) => any
+  changes: (orderId: string) => any
 }
 
 _orderKeys.preview = function (id: string) {
   return [this.detail(id), "preview"]
+}
+
+_orderKeys.changes = function (id: string) {
+  return [this.detail(id), "changes"]
 }
 
 export const ordersQueryKeys = _orderKeys
@@ -30,7 +35,7 @@ export const useOrder = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<any, FetchError, any, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -49,7 +54,7 @@ export const useOrderPreview = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminOrderPreviewResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminOrderPreviewResponse,
       QueryKey
     >,
@@ -68,7 +73,7 @@ export const useOrderPreview = (
 export const useOrders = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<any, FetchError, any, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -81,11 +86,33 @@ export const useOrders = (
   return { ...data, ...rest }
 }
 
+export const useOrderChanges = (
+  id: string,
+  query?: HttpTypes.AdminOrderChangesFilters,
+  options?: Omit<
+    UseQueryOptions<
+      HttpTypes.AdminOrderChangesResponse,
+      Error,
+      HttpTypes.AdminOrderChangesResponse,
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: async () => sdk.admin.order.listChanges(id, query),
+    queryKey: ordersQueryKeys.changes(id),
+    ...options,
+  })
+
+  return { ...data, ...rest }
+}
+
 export const useCreateOrderFulfillment = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCreateOrderFulfillment
   >
 ) => {
@@ -114,7 +141,7 @@ export const useCreateOrderFulfillment = (
 export const useCancelOrderFulfillment = (
   orderId: string,
   fulfillmentId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: (payload: { no_notification?: boolean }) =>
@@ -139,7 +166,7 @@ export const useCreateOrderShipment = (
   fulfillmentId: string,
   options?: UseMutationOptions<
     { order: HttpTypes.AdminOrder },
-    Error,
+    FetchError,
     HttpTypes.AdminCreateOrderShipment
   >
 ) => {
@@ -163,7 +190,7 @@ export const useCreateOrderShipment = (
 
 export const useCancelOrder = (
   orderId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<any, FetchError, any>
 ) => {
   return useMutation({
     mutationFn: (id) => sdk.admin.order.cancel(id),

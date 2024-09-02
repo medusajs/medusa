@@ -26,6 +26,11 @@ const ignoreSchemas = [
   "AuthStoreSessionResponse",
 ]
 
+const ignoreTags = {
+  admin: ["Auth"],
+  store: ["Auth"]
+}
+
 export default async function () {
   const oasOutputBasePath = getOasOutputBasePath()
   const oasOperationsPath = path.join(oasOutputBasePath, "operations")
@@ -225,7 +230,7 @@ export default async function () {
     const lengthBefore = parsedBaseYaml.tags?.length || 0
 
     parsedBaseYaml.tags = parsedBaseYaml.tags?.filter((tag) =>
-      areaTags.has(tag.name)
+      areaTags.has(tag.name) || ignoreTags[area].includes(tag.name)
     )
 
     if (lengthBefore !== (parsedBaseYaml.tags?.length || 0)) {

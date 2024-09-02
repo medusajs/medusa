@@ -8,7 +8,7 @@ import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
 } from "@medusajs/utils"
-import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
+import { medusaIntegrationTestRunner, TestEventUtils } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -91,14 +91,18 @@ medusaIntegrationTestRunner({
         it("should throw an exception if there is no provider for the channel", async () => {
           const notification = {
             to: "test@medusajs.com",
+            template: "order-created",
             channel: "sms",
           } as CreateNotificationDTO
 
           const error = await service
             .createNotifications(notification)
             .catch((e) => e)
+
+          const [notificationResult] = await service.listNotifications()
+
           expect(error.message).toEqual(
-            "Could not find a notification provider for channel: sms"
+            `Could not find a notification provider for channel: sms for notification id ${notificationResult.id}`
           )
         })
 

@@ -42,7 +42,7 @@ export const useTaxRates = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminTaxRateListResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminTaxRateListResponse,
       QueryKey
     >,
@@ -62,7 +62,7 @@ export const useUpdateTaxRate = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminTaxRateResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateTaxRate
   >
 ) => {
@@ -106,7 +106,7 @@ export const useDeleteTaxRate = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminTaxRateDeleteResponse,
-    Error,
+    FetchError,
     void
   >
 ) => {

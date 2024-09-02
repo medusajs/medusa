@@ -1,4 +1,4 @@
-import { AdminGetPromotionsParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UsePromotionTableQueryProps = {
@@ -17,7 +17,7 @@ export const usePromotionTableQuery = ({
 
   const { offset, q, created_at, updated_at } = queryObject
 
-  const searchParams: AdminGetPromotionsParams = {
+  const searchParams: HttpTypes.AdminGetPromotionsParams = {
     limit: pageSize,
     created_at: created_at ? JSON.parse(created_at) : undefined,
     updated_at: updated_at ? JSON.parse(updated_at) : undefined,

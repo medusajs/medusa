@@ -1,4 +1,3 @@
-import { Order } from "@medusajs/medusa"
 import {
   ColumnDef,
   ColumnDefBase,
@@ -34,9 +33,10 @@ import {
   TotalCell,
   TotalHeader,
 } from "../../../components/table/table-cells/order/total-cell"
+import { HttpTypes } from "@medusajs/types"
 
 // We have to use any here, as the type of Order is so complex that it lags the TS server
-const columnHelper = createColumnHelper<Order>()
+const columnHelper = createColumnHelper<HttpTypes.AdminOrder>()
 
 type UseOrderTableColumnsProps = {
   exclude?: string[]
@@ -52,7 +52,7 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
         cell: ({ getValue }) => {
           const id = getValue()
 
-          return <DisplayIdCell displayId={id} />
+          return <DisplayIdCell displayId={id!} />
         },
       }),
       columnHelper.accessor("created_at", {
@@ -118,17 +118,19 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
 
   const isAccessorColumnDef = (
     c: any
-  ): c is ColumnDef<Order> & { accessorKey: string } => {
+  ): c is ColumnDef<HttpTypes.AdminOrder> & { accessorKey: string } => {
     return c.accessorKey !== undefined
   }
 
   const isDisplayColumnDef = (
     c: any
-  ): c is ColumnDef<Order> & { id: string } => {
+  ): c is ColumnDef<HttpTypes.AdminOrder> & { id: string } => {
     return c.id !== undefined
   }
 
-  const shouldExclude = <TDef extends ColumnDefBase<Order, any>>(c: TDef) => {
+  const shouldExclude = <TDef extends ColumnDefBase<HttpTypes.AdminOrder, any>>(
+    c: TDef
+  ) => {
     if (isAccessorColumnDef(c)) {
       return exclude.includes(c.accessorKey)
     } else if (isDisplayColumnDef(c)) {
@@ -138,5 +140,7 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
     return false
   }
 
-  return columns.filter((c) => !shouldExclude(c)) as ColumnDef<Order>[]
+  return columns.filter(
+    (c) => !shouldExclude(c)
+  ) as ColumnDef<HttpTypes.AdminOrder>[]
 }
