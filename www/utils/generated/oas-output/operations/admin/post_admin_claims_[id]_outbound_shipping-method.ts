@@ -1,8 +1,10 @@
 /**
  * @oas [post] /admin/claims/{id}/outbound/shipping-method
  * operationId: PostClaimsIdOutboundShippingMethod
- * summary: Add Shipping Methods to Claim
- * description: Add a list of shipping methods to a claim.
+ * summary: Add Outbound Shipping Methods to a Claim
+ * x-sidebar-summary: Add Outbound Shipping
+ * description: |
+ *   Add an outbound (or return) shipping method to a claim. The outbound shipping method will have a `SHIPPING_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id

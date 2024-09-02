@@ -1,8 +1,10 @@
 /**
  * @oas [post] /admin/claims/{id}/outbound/items
  * operationId: PostClaimsIdOutboundItems
- * summary: Add Items to Claim
- * description: Add a list of items to a claim.
+ * summary: Add Outbound Items to a Claim
+ * x-sidebar-summary: Add Outbound Items
+ * description: |
+ *   Add outbound (or return) items to a claim. These outbound items will have an `ITEM_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id
