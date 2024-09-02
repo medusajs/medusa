@@ -225,7 +225,7 @@ medusaIntegrationTestRunner({
           .catch((e) => e)
 
         expect(e.response.data.message).toEqual(
-          "amount to refund cannot be greater than pending difference - 75"
+          "Cannot refund more than pending difference - 75"
         )
       })
 
