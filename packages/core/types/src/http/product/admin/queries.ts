@@ -5,7 +5,7 @@ import {
   BaseProductOptionParams,
 } from "../common"
 
-export interface AdminProductOptionParams extends BaseProductOptionParams {}
+export interface AdminProductOptionParams extends Omit<BaseProductOptionParams, "product_id"> {}
 export interface AdminProductVariantParams extends 
   FindParams, BaseFilterable<AdminProductVariantParams> {
     q?: string
@@ -16,7 +16,7 @@ export interface AdminProductVariantParams extends
     updated_at?: OperatorMap<string>
     deleted_at?: OperatorMap<string>
   }
-export interface AdminProductListParams extends BaseProductListParams {
+export interface AdminProductListParams extends Omit<BaseProductListParams, "categories"> {
   price_list_id?: string | string[]
   variants?: AdminProductVariantParams
 }
