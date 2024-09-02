@@ -249,9 +249,27 @@ export const ClaimCreateForm = ({
       )
   )
 
+  const inboundShipping = preview.shipping_methods.find((s) => {
+    return !!s.actions?.find(
+      (a) => a.action === "SHIPPING_ADD" && !!a.return_id
+    )
+  })
+
   const outboundShipping = preview.shipping_methods.find((s) => {
     return !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
   })
+
+  useEffect(() => {
+    if (inboundShipping) {
+      setCustomInboundShippingAmount(inboundShipping.total)
+    }
+  }, [inboundShipping])
+
+  useEffect(() => {
+    if (outboundShipping) {
+      setCustomOutboundShippingAmount(outboundShipping.total)
+    }
+  }, [outboundShipping])
 
   const {
     fields: inboundItems,
