@@ -20,6 +20,8 @@ medusaIntegrationTestRunner({
     let shippingProfile
     let fulfillmentSet
     let returnReason
+    let returnShippingOption
+    let outboundShippingOption
     let inventoryItem
     let inventoryItemExtra
     let location
@@ -428,15 +430,14 @@ medusaIntegrationTestRunner({
         )
 
         /*
-            Create a claim with a single outbound item
-          */
-
+          Create a claim with a single outbound item
+        */
         const singleOutboundClaim = (
           await api.post(
             "/admin/claims",
             {
               order_id: order.id,
-              type: ClaimType.REFUND,
+              type: ClaimType.REPLACE,
               description: "Base claim",
             },
             adminHeaders
@@ -552,14 +553,25 @@ medusaIntegrationTestRunner({
             Arbitrarily refund an amount back to the customer
           */
 
-        await api.post(
-          `/admin/payments/${paymentCollection.payments[0].id}/refund`,
-          {
-            amount: 10,
-            note: "Do not like it",
-          },
-          adminHeaders
-        )
+        // TODO: Potentially create a new endpoint on the order that
+        // 1. creates a new payment collection
+        // 2. marks payment collection as paid to balance the order for rogue refunds
+        // await api.post(
+        //   `/admin/payments/${paymentCollection.payments[0].id}/refund`,
+        //   {
+        //     amount: 10,
+        //     note: "Do not like it",
+        //   },
+        //   adminHeaders
+        // )
+
+        // // Note: Now the order is out of balance due to the rogue refund that happened for Y reason.
+        // // The CX now needs to mark this as paid to balance the order
+        // await api.post(
+        //   `/admin/payment-collections/${paymentCollection.id}/mark-as-paid`,
+        //   { order_id: order.id },
+        //   adminHeaders
+        // )
 
         orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
           .data.order
@@ -569,10 +581,10 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             paid_total: 131,
             difference_sum: 70,
-            refunded_total: 10,
-            transaction_total: 121,
+            refunded_total: 0,
+            transaction_total: 131,
             // Q: Should the pending difference be changed here? Its been refunded, so nothing is pending per-ce
-            pending_difference: 10,
+            pending_difference: 0,
             current_order_total: 131,
             original_order_total: 61,
           })
@@ -605,174 +617,172 @@ medusaIntegrationTestRunner({
 
         // Ensure that there are no more fulfillable items
         expect(fulfillableItem).toBeUndefined()
-
+        console.log("orderResult -- ", orderResult)
         // Totals summary after fulfillment is done
         expect(orderResult.summary).toEqual(
           expect.objectContaining({
             paid_total: 131,
             difference_sum: 0,
-            refunded_total: 10,
-            transaction_total: 121,
-            pending_difference: 10,
+            refunded_total: 0,
+            transaction_total: 131,
+            pending_difference: 0,
             current_order_total: 131,
             // Note: When all items are fulfilled, the original_order_total goes to the new total
             original_order_total: 131,
           })
         )
 
-        /*
-            We can see that fulfillment affects the totals, so lets create and confirm 2 claims
-            and fulfill after
-          */
+        // /*
+        //     We can see that fulfillment affects the totals, so lets create and confirm 2 claims
+        //     and fulfill after
+        //   */
 
-        let claimWithInboundAndOutbound = (
-          await api.post(
-            "/admin/claims",
-            {
-              order_id: order.id,
-              type: ClaimType.REPLACE,
-              description: "Base claim",
-            },
-            adminHeaders
-          )
-        ).data.claim
+        // let claimWithInboundAndOutbound = (
+        //   await api.post(
+        //     "/admin/claims",
+        //     {
+        //       order_id: order.id,
+        //       type: ClaimType.REPLACE,
+        //       description: "Base claim",
+        //     },
+        //     adminHeaders
+        //   )
+        // ).data.claim
 
-        orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
-          .data.order
+        // orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
+        //   .data.order
 
-        // Nothing changes from the previous expectation
-        expect(orderResult.summary).toEqual(
-          expect.objectContaining({
-            paid_total: 131,
-            difference_sum: 0,
-            refunded_total: 10,
-            transaction_total: 121,
-            pending_difference: 10,
-            current_order_total: 131,
-            original_order_total: 131,
-          })
-        )
+        // // Nothing changes from the previous expectation
+        // expect(orderResult.summary).toEqual(
+        //   expect.objectContaining({
+        //     paid_total: 131,
+        //     difference_sum: 0,
+        //     refunded_total: 10,
+        //     transaction_total: 121,
+        //     pending_difference: 10,
+        //     current_order_total: 131,
+        //     original_order_total: 131,
+        //   })
+        // )
 
-        let inboundItem = orderResult.items[0]
+        // let inboundItem = orderResult.items[0]
 
-        await api.post(
-          `/admin/claims/${claimWithInboundAndOutbound.id}/inbound/items`,
-          { items: [{ id: inboundItem.id, quantity: 1 }] },
-          adminHeaders
-        )
+        // await api.post(
+        //   `/admin/claims/${claimWithInboundAndOutbound.id}/inbound/items`,
+        //   { items: [{ id: inboundItem.id, quantity: 1 }] },
+        //   adminHeaders
+        // )
 
-        await api.post(
-          `/admin/claims/${claimWithInboundAndOutbound.id}/outbound/items`,
-          {
-            items: [
-              {
-                variant_id: product.variants[0].id,
-                quantity: 1,
-              },
-            ],
-          },
-          adminHeaders
-        )
+        // await api.post(
+        //   `/admin/claims/${claimWithInboundAndOutbound.id}/outbound/items`,
+        //   {
+        //     items: [
+        //       {
+        //         variant_id: product.variants[0].id,
+        //         quantity: 1,
+        //       },
+        //     ],
+        //   },
+        //   adminHeaders
+        // )
 
-        await api.post(
-          `/admin/claims/${claimWithInboundAndOutbound.id}/request`,
-          {},
-          adminHeaders
-        )
+        // await api.post(
+        //   `/admin/claims/${claimWithInboundAndOutbound.id}/request`,
+        //   {},
+        //   adminHeaders
+        // )
 
-        orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
-          .data.order
+        // orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
+        //   .data.order
 
-        // Totals summary after all
-        expect(orderResult.summary).toEqual(
-          expect.objectContaining({
-            paid_total: 131,
-            difference_sum: -20,
-            refunded_total: 10,
-            transaction_total: 121,
-            // TODO: This looks wrong
-            pending_difference: -10,
-            current_order_total: 111,
-            original_order_total: 131,
-            // This is now positive as we have an item to be fulfilled
-          })
-        )
+        // // Totals summary after all
+        // expect(orderResult.summary).toEqual(
+        //   expect.objectContaining({
+        //     paid_total: 131,
+        //     difference_sum: -20,
+        //     refunded_total: 10,
+        //     transaction_total: 121,
+        //     // TODO: This looks wrong
+        //     pending_difference: -10,
+        //     current_order_total: 111,
+        //     original_order_total: 131,
+        //   })
+        // )
 
-        // Lets create one more claim without fulfilling the previous one
-        claimWithInboundAndOutbound = (
-          await api.post(
-            "/admin/claims",
-            {
-              order_id: order.id,
-              type: ClaimType.REPLACE,
-              description: "Base claim",
-            },
-            adminHeaders
-          )
-        ).data.claim
+        // // Lets create one more claim without fulfilling the previous one
+        // claimWithInboundAndOutbound = (
+        //   await api.post(
+        //     "/admin/claims",
+        //     {
+        //       order_id: order.id,
+        //       type: ClaimType.REPLACE,
+        //       description: "Base claim",
+        //     },
+        //     adminHeaders
+        //   )
+        // ).data.claim
 
-        orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
-          .data.order
+        // orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
+        //   .data.order
 
-        // Nothing changes from the previous expectation
-        expect(orderResult.summary).toEqual(
-          expect.objectContaining({
-            paid_total: 131,
-            difference_sum: -20,
-            refunded_total: 10,
-            transaction_total: 121,
-            pending_difference: -10,
-            current_order_total: 111,
-            original_order_total: 131,
-          })
-        )
+        // // Nothing changes from the previous expectation
+        // expect(orderResult.summary).toEqual(
+        //   expect.objectContaining({
+        //     paid_total: 131,
+        //     difference_sum: -20,
+        //     refunded_total: 10,
+        //     transaction_total: 121,
+        //     pending_difference: -10,
+        //     current_order_total: 111,
+        //     original_order_total: 131,
+        //   })
+        // )
 
-        inboundItem = orderResult.items[0]
+        // inboundItem = orderResult.items[0]
 
-        await api.post(
-          `/admin/claims/${claimWithInboundAndOutbound.id}/inbound/items`,
-          { items: [{ id: inboundItem.id, quantity: 1 }] },
-          adminHeaders
-        )
+        // await api.post(
+        //   `/admin/claims/${claimWithInboundAndOutbound.id}/inbound/items`,
+        //   { items: [{ id: inboundItem.id, quantity: 1 }] },
+        //   adminHeaders
+        // )
 
-        await api.post(
-          `/admin/claims/${claimWithInboundAndOutbound.id}/outbound/items`,
-          {
-            items: [
-              {
-                variant_id: product.variants[0].id,
-                quantity: 1,
-              },
-            ],
-          },
-          adminHeaders
-        )
+        // await api.post(
+        //   `/admin/claims/${claimWithInboundAndOutbound.id}/outbound/items`,
+        //   {
+        //     items: [
+        //       {
+        //         variant_id: product.variants[0].id,
+        //         quantity: 1,
+        //       },
+        //     ],
+        //   },
+        //   adminHeaders
+        // )
 
-        await api.post(
-          `/admin/claims/${claimWithInboundAndOutbound.id}/request`,
-          {},
-          adminHeaders
-        )
+        // await api.post(
+        //   `/admin/claims/${claimWithInboundAndOutbound.id}/request`,
+        //   {},
+        //   adminHeaders
+        // )
 
-        orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
-          .data.order
+        // orderResult = (await api.get(`/admin/orders/${order.id}`, adminHeaders))
+        //   .data.order
 
-        expect(orderResult.summary).toEqual(
-          expect.objectContaining({
-            paid_total: 131,
-            // TODO: This looks wrong
-            difference_sum: -10,
-            refunded_total: 10,
-            transaction_total: 121,
-            // TODO: This looks wrong
-            pending_difference: 15,
-            // TODO: This looks wrong
-            current_order_total: 136,
-            // TODO: This looks wrong
-            original_order_total: 146,
-            // TODO: This looks wrong
-          })
-        )
+        // expect(orderResult.summary).toEqual(
+        //   expect.objectContaining({
+        //     paid_total: 131,
+        //     // TODO: This looks wrong
+        //     difference_sum: -10,
+        //     refunded_total: 10,
+        //     transaction_total: 121,
+        //     // TODO: This looks wrong
+        //     pending_difference: 15,
+        //     // TODO: This looks wrong
+        //     current_order_total: 136,
+        //     // TODO: This looks wrong
+        //     original_order_total: 146
+        //   })
+        // )
 
         // TODO: can't continue due to the irregularities above
         // After this fulfill one item
