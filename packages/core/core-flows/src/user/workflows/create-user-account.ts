@@ -5,8 +5,8 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createUsersStep } from "../steps"
 import { setAuthAppMetadataStep } from "../../auth"
+import { createUsersWorkflow } from "./create-users"
 
 export type CreateUserAccountWorkflowInput = {
   authIdentityId: string
@@ -19,8 +19,15 @@ export const createUserAccountWorkflowId = "create-user-account"
  */
 export const createUserAccountWorkflow = createWorkflow(
   createUserAccountWorkflowId,
-  (input: WorkflowData<CreateUserAccountWorkflowInput>): WorkflowResponse<UserDTO> => {
-    const users = createUsersStep([input.userData])
+  (
+    input: WorkflowData<CreateUserAccountWorkflowInput>
+  ): WorkflowResponse<UserDTO> => {
+    const users = createUsersWorkflow.runAsStep({
+      input: {
+        users: [input.userData],
+      },
+    })
+
     const user = transform(users, (users: UserDTO[]) => users[0])
 
     setAuthAppMetadataStep({

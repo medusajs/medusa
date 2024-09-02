@@ -1,8 +1,4 @@
 import { ArrowDownRightMini, DocumentText, XCircle } from "@medusajs/icons"
-import {
-  Payment as MedusaPayment,
-  Refund as MedusaRefund,
-} from "@medusajs/medusa"
 import { AdminPaymentCollection, HttpTypes } from "@medusajs/types"
 import {
   Badge,
@@ -44,7 +40,7 @@ export const OrderPaymentSection = ({ order }: OrderPaymentSectionProps) => {
   const refunds = payments
     .map((payment) => payment?.refunds)
     .flat(1)
-    .filter(Boolean)
+    .filter(Boolean) as HttpTypes.AdminRefund[]
 
   return (
     <Container className="divide-y divide-dashed p-0">
@@ -122,7 +118,7 @@ const Refund = ({
       <div className="flex items-center justify-end">{RefundReasonBadge}</div>
       <div className="flex items-center justify-end">
         <Text size="small" leading="compact">
-          - {getLocaleAmount(refund.amount, currencyCode)}
+          - {getLocaleAmount(refund.amount as number, currencyCode)}
         </Text>
       </div>
     </div>
@@ -136,8 +132,8 @@ const Payment = ({
   currencyCode,
 }: {
   order: HttpTypes.AdminOrder
-  payment: MedusaPayment
-  refunds: MedusaRefund[]
+  payment: HttpTypes.AdminPayment
+  refunds: HttpTypes.AdminRefund[]
   currencyCode: string
 }) => {
   const { t } = useTranslation()
@@ -148,7 +144,7 @@ const Payment = ({
     const res = await prompt({
       title: t("orders.payment.capture"),
       description: t("orders.payment.capturePayment", {
-        amount: formatCurrency(payment.amount, currencyCode),
+        amount: formatCurrency(payment.amount as number, currencyCode),
       }),
       confirmText: t("actions.confirm"),
       cancelText: t("actions.cancel"),
@@ -160,12 +156,12 @@ const Payment = ({
     }
 
     await mutateAsync(
-      { amount: payment.amount },
+      { amount: payment.amount as number },
       {
         onSuccess: () => {
           toast.success(
             t("orders.payment.capturePaymentSuccess", {
-              amount: formatCurrency(payment.amount, currencyCode),
+              amount: formatCurrency(payment.amount as number, currencyCode),
             })
           )
         },
@@ -197,7 +193,10 @@ const Payment = ({
             {cleanId}
           </Text>
           <Text size="small" leading="compact">
-            {format(new Date(payment.created_at), "dd MMM, yyyy, HH:mm:ss")}
+            {format(
+              new Date(payment.created_at as string),
+              "dd MMM, yyyy, HH:mm:ss"
+            )}
           </Text>
         </div>
         <div className="flex items-center justify-end">
@@ -212,7 +211,7 @@ const Payment = ({
         </div>
         <div className="flex items-center justify-end">
           <Text size="small" leading="compact">
-            {getLocaleAmount(payment.amount, payment.currency_code)}
+            {getLocaleAmount(payment.amount as number, payment.currency_code)}
           </Text>
         </div>
         <ActionMenu
@@ -260,8 +259,8 @@ const PaymentBreakdown = ({
   currencyCode,
 }: {
   order: HttpTypes.AdminOrder
-  payments: MedusaPayment[]
-  refunds: MedusaRefund[]
+  payments: HttpTypes.AdminPayment[]
+  refunds: HttpTypes.AdminRefund[]
   currencyCode: string
 }) => {
   /**
@@ -271,7 +270,10 @@ const PaymentBreakdown = ({
 
   const entries = [...orderRefunds, ...payments]
     .sort((a, b) => {
-      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      return (
+        new Date(a.created_at as string).getTime() -
+        new Date(b.created_at as string).getTime()
+      )
     })
     .map((entry) => {
       return {
@@ -279,8 +281,8 @@ const PaymentBreakdown = ({
         type: entry.id.startsWith("pay_") ? "payment" : "refund",
       }
     }) as (
-    | { type: "payment"; event: MedusaPayment }
-    | { type: "refund"; event: MedusaRefund }
+    | { type: "payment"; event: HttpTypes.AdminPayment }
+    | { type: "refund"; event: HttpTypes.AdminRefund }
   )[]
 
   return (

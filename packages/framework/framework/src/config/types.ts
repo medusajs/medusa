@@ -37,6 +37,13 @@ export type AdminOptions = {
    * - `/auth`
    * - `/`
    * 
+   * :::note
+   * 
+   * When using Docker, make sure that the root path of the Docker image doesn't path the admin's `path`. For example, if the Docker image's root path is `/app`, change
+   * the value of the `path` configuration, as it's `/app` by default.
+   * 
+   * :::
+   * 
    * @example
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
