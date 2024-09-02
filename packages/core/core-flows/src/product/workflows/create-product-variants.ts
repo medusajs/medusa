@@ -63,7 +63,7 @@ const validateVariantsDuplicateInventoryItemIds = (
     }[]
   }[]
 ) => {
-  const errors: string[] = []
+  const erroredVariantIds: string[] = []
 
   for (const variantData of variantsData) {
     const inventoryItemIds = variantData.inventory_items.map(
@@ -74,18 +74,17 @@ const validateVariantsDuplicateInventoryItemIds = (
     )
 
     if (duplicatedInventoryItemIds.length) {
-      errors.push(
-        `Variant with id ${
-          variantData.variantId
-        } has duplicate inventory item ids ${duplicatedInventoryItemIds.join(
-          ", "
-        )}`
-      )
+      erroredVariantIds.push(variantData.variantId)
     }
   }
 
-  if (errors.length) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, errors.join("\n"))
+  if (erroredVariantIds.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Cannot associate duplicate inventory items to a variant(s) ${erroredVariantIds.join(
+        "\n"
+      )}`
+    )
   }
 }
 

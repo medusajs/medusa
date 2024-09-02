@@ -2256,7 +2256,7 @@ medusaIntegrationTestRunner({
           expect(error.response.status).toEqual(400)
           expect(error.response.data.message).toMatch(
             new RegExp(
-              `Variant with id \\w+ has duplicate inventory item ids ${inventoryItem1.id}`
+              `Cannot associate duplicate inventory items to a variant(s) \\w+`
             )
           )
         })
