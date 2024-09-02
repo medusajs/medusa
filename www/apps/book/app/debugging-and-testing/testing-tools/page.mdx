@@ -1,0 +1,91 @@
+export const metadata = {
+  title: `${pageNumber} Medusa Testing Tools`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about Medusa's testing tools and how to install and configure them.
+
+## medusa-test-utils Package
+
+Medusa provides a `medusa-test-utils` package with utility tools to create integration and unit tests for your custom API routes, modules, or other Medusa customizations.
+
+### Install medusa-test-utils
+
+To use the `medusa-test-utils` package, install it as a `devDependency`:
+
+```bash npm2yarn
+npm install --save-dev medusa-test-utils
+```
+
+---
+
+## Install and Configure Jest
+
+Writing tests with `medusa-test-utils`'s tools requires installing and configuring Jest in your project.
+
+{/* TODO remove this note at some point in the future */}
+
+<Note>
+
+If your Medusa project was created after September 2nd, Jest is already installed and configured.
+
+</Note>
+
+Run the following command to install the required Jest dependencies:
+
+```bash npm2yarn
+npm install --save-dev jest ts-jest @swc/jest
+```
+
+Then, create the file `jest.config.js` with the following content:
+
+```js title="jest.config.js"
+/** @type {import('ts-jest').JestConfigWithTsJest} **/
+module.exports = {
+  transform: {
+    "^.+\\.[jt]s$": [
+      "@swc/jest",
+      {
+        jsc: {
+          parser: { syntax: "typescript", decorators: true },
+        },
+      },
+    ],
+  },
+  testEnvironment: `node`,
+  moduleFileExtensions: [`js`, `ts`, "json"],
+  modulePathIgnorePatterns: ["dist/"],
+}
+
+if (process.env.TEST_TYPE === "integration") {
+  module.exports.testMatch = ["**/src/integration-tests/*.spec.[jt]s"]
+} else if (process.env.TEST_TYPE === "unit") {
+  module.exports.testMatch = ["**/src/**/__tests__/*.spec.[jt]s"]
+}
+```
+
+---
+
+## Add Test Commands
+
+Finally, add the following scripts to `package.json`:
+
+```json title="package.json"
+"scripts": {
+  // ...
+  "test:integration": "npm run build && NODE_OPTIONS=--experimental-vm-modules TEST_TYPE=integration jest --runInBand --forceExit",
+  "test:unit": "npm run build && NODE_OPTIONS=--experimental-vm-modules TEST_TYPE=unit jest --runInBand --forceExit"
+},
+```
+
+You now have two commands:
+
+- `test:integration` to run integration tests (for example, for API routes and workflows) available under the `src/integration-tests` directory.
+- `test:unit` to run unit tests (for example, for a module's main service) available in any `__tests__` directory under `src`.
+
+---
+
+## Test Tools and Writing Tests
+
+The next chapters explain how to use the testing tools provided by `medusa-test-utils` to write tests.

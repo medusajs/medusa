@@ -1,0 +1,70 @@
+export const metadata = {
+  title: `${pageNumber} Example: Unit Tests for a Module`,
+}
+
+# {metadata.title}
+
+In this chapter, find an example of writing a unit test for a module using the [moduleIntegrationTestRunner utility function](../page.mdx).
+
+## Write Unit Test for Module
+
+Consider a `hello` module with a `HelloModuleService` that has a `getMessage` method:
+
+```ts title="src/modules/hello/service.ts"
+import { MedusaService } from "@medusajs/utils"
+import MyCustom from "./models/my-custom"
+
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  getMessage(): string {
+    return "Hello, World!"
+  }
+}
+
+export default HelloModuleService
+```
+
+To create a unit test for the method, create the file `src/modules/hello/__tests__/service.spec.ts` with the following content:
+
+```ts title="src/modules/hello/__tests__/service.spec.ts"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { HELLO_MODULE } from ".."
+import HelloModuleService from "../service"
+import MyCustom from "../models/my-custom"
+
+moduleIntegrationTestRunner<HelloModuleService>({
+  moduleName: HELLO_MODULE,
+  moduleModels: [MyCustom],
+  resolve: "./modules/hello",
+  testSuite: ({ service }) => {
+    describe("HelloModuleService", () => {
+      it("says hello world", () => {
+        const message = service.getMessage()
+
+        expect(message).toEqual("Hello, World!")
+      })
+    })
+  }
+})
+```
+
+You use the `moduleIntegrationTestRunner` function to add tests for the `hello` module. You have one test that passes if the `getMessage` method returns the `"Hello, World!"` string.
+
+---
+
+## Run Test
+
+Run the following command to run your unit tests:
+
+```bash npm2yarn
+npm run test:unit
+```
+
+<Note title="Tip">
+
+If you don't have a `test:unit` script in `package.json`, refer to the [Medusa Testing Tools chapter](../../page.mdx#add-test-commands).
+
+</Note>
+
+This runs your Medusa application and runs the tests available in any `__tests__` directory under the `src` directory.

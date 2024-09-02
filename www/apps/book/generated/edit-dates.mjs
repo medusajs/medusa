@@ -9,7 +9,6 @@ export const generatedEditDates = {
   "app/advanced-development/workflows/workflow-hooks/page.mdx": "2024-08-13T09:55:37+03:00",
   "app/cheatsheet/page.mdx": "2024-07-11T13:53:40+03:00",
   "app/debugging-and-testing/logging/page.mdx": "2024-07-04T17:26:03+03:00",
-  "app/debugging-and-testing/tools/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/more-resources/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/storefront-development/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/storefront-development/nextjs-starter/page.mdx": "2024-07-04T17:26:03+03:00",
@@ -19,7 +18,7 @@ export const generatedEditDates = {
   "app/advanced-development/workflows/parallel-steps/page.mdx": "2024-07-31T17:01:33+03:00",
   "app/advanced-development/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/first-customizations/page.mdx": "2024-05-07T18:00:28+02:00",
-  "app/debugging-and-testing/page.mdx": "2024-05-03T17:36:38+03:00",
+  "app/debugging-and-testing/page.mdx": "2024-09-02T11:06:13.298Z",
   "app/basics/medusa-container/page.mdx": "2024-08-05T07:24:27+00:00",
   "app/architectural-modules/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/basics/project-directories-files/page.mdx": "2024-07-04T17:26:03+03:00",
@@ -66,5 +65,11 @@ export const generatedEditDates = {
   "app/advanced-development/data-models/configure-properties/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/advanced-development/data-models/index/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/advanced-development/custom-cli-scripts/page.mdx": "2024-07-04T17:26:03+03:00",
-  "app/advanced-development/data-models/property-types/page.mdx": "2024-07-04T17:26:03+03:00"
+  "app/advanced-development/data-models/property-types/page.mdx": "2024-07-04T17:26:03+03:00",
+  "app/debugging-and-testing/testing-tools/integration-tests/api-routes/page.mdx": "2024-09-02T10:57:08.040Z",
+  "app/debugging-and-testing/testing-tools/integration-tests/page.mdx": "2024-09-02T10:56:09.872Z",
+  "app/debugging-and-testing/testing-tools/integration-tests/workflows/page.mdx": "2024-09-02T10:57:04.202Z",
+  "app/debugging-and-testing/testing-tools/page.mdx": "2024-09-02T10:08:29.388Z",
+  "app/debugging-and-testing/testing-tools/unit-tests/module-example/page.mdx": "2024-09-02T11:04:27.232Z",
+  "app/debugging-and-testing/testing-tools/unit-tests/page.mdx": "2024-09-02T11:03:26.997Z"
 }

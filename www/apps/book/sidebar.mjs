@@ -370,13 +370,42 @@ export const sidebar = numberSidebarItems(
       children: [
         {
           type: "link",
-          path: "/debugging-and-testing/logging",
-          title: "Logging",
+          path: "/debugging-and-testing/testing-tools",
+          title: "Testing Tools",
         },
         {
           type: "link",
-          path: "/debugging-and-testing/tools",
-          title: "Tools",
+          path: "/debugging-and-testing/testing-tools/integration-tests",
+          title: "Integration Tests",
+          children: [
+            {
+              type: "link",
+              path: "/debugging-and-testing/testing-tools/integration-tests/api-routes",
+              title: "Example: API Routes Tests",
+            },
+            {
+              type: "link",
+              path: "/debugging-and-testing/testing-tools/integration-tests/workflows",
+              title: "Example: Workflows Tests",
+            },
+          ],
+        },
+        {
+          type: "link",
+          path: "/debugging-and-testing/testing-tools/unit-tests",
+          title: "Unit Tests",
+          children: [
+            {
+              type: "link",
+              path: "/debugging-and-testing/testing-tools/unit-tests/module-example",
+              title: "Example: Module Tests",
+            },
+          ],
+        },
+        {
+          type: "link",
+          path: "/debugging-and-testing/logging",
+          title: "Logging",
         },
       ],
     },
