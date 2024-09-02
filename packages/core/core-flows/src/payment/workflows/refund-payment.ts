@@ -16,7 +16,7 @@ import { refundPaymentStep } from "../steps/refund-payment"
  * This step validates that the refund is valid for the order
  */
 export const validateRefundStep = createStep(
-  "begin-claim-order-validation",
+  "validate-refund-step",
   async function ({
     order,
     payment,
@@ -41,7 +41,7 @@ export const validateRefundStep = createStep(
     if (MathBN.gt(amountToRefund, amountPending)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `amount to refund cannot be greater than pending difference - ${amountPending}`
+        `Cannot refund more than pending difference - ${amountPending}`
       )
     }
   }
