@@ -1202,18 +1202,30 @@ class OasKindGenerator extends FunctionKindGenerator {
       return schemaFromFactory
     }
 
+    const isEnum = itemType.flags === ts.TypeFlags.Enum
+    const isEnumParent =
+      itemType.symbol &&
+      "parent" in itemType.symbol &&
+      (itemType.symbol.parent as ts.Symbol)?.valueDeclaration?.kind ===
+        ts.SyntaxKind.EnumDeclaration
+
     switch (true) {
-      case itemType.flags === ts.TypeFlags.Enum:
+      case isEnum || isEnumParent:
         const enumMembers: string[] = []
-        symbol?.members?.forEach((enumMember) => {
-          if ((enumMember.valueDeclaration as ts.EnumMember).initializer) {
-            enumMembers.push(
-              (
-                enumMember.valueDeclaration as ts.EnumMember
-              ).initializer!.getText()
-            )
-          }
-        })
+        if (isEnum) {
+          symbol?.members?.forEach((enumMember) => {
+            if ((enumMember.valueDeclaration as ts.EnumMember).initializer) {
+              enumMembers.push(
+                (
+                  enumMember.valueDeclaration as ts.EnumMember
+                ).initializer!.getText()
+              )
+            }
+          })
+        } else {
+          // the item itself is the enum member so add it to the array
+          enumMembers.push(itemType.symbol.getName())
+        }
         return {
           type: "string",
           description,
@@ -1553,8 +1565,9 @@ class OasKindGenerator extends FunctionKindGenerator {
             break
           }
 
+          const expressionName = (expression.name as ts.Identifier).getText()
           isRequired =
-            (expression.name as ts.Identifier).getText() !== "optional"
+            expressionName !== "optional" && expressionName !== "nullish"
           break
         case ts.SyntaxKind.QuestionToken:
           isRequired = false
@@ -2081,14 +2094,18 @@ class OasKindGenerator extends FunctionKindGenerator {
       return false
     }
 
-    const responseContent = (oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject).content
+    const responseContent = (
+      oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject
+    ).content
     if (!responseContent) {
       return false
     }
 
     const fnText = node.getText()
 
-    return Object.keys(responseContent).some((responseType) => fnText.includes(responseType))
+    return Object.keys(responseContent).some((responseType) =>
+      fnText.includes(responseType)
+    )
   }
 
   private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
