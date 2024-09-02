@@ -20,8 +20,8 @@ const OptionActions = ({
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("products.deleteWarning", {
-        title: product.title,
+      description: t("products.options.deleteWarning", {
+        title: option.title,
       }),
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),
