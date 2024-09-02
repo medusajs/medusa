@@ -2204,6 +2204,63 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("creates throw when duplicated inventory items", async () => {
+          const inventoryItem1 = (
+            await api.post(
+              `/admin/inventory-items`,
+              { sku: "inventory-1" },
+              adminHeaders
+            )
+          ).data.inventory_item
+
+          const payload = {
+            title: "Test product - 1",
+            handle: "test-1",
+            variants: [
+              {
+                title: "Custom inventory 1",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: true,
+                inventory_items: [
+                  {
+                    inventory_item_id: inventoryItem1.id,
+                    required_quantity: 4,
+                  },
+                  {
+                    inventory_item_id: inventoryItem1.id,
+                    required_quantity: 2,
+                  },
+                ],
+              },
+              {
+                title: "No inventory",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: false,
+              },
+              {
+                title: "Default Inventory",
+                prices: [{ currency_code: "usd", amount: 100 }],
+                manage_inventory: true,
+              },
+            ],
+          }
+
+          const error = await api
+            .post(
+              "/admin/products?fields=%2bvariants.inventory_items.inventory.*,%2bvariants.inventory_items.*",
+              payload,
+              adminHeaders
+            )
+            .catch((err) => err)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toMatch(
+            new RegExp(
+              "Cannot associate duplicate inventory items to variant\\(s\\) \\w+"
+            )
+          )
+        })
+
         it("should throw an error when inventory item does not exist", async () => {
           const payload = {
             title: "Test product - 1",
