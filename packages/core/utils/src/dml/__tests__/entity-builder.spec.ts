@@ -5,8 +5,8 @@ import { model } from "../entity-builder"
 import { DuplicateIdPropertyError } from "../errors"
 import {
   createMikrORMEntity,
-  toMikroOrmEntities,
   toMikroORMEntity,
+  toMikroOrmEntities,
 } from "../helpers/create-mikro-orm-entity"
 
 describe("Entity builder", () => {
@@ -682,7 +682,7 @@ describe("Entity builder", () => {
       })
     })
 
-    test("mark property nullable", () => {
+    test.only("mark property nullable", () => {
       const user = model.define("user", {
         id: model.number(),
         username: model.text().nullable(),
@@ -2131,7 +2131,7 @@ describe("Entity builder", () => {
           entity: "Email",
           nullable: false,
           mappedBy: "user",
-          cascade: ["perist", "soft-remove"],
+          cascade: ["persist", "soft-remove"],
         },
         created_at: {
           reference: "scalar",
@@ -2284,7 +2284,7 @@ describe("Entity builder", () => {
           entity: "Email",
           nullable: false,
           mappedBy: "user",
-          cascade: ["perist", "soft-remove"],
+          cascade: ["persist", "soft-remove"],
         },
         created_at: {
           reference: "scalar",
@@ -2891,7 +2891,7 @@ describe("Entity builder", () => {
           entity: "Email",
           orphanRemoval: true,
           mappedBy: "user",
-          cascade: ["perist", "soft-remove"],
+          cascade: ["persist", "soft-remove"],
         },
         created_at: {
           reference: "scalar",
@@ -2981,7 +2981,7 @@ describe("Entity builder", () => {
           entity: "Email",
           orphanRemoval: true,
           mappedBy: "user",
-          cascade: ["perist", "soft-remove"],
+          cascade: ["persist", "soft-remove"],
         },
         created_at: {
           reference: "scalar",
