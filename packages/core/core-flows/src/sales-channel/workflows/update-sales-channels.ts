@@ -3,11 +3,14 @@ import {
   SalesChannelDTO,
   UpdateSalesChannelDTO,
 } from "@medusajs/types"
+import { SalesChannelWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { updateSalesChannelsStep } from "../steps/update-sales-channels"
 
 export type UpdateSalesChannelsWorkflowInput = {
@@ -24,6 +27,25 @@ export const updateSalesChannelsWorkflow = createWorkflow(
   (
     input: WorkflowData<UpdateSalesChannelsWorkflowInput>
   ): WorkflowResponse<SalesChannelDTO[]> => {
-    return new WorkflowResponse(updateSalesChannelsStep(input))
+    const updatedSalesChannels = updateSalesChannelsStep(input)
+
+    const salesChannelIdEvents = transform(
+      { updatedSalesChannels },
+      ({ updatedSalesChannels }) => {
+        const arr = Array.isArray(updatedSalesChannels)
+          ? updatedSalesChannels
+          : [updatedSalesChannels]
+        return arr?.map((salesChannel) => {
+          return { id: salesChannel.id }
+        })
+      }
+    )
+
+    emitEventStep({
+      eventName: SalesChannelWorkflowEvents.UPDATED,
+      data: salesChannelIdEvents,
+    })
+
+    return new WorkflowResponse(updatedSalesChannels)
   }
 )

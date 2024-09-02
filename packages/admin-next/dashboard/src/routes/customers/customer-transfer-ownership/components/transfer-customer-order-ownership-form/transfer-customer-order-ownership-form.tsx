@@ -1,18 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Order } from "@medusajs/medusa"
 import { Button } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { TransferOwnerShipForm } from "../../../../../components/forms/transfer-ownership-form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { TransferOwnershipSchema } from "../../../../../lib/schemas"
+import { HttpTypes } from "@medusajs/types"
 
 type TransferCustomerOrderOwnershipFormProps = {
-  order: Order
+  order: HttpTypes.AdminOrder
 }
 
 export const TransferCustomerOrderOwnershipForm = ({
@@ -23,7 +20,7 @@ export const TransferCustomerOrderOwnershipForm = ({
 
   const form = useForm<z.infer<typeof TransferOwnershipSchema>>({
     defaultValues: {
-      current_owner_id: order.customer_id,
+      current_owner_id: order.customer_id ?? undefined,
       new_owner_id: "",
     },
     resolver: zodResolver(TransferOwnershipSchema),

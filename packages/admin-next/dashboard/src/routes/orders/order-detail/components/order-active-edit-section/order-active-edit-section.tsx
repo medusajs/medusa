@@ -10,6 +10,7 @@ import {
 import { useMemo } from "react"
 import { HttpTypes } from "@medusajs/types"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { useNavigate } from "react-router-dom"
 
 type OrderActiveEditSectionProps = {
   order: HttpTypes.AdminOrder
@@ -51,11 +52,14 @@ export const OrderActiveEditSection = ({
   order,
 }: OrderActiveEditSectionProps) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const { order: orderPreview } = useOrderPreview(order.id)
 
   const { mutateAsync: cancelOrderEdit } = useCancelOrderEdit(order.id)
   const { mutateAsync: confirmOrderEdit } = useConfirmOrderEdit(order.id)
+
+  const isPending = orderPreview.order_change?.status === "pending"
 
   const [addedItems, removedItems] = useMemo(() => {
     const added = []
@@ -125,7 +129,13 @@ export const OrderActiveEditSection = ({
         <div className="flex w-full flex-col divide-y divide-dashed">
           <div className="flex items-center gap-2 px-6 py-4">
             <ExclamationCircleSolid className="text-blue-500" />
-            <Heading level="h2">{t("orders.edits.panel.title")}</Heading>
+            <Heading level="h2">
+              {t(
+                isPending
+                  ? "orders.edits.panel.titlePending"
+                  : "orders.edits.panel.title"
+              )}
+            </Heading>
           </div>
 
           {/*ADDED ITEMS*/}
@@ -155,13 +165,23 @@ export const OrderActiveEditSection = ({
           )}
 
           <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
-            <Button
-              size="small"
-              variant="secondary"
-              onClick={onConfirmOrderEdit}
-            >
-              {t("actions.forceConfirm")}
-            </Button>
+            {isPending ? (
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={() => navigate(`/orders/${order.id}/edits`)}
+              >
+                {t("actions.continueEdit")}
+              </Button>
+            ) : (
+              <Button
+                size="small"
+                variant="secondary"
+                onClick={onConfirmOrderEdit}
+              >
+                {t("actions.forceConfirm")}
+              </Button>
+            )}
             <Button
               size="small"
               variant="secondary"

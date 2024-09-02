@@ -1,4 +1,4 @@
-import { AdminGetTaxRatesParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UseTaxRateTableQueryProps = {
@@ -17,7 +17,7 @@ export const useTaxRateTableQuery = ({
 
   const { offset, q, order, created_at, updated_at } = queryObject
 
-  const searchParams: AdminGetTaxRatesParams = {
+  const searchParams: HttpTypes.AdminTaxRateListParams = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     order,

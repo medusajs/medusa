@@ -1,7 +1,7 @@
 export const generatedEditDates = {
   "app/commerce-modules/auth/auth-providers/emailpass/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/commerce-modules/auth/auth-providers/page.mdx": "2024-07-01T10:21:19+03:00",
-  "app/commerce-modules/auth/authentication-route/page.mdx": "2024-06-13T12:21:54+03:00",
+  "app/commerce-modules/auth/authentication-route/page.mdx": "2024-08-30T12:23:50.176Z",
   "app/commerce-modules/auth/examples/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/commerce-modules/auth/module-options/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/commerce-modules/auth/page.mdx": "2024-08-05T07:24:27+00:00",
@@ -224,7 +224,7 @@ export const generatedEditDates = {
   "app/page.mdx": "2024-08-13T08:51:20+02:00",
   "app/commerce-modules/auth/auth-providers/_google/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/commerce-modules/auth/_events/_events-table/page.mdx": "2024-07-03T19:27:13+03:00",
-  "app/commerce-modules/auth/auth-flows/page.mdx": "2024-06-26T07:55:59+00:00",
+  "app/commerce-modules/auth/auth-flows/page.mdx": "2024-08-30T12:27:07.160Z",
   "app/commerce-modules/auth/_events/page.mdx": "2024-07-03T19:27:13+03:00",
   "app/commerce-modules/auth/auth-identity-and-actor-types/page.mdx": "2024-07-31T17:01:33+03:00",
   "app/commerce-modules/api-key/page.mdx": "2024-08-05T07:24:27+00:00",

@@ -11,6 +11,7 @@ import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { ordersQueryKeys } from "./orders"
+import { FetchError } from "@medusajs/js-sdk"
 
 const RETURNS_QUERY_KEY = "returns" as const
 export const returnsQueryKeys = queryKeysFactory(RETURNS_QUERY_KEY)
@@ -19,7 +20,7 @@ export const useReturn = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<any, FetchError, any, QueryKey>,
     "queryFn" | "queryKey"
   >
 ) => {
@@ -37,7 +38,7 @@ export const useReturns = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminReturnFilters,
-      Error,
+      FetchError,
       HttpTypes.AdminReturnsResponse,
       QueryKey
     >,
@@ -57,7 +58,7 @@ export const useInitiateReturn = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminInitiateReturnRequest
   >
 ) => {
@@ -85,7 +86,7 @@ export const useInitiateReturn = (
 export const useCancelReturn = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, FetchError>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.return.cancel(id),
@@ -120,7 +121,7 @@ export const useConfirmReturnRequest = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminConfirmReturnRequest
   >
 ) => {
@@ -151,7 +152,7 @@ export const useConfirmReturnRequest = (
 export const useCancelReturnRequest = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, FetchError>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.return.cancelRequest(id),
@@ -182,7 +183,7 @@ export const useAddReturnItem = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminAddReturnItems
   >
 ) => {
@@ -209,7 +210,7 @@ export const useUpdateReturnItem = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateReturnItems & { actionId: string }
   >
 ) => {
@@ -238,7 +239,11 @@ export const useUpdateReturnItem = (
 export const useRemoveReturnItem = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
@@ -263,7 +268,7 @@ export const useUpdateReturn = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateReturnRequest
   >
 ) => {
@@ -291,7 +296,7 @@ export const useAddReturnShipping = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminAddReturnShipping
   >
 ) => {
@@ -318,7 +323,7 @@ export const useUpdateReturnShipping = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminAddReturnShipping
   >
 ) => {
@@ -346,7 +351,11 @@ export const useUpdateReturnShipping = (
 export const useDeleteReturnShipping = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) =>
@@ -375,7 +384,7 @@ export const useInitiateReceiveReturn = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminInitiateReceiveReturn
   >
 ) => {
@@ -402,7 +411,7 @@ export const useAddReceiveItems = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminReceiveItems
   >
 ) => {
@@ -429,7 +438,7 @@ export const useUpdateReceiveItem = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateReceiveItems & { actionId: string }
   >
 ) => {
@@ -458,7 +467,11 @@ export const useUpdateReceiveItem = (
 export const useRemoveReceiveItems = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) => {
@@ -484,7 +497,7 @@ export const useAddDismissItems = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminDismissItems
   >
 ) => {
@@ -511,7 +524,7 @@ export const useUpdateDismissItem = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminUpdateDismissItems & { actionId: string }
   >
 ) => {
@@ -540,7 +553,11 @@ export const useUpdateDismissItem = (
 export const useRemoveDismissItem = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error, string>
+  options?: UseMutationOptions<
+    HttpTypes.AdminReturnResponse,
+    FetchError,
+    string
+  >
 ) => {
   return useMutation({
     mutationFn: (actionId: string) => {
@@ -566,7 +583,7 @@ export const useConfirmReturnReceive = (
   orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminReturnResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminConfirmReceiveReturn
   >
 ) => {
@@ -597,7 +614,7 @@ export const useConfirmReturnReceive = (
 export const useCancelReceiveReturn = (
   id: string,
   orderId: string,
-  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, Error>
+  options?: UseMutationOptions<HttpTypes.AdminReturnResponse, FetchError>
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.return.cancelReceive(id),

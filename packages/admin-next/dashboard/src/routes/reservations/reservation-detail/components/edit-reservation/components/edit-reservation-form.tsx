@@ -1,6 +1,5 @@
 import * as zod from "zod"
-
-import { InventoryTypes, StockLocationDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
 import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
@@ -10,12 +9,11 @@ import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { Form } from "../../../../../../components/common/form"
 import { useUpdateReservationItem } from "../../../../../../hooks/api/reservations"
-import { InventoryItemRes } from "../../../../../../types/api-responses"
 
 type EditReservationFormProps = {
-  reservation: InventoryTypes.ReservationItemDTO
-  locations: StockLocationDTO[]
-  item: InventoryItemRes["inventory_item"]
+  reservation: HttpTypes.AdminReservationResponse["reservation"]
+  locations: HttpTypes.AdminStockLocation[]
+  item: HttpTypes.AdminInventoryItemResponse["inventory_item"]
 }
 
 const EditReservationSchema = z.object({
@@ -43,7 +41,9 @@ const AttributeGridRow = ({
   )
 }
 
-const getDefaultValues = (reservation: InventoryTypes.ReservationItemDTO) => {
+const getDefaultValues = (
+  reservation: HttpTypes.AdminReservationResponse["reservation"]
+) => {
   return {
     quantity: reservation.quantity,
     location_id: reservation.location_id,
@@ -82,8 +82,7 @@ export const EditReservationForm = ({
   const locationId = form.watch("location_id")
 
   const level = item.location_levels!.find(
-    (level: InventoryTypes.InventoryLevelDTO) =>
-      level.location_id === locationId
+    (level: HttpTypes.AdminInventoryLevel) => level.location_id === locationId
   )
 
   return (
@@ -139,7 +138,7 @@ export const EditReservationForm = ({
               title={t("inventory.available")}
               value={
                 level!.stocked_quantity -
-                (level.reserved_quantity - reservation.quantity) -
+                (level!.reserved_quantity - reservation.quantity) -
                 reservedQuantity
               }
             />
@@ -157,7 +156,10 @@ export const EditReservationForm = ({
                     <Input
                       type="number"
                       min={0}
-                      max={level!.available_quantity + reservation.quantity}
+                      max={
+                        (level!.available_quantity || 0) +
+                        (reservation.quantity || 0)
+                      }
                       value={value || ""}
                       onChange={(e) => {
                         const value = e.target.value

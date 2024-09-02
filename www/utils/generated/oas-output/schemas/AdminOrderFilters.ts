@@ -8,9 +8,9 @@
  *     oneOf:
  *       - type: string
  *         title: id
- *         description: The order's ID.
+ *         description: The return's ID.
  *       - type: array
- *         description: The order's ID.
+ *         description: The return's ID.
  *         items:
  *           type: string
  *           title: id
@@ -19,9 +19,9 @@
  *     oneOf:
  *       - type: string
  *         title: name
- *         description: The order's name.
+ *         description: The return's name.
  *       - type: array
- *         description: The order's name.
+ *         description: The return's name.
  *         items:
  *           type: string
  *           title: name
@@ -29,28 +29,28 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The order's limit.
+ *     description: The return's limit.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The order's offset.
+ *     description: The return's offset.
  *   order:
  *     type: string
  *     title: order
- *     description: The order's details.
+ *     description: The return's order.
  *   fields:
  *     type: string
  *     title: fields
- *     description: The order's fields.
+ *     description: The return's fields.
  *   $and:
  *     type: array
- *     description: The order's $and.
+ *     description: The return's $and.
  *     items:
  *       type: object
  *     title: $and
  *   $or:
  *     type: array
- *     description: The order's $or.
+ *     description: The return's $or.
  *     items:
  *       type: object
  *     title: $or
