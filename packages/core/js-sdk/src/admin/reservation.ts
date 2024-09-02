@@ -71,7 +71,7 @@ class Reservation {
   }
 
   async delete(id: string, headers?: ClientHeaders) {
-    return await this.client.fetch<HttpTypes.DeleteResponse<"reservation">>(
+    return await this.client.fetch<HttpTypes.AdminReservationDeleteResponse>(
       `/admin/reservations/${id}`,
       {
         method: "DELETE",

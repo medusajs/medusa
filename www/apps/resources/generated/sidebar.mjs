@@ -259,26 +259,18 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "type": "sub-category",
-                "title": "Auth Flows",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/commerce-modules/auth/authentication-route",
-                    "title": "Using API Routes",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/commerce-modules/auth/auth-flows",
-                    "title": "Using Module's Service",
-                    "children": []
-                  }
-                ]
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-flows",
+                "title": "Auth Flow with Module",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/authentication-route",
+                "title": "Auth Flow with Routes",
+                "children": []
               }
             ]
           },

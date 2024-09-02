@@ -9,7 +9,6 @@ import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
-import { PriceListRes } from "../../types/api-responses"
 
 import { getCountryByIso2 } from "../../lib/data/countries"
 import {
@@ -415,7 +414,8 @@ export const RouteMap: RouteObject[] = [
                 lazy: () =>
                   import("../../routes/price-lists/price-list-detail"),
                 handle: {
-                  crumb: (data: PriceListRes) => data.price_list.title,
+                  crumb: (data: HttpTypes.AdminPriceListResponse) =>
+                    data.price_list.title,
                 },
                 children: [
                   {

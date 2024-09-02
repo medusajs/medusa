@@ -200,6 +200,11 @@ export interface CreateCustomerDTO {
   created_by?: string | null
 
   /**
+   * Whether the customer has an account.
+   */
+  has_account?: boolean
+
+  /**
    * The addresses of the customer.
    */
   addresses?: Omit<CreateCustomerAddressDTO, "customer_id">[]

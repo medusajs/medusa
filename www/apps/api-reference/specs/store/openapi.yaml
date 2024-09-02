@@ -9,6 +9,9 @@ servers:
   - url: http://localhost:9000
   - url: https://api.medusajs.com
 tags:
+  - name: Auth
+    description: >
+      Auth API routes allow you to manage a customer's authentication.
   - name: Carts
     description: >
       A cart is a virtual shopping bag that customers can use to add items they

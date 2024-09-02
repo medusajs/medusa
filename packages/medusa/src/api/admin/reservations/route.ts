@@ -8,15 +8,11 @@ import {
 } from "@medusajs/utils"
 
 import { createReservationsWorkflow } from "@medusajs/core-flows"
-import {
-  AdminCreateReservationType,
-  AdminGetReservationsParamsType,
-} from "./validators"
 import { refetchReservation } from "./helpers"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetReservationsParamsType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminGetReservationsParams>,
   res: MedusaResponse<HttpTypes.AdminReservationListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -41,7 +37,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateReservationType>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateReservation>,
   res: MedusaResponse<HttpTypes.AdminReservationResponse>
 ) => {
   const input = [req.validatedBody]

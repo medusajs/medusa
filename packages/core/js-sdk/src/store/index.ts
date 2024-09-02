@@ -1,5 +1,4 @@
 import {
-  DeleteResponse,
   FindParams,
   HttpTypes,
   PaginatedResponse,
@@ -206,7 +205,7 @@ export class Store {
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
-        DeleteResponse<"line-item", HttpTypes.StoreCart>
+        HttpTypes.StoreLineItemDeleteResponse
       >(`/store/carts/${cartId}/line-items/${lineItemId}`, {
         method: "DELETE",
         headers,
@@ -434,7 +433,7 @@ export class Store {
     },
     deleteAddress: async (addressId: string, headers?: ClientHeaders) => {
       return this.client.fetch<
-        DeleteResponse<"address", HttpTypes.StoreCustomer>
+        HttpTypes.StoreCustomerAddressDeleteResponse
       >(`/store/customers/me/addresses/${addressId}`, {
         method: "DELETE",
         headers,

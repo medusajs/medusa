@@ -7,6 +7,7 @@ export interface AdminPricePreferenceListParams
   id?: string | string[]
   attribute?: string | string[]
   value?: string | string[]
+  q?: string
 }
 
 export interface AdminPricePreferenceParams extends SelectParams {}

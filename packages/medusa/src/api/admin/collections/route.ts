@@ -13,7 +13,7 @@ import { refetchCollection } from "./helpers"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCollectionListParams>,
   res: MedusaResponse<HttpTypes.AdminCollectionListResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)

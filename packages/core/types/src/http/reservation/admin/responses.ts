@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "../../common"
+import { DeleteResponse, PaginatedResponse } from "../../common"
 import { AdminReservation } from "./entities"
 
 export interface AdminReservationResponse {
@@ -8,3 +8,5 @@ export interface AdminReservationResponse {
 export type AdminReservationListResponse = PaginatedResponse<{
   reservations: AdminReservation[]
 }>
+
+export type AdminReservationDeleteResponse = DeleteResponse<"reservation">

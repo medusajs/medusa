@@ -139,7 +139,7 @@ export const updateProductVariantsWorkflow = createWorkflow(
     )
 
     const variantIdEvents = transform({ response }, ({ response }) => {
-      return response.map((v) => {
+      return response?.map((v) => {
         return { id: v.id }
       })
     })

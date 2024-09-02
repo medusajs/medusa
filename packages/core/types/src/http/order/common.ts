@@ -1,6 +1,7 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { BigNumberValue } from "../../totals"
 import { BaseClaim } from "../claim/common"
+import { FindParams } from "../common"
 import { BasePaymentCollection } from "../payment/common"
 import { BaseProduct, BaseProductVariant } from "../product/common"
 
@@ -264,9 +265,9 @@ export interface BaseOrder {
   sales_channel_id: string | null
   email: string | null
   currency_code: string
-  display_id?: string
-  shipping_address?: BaseOrderAddress
-  billing_address?: BaseOrderAddress
+  display_id?: number
+  shipping_address?: BaseOrderAddress | null
+  billing_address?: BaseOrderAddress | null
   items: BaseOrderLineItem[] | null
   shipping_methods: BaseOrderShippingMethod[] | null
   payment_collections?: BasePaymentCollection[]
@@ -302,9 +303,18 @@ export interface BaseOrder {
   original_shipping_tax_total: number
 }
 
-export interface BaseOrderFilters extends BaseFilterable<BaseOrderFilters> {
+export interface BaseOrderFilters
+  extends FindParams,
+    BaseFilterable<BaseOrderFilters> {
   id?: string[] | string | OperatorMap<string | string[]>
   status?: string[] | string | OperatorMap<string | string[]>
+}
+
+export interface BaseOrderChangesFilters
+  extends BaseFilterable<BaseOrderChangesFilters> {
+  id?: string[] | string | OperatorMap<string | string[]>
+  status?: string[] | string | OperatorMap<string | string[]>
+  change_type?: string[] | string | OperatorMap<string | string[]>
 }
 
 export interface BaseOrderChange {

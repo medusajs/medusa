@@ -6,7 +6,7 @@ import { MedusaError } from "@medusajs/utils"
 
 import { deleteInvitesWorkflow } from "@medusajs/core-flows"
 import { refetchInvite } from "../helpers"
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -31,7 +31,7 @@ export const GET = async (
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse<DeleteResponse<"invite">>
+  res: MedusaResponse<HttpTypes.AdminInviteDeleteResponse>
 ) => {
   const { id } = req.params
   const workflow = deleteInvitesWorkflow(req.scope)

@@ -47,6 +47,54 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - name: q
+ *     in: query
+ *     description: Search term to filter the campaign's searchable properties.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: q
+ *       description: Search term to filter the campaign's searchable properties.
+ *   - name: campaign_identifier
+ *     in: query
+ *     description: Filter the campaign by its identifier.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: campaign_identifier
+ *       description: Filter the campaign by its identifier.
+ *   - name: budget
+ *     in: query
+ *     description: Filter the campaign by its budget.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: Filter the campaign by its budget.
+ *       properties:
+ *         currency_code:
+ *           type: string
+ *           title: currency_code
+ *           description: Filter the campaign by its budget's currency code.
+ *   - name: $and
+ *     in: query
+ *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $and
+ *   - name: $or
+ *     in: query
+ *     description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *     required: false
+ *     schema:
+ *       type: array
+ *       description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *       items:
+ *         type: object
+ *       title: $or
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -67,7 +115,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of campaigns.
  *               required:
  *                 - limit
  *                 - offset
@@ -76,23 +124,23 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The campaign's limit.
+ *                   description: The maximum number of items retrieved.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The campaign's offset.
+ *                   description: The number of its skipped before the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The campaign's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The list of campaigns
  *               required:
  *                 - campaigns
  *               properties:
  *                 campaigns:
  *                   type: array
- *                   description: The campaign's campaigns.
+ *                   description: The list of campaigns.
  *                   items:
  *                     $ref: "#/components/schemas/CampaignResponse"
  *   "400":

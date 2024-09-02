@@ -105,6 +105,7 @@
     "revoke": "Revoke",
     "cancel": "Cancel",
     "forceConfirm": "Force confirm",
+    "continueEdit": "Continue edit",
     "enable": "Enable",
     "disable": "Disable",
     "undo": "Undo",
@@ -837,7 +838,8 @@
     "summary": {
       "requestReturn": "Request return",
       "allocateItems": "Allocate items",
-      "editOrder": "Edit order"
+      "editOrder": "Edit order",
+      "editOrderContinue": "Continue order edit"
     },
     "payment": {
       "title": "Payments",
@@ -890,7 +892,8 @@
       "createSuccessToast": "Order edit request created",
       "activeChangeError": "There is already active order change on the order (return, claim, exchange etc.). Please finish or cancel the change before editing the order.",
       "panel": {
-        "title": "Order edit requested"
+        "title": "Order edit requested",
+        "titlePending": "Order edit pending"
       },
       "toast": {
         "canceledSuccessfully": "Order edit cancelled",
@@ -1162,6 +1165,11 @@
           "created": "Exchange #{{exchangeId}} requested",
           "itemsInbound": "{{count}} item to return",
           "itemsOutbound": "{{count}} item to send"
+        },
+        "edit": {
+          "requested": "Order edit #{{editId}} requested",
+          "requested": "Order edit #{{editId}} requested",
+          "confirmed": "Order edit #{{editId}} confirmed"
         }
       }
     }

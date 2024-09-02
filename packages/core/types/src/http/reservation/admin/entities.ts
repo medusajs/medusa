@@ -2,7 +2,7 @@ export interface AdminReservation {
   id: string
   line_item_id: string | null
   location_id: string
-  quantity: string
+  quantity: number
   external_id: string | null
   description: string | null
   inventory_item_id: string

@@ -1972,6 +1972,10 @@ medusaIntegrationTestRunner({
           )
         })
 
+        afterEach(async () => {
+          jest.clearAllMocks()
+        })
+
         it("should create an order and create item reservations", async () => {
           const cart = (
             await api.post(`/store/carts`, {
@@ -2133,6 +2137,62 @@ medusaIntegrationTestRunner({
           expect(error.response.data).toEqual({
             type: "invalid_data",
             message: "Payment sessions are required to complete cart",
+          })
+        })
+
+        it("should fail to update cart when it is completed", async () => {
+          const cart = (
+            await api.post(`/store/carts`, {
+              currency_code: "usd",
+              email: "tony@stark-industries.com",
+              shipping_address: {
+                address_1: "test address 1",
+                address_2: "test address 2",
+                city: "ny",
+                country_code: "us",
+                province: "ny",
+                postal_code: "94016",
+              },
+              sales_channel_id: salesChannel.id,
+              items: [{ quantity: 1, variant_id: product.variants[0].id }],
+            })
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(`/store/payment-collections`, {
+              cart_id: cart.id,
+            })
+          ).data.payment_collection
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" }
+          )
+
+          await api.post(`/store/carts/${cart.id}/complete`, {})
+
+          const cartRefetch = (await api.get(`/store/carts/${cart.id}`)).data
+            .cart
+
+          expect(cartRefetch.completed_at).toBeTruthy()
+
+          await expect(
+            api.post(`/store/carts/${cart.id}/shipping-methods`, {
+              option_id: shippingOption.id,
+            })
+          ).rejects.toThrow()
+
+          const error = await api
+            .post(`/store/carts/${cart.id}/line-items`, {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+            })
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data).toEqual({
+            type: "invalid_data",
+            message: `Cart ${cart.id} is already completed.`,
           })
         })
 

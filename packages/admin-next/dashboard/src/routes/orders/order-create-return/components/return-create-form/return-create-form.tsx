@@ -660,7 +660,7 @@ export const ReturnCreateForm = ({
                       }
                       code={order.currency_code}
                       onValueChange={(value) =>
-                        setCustomShippingAmount(value ? parseInt(value) : "")
+                        setCustomShippingAmount(value ? parseFloat(value) : "")
                       }
                       value={customShippingAmount}
                       disabled={showPlaceholder}

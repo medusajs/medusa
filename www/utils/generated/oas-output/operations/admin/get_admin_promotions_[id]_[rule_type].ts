@@ -1,8 +1,14 @@
 /**
  * @oas [get] /admin/promotions/{id}/{rule_type}
  * operationId: GetPromotionsIdRule_type
- * summary: "List "
- * description: Retrieve a list of  in a promotion. The  can be filtered by fields like FILTER FIELDS. The  can also be paginated.
+ * summary: List Rules of a Promotion
+ * x-sidebar-summary: List Rules
+ * description: > 
+ *   Retrieve a list of rules in a promotion. The type of rules retrieved depend on the value of the `rule_type` path parameter:
+ * 
+ *   - If `rule_type` is `rules`, the promotion's rules are retrivied.
+ *   - If `rule_type` is `target-rules`, the target rules of the promotion's application method are retrieved.
+ *   - If `rule_type` is `buy-rules`, the buy rules of the promotion's application method are retrieved.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,10 +19,14 @@
  *       type: string
  *   - name: rule_type
  *     in: path
- *     description: The promotion's rule type.
+ *     description: The type of rules to retrieve.
  *     required: true
  *     schema:
  *       type: string
+ *       enum:
+ *         - rules
+ *         - target-rules
+ *         - buy-rules
  *   - name: expand
  *     in: query
  *     description: Comma-separated relations that should be expanded in the returned data.
@@ -59,6 +69,28 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *   - name: promotion_type
+ *     in: query
+ *     description: The type of promotion to retrieve its rules. This is only used if the promotion doesn't have a type.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: promotion_type
+ *       description: The type of promotion to retrieve its rules. This is only used if the promotion doesn't have a type.
+ *       enum:
+ *         - standard
+ *         - buyget
+ *   - name: application_method_type
+ *     in: query
+ *     description: The type of application method to retrieve its rules. This is only used if the promotion doesn't have an application method, or its method doesn't have a type.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: application_method_type
+ *       description: The type of application method to retrieve its rules. This is only used if the promotion doesn't have an application method, or its method doesn't have a type.
+ *       enum:
+ *         - fixed
+ *         - percentage
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -78,13 +110,13 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The list of promotion rules.
  *           required:
  *             - rules
  *           properties:
  *             rules:
  *               type: array
- *               description: The promotion's rules.
+ *               description: The list of promotion rules.
  *               items:
  *                 $ref: "#/components/schemas/AdminPromotionRule"
  *   "400":
