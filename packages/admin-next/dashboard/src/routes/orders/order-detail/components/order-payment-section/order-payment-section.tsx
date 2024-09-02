@@ -96,7 +96,7 @@ const Refund = ({
 
   const RefundNoteIndicator = refund.note && (
     <Tooltip content={refund.note}>
-      <DocumentText className="text-ui-tag-neutral-icon inline ml-1" />
+      <DocumentText className="text-ui-tag-neutral-icon ml-1 inline" />
     </Tooltip>
   )
 
