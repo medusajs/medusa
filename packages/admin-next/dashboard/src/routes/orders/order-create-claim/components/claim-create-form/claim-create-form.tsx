@@ -1003,7 +1003,7 @@ export const ClaimCreateForm = ({
                   variant="secondary"
                   size="small"
                 >
-                  {t("orders.claims.cancel")}
+                  {t("orders.claims.cancel.title")}
                 </Button>
               </RouteFocusModal.Close>
               <Button
