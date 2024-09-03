@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/returns/{id}/shipping-method/{action_id}
  * operationId: PostReturnsIdShippingMethodAction_id
- * summary: Add Shipping Methods to Return
- * description: Add a list of shipping methods to a return.
+ * summary: Update a Shipping Method of a Return
+ * x-sidebar-summary: Update Shipping Method
+ * description: |
+ *   Update a shipping method of the return by the ID of the item's `SHIPPING_ADD` action.
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The return's action id.
+ *     description: The ID of the shipping method's `SHIPPING_ADD` action.
  *     required: true
  *     schema:
  *       type: string
