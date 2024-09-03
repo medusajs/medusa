@@ -16,7 +16,12 @@ export async function graphqlToTs() {
 
     const config = {
       documents: [],
-      config: {},
+      config: {
+        scalars: {
+          DateTime: { output: "Date | string" },
+          JSON: { output: "Record<any, unknown>" },
+        },
+      },
       filename: "",
       schema: parse(printSchema(schema as any)),
       plugins: [
