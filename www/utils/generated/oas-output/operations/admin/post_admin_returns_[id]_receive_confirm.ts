@@ -1,8 +1,10 @@
 /**
  * @oas [post] /admin/returns/{id}/receive/confirm
  * operationId: PostReturnsIdReceiveConfirm
- * summary: Add Confirms to Return
- * description: Add a list of confirms to a return.
+ * summary: Confirm Return Receival
+ * description: >
+ *   Confirm that a return has been received. This updates the quantity of the items received, if not damaged, and 
+ *   reflects the changes on the order.
  * x-authenticated: true
  * parameters:
  *   - name: id

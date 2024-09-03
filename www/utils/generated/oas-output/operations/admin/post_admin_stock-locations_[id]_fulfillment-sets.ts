@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/stock-locations/{id}/fulfillment-sets
  * operationId: PostStockLocationsIdFulfillmentSets
- * summary: Add Fulfillment Sets to Stock Location
- * description: Add a list of fulfillment sets to a stock location.
+ * summary: Add Fulfillment Set to Stock Location
+ * x-sidebar-summary: Add Fulfillment Set
+ * description: Create and add a fulfillment set to a stock location.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,7 +63,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The fulfillment set to create.
  *         required:
  *           - name
  *           - type
@@ -70,11 +71,11 @@
  *           name:
  *             type: string
  *             title: name
- *             description: The stock location's name.
+ *             description: The fulfillment set's name.
  *           type:
  *             type: string
  *             title: type
- *             description: The stock location's type.
+ *             description: The fulfillment set's type.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

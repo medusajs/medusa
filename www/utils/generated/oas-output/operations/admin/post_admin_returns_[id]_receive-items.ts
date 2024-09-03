@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/returns/{id}/receive-items
  * operationId: PostReturnsIdReceiveItems
- * summary: Add Receive Items to Return
- * description: Add a list of receive items to a return.
+ * summary: Add Received Items to Return
+ * x-sidebar-summary: Add Received Items
+ * description: Add received items in a return. These items will have the action `RECEIVE_RETURN_ITEM`.
  * x-authenticated: true
  * parameters:
  *   - name: id
