@@ -133,8 +133,6 @@ export const AdminUpdateApplicationMethod = z
     type: z.nativeEnum(ApplicationMethodType).optional(),
     target_type: z.nativeEnum(ApplicationMethodTargetType).optional(),
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
-    target_rules: z.array(AdminCreatePromotionRule).optional(),
-    buy_rules: z.array(AdminCreatePromotionRule).optional(),
     apply_to_quantity: z.number().nullish(),
     buy_rules_min_quantity: z.number().nullish(),
   })
