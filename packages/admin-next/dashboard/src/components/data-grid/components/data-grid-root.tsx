@@ -16,10 +16,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { VirtualItem, useVirtualizer } from "@tanstack/react-virtual"
-import FocusTrap from "focus-trap-react"
-import {
+import React, {
   CSSProperties,
-  MouseEvent,
   ReactNode,
   useCallback,
   useEffect,
@@ -48,12 +46,11 @@ import {
 } from "../hooks"
 import { DataGridMatrix } from "../models"
 import { DataGridCoordinates, GridColumnOption } from "../types"
-import { generateCellId, isCellMatch } from "../utils"
+import { isCellMatch } from "../utils"
 import { DataGridKeyboardShortcutModal } from "./data-grid-keyboard-shortcut-modal"
-
 export interface DataGridRootProps<
   TData,
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 > {
   data?: TData[]
   columns: ColumnDef<TData>[]
@@ -98,7 +95,7 @@ const getCommonPinningStyles = <TData,>(
 
 export const DataGridRoot = <
   TData,
-  TFieldValues extends FieldValues = FieldValues
+  TFieldValues extends FieldValues = FieldValues,
 >({
   data = [],
   columns,
@@ -117,7 +114,7 @@ export const DataGridRoot = <
     formState: { errors },
   } = state
 
-  const [trapActive, setTrapActive] = useState(false)
+  const [trapActive, setTrapActive] = useState(true)
 
   const [anchor, setAnchor] = useState<DataGridCoordinates | null>(null)
   const [rangeEnd, setRangeEnd] = useState<DataGridCoordinates | null>(null)
@@ -318,11 +315,13 @@ export const DataGridRoot = <
   })
 
   const { handleKeyDownEvent } = useDataGridKeydownEvent<TData, TFieldValues>({
+    containerRef,
     matrix,
     queryTool,
     anchor,
     rangeEnd,
     isEditing,
+    setTrapActive,
     setRangeEnd,
     getSelectionValues,
     getValues,
@@ -401,26 +400,20 @@ export const DataGridRoot = <
    * Register all handlers for the grid.
    */
   useEffect(() => {
-    const container = containerRef.current
-
-    if (
-      !container ||
-      !container.contains(document.activeElement) ||
-      !trapActive
-    ) {
+    if (!trapActive) {
       return
     }
 
-    container.addEventListener("keydown", handleKeyDownEvent)
-    container.addEventListener("mouseup", handleMouseUpEvent)
+    window.addEventListener("keydown", handleKeyDownEvent)
+    window.addEventListener("mouseup", handleMouseUpEvent)
 
     // Copy and paste event listeners need to be added to the window
     window.addEventListener("copy", handleCopyEvent)
     window.addEventListener("paste", handlePasteEvent)
 
     return () => {
-      container.removeEventListener("keydown", handleKeyDownEvent)
-      container.removeEventListener("mouseup", handleMouseUpEvent)
+      window.removeEventListener("keydown", handleKeyDownEvent)
+      window.removeEventListener("mouseup", handleMouseUpEvent)
 
       window.removeEventListener("copy", handleCopyEvent)
       window.removeEventListener("paste", handlePasteEvent)
@@ -433,12 +426,28 @@ export const DataGridRoot = <
     handlePasteEvent,
   ])
 
-  const [isHeaderInteractionActive, setIsHeaderInteractionActive] =
-    useState(false)
+  useEffect(() => {
+    // add a handler if the click is outside of the containerRef then disable the trap
+    const handleClick = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setTrapActive(false)
+      }
+    }
+
+    window.addEventListener("click", handleClick)
+
+    return () => {
+      window.removeEventListener("click", handleClick)
+    }
+  }, [])
 
   const handleHeaderInteractionChange = useCallback((isActive: boolean) => {
-    setIsHeaderInteractionActive(isActive)
-    setTrapActive(!isActive)
+    if (isActive) {
+      setTrapActive(false)
+    }
   }, [])
 
   /**
@@ -513,6 +522,12 @@ export const DataGridRoot = <
     ]
   )
 
+  const handleRestoreGridFocus = useCallback(() => {
+    if (anchor && !trapActive) {
+      setTrapActive(true)
+    }
+  }, [anchor, trapActive, queryTool])
+
   return (
     <DataGridContext.Provider value={values}>
       <div className="bg-ui-bg-subtle flex size-full flex-col">
@@ -526,178 +541,116 @@ export const DataGridRoot = <
           isHighlighted={isHighlighted}
           onHeaderInteractionChange={handleHeaderInteractionChange}
         />
-        <FocusTrap
-          active={trapActive && !isHeaderInteractionActive}
-          focusTrapOptions={{
-            initialFocus: () => {
-              if (!anchor) {
-                const coords = matrix.getFirstNavigableCell()
+        <div className="size-full overflow-hidden">
+          <div
+            ref={containerRef}
+            autoFocus
+            tabIndex={0}
+            className="relative h-full select-none overflow-auto outline-none"
+            onFocus={handleRestoreGridFocus}
+            onClick={handleRestoreGridFocus}
+            data-container={true}
+            role="application"
+          >
+            <div role="grid" className="text-ui-fg-subtle grid">
+              <div
+                role="rowgroup"
+                className="txt-compact-small-plus bg-ui-bg-subtle sticky top-0 z-[1] grid"
+              >
+                {grid.getHeaderGroups().map((headerGroup) => (
+                  <div
+                    role="row"
+                    key={headerGroup.id}
+                    className="flex h-10 w-full"
+                  >
+                    {virtualPaddingLeft ? (
+                      <div
+                        role="presentation"
+                        style={{ display: "flex", width: virtualPaddingLeft }}
+                      />
+                    ) : null}
+                    {virtualColumns.reduce((acc, vc, index, array) => {
+                      const header = headerGroup.headers[vc.index]
+                      const previousVC = array[index - 1]
 
-                if (!coords) {
-                  return undefined
-                }
-
-                const id = generateCellId(coords)
-
-                return containerRef.current?.querySelector(
-                  `[data-container-id="${id}"]`
-                )
-              }
-
-              const id = generateCellId(anchor)
-
-              const anchorContainer = containerRef.current?.querySelector(
-                `[data-container-id="${id}`
-              ) as HTMLElement | null
-
-              return anchorContainer ?? undefined
-            },
-            onActivate: () => setTrapActive(true),
-            onDeactivate: () => setTrapActive(false),
-            fallbackFocus: () => {
-              if (!anchor) {
-                const coords = matrix.getFirstNavigableCell()
-
-                if (!coords) {
-                  return containerRef.current!
-                }
-
-                const id = generateCellId(coords)
-
-                const firstCell = containerRef.current?.querySelector(
-                  `[data-container-id="${id}"]`
-                ) as HTMLElement | null
-
-                if (firstCell) {
-                  return firstCell
-                }
-
-                return containerRef.current!
-              }
-
-              const id = generateCellId(anchor)
-
-              const anchorContainer = containerRef.current?.querySelector(
-                `[data-container-id="${id}`
-              ) as HTMLElement | null
-
-              if (anchorContainer) {
-                return anchorContainer
-              }
-
-              return containerRef.current!
-            },
-            allowOutsideClick: true,
-            escapeDeactivates: false,
-          }}
-        >
-          <div className="size-full overflow-hidden">
-            <div
-              ref={containerRef}
-              tabIndex={-1}
-              onFocus={() => !trapActive && setTrapActive(true)}
-              className="relative h-full select-none overflow-auto outline-none"
-            >
-              <div role="grid" className="text-ui-fg-subtle grid">
-                <div
-                  role="rowgroup"
-                  className="txt-compact-small-plus bg-ui-bg-subtle sticky top-0 z-[1] grid"
-                >
-                  {grid.getHeaderGroups().map((headerGroup) => (
-                    <div
-                      role="row"
-                      key={headerGroup.id}
-                      className="flex h-10 w-full"
-                    >
-                      {virtualPaddingLeft ? (
-                        <div
-                          role="presentation"
-                          style={{ display: "flex", width: virtualPaddingLeft }}
-                        />
-                      ) : null}
-                      {virtualColumns.reduce((acc, vc, index, array) => {
-                        const header = headerGroup.headers[vc.index]
-                        const previousVC = array[index - 1]
-
-                        if (previousVC && vc.index !== previousVC.index + 1) {
-                          // If there's a gap between the current and previous virtual columns
-                          acc.push(
-                            <div
-                              key={`padding-${previousVC.index}-${vc.index}`}
-                              role="presentation"
-                              style={{
-                                display: "flex",
-                                width: `${vc.start - previousVC.end}px`,
-                              }}
-                            />
-                          )
-                        }
-
+                      if (previousVC && vc.index !== previousVC.index + 1) {
+                        // If there's a gap between the current and previous virtual columns
                         acc.push(
                           <div
-                            key={header.id}
-                            role="columnheader"
-                            data-column-index={vc.index}
+                            key={`padding-${previousVC.index}-${vc.index}`}
+                            role="presentation"
                             style={{
-                              width: header.getSize(),
-                              ...getCommonPinningStyles(header.column),
+                              display: "flex",
+                              width: `${vc.start - previousVC.end}px`,
                             }}
-                            className="bg-ui-bg-base txt-compact-small-plus flex items-center border-b border-r px-4 py-2.5"
-                          >
-                            {header.isPlaceholder
-                              ? null
-                              : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
-                          </div>
+                          />
                         )
+                      }
 
-                        return acc
-                      }, [] as ReactNode[])}
-                      {virtualPaddingRight ? (
+                      acc.push(
                         <div
-                          role="presentation"
+                          key={header.id}
+                          role="columnheader"
+                          data-column-index={vc.index}
                           style={{
-                            display: "flex",
-                            width: virtualPaddingRight,
+                            width: header.getSize(),
+                            ...getCommonPinningStyles(header.column),
                           }}
-                        />
-                      ) : null}
-                    </div>
-                  ))}
-                </div>
-                <div
-                  role="rowgroup"
-                  className="relative grid"
-                  style={{
-                    height: `${rowVirtualizer.getTotalSize()}px`,
-                  }}
-                >
-                  {virtualRows.map((virtualRow) => {
-                    const row = visibleRows[virtualRow.index] as Row<TData>
-                    const rowIndex = flatRows.findIndex((r) => r.id === row.id)
+                          className="bg-ui-bg-base txt-compact-small-plus flex items-center border-b border-r px-4 py-2.5"
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </div>
+                      )
 
-                    return (
-                      <DataGridRow
-                        key={row.id}
-                        row={row}
-                        rowIndex={rowIndex}
-                        virtualRow={virtualRow}
-                        flatColumns={flatColumns}
-                        virtualColumns={virtualColumns}
-                        anchor={anchor}
-                        virtualPaddingLeft={virtualPaddingLeft}
-                        virtualPaddingRight={virtualPaddingRight}
-                        onDragToFillStart={onDragToFillStart}
+                      return acc
+                    }, [] as ReactNode[])}
+                    {virtualPaddingRight ? (
+                      <div
+                        role="presentation"
+                        style={{
+                          display: "flex",
+                          width: virtualPaddingRight,
+                        }}
                       />
-                    )
-                  })}
-                </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+              <div
+                role="rowgroup"
+                className="relative grid"
+                style={{
+                  height: `${rowVirtualizer.getTotalSize()}px`,
+                }}
+              >
+                {virtualRows.map((virtualRow) => {
+                  const row = visibleRows[virtualRow.index] as Row<TData>
+                  const rowIndex = flatRows.findIndex((r) => r.id === row.id)
+
+                  return (
+                    <DataGridRow
+                      key={row.id}
+                      row={row}
+                      rowIndex={rowIndex}
+                      virtualRow={virtualRow}
+                      flatColumns={flatColumns}
+                      virtualColumns={virtualColumns}
+                      anchor={anchor}
+                      virtualPaddingLeft={virtualPaddingLeft}
+                      virtualPaddingRight={virtualPaddingRight}
+                      onDragToFillStart={onDragToFillStart}
+                    />
+                  )
+                })}
               </div>
             </div>
           </div>
-        </FocusTrap>
+        </div>
       </div>
     </DataGridContext.Provider>
   )
@@ -783,6 +736,7 @@ const DataGridHeader = ({
             type="button"
             onClick={onResetColumns}
             className="text-ui-fg-muted hover:text-ui-fg-subtle"
+            data-id="reset-columns"
           >
             {t("dataGrid.columns.resetToDefault")}
           </Button>
@@ -821,7 +775,7 @@ type DataGridCellProps<TData> = {
   columnIndex: number
   rowIndex: number
   anchor: DataGridCoordinates | null
-  onDragToFillStart: (e: MouseEvent<HTMLElement>) => void
+  onDragToFillStart: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 const DataGridCell = <TData,>({
@@ -880,7 +834,7 @@ type DataGridRowProps<TData> = {
   virtualColumns: VirtualItem<Element>[]
   flatColumns: Column<TData, unknown>[]
   anchor: DataGridCoordinates | null
-  onDragToFillStart: (e: MouseEvent<HTMLElement>) => void
+  onDragToFillStart: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 const DataGridRow = <TData,>({
