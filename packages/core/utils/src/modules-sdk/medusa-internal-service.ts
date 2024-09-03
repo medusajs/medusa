@@ -2,9 +2,9 @@ import {
   BaseFilterable,
   Context,
   FilterQuery,
-  FilterQuery as InternalFilterQuery,
   FindConfig,
   InferEntityType,
+  FilterQuery as InternalFilterQuery,
   ModulesSdkTypes,
   PerformedActions,
   UpsertWithReplaceConfig,
@@ -22,13 +22,13 @@ import {
   shouldForceTransaction,
 } from "../common"
 import { FreeTextSearchFilterKey } from "../dal"
+import { DmlEntity, toMikroORMEntity } from "../dml"
 import { buildQuery } from "./build-query"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
-import { DmlEntity, toMikroORMEntity } from "../dml"
 
 type SelectorAndData = {
   selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
@@ -304,7 +304,7 @@ export function MedusaInternalService<
       if (keySelectorForDataOnly.$or.length) {
         const entitiesToUpdate = await this.list(
           keySelectorForDataOnly,
-          {},
+          { take: null },
           sharedContext
         )
 
