@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/orders/{id}
  * operationId: PostOrdersId
- * summary: Update a Order
- * description: Update a order's details.
+ * summary: Update an Order
+ * description: Update an order's details.
  * x-authenticated: true
  * parameters:
  *   - name: id

@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments
  * operationId: PostOrdersIdFulfillmentsFulfillment_idShipments
- * summary: Add Shipments to Order
- * description: Add a list of shipments to a order.
+ * summary: Create Shipment for an Order's Fulfillment
+ * x-sidebar-summary: Create Shipment
+ * description: Create a shipment for an order's fulfillment. 
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +14,7 @@
  *       type: string
  *   - name: fulfillment_id
  *     in: path
- *     description: The order's fulfillment id.
+ *     description: The fulfillment's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -69,17 +70,17 @@
  *       schema:
  *         allOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The shipment's details.
  *             required:
  *               - items
  *               - metadata
  *             properties:
  *               items:
  *                 type: array
- *                 description: The order's items.
+ *                 description: The items to create shipment for.
  *                 items:
  *                   type: object
- *                   description: The item's items.
+ *                   description: The details of the item to create shipment for.
  *                   required:
  *                     - id
  *                     - quantity
@@ -91,10 +92,10 @@
  *                     quantity:
  *                       type: number
  *                       title: quantity
- *                       description: The item's quantity.
+ *                       description: The item's quantity to ship.
  *               labels:
  *                 type: array
- *                 description: The order's labels.
+ *                 description: The labels to create for the shipment.
  *                 items:
  *                   type: object
  *                   description: The label's labels.
@@ -114,21 +115,21 @@
  *                     label_url:
  *                       type: string
  *                       title: label_url
- *                       description: The label's label url.
+ *                       description: The label's url.
  *               no_notification:
  *                 type: boolean
  *                 title: no_notification
- *                 description: The order's no notification.
+ *                 description: Whether to send the customer a notification about the created shipment.
  *               metadata:
  *                 type: object
- *                 description: The order's metadata.
+ *                 description: The shipment's metadata. Can hold custom key-value pairs.
  *           - type: object
- *             description: SUMMARY
+ *             description: The shipment's details.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The shipment's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
