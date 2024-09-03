@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/exchanges/{id}/cancel
  * operationId: PostExchangesIdCancel
- * summary: Add Cancels to Exchange
- * description: Add a list of cancels to a exchange.
+ * summary: Cancel an Exchange
+ * description: Cancel an exchange and its associated return. 
  * x-authenticated: true
  * parameters:
  *   - name: id

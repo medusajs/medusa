@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/claims/{id}/inbound/shipping-method/{action_id}
  * operationId: PostClaimsIdInboundShippingMethodAction_id
- * summary: Add Shipping Methods to Claim
- * description: Add a list of shipping methods to a claim.
+ * summary: Update Inbound Shipping Method of a Claim
+ * x-sidebar-summary: Update Inbound Shipping
+ * description: |
+ *   Update the shipping method for returning items in the claim using the `ID` of the method's `SHIPPING_ADD` action.
+ * 
+ *   Every shipping method has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The claim's action id.
+ *     description: The ID of the shipping method's `SHIPPING_ADD` action.
  *     required: true
  *     schema:
  *       type: string

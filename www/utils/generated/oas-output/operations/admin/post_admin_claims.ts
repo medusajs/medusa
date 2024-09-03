@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/claims
  * operationId: PostClaims
- * summary: Create Claim
- * description: Create a claim.
+ * summary: Create a Claim
+ * description: Create a claim. The claim is still in the request state, and the changes are only applied on the order once the claim is confirmed.
  * x-authenticated: true
  * parameters:
  *   - name: expand
