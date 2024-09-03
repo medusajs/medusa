@@ -5,7 +5,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
 } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+import { ChangeActionType, OrderChangeStatus, isDefined } from "@medusajs/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -65,7 +65,7 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
 
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
-      fields: ["id", "status", "currency_code", "canceled_at"],
+      fields: ["id", "status", "region_id", "currency_code", "canceled_at"],
       variables: { id: orderClaim.order_id },
       list: false,
       throw_if_key_not_found: true,
@@ -114,9 +114,13 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
         const option = data.shippingOptions[0]
         const orderChange = data.orderChange
 
+        const isCustomPrice = isDefined(data.customPrice)
         return {
           shipping_option_id: option.id,
-          amount: data.customPrice ?? option.calculated_price.calculated_amount,
+          amount: isCustomPrice
+            ? data.customPrice
+            : option.calculated_price.calculated_amount,
+          is_custom_amount: isCustomPrice,
           is_tax_inclusive:
             !!option.calculated_price.is_calculated_price_tax_inclusive,
           data: option.data ?? {},
