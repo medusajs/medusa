@@ -13,7 +13,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { deletePromotionRulesWorkflowStep } from "../steps/delete-promotion-rules-workflow"
+import { deletePromotionRulesWorkflowStep } from "../steps/delete-promotion-rules"
 import { createPromotionRulesWorkflow } from "./create-promotion-rules"
 import { updatePromotionRulesWorkflow } from "./update-promotion-rules"
 
