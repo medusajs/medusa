@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/returns/{id}/request-items
  * operationId: PostReturnsIdRequestItems
- * summary: Add Request Items to Return
- * description: Add a list of request items to a return.
+ * summary: Add Requested Items to Return
+ * x-sidebar-summary: Add Items
+ * description: Add items that are requested to be returned. These items will have the action `RETURN_ITEM`.
  * x-authenticated: true
  * parameters:
  *   - name: id
