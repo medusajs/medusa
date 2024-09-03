@@ -36,7 +36,7 @@ This workflow creates an authentication identity for a user.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"createUserAccountWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users.","link":"../core_flows.Steps_User/page.mdx#createusersstep","depth":1},{"type":"step","name":"setAuthAppMetadataStep","description":"This step sets the `app_metadata` property of an auth identity.","link":"../core_flows.Steps_Auth/page.mdx#setauthappmetadatastep","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"createUserAccountWorkflow","steps":[{"type":"workflow","name":"createUsersWorkflow","description":"This workflow creates one or more users.","link":"page.mdx#createusersworkflow","depth":1},{"type":"step","name":"setAuthAppMetadataStep","description":"This step sets the `app_metadata` property of an auth identity.","link":"../core_flows.Steps_Auth/page.mdx#setauthappmetadatastep","depth":2}]}} />
 
 ### Input
 
@@ -54,7 +54,7 @@ This workflow creates one or more users.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"createUsersWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users.","link":"../core_flows.Steps_User/page.mdx#createusersstep","depth":1}]}} />
+<WorkflowDiagram workflow={{"name":"createUsersWorkflow","steps":[{"type":"step","name":"createUsersStep","description":"This step creates one or more users.","link":"../core_flows.Steps_User/page.mdx#createusersstep","depth":1},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":2}]}} />
 
 ### Input
 
@@ -72,7 +72,7 @@ This workflow deletes one or more users.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"deleteUsersWorkflow","steps":[{"type":"step","name":"deleteUsersStep","description":"This step deletes one or more stores.","link":"../core_flows.Steps_User/page.mdx#deleteusersstep","depth":1}]}} />
+<WorkflowDiagram workflow={{"name":"deleteUsersWorkflow","steps":[{"type":"step","name":"deleteUsersStep","description":"This step deletes one or more stores.","link":"../core_flows.Steps_User/page.mdx#deleteusersstep","depth":1},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":2}]}} />
 
 ### Input
 
@@ -86,7 +86,7 @@ This workflow updates one or more users.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"updateUsersWorkflow","steps":[{"type":"step","name":"updateUsersStep","description":"This step updates one or more stores.","link":"../core_flows.Steps_User/page.mdx#updateusersstep","depth":1}]}} />
+<WorkflowDiagram workflow={{"name":"updateUsersWorkflow","steps":[{"type":"step","name":"updateUsersStep","description":"This step updates one or more stores.","link":"../core_flows.Steps_User/page.mdx#updateusersstep","depth":1},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":2}]}} />
 
 ### Input
 
