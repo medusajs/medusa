@@ -510,7 +510,6 @@ export const useDataGridKeydownEvent = <
 
       switch (e.key) {
         case ".":
-          console.log(focusableElements.cancel)
           focusElement(focusableElements.cancel)
           break
         case ",":
