@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/products/{id}/options/{option_id}
  * operationId: PostProductsIdOptionsOption_id
- * summary: Add Options to Product
- * description: Add a list of options to a product.
+ * summary: Update a Product's Option
+ * x-sidebar-summary: Update Option
+ * description: Update the details of a product option.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +14,7 @@
  *       type: string
  *   - name: option_id
  *     in: path
- *     description: The product's option id.
+ *     description: The option's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -70,12 +71,12 @@
  *         allOf:
  *           - $ref: "#/components/schemas/AdminUpdateProductOption"
  *           - type: object
- *             description: SUMMARY
+ *             description: The properties to update in the product option.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The properties to update in the product option.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

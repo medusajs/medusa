@@ -1,8 +1,13 @@
 /**
  * @oas [post] /admin/orders/{id}/cancel
  * operationId: PostOrdersIdCancel
- * summary: Add Cancels to Order
- * description: Add a list of cancels to a order.
+ * summary: Cancel Order
+ * description: >
+ *   Cancel an order. The cancelation fails if:
+ * 
+ *   - The order has captured payments.
+ *   - The order has refund payments.
+ *   - The order has fulfillments that aren't canceled.
  * x-authenticated: true
  * parameters:
  *   - name: id
