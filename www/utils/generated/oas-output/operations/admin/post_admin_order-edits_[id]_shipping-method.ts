@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/order-edits/{id}/shipping-method
  * operationId: PostOrderEditsIdShippingMethod
- * summary: Add Shipping Methods to Order Edit
- * description: Add a list of shipping methods to a order edit.
+ * summary: Add Shipping Method to Order Edit
+ * x-sidebar-summary: Add Shipping Method
+ * description: Add a shipping method to an exchange. The shipping method will have a `SHIPPING_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id
