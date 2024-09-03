@@ -1,7 +1,7 @@
 import { MiddlewareRoute } from "@medusajs/framework"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
-import { createBatchBody, createLinkBody } from "../../utils/validators"
+import { createBatchBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import {
   AdminCreatePriceList,
