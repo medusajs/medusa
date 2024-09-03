@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/exchanges/{id}/outbound/shipping-method
  * operationId: PostExchangesIdOutboundShippingMethod
- * summary: Add Shipping Methods to Exchange
- * description: Add a list of shipping methods to a exchange.
+ * summary: Add Outbound Shipping Method to Exchange
+ * x-sidebar-summary: Add Outbound Shipping
+ * description: Add an outbound shipping method to an exchange. The outbound shipping method will have a `SHIPPING_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id
