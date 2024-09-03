@@ -125,6 +125,7 @@ export type AdminUpdateApplicationMethodType = z.infer<
 >
 export const AdminUpdateApplicationMethod = z
   .object({
+    id: z.string(),
     description: z.string().nullish(),
     value: z.number().optional(),
     max_quantity: z.number().nullish(),
@@ -186,9 +187,7 @@ export const UpdatePromotion = z
     is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType).optional(),
     campaign_id: z.string().nullish(),
-    campaign: CreateCampaign.optional(),
     application_method: AdminUpdateApplicationMethod.optional(),
-    rules: z.array(AdminCreatePromotionRule).optional(),
   })
   .strict()
 
