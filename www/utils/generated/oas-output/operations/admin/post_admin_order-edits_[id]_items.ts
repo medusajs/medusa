@@ -2,7 +2,8 @@
  * @oas [post] /admin/order-edits/{id}/items
  * operationId: PostOrderEditsIdItems
  * summary: Add Items to Order Edit
- * description: Add a list of items to a order edit.
+ * x-sidebar-summary: Add Items
+ * description: Add new items to an order edit. These items will have the action `ITEM_ADD`.
  * x-authenticated: true
  * parameters:
  *   - name: id

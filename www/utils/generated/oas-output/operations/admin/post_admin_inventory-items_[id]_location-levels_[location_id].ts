@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: PostInventoryItemsIdLocationLevelsLocation_id
- * summary: Add Location Levels to Inventory Item
- * description: Add a list of location levels to a inventory item.
+ * summary: Update an Inventory Level of an Inventory Item
+ * x-sidebar-summary: Update Inventory Level
+ * description: Updates the details of an inventory item's inventory level using its associated location ID.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +14,7 @@
  *       type: string
  *   - name: location_id
  *     in: path
- *     description: The inventory item's location id.
+ *     description: The ID of the location associated with the inventory level.
  *     required: true
  *     schema:
  *       type: string
@@ -68,16 +69,16 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The properties to update in the inventory level.
  *         properties:
  *           stocked_quantity:
  *             type: number
  *             title: stocked_quantity
- *             description: The inventory item's stocked quantity.
+ *             description: The inventory level's stocked quantity.
  *           incoming_quantity:
  *             type: number
  *             title: incoming_quantity
- *             description: The inventory item's incoming quantity.
+ *             description: The inventory level's incoming quantity.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

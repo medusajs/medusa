@@ -2,7 +2,7 @@
  * @oas [post] /admin/order-edits
  * operationId: PostOrderEdits
  * summary: Create Order Edit
- * description: Create a order edit.
+ * description: Create an order edit.
  * x-authenticated: true
  * parameters: []
  * security:
