@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/exchanges/{id}/outbound/items
  * operationId: PostExchangesIdOutboundItems
- * summary: Add Items to Exchange
- * description: Add a list of items to a exchange.
+ * summary: Add Outbound Items to Exchange
+ * description: Add outbound (or new) items to an exchange. These outbound items will have the action `ITEM_ADD`.
  * x-authenticated: true
  * parameters:
  *   - name: id

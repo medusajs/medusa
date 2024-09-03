@@ -49,7 +49,7 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: id
  *     in: query
- *     required: false
+ *     required: true
  *     schema:
  *       oneOf:
  *         - type: string

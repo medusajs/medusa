@@ -89,7 +89,7 @@
  *     in: query
  *     description: Filter by the invite's creation date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the invite's creation date.
  *       properties:
@@ -208,7 +208,7 @@
  *     in: query
  *     description: Filter by the invite's update date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the invite's update date.
  *       properties:
@@ -327,7 +327,7 @@
  *     in: query
  *     description: Filter by the invite's deletion date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the invite's deletion date.
  *       properties:

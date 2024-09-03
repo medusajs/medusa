@@ -2,6 +2,7 @@
  * @schema AdminCreateReservation
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminCreateReservation
  * required:
  *   - location_id
  *   - inventory_item_id
@@ -30,7 +31,6 @@
  *   metadata:
  *     type: object
  *     description: The reservation's metadata.
- * x-schemaName: AdminCreateReservation
  * 
 */
 

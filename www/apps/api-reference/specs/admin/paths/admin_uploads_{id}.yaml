@@ -1,9 +1,9 @@
 get:
   operationId: GetUploadsId
-  summary: Get a Upload
+  summary: Get a File
   description: >-
-    Retrieve a upload by its ID. You can expand the upload's relations or select
-    the fields that should be returned.
+    Retrieve an uploaded file by its ID. You can expand the file's relations or
+    select the fields that should be returned.
   x-authenticated: true
   parameters:
     - name: id

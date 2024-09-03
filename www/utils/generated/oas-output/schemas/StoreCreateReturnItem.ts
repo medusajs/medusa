@@ -2,6 +2,7 @@
  * @schema StoreCreateReturnItem
  * type: object
  * description: The item's items.
+ * x-schemaName: StoreCreateReturnItem
  * required:
  *   - id
  *   - quantity
@@ -22,7 +23,6 @@
  *     type: string
  *     title: note
  *     description: The item's note.
- * x-schemaName: StoreCreateReturnItem
  * 
 */
 

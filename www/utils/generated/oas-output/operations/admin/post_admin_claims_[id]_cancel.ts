@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/claims/{id}/cancel
  * operationId: PostClaimsIdCancel
- * summary: Add Cancels to Claim
- * description: Add a list of cancels to a claim.
+ * summary: Cancel a Claim
+ * description: Cancel a claim and its associated return.
  * x-authenticated: true
  * parameters:
  *   - name: id

@@ -156,55 +156,6 @@
  *             $lte:
  *               type: string
  *               description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
- *   - name: quantity
- *     in: query
- *     description: Filter by a reserved quantity.
- *     required: false
- *     schema:
- *       description: The reservation's quantity.
- *       properties:
- *         $eq:
- *           type: string
- *           description: Filter by an exact match.
- *         $ne:
- *           type: string
- *           description: Filter by values not matching this parameter.
- *         $in:
- *           type: array
- *           description: Filter by values in this array's items.
- *           items:
- *             type: string
- *         $nin:
- *           type: array
- *           description: Filter by values not in this array's items.
- *           items:
- *             type: string
- *         $like:
- *           type: string
- *           description: Apply a `like` filter. Useful for strings only.
- *         $ilike:
- *           type: string
- *           description: Apply a case-insensitive `like` filter. Useful for strings only.
- *         $re:
- *           type: string
- *           description: Apply a regex filter. Useful for strings only.
- *         $contains:
- *           type: array
- *           description: Filter arrays that contain some of the values of this parameter.
- *           items:
- *             type: string
- *         $gt:
- *           type: string
- *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
- *         $gte:
- *           type: string
- *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
- *         $lt:
- *           type: string
- *           description: Filter by values less than this parameter. Useful for numbers and dates only.
- *         $lte:
- *           type: string
- *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
  *   - name: created_at
  *     in: query
  *     description: Filter by a reservation's creation date.

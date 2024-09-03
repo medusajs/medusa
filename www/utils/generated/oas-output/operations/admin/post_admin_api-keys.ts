@@ -2,7 +2,13 @@
  * @oas [post] /admin/api-keys
  * operationId: PostApiKeys
  * summary: Create Api Key
- * description: Create a api key.
+ * description: >
+ *   Create a secret or publishable API key.
+ * 
+ *   A secret API key is used for admin authentication.
+ * 
+ * 
+ *   A publishable API key is used by client applications to set the scope of the request.
  * x-authenticated: true
  * parameters: []
  * security:

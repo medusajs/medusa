@@ -2,8 +2,7 @@
  * @oas [get] /admin/draft-orders/{id}
  * operationId: GetDraftOrdersId
  * summary: Get a Draft Order
- * description: Retrieve a draft order by its ID. You can expand the draft order's
- *   relations or select the fields that should be returned using the query parameters.
+ * description: Retrieve a draft order by its ID. You can expand the draft order's relations or select the fields that should be returned using the query parameters.
  * x-authenticated: true
  * parameters:
  *   - name: id

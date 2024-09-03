@@ -1,13 +1,15 @@
 /**
  * @oas [post] /admin/api-keys/{id}/revoke
  * operationId: PostApiKeysIdRevoke
- * summary: Add Revokes to Api Key
- * description: Add a list of revokes to a api key.
+ * summary: Revoke API Key
+ * description: >
+ *   Revokes an API key. If the API key is a secret, it can't be used for authentication anymore. If it's publishable,
+ *   it can't be used by client applications.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The api key's ID.
+ *     description: The API key's ID.
  *     required: true
  *     schema:
  *       type: string
