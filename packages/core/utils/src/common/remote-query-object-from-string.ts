@@ -1,4 +1,17 @@
 import { isObject } from "./is-object"
+import { ObjectToStringPath, RemoteQueryEntryPoints } from "@medusajs/types"
+
+export type Config<TEntry> = {
+  entryPoint: TEntry
+  variables?: any
+  fields: ObjectToStringPath<
+    RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
+  > extends never
+    ? string[]
+    : ObjectToStringPath<
+        RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
+      >[]
+}
 
 /**
  * Convert a string fields array to a remote query object
@@ -83,18 +96,8 @@ import { isObject } from "./is-object"
  * //   },
  * // }
  */
-export function remoteQueryObjectFromString(
-  config:
-    | {
-        entryPoint: string
-        variables?: any
-        fields: string[]
-      }
-    | {
-        service: string
-        variables?: any
-        fields: string[]
-      }
+export function remoteQueryObjectFromString<const TEntry>(
+  config: Config<TEntry>
 ): object {
   const { entryPoint, service, variables, fields } = {
     ...config,
@@ -114,12 +117,13 @@ export function remoteQueryObjectFromString(
   const usedVariables = new Set()
 
   for (const field of fields) {
-    if (!field.includes(".")) {
+    const fieldAsString = field as string
+    if (!fieldAsString.includes(".")) {
       remoteJoinerConfig[entryKey]["fields"].push(field)
       continue
     }
 
-    const fieldSegments = field.split(".")
+    const fieldSegments = fieldAsString.split(".")
     const fieldProperty = fieldSegments.pop()
 
     let combinedPath = ""

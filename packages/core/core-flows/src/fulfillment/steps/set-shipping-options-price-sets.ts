@@ -35,7 +35,7 @@ async function getCurrentShippingOptionPriceSetsLinks(
       take: null,
     },
     fields: ["shipping_option_id", "price_set_id"],
-  })
+  } as any)
 
   const shippingOptionPriceSetLinks = (await remoteQuery(query)) as {
     shipping_option_id: string

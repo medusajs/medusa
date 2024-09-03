@@ -10,12 +10,12 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  isDefined,
   LINKS,
   ModuleRegistrationName,
-  isDefined,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface PriceRegionId {
   region_id: string
@@ -40,7 +40,7 @@ async function getCurrentShippingOptionPrices(
       take: null,
     },
     fields: ["shipping_option_id", "price_set_id", "price_set.prices.*"],
-  })
+  } as any)
 
   const shippingOptionPrices = (await remoteQuery(query)) as {
     shipping_option_id: string

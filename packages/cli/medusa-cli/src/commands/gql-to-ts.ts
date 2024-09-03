@@ -66,7 +66,7 @@ export async function graphqlToTs() {
     })
 
     const remoteQueryEntryPoints = `
-declare module '@medusajs/modules-sdk' {
+declare module '@medusajs/types' {
   interface RemoteQueryEntryPoints {
     ${entryPoints
       .map((entry) => `${entry.entryPoint}: ${entry.entityType}`)
