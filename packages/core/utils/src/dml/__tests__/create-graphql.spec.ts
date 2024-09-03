@@ -1,15 +1,21 @@
 import { model } from "../entity-builder"
-import { generateGraphQLFromEntity } from "../helpers/create-graphql"
+import { toGraphQLSchema } from "../helpers/create-graphql"
 
 describe("GraphQL builder", () => {
   test("define an entity", () => {
+    const email = model.define("email", {
+      email: model.text(),
+      isVerified: model.boolean(),
+    })
+
     const user = model.define("user", {
       id: model.id(),
       username: model.text(),
-      email: model.text(),
+      email: model.hasOne(() => email, { mappedBy: "owner" }),
       spend_limit: model.bigNumber(),
       phones: model.array(),
       group: model.belongsTo(() => group, { mappedBy: "users" }),
+      role: model.enum(["moderator", "admin", "guest"]).default("guest"),
     })
 
     const group = model.define("group", {
@@ -18,15 +24,51 @@ describe("GraphQL builder", () => {
       users: model.hasMany(() => user),
     })
 
-    const User = generateGraphQLFromEntity()
-    const Group = generateGraphQLFromEntity()
+    const toGql = toGraphQLSchema([email, user, group])
 
-    try {
-      console.log(User(user))
-    } catch {}
+    const expected = `
+      type Email {
+        email: String!
+        isVerified: Boolean!
+        created_at: DateTime!
+        updated_at: DateTime!
+        deleted_at: DateTime
+      }
 
-    try {
-      console.log(Group(group))
-    } catch {}
+      extend type Email {
+        owner: User!
+      }
+
+      enum UserRoleEnum {
+        moderator
+        admin
+        guest
+      }
+
+      type User {
+        id: ID!
+        username: String!
+        email: Email!
+        spend_limit: String!
+        phones: [String]!
+        group: [Group]!
+        role: UserRoleEnum!
+        raw_spend_limit: JSON!
+        created_at: DateTime!
+        updated_at: DateTime!
+        deleted_at: DateTime
+      }
+
+      type Group {
+        id: Int!
+        name: String!
+        users: [User]!
+        created_at: DateTime!
+        updated_at: DateTime!
+        deleted_at: DateTime
+      }
+      `
+
+    expect(toGql.replace(/\s/g, "")).toEqual(expected.replace(/\s/g, ""))
   })
 })

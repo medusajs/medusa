@@ -1,4 +1,4 @@
-import type { DMLSchema, PropertyType } from "@medusajs/types"
+import type { PropertyType } from "@medusajs/types"
 import { DmlEntity } from "../entity"
 import { parseEntityName } from "./entity-builder/parse-entity-name"
 import { getGraphQLAttributeFromDMLPropety } from "./graphql-builder/get-attribute"
@@ -12,21 +12,22 @@ export function generateGraphQLFromEntity() {
     const { modelName } = parseEntityName(entity)
 
     let extra: string[] = []
-
     let gqlSchema: string[] = []
 
     const context = {
       MANY_TO_MANY_TRACKED_RELATIONS,
     }
 
-    Object.entries(schema as DMLSchema).forEach(([name, property]) => {
+    Object.entries(schema).forEach(([name, property]) => {
       const field = property.parse(name)
 
       if ("fieldName" in field) {
         const prop = getGraphQLAttributeFromDMLPropety(
+          modelName,
           name,
           property as PropertyType<any>
         )
+
         if (prop.enum) {
           extra.push(prop.enum)
         }
@@ -34,8 +35,8 @@ export function generateGraphQLFromEntity() {
         gqlSchema.push(`${prop.attribute}`)
       } else {
         const prop = setGraphQLRelationship(modelName, field, context)
-        if (prop.pivotSchema) {
-          extra.push(prop.pivotSchema)
+        if (prop.extra) {
+          extra.push(prop.extra)
         }
 
         gqlSchema.push(`${prop.attribute}`)

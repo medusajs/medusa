@@ -5,6 +5,7 @@ import {
 } from "@medusajs/types"
 import { camelToSnakeCase, pluralize } from "../../../common"
 import { DmlEntity } from "../../entity"
+import { BelongsTo } from "../../relations/belongs-to"
 import { HasMany } from "../../relations/has-many"
 import { HasOne } from "../../relations/has-one"
 import { ManyToMany as DmlManyToMany } from "../../relations/many-to-many"
@@ -14,30 +15,7 @@ type Context = {
   MANY_TO_MANY_TRACKED_RELATIONS: Record<string, boolean>
 }
 
-export function defineHasOneRelationship(
-  relationship: RelationshipMetadata,
-  { relatedModelName }: { relatedModelName: string }
-) {
-  const fieldName = relationship.name
-  return {
-    attribute:
-      `${fieldName}: ${relatedModelName}` + (relationship.nullable ? "" : "!"),
-  }
-}
-
-export function defineHasManyRelationship(
-  relationship: RelationshipMetadata,
-  { relatedModelName }: { relatedModelName: string }
-) {
-  const fieldName = relationship.name
-  return {
-    attribute:
-      `${fieldName}: [${relatedModelName}]` +
-      (relationship.nullable ? "" : "!"),
-  }
-}
-
-export function defineBelongsToRelationship(
+function defineRelationships(
   modelName: string,
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
@@ -46,21 +24,29 @@ export function defineBelongsToRelationship(
   >,
   { relatedModelName }: { relatedModelName: string }
 ) {
+  let extra: string | undefined
   const fieldName = relationship.name
 
   const mappedBy = relationship.mappedBy || camelToSnakeCase(modelName)
-  const { schema: relationSchema, cascades: relationCascades } =
-    relatedEntity.parse()
+  const { schema: relationSchema } = relatedEntity.parse()
 
   const otherSideRelation = relationSchema[mappedBy]
-  let isArray = HasOne.isHasOne(otherSideRelation)
+
+  if (relationship.options?.mappedBy && HasOne.isHasOne(relationship)) {
+    const otherSideFieldName = relationship.options.mappedBy
+    extra = `extend type ${relatedModelName} {\n  ${otherSideFieldName}: ${modelName}!\n}`
+  }
+
+  let isArray = false
 
   /**
    * Otherside is a has many. Hence we should defined a ManyToOne
    */
   if (
     HasMany.isHasMany(otherSideRelation) ||
-    DmlManyToMany.isManyToMany(otherSideRelation)
+    DmlManyToMany.isManyToMany(otherSideRelation) ||
+    (BelongsTo.isBelongsTo(otherSideRelation) &&
+      HasMany.isHasMany(relationship))
   ) {
     isArray = true
   }
@@ -70,27 +56,24 @@ export function defineBelongsToRelationship(
       `${fieldName}: ${isArray ? "[" : ""}${relatedModelName}${
         isArray ? "]" : ""
       }` + (relationship.nullable ? "" : "!"),
+    extra,
   }
 }
 
 /**
- * Defines a many to many relationship on the Mikro ORM entity
+ * Defines a many to many relationship as a GraphQL attribute
  */
-export function defineManyToManyRelationship(
+function defineManyToManyRelationship(
   modelName: string,
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
     Record<string, PropertyType<any> | RelationshipType<any>>,
     any
   >,
-  {
-    relatedModelName,
-    pgSchema,
-  }: { relatedModelName: string; pgSchema: string | undefined },
+  { relatedModelName }: { relatedModelName: string },
   { MANY_TO_MANY_TRACKED_RELATIONS }: Context
 ) {
   let mappedBy = relationship.mappedBy
-  let inversedBy: undefined | string
   let pivotEntityName: undefined | string
   let pivotTableName: undefined | string
 
@@ -122,7 +105,6 @@ export function defineManyToManyRelationship(
       otherSideRelation.parse(mappedBy).mappedBy &&
       MANY_TO_MANY_TRACKED_RELATIONS[`${relatedModelName}.${mappedBy}`]
     ) {
-      inversedBy = mappedBy
       mappedBy = undefined
     } else {
       MANY_TO_MANY_TRACKED_RELATIONS[`${modelName}.${relationship.name}`] = true
@@ -176,7 +158,7 @@ export function defineManyToManyRelationship(
     attribute:
       `${relationship.name}: [${relatedModelName}]` +
       (relationship.nullable ? "" : "!"),
-    pivotSchema: pivotTableName
+    extra: pivotTableName
       ? `type ${pivotTableName} {
   ${camelToSnakeCase(modelName)}_id: String
   ${camelToSnakeCase(relatedModelName)}_id: String
@@ -190,7 +172,7 @@ export function setGraphQLRelationship(
   relationship: RelationshipMetadata,
   context: Context
 ): {
-  pivotSchema?: string
+  extra?: string
   attribute: string
 } {
   const relatedEntity =
@@ -222,11 +204,9 @@ export function setGraphQLRelationship(
    */
   switch (relationship.type) {
     case "hasOne":
-      return defineHasOneRelationship(relationship, relatedEntityInfo)
     case "hasMany":
-      return defineHasManyRelationship(relationship, relatedEntityInfo)
     case "belongsTo":
-      return defineBelongsToRelationship(
+      return defineRelationships(
         entityName,
         relationship,
         relatedEntity,
