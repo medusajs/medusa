@@ -8,10 +8,9 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { AdminCompleteOrderType } from "../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCompleteOrderType & AdditionalData>,
+  req: AuthenticatedMedusaRequest<AdditionalData>,
   res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -19,7 +18,7 @@ export const POST = async (
 
   await completeOrderWorkflow(req.scope).run({
     input: {
-      orderIds: [req.validatedBody.order_id],
+      orderIds: [id],
       additional_data: req.validatedBody.additional_data,
     },
   })
