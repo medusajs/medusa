@@ -55,24 +55,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - name
- *           - type
- *           - metadata
- *         properties:
- *           name:
- *             type: string
- *             title: name
- *             description: The shipping profile's name.
- *           type:
- *             type: string
- *             title: type
- *             description: The shipping profile's type.
- *           metadata:
- *             type: object
- *             description: The shipping profile's metadata.
+ *         $ref: "#/components/schemas/AdminCreateShippingProfile"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

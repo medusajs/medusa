@@ -87,7 +87,7 @@
  *     in: query
  *     description: Filter by the type's creation date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the type's creation date.
  *       properties:
@@ -206,7 +206,7 @@
  *     in: query
  *     description: Filter by the type's update date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the type's update date.
  *       properties:
@@ -325,7 +325,7 @@
  *     in: query
  *     description: Filter by the type's deletion date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the type's deletion date.
  *       properties:

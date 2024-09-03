@@ -2,6 +2,7 @@
  * @schema AdminCreateRefundReason
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminCreateRefundReason
  * required:
  *   - label
  * properties:
@@ -13,7 +14,6 @@
  *     type: string
  *     title: description
  *     description: The refund reason's description.
- * x-schemaName: AdminCreateRefundReason
  * 
 */
 

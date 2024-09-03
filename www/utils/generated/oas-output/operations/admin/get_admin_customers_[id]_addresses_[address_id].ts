@@ -2,8 +2,7 @@
  * @oas [get] /admin/customers/{id}/addresses/{address_id}
  * operationId: GetCustomersIdAddressesAddress_id
  * summary: List Addresses
- * description: Retrieve a list of a customer's addresses. The addresses can be
- *   filtered by fields like `company`. The addresses can also be paginated.
+ * description: Retrieve a list of a customer's addresses. The addresses can be filtered by fields like `company`. The addresses can also be paginated.
  * x-authenticated: true
  * parameters:
  *   - name: id
