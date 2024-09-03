@@ -1012,6 +1012,18 @@ export const filesMap = [
     "pathname": "/storefront-development/tips"
   },
   {
+    "filePath": "/www/apps/resources/app/test-tools-reference/medusaIntegrationTestRunner/page.mdx",
+    "pathname": "/test-tools-reference/medusaIntegrationTestRunner"
+  },
+  {
+    "filePath": "/www/apps/resources/app/test-tools-reference/moduleIntegrationTestRunner/page.mdx",
+    "pathname": "/test-tools-reference/moduleIntegrationTestRunner"
+  },
+  {
+    "filePath": "/www/apps/resources/app/test-tools-reference/page.mdx",
+    "pathname": "/test-tools-reference"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/cors-errors/page.mdx",
     "pathname": "/troubleshooting/cors-errors"
   },
