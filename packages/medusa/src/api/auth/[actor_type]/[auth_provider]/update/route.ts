@@ -1,19 +1,8 @@
 import { IAuthModuleService } from "@medusajs/types"
 import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
-import { z } from "zod"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 
-export const AdminResetPasswordReq = z.object({
-  update: z.record(z.unknown()),
-  // entity_id: z.string(),
-})
-
-export type AdminResetPasswordReqType = z.infer<typeof AdminResetPasswordReq>
-
-export const POST = async (
-  req: MedusaRequest<AdminResetPasswordReqType>,
-  res: MedusaResponse
-) => {
+export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
   const { auth_provider } = req.params
 
   const service: IAuthModuleService = req.scope.resolve(
@@ -22,7 +11,7 @@ export const POST = async (
 
   const { success, error } = await service.updateProviderData(
     auth_provider,
-    req.validatedBody
+    req.body as Record<string, unknown>
   )
 
   if (success) {

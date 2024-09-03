@@ -1,7 +1,6 @@
 import { MiddlewareRoute } from "@medusajs/framework"
 import { authenticate } from "../../utils/middlewares/authenticate-middleware"
-import { AdminResetPasswordTokenReq } from "../admin/users/validators"
-import { validateAndTransformBody } from "../utils/validate-body"
+import { authenticateOneTimeToken } from "./utils/validate-ot-token"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [
@@ -38,17 +37,15 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider/reset-password",
+    middlewares: [validateScopeProviderAssociation()],
+  },
+  {
+    method: ["POST"],
+    matcher: "/auth/:actor_type/:auth_provider/update",
     middlewares: [
-      validateAndTransformBody(AdminResetPasswordTokenReq),
+      authenticateOneTimeToken(["user", "customer"]),
+      authenticate("*", ["bearer", "session"]),
       validateScopeProviderAssociation(),
     ],
   },
-  // {
-  //   method: ["POST"],
-  //   matcher: "/auth/:actor_type/:auth_provider/reset-password",
-  //   middlewares: [
-  //     validateAndTransformBody(AdminResetPasswordReq),
-  //     validateScopeProviderAssociation()
-  //   ],
-  // },
 ]

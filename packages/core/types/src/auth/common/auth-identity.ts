@@ -84,6 +84,11 @@ export type ProviderIdentityDTO = {
   entity_id: string
 
   /**
+   * The ID of the auth identity linked to the provider identity.
+   */
+  auth_identity_id?: string
+
+  /**
    * The auth identity linked to the provider identity.
    */
   auth_identity?: AuthIdentityDTO

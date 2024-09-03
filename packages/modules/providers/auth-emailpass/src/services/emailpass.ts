@@ -45,12 +45,13 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     providerMetadata: Record<string, unknown>,
     authIdentityService: AuthIdentityProviderService
   ) {
+    console.log("update", providerMetadata)
     const { email, password } = providerMetadata ?? {}
 
     if (!email || !isString(email)) {
       return {
         success: false,
-        error: "Cannot update provider identity without email",
+        error: `Cannot update ${this.provider} provider identity without email`,
       }
     }
 

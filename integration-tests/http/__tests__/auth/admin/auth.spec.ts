@@ -180,13 +180,14 @@ medusaIntegrationTestRunner({
 
         const token = await authModule.generateToken({
           provider: "emailpass",
+          actor_type: "user",
           entity_id: "test@medusa-commerce.com",
         })
 
         const response = await api.post(
           `/auth/user/emailpass/update?token=${token}`,
           {
-            entity_id: "test@medusa-commerce.com",
+            email: "test@medusa-commerce.com",
             password: "new_password",
           }
         )

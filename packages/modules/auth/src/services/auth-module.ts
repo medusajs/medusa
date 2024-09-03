@@ -242,23 +242,34 @@ export default class AuthModuleService
   }
 
   async generateToken(
-    payload: { entity_id: string } & Record<string, unknown>
+    payload: {
+      entity_id: string
+      provider: string
+      actor_type: string
+    } & Record<string, unknown>
   ): Promise<string> {
-    // const providerIdentity = await this.providerIdentityService_.retrieve({
-    //   entity_id: entityId,
-    //   provider,
-    // })
+    if (!payload.entity_id) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Identifier `entity_id` is required to generate a token"
+      )
+    }
 
-    // const secret = providerIdentity.provider_metadata?.password as string
+    const [providerIdentity] = await this.providerIdentityService_.list({
+      entity_id: payload.entity_id,
+      provider: payload.provider,
+    })
 
-    // const payload = {
-    //   entity_id: entityId,
-    //   provider_identity_id: providerIdentity.id,
-    // }
+    const tokenPayload = {
+      provider_identity_id: providerIdentity.id,
+      actor_type: payload.actor_type,
+    }
+
+    console.log("TOKEN PAYLOAD", tokenPayload)
 
     // TODO: Add config to auth module
     const expiry = DEFAULT_RESET_PASSWORD_TOKEN_DURATION
-    const token = jwt.sign(payload, "secret", {
+    const token = jwt.sign(tokenPayload, "secret", {
       expiresIn: expiry,
     })
 
