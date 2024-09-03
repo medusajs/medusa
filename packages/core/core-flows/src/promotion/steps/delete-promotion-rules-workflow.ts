@@ -3,7 +3,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { deletePromotionRulesWorkflow } from "../workflows/delete-promotion-rules"
 
 export const deletePromotionRulesWorkflowStepId =
-  "delete-promotion-rules-workflow"
+  "delete-promotion-rules-step"
 /**
  * This step deletes promotion rules using the {@link deletePromotionRulesWorkflow}.
  */
