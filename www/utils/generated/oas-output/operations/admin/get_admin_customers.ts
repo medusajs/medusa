@@ -3325,12 +3325,12 @@
  *       title: $or
  *   - name: has_account
  *     in: query
- *     description: The customer's has account.
+ *     description: Filter by whether the customer is registered.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: has_account
- *       description: The customer's has account.
+ *       description: Filter by whether the customer is registered.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

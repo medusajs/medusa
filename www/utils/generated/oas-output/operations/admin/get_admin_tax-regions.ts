@@ -268,9 +268,9 @@
  *       oneOf:
  *         - type: string
  *           title: created_at
- *           description: The tax region's created at.
+ *           description: Filter by a tax region's creation date.
  *         - type: object
- *           description: The tax region's created at.
+ *           description: Apply filters on the tax region's creation date.
  *           properties:
  *             $and:
  *               type: array
@@ -503,9 +503,9 @@
  *       oneOf:
  *         - type: string
  *           title: updated_at
- *           description: The tax region's updated at.
+ *           description: Filter by a tax region's update date.
  *         - type: object
- *           description: The tax region's updated at.
+ *           description: Apply filters on the tax region's update date.
  *           properties:
  *             $and:
  *               type: array
@@ -738,9 +738,9 @@
  *       oneOf:
  *         - type: string
  *           title: deleted_at
- *           description: The tax region's deleted at.
+ *           description: Filter by a tax region's deletion date.
  *         - type: object
- *           description: The tax region's deleted at.
+ *           description: Apply filters on the tax region's deletion date.
  *           properties:
  *             $and:
  *               type: array

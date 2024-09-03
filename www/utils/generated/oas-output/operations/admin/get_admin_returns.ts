@@ -97,25 +97,25 @@
  *       title: $or
  *   - name: sales_channel_id
  *     in: query
- *     description: The return's sales channel id.
+ *     description: Filter by sales channel IDs to retrieve their associated returns.
  *     required: false
  *     schema:
  *       type: array
- *       description: The return's sales channel id.
+ *       description: Filter by sales channel IDs to retrieve their associated returns.
  *       items:
  *         type: string
  *         title: sales_channel_id
- *         description: The sales channel id's details.
+ *         description: A sales channel's ID.
  *   - name: fulfillment_status
  *     in: query
- *     description: The return's fulfillment status.
+ *     description: Filter by fulfillment statuses.
  *     required: false
  *     schema:
  *       type: array
- *       description: The return's fulfillment status.
+ *       description: Filter by fulfillment statuses.
  *       items:
  *         type: string
- *         description: The fulfillment status's details.
+ *         description: A fulfillment status.
  *         enum:
  *           - canceled
  *           - not_fulfilled
@@ -127,14 +127,14 @@
  *           - delivered
  *   - name: payment_status
  *     in: query
- *     description: The return's payment status.
+ *     description: Filter by payment statuses.
  *     required: false
  *     schema:
  *       type: array
- *       description: The return's payment status.
+ *       description: Filter by payment statuses.
  *       items:
  *         type: string
- *         description: The payment status's details.
+ *         description: A payment status.
  *         enum:
  *           - canceled
  *           - not_paid
@@ -148,30 +148,30 @@
  *           - requires_action
  *   - name: region_id
  *     in: query
- *     description: The return's region id.
+ *     description: Filter by region IDs to retrieve their associated returns.
  *     required: false
  *     schema:
  *       type: array
- *       description: The return's region id.
+ *       description: Filter by region IDs to retrieve their associated returns.
  *       items:
  *         type: string
  *         title: region_id
  *         description: The region id's details.
  *   - name: q
  *     in: query
- *     description: The return's q.
+ *     description: Search term to filter the return's searchable properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The return's q.
+ *       description: Search term to filter the return's searchable properties.
  *   - name: created_at
  *     in: query
- *     description: The return's created at.
+ *     description: Filter by the return's creation date.
  *     required: false
  *     schema:
  *       type: object
- *       description: The return's created at.
+ *       description: Filter by the return's creation date.
  *       properties:
  *         $and:
  *           type: array
@@ -191,11 +191,11 @@
  *               title: $eq
  *               description: Filter by an exact match.
  *             - type: array
- *               description: Filter by an exact match.
+ *               description: Filter by multiple exact matches.
  *               items:
  *                 type: string
  *                 title: $eq
- *                 description: Filter by an exact match.
+ *                 description: An exact match.
  *         $ne:
  *           type: string
  *           title: $ne
@@ -206,19 +206,19 @@
  *           items:
  *             type: string
  *             title: $in
- *             description: Filter by values in this array.
+ *             description: The value to match.
  *         $nin:
  *           type: array
  *           description: Filter by values not in this array.
  *           items:
  *             type: string
  *             title: $nin
- *             description: Filter by values not in this array.
+ *             description: The value not to match.
  *         $not:
  *           oneOf:
  *             - type: string
  *               title: $not
- *               description: Filter by values not matching the conditions in this parameter.
+ *               description: Filter by values not matching this parameter.
  *             - type: object
  *               description: Filter by values not matching the conditions in this parameter.
  *               properties:
@@ -240,42 +240,42 @@
  *                       title: $eq
  *                       description: Filter by an exact match.
  *                     - type: array
- *                       description: Filter by an exact match.
+ *                       description: Filter by multiple exact matches.
  *                       items:
  *                         type: string
  *                         title: $eq
- *                         description: Filter by an exact match.
+ *                         description: The value to match.
  *                 $ne:
  *                   type: string
  *                   title: $ne
- *                   description: Filter by values not equal to this parameter.
+ *                   description: Filter by values not matching this parameter.
  *                 $in:
  *                   type: array
  *                   description: Filter by values in this array.
  *                   items:
  *                     type: string
  *                     title: $in
- *                     description: Filter by values in this array.
+ *                     description: The value to match.
  *                 $nin:
  *                   type: array
  *                   description: Filter by values not in this array.
  *                   items:
  *                     type: string
  *                     title: $nin
- *                     description: Filter by values not in this array.
+ *                     description: The value to not match
  *                 $not:
  *                   oneOf:
  *                     - type: string
  *                       title: $not
- *                       description: Filter by values not matching the conditions in this parameter.
+ *                       description: Filter by values not matching this parameter
  *                     - type: object
  *                       description: Filter by values not matching the conditions in this parameter.
  *                     - type: array
- *                       description: Filter by values not matching the conditions in this parameter.
+ *                       description: Filter by values not matching the values of this parameter.
  *                       items:
  *                         type: string
  *                         title: $not
- *                         description: Filter by values not matching the conditions in this parameter.
+ *                         description: The values to not match.
  *                 $gt:
  *                   type: string
  *                   title: $gt
@@ -314,31 +314,31 @@
  *                   items:
  *                     type: string
  *                     title: $overlap
- *                     description: Filter arrays that have overlapping values with this parameter.
+ *                     description: The value to match.
  *                 $contains:
  *                   type: array
  *                   description: Filter arrays that contain some of the values of this parameter.
  *                   items:
  *                     type: string
  *                     title: $contains
- *                     description: Filter arrays that contain some of the values of this parameter.
+ *                     description: The values to match.
  *                 $contained:
  *                   type: array
  *                   description: Filter arrays that contain all values of this parameter.
  *                   items:
  *                     type: string
  *                     title: $contained
- *                     description: Filter arrays that contain all values of this parameter.
+ *                     description: The values to match.
  *                 $exists:
  *                   type: boolean
  *                   title: $exists
  *                   description: Filter by whether a value for this parameter exists (not `null`).
  *             - type: array
- *               description: Filter by values not matching the conditions in this parameter.
+ *               description: Filter by values not matching those in this parameter.
  *               items:
  *                 type: string
  *                 title: $not
- *                 description: Filter by values not matching the conditions in this parameter.
+ *                 description: The values to not match.
  *         $gt:
  *           type: string
  *           title: $gt
@@ -377,32 +377,32 @@
  *           items:
  *             type: string
  *             title: $overlap
- *             description: Filter arrays that have overlapping values with this parameter.
+ *             description: The values to match.
  *         $contains:
  *           type: array
  *           description: Filter arrays that contain some of the values of this parameter.
  *           items:
  *             type: string
  *             title: $contains
- *             description: Filter arrays that contain some of the values of this parameter.
+ *             description: The values to match.
  *         $contained:
  *           type: array
  *           description: Filter arrays that contain all values of this parameter.
  *           items:
  *             type: string
  *             title: $contained
- *             description: Filter arrays that contain all values of this parameter.
+ *             description: The values to match.
  *         $exists:
  *           type: boolean
  *           title: $exists
  *           description: Filter by whether a value for this parameter exists (not `null`).
  *   - name: updated_at
  *     in: query
- *     description: The return's updated at.
+ *     description: Filter by the return's update date.
  *     required: false
  *     schema:
  *       type: object
- *       description: The return's updated at.
+ *       description: Filter by the return's update date.
  *       properties:
  *         $and:
  *           type: array
@@ -422,11 +422,11 @@
  *               title: $eq
  *               description: Filter by an exact match.
  *             - type: array
- *               description: Filter by an exact match.
+ *               description: Filter by multiple exact matches.
  *               items:
  *                 type: string
  *                 title: $eq
- *                 description: Filter by an exact match.
+ *                 description: An exact match.
  *         $ne:
  *           type: string
  *           title: $ne
@@ -437,19 +437,19 @@
  *           items:
  *             type: string
  *             title: $in
- *             description: Filter by values in this array.
+ *             description: The value to match.
  *         $nin:
  *           type: array
  *           description: Filter by values not in this array.
  *           items:
  *             type: string
  *             title: $nin
- *             description: Filter by values not in this array.
+ *             description: The value not to match.
  *         $not:
  *           oneOf:
  *             - type: string
  *               title: $not
- *               description: Filter by values not matching the conditions in this parameter.
+ *               description: Filter by values not matching this parameter.
  *             - type: object
  *               description: Filter by values not matching the conditions in this parameter.
  *               properties:
@@ -471,42 +471,42 @@
  *                       title: $eq
  *                       description: Filter by an exact match.
  *                     - type: array
- *                       description: Filter by an exact match.
+ *                       description: Filter by multiple exact matches.
  *                       items:
  *                         type: string
  *                         title: $eq
- *                         description: Filter by an exact match.
+ *                         description: The value to match.
  *                 $ne:
  *                   type: string
  *                   title: $ne
- *                   description: Filter by values not equal to this parameter.
+ *                   description: Filter by values not matching this parameter.
  *                 $in:
  *                   type: array
  *                   description: Filter by values in this array.
  *                   items:
  *                     type: string
  *                     title: $in
- *                     description: Filter by values in this array.
+ *                     description: The value to match.
  *                 $nin:
  *                   type: array
  *                   description: Filter by values not in this array.
  *                   items:
  *                     type: string
  *                     title: $nin
- *                     description: Filter by values not in this array.
+ *                     description: The value to not match
  *                 $not:
  *                   oneOf:
  *                     - type: string
  *                       title: $not
- *                       description: Filter by values not matching the conditions in this parameter.
+ *                       description: Filter by values not matching this parameter
  *                     - type: object
  *                       description: Filter by values not matching the conditions in this parameter.
  *                     - type: array
- *                       description: Filter by values not matching the conditions in this parameter.
+ *                       description: Filter by values not matching the values of this parameter.
  *                       items:
  *                         type: string
  *                         title: $not
- *                         description: Filter by values not matching the conditions in this parameter.
+ *                         description: The values to not match.
  *                 $gt:
  *                   type: string
  *                   title: $gt
@@ -545,31 +545,31 @@
  *                   items:
  *                     type: string
  *                     title: $overlap
- *                     description: Filter arrays that have overlapping values with this parameter.
+ *                     description: The value to match.
  *                 $contains:
  *                   type: array
  *                   description: Filter arrays that contain some of the values of this parameter.
  *                   items:
  *                     type: string
  *                     title: $contains
- *                     description: Filter arrays that contain some of the values of this parameter.
+ *                     description: The values to match.
  *                 $contained:
  *                   type: array
  *                   description: Filter arrays that contain all values of this parameter.
  *                   items:
  *                     type: string
  *                     title: $contained
- *                     description: Filter arrays that contain all values of this parameter.
+ *                     description: The values to match.
  *                 $exists:
  *                   type: boolean
  *                   title: $exists
  *                   description: Filter by whether a value for this parameter exists (not `null`).
  *             - type: array
- *               description: Filter by values not matching the conditions in this parameter.
+ *               description: Filter by values not matching those in this parameter.
  *               items:
  *                 type: string
  *                 title: $not
- *                 description: Filter by values not matching the conditions in this parameter.
+ *                 description: The values to not match.
  *         $gt:
  *           type: string
  *           title: $gt
@@ -608,21 +608,21 @@
  *           items:
  *             type: string
  *             title: $overlap
- *             description: Filter arrays that have overlapping values with this parameter.
+ *             description: The values to match.
  *         $contains:
  *           type: array
  *           description: Filter arrays that contain some of the values of this parameter.
  *           items:
  *             type: string
  *             title: $contains
- *             description: Filter arrays that contain some of the values of this parameter.
+ *             description: The values to match.
  *         $contained:
  *           type: array
  *           description: Filter arrays that contain all values of this parameter.
  *           items:
  *             type: string
  *             title: $contained
- *             description: Filter arrays that contain all values of this parameter.
+ *             description: The values to match.
  *         $exists:
  *           type: boolean
  *           title: $exists

@@ -498,20 +498,20 @@
  *             description: A stock location's ID.
  *   - name: is_return
  *     in: query
- *     description: The shipping option's is return.
+ *     description: Filter by whether the shipping option is used for returns.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: is_return
- *       description: The shipping option's is return.
+ *       description: Filter by whether the shipping option is used for returns.
  *   - name: admin_only
  *     in: query
- *     description: The shipping option's admin only.
+ *     description: Filter by whether the shipping option is used by admin users only.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: admin_only
- *       description: The shipping option's admin only.
+ *       description: Filter by whether the shipping option is used by admin users only.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

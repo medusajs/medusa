@@ -8,7 +8,9 @@
  * 
  *   Only the attributes of the rule type specified in the path parameter are retrieved:
  * 
- *   - If `rule_type` is `rules`, the attributes of the promotion's type are retrieved. - If `rule_type` is `target-rules`, the target rules' attributes of the application method's type are retrieved. - If `rule_type` is `buy-rules`, the buy rules' attributes of the application method's type are retrieved.
+ *   - If `rule_type` is `rules`, the attributes of the promotion's type are retrieved.
+ *   - If `rule_type` is `target-rules`, the target rules' attributes of the application method's type are retrieved.
+ *   - If `rule_type` is `buy-rules`, the buy rules' attributes of the application method's type are retrieved.
  * x-authenticated: true
  * parameters:
  *   - name: rule_type
