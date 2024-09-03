@@ -16,9 +16,11 @@ export const validateResetPasswordTokenStep = createStep(
     providerIdentityId: string
     passwordHash: string
   }) => {
-    const verified = jwt.verify(input.token, input.passwordHash) as TokenPayload
+    const decoded = jwt.decode(input.token) as TokenPayload
 
-    const isExpired = verified.exp < Date.now()
+    const isExpired = decoded.exp < Math.floor(Date.now() / 1000)
+
+    const verified = jwt.verify(input.token, input.passwordHash) as TokenPayload
     const isInvalid =
       verified.entity_id !== input.entityId ||
       verified.provider_identity_id !== input.providerIdentityId

@@ -58,11 +58,11 @@ export interface IAuthModuleService extends IModuleService {
   resetPassword(
     provider: string,
     resetPasswordData: ResetPasswordInput
-  ): Promise<AuthenticationResponse>
+  ): Promise<AuthIdentityDTO>
 
   generateResetPasswordToken(
     provider: string,
-    generatePasswordTokenData: Record<string, unknown>
+    entityId: string
   ): Promise<string>
 
   /**

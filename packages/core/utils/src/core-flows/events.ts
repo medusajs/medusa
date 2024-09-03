@@ -17,6 +17,10 @@ export const UserWorkflowEvents = {
   PASSWORD_RESET: "user.password_reset",
 }
 
+export const AuthWorkflowEvents = {
+  PASSWORD_RESET: "auth.password_reset",
+}
+
 export const SalesChannelWorkflowEvents = {
   CREATED: "sales-channel.created",
   UPDATED: "sales-channel.updated",

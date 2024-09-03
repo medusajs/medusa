@@ -1,6 +1,7 @@
 import {
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityDTO,
   AuthIdentityProviderService,
   AuthTypes,
   Context,
@@ -226,31 +227,23 @@ export default class AuthModuleService
   async resetPassword(
     provider: string,
     resetPasswordData: ResetPasswordInput
-  ): Promise<AuthenticationResponse> {
-    try {
-      return await this.authProviderService_.resetPassword(
-        provider,
-        resetPasswordData,
-        this.getAuthIdentityProviderService(provider)
-      )
-    } catch (error) {
-      return { success: false, error: error.message }
-    }
+  ): Promise<AuthIdentityDTO> {
+    return await this.authProviderService_.resetPassword(
+      provider,
+      resetPasswordData,
+      this.getAuthIdentityProviderService(provider)
+    )
   }
 
   async generateResetPasswordToken(
     provider: string,
-    generatePasswordTokenData: Record<string, unknown>
+    entityId: string
   ): Promise<string> {
-    try {
-      return await this.authProviderService_.(
-        provider,
-        resetPasswordData,
-        this.getAuthIdentityProviderService(provider)
-      )
-    } catch (error) {
-      return { success: false, error: error.message }
-    }
+    return await this.authProviderService_.generateResetPasswordToken(
+      provider,
+      entityId,
+      this.getAuthIdentityProviderService(provider)
+    )
   }
 
   getAuthIdentityProviderService(
@@ -313,23 +306,18 @@ export default class AuthModuleService
           createdAuthIdentity
         )
       },
-
-      update: async (data: {
+      updateProviderIdentity: async (data: {
         id: string
         provider_metadata?: Record<string, unknown>
         user_metadata?: Record<string, unknown>
       }) => {
         const normalizedRequest = {
           id: data.id,
-          provider_identities: [
-            {
-              provider_metadata: data.provider_metadata,
-              user_metadata: data.user_metadata,
-            },
-          ],
+          provider_metadata: data.provider_metadata,
+          user_metadata: data.user_metadata,
         }
 
-        const updatedAuthIdentity = await this.authIdentityService_.update(
+        const updatedAuthIdentity = await this.updateProviderIdentites(
           normalizedRequest
         )
 

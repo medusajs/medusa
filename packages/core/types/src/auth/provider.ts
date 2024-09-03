@@ -2,12 +2,9 @@ import {
   AuthIdentityDTO,
   AuthenticationInput,
   AuthenticationResponse,
-  ProviderIdentityDTO,
 } from "./common"
 
-export type ResetPasswordInput = {
-  body: Record<string, unknown>
-}
+export type ResetPasswordInput = Record<string, unknown>
 
 // This interface currently won't allow for linking multiple providers to a single auth entity. That flow is more complex and not supported yet.
 export interface AuthIdentityProviderService {
@@ -18,7 +15,7 @@ export interface AuthIdentityProviderService {
     provider_metadata?: Record<string, unknown>
     user_metadata?: Record<string, unknown>
   }) => Promise<AuthIdentityDTO>
-  update: (data: {
+  updateProviderIdentity: (data: {
     id: string
     provider_metadata?: Record<string, unknown>
     user_metadata?: Record<string, unknown>
@@ -47,9 +44,9 @@ export interface IAuthProvider {
   resetPassword(
     data: ResetPasswordInput,
     authIdentityProviderService: AuthIdentityProviderService
-  ): Promise<AuthenticationResponse>
+  ): Promise<AuthIdentityDTO>
   generateResetPasswordToken(
     entityId: string,
-    providerIdentity: ProviderIdentityDTO
+    authIdentityProviderService: AuthIdentityProviderService
   ): Promise<string>
 }

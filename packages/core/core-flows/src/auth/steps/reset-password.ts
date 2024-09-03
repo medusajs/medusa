@@ -1,7 +1,6 @@
 import {
   IAuthModuleService,
-  ProviderIdentityDTO,
-  ResetPasswordInput,
+  ProviderIdentityDTO
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -12,7 +11,8 @@ export const resetPasswordStep = createStep(
   async (
     input: {
       provider: string
-      resetData: ResetPasswordInput
+      entityId: string
+      password: string
       providerIdentity: ProviderIdentityDTO
     },
     { container }
@@ -28,7 +28,10 @@ export const resetPasswordStep = createStep(
       provider_metadata: oldProviderMetadata,
     }
 
-    const result = await service.resetPassword(input.provider, input.resetData)
+    const result = await service.resetPassword(input.provider, {
+      entityId: input.entityId,
+      password: input.password,
+    })
 
     return new StepResponse(result, forCompensate)
   },

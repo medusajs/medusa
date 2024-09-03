@@ -55,12 +55,8 @@ export const resetPasswordWorkflow = createWorkflow(
     const result = resetPasswordStep({
       provider: input.provider,
       providerIdentity,
-      resetData: {
-        body: {
-          entityId: input.entityId,
-          password: input.password,
-        },
-      },
+      entityId: input.entityId,
+      password: input.password,
     })
 
     return new WorkflowResponse(result)

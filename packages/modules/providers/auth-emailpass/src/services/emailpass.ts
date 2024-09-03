@@ -5,7 +5,7 @@ import {
   AuthIdentityProviderService,
   EmailPassAuthProviderOptions,
   Logger,
-  ResetPasswordInput
+  ResetPasswordInput,
 } from "@medusajs/types"
 import {
   AbstractAuthModuleProvider,
@@ -21,6 +21,8 @@ type InjectedDependencies = {
 
 interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
 
+// 15 minutes in milliseconds
+const DEFAULT_VALID_RESET_PASSWORD_TOKEN_DURATION = 60 * 15
 export class EmailPassAuthService extends AbstractAuthModuleProvider {
   protected config_: LocalServiceConfig
   protected logger_: Logger
@@ -53,18 +55,26 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
     const providerIdentity = authIdentity.provider_identities?.find(
       (pi) => pi.provider === this.provider
-    )!
+    )
+
+    if (!providerIdentity) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Provider identity with entity_id ${entityId} and provider ${this.provider} not found`
+      )
+    }
 
     const secret = providerIdentity.provider_metadata?.password as string
     // TODO: Add config to provider module
-    const expiry = Math.floor(Date.now() / 1000) + 60 * 15
+    const expiry = DEFAULT_VALID_RESET_PASSWORD_TOKEN_DURATION
     const payload = {
       entity_id: entityId,
       provider_identity_id: providerIdentity.id,
-      exp: expiry,
     }
 
-    const token = jwt.sign(payload, secret)
+    const token = jwt.sign(payload, secret, {
+      expiresIn: expiry,
+    })
 
     return token
   }
@@ -73,57 +83,44 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     resetPasswordData: ResetPasswordInput,
     authIdentityService: AuthIdentityProviderService
   ) {
-    const { email, password } = resetPasswordData.body as {
-      email: string
-      password: string
-    }
+    const { entityId: email, password } = resetPasswordData ?? {}
 
     if (!password || !isString(password)) {
-      return {
-        success: false,
-        error: "Invalid password",
-      }
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, `Invalid password`)
     }
 
     if (!email || !isString(email)) {
-      return {
-        success: false,
-        error: "Invalid email",
-      }
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, `Invalid email`)
     }
 
     const passwordHash = await this.hashPassword(password)
 
     let updatedAuthIdentity: AuthIdentityDTO | undefined
 
-    try {
-      const authIdentity = await authIdentityService.retrieve({
-        entity_id: email,
-      })
+    const authIdentity = await authIdentityService.retrieve({
+      entity_id: email,
+    })
 
-      updatedAuthIdentity = await authIdentityService.update({
-        id: authIdentity.id,
-        provider_metadata: {
-          password: passwordHash,
-        },
-      })
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message,
-      }
-    }
-
-    const copy = JSON.parse(JSON.stringify(updatedAuthIdentity))
-    const providerIdentity = copy.provider_identities?.find(
+    const emailPassProvider = authIdentity.provider_identities?.find(
       (pi) => pi.provider === this.provider
-    )!
-    delete providerIdentity.provider_metadata?.password
+    )
 
-    return {
-      success: true,
-      authIdentity: copy,
+    if (!emailPassProvider) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Provider identity with entity_id ${email} and provider ${this.provider} not found`
+      )
     }
+
+    updatedAuthIdentity = await authIdentityService.updateProviderIdentity({
+      id: emailPassProvider.id,
+      provider_metadata: {
+        ...emailPassProvider?.provider_metadata,
+        password: passwordHash,
+      },
+    })
+
+    return updatedAuthIdentity
   }
 
   protected async createAuthIdentity({ email, password, authIdentityService }) {

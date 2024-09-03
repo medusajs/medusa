@@ -1,9 +1,9 @@
 import {
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityDTO,
   AuthIdentityProviderService,
   IAuthProvider,
-  ProviderIdentityDTO,
   ResetPasswordInput,
 } from "@medusajs/types"
 
@@ -243,7 +243,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   resetPassword(
     data: ResetPasswordInput,
     authIdentityProviderService: AuthIdentityProviderService
-  ): Promise<AuthenticationResponse> {
+  ): Promise<AuthIdentityDTO> {
     throw new Error(
       `Method 'recover' not implemented for provider ${this.provider}`
     )
@@ -251,7 +251,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
 
   generateResetPasswordToken(
     entityId: string,
-    providerIdentity: ProviderIdentityDTO
+    authIdentityProviderService: AuthIdentityProviderService
   ): Promise<string> {
     throw new Error(
       `Method 'generateResetPasswordToken' not implemented for provider ${this.provider}`

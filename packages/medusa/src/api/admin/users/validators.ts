@@ -39,8 +39,8 @@ export const AdminUpdateUser = z.object({
   avatar_url: z.string().nullish(),
 })
 
-export type AdminResetPasswordReqType = z.infer<typeof AdminResetPasswordReq>
-export const AdminResetPasswordReq = z.object({
+export type AdminResetPasswordTokenReqType = z.infer<typeof AdminResetPasswordTokenReq>
+export const AdminResetPasswordTokenReq = z.object({
   email: z.string()
 })
 

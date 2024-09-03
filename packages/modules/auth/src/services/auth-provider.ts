@@ -1,4 +1,5 @@
 import {
+  AuthIdentityDTO,
   AuthIdentityProviderService,
   AuthTypes,
   AuthenticationInput,
@@ -56,7 +57,7 @@ export default class AuthProviderService {
     provider: string,
     resetPasswordData: ResetPasswordInput,
     authIdentityProviderService: AuthIdentityProviderService
-  ): Promise<AuthenticationResponse> {
+  ): Promise<AuthIdentityDTO> {
     const providerHandler = this.retrieveProviderRegistration(provider)
     return await providerHandler.resetPassword(
       resetPasswordData,
@@ -71,7 +72,7 @@ export default class AuthProviderService {
   ): Promise<string> {
     const providerHandler = this.retrieveProviderRegistration(provider)
     return await providerHandler.generateResetPasswordToken(
-      resetPasswordData,
+      entityId,
       authIdentityProviderService
     )
   }
