@@ -2672,6 +2672,7 @@ export default class OrderModuleService<
           : transactionData.order_id,
       },
       {
+        take: null,
         select: ["id", "version"],
       },
       sharedContext
@@ -2719,6 +2720,7 @@ export default class OrderModuleService<
       },
       {
         select: ["order_id", "version", "amount"],
+        take: null,
       },
       sharedContext
     )
@@ -2744,6 +2746,7 @@ export default class OrderModuleService<
         id: transactionIds,
       },
       {
+        take: null,
         select: ["order_id", "amount"],
       },
       sharedContext
@@ -2778,6 +2781,7 @@ export default class OrderModuleService<
       {
         select: ["order_id", "amount"],
         withDeleted: true,
+        take: null,
       },
       sharedContext
     )
@@ -2810,7 +2814,7 @@ export default class OrderModuleService<
       {
         order_id: transactionData.map((trx) => trx.order_id),
       },
-      {},
+      { take: null },
       sharedContext
     )
 
