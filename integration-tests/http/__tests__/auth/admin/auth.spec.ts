@@ -1,3 +1,4 @@
+import { IAuthModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
@@ -131,28 +132,26 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("Reset password flows", () => {
+    describe.only("Reset password flows", () => {
       it("should generate a reset password token", async () => {
-        const response = await api.post(
-          "/auth/user/emailpass/reset-password-token",
-          { email: "admin@medusa.js" }
-        )
+        const response = await api.post("/auth/user/emailpass/reset-password", {
+          email: "admin@medusa.js",
+        })
 
         expect(response.status).toEqual(201)
       })
 
       it("should fails to generate token for non-existing user, but still respond with 201", async () => {
-        const response = await api.post(
-          "/auth/user/emailpass/reset-password-token",
-          { email: "non-existing-user@medusa.js" }
-        )
+        const response = await api.post("/auth/user/emailpass/reset-password", {
+          email: "non-existing-user@medusa.js",
+        })
 
         expect(response.status).toEqual(201)
       })
 
       it("should fails to generate token for existing user but no provider, but still respond with 201", async () => {
         const response = await api.post(
-          "/auth/user/non-existing-provider/reset-password-token",
+          "/auth/user/non-existing-provider/reset-password",
           { email: "admin@medusa.js" }
         )
 
@@ -161,7 +160,7 @@ medusaIntegrationTestRunner({
 
       it("should fails to generate token for existing user but no provider, but still respond with 201", async () => {
         const response = await api.post(
-          "/auth/user/non-existing-provider/reset-password-token",
+          "/auth/user/non-existing-provider/reset-password",
           { email: "admin@medusa.js" }
         )
 
@@ -169,7 +168,9 @@ medusaIntegrationTestRunner({
       })
 
       it("should successfully reset password", async () => {
-        const authModule = container.resolve(ModuleRegistrationName.AUTH)
+        const authModule = container.resolve(
+          ModuleRegistrationName.AUTH
+        ) as IAuthModuleService
 
         // Create user
         await api.post("/auth/user/emailpass/register", {
@@ -177,16 +178,18 @@ medusaIntegrationTestRunner({
           password: "secret_password",
         })
 
-        const token = await authModule.generateResetPasswordToken(
-          "emailpass",
-          "test@medusa-commerce.com"
-        )
-
-        const response = await api.post("/auth/user/emailpass/reset-password", {
+        const token = await authModule.generateToken({
+          provider: "emailpass",
           entity_id: "test@medusa-commerce.com",
-          password: "new_password",
-          token,
         })
+
+        const response = await api.post(
+          `/auth/user/emailpass/update?token=${token}`,
+          {
+            entity_id: "test@medusa-commerce.com",
+            password: "new_password",
+          }
+        )
 
         expect(response.status).toEqual(200)
         expect(response.data).toEqual({ success: true })

@@ -5,14 +5,12 @@ import {
   AuthIdentityProviderService,
   EmailPassAuthProviderOptions,
   Logger,
-  ResetPasswordInput,
 } from "@medusajs/types"
 import {
   AbstractAuthModuleProvider,
   isString,
   MedusaError,
 } from "@medusajs/utils"
-import jwt from "jsonwebtoken"
 import Scrypt from "scrypt-kdf"
 
 type InjectedDependencies = {
@@ -21,8 +19,6 @@ type InjectedDependencies = {
 
 interface LocalServiceConfig extends EmailPassAuthProviderOptions {}
 
-// 15 minutes in milliseconds
-const DEFAULT_VALID_RESET_PASSWORD_TOKEN_DURATION = 60 * 15
 export class EmailPassAuthService extends AbstractAuthModuleProvider {
   protected config_: LocalServiceConfig
   protected logger_: Logger
@@ -45,82 +41,62 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     return passwordHash.toString("base64")
   }
 
-  async generateResetPasswordToken(
-    entityId: string,
-    authIdentityService: AuthIdentityProviderService
-  ): Promise<string> {
-    const authIdentity = await authIdentityService.retrieve({
-      entity_id: entityId,
-    })
-
-    const providerIdentity = authIdentity.provider_identities?.find(
-      (pi) => pi.provider === this.provider
-    )
-
-    if (!providerIdentity) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Provider identity with entity_id ${entityId} and provider ${this.provider} not found`
-      )
-    }
-
-    const secret = providerIdentity.provider_metadata?.password as string
-    // TODO: Add config to provider module
-    const expiry = DEFAULT_VALID_RESET_PASSWORD_TOKEN_DURATION
-    const payload = {
-      entity_id: entityId,
-      provider_identity_id: providerIdentity.id,
-    }
-
-    const token = jwt.sign(payload, secret, {
-      expiresIn: expiry,
-    })
-
-    return token
-  }
-
-  async resetPassword(
-    resetPasswordData: ResetPasswordInput,
+  async update(
+    providerMetadata: Record<string, unknown>,
     authIdentityService: AuthIdentityProviderService
   ) {
-    const { entityId: email, password } = resetPasswordData ?? {}
-
-    if (!password || !isString(password)) {
-      throw new MedusaError(MedusaError.Types.NOT_FOUND, `Invalid password`)
-    }
+    const { email, password } = providerMetadata ?? {}
 
     if (!email || !isString(email)) {
-      throw new MedusaError(MedusaError.Types.NOT_FOUND, `Invalid email`)
+      return {
+        success: false,
+        error: "Cannot update provider identity without email",
+      }
+    }
+
+    // The only update allowed is the password
+    // Question: Should we throw if not provided?
+    if (!password || !isString(password)) {
+      return { success: true }
     }
 
     const passwordHash = await this.hashPassword(password)
 
-    let updatedAuthIdentity: AuthIdentityDTO | undefined
+    let authIdentity: AuthIdentityDTO | undefined
 
-    const authIdentity = await authIdentityService.retrieve({
-      entity_id: email,
-    })
+    try {
+      authIdentity = await authIdentityService.retrieve({
+        entity_id: email,
+      })
 
-    const emailPassProvider = authIdentity.provider_identities?.find(
-      (pi) => pi.provider === this.provider
-    )
-
-    if (!emailPassProvider) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Provider identity with entity_id ${email} and provider ${this.provider} not found`
+      const emailPassProvider = authIdentity.provider_identities?.find(
+        (pi) => pi.provider === this.provider
       )
+
+      await authIdentityService.update({
+        id: emailPassProvider!.id,
+        provider_metadata: {
+          password: passwordHash,
+        },
+      })
+    } catch (error) {
+      if (error.type === MedusaError.Types.NOT_FOUND) {
+        return { success: false, error: error.message }
+      }
+
+      return { success: false, error: error.message }
     }
 
-    updatedAuthIdentity = await authIdentityService.updateProviderIdentity({
-      id: emailPassProvider.id,
-      provider_metadata: {
-        ...emailPassProvider?.provider_metadata,
-        password: passwordHash,
-      },
-    })
+    const copy = JSON.parse(JSON.stringify(authIdentity))
+    const providerIdentity = copy.provider_identities?.find(
+      (pi) => pi.provider === this.provider
+    )!
+    delete providerIdentity.provider_metadata?.password
 
-    return updatedAuthIdentity
+    return {
+      success: true,
+      authIdentity: copy,
+    }
   }
 
   protected async createAuthIdentity({ email, password, authIdentityService }) {

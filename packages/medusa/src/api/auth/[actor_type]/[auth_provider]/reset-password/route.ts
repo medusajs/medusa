@@ -1,31 +1,24 @@
-import { resetPasswordWorkflow } from "@medusajs/core-flows"
-import { z } from "zod"
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
-
-export const AdminResetPasswordReq = z.object({
-  token: z.string(),
-  password: z.string(),
-  entity_id: z.string(),
-})
-
-export type AdminResetPasswordReqType = z.infer<typeof AdminResetPasswordReq>
+import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../types/routing"
+import { AdminResetPasswordTokenReqType } from "../../../../admin/users/validators"
 
 export const POST = async (
-  req: MedusaRequest<AdminResetPasswordReqType>,
+  req: AuthenticatedMedusaRequest<AdminResetPasswordTokenReqType>,
   res: MedusaResponse
 ) => {
   const { auth_provider } = req.params
+  const { email } = req.validatedBody
 
-  const { result } = await resetPasswordWorkflow(req.scope).run({
-    input: {
-      provider: auth_provider,
-      token: req.validatedBody.token,
-      password: req.validatedBody.password,
-      entityId: req.validatedBody.entity_id,
-    },
+
+  await generateResetPasswordTokenWorkflow(req.scope).run({
+    input: { entityId: email, provider: auth_provider }, 
+    throwOnError: false // we don't want to throw on error to avoid leaking information about non-existing identities
   })
 
-  console.log("RESULT: ", result)
-
-  res.status(200).json({ success: true })
+  res.sendStatus(201)
 }
+
+export const AUTHENTICATE = false

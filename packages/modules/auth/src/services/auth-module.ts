@@ -1,7 +1,6 @@
 import {
   AuthenticationInput,
   AuthenticationResponse,
-  AuthIdentityDTO,
   AuthIdentityProviderService,
   AuthTypes,
   Context,
@@ -9,20 +8,20 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  ResetPasswordInput,
 } from "@medusajs/types"
-
-import { AuthIdentity, ProviderIdentity } from "@models"
-
-import { joinerConfig } from "../joiner-config"
-
 import {
   InjectManager,
   MedusaContext,
   MedusaError,
   MedusaService,
 } from "@medusajs/utils"
+import { AuthIdentity, ProviderIdentity } from "@models"
+import jwt from "jsonwebtoken"
+import { joinerConfig } from "../joiner-config"
 import AuthProviderService from "./auth-provider"
+
+// 15 minutes
+const DEFAULT_RESET_PASSWORD_TOKEN_DURATION = 60 * 15
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -94,18 +93,19 @@ export default class AuthModuleService
   }
 
   // TODO: Update to follow convention
-  updateAuthIdentites(
+  // @ts-expect-error
+  updateAuthIdentities(
     data: AuthTypes.UpdateAuthIdentityDTO[],
     sharedContext?: Context
   ): Promise<AuthTypes.AuthIdentityDTO[]>
 
-  updateAuthIdentites(
+  updateAuthIdentities(
     data: AuthTypes.UpdateAuthIdentityDTO,
     sharedContext?: Context
   ): Promise<AuthTypes.AuthIdentityDTO>
 
   @InjectManager("baseRepository_")
-  async updateAuthIdentites(
+  async updateAuthIdentities(
     data: AuthTypes.UpdateAuthIdentityDTO | AuthTypes.UpdateAuthIdentityDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthIdentityDTO | AuthTypes.AuthIdentityDTO[]> {
@@ -137,6 +137,7 @@ export default class AuthModuleService
       return { success: false, error: error.message }
     }
   }
+
   // @ts-expect-error
   createProviderIdentities(
     data: AuthTypes.CreateProviderIdentityDTO[],
@@ -165,18 +166,19 @@ export default class AuthModuleService
     >(providerIdentities)
   }
 
-  updateProviderIdentites(
+  // @ts-expect-error
+  updateProviderIdentities(
     data: AuthTypes.UpdateProviderIdentityDTO[],
     sharedContext?: Context
   ): Promise<AuthTypes.ProviderIdentityDTO[]>
 
-  updateProviderIdentites(
+  updateProviderIdentities(
     data: AuthTypes.UpdateProviderIdentityDTO,
     sharedContext?: Context
   ): Promise<AuthTypes.ProviderIdentityDTO>
 
   @InjectManager("baseRepository_")
-  async updateProviderIdentites(
+  async updateProviderIdentities(
     data:
       | AuthTypes.UpdateProviderIdentityDTO
       | AuthTypes.UpdateProviderIdentityDTO[],
@@ -192,6 +194,21 @@ export default class AuthModuleService
     >(updatedProviders)
 
     return Array.isArray(data) ? serializedProviders : serializedProviders[0]
+  }
+
+  async updateProviderData(
+    provider: string,
+    data: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    try {
+      return await this.authProviderService_.update(
+        provider,
+        data,
+        this.getAuthIdentityProviderService(provider)
+      )
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
   }
 
   async authenticate(
@@ -224,26 +241,28 @@ export default class AuthModuleService
     }
   }
 
-  async resetPassword(
-    provider: string,
-    resetPasswordData: ResetPasswordInput
-  ): Promise<AuthIdentityDTO> {
-    return await this.authProviderService_.resetPassword(
-      provider,
-      resetPasswordData,
-      this.getAuthIdentityProviderService(provider)
-    )
-  }
-
-  async generateResetPasswordToken(
-    provider: string,
-    entityId: string
+  async generateToken(
+    payload: { entity_id: string } & Record<string, unknown>
   ): Promise<string> {
-    return await this.authProviderService_.generateResetPasswordToken(
-      provider,
-      entityId,
-      this.getAuthIdentityProviderService(provider)
-    )
+    // const providerIdentity = await this.providerIdentityService_.retrieve({
+    //   entity_id: entityId,
+    //   provider,
+    // })
+
+    // const secret = providerIdentity.provider_metadata?.password as string
+
+    // const payload = {
+    //   entity_id: entityId,
+    //   provider_identity_id: providerIdentity.id,
+    // }
+
+    // TODO: Add config to auth module
+    const expiry = DEFAULT_RESET_PASSWORD_TOKEN_DURATION
+    const token = jwt.sign(payload, "secret", {
+      expiresIn: expiry,
+    })
+
+    return token
   }
 
   getAuthIdentityProviderService(
@@ -306,7 +325,7 @@ export default class AuthModuleService
           createdAuthIdentity
         )
       },
-      updateProviderIdentity: async (data: {
+      update: async (data: {
         id: string
         provider_metadata?: Record<string, unknown>
         user_metadata?: Record<string, unknown>
@@ -317,7 +336,7 @@ export default class AuthModuleService
           user_metadata: data.user_metadata,
         }
 
-        const updatedAuthIdentity = await this.updateProviderIdentites(
+        const updatedAuthIdentity = await this.updateProviderIdentities(
           normalizedRequest
         )
 

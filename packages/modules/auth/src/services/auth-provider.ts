@@ -1,10 +1,8 @@
 import {
-  AuthIdentityDTO,
   AuthIdentityProviderService,
   AuthTypes,
   AuthenticationInput,
-  AuthenticationResponse,
-  ResetPasswordInput,
+  AuthenticationResponse
 } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import { AuthProviderRegistrationPrefix } from "@types"
@@ -53,28 +51,13 @@ export default class AuthProviderService {
     return await providerHandler.register(auth, authIdentityProviderService)
   }
 
-  async resetPassword(
+  async update(
     provider: string,
-    resetPasswordData: ResetPasswordInput,
+    data: Record<string, unknown>,
     authIdentityProviderService: AuthIdentityProviderService
-  ): Promise<AuthIdentityDTO> {
+  ): Promise<AuthenticationResponse> {
     const providerHandler = this.retrieveProviderRegistration(provider)
-    return await providerHandler.resetPassword(
-      resetPasswordData,
-      authIdentityProviderService
-    )
-  }
-
-  async generateResetPasswordToken(
-    provider: string,
-    entityId: string,
-    authIdentityProviderService: AuthIdentityProviderService
-  ): Promise<string> {
-    const providerHandler = this.retrieveProviderRegistration(provider)
-    return await providerHandler.generateResetPasswordToken(
-      entityId,
-      authIdentityProviderService
-    )
+    return await providerHandler.update(data, authIdentityProviderService)
   }
 
   async validateCallback(
