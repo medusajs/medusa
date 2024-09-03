@@ -62,9 +62,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
- *         required:
- *           - metadata
+ *         description: The propeties to update in the region.
  *         properties:
  *           name:
  *             type: string
@@ -80,25 +78,25 @@
  *             items:
  *               type: string
  *               title: countries
- *               description: The country's countries.
+ *               description: A country code.
  *           automatic_taxes:
  *             type: boolean
  *             title: automatic_taxes
- *             description: The region's automatic taxes.
+ *             description: Whether taxes are calculated automatically for carts in the region.
  *           payment_providers:
  *             type: array
- *             description: The region's payment providers.
+ *             description: The payment providers enabled in the region.
  *             items:
  *               type: string
  *               title: payment_providers
- *               description: The payment provider's payment providers.
+ *               description: A payment provider's ID.
  *           metadata:
  *             type: object
- *             description: The region's metadata.
+ *             description: The region's metadata. Can hold custom key-value pairs.
  *           is_tax_inclusive:
  *             type: boolean
  *             title: is_tax_inclusive
- *             description: The region's is tax inclusive.
+ *             description: Whether the prices in the region are tax inclusive.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

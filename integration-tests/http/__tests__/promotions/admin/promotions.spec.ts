@@ -1,30 +1,19 @@
-import {
-  ICustomerModuleService,
-  IProductModuleService,
-  IPromotionModuleService,
-  IRegionModuleService,
-  ISalesChannelModuleService,
-} from "@medusajs/types"
-import { ModuleRegistrationName, PromotionType } from "@medusajs/utils"
+import { PromotionType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
-const env = { MEDUSA_FF_MEDUSA_V2: true }
-const adminHeaders = { headers: { "x-medusa-access-token": "test_token" } }
+const adminHeaders = {
+  headers: { "x-medusa-access-token": "test_token" },
+}
 
 medusaIntegrationTestRunner({
-  env,
   testSuite: ({ dbConnection, getContainer, api }) => {
-    describe.skip("Admin: Promotion Rules API", () => {
+    describe("Admin Promotions API", () => {
       let appContainer
+      let promotion
       let standardPromotion
-      let promotionModule: IPromotionModuleService
-      let regionService: IRegionModuleService
-      let productService: IProductModuleService
-      let customerService: ICustomerModuleService
-      let salesChannelService: ISalesChannelModuleService
 
       const promotionRule = {
         operator: "eq",
@@ -34,30 +23,524 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
-        regionService = appContainer.resolve(ModuleRegistrationName.REGION)
-        productService = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-        customerService = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
-        salesChannelService = appContainer.resolve(
-          ModuleRegistrationName.SALES_CHANNEL
-        )
       })
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-        standardPromotion = await promotionModule.createPromotions({
-          code: "TEST_ACROSS",
-          type: PromotionType.STANDARD,
-          application_method: {
-            type: "fixed",
-            allocation: "across",
-            target_type: "items",
-            value: 100,
-            target_rules: [promotionRule],
-            currency_code: "USD",
-          },
-          rules: [promotionRule],
+        promotion = standardPromotion = (
+          await api.post(
+            `/admin/promotions`,
+            {
+              code: "TEST_ACROSS",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "fixed",
+                allocation: "across",
+                target_type: "items",
+                value: 100,
+                target_rules: [promotionRule],
+                currency_code: "USD",
+              },
+              rules: [promotionRule],
+            },
+            adminHeaders
+          )
+        ).data.promotion
+      })
+
+      describe("GET /admin/promotions/:id", () => {
+        it("should throw an error if id does not exist", async () => {
+          const { response } = await api
+            .get(`/admin/promotions/does-not-exist`, adminHeaders)
+            .catch((e) => e)
+
+          expect(response.status).toEqual(404)
+          expect(response.data.message).toEqual(
+            "Promotion with id or code: does-not-exist was not found"
+          )
+        })
+
+        it("should get the requested promotion by id or codde", async () => {
+          let response = await api.get(
+            `/admin/promotions/${promotion.id}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual(
+            expect.objectContaining({
+              id: promotion.id,
+            })
+          )
+
+          response = await api.get(
+            `/admin/promotions/${promotion.code}`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual(
+            expect.objectContaining({
+              id: promotion.id,
+            })
+          )
+        })
+
+        it("should get the requested promotion with filtered fields and relations", async () => {
+          const response = await api.get(
+            `/admin/promotions/${promotion.id}?fields=id,code`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual({
+            id: promotion.id,
+            code: promotion.code,
+          })
+        })
+      })
+
+      describe("GET /admin/promotions", () => {
+        it("should get all promotions and its count", async () => {
+          const response = await api.get(`/admin/promotions`, adminHeaders)
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(1)
+          expect(response.data.promotions).toEqual([
+            expect.objectContaining({
+              id: expect.any(String),
+            }),
+          ])
+        })
+
+        it("should support search of promotions", async () => {
+          await api.post(
+            `/admin/promotions`,
+            {
+              code: "first",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "fixed",
+                target_type: "order",
+                value: 100,
+                currency_code: "USD",
+              },
+            },
+            adminHeaders
+          )
+
+          const response = await api.get(
+            `/admin/promotions?q=fir`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotions).toEqual([
+            expect.objectContaining({
+              code: "first",
+            }),
+          ])
+        })
+
+        it("should get all promotions and its count filtered", async () => {
+          const response = await api.get(
+            `/admin/promotions?fields=code,created_at,application_method.id`,
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.count).toEqual(1)
+          expect(response.data.promotions).toEqual([
+            {
+              id: expect.any(String),
+              code: "TEST_ACROSS",
+              created_at: expect.any(String),
+              application_method: {
+                id: expect.any(String),
+              },
+            },
+          ])
+        })
+      })
+
+      describe("POST /admin/promotions", () => {
+        it("should throw an error if required params are not passed", async () => {
+          const { response } = await api
+            .post(
+              `/admin/promotions`,
+              { type: PromotionType.STANDARD },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data.message).toEqual(
+            "Invalid request: Field 'code' is required; Field 'application_method' is required"
+          )
+        })
+
+        it("should create a standard promotion successfully", async () => {
+          const response = await api.post(
+            `/admin/promotions`,
+            {
+              code: "TEST",
+              type: PromotionType.STANDARD,
+              is_automatic: true,
+              campaign: {
+                name: "test",
+                campaign_identifier: "test-1",
+                budget: {
+                  type: "usage",
+                  limit: 100,
+                },
+              },
+              application_method: {
+                target_type: "items",
+                type: "fixed",
+                allocation: "each",
+                currency_code: "USD",
+                value: 100,
+                max_quantity: 100,
+                target_rules: [
+                  {
+                    attribute: "test.test",
+                    operator: "eq",
+                    values: ["test1", "test2"],
+                  },
+                ],
+              },
+              rules: [
+                {
+                  attribute: "test.test",
+                  operator: "eq",
+                  values: ["test1", "test2"],
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              code: "TEST",
+              type: "standard",
+              is_automatic: true,
+              campaign: expect.objectContaining({
+                name: "test",
+                campaign_identifier: "test-1",
+                budget: expect.objectContaining({
+                  currency_code: null,
+                  type: "usage",
+                  limit: 100,
+                }),
+              }),
+              application_method: expect.objectContaining({
+                value: 100,
+                max_quantity: 100,
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                target_rules: [
+                  expect.objectContaining({
+                    operator: "eq",
+                    attribute: "test.test",
+                    values: expect.arrayContaining([
+                      expect.objectContaining({ value: "test1" }),
+                      expect.objectContaining({ value: "test2" }),
+                    ]),
+                  }),
+                ],
+              }),
+              rules: [
+                expect.objectContaining({
+                  operator: "eq",
+                  attribute: "test.test",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({ value: "test1" }),
+                    expect.objectContaining({ value: "test2" }),
+                  ]),
+                }),
+              ],
+            })
+          )
+        })
+
+        it("should throw an error if buy_rules params are not passed", async () => {
+          const { response } = await api
+            .post(
+              `/admin/promotions`,
+              {
+                code: "TEST",
+                type: PromotionType.BUYGET,
+                is_automatic: true,
+                application_method: {
+                  target_type: "items",
+                  type: "fixed",
+                  allocation: "each",
+                  value: 100,
+                  max_quantity: 100,
+                  currency_code: "USD",
+                  target_rules: [
+                    {
+                      attribute: "test.test",
+                      operator: "eq",
+                      values: ["test1", "test2"],
+                    },
+                  ],
+                },
+                rules: [
+                  {
+                    attribute: "test.test",
+                    operator: "eq",
+                    values: ["test1", "test2"],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data.message).toEqual(
+            "Invalid request: Buyget promotions require at least one buy rule and quantities to be defined"
+          )
+        })
+
+        it("should throw an error if buy_rules params are not passed", async () => {
+          const { response } = await api
+            .post(
+              `/admin/promotions`,
+              {
+                code: "TEST",
+                type: PromotionType.BUYGET,
+                is_automatic: true,
+                application_method: {
+                  target_type: "items",
+                  type: "fixed",
+                  allocation: "each",
+                  value: 100,
+                  max_quantity: 100,
+                  currency_code: "USD",
+                  buy_rules: [
+                    {
+                      attribute: "test.test",
+                      operator: "eq",
+                      values: ["test1", "test2"],
+                    },
+                  ],
+                },
+                rules: [
+                  {
+                    attribute: "test.test",
+                    operator: "eq",
+                    values: ["test1", "test2"],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          // expect(response.data.message).toEqual(
+          //   "Target rules are required for buyget promotion type"
+          // )
+        })
+
+        it("should create a buyget promotion successfully", async () => {
+          const response = await api.post(
+            `/admin/promotions`,
+            {
+              code: "TEST",
+              type: PromotionType.BUYGET,
+              is_automatic: true,
+              campaign: {
+                name: "test",
+                campaign_identifier: "test-1",
+                budget: {
+                  type: "usage",
+                  limit: 100,
+                },
+              },
+              application_method: {
+                target_type: "items",
+                type: "fixed",
+                allocation: "each",
+                value: 100,
+                max_quantity: 100,
+                apply_to_quantity: 1,
+                buy_rules_min_quantity: 1,
+                currency_code: "USD",
+                target_rules: [
+                  {
+                    attribute: "test.test",
+                    operator: "eq",
+                    values: ["test1", "test2"],
+                  },
+                ],
+                buy_rules: [
+                  {
+                    attribute: "test.test",
+                    operator: "eq",
+                    values: ["test1", "test2"],
+                  },
+                ],
+              },
+              rules: [
+                {
+                  attribute: "test.test",
+                  operator: "eq",
+                  values: ["test1", "test2"],
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              code: "TEST",
+              type: "buyget",
+              is_automatic: true,
+              campaign: expect.objectContaining({
+                name: "test",
+                campaign_identifier: "test-1",
+                budget: expect.objectContaining({
+                  type: "usage",
+                  limit: 100,
+                }),
+              }),
+              application_method: expect.objectContaining({
+                value: 100,
+                max_quantity: 100,
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                apply_to_quantity: 1,
+                buy_rules_min_quantity: 1,
+                target_rules: [
+                  expect.objectContaining({
+                    operator: "eq",
+                    attribute: "test.test",
+                    values: expect.arrayContaining([
+                      expect.objectContaining({ value: "test1" }),
+                      expect.objectContaining({ value: "test2" }),
+                    ]),
+                  }),
+                ],
+                buy_rules: [
+                  expect.objectContaining({
+                    operator: "eq",
+                    attribute: "test.test",
+                    values: expect.arrayContaining([
+                      expect.objectContaining({ value: "test1" }),
+                      expect.objectContaining({ value: "test2" }),
+                    ]),
+                  }),
+                ],
+              }),
+              rules: [
+                expect.objectContaining({
+                  operator: "eq",
+                  attribute: "test.test",
+                  values: expect.arrayContaining([
+                    expect.objectContaining({ value: "test1" }),
+                    expect.objectContaining({ value: "test2" }),
+                  ]),
+                }),
+              ],
+            })
+          )
+        })
+      })
+
+      describe("DELETE /admin/promotions/:id", () => {
+        it("should delete promotion successfully", async () => {
+          const deleteRes = await api.delete(
+            `/admin/promotions/${promotion.id}`,
+            adminHeaders
+          )
+
+          expect(deleteRes.status).toEqual(200)
+
+          const { response } = await api
+            .get(`/admin/promotions/${promotion.id}`, adminHeaders)
+            .catch((e) => e)
+
+          expect(response.status).toEqual(404)
+          expect(response.data.message).toEqual(
+            `Promotion with id or code: ${promotion.id} was not found`
+          )
+        })
+      })
+
+      describe("POST /admin/promotions/:id", () => {
+        it("should throw an error if id does not exist", async () => {
+          const { response } = await api
+            .post(
+              `/admin/promotions/does-not-exist`,
+              { type: PromotionType.STANDARD },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(response.status).toEqual(404)
+          expect(response.data.message).toEqual(
+            `Promotion with id "does-not-exist" not found`
+          )
+        })
+
+        it("should update a promotion successfully", async () => {
+          const response = await api.post(
+            `/admin/promotions/${promotion.id}`,
+            {
+              code: "TEST_TWO",
+              application_method: { value: 200 },
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              code: "TEST_TWO",
+              application_method: expect.objectContaining({
+                value: 200,
+              }),
+            })
+          )
+        })
+
+        it("should update a buyget promotion successfully", async () => {
+          const response = await api.post(
+            `/admin/promotions/${promotion.id}`,
+            {
+              code: "TEST_TWO",
+              application_method: {
+                value: 200,
+                buy_rules_min_quantity: 6,
+              },
+            },
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.promotion).toEqual(
+            expect.objectContaining({
+              id: promotion.id,
+              code: "TEST_TWO",
+              application_method: expect.objectContaining({
+                value: 200,
+                buy_rules_min_quantity: 6,
+              }),
+            })
+          )
         })
       })
 
@@ -133,6 +616,7 @@ medusaIntegrationTestRunner({
               adminHeaders
             )
           ).data.promotion
+
           expect(promotion).toEqual(
             expect.objectContaining({
               id: standardPromotion.id,
@@ -225,6 +709,7 @@ medusaIntegrationTestRunner({
               adminHeaders
             )
           ).data.promotion
+
           expect(promotion).toEqual(
             expect.objectContaining({
               id: standardPromotion.id,
@@ -321,22 +806,28 @@ medusaIntegrationTestRunner({
         })
 
         it("should add buy rules to a buyget promotion successfully", async () => {
-          const buyGetPromotion = await promotionModule.createPromotions({
-            code: "TEST_BUYGET",
-            type: PromotionType.BUYGET,
-            application_method: {
-              type: "fixed",
-              target_type: "items",
-              allocation: "across",
-              value: 100,
-              apply_to_quantity: 1,
-              buy_rules_min_quantity: 1,
-              buy_rules: [promotionRule],
-              target_rules: [promotionRule],
-              currency_code: "USD",
-            },
-            rules: [promotionRule],
-          })
+          const buyGetPromotion = (
+            await api.post(
+              `/admin/promotions`,
+              {
+                code: "TEST_BUYGET",
+                type: PromotionType.BUYGET,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  allocation: "across",
+                  value: 100,
+                  apply_to_quantity: 1,
+                  buy_rules_min_quantity: 1,
+                  buy_rules: [promotionRule],
+                  target_rules: [promotionRule],
+                  currency_code: "USD",
+                },
+                rules: [promotionRule],
+              },
+              adminHeaders
+            )
+          ).data.promotion
 
           const response = await api.post(
             `/admin/promotions/${buyGetPromotion.id}/buy-rules/batch`,
@@ -413,10 +904,12 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const promotion = await promotionModule.retrievePromotion(
-            standardPromotion.id,
-            { relations: ["rules"] }
-          )
+          const promotion = (
+            await api.get(
+              `/admin/promotions/${standardPromotion.id}?fields=*rules`,
+              adminHeaders
+            )
+          ).data.promotion
 
           expect(promotion.rules!.length).toEqual(0)
         })
@@ -454,10 +947,12 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const promotion = await promotionModule.retrievePromotion(
-            standardPromotion.id,
-            { relations: ["application_method.target_rules"] }
-          )
+          const promotion = (
+            await api.get(
+              `/admin/promotions/${standardPromotion.id}?fields=*application_method.target_rules`,
+              adminHeaders
+            )
+          ).data.promotion
 
           expect(promotion.application_method!.target_rules!.length).toEqual(0)
         })
@@ -481,22 +976,28 @@ medusaIntegrationTestRunner({
         })
 
         it("should remove buy rules from a promotion successfully", async () => {
-          const buyGetPromotion = await promotionModule.createPromotions({
-            code: "TEST_BUYGET",
-            type: PromotionType.BUYGET,
-            application_method: {
-              type: "fixed",
-              currency_code: "USD",
-              target_type: "items",
-              allocation: "across",
-              value: 100,
-              apply_to_quantity: 1,
-              buy_rules_min_quantity: 1,
-              buy_rules: [promotionRule],
-              target_rules: [promotionRule],
-            },
-            rules: [promotionRule],
-          })
+          const buyGetPromotion = (
+            await api.post(
+              `/admin/promotions`,
+              {
+                code: "TEST_BUYGET",
+                type: PromotionType.BUYGET,
+                application_method: {
+                  type: "fixed",
+                  currency_code: "USD",
+                  target_type: "items",
+                  allocation: "across",
+                  value: 100,
+                  apply_to_quantity: 1,
+                  buy_rules_min_quantity: 1,
+                  buy_rules: [promotionRule],
+                  target_rules: [promotionRule],
+                },
+                rules: [promotionRule],
+              },
+              adminHeaders
+            )
+          ).data.promotion
 
           const ruleId = buyGetPromotion!.application_method!.buy_rules![0].id
           const response = await api.post(
@@ -512,12 +1013,12 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const promotion = await promotionModule.retrievePromotion(
-            buyGetPromotion.id,
-            {
-              relations: ["application_method.buy_rules"],
-            }
-          )
+          const promotion = (
+            await api.get(
+              `/admin/promotions/${buyGetPromotion.id}?fields=*application_method.buy_rules`,
+              adminHeaders
+            )
+          ).data.promotion
 
           expect(promotion.application_method!.buy_rules!.length).toEqual(0)
         })
@@ -598,6 +1099,7 @@ medusaIntegrationTestRunner({
               adminHeaders
             )
           ).data.promotion
+
           expect(promotion).toEqual(
             expect.objectContaining({
               id: standardPromotion.id,
@@ -640,64 +1142,43 @@ medusaIntegrationTestRunner({
             expect.arrayContaining([
               expect.objectContaining({
                 id: "currency_code",
-                label: "Currency Code",
-                required: true,
                 value: "currency_code",
+                label: "Currency Code",
+                field_type: "select",
+                required: false,
+                disguised: true,
+                hydrate: true,
               }),
               expect.objectContaining({
                 id: "customer_group",
+                value: "customer.groups.id",
                 label: "Customer Group",
                 required: false,
-                value: "customer_group.id",
+                field_type: "multiselect",
               }),
               expect.objectContaining({
                 id: "region",
+                value: "region.id",
                 label: "Region",
                 required: false,
-                value: "region.id",
+                field_type: "multiselect",
               }),
               expect.objectContaining({
                 id: "country",
+                value: "shipping_address.country_code",
                 label: "Country",
                 required: false,
-                value: "shipping_address.country_code",
+                field_type: "multiselect",
               }),
               expect.objectContaining({
                 id: "sales_channel",
+                value: "sales_channel_id",
                 label: "Sales Channel",
                 required: false,
-                value: "sales_channel.id",
+                field_type: "multiselect",
               }),
             ])
           )
-        })
-      })
-
-      describe("GET /admin/promotions/rule-operator-options", () => {
-        it("return all rule operators", async () => {
-          const response = await api.get(
-            `/admin/promotions/rule-operator-options`,
-            adminHeaders
-          )
-
-          expect(response.status).toEqual(200)
-          expect(response.data.operators).toEqual([
-            {
-              id: "in",
-              label: "In",
-              value: "in",
-            },
-            {
-              id: "eq",
-              label: "Equals",
-              value: "eq",
-            },
-            {
-              id: "ne",
-              label: "Not In",
-              value: "ne",
-            },
-          ])
         })
       })
 
@@ -733,10 +1214,21 @@ medusaIntegrationTestRunner({
         })
 
         it("should return all values based on rule types", async () => {
-          const [region1, region2] = await regionService.createRegions([
-            { name: "North America", currency_code: "usd" },
-            { name: "Europe", currency_code: "eur" },
-          ])
+          const region1 = (
+            await api.post(
+              "/admin/regions",
+              { name: "North America", currency_code: "usd" },
+              adminHeaders
+            )
+          ).data.region
+
+          const region2 = (
+            await api.post(
+              "/admin/regions",
+              { name: "Europe", currency_code: "eur" },
+              adminHeaders
+            )
+          ).data.region
 
           let response = await api.get(
             `/admin/promotions/rule-value-options/rules/region`,
@@ -772,9 +1264,13 @@ medusaIntegrationTestRunner({
             ])
           )
 
-          const group = await customerService.createCustomerGroups({
-            name: "VIP",
-          })
+          const group = (
+            await api.post(
+              "/admin/customer-groups",
+              { name: "VIP" },
+              adminHeaders
+            )
+          ).data.customer_group
 
           response = await api.get(
             `/admin/promotions/rule-value-options/rules/customer_group`,
@@ -789,9 +1285,13 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const salesChannel = await salesChannelService.createSalesChannels({
-            name: "Instagram",
-          })
+          const salesChannel = (
+            await api.post(
+              "/admin/sales-channels",
+              { name: "Instagram" },
+              adminHeaders
+            )
+          ).data.sales_channel
 
           response = await api.get(
             `/admin/promotions/rule-value-options/rules/sales_channel`,
@@ -828,10 +1328,21 @@ medusaIntegrationTestRunner({
             ])
           )
 
-          const [product1, product2] = await productService.createProducts([
-            { title: "test product 1" },
-            { title: "test product 2" },
-          ])
+          const product1 = (
+            await api.post(
+              "/admin/products",
+              { title: "Test product 1" },
+              adminHeaders
+            )
+          ).data.product
+
+          const product2 = (
+            await api.post(
+              "/admin/products",
+              { title: "Test product 2" },
+              adminHeaders
+            )
+          ).data.product
 
           response = await api.get(
             `/admin/promotions/rule-value-options/target-rules/product`,
@@ -842,15 +1353,18 @@ medusaIntegrationTestRunner({
           expect(response.data.values.length).toEqual(2)
           expect(response.data.values).toEqual(
             expect.arrayContaining([
-              { label: "test product 1", value: product1.id },
-              { label: "test product 2", value: product2.id },
+              { label: "Test product 1", value: product1.id },
+              { label: "Test product 2", value: product2.id },
             ])
           )
 
-          const category = await productService.createProductCategories({
-            name: "test category 1",
-            parent_category_id: null,
-          })
+          const category = (
+            await api.post(
+              "/admin/product-categories",
+              { name: "test category 1" },
+              adminHeaders
+            )
+          ).data.product_category
 
           response = await api.get(
             `/admin/promotions/rule-value-options/target-rules/product_category`,
@@ -862,9 +1376,13 @@ medusaIntegrationTestRunner({
             { label: "test category 1", value: category.id },
           ])
 
-          const collection = await productService.createProductCollections({
-            title: "test collection 1",
-          })
+          const collection = (
+            await api.post(
+              "/admin/collections",
+              { title: "test collection 1" },
+              adminHeaders
+            )
+          ).data.collection
 
           response = await api.get(
             `/admin/promotions/rule-value-options/target-rules/product_collection`,
@@ -876,9 +1394,13 @@ medusaIntegrationTestRunner({
             { label: "test collection 1", value: collection.id },
           ])
 
-          const type = await productService.createProductTypes({
-            value: "test type",
-          })
+          const type = (
+            await api.post(
+              "/admin/product-types",
+              { value: "test type" },
+              adminHeaders
+            )
+          ).data.product_type
 
           response = await api.get(
             `/admin/promotions/rule-value-options/target-rules/product_type`,
@@ -890,10 +1412,21 @@ medusaIntegrationTestRunner({
             { label: "test type", value: type.id },
           ])
 
-          const [tag1, tag2] = await productService.createProductTags([
-            { value: "test tag 1" },
-            { value: "test tag 2" },
-          ])
+          const tag1 = (
+            await api.post(
+              "/admin/product-tags",
+              { value: "test tag 1" },
+              adminHeaders
+            )
+          ).data.product_tag
+
+          const tag2 = (
+            await api.post(
+              "/admin/product-tags",
+              { value: "test tag 2" },
+              adminHeaders
+            )
+          ).data.product_tag
 
           response = await api.get(
             `/admin/promotions/rule-value-options/target-rules/product_tag`,

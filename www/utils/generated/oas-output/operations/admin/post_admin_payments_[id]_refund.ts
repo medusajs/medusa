@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/payments/{id}/refund
  * operationId: PostPaymentsIdRefund
- * summary: Add Refunds to Payment
- * description: Add a list of refunds to a payment.
+ * summary: Refund Payment
+ * description: Refund an amount of a payment. This uses the `refundPayment` method of the payment provider associated with the payment's collection.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,20 +62,20 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The refund's details.
  *         properties:
  *           amount:
  *             type: number
  *             title: amount
- *             description: The payment's amount.
+ *             description: The amount to refund.
  *           refund_reason_id:
  *             type: string
  *             title: refund_reason_id
- *             description: The payment's refund reason id.
+ *             description: The ID of a refund reason.
  *           note:
  *             type: string
  *             title: note
- *             description: The payment's note.
+ *             description: A note to attach to the refund.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

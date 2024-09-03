@@ -970,7 +970,6 @@
       "create": "Create Claim",
       "confirm": "Confirm Claim",
       "confirmText": "You are about to confirm a Claim. This action cannot be undone.",
-      "cancel": "Cancel Claim",
       "manage": "Manage Claim",
       "outbound": "Outbound",
       "outboundItemAdded": "{{itemsCount}}x added through claim",
@@ -983,6 +982,10 @@
         "cancelClaim": {
           "successToast": "Claim was successfully canceled."
         }
+      },
+      "cancel": {
+        "title": "Cancel Claim",
+        "description": "Are you sure you want to cancel the claim?"
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
@@ -1001,7 +1004,6 @@
       "manage": "Manage Exchange",
       "confirm": "Confirm Exchange",
       "confirmText": "You are about to confirm an Exchange. This action cannot be undone.",
-      "cancel": "Cancel Exchange",
       "outbound": "Outbound",
       "outboundItemAdded": "{{itemsCount}}x added through exchange",
       "outboundTotal": "Outbound total",
@@ -1013,6 +1015,10 @@
         "cancelExchange": {
           "successToast": "Exchange was successfully canceled."
         }
+      },
+      "cancel": {
+        "title": "Cancel Exchange",
+        "description": "Are you sure you want to cancel the exchange?"
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
@@ -1161,16 +1167,17 @@
         },
         "claim": {
           "created": "Claim #{{claimId}} requested",
+          "canceled": "Claim #{{claimId}} canceled",
           "itemsInbound": "{{count}} item to return",
           "itemsOutbound": "{{count}} item to send"
         },
         "exchange": {
           "created": "Exchange #{{exchangeId}} requested",
+          "canceled": "Exchange #{{exchangeId}} canceled",
           "itemsInbound": "{{count}} item to return",
           "itemsOutbound": "{{count}} item to send"
         },
         "edit": {
-          "requested": "Order edit #{{editId}} requested",
           "requested": "Order edit #{{editId}} requested",
           "confirmed": "Order edit #{{editId}} confirmed"
         }

@@ -57,7 +57,7 @@
  *       schema:
  *         allOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The promotion's details.
  *             required:
  *               - code
  *               - type
@@ -71,19 +71,22 @@
  *               is_automatic:
  *                 type: boolean
  *                 title: is_automatic
- *                 description: The promotion's is automatic.
+ *                 description: Whether the promotion is applied automatically.
  *               type:
  *                 type: string
+ *                 description: The promotion's type.
+ *                 externalDocs:
+ *                   url: https://docs.medusajs.com/v2/resources/commerce-modules/promotion/concepts#what-is-a-promotion
  *                 enum:
  *                   - standard
  *                   - buyget
  *               campaign_id:
  *                 type: string
  *                 title: campaign_id
- *                 description: The promotion's campaign id.
+ *                 description: The ID of the campaign that the promotion belongs to.
  *               campaign:
  *                 type: object
- *                 description: The promotion's campaign.
+ *                 description: The details of a campaign to create and add the promotion to it.
  *                 required:
  *                   - name
  *                   - campaign_identifier
@@ -99,14 +102,14 @@
  *                   campaign_identifier:
  *                     type: string
  *                     title: campaign_identifier
- *                     description: The campaign's campaign identifier.
+ *                     description: The campaign's identifier.
  *                   description:
  *                     type: string
  *                     title: description
  *                     description: The campaign's description.
  *                   budget:
  *                     type: object
- *                     description: The campaign's budget.
+ *                     description: The campaign's budget which, when crossed, ends the campaign.
  *                     required:
  *                       - type
  *                       - limit
@@ -114,6 +117,9 @@
  *                     properties:
  *                       type:
  *                         type: string
+ *                         description: >
+ *                           The budget's type. This can't be edited later. Use `spend` to set a limit on the total amount discounted by the campaign's promotions.
+ *                           Use `usage` to set a limit on the total number of times the campaign's promotions can be used.
  *                         enum:
  *                           - spend
  *                           - usage
@@ -124,30 +130,17 @@
  *                       currency_code:
  *                         type: string
  *                         title: currency_code
- *                         description: The budget's currency code.
+ *                         description: The campaign budget's currency code. This can't be edited later.
  *                   starts_at:
  *                     type: string
  *                     title: starts_at
- *                     description: The campaign's starts at.
+ *                     description: The campaign's start date.
  *                     format: date-time
  *                   ends_at:
  *                     type: string
  *                     title: ends_at
- *                     description: The campaign's ends at.
+ *                     description: The campaign's end date.
  *                     format: date-time
- *                   promotions:
- *                     type: array
- *                     description: The campaign's promotions.
- *                     items:
- *                       type: object
- *                       description: The promotion's promotions.
- *                       required:
- *                         - id
- *                       properties:
- *                         id:
- *                           type: string
- *                           title: id
- *                           description: The promotion's ID.
  *               application_method:
  *                 type: object
  *                 description: The promotion's application method.
@@ -168,7 +161,7 @@
  *                   value:
  *                     type: number
  *                     title: value
- *                     description: The application method's value.
+ *                     description: The discounted amount applied by the associated promotion based on the `type`.
  *                   currency_code:
  *                     type: string
  *                     title: currency_code
@@ -176,20 +169,23 @@
  *                   max_quantity:
  *                     type: number
  *                     title: max_quantity
- *                     description: The application method's max quantity.
+ *                     description: The max quantity allowed in the cart for the associated promotion to be applied.
  *                   type:
  *                     type: string
+ *                     description: The type of the application method indicating how the associated promotion is applied.
  *                     enum:
  *                       - fixed
  *                       - percentage
  *                   target_type:
  *                     type: string
+ *                     description: The target type of the application method indicating whether the associated promotion is applied to the cart's items, shipping methods, or the whole order.
  *                     enum:
  *                       - order
  *                       - shipping_methods
  *                       - items
  *                   allocation:
  *                     type: string
+ *                     description: The allocation value that indicates whether the associated promotion is applied on each item in a cart or split between the items in the cart.
  *                     enum:
  *                       - each
  *                       - across
@@ -198,7 +194,7 @@
  *                     description: The application method's target rules.
  *                     items:
  *                       type: object
- *                       description: The target rule's target rules.
+ *                       description: A target rule's details.
  *                       required:
  *                         - operator
  *                         - description
@@ -207,6 +203,7 @@
  *                       properties:
  *                         operator:
  *                           type: string
+ *                           description: The operator used to check whether the target rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
  *                           enum:
  *                             - gte
  *                             - lte
@@ -222,24 +219,27 @@
  *                         attribute:
  *                           type: string
  *                           title: attribute
- *                           description: The target rule's attribute.
+ *                           description: The attribute to compare against when checking whether a promotion can be applied on a cart.
+ *                           example: items.product.id
  *                         values:
  *                           oneOf:
  *                             - type: string
  *                               title: values
- *                               description: The target rule's values.
- *                             - type: array
- *                               description: The target rule's values.
- *                               items:
- *                                 type: string
- *                                 title: values
- *                                 description: The value's values.
+  *                              description: The attribute's value.
+  *                              example: prod_123
+  *                            - type: array
+  *                              description: The allowed attribute values.
+  *                              items:
+  *                                type: string
+  *                                title: values
+  *                                description: An attribute value.
+  *                                example: prod_123
  *                   buy_rules:
  *                     type: array
  *                     description: The application method's buy rules.
  *                     items:
  *                       type: object
- *                       description: The buy rule's buy rules.
+ *                       description: A buy rule's details.
  *                       required:
  *                         - operator
  *                         - description
@@ -248,6 +248,7 @@
  *                       properties:
  *                         operator:
  *                           type: string
+ *                           description: The operator used to check whether the buy rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
  *                           enum:
  *                             - gte
  *                             - lte
@@ -263,32 +264,35 @@
  *                         attribute:
  *                           type: string
  *                           title: attribute
- *                           description: The buy rule's attribute.
+ *                           description: The attribute to compare against when checking whether a promotion can be applied on a cart.
+ *                           example: items.product.id
  *                         values:
  *                           oneOf:
  *                             - type: string
  *                               title: values
- *                               description: The buy rule's values.
- *                             - type: array
- *                               description: The buy rule's values.
- *                               items:
- *                                 type: string
- *                                 title: values
- *                                 description: The value's values.
+  *                              description: The attribute's value.
+  *                              example: prod_123
+  *                            - type: array
+  *                              description: The allowed attribute values.
+  *                              items:
+  *                                type: string
+  *                                title: values
+  *                                description: An attribute value.
+  *                                example: prod_123
  *                   apply_to_quantity:
  *                     type: number
  *                     title: apply_to_quantity
- *                     description: The application method's apply to quantity.
+ *                     description: The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value f this attribute is `1`.
  *                   buy_rules_min_quantity:
  *                     type: number
  *                     title: buy_rules_min_quantity
- *                     description: The application method's buy rules min quantity.
+ *                     description: The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
  *               rules:
  *                 type: array
  *                 description: The promotion's rules.
  *                 items:
  *                   type: object
- *                   description: The rule's rules.
+ *                   description: A rule's details.
  *                   required:
  *                     - operator
  *                     - description
@@ -297,6 +301,7 @@
  *                   properties:
  *                     operator:
  *                       type: string
+ *                       description: The operator used to check whether the buy rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
  *                       enum:
  *                         - gte
  *                         - lte
@@ -312,25 +317,28 @@
  *                     attribute:
  *                       type: string
  *                       title: attribute
- *                       description: The rule's attribute.
+ *                       description: The attribute to compare against when checking whether a promotion can be applied on a cart.
+ *                       example: items.product.id
  *                     values:
  *                       oneOf:
  *                         - type: string
  *                           title: values
- *                           description: The rule's values.
- *                         - type: array
- *                           description: The rule's values.
- *                           items:
- *                             type: string
- *                             title: values
- *                             description: The value's values.
+ *                           description: The attribute's value.
+  *                          example: prod_123
+  *                            - type: array
+  *                              description: The allowed attribute values.
+  *                              items:
+  *                                type: string
+  *                                title: values
+  *                                description: An attribute value.
+  *                                example: prod_123
  *           - type: object
- *             description: SUMMARY
+ *             description: The promotion's details.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The promotion's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

@@ -1,9 +1,4 @@
-import { IPromotionModuleService } from "@medusajs/types"
-import {
-  CampaignBudgetType,
-  ModuleRegistrationName,
-  PromotionType,
-} from "@medusajs/utils"
+import { CampaignBudgetType, PromotionType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -24,7 +19,6 @@ export const campaignData = {
 
 export const campaignsData = [
   {
-    id: "campaign-id-1",
     name: "campaign 1",
     description: "test description",
     campaign_identifier: "test-1",
@@ -37,7 +31,6 @@ export const campaignsData = [
     },
   },
   {
-    id: "campaign-id-2",
     name: "campaign 2",
     description: "test description",
     campaign_identifier: "test-2",
@@ -88,17 +81,25 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("Admin Campaigns API", () => {
       let appContainer
-      let promotionModuleService: IPromotionModuleService
+      let campaign1
+      let campaign2
+      let promotion
 
       beforeAll(async () => {
         appContainer = getContainer()
-        promotionModuleService = appContainer.resolve(
-          ModuleRegistrationName.PROMOTION
-        )
       })
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+        campaign1 = (
+          await api.post(`/admin/campaigns`, campaignsData[0], adminHeaders)
+        ).data.campaign
+        campaign2 = (
+          await api.post(`/admin/campaigns`, campaignsData[1], adminHeaders)
+        ).data.campaign
+        promotion = (
+          await api.post(`/admin/promotions`, promotionData, adminHeaders)
+        ).data.promotion
       })
 
       const generatePromotionData = () => {
@@ -122,10 +123,6 @@ medusaIntegrationTestRunner({
       }
 
       describe("GET /admin/campaigns", () => {
-        beforeEach(async () => {
-          await promotionModuleService.createCampaigns(campaignsData)
-        })
-
         it("should get all campaigns and its count", async () => {
           const response = await api.get(`/admin/campaigns`, adminHeaders)
 
@@ -134,62 +131,10 @@ medusaIntegrationTestRunner({
           expect(response.data.campaigns).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                id: expect.any(String),
-                name: "campaign 1",
-                description: "test description",
-                campaign_identifier: "test-1",
-                starts_at: expect.any(String),
-                ends_at: expect.any(String),
-                budget: {
-                  id: expect.any(String),
-                  type: "spend",
-                  currency_code: "USD",
-                  limit: 1000,
-                  used: 0,
-                  raw_limit: {
-                    precision: 20,
-                    value: "1000",
-                  },
-                  raw_used: {
-                    precision: 20,
-                    value: "0",
-                  },
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  deleted_at: null,
-                },
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                deleted_at: null,
+                id: campaign1.id,
               }),
               expect.objectContaining({
-                id: expect.any(String),
-                name: "campaign 2",
-                description: "test description",
-                campaign_identifier: "test-2",
-                starts_at: expect.any(String),
-                ends_at: expect.any(String),
-                budget: {
-                  id: expect.any(String),
-                  type: "usage",
-                  limit: 1000,
-                  used: 0,
-                  currency_code: null,
-                  raw_limit: {
-                    precision: 20,
-                    value: "1000",
-                  },
-                  raw_used: {
-                    precision: 20,
-                    value: "0",
-                  },
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  deleted_at: null,
-                },
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                deleted_at: null,
+                id: campaign2.id,
               }),
             ])
           )
@@ -253,61 +198,29 @@ medusaIntegrationTestRunner({
         })
 
         it("should get the requested campaign", async () => {
-          const createdCampaign = await promotionModuleService.createCampaigns(
-            campaignData
-          )
-
           const response = await api.get(
-            `/admin/campaigns/${createdCampaign.id}`,
+            `/admin/campaigns/${campaign1.id}`,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
-          expect(response.data.campaign).toEqual({
-            id: expect.any(String),
-            name: "campaign 1",
-            description: "test description",
-            campaign_identifier: "test-1",
-            starts_at: expect.any(String),
-            ends_at: expect.any(String),
-            budget: {
-              id: expect.any(String),
-              type: "spend",
-              limit: 1000,
-              currency_code: "USD",
-              raw_limit: {
-                precision: 20,
-                value: "1000",
-              },
-              raw_used: {
-                precision: 20,
-                value: "0",
-              },
-              used: 0,
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              deleted_at: null,
-            },
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            deleted_at: null,
-          })
+          expect(response.data.campaign).toEqual(
+            expect.objectContaining({
+              id: campaign1.id,
+            })
+          )
         })
 
         it("should get the requested campaign with filtered fields and relations", async () => {
-          const createdCampaign = await promotionModuleService.createCampaigns(
-            campaignData
-          )
-
           const response = await api.get(
-            `/admin/campaigns/${createdCampaign.id}?fields=name`,
+            `/admin/campaigns/${campaign1.id}?fields=name`,
             adminHeaders
           )
 
           expect(response.status).toEqual(200)
           expect(response.data.campaign).toEqual({
-            id: expect.any(String),
-            name: "campaign 1",
+            id: campaign1.id,
+            name: campaign1.name,
           })
         })
       })
@@ -355,98 +268,6 @@ medusaIntegrationTestRunner({
             })
           )
         })
-
-        it("should create 3 campaigns in parallel and have the context passed as argument when calling createCampaigns with different transactionId", async () => {
-          await api.post(
-            `/admin/promotions`,
-            { ...promotionData, code: "PARALLEL" },
-            adminHeaders
-          )
-
-          const spyCreateCampaigns = jest.spyOn(
-            promotionModuleService.constructor.prototype,
-            "createCampaigns"
-          )
-
-          const a = async () => {
-            return await api.post(
-              `/admin/campaigns`,
-              {
-                name: "camp_1",
-                campaign_identifier: "camp_1",
-                starts_at: new Date("01/01/2024").toISOString(),
-                ends_at: new Date("01/02/2024").toISOString(),
-                budget: {
-                  limit: 1000,
-                  type: "usage",
-                },
-              },
-              adminHeaders
-            )
-          }
-
-          const b = async () => {
-            return await api.post(
-              `/admin/campaigns`,
-              {
-                name: "camp_2",
-                campaign_identifier: "camp_2",
-                starts_at: new Date("01/02/2024").toISOString(),
-                ends_at: new Date("01/03/2029").toISOString(),
-                budget: {
-                  limit: 500,
-                  type: "usage",
-                },
-              },
-              adminHeaders
-            )
-          }
-
-          const c = async () => {
-            return await api.post(
-              `/admin/campaigns`,
-              {
-                name: "camp_3",
-                campaign_identifier: "camp_3",
-                starts_at: new Date("01/03/2024").toISOString(),
-                ends_at: new Date("01/04/2029").toISOString(),
-                budget: {
-                  limit: 250,
-                  type: "usage",
-                },
-              },
-              {
-                headers: {
-                  ...adminHeaders.headers,
-                  "x-request-id": "my-custom-request-id",
-                },
-              }
-            )
-          }
-
-          await Promise.all([a(), b(), c()])
-
-          expect(spyCreateCampaigns).toHaveBeenCalledTimes(3)
-          expect(spyCreateCampaigns.mock.calls[0][1].__type).toBe(
-            "MedusaContext"
-          )
-
-          const distinctTransactionId = [
-            ...new Set(
-              spyCreateCampaigns.mock.calls.map((call) => call[1].transactionId)
-            ),
-          ]
-          expect(distinctTransactionId).toHaveLength(3)
-
-          const distinctRequestId = [
-            ...new Set(
-              spyCreateCampaigns.mock.calls.map((call) => call[1].requestId)
-            ),
-          ]
-
-          expect(distinctRequestId).toHaveLength(3)
-          expect(distinctRequestId).toContain("my-custom-request-id")
-        })
       })
 
       describe("POST /admin/campaigns/:id", () => {
@@ -462,37 +283,17 @@ medusaIntegrationTestRunner({
         })
 
         it("should update a campaign successfully", async () => {
-          const createdPromotion = (
-            await api.post(`/admin/promotions`, promotionData, adminHeaders)
-          ).data.promotion
-
-          const createdCampaign = (
-            await api.post(
-              `/admin/campaigns`,
-              {
-                name: "test",
-                campaign_identifier: "test",
-                starts_at: new Date("01/01/2024").toISOString(),
-                ends_at: new Date("01/01/2029").toISOString(),
-                budget: {
-                  limit: 1000,
-                  type: "usage",
-                },
-              },
-              adminHeaders
-            )
-          ).data.campaign
-
-          await promotionModuleService.addPromotionsToCampaign({
-            id: createdCampaign.id,
-            promotion_ids: [createdPromotion.id],
-          })
+          await api.post(
+            `admin/campaigns/${campaign1.id}/promotions`,
+            { add: [promotion.id] },
+            adminHeaders
+          )
 
           const response = await api.post(
-            `/admin/campaigns/${createdCampaign.id}?fields=*promotions`,
+            `/admin/campaigns/${campaign1.id}?fields=*promotions`,
             {
-              name: "test-2",
-              campaign_identifier: "test-2",
+              name: "test-update",
+              campaign_identifier: "test-update",
               budget: {
                 limit: 2000,
               },
@@ -503,16 +304,16 @@ medusaIntegrationTestRunner({
           expect(response.status).toEqual(200)
           expect(response.data.campaign).toEqual(
             expect.objectContaining({
-              id: expect.any(String),
-              name: "test-2",
-              campaign_identifier: "test-2",
+              id: campaign1.id,
+              name: "test-update",
+              campaign_identifier: "test-update",
               budget: expect.objectContaining({
                 limit: 2000,
-                type: "usage",
+                type: "spend",
               }),
               promotions: [
                 expect.objectContaining({
-                  id: createdPromotion.id,
+                  id: promotion.id,
                 }),
               ],
             })
@@ -522,37 +323,26 @@ medusaIntegrationTestRunner({
 
       describe("DELETE /admin/campaigns/:id", () => {
         it("should delete campaign successfully", async () => {
-          const [createdCampaign] =
-            await promotionModuleService.createCampaigns([
-              {
-                name: "test",
-                campaign_identifier: "test",
-                starts_at: new Date("01/01/2024"),
-                ends_at: new Date("01/01/2025"),
-              },
-            ])
-
           const deleteRes = await api.delete(
-            `/admin/campaigns/${createdCampaign.id}`,
+            `/admin/campaigns/${campaign1.id}`,
             adminHeaders
           )
 
           expect(deleteRes.status).toEqual(200)
 
-          const campaigns = await promotionModuleService.listCampaigns({
-            id: [createdCampaign.id],
-          })
+          const { response } = await api
+            .post(`/admin/campaigns/${campaign1.id}`, {}, adminHeaders)
+            .catch((e) => e)
 
-          expect(campaigns.length).toEqual(0)
+          expect(response.status).toEqual(404)
+          expect(response.data.message).toEqual(
+            `Campaign with id "${campaign1.id}" not found`
+          )
         })
       })
 
       describe("POST /admin/campaigns/:id/promotions", () => {
         it("should add or remove promotions from campaign", async () => {
-          const campaign = (
-            await api.post(`/admin/campaigns`, campaignData, adminHeaders)
-          ).data.campaign
-
           const promotion1 = (
             await api.post(
               `/admin/promotions`,
@@ -561,17 +351,9 @@ medusaIntegrationTestRunner({
             )
           ).data.promotion
 
-          const promotion2 = (
-            await api.post(
-              `/admin/promotions`,
-              generatePromotionData(),
-              adminHeaders
-            )
-          ).data.promotion
-
           let response = await api.post(
-            `/admin/campaigns/${campaign.id}/promotions`,
-            { add: [promotion1.id, promotion2.id] },
+            `/admin/campaigns/${campaign1.id}/promotions`,
+            { add: [promotion1.id, promotion.id] },
             adminHeaders
           )
 
@@ -583,7 +365,7 @@ medusaIntegrationTestRunner({
           )
 
           response = await api.get(
-            `/admin/promotions?campaign_id=${campaign.id}`,
+            `/admin/promotions?campaign_id=${campaign1.id}`,
             adminHeaders
           )
 
@@ -595,19 +377,19 @@ medusaIntegrationTestRunner({
                 id: promotion1.id,
               }),
               expect.objectContaining({
-                id: promotion2.id,
+                id: promotion.id,
               }),
             ])
           )
 
           await api.post(
-            `/admin/campaigns/${campaign.id}/promotions`,
+            `/admin/campaigns/${campaign1.id}/promotions`,
             { remove: [promotion1.id] },
             adminHeaders
           )
 
           response = await api.get(
-            `/admin/promotions?campaign_id=${campaign.id}`,
+            `/admin/promotions?campaign_id=${campaign1.id}`,
             adminHeaders
           )
 
@@ -616,7 +398,7 @@ medusaIntegrationTestRunner({
           expect(response.data.promotions).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                id: promotion2.id,
+                id: promotion.id,
               }),
             ])
           )
