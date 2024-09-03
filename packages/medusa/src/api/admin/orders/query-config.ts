@@ -12,6 +12,7 @@ export const defaultAdminOrderFields = [
 export const defaultAdminRetrieveOrderFields = [
   "id",
   "display_id",
+  "region_id",
   "status",
   "version",
   "summary",

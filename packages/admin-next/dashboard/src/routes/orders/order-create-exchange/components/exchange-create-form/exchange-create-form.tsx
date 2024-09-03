@@ -522,7 +522,7 @@ export const ExchangeCreateForm = ({
                   variant="secondary"
                   size="small"
                 >
-                  {t("orders.exchanges.cancel")}
+                  {t("orders.exchanges.cancel.title")}
                 </Button>
               </RouteFocusModal.Close>
 

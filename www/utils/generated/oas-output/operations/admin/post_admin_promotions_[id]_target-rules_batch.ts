@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/promotions/{id}/target-rules/batch
  * operationId: PostPromotionsIdTargetRulesBatch
- * summary: Add Target Rules to Promotion
- * description: Add a list of target rules to a promotion.
+ * summary: Manage Target Rules of a Promotion
+ * x-sidebar-summary: Manage Target Rules
+ * description: Manage the target rules of a promotion to create, update, or delete them.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,14 +63,14 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The target rules to create, update, or delete.
  *         properties:
  *           create:
  *             type: array
- *             description: The promotion's create.
+ *             description: The target rules to create.
  *             items:
  *               type: object
- *               description: The create's details.
+ *               description: A target rule's details.
  *               required:
  *                 - operator
  *                 - description
@@ -78,6 +79,7 @@
  *               properties:
  *                 operator:
  *                   type: string
+ *                   description: The operator used to check whether the target rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
  *                   enum:
  *                     - gte
  *                     - lte
@@ -89,28 +91,31 @@
  *                 description:
  *                   type: string
  *                   title: description
- *                   description: The create's description.
+ *                   description: The target rule's description.
  *                 attribute:
  *                   type: string
  *                   title: attribute
- *                   description: The create's attribute.
+ *                   description: The attribute to compare against when checking whether a promotion can be applied on a cart.
+ *                   example: items.product.id
  *                 values:
  *                   oneOf:
  *                     - type: string
  *                       title: values
- *                       description: The create's values.
+ *                       description: The attribute's value.
+ *                       example: prod_123
  *                     - type: array
- *                       description: The create's values.
+ *                       description: The allowed attribute values.
  *                       items:
  *                         type: string
  *                         title: values
- *                         description: The value's values.
+ *                         description: An attribute value.
+ *                         example: prod_123
  *           update:
  *             type: array
- *             description: The promotion's update.
+ *             description: The target rules to update.
  *             items:
  *               type: object
- *               description: The update's details.
+ *               description: The properties to update in a target rule.
  *               required:
  *                 - id
  *                 - description
@@ -119,9 +124,10 @@
  *                 id:
  *                   type: string
  *                   title: id
- *                   description: The update's ID.
+ *                   description: The target rule's ID.
  *                 operator:
  *                   type: string
+ *                   description: The operator used to check whether the target rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
  *                   enum:
  *                     - gte
  *                     - lte
@@ -133,29 +139,32 @@
  *                 description:
  *                   type: string
  *                   title: description
- *                   description: The update's description.
+ *                   description: The target rule's description.
  *                 attribute:
  *                   type: string
  *                   title: attribute
- *                   description: The update's attribute.
+ *                   description: The attribute to compare against when checking whether a promotion can be applied on a cart.
+ *                   example: items.product.id
  *                 values:
  *                   oneOf:
  *                     - type: string
  *                       title: values
- *                       description: The update's values.
+ *                       description: The attribute's value.
+ *                       example: prod_123
  *                     - type: array
- *                       description: The update's values.
+ *                       description: The allowed attribute values.
  *                       items:
  *                         type: string
  *                         title: values
- *                         description: The value's values.
+ *                         description: An attribute value.
+ *                         example: prod_123
  *           delete:
  *             type: array
- *             description: The promotion's delete.
+ *             description: The target rules to delete.
  *             items:
  *               type: string
  *               title: delete
- *               description: The delete's details.
+ *               description: A target rule's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -171,7 +180,7 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The result of the batch operations.
  *           required:
  *             - created
  *             - updated
@@ -179,17 +188,17 @@
  *           properties:
  *             created:
  *               type: array
- *               description: The promotion's created.
+ *               description: The created target rules.
  *               items:
  *                 $ref: "#/components/schemas/AdminPromotionRule"
  *             updated:
  *               type: array
- *               description: The promotion's updated.
+ *               description: The updated target rules.
  *               items:
  *                 $ref: "#/components/schemas/AdminPromotionRule"
  *             deleted:
  *               type: object
- *               description: The promotion's deleted.
+ *               description: The details of the deleted target rules.
  *               required:
  *                 - ids
  *                 - object
@@ -197,19 +206,20 @@
  *               properties:
  *                 ids:
  *                   type: array
- *                   description: The deleted's ids.
+ *                   description: The IDs of deleted target rules.
  *                   items:
  *                     type: string
  *                     title: ids
- *                     description: The id's ids.
+ *                     description: A target rule's ID.
  *                 object:
  *                   type: string
  *                   title: object
- *                   description: The deleted's object.
+ *                   description: The name of the object that was deleted.
+ *                   default: "promotion-rule"
  *                 deleted:
  *                   type: boolean
  *                   title: deleted
- *                   description: The deleted's details.
+ *                   description: Whether the target rules were deleted.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

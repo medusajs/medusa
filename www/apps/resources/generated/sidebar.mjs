@@ -13987,6 +13987,40 @@ export const generatedSidebar = [
             "initialOpen": false
           }
         ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "title": "Testing Tools Reference",
+        "path": "/test-tools-reference",
+        "isChildSidebar": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "category",
+            "title": "Functions",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "medusaIntegrationTestRunner",
+                "path": "/test-tools-reference/medusaIntegrationTestRunner",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "moduleIntegrationTestRunner",
+                "path": "/test-tools-reference/moduleIntegrationTestRunner",
+                "children": []
+              }
+            ]
+          }
+        ]
       }
     ]
   },

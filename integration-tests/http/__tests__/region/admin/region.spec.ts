@@ -1,3 +1,4 @@
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -10,9 +11,10 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     let region1
     let region2
+    let container
 
     beforeEach(async () => {
-      const container = getContainer()
+      container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
 
       region1 = (
@@ -101,6 +103,37 @@ medusaIntegrationTestRunner({
               `Region with id: invalid-region-id not found`
             )
           })
+      })
+
+      it("should list payment providers", async () => {
+        const remoteLink = container.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
+
+        let response = await api.get(
+          `/store/regions/${region1.id}?fields=*payment_providers`
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.region.payment_providers).toEqual([])
+
+        await remoteLink.create([
+          {
+            [Modules.REGION]: { region_id: region1.id },
+            [Modules.PAYMENT]: { payment_provider_id: "pp_system_default" },
+          },
+        ])
+
+        response = await api.get(
+          `/store/regions/${region1.id}?fields=*payment_providers`
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.region.payment_providers).toEqual([
+          expect.objectContaining({
+            id: "pp_system_default",
+          }),
+        ])
       })
     })
 

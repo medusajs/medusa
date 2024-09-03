@@ -12,7 +12,9 @@ In this chapter, you’ll learn about workflows and how to define and execute th
 
 A workflow is a series of queries and actions that complete a task.
 
-You construct a workflow similar to how you create a JavaScript function, but unlike regular functions, a workflow creates an internal representation of your steps. This makes it possible to keep track of your workflow’s progress, automatically retry failing steps, and roll back steps.
+You construct a workflow similar to how you create a JavaScript function, but unlike regular functions, a workflow creates an internal representation of your steps.
+
+By using a workflow, you can track its execution's progress, provide roll-back logic for each step to mitigate data inconsistency when errors occur, automatically retry failing steps, and do much more, as explained in later chapters.
 
 ---
 
@@ -213,7 +215,7 @@ You’ll receive the following response:
 
 - You're defining a flow with interactions across multiple systems and services.
 - You're defining flows to be used across different resources. For example, if you want to invoke the flow manually through an API Router, but also want to automate its running through a scheduled job.
-- You want to define configurations related to errors and how to roll-back steps. This is explained more in later chapters.
+- You want to maintain data consistency and handle errors gracefully by rolling-back steps. This is explained more in later chapters.
 
 </Note>
 
