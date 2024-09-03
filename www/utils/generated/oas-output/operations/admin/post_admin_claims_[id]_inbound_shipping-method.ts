@@ -1,8 +1,10 @@
 /**
  * @oas [post] /admin/claims/{id}/inbound/shipping-method
  * operationId: PostClaimsIdInboundShippingMethod
- * summary: Add Shipping Methods to Claim
- * description: Add a list of shipping methods to a claim.
+ * summary: Add an Inbound Shipping Method to a Claim
+ * x-sidebar-summary: Add Inbound Shipping
+ * description: |
+ *   Add an inbound (or return) shipping method to a claim. The inbound shipping method will have a `SHIPPING_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id
