@@ -2,7 +2,7 @@
  * @oas [post] /admin/returns
  * operationId: PostReturns
  * summary: Create Return
- * description: Create a return.
+ * description: Create a return. The return can later be requested or confirmed.
  * x-authenticated: true
  * parameters:
  *   - name: expand

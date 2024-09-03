@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/sales-channels/{id}/products
  * operationId: PostSalesChannelsIdProducts
- * summary: Add Products to Sales Channel
- * description: Add a list of products to a sales channel.
+ * summary: Manage Products in Sales Channel
+ * x-sidebar-summary: Manage Products
+ * description: Manage products in a sales channel to add or remove them from the channel.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,22 +63,22 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The products to add or remove from the channel.
  *         properties:
  *           add:
  *             type: array
- *             description: The sales channel's add.
+ *             description: The products to add to the sales channel.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A product's ID.
  *           remove:
  *             type: array
- *             description: The sales channel's remove.
+ *             description: The products to remove from the sales channel.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A product's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

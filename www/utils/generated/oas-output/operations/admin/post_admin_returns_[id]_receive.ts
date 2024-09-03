@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/returns/{id}/receive
  * operationId: PostReturnsIdReceive
- * summary: Add Receives to Return
- * description: Add a list of receives to a return.
+ * summary: Start Return Receival
+ * description: Start a return receival process to be later confirmed using the `/admin/returns/:id/receive/confirm` API route.
  * x-authenticated: true
  * parameters:
  *   - name: id
