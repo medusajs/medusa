@@ -69,20 +69,28 @@ get:
           with `-`.
     - name: include_ancestors_tree
       in: query
-      description: The product category's include ancestors tree.
+      description: >-
+        Whether to retrieve the category's parent. When enabled, the parent
+        category is set in the `parent_category` property.
       required: false
       schema:
         type: boolean
         title: include_ancestors_tree
-        description: The product category's include ancestors tree.
+        description: >-
+          Whether to retrieve the category's parent. When enabled, the parent
+          category is set in the `parent_category` property.
     - name: include_descendants_tree
       in: query
-      description: The product category's include descendants tree.
+      description: >-
+        Whether to retrieve a list of child categories. When enabled, the parent
+        categories are added to the `category_children` property.
       required: false
       schema:
         type: boolean
         title: include_descendants_tree
-        description: The product category's include descendants tree.
+        description: >-
+          Whether to retrieve a list of child categories. When enabled, the
+          parent categories are added to the `category_children` property.
   security:
     - api_token: []
     - cookie_auth: []

@@ -2,9 +2,7 @@
  * @oas [get] /admin/inventory-items/{id}/location-levels
  * operationId: GetInventoryItemsIdLocationLevels
  * summary: List Inventory Levels
- * description: Retrieve a list of inventory levels associated with an inventory item. The
- *   inventory levels can be filtered by fields like `location_id`. The inventory
- *   levels can also be paginated.
+ * description: Retrieve a list of inventory levels associated with an inventory item. The inventory levels can be filtered by fields like `location_id`. The inventory levels can also be paginated.
  * x-authenticated: true
  * parameters:
  *   - name: id

@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/collections/{id}/products
  * operationId: PostCollectionsIdProducts
- * summary: Add Products to Collection
- * description: Add a list of products to a collection.
+ * summary: Manage Products of a Collection
+ * x-sidebar-summary: Manage Products
+ * description: Manage the products of a collection by adding or removing them from the collection.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,22 +63,22 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The products to add or remove.
  *         properties:
  *           add:
  *             type: array
- *             description: The collection's add.
+ *             description: The products to add to the collection.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A product's ID.
  *           remove:
  *             type: array
- *             description: The collection's remove.
+ *             description: The products to remove from the collection.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A product's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

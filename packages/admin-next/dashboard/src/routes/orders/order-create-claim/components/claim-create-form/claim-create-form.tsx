@@ -47,6 +47,7 @@ import {
   useRemoveClaimInboundItem,
   useUpdateClaimInboundItem,
   useUpdateClaimInboundShipping,
+  useUpdateClaimOutboundShipping,
 } from "../../../../../hooks/api/claims"
 import { useUpdateReturn } from "../../../../../hooks/api/returns.tsx"
 import { sdk } from "../../../../../lib/client"
@@ -78,10 +79,17 @@ export const ClaimCreateForm = ({
    * STATE
    */
   const { setIsOpen } = useStackedModal()
-  const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
-  const [customShippingAmount, setCustomShippingAmount] = useState<
-    number | string
-  >(0)
+  const [isShippingInboundPriceEdit, setIsShippingInboundPriceEdit] =
+    useState(false)
+  const [isShippingOutboundPriceEdit, setIsShippingOutboundPriceEdit] =
+    useState(false)
+
+  const [customInboundShippingAmount, setCustomInboundShippingAmount] =
+    useState<number | string>(0)
+
+  const [customOutboundShippingAmount, setCustomOutboundShippingAmount] =
+    useState<number | string>(0)
+
   const [inventoryMap, setInventoryMap] = useState<
     Record<string, InventoryLevelDTO[]>
   >({})
@@ -114,6 +122,11 @@ export const ClaimCreateForm = ({
   } = useUpdateClaimInboundShipping(claim.id, order.id)
 
   const {
+    mutateAsync: updateOutboundShipping,
+    isPending: isUpdatingOutboundShipping,
+  } = useUpdateClaimOutboundShipping(claim.id, order.id)
+
+  const {
     mutateAsync: deleteInboundShipping,
     isPending: isDeletingInboundShipping,
   } = useDeleteClaimInboundShipping(claim.id, order.id)
@@ -133,6 +146,7 @@ export const ClaimCreateForm = ({
     isAddingInboundShipping ||
     isUpdatingInboundShipping ||
     isDeletingInboundShipping ||
+    isUpdatingOutboundShipping ||
     isAddingInboundItem ||
     isRemovingInboundItem ||
     isUpdatingInboundItem ||
@@ -235,9 +249,27 @@ export const ClaimCreateForm = ({
       )
   )
 
+  const inboundShipping = preview.shipping_methods.find((s) => {
+    return !!s.actions?.find(
+      (a) => a.action === "SHIPPING_ADD" && !!a.return_id
+    )
+  })
+
   const outboundShipping = preview.shipping_methods.find((s) => {
     return !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
   })
+
+  useEffect(() => {
+    if (inboundShipping) {
+      setCustomInboundShippingAmount(inboundShipping.total)
+    }
+  }, [inboundShipping])
+
+  useEffect(() => {
+    if (outboundShipping) {
+      setCustomOutboundShippingAmount(outboundShipping.total)
+    }
+  }, [outboundShipping])
 
   const {
     fields: inboundItems,
@@ -291,7 +323,7 @@ export const ClaimCreateForm = ({
   }, [previewItems])
 
   useEffect(() => {
-    const method = preview.shipping_methods.find(
+    let method = preview.shipping_methods.find(
       (s) =>
         !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
     )
@@ -299,14 +331,27 @@ export const ClaimCreateForm = ({
     if (method) {
       form.setValue("inbound_option_id", method.shipping_option_id)
     }
+
+    method = preview.shipping_methods.find(
+      (s) =>
+        !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
+    )
+
+    if (method) {
+      form.setValue("outbound_option_id", method.shipping_option_id)
+    }
   }, [preview.shipping_methods])
 
   useEffect(() => {
     form.setValue("location_id", orderReturn?.location_id)
   }, [orderReturn])
 
-  const showInboundItemsPlaceholder = !inboundItems.length
-  const shippingOptionId = form.watch("inbound_option_id")
+  const showInboundItemsPlaceholder = !inboundPreviewItems.length
+  const showOutboundItemsPlaceholder = !outboundPreviewItems.length
+
+  const inboundShippingOptionId = form.watch("inbound_option_id")
+  const outboundShippingOptionId = form.watch("outbound_option_id")
+
   const prompt = usePrompt()
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -393,10 +438,16 @@ export const ClaimCreateForm = ({
   }
 
   useEffect(() => {
-    if (isShippingPriceEdit) {
-      document.getElementById("js-shipping-input")?.focus()
+    if (isShippingInboundPriceEdit) {
+      document.getElementById("js-shipping-inbound-input")?.focus()
     }
-  }, [isShippingPriceEdit])
+  }, [isShippingInboundPriceEdit])
+
+  useEffect(() => {
+    if (isShippingOutboundPriceEdit) {
+      document.getElementById("js-shipping-outbound-input")?.focus()
+    }
+  }, [isShippingOutboundPriceEdit])
 
   const showLevelsWarning = useMemo(() => {
     if (!locationId) {
@@ -753,22 +804,22 @@ export const ClaimCreateForm = ({
                 </span>
 
                 <span className="txt-small text-ui-fg-subtle flex items-center">
-                  {!isShippingPriceEdit && (
+                  {!isShippingInboundPriceEdit && (
                     <IconButton
-                      onClick={() => setIsShippingPriceEdit(true)}
+                      onClick={() => setIsShippingInboundPriceEdit(true)}
                       variant="transparent"
                       className="text-ui-fg-muted"
                       disabled={
-                        showInboundItemsPlaceholder || !shippingOptionId
+                        showInboundItemsPlaceholder || !inboundShippingOptionId
                       }
                     >
                       <PencilSquare />
                     </IconButton>
                   )}
 
-                  {isShippingPriceEdit ? (
+                  {isShippingInboundPriceEdit ? (
                     <CurrencyInput
-                      id="js-shipping-input"
+                      id="js-shipping-inbound-input"
                       onBlur={() => {
                         let actionId
 
@@ -786,9 +837,9 @@ export const ClaimCreateForm = ({
                         })
 
                         const customPrice =
-                          customShippingAmount === ""
+                          customInboundShippingAmount === ""
                             ? null
-                            : parseFloat(customShippingAmount)
+                            : parseFloat(customInboundShippingAmount)
 
                         if (actionId) {
                           updateInboundShipping(
@@ -803,15 +854,15 @@ export const ClaimCreateForm = ({
                             }
                           )
                         }
-                        setIsShippingPriceEdit(false)
+                        setIsShippingInboundPriceEdit(false)
                       }}
                       symbol={
                         currencies[order.currency_code.toUpperCase()]
                           .symbol_native
                       }
                       code={order.currency_code}
-                      onValueChange={setCustomShippingAmount}
-                      value={customShippingAmount}
+                      onValueChange={setCustomInboundShippingAmount}
+                      value={customInboundShippingAmount}
                       disabled={showInboundItemsPlaceholder}
                     />
                   ) : (
@@ -826,9 +877,70 @@ export const ClaimCreateForm = ({
                 </span>
 
                 <span className="txt-small text-ui-fg-subtle flex items-center">
-                  {getStylizedAmount(
-                    outboundShipping?.amount ?? 0,
-                    order.currency_code
+                  {!isShippingOutboundPriceEdit && (
+                    <IconButton
+                      onClick={() => setIsShippingOutboundPriceEdit(true)}
+                      variant="transparent"
+                      className="text-ui-fg-muted"
+                      disabled={
+                        showOutboundItemsPlaceholder ||
+                        !outboundShippingOptionId
+                      }
+                    >
+                      <PencilSquare />
+                    </IconButton>
+                  )}
+
+                  {isShippingOutboundPriceEdit ? (
+                    <CurrencyInput
+                      id="js-shipping-outbound-input"
+                      onBlur={() => {
+                        let actionId
+
+                        preview.shipping_methods.forEach((s) => {
+                          if (s.actions) {
+                            for (const a of s.actions) {
+                              if (a.action === "SHIPPING_ADD" && !a.return_id) {
+                                actionId = a.id
+                              }
+                            }
+                          }
+                        })
+
+                        const customPrice =
+                          customOutboundShippingAmount === ""
+                            ? null
+                            : parseFloat(customOutboundShippingAmount)
+
+                        if (actionId) {
+                          updateOutboundShipping(
+                            {
+                              actionId,
+                              custom_price: customPrice,
+                            },
+                            {
+                              onError: (error) => {
+                                toast.error(error.message)
+                              },
+                            }
+                          )
+                        }
+                        setIsShippingOutboundPriceEdit(false)
+                      }}
+                      symbol={
+                        currencies[order.currency_code.toUpperCase()]
+                          .symbol_native
+                      }
+                      code={order.currency_code}
+                      onValueChange={setCustomOutboundShippingAmount}
+                      value={customOutboundShippingAmount}
+                      disabled={showOutboundItemsPlaceholder}
+                    />
+                  ) : (
+                    getStylizedAmount(
+                      outboundShipping?.amount ?? 0,
+                      order.currency_code
+                    )
                   )}
                 </span>
               </div>

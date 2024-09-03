@@ -1,5 +1,6 @@
 type: object
 description: SUMMARY
+x-schemaName: AdminCreateRefundReason
 required:
   - label
 properties:
@@ -11,4 +12,3 @@ properties:
     type: string
     title: description
     description: The refund reason's description.
-x-schemaName: AdminCreateRefundReason

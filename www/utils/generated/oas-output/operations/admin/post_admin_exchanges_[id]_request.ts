@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/exchanges/{id}/request
  * operationId: PostExchangesIdRequest
- * summary: Add Requests to Exchange
- * description: Add a list of requests to a exchange.
+ * summary: Confirm an Exchange
+ * description: Confirm an exchange request, applying its changes on the associated order.
  * x-authenticated: true
  * parameters:
  *   - name: id
