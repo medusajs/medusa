@@ -189,6 +189,15 @@ const RETURN_REASON_INJECTION_ZONES = [
   "return_reason.list.after",
 ] as const
 
+const INVENTORY_ITEM_INJECTION_ZONES = [
+  "inventory_item.details.before",
+  "inventory_item.details.after",
+  "inventory_item.details.side.before",
+  "inventory_item.details.side.after",
+  "inventory_item.list.before",
+  "inventory_item.list.after",
+] as const
+
 /**
  * All valid injection zones in the admin panel. An injection zone is a specific place
  * in the admin panel where a plugin can inject custom widgets.
@@ -220,4 +229,5 @@ export const INJECTION_ZONES = [
   ...PRODUCT_TYPE_INJECTION_ZONES,
   ...PRODUCT_TAG_INJECTION_ZONES,
   ...RETURN_REASON_INJECTION_ZONES,
+  ...INVENTORY_ITEM_INJECTION_ZONES,
 ] as const

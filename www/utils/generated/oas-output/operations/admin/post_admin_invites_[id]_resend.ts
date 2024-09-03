@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/invites/{id}/resend
  * operationId: PostInvitesIdResend
- * summary: Add Resends to Invite
- * description: Add a list of resends to a invite.
+ * summary: Refresh Invite Token
+ * description: Refresh the token of an invite.
  * x-authenticated: false
  * parameters:
  *   - name: id

@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/customers/{id}/addresses/{address_id}
  * operationId: PostCustomersIdAddressesAddress_id
- * summary: Add Addresses to Customer
- * description: Add a list of addresses to a customer.
+ * summary: Update a Customer's Address
+ * x-sidebar-summary: Update Address
+ * description: Update a customer address's details.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -69,7 +70,7 @@
  *       schema:
  *         allOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The address's details.
  *             required:
  *               - address_name
  *               - company
@@ -87,65 +88,65 @@
  *               address_name:
  *                 type: string
  *                 title: address_name
- *                 description: The customer's address name.
+ *                 description: The name of the address.
  *               is_default_shipping:
  *                 type: boolean
  *                 title: is_default_shipping
- *                 description: The customer's is default shipping.
+ *                 description: Whether this address is used by default for shipping when placing an order.
  *               is_default_billing:
  *                 type: boolean
  *                 title: is_default_billing
- *                 description: The customer's is default billing.
+ *                 description: Whether this address is used by default for billing when placing an order.
  *               company:
  *                 type: string
  *                 title: company
- *                 description: The customer's company.
+ *                 description: The address's company.
  *               first_name:
  *                 type: string
  *                 title: first_name
- *                 description: The customer's first name.
+ *                 description: The address's first name.
  *               last_name:
  *                 type: string
  *                 title: last_name
- *                 description: The customer's last name.
+ *                 description: The address's last name.
  *               address_1:
  *                 type: string
  *                 title: address_1
- *                 description: The customer's address 1.
+ *                 description: The address's first line
  *               address_2:
  *                 type: string
  *                 title: address_2
- *                 description: The customer's address 2.
+ *                 description: The address's second line
  *               city:
  *                 type: string
  *                 title: city
- *                 description: The customer's city.
+ *                 description: The address's city.
  *               country_code:
  *                 type: string
  *                 title: country_code
- *                 description: The customer's country code.
+ *                 description: The address's country code.
  *               province:
  *                 type: string
  *                 title: province
- *                 description: The customer's province.
+ *                 description: The address's province.
  *               postal_code:
  *                 type: string
  *                 title: postal_code
- *                 description: The customer's postal code.
+ *                 description: The address's postal code.
  *               phone:
  *                 type: string
  *                 title: phone
- *                 description: The customer's phone.
+ *                 description: The address's phone.
  *               metadata:
  *                 type: object
- *                 description: The customer's metadata.
+ *                 description: The address's metadata.
  *           - type: object
- *             description: SUMMARY
+ *             description: The address's details.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The address's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

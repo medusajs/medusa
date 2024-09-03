@@ -2,6 +2,7 @@
  * @schema AdminCreateRegion
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminCreateRegion
  * required:
  *   - name
  *   - currency_code
@@ -25,6 +26,10 @@
  *     type: boolean
  *     title: automatic_taxes
  *     description: The region's automatic taxes.
+ *   is_tax_inclusive:
+ *     type: boolean
+ *     title: is_tax_inclusive
+ *     description: The region's is tax inclusive.
  *   payment_providers:
  *     type: array
  *     description: The region's payment providers.
@@ -35,11 +40,6 @@
  *   metadata:
  *     type: object
  *     description: The region's metadata.
- *   is_tax_inclusive:
- *     type: boolean
- *     title: is_tax_inclusive
- *     description: The region's is tax inclusive.
- * x-schemaName: AdminCreateRegion
  * 
 */
 

@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/inventory-items/{id}
  * operationId: PostInventoryItemsId
- * summary: Update a Inventory Item
- * description: Update a inventory item's details.
+ * summary: Update an Inventory Item
+ * description: Update an inventory item's details.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,7 +62,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The properties to update in the inventory item.
  *         required:
  *           - sku
  *           - hs_code
@@ -81,11 +81,11 @@
  *           sku:
  *             type: string
  *             title: sku
- *             description: The inventory item's sku.
+ *             description: The inventory item's SKU.
  *           hs_code:
  *             type: string
  *             title: hs_code
- *             description: The inventory item's hs code.
+ *             description: The inventory item's HS code.
  *           weight:
  *             type: number
  *             title: weight
@@ -109,7 +109,7 @@
  *           mid_code:
  *             type: string
  *             title: mid_code
- *             description: The inventory item's mid code.
+ *             description: The inventory item's MID code.
  *           material:
  *             type: string
  *             title: material
@@ -125,14 +125,14 @@
  *           requires_shipping:
  *             type: boolean
  *             title: requires_shipping
- *             description: The inventory item's requires shipping.
+ *             description: Whether the inventory item requires shipping.
  *           thumbnail:
  *             type: string
  *             title: thumbnail
- *             description: The inventory item's thumbnail.
+ *             description: The URL of an image to be used as the inventory item's thumbnail. You can use the Upload API routes to upload an image and get its URL.
  *           metadata:
  *             type: object
- *             description: The inventory item's metadata.
+ *             description: The inventory item's metadata. Can be custom data in key-value pairs.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

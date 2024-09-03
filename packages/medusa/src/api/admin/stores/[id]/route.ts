@@ -2,6 +2,7 @@ import { updateStoresWorkflow } from "@medusajs/core-flows"
 import {
   remoteQueryObjectFromString,
   ContainerRegistrationKeys,
+  MedusaError,
 } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -32,6 +33,14 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateStoreType>,
   res: MedusaResponse<HttpTypes.AdminStoreResponse>
 ) => {
+  const existingStore = await refetchStore(req.params.id, req.scope, ["id"])
+  if (!existingStore) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Store with id "${req.params.id}" not found`
+    )
+  }
+
   const { result } = await updateStoresWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },

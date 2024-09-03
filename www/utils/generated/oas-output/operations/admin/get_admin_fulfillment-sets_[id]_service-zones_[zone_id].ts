@@ -3,8 +3,7 @@
  * operationId: GetFulfillmentSetsIdServiceZonesZone_id
  * summary: Get a Service Zone in a Fulfillment Set
  * x-sidebar-summary: Get a Service Zone
- * description: Retrieve a service zone that belongs to a fulfillment set.
- *   be paginated.
+ * description: Retrieve a service zone that belongs to a fulfillment set. be paginated.
  * x-authenticated: true
  * parameters:
  *   - name: id

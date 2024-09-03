@@ -1,6 +1,5 @@
-import React from "react"
 import { Button, Heading, IconButton, Input, Label } from "@medusajs/ui"
-import { useFieldArray, UseFormReturn } from "react-hook-form"
+import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form"
 import { XMarkMini } from "@medusajs/icons"
 import { useTranslation } from "react-i18next"
 
@@ -24,6 +23,11 @@ function VariantSection({ form, variant, index }: VariantSectionProps) {
     name: `variants.${index}.inventory`,
   })
 
+  const inventoryFormData = useWatch({
+    control: form.control,
+    name: `variants.${index}.inventory`,
+  })
+
   const items = useComboboxData({
     queryKey: ["inventory_items"],
     queryFn: (params) => sdk.admin.inventoryItem.list(params),
@@ -33,6 +37,21 @@ function VariantSection({ form, variant, index }: VariantSectionProps) {
         value: item.id,
       })),
   })
+
+  /**
+   * Will mark an option as disabled if another input already selected that option
+   * @param option
+   * @param inventoryIndex
+   */
+  const isItemOptionDisabled = (
+    option: (typeof items.options)[0],
+    inventoryIndex: number
+  ) => {
+    return inventoryFormData?.some(
+      (i, index) =>
+        index != inventoryIndex && i.inventory_item_id === option.value
+    )
+  }
 
   return (
     <div className="grid gap-y-4">
@@ -81,7 +100,10 @@ function VariantSection({ form, variant, index }: VariantSectionProps) {
                     <Form.Control>
                       <Combobox
                         {...field}
-                        options={items.options}
+                        options={items.options.map((o) => ({
+                          ...o,
+                          disabled: isItemOptionDisabled(o, inventoryIndex),
+                        }))}
                         searchValue={items.searchValue}
                         onSearchValueChange={items.onSearchValueChange}
                         fetchNextPage={items.fetchNextPage}

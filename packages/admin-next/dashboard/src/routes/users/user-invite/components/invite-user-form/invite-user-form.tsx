@@ -31,7 +31,6 @@ import {
 } from "../../../../../hooks/api/invites"
 import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-user-invite-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { backendUrl } from "../../../../../lib/client"
 import { isFetchError } from "../../../../../lib/is-fetch-error.ts"
 
 const InviteUserSchema = zod.object({
@@ -40,6 +39,8 @@ const InviteUserSchema = zod.object({
 
 const PAGE_SIZE = 10
 const PREFIX = "usr_invite"
+const INVITE_URL = `${window.location.origin}${__BASE__ === "/" ? "" : __BASE__}/invite?token=`
+
 
 export const InviteUserForm = () => {
   const { t } = useTranslation()
@@ -206,7 +207,7 @@ const InviteActions = ({ invite }: { invite: InviteDTO }) => {
   }
 
   const handleCopyInviteLink = () => {
-    const inviteUrl = `${backendUrl}/app/invite?token=${invite.token}`
+    const inviteUrl = `${INVITE_URL}${invite.token}`
     copy(inviteUrl)
   }
 

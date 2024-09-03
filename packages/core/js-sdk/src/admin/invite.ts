@@ -69,6 +69,7 @@ export class Invite {
     return await this.client.fetch<{ invite: HttpTypes.AdminInviteResponse }>(
       `/admin/invites/${id}/resend`,
       {
+        method: "POST",
         headers,
       }
     )

@@ -2,7 +2,7 @@
  * @oas [post] /admin/draft-orders
  * operationId: PostDraftOrders
  * summary: Create Draft Order
- * description: Create a draft order.
+ * description: Create a draft order. This creates an order with the `is_draft_order` property enabled.
  * x-authenticated: true
  * parameters:
  *   - name: expand
@@ -57,7 +57,7 @@
  *       schema:
  *         allOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The draft order's details.
  *             required:
  *               - sales_channel_id
  *               - email
@@ -68,25 +68,27 @@
  *               - metadata
  *             properties:
  *               status:
- *                 type: boolean
+ *                 type: string
  *                 title: status
  *                 description: The draft order's status.
+ *                 enum:
+ *                   - completed
  *               sales_channel_id:
  *                 type: string
  *                 title: sales_channel_id
- *                 description: The draft order's sales channel id.
+ *                 description: The ID of the associated sales channel.
  *               email:
  *                 type: string
  *                 title: email
- *                 description: The draft order's email.
+ *                 description: The email of the draft order's customer.
  *                 format: email
  *               customer_id:
  *                 type: string
  *                 title: customer_id
- *                 description: The draft order's customer id.
+ *                 description: The ID of the draft order's customer.
  *               billing_address:
  *                 type: object
- *                 description: The draft order's billing address.
+ *                 description: The billing address's details.
  *                 required:
  *                   - first_name
  *                   - last_name
@@ -119,11 +121,11 @@
  *                   address_1:
  *                     type: string
  *                     title: address_1
- *                     description: The billing address's address 1.
+ *                     description: The billing address's first line.
  *                   address_2:
  *                     type: string
  *                     title: address_2
- *                     description: The billing address's address 2.
+ *                     description: The billing address's second line.
  *                   city:
  *                     type: string
  *                     title: city
@@ -178,11 +180,11 @@
  *                   address_1:
  *                     type: string
  *                     title: address_1
- *                     description: The shipping address's address 1.
+ *                     description: The shipping address's first line.
  *                   address_2:
  *                     type: string
  *                     title: address_2
- *                     description: The shipping address's address 2.
+ *                     description: The shipping address's second line.
  *                   city:
  *                     type: string
  *                     title: city
@@ -207,7 +209,7 @@
  *                 description: The draft order's items.
  *                 items:
  *                   type: object
- *                   description: The item's items.
+ *                   description: The item's details.
  *                   required:
  *                     - title
  *                     - sku
@@ -224,7 +226,7 @@
  *                     sku:
  *                       type: string
  *                       title: sku
- *                       description: The item's sku.
+ *                       description: The item's SKU.
  *                     barcode:
  *                       type: string
  *                       title: barcode
@@ -232,7 +234,7 @@
  *                     variant_id:
  *                       type: string
  *                       title: variant_id
- *                       description: The item's variant id.
+ *                       description: The ID of the associated product variant.
  *                     unit_price:
  *                       oneOf:
  *                         - type: string
@@ -254,25 +256,25 @@
  *                             precision:
  *                               type: number
  *                               title: precision
- *                               description: The unit price's precision.
+ *                               description: The unit price's rounding precision.
  *                     quantity:
  *                       type: number
  *                       title: quantity
- *                       description: The item's quantity.
+ *                       description: The item's ordered quantity.
  *                     metadata:
  *                       type: object
  *                       description: The item's metadata.
  *               region_id:
  *                 type: string
  *                 title: region_id
- *                 description: The draft order's region id.
+ *                 description: The ID of the associated region.
  *               promo_codes:
  *                 type: array
- *                 description: The draft order's promo codes.
+ *                 description: The promotion codes applied on the draft order.
  *                 items:
  *                   type: string
  *                   title: promo_codes
- *                   description: The promo code's promo codes.
+ *                   description: A promotion code.
  *               currency_code:
  *                 type: string
  *                 title: currency_code
@@ -280,16 +282,14 @@
  *               no_notification_order:
  *                 type: boolean
  *                 title: no_notification_order
- *                 description: The draft order's no notification order.
+ *                 description: Whether to send the customer notifications on order changes.
  *               shipping_methods:
  *                 type: array
  *                 description: The draft order's shipping methods.
  *                 items:
  *                   type: object
- *                   description: The shipping method's shipping methods.
+ *                   description: The shipping method's details.
  *                   required:
- *                     - shipping_method_id
- *                     - order_id
  *                     - name
  *                     - option_id
  *                     - amount
@@ -297,11 +297,7 @@
  *                     shipping_method_id:
  *                       type: string
  *                       title: shipping_method_id
- *                       description: The shipping method's shipping method id.
- *                     order_id:
- *                       type: string
- *                       title: order_id
- *                       description: The shipping method's order id.
+ *                       description: The ID of an existing shipping method.
  *                     name:
  *                       type: string
  *                       title: name
@@ -309,10 +305,12 @@
  *                     option_id:
  *                       type: string
  *                       title: option_id
- *                       description: The shipping method's option id.
+ *                       description: The ID of the shipping option this method is created from.
  *                     data:
  *                       type: object
- *                       description: The shipping method's data.
+ *                       description: The shipping method's data, useful for fulfillment providers.
+ *                       externalDocs:
+ *                         url: https://docs.medusajs.com/v2/resources/commerce-modules/order/concepts#data-property
  *                     amount:
  *                       oneOf:
  *                         - type: string
@@ -334,17 +332,17 @@
  *                             precision:
  *                               type: number
  *                               title: precision
- *                               description: The amount's precision.
+ *                               description: The amount's rounding precision.
  *               metadata:
  *                 type: object
  *                 description: The draft order's metadata.
  *           - type: object
- *             description: SUMMARY
+ *             description: The draft order's details.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The draft order's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

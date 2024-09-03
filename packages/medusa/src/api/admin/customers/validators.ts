@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { booleanString } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
@@ -34,6 +35,7 @@ export const AdminCustomersParams = createFindParams({
     company_name: z.union([z.string(), z.array(z.string())]).optional(),
     first_name: z.union([z.string(), z.array(z.string())]).optional(),
     last_name: z.union([z.string(), z.array(z.string())]).optional(),
+    has_account: booleanString().optional(),
     created_by: z.union([z.string(), z.array(z.string())]).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),

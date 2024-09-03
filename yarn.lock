@@ -18843,7 +18843,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-port@npm:^5.1.1":
+"get-port@npm:^5.1, get-port@npm:^5.1.1":
   version: 5.1.1
   resolution: "get-port@npm:5.1.1"
   checksum: 2873877a469b24e6d5e0be490724a17edb39fafc795d1d662e7bea951ca649713b4a50117a473f9d162312cb0e946597bd0e049ed2f866e79e576e8e213d3d1c
@@ -22757,6 +22757,7 @@ __metadata:
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     cross-env: ^5.2.1
+    get-port: ^5.1
     jest: ^29.7.0
     randomatic: ^3.1.1
     rimraf: ^3.0.2
@@ -22769,7 +22770,6 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     axios: ^0.28.0
     express: ^4.18.3
-    get-port: ^5.1.0
     pg-god: ^1.0.12
   peerDependenciesMeta:
     "@medusajs/core":
@@ -22785,8 +22785,6 @@ __metadata:
     axios:
       optional: true
     express:
-      optional: true
-    get-port:
       optional: true
     pg-god:
       optional: true

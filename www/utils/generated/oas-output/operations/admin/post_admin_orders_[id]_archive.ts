@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/orders/{id}/archive
  * operationId: PostOrdersIdArchive
- * summary: Add Archives to Order
- * description: Add a list of archives to a order.
+ * summary: Archive an Order
+ * description: Change the status of an order to archived.
  * x-authenticated: true
  * parameters:
  *   - name: id

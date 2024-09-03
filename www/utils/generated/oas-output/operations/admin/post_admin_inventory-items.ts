@@ -2,7 +2,7 @@
  * @oas [post] /admin/inventory-items
  * operationId: PostInventoryItems
  * summary: Create Inventory Item
- * description: Create a inventory item.
+ * description: Create an inventory item.
  * x-authenticated: true
  * parameters:
  *   - name: expand

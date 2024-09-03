@@ -1,0 +1,23 @@
+/**
+ * @schema AdminCreateShippingProfile
+ * type: object
+ * description: SUMMARY
+ * required:
+ *   - name
+ *   - type
+ * properties:
+ *   name:
+ *     type: string
+ *     title: name
+ *     description: The shipping profile's name.
+ *   type:
+ *     type: string
+ *     title: type
+ *     description: The shipping profile's type.
+ *   metadata:
+ *     type: object
+ *     description: The shipping profile's metadata.
+ * x-schemaName: AdminCreateShippingProfile
+ * 
+*/
+

@@ -49,7 +49,7 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: groups
  *     in: query
- *     required: true
+ *     required: false
  *     schema:
  *       oneOf:
  *         - type: string
@@ -3323,6 +3323,14 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: has_account
+ *     in: query
+ *     description: Filter by whether the customer is registered.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: has_account
+ *       description: Filter by whether the customer is registered.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
