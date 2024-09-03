@@ -8,7 +8,9 @@ In this chapter, you’ll learn what data models are and how to create a data mo
 
 ## What is a Data Model?
 
-A data model is a class that represents a table in the database. It's created in a module.
+A data model is a class that represents a table in the database.
+
+A data model is created in a module, and its record are managed in the database using the module's service.
 
 ---
 
@@ -46,7 +48,7 @@ The example above defines the data model `MyCustom` with the properties `id` and
 
 ### Generate a Migration
 
-A migration defines changes to be made in the database, such as create or update tables.
+A migration is a TypeScript or JavaScript file that defines changes to be made in the database, such as create or update tables.
 
 To generate a migration for the data models in your module, run the following command:
 
