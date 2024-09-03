@@ -136,6 +136,20 @@ const useDataGridShortcuts = () => {
           Windows: ["Shift", "Ctrl", "↑"],
         },
       },
+      {
+        label: t("dataGrid.shortcuts.commands.focusToolbar"),
+        keys: {
+          Mac: ["⌃", "⌥", ","],
+          Windows: ["Ctrl", "Alt", ","],
+        },
+      },
+      {
+        label: t("dataGrid.shortcuts.commands.focusCancel"),
+        keys: {
+          Mac: ["⌃", "⌥", "."],
+          Windows: ["Ctrl", "Alt", "."],
+        },
+      },
     ],
     [t]
   )
