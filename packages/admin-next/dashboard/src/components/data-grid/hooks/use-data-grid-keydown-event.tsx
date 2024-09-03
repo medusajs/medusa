@@ -13,7 +13,6 @@ import {
   DataGridUpdateCommand,
 } from "../models"
 import { DataGridCoordinates } from "../types"
-import { isSpecialFocusKey } from "../utils"
 
 type UseDataGridKeydownEventOptions<TData, TFieldValues extends FieldValues> = {
   containerRef: React.RefObject<HTMLDivElement>
@@ -558,11 +557,6 @@ export const useDataGridKeydownEvent = <
         handleTabKey(e)
         return
       }
-
-      if (isSpecialFocusKey(e)) {
-        handleSpecialFocusKeys(e)
-        return
-      }
     },
     [
       handleEscapeKey,
@@ -572,12 +566,12 @@ export const useDataGridKeydownEvent = <
       handleEnterKey,
       handleDeleteKey,
       handleTabKey,
-      handleSpecialFocusKeys,
     ]
   )
 
   return {
     handleKeyDownEvent,
+    handleSpecialFocusKeys,
   }
 }
 

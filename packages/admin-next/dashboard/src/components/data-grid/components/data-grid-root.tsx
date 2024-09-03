@@ -46,7 +46,7 @@ import {
 } from "../hooks"
 import { DataGridMatrix } from "../models"
 import { DataGridCoordinates, GridColumnOption } from "../types"
-import { isCellMatch } from "../utils"
+import { isCellMatch, isSpecialFocusKey } from "../utils"
 import { DataGridKeyboardShortcutModal } from "./data-grid-keyboard-shortcut-modal"
 export interface DataGridRootProps<
   TData,
@@ -314,27 +314,28 @@ export const DataGridRoot = <
     anchor,
   })
 
-  const { handleKeyDownEvent } = useDataGridKeydownEvent<TData, TFieldValues>({
-    containerRef,
-    matrix,
-    queryTool,
-    anchor,
-    rangeEnd,
-    isEditing,
-    setTrapActive,
-    setRangeEnd,
-    getSelectionValues,
-    getValues,
-    setSelectionValues,
-    onEditingChangeHandler,
-    restoreSnapshot,
-    setSingleRange,
-    scrollToCoordinates,
-    execute,
-    undo,
-    redo,
-    setValue,
-  })
+  const { handleKeyDownEvent, handleSpecialFocusKeys } =
+    useDataGridKeydownEvent<TData, TFieldValues>({
+      containerRef,
+      matrix,
+      queryTool,
+      anchor,
+      rangeEnd,
+      isEditing,
+      setTrapActive,
+      setRangeEnd,
+      getSelectionValues,
+      getValues,
+      setSelectionValues,
+      onEditingChangeHandler,
+      restoreSnapshot,
+      setSingleRange,
+      scrollToCoordinates,
+      execute,
+      undo,
+      redo,
+      setValue,
+    })
 
   const { handleMouseUpEvent } = useDataGridMouseUpEvent<TData, TFieldValues>({
     matrix,
@@ -425,6 +426,21 @@ export const DataGridRoot = <
     handleCopyEvent,
     handlePasteEvent,
   ])
+
+  useEffect(() => {
+    const specialFocusHandler = (e: KeyboardEvent) => {
+      if (isSpecialFocusKey(e)) {
+        handleSpecialFocusKeys(e)
+        return
+      }
+    }
+
+    window.addEventListener("keydown", specialFocusHandler)
+
+    return () => {
+      window.removeEventListener("keydown", specialFocusHandler)
+    }
+  }, [handleSpecialFocusKeys])
 
   const handleHeaderInteractionChange = useCallback((isActive: boolean) => {
     if (isActive) {
