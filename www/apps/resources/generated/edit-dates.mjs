@@ -145,7 +145,7 @@ export const generatedEditDates = {
   "app/recipes/digital-products/page.mdx": "2024-08-02T13:02:06+00:00",
   "app/recipes/ecommerce/page.mdx": "2024-06-09T15:18:43+02:00",
   "app/recipes/integrate-ecommerce-stack/page.mdx": "2024-08-05T07:24:27+00:00",
-  "app/recipes/marketplace/examples/vendors/page.mdx": "2024-07-31T17:01:33+03:00",
+  "app/recipes/marketplace/examples/vendors/page.mdx": "2024-09-02T14:06:37.189Z",
   "app/recipes/marketplace/page.mdx": "2024-07-11T15:56:41+00:00",
   "app/recipes/multi-region-store/page.mdx": "2024-07-01T10:21:19+03:00",
   "app/recipes/omnichannel/page.mdx": "2024-06-09T15:18:43+02:00",
