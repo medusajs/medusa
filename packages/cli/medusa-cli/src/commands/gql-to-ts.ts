@@ -1,28 +1,22 @@
-import fs from "fs/promises"
-import path from "path"
 import { parse, printSchema } from "graphql"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
 import { codegen } from "@graphql-codegen/core"
 import { logger, MedusaAppLoader } from "@medusajs/framework"
 import { initializeContainer } from "@medusajs/medusa/dist/loaders"
+import { FileSystem } from "@medusajs/utils"
 
 export async function graphqlToTs() {
   try {
     const directory = process.cwd()
+
     await initializeContainer(directory)
     const medusaAppLoader = new MedusaAppLoader()
     const { gqlSchema: schema } = await medusaAppLoader.load()
 
-    console.log(schema)
-
-    const outputPath = path.join(process.cwd(), "src/commands/generated.ts")
-
     const config = {
       documents: [],
       config: {},
-      // used by a plugin internally, although the 'typescript' plugin currently
-      // returns the string output, rather than writing to a file
-      filename: outputPath,
+      filename: "",
       schema: parse(printSchema(schema as any)),
       plugins: [
         // Each plugin should be an object
@@ -35,9 +29,20 @@ export async function graphqlToTs() {
       },
     }
 
+    const fileSystem = new FileSystem(directory)
+
     const output = await codegen(config)
-    await fs.writeFile(outputPath, output)
-    console.log("Outputs generated!")
+    await fileSystem.create("src/__generated/remote-query-type.ts", output)
+
+    const barrelExists = await fileSystem.exists("src/__generated/index.ts")
+
+    if (!barrelExists) {
+      await fileSystem.create(
+        "src/__generated/index.ts",
+        "export * as RemoteQueryTypes from './remote-query-types'"
+      )
+    }
+
     process.exit()
   } catch (error) {
     logger.error(error)
