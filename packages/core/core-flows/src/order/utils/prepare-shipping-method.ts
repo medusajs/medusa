@@ -45,7 +45,8 @@ export function prepareShippingMethodUpdate({
   ) as OrderChangeActionDTO
 
   const data = input.data
-  const option = shippingOptions[0]
+
+  const option = shippingOptions?.[0]
 
   const isCustomPrice = !isDefined(shippingOptions)
   const price = isCustomPrice
