@@ -125,7 +125,6 @@ export type AdminUpdateApplicationMethodType = z.infer<
 >
 export const AdminUpdateApplicationMethod = z
   .object({
-    id: z.string(),
     description: z.string().nullish(),
     value: z.number().optional(),
     max_quantity: z.number().nullish(),
