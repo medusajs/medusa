@@ -1,19 +1,9 @@
 import {
   BigNumberInput,
   CampaignBudgetExceededAction,
-  ComputeActions,
   PromotionDTO,
 } from "@medusajs/types"
 import { CampaignBudgetType, ComputedActions, MathBN } from "@medusajs/utils"
-
-export function canRegisterUsage(computedAction: ComputeActions): boolean {
-  return (
-    [
-      ComputedActions.ADD_ITEM_ADJUSTMENT,
-      ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT,
-    ] as string[]
-  ).includes(computedAction.action)
-}
 
 export function computeActionForBudgetExceeded(
   promotion: PromotionDTO,
