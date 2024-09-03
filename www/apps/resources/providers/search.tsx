@@ -63,7 +63,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         },
       ]}
-      initialDefaultFilters={["resources"]}
+      initialDefaultFilters={["guides"]}
     >
       {children}
     </UiSearchProvider>

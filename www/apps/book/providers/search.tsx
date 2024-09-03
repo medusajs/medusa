@@ -74,7 +74,7 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         },
       ]}
-      initialDefaultFilters={["book"]}
+      initialDefaultFilters={["guides"]}
     >
       {children}
     </UiSearchProvider>
