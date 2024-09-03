@@ -62,9 +62,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
- *         required:
- *           - description
+ *         description: The properties to update in the refund reason.
  *         properties:
  *           label:
  *             type: string

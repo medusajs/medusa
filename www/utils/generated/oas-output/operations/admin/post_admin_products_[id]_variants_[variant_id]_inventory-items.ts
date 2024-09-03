@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/products/{id}/variants/{variant_id}/inventory-items
  * operationId: PostProductsIdVariantsVariant_idInventoryItems
- * summary: Add Inventory Items to Product
- * description: Add a list of inventory items to a product.
+ * summary: Associate Variant with Inventory Item
+ * x-sidebar-summary: Associate Variant's Inventory
+ * description: Associate with a product variant an inventory item that manages its inventory details.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +14,7 @@
  *       type: string
  *   - name: variant_id
  *     in: path
- *     description: The product's variant id.
+ *     description: The variant's ID.
  *     required: true
  *     schema:
  *       type: string

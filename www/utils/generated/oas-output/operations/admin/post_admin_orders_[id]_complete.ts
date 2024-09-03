@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/orders/{id}/complete
  * operationId: PostOrdersIdComplete
- * summary: Add Completes to Order
- * description: Add a list of completes to a order.
+ * summary: Complete Order
+ * description: Mark an order as completed.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -61,23 +61,12 @@
  *   content:
  *     application/json:
  *       schema:
- *         allOf:
- *           - type: object
- *             description: SUMMARY
- *             required:
- *               - order_id
- *             properties:
- *               order_id:
- *                 type: string
- *                 title: order_id
- *                 description: The order's order id.
- *           - type: object
- *             description: SUMMARY
- *             properties:
- *               additional_data:
- *                 type: object
- *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         type: object
+ *         description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
+ *         properties:
+ *           additional_data:
+ *             type: object
+ *             description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

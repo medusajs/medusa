@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/payments/{id}/capture
  * operationId: PostPaymentsIdCapture
- * summary: Add Captures to Payment
- * description: Add a list of captures to a payment.
+ * summary: Capture Payment
+ * description: Capture an amount of a payment. This uses the `capturePayment` method of the payment provider associated with the payment's collection.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,12 +62,12 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The payment's details.
  *         properties:
  *           amount:
  *             type: number
  *             title: amount
- *             description: The payment's amount.
+ *             description: The amount to capture.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
