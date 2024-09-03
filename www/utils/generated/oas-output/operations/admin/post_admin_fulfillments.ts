@@ -2,7 +2,7 @@
  * @oas [post] /admin/fulfillments
  * operationId: PostFulfillments
  * summary: Create Fulfillment
- * description: Create a fulfillment.
+ * description: Create a fulfillment for an order, return, exchange, and more.
  * x-authenticated: true
  * parameters:
  *   - name: expand

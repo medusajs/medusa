@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/invites/accept
  * operationId: PostInvitesAccept
- * summary: Create Invite
- * description: Create a invite.
+ * summary: Accept Invite
+ * description: >
+ *   Accept an invite and create a new user.
+ * 
+ *   Since the user isn't created yet, the JWT token used in the authorization header is retrieved from the `/auth/user/emailpass/register` API route (or a provider other than `emailpass`).
+ *   The user can then authenticate using the `/auth/user/emailpass` API route.
  * x-authenticated: false
  * parameters:
  *   - name: expand
@@ -52,7 +56,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The details of the user to be created.
  *         required:
  *           - email
  *           - first_name
@@ -61,16 +65,16 @@
  *           email:
  *             type: string
  *             title: email
- *             description: The invite's email.
+ *             description: The user's email.
  *             format: email
  *           first_name:
  *             type: string
  *             title: first_name
- *             description: The invite's first name.
+ *             description: The user's first name.
  *           last_name:
  *             type: string
  *             title: last_name
- *             description: The invite's last name.
+ *             description: The user's last name.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -92,21 +96,21 @@
  *         schema:
  *           oneOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The created user's details.
  *               required:
  *                 - user
  *               properties:
  *                 user:
  *                   $ref: "#/components/schemas/AdminUser"
  *             - type: object
- *               description: SUMMARY
+ *               description: An error's details.
  *               required:
  *                 - message
  *               properties:
  *                 message:
  *                   type: string
  *                   title: message
- *                   description: The invite's message.
+ *                   description: The error message.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
