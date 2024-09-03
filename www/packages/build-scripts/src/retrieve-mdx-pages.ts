@@ -1,5 +1,6 @@
 import { readdirSync } from "fs"
 import path from "path"
+import { getFileSlugSyncUtil } from "remark-rehype-plugins"
 
 type Options = {
   basePath: string
@@ -23,8 +24,14 @@ export function retrieveMdxPages({ basePath }: Options): string[] {
         continue
       }
 
+      const slug = getFileSlugSyncUtil(filePath)
+
       urls.push(
-        filePath.replace(basePath, "").replace(file.name, "").replace(/\/$/, "")
+        slug ||
+          filePath
+            .replace(basePath, "")
+            .replace(file.name, "")
+            .replace(/\/$/, "")
       )
     }
 
