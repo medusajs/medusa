@@ -188,7 +188,7 @@ export const searchFiltersV2: OptionType[] = [
     label: "Guides",
   },
   {
-    value: "references",
+    value: "references-v2",
     label: "References",
   },
   {
