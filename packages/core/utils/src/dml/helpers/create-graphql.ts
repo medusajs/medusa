@@ -14,10 +14,6 @@ export function generateGraphQLFromEntity() {
     let extra: string[] = []
     let gqlSchema: string[] = []
 
-    const context = {
-      MANY_TO_MANY_TRACKED_RELATIONS,
-    }
-
     Object.entries(schema).forEach(([name, property]) => {
       const field = property.parse(name)
 
@@ -34,7 +30,7 @@ export function generateGraphQLFromEntity() {
 
         gqlSchema.push(`${prop.attribute}`)
       } else {
-        const prop = setGraphQLRelationship(modelName, field, context)
+        const prop = setGraphQLRelationship(modelName, field)
         if (prop.extra) {
           extra.push(prop.extra)
         }
