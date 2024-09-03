@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/returns/{id}/cancel
  * operationId: PostReturnsIdCancel
- * summary: Add Cancels to Return
- * description: Add a list of cancels to a return.
+ * summary: Cancel a return.
+ * description: Cancel a return.
  * x-authenticated: true
  * parameters:
  *   - name: id

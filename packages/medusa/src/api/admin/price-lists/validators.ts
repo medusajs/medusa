@@ -76,3 +76,11 @@ export const AdminUpdatePriceList = z.object({
 })
 
 export type AdminUpdatePriceListType = z.infer<typeof AdminUpdatePriceList>
+
+export const AdminRemoveProductsPriceList = z.object({
+  remove: z.array(z.string()).optional(),
+})
+
+export type AdminRemoveProductsPriceListType = z.infer<
+  typeof AdminRemoveProductsPriceList
+>

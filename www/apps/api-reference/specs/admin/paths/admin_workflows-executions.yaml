@@ -69,13 +69,13 @@ get:
         oneOf:
           - type: string
             title: transaction_id
-            description: The workflows execution's transaction id.
+            description: Filter by a transaction ID.
           - type: array
-            description: The workflows execution's transaction id.
+            description: Filter by transaction IDs.
             items:
               type: string
               title: transaction_id
-              description: The transaction id's details.
+              description: A transaction ID.
     - name: workflow_id
       in: query
       required: false
@@ -83,13 +83,13 @@ get:
         oneOf:
           - type: string
             title: workflow_id
-            description: The workflows execution's workflow id.
+            description: Filter by a workflow ID.
           - type: array
-            description: The workflows execution's workflow id.
+            description: Filter by workflow IDs.
             items:
               type: string
               title: workflow_id
-              description: The workflow id's details.
+              description: A workflow ID.
   security:
     - api_token: []
     - cookie_auth: []
@@ -109,7 +109,7 @@ get:
           schema:
             allOf:
               - type: object
-                description: SUMMARY
+                description: The paginated list of workflow executions.
                 required:
                   - limit
                   - offset
@@ -118,17 +118,19 @@ get:
                   limit:
                     type: number
                     title: limit
-                    description: The workflows execution's limit.
+                    description: The maximum number of items returned.
                   offset:
                     type: number
                     title: offset
-                    description: The workflows execution's offset.
+                    description: >-
+                      The number of items skipped before retrieving the returned
+                      items.
                   count:
                     type: number
                     title: count
-                    description: The workflows execution's count.
+                    description: The total number of items.
               - type: object
-                description: SUMMARY
+                description: The paginated list of workflow executions.
                 required:
                   - workflow_executions
                 properties:

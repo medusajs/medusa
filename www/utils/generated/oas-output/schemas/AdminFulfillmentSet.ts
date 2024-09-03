@@ -1,7 +1,17 @@
 /**
  * @schema AdminFulfillmentSet
  * type: object
- * description: The fulfillment set that the service zone belongs to.
+ * description: The fulfillment set's parent.
+ * x-schemaName: AdminFulfillmentSet
+ * required:
+ *   - id
+ *   - name
+ *   - type
+ *   - location
+ *   - service_zones
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
  * properties:
  *   id:
  *     type: string
@@ -37,16 +47,6 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The parent's deleted at.
- * required:
- *   - id
- *   - name
- *   - type
- *   - location
- *   - service_zones
- *   - created_at
- *   - updated_at
- *   - deleted_at
- * x-schemaName: AdminFulfillmentSet
  * 
 */
 

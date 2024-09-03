@@ -52,11 +52,7 @@ export const AdminArchiveOrder = z.object({
 })
 export type AdminArchiveOrderType = z.infer<typeof AdminArchiveOrder>
 
-export type AdminCompleteOrderType = z.infer<typeof CompleteOrder>
-export const CompleteOrder = z.object({
-  order_id: z.string(),
-})
-export const AdminCompleteOrder = WithAdditionalData(CompleteOrder)
+export const AdminCompleteOrder = WithAdditionalData(z.object({}))
 
 const Item = z.object({
   id: z.string(),

@@ -64,7 +64,7 @@
  *           title: id
  *           description: Filter by a stock location ID.
  *         - type: array
- *           description:  Filter by stock location IDs.
+ *           description: Filter by stock location IDs.
  *           items:
  *             type: string
  *             title: id

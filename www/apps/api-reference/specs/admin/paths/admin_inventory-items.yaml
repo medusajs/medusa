@@ -163,151 +163,253 @@ get:
         description: The inventory item's requires shipping.
     - name: weight
       in: query
-      description: The inventory item's weight.
+      description: Filter the inventory item's weight.
       required: false
       schema:
-        description: The inventory item's weight.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
+        description: Filter the inventory item's weight.
         properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
+          $eq:
+            type: string
+            description: Filter by an exact match.
+          $ne:
+            type: string
+            description: Filter by values not matching this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array's items.
+            items:
+              type: string
+          $nin:
+            type: array
+            description: Filter by values not in this array's items.
+            items:
+              type: string
+          $like:
+            type: string
+            description: Apply a `like` filter. Useful for strings only.
+          $ilike:
+            type: string
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $re:
+            type: string
+            description: Apply a regex filter. Useful for strings only.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+          $gt:
+            type: string
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
     - name: length
       in: query
-      description: The inventory item's length.
+      description: Filter the inventory item's length.
       required: false
       schema:
-        description: The inventory item's length.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
+        description: Filter the inventory item's length.
         properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
+          $eq:
+            type: string
+            description: Filter by an exact match.
+          $ne:
+            type: string
+            description: Filter by values not matching this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array's items.
+            items:
+              type: string
+          $nin:
+            type: array
+            description: Filter by values not in this array's items.
+            items:
+              type: string
+          $like:
+            type: string
+            description: Apply a `like` filter. Useful for strings only.
+          $ilike:
+            type: string
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $re:
+            type: string
+            description: Apply a regex filter. Useful for strings only.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+          $gt:
+            type: string
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
     - name: height
       in: query
-      description: The inventory item's height.
+      description: Filter by the inventory item's height.
       required: false
       schema:
-        description: The inventory item's height.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
+        description: Filter by the inventory item's height.
         properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
+          $eq:
+            type: string
+            description: Filter by an exact match.
+          $ne:
+            type: string
+            description: Filter by values not matching this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array's items.
+            items:
+              type: string
+          $nin:
+            type: array
+            description: Filter by values not in this array's items.
+            items:
+              type: string
+          $like:
+            type: string
+            description: Apply a `like` filter. Useful for strings only.
+          $ilike:
+            type: string
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $re:
+            type: string
+            description: Apply a regex filter. Useful for strings only.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+          $gt:
+            type: string
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
     - name: width
       in: query
-      description: The inventory item's width.
+      description: Filter by the inventory item's width.
       required: false
       schema:
-        description: The inventory item's width.
-        required:
-          - $eq
-          - $ne
-          - $in
-          - $nin
-          - $like
-          - $ilike
-          - $re
-          - $contains
-          - $gt
-          - $gte
-          - $lt
-          - $lte
+        description: Filter by the inventory item's width.
         properties:
-          $eq: {}
-          $ne: {}
-          $in: {}
-          $nin: {}
-          $like: {}
-          $ilike: {}
-          $re: {}
-          $contains: {}
-          $gt: {}
-          $gte: {}
-          $lt: {}
-          $lte: {}
+          $eq:
+            type: string
+            description: Filter by an exact match.
+          $ne:
+            type: string
+            description: Filter by values not matching this parameter.
+          $in:
+            type: array
+            description: Filter by values in this array's items.
+            items:
+              type: string
+          $nin:
+            type: array
+            description: Filter by values not in this array's items.
+            items:
+              type: string
+          $like:
+            type: string
+            description: Apply a `like` filter. Useful for strings only.
+          $ilike:
+            type: string
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
+          $re:
+            type: string
+            description: Apply a regex filter. Useful for strings only.
+          $contains:
+            type: array
+            description: Filter arrays that contain some of the values of this parameter.
+            items:
+              type: string
+          $gt:
+            type: string
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
+          $gte:
+            type: string
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
+          $lt:
+            type: string
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
+          $lte:
+            type: string
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
     - name: location_levels
       in: query
-      description: The inventory item's location levels.
+      description: Filter by the inventory item's associated location IDs.
       required: false
       schema:
         type: object
-        description: The inventory item's location levels.
+        description: Filter by the inventory item's associated location IDs.
         properties:
           location_id:
             oneOf:
               - type: string
                 title: location_id
-                description: The location level's location id.
+                description: The associated location's ID.
               - type: array
-                description: The location level's location id.
+                description: >-
+                  The location IDs to retrieve inventory items associated with
+                  them.
                 items:
                   type: string
                   title: location_id
-                  description: The location id's details.
+                  description: A location's ID.
         required:
           - location_id
     - name: $and
@@ -315,7 +417,9 @@ get:
       required: false
       schema:
         type: array
-        description: The inventory item's $and.
+        description: >-
+          Join query parameters with an AND condition. Each object's content is
+          the same type as the expected query parameters.
         items:
           type: object
         title: $and
@@ -324,7 +428,9 @@ get:
       required: false
       schema:
         type: array
-        description: The inventory item's $or.
+        description: >-
+          Join query parameters with an OR condition. Each object's content is
+          the same type as the expected query parameters.
         items:
           type: object
         title: $or

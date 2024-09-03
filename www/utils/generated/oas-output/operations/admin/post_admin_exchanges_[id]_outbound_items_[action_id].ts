@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/exchanges/{id}/outbound/items/{action_id}
  * operationId: PostExchangesIdOutboundItemsAction_id
- * summary: Add Items to Exchange
- * description: Add a list of items to a exchange.
+ * summary: Update Outbound Item of an Exchange
+ * x-sidebar-summary: Update Outbound Item
+ * description: |
+ *   Update an outbound (or new) item from an exchange using the `ID` of the item's `ITEM_ADD` action.
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The exchange's action id.
+ *     description: The ID of the new exchange item's `ITEM_ADD` action.
  *     required: true
  *     schema:
  *       type: string

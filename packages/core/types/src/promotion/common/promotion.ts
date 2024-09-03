@@ -138,7 +138,7 @@ export interface UpdatePromotionDTO {
   /**
    * The associated application method.
    */
-  application_method?: UpdateApplicationMethodDTO
+  application_method?: Omit<UpdateApplicationMethodDTO, "id">
 
   /**
    * The associated campaign's ID.

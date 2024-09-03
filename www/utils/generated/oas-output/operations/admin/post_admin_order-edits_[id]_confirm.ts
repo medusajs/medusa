@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/order-edits/{id}/confirm
  * operationId: PostOrderEditsIdConfirm
- * summary: Add Confirms to Order Edit
- * description: Add a list of confirms to a order edit.
+ * summary: Confirm Order Edit
+ * description: Confirm an order edit request and apply the changes on the order.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -43,10 +43,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: confirmOrderEditRequestWorkflow
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

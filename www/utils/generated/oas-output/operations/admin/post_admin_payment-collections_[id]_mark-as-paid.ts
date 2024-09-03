@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/payment-collections/{id}/mark-as-paid
  * operationId: PostPaymentCollectionsIdMarkAsPaid
- * summary: Add Mark As Paids to Payment Collection
- * description: Add a list of mark as paids to a payment collection.
+ * summary: Mark a Payment Collection as Paid
+ * x-sidebar-summary: Mark as Paid
+ * description: Mark a payment collection as paid. This creates and authorizes a payment session, then capture its payment, using the manual payment provider.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,14 +63,14 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The payment details.
  *         required:
  *           - order_id
  *         properties:
  *           order_id:
  *             type: string
  *             title: order_id
- *             description: The payment collection's order id.
+ *             description: The ID of the order associated with the payment collection.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

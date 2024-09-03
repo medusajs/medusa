@@ -123,7 +123,6 @@
  *       enum:
  *         - "true"
  *         - "false"
- *       title: is_default
  *   - name: created_at
  *     in: query
  *     description: Filter by a tax rate's creation date.

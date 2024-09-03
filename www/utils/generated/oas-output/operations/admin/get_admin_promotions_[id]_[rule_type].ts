@@ -3,7 +3,7 @@
  * operationId: GetPromotionsIdRule_type
  * summary: List Rules of a Promotion
  * x-sidebar-summary: List Rules
- * description: > 
+ * description: >
  *   Retrieve a list of rules in a promotion. The type of rules retrieved depend on the value of the `rule_type` path parameter:
  * 
  *   - If `rule_type` is `rules`, the promotion's rules are retrivied.
@@ -69,28 +69,6 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
- *   - name: promotion_type
- *     in: query
- *     description: The type of promotion to retrieve its rules. This is only used if the promotion doesn't have a type.
- *     required: false
- *     schema:
- *       type: string
- *       title: promotion_type
- *       description: The type of promotion to retrieve its rules. This is only used if the promotion doesn't have a type.
- *       enum:
- *         - standard
- *         - buyget
- *   - name: application_method_type
- *     in: query
- *     description: The type of application method to retrieve its rules. This is only used if the promotion doesn't have an application method, or its method doesn't have a type.
- *     required: false
- *     schema:
- *       type: string
- *       title: application_method_type
- *       description: The type of application method to retrieve its rules. This is only used if the promotion doesn't have an application method, or its method doesn't have a type.
- *       enum:
- *         - fixed
- *         - percentage
  * security:
  *   - api_token: []
  *   - cookie_auth: []
