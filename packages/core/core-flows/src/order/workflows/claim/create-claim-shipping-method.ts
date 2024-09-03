@@ -5,7 +5,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
 } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus, isDefined } from "@medusajs/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -19,6 +19,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { prepareShippingMethod } from "../../utils/prepare-shipping-method"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 
@@ -53,7 +54,7 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
     return_id?: string
     claim_id?: string
     shipping_option_id: string
-    custom_price?: BigNumberInput
+    custom_price?: BigNumberInput | null
   }): WorkflowResponse<OrderPreviewDTO> {
     const orderClaim: OrderClaimDTO = useRemoteQueryStep({
       entry_point: "order_claim",
@@ -104,33 +105,13 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
 
     const shippingMethodInput = transform(
       {
-        orderClaim,
+        relatedEntity: orderClaim,
         shippingOptions,
         customPrice: input.custom_price,
         orderChange,
         input,
       },
-      (data) => {
-        const option = data.shippingOptions[0]
-        const orderChange = data.orderChange
-
-        const isCustomPrice = isDefined(data.customPrice)
-        return {
-          shipping_option_id: option.id,
-          amount: isCustomPrice
-            ? data.customPrice
-            : option.calculated_price.calculated_amount,
-          is_custom_amount: isCustomPrice,
-          is_tax_inclusive:
-            !!option.calculated_price.is_calculated_price_tax_inclusive,
-          data: option.data ?? {},
-          name: option.name,
-          version: orderChange.version,
-          order_id: data.orderClaim.order_id,
-          return_id: input.return_id,
-          claim_id: data.orderClaim.id,
-        }
-      }
+      prepareShippingMethod("claim_id")
     )
 
     const createdMethods = createOrderShippingMethods({
@@ -174,6 +155,7 @@ export const createClaimShippingMethodWorkflow = createWorkflow(
       }) => {
         const shippingOption = shippingOptions[0]
         const createdMethod = createdMethods[0]
+
         const methodPrice =
           customPrice ?? shippingOption.calculated_price.calculated_amount
 

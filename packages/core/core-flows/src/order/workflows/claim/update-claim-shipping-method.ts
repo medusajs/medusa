@@ -5,7 +5,7 @@ import {
   OrderPreviewDTO,
   OrderWorkflow,
 } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus, isDefined } from "@medusajs/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -25,6 +25,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { prepareShippingMethodUpdate } from "../../utils/prepare-shipping-method"
 
 /**
  * This step validates that a claim's shipping method can be updated.
@@ -96,15 +97,12 @@ export const updateClaimShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    const shippingOptions = when(
-      { input, orderClaim },
-      ({ input, orderClaim }) => {
-        return input.data?.custom_price === null
-      }
-    ).then(() => {
+    const shippingOptions = when({ input }, ({ input }) => {
+      return input.data?.custom_price === null
+    }).then(() => {
       const action = transform(
-        { orderChange, input },
-        ({ orderChange, input }) => {
+        { orderChange, input, orderClaim },
+        ({ orderChange, input, orderClaim }) => {
           const originalAction = (orderChange.actions ?? []).find(
             (a) => a.id === input.action_id
           ) as OrderChangeActionDTO
@@ -146,35 +144,7 @@ export const updateClaimShippingMethodWorkflow = createWorkflow(
 
     const updateData = transform(
       { orderChange, input, shippingOptions },
-      ({ input, orderChange, shippingOptions }) => {
-        const originalAction = (orderChange.actions ?? []).find(
-          (a) => a.id === input.action_id
-        ) as OrderChangeActionDTO
-
-        const data = input.data
-        const option = shippingOptions[0]
-
-        const action = {
-          id: originalAction.id,
-          amount: data.custom_price,
-          internal_note: data.internal_note,
-        }
-
-        const isCustomPrice = !isDefined(shippingOptions)
-        const shippingMethod = {
-          id: originalAction.reference_id,
-          amount: isCustomPrice
-            ? data.custom_price
-            : option.calculated_price.calculated_amount,
-          is_custom_amount: isCustomPrice,
-          metadata: data.metadata,
-        }
-
-        return {
-          action,
-          shippingMethod,
-        }
-      }
+      prepareShippingMethodUpdate
     )
 
     parallelize(

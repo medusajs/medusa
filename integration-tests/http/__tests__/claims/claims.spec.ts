@@ -595,13 +595,17 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
+          // shipping Options w/ custom price
           const {
             data: {
               order_preview: { shipping_methods: outboundShippingMethods },
             },
           } = await api.post(
             `/admin/claims/${claimId}/outbound/shipping-method`,
-            { shipping_option_id: outboundShippingOption.id },
+            {
+              shipping_option_id: outboundShippingOption.id,
+              custom_price: 12.5,
+            },
             adminHeaders
           )
 
@@ -609,9 +613,32 @@ medusaIntegrationTestRunner({
             (m) => m.shipping_option_id == outboundShippingOption.id
           )
 
+          expect(outboundShippingMethod.subtotal).toBe(12.5)
+          expect(outboundShippingMethod.is_custom_amount).toBe(true)
+
+          // Reset shipping custom price
+          const {
+            data: {
+              order_preview: { shipping_methods: outboundShippingMethods2 },
+            },
+          } = await api.post(
+            `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
+            {
+              custom_price: null,
+            },
+            adminHeaders
+          )
+
+          const outboundShippingMethodReset = outboundShippingMethods2.find(
+            (m) => m.shipping_option_id == outboundShippingOption.id
+          )
+
+          expect(outboundShippingMethodReset.subtotal).toBe(20)
+          expect(outboundShippingMethodReset.is_custom_amount).toBe(false)
+
           // Delete & recreate again to ensure it works for both delete and create
           await api.delete(
-            `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
+            `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethodReset.actions[0].id}`,
             adminHeaders
           )
 

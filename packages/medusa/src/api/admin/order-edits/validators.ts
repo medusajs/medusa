@@ -12,7 +12,7 @@ export type AdminPostOrderEditsReqSchemaType = z.infer<
 
 export const AdminPostOrderEditsShippingReqSchema = z.object({
   shipping_option_id: z.string(),
-  custom_price: z.number().optional(),
+  custom_price: z.number().nullish().optional(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
   metadata: z.record(z.unknown()).optional(),

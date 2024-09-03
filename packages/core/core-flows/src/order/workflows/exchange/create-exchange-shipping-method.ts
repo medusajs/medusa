@@ -19,6 +19,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { prepareShippingMethod } from "../../utils/prepare-shipping-method"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 
@@ -53,7 +54,7 @@ export const createExchangeShippingMethodWorkflow = createWorkflow(
     return_id?: string
     exchange_id?: string
     shipping_option_id: string
-    custom_price?: BigNumberInput
+    custom_price?: BigNumberInput | null
   }): WorkflowResponse<OrderPreviewDTO> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
@@ -108,29 +109,13 @@ export const createExchangeShippingMethodWorkflow = createWorkflow(
 
     const shippingMethodInput = transform(
       {
-        orderExchange,
+        relatedEntity: orderExchange,
         shippingOptions,
         customPrice: input.custom_price,
         orderChange,
         input,
       },
-      (data) => {
-        const option = data.shippingOptions[0]
-        const orderChange = data.orderChange
-
-        return {
-          shipping_option_id: option.id,
-          amount: data.customPrice ?? option.calculated_price.calculated_amount,
-          is_tax_inclusive:
-            !!option.calculated_price.is_calculated_price_tax_inclusive,
-          data: option.data ?? {},
-          name: option.name,
-          version: orderChange.version,
-          order_id: data.orderExchange.order_id,
-          return_id: input.return_id,
-          exchange_id: data.orderExchange.id,
-        }
-      }
+      prepareShippingMethod("exchange_id")
     )
 
     const createdMethods = createOrderShippingMethods({
