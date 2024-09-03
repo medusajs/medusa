@@ -4,7 +4,7 @@
  * summary: Remove a Received Item from Return
  * x-sidebar-summary: Remove Received Item
  * description: |
- *   Remove an item marked as received in the return by the ID of the  item's `RECEIVE_RETURN_ITEM` action.
+ *   Remove a received item in the return by the ID of the  item's `RECEIVE_RETURN_ITEM` action.
  * 
  *   Every item has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property. return.
  * x-authenticated: true

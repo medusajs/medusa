@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/returns/{id}/request-items/{action_id}
  * operationId: PostReturnsIdRequestItemsAction_id
- * summary: Add Request Items to Return
- * description: Add a list of request items to a return.
+ * summary: Update Requested Item in Return
+ * x-sidebar-summary: Update Requested Item
+ * description: |
+ *   Update a requested item to be returned by the ID of the  item's `RETURN_ITEM` action.
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property. return.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The return's action id.
+ *     description: The ID of the item's `RETURN_ITEM` action.
  *     required: true
  *     schema:
  *       type: string

@@ -4,7 +4,7 @@
  * summary: Remove Item from Return
  * x-sidebar-summary: Remove Item
  * description: |
- *   Remove an item in the return by the ID of the  item's `RETURN_ITEM` action.
+ *   Remove a requested item to be returned by the ID of the item's `RETURN_ITEM` action.
  * 
  *   Every item has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property. return.
  * x-authenticated: true

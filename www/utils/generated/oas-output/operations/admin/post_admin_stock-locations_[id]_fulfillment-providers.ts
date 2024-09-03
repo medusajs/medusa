@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/stock-locations/{id}/fulfillment-providers
  * operationId: PostStockLocationsIdFulfillmentProviders
- * summary: Add Fulfillment Providers to Stock Location
- * description: Add a list of fulfillment providers to a stock location.
+ * summary: Manage Fulfillment Providers of a Stock Location
+ * x-sidebar-summary: Manage Fulfillment Providers
+ * description: Manage the fulfillment providers to add or remove them from a stock location.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,22 +63,22 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The fulfillment providers to add or remove from the stock location.
  *         properties:
  *           add:
  *             type: array
- *             description: The stock location's add.
+ *             description: The fulfillment providers to add to the stock location.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A fulfillment provider's ID.
  *           remove:
  *             type: array
- *             description: The stock location's remove.
+ *             description: The fulfillment providers to remove from the stock location.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A fulfillment provider's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
