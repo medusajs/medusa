@@ -496,6 +496,22 @@
  *             type: string
  *             title: stock_location_id
  *             description: A stock location's ID.
+ *   - name: is_return
+ *     in: query
+ *     description: The shipping option's is return.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: is_return
+ *       description: The shipping option's is return.
+ *   - name: admin_only
+ *     in: query
+ *     description: The shipping option's admin only.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: admin_only
+ *       description: The shipping option's admin only.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

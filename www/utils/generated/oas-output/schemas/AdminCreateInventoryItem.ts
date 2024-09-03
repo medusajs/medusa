@@ -2,6 +2,7 @@
  * @schema AdminCreateInventoryItem
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminCreateInventoryItem
  * properties:
  *   sku:
  *     type: string
@@ -58,7 +59,6 @@
  *   metadata:
  *     type: object
  *     description: The inventory item's metadata.
- * x-schemaName: AdminCreateInventoryItem
  * 
 */
 

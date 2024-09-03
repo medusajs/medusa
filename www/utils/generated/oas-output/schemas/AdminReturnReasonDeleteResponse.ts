@@ -2,6 +2,7 @@
  * @schema AdminReturnReasonDeleteResponse
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminReturnReasonDeleteResponse
  * required:
  *   - id
  *   - object
@@ -19,8 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the return reason was deleted.
- * x-schemaName: AdminReturnReasonDeleteResponse
+ *     description: Whether the Return Reason was deleted.
  * 
 */
 
