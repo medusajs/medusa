@@ -77,14 +77,14 @@
  *         - type: string
  *           title: channel
  *           description: Filter by a notification channel.
- *           example: "email"
+ *           example: email
  *         - type: array
  *           description: Filter by notification channels.
  *           items:
  *             type: string
  *             title: channel
  *             description: A notification channel.
- *             example: "email"
+ *             example: email
  *   - name: $and
  *     in: query
  *     required: false

@@ -2,6 +2,7 @@
  * @schema AdminDeletePaymentCollectionResponse
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminDeletePaymentCollectionResponse
  * required:
  *   - id
  *   - object
@@ -14,13 +15,12 @@
  *   object:
  *     type: string
  *     title: object
- *     description: The name of the deleted object.
+ *     description: SUMMARY
  *     default: payment-collection
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the payment collection was deleted.
- * x-schemaName: AdminDeletePaymentCollectionResponse
+ *     description: SUMMARY
  * 
 */
 

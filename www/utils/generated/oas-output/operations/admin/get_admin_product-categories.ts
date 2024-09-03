@@ -147,7 +147,7 @@
  *     in: query
  *     description: Filter by the category's creation date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the category's creation date.
  *       properties:
@@ -266,7 +266,7 @@
  *     in: query
  *     description: Filter by the category's update date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the category's update date.
  *       properties:
@@ -385,7 +385,7 @@
  *     in: query
  *     description: Filter by the category's deletion date.
  *     required: false
- *     schema: 
+ *     schema:
  *       type: object
  *       description: Filter by the category's deletion date.
  *       properties:

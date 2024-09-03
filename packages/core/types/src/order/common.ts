@@ -104,6 +104,16 @@ export type OrderSummaryDTO = {
    * The refunded total of the order summary.
    */
   refunded_total: BigNumberValue
+
+  /**
+   * The pending difference of the order.
+   */
+  pending_difference: BigNumberValue
+
+  /**
+   * The raw pending difference of the order.
+   */
+  raw_pending_difference: BigNumberRawValue
 }
 
 /**

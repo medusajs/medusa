@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/customer-groups/{id}/customers
  * operationId: PostCustomerGroupsIdCustomers
- * summary: Add Customers to Customer Group
- * description: Add a list of customers to a customer group.
+ * summary: Manage Customers of a Customer Group
+ * x-sidebar-summary: Manage Customers
+ * description: Manage the customers of a group to add or remove them from the group.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,22 +63,22 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The customers to add or remove from the group.
  *         properties:
  *           add:
  *             type: array
- *             description: The customer group's add.
+ *             description: The customers to add to the group.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A customer's ID.
  *           remove:
  *             type: array
- *             description: The customer group's remove.
+ *             description: The customers to remove from the group.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A customer's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/claims/{id}/request
  * operationId: PostClaimsIdRequest
- * summary: Add Requests to Claim
- * description: Add a list of requests to a claim.
+ * summary: Confirm a Claim Request
+ * x-sidebar-summary: Confirm Claim
+ * description: Confirm a claim request, applying its changes on the associated order.
  * x-authenticated: true
  * parameters:
  *   - name: id

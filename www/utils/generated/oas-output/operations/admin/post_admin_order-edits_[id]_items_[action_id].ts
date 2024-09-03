@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/order-edits/{id}/items/{action_id}
  * operationId: PostOrderEditsIdItemsAction_id
- * summary: Add Items to Order Edit
- * description: Add a list of items to a order edit.
+ * summary: Update an Item in an Order Edit
+ * x-sidebar-summary: Update Item
+ * description: |
+ *   Update an added item in the order edit by the ID of the item's `ITEM_ADD` action.
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The order edit's action id.
+ *     description: The ID of the new item's `ITEM_ADD` action.
  *     required: true
  *     schema:
  *       type: string

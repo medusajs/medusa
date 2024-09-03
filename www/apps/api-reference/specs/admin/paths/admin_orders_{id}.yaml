@@ -1,8 +1,8 @@
 get:
   operationId: GetOrdersId
-  summary: Get a Order
+  summary: Get an Order
   description: >-
-    Retrieve a order by its ID. You can expand the order's relations or select
+    Retrieve an order by its ID. You can expand the order's relations or select
     the fields that should be returned.
   x-authenticated: true
   parameters:

@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/exchanges/{id}/inbound/items
  * operationId: PostExchangesIdInboundItems
- * summary: Add Items to Exchange
- * description: Add a list of items to a exchange.
+ * summary: Add Inbound Items to an Exchange
+ * x-sidebary-summary: Add Inbound Items
+ * description: Add inbound (or return) items to an exchange. These inbound items will have the action `RETURN_ITEM`.
  * x-authenticated: true
  * parameters:
  *   - name: id

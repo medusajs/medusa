@@ -2,6 +2,7 @@
  * @schema AdminCreateShippingOption
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminCreateShippingOption
  * required:
  *   - name
  *   - service_zone_id
@@ -28,9 +29,10 @@
  *     description: The shipping option's data.
  *   price_type:
  *     type: string
+ *     description: The shipping option's price type.
  *     enum:
- *       - calculated
  *       - flat
+ *       - calculated
  *   provider_id:
  *     type: string
  *     title: provider_id
@@ -44,6 +46,7 @@
  *       oneOf:
  *         - type: object
  *           description: The price's prices.
+ *           x-schemaName: AdminCreateShippingOptionPriceWithCurrency
  *           required:
  *             - currency_code
  *             - amount
@@ -58,6 +61,7 @@
  *               description: The price's amount.
  *         - type: object
  *           description: The price's prices.
+ *           x-schemaName: AdminCreateShippingOptionPriceWithRegion
  *           required:
  *             - region_id
  *             - amount
@@ -75,7 +79,6 @@
  *     description: The shipping option's rules.
  *     items:
  *       $ref: "#/components/schemas/AdminCreateShippingOptionRule"
- * x-schemaName: AdminCreateShippingOption
  * 
 */
 

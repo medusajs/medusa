@@ -1,13 +1,14 @@
 /**
  * @oas [post] /admin/api-keys/{id}/sales-channels
  * operationId: PostApiKeysIdSalesChannels
- * summary: Add Sales Channels to Api Key
- * description: Add a list of sales channels to a api key.
+ * summary: Manage Sales Channels of a Publishable API Key
+ * x-sidebar-summary: Manage Sales Channels
+ * description: Manage the sales channels of a publishable API key, either to associate them or remove them from the API key.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The api key's ID.
+ *     description: The API key's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -62,22 +63,22 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The sales channels to add or remove from the publishable API key.
  *         properties:
  *           add:
  *             type: array
- *             description: The api key's add.
+ *             description: The sales channels to add to the publishable API key.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A sales channel's ID.
  *           remove:
  *             type: array
- *             description: The api key's remove.
+ *             description: The sales channels to remove from the publishable API key.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A sales channel's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
