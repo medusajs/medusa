@@ -444,7 +444,6 @@ export const DataGridRoot = <
 
   const handleHeaderInteractionChange = useCallback((isActive: boolean) => {
     if (isActive) {
-      console.log("isActive is true, setting trapActive to false")
       setTrapActive(false)
     }
   }, [])
