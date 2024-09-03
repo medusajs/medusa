@@ -29,10 +29,13 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.9",
     "@swc/core": "^1.5.29",
     "@swc/jest": "^0.2.36",
     "@types/yargs": "^15.0.15",
     "cross-env": "^5.2.1",
+    "graphql": "^16.9.0",
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
     "typescript": "^5.3.3"

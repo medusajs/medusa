@@ -20,13 +20,13 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  isObject,
+  isString,
   MedusaError,
   ModuleRegistrationName,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  isObject,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
@@ -41,6 +41,7 @@ import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
+import {GraphQLSchema} from "graphql/type";
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -227,6 +228,7 @@ export type MedusaAppOutput = {
   link: RemoteLink | undefined
   query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
+  gqlSchema?: GraphQLSchema
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
   revertMigrations: RevertMigrationFn
@@ -524,6 +526,7 @@ async function MedusaApp_({
     link: remoteLink,
     query,
     entitiesMap: schema.getTypeMap(),
+    gqlSchema: schema,
     notFound,
     runMigrations,
     revertMigrations,
