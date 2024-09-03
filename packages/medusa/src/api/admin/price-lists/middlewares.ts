@@ -9,6 +9,7 @@ import {
   AdminGetPriceListParams,
   AdminGetPriceListPricesParams,
   AdminGetPriceListsParams,
+  AdminRemoveProductsPriceList,
   AdminUpdatePriceList,
   AdminUpdatePriceListPrice,
 } from "./validators"
@@ -60,7 +61,7 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/price-lists/:id/products",
     middlewares: [
-      validateAndTransformBody(createLinkBody()),
+      validateAndTransformBody(AdminRemoveProductsPriceList),
       validateAndTransformQuery(
         AdminGetPriceListParams,
         QueryConfig.listPriceListQueryConfig
