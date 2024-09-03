@@ -401,7 +401,6 @@ export const DataGridRoot = <
    */
   useEffect(() => {
     if (!trapActive) {
-      console.log("trapActive is false")
       return
     }
 
