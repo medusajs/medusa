@@ -401,6 +401,7 @@ export const DataGridRoot = <
    */
   useEffect(() => {
     if (!trapActive) {
+      console.log("trapActive is false")
       return
     }
 
@@ -426,26 +427,9 @@ export const DataGridRoot = <
     handlePasteEvent,
   ])
 
-  useEffect(() => {
-    // add a handler if the click is outside of the containerRef then disable the trap
-    const handleClick = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
-        setTrapActive(false)
-      }
-    }
-
-    window.addEventListener("click", handleClick)
-
-    return () => {
-      window.removeEventListener("click", handleClick)
-    }
-  }, [])
-
   const handleHeaderInteractionChange = useCallback((isActive: boolean) => {
     if (isActive) {
+      console.log("isActive is true, setting trapActive to false")
       setTrapActive(false)
     }
   }, [])
@@ -485,6 +469,7 @@ export const DataGridRoot = <
       control,
       trapActive,
       errors,
+      setTrapActive,
       setIsSelecting,
       setIsEditing: onEditingChangeHandler,
       setSingleRange,
@@ -505,6 +490,7 @@ export const DataGridRoot = <
       control,
       trapActive,
       errors,
+      setTrapActive,
       setIsSelecting,
       onEditingChangeHandler,
       setSingleRange,
@@ -525,6 +511,13 @@ export const DataGridRoot = <
   const handleRestoreGridFocus = useCallback(() => {
     if (anchor && !trapActive) {
       setTrapActive(true)
+
+      setSingleRange(anchor)
+      scrollToCoordinates(anchor, "both")
+
+      requestAnimationFrame(() => {
+        queryTool?.getContainer(anchor)?.focus()
+      })
     }
   }, [anchor, trapActive, queryTool])
 
