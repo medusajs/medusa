@@ -2,8 +2,6 @@ import { Trash } from "@medusajs/icons"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-
-import { LineItem } from "@medusajs/medusa"
 import { Input, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
 
@@ -14,9 +12,10 @@ import { MoneyAmountCell } from "../../../../../components/table/table-cells/com
 import { useProductVariant } from "../../../../../hooks/api/products.tsx"
 import { getFulfillableQuantity } from "../../../../../lib/order-item.ts"
 import { CreateFulfillmentSchema } from "./constants.ts"
+import { HttpTypes } from "@medusajs/types"
 
 type OrderEditItemProps = {
-  item: LineItem
+  item: HttpTypes.AdminOrderLineItem
   currencyCode: string
   locationId?: string
   onItemRemove: (itemId: string) => void
@@ -33,8 +32,8 @@ export function OrderCreateFulfillmentItem({
   const { t } = useTranslation()
 
   const { variant } = useProductVariant(
-    item.variant.product_id,
-    item.variant_id,
+    item.variant!.product_id!,
+    item.variant_id!,
     {
       fields: "*inventory,*inventory.location_levels",
     }
@@ -79,10 +78,10 @@ export function OrderCreateFulfillmentItem({
               <Text className="txt-small" as="span" weight="plus">
                 {item.title}
               </Text>
-              {item.variant.sku && <span>({item.variant.sku})</span>}
+              {item.variant?.sku && <span>({item.variant.sku})</span>}
             </div>
             <Text as="div" className="text-ui-fg-subtle txt-small">
-              {item.variant.title}
+              {item.variant?.title ?? ""}
             </Text>
           </div>
         </div>

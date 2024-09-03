@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
 import { Config } from "../types"
 
@@ -13,7 +14,7 @@ export class Auth {
   register = async (
     actor: "customer" | "user",
     method: "emailpass",
-    payload: { email: string; password: string }
+    payload: HttpTypes.AdminSignUpWithEmailPassword
   ) => {
     const { token } = await this.client.fetch<{ token: string }>(
       `/auth/${actor}/${method}/register`,
@@ -31,7 +32,7 @@ export class Auth {
   login = async (
     actor: "customer" | "user",
     method: "emailpass",
-    payload: { email: string; password: string }
+    payload: HttpTypes.AdminSignInWithEmailPassword
   ) => {
     const { token } = await this.client.fetch<{ token: string }>(
       `/auth/${actor}/${method}`,

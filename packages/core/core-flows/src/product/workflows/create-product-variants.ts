@@ -5,13 +5,17 @@ import {
   PricingTypes,
   ProductTypes,
 } from "@medusajs/types"
-import { Modules, ProductVariantWorkflowEvents } from "@medusajs/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
+  MedusaError,
+  Modules,
+  ProductVariantWorkflowEvents,
+} from "@medusajs/utils"
+import {
   createHook,
   createWorkflow,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { createLinksWorkflow } from "../../common/workflows/create-links"
@@ -50,6 +54,40 @@ const buildLink = (
   return link
 }
 
+const validateVariantsDuplicateInventoryItemIds = (
+  variantsData: {
+    variantId: string
+    inventory_items: {
+      inventory_item_id: string
+      required_quantity?: number
+    }[]
+  }[]
+) => {
+  const erroredVariantIds: string[] = []
+
+  for (const variantData of variantsData) {
+    const inventoryItemIds = variantData.inventory_items.map(
+      (item) => item.inventory_item_id
+    )
+    const duplicatedInventoryItemIds = inventoryItemIds.filter(
+      (id, index) => inventoryItemIds.indexOf(id) !== index
+    )
+
+    if (duplicatedInventoryItemIds.length) {
+      erroredVariantIds.push(variantData.variantId)
+    }
+  }
+
+  if (erroredVariantIds.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Cannot associate duplicate inventory items to variant(s) ${erroredVariantIds.join(
+        "\n"
+      )}`
+    )
+  }
+}
+
 const buildLinksToCreate = (data: {
   createdVariants: ProductTypes.ProductVariantDTO[]
   inventoryIndexMap: Record<number, InventoryTypes.InventoryItemDTO>
@@ -57,6 +95,18 @@ const buildLinksToCreate = (data: {
 }) => {
   let index = 0
   const linksToCreate: LinkDefinition[] = []
+
+  validateVariantsDuplicateInventoryItemIds(
+    data.createdVariants.map((variant, index) => {
+      const variantInput = data.input.product_variants[index]
+      const inventoryItems = variantInput.inventory_items || []
+
+      return {
+        variantId: variant.id,
+        inventory_items: inventoryItems,
+      }
+    })
+  )
 
   for (const variant of data.createdVariants) {
     const variantInput = data.input.product_variants[index]

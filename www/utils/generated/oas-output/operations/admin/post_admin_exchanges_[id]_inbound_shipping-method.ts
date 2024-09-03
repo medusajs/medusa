@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/exchanges/{id}/inbound/shipping-method
  * operationId: PostExchangesIdInboundShippingMethod
- * summary: Add Shipping Methods to Exchange
- * description: Add a list of shipping methods to a exchange.
+ * summary: Add an Inbound Shipping Method to an Exchange
+ * x-sidebar-summary: Add Inbound Shipping
+ * description: Add an inbound (or return) shipping method to an exchange. The inbound shipping method will have a `SHIPPING_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id

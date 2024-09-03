@@ -1,4 +1,3 @@
-import { Customer, DraftOrder, Order } from "@medusajs/medusa"
 import { Select, Text, clx } from "@medusajs/ui"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
@@ -19,6 +18,7 @@ import { TransferOwnershipSchema } from "../../../lib/schemas"
 import { Form } from "../../common/form"
 import { Skeleton } from "../../common/skeleton"
 import { Combobox } from "../../inputs/combobox"
+import { HttpTypes } from "@medusajs/types"
 
 type TransferOwnerShipFieldValues = z.infer<typeof TransferOwnershipSchema>
 
@@ -26,14 +26,16 @@ type TransferOwnerShipFormProps = {
   /**
    * The Order or DraftOrder to transfer ownership of.
    */
-  order: Order | DraftOrder
+  order: HttpTypes.AdminOrder
   /**
    * React Hook Form control object.
    */
   control: Control<TransferOwnerShipFieldValues>
 }
 
-const isOrder = (order: Order | DraftOrder): order is Order => {
+const isOrder = (
+  order: HttpTypes.AdminOrder
+): order is HttpTypes.AdminOrder => {
   return "customer" in order
 }
 
@@ -90,7 +92,7 @@ export const TransferOwnerShipForm = ({
     },
   })
 
-  const createLabel = (customer?: Customer) => {
+  const createLabel = (customer?: HttpTypes.AdminCustomer) => {
     if (!customer) {
       return ""
     }
@@ -187,7 +189,7 @@ export const TransferOwnerShipForm = ({
   )
 }
 
-const OrderDetailsTable = ({ order }: { order: Order }) => {
+const OrderDetailsTable = ({ order }: { order: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   const { label: fulfillmentLabel } = getOrderFulfillmentStatus(
@@ -208,7 +210,8 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
   )
 }
 
-const DraftOrderDetailsTable = ({ draft }: { draft: DraftOrder }) => {
+// TODO: Create type for Draft Order when we have it
+const DraftOrderDetailsTable = ({ draft }: { draft: HttpTypes.AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
@@ -219,10 +222,12 @@ const DraftOrderDetailsTable = ({ draft }: { draft: DraftOrder }) => {
         label={t("fields.status")}
         value={t(`draftOrders.status.${draft.status}`)}
       />
-      <TotalRow
+
+      {/* TODO: This will likely change. We don't use carts for draft orders any longer. */}
+      {/* <TotalRow
         total={draft.cart.total || 0}
         currencyCode={draft.cart.region.currency_code}
-      />
+      /> */}
     </Table>
   )
 }

@@ -1,9 +1,9 @@
 import { LoaderFunctionArgs } from "react-router-dom"
 
+import { HttpTypes } from "@medusajs/types"
 import { ordersQueryKeys } from "../../../hooks/api/orders"
 import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
-import { OrderRes } from "../../../types/api-responses"
 import { DEFAULT_FIELDS } from "./constants"
 
 const orderDetailQuery = (id: string) => ({
@@ -19,7 +19,7 @@ export const orderLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = orderDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<OrderRes>(query.queryKey) ??
+    queryClient.getQueryData<HttpTypes.AdminOrderResponse>(query.queryKey) ??
     (await queryClient.fetchQuery(query))
   )
 }

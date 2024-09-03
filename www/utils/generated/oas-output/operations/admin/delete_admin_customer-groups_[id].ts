@@ -49,9 +49,6 @@
  *               type: boolean
  *               title: deleted
  *               description: The customer group's deleted.
- *             parent:
- *               type: object
- *               description: The customer group's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

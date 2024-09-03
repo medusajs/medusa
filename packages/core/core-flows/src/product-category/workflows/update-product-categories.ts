@@ -23,7 +23,11 @@ export const updateProductCategoriesWorkflow = createWorkflow(
     const productCategoryIdEvents = transform(
       { updatedCategories },
       ({ updatedCategories }) => {
-        return updatedCategories.map((v) => {
+        const arr = Array.isArray(updatedCategories)
+          ? updatedCategories
+          : [updatedCategories]
+
+        return arr?.map((v) => {
           return { id: v.id }
         })
       }

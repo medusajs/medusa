@@ -67,29 +67,6 @@
  *         type: object
  *         description: The $or's details.
  *       title: $or
- *   - name: variants
- *     in: query
- *     description: The product's variants.
- *     required: false
- *     schema:
- *       type: object
- *       description: The product's variants.
- *       properties:
- *         options:
- *           type: object
- *           description: The variant's options.
- *           required:
- *             - value
- *             - option_id
- *           properties:
- *             value:
- *               type: string
- *               title: value
- *               description: The option's value.
- *             option_id:
- *               type: string
- *               title: option_id
- *               description: The option's option id.
  *   - name: q
  *     in: query
  *     description: The product's q.
@@ -165,16 +142,16 @@
  *     description: The product's tags.
  *     required: false
  *     schema:
- *       type: object
- *       description: The product's tags.
- *       properties:
- *         id:
- *           type: array
- *           description: The tag's ID.
+ *       oneOf:
+ *         - type: string
+ *           title: tags
+ *           description: The product's tags.
+ *         - type: array
+ *           description: The product's tags.
  *           items:
  *             type: string
- *             title: id
- *             description: The id's ID.
+ *             title: tags
+ *             description: The tag's tags.
  *   - name: type_id
  *     in: query
  *     description: The product's type id.
@@ -1238,6 +1215,58 @@
  *                   type: boolean
  *                   title: $exists
  *                   description: The id's $exists.
+ *   - name: region_id
+ *     in: query
+ *     description: The product's region id.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: region_id
+ *       description: The product's region id.
+ *   - name: currency_code
+ *     in: query
+ *     description: The product's currency code.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: currency_code
+ *       description: The product's currency code.
+ *   - name: province
+ *     in: query
+ *     description: The product's province.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: province
+ *       description: The product's province.
+ *   - name: sales_channel_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: sales_channel_id
+ *           description: The product's sales channel id.
+ *         - type: array
+ *           description: The product's sales channel id.
+ *           items:
+ *             type: string
+ *             title: sales_channel_id
+ *             description: The sales channel id's details.
+ *   - name: category_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: category_id
+ *           description: The product's category id.
+ *         - type: array
+ *           description: The product's category id.
+ *           items:
+ *             type: string
+ *             title: category_id
+ *             description: The category id's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

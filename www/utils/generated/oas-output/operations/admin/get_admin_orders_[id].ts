@@ -1,8 +1,8 @@
 /**
  * @oas [get] /admin/orders/{id}
  * operationId: GetOrdersId
- * summary: Get a Order
- * description: Retrieve a order by its ID. You can expand the order's relations or select the fields that should be returned.
+ * summary: Get an Order
+ * description: Retrieve an order by its ID. You can expand the order's relations or select the fields that should be returned.
  * x-authenticated: true
  * parameters:
  *   - name: id

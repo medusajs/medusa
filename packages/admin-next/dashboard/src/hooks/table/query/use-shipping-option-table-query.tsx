@@ -1,4 +1,4 @@
-import { AdminGetShippingOptionsParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UseShippingOptionTableQueryProps = {
@@ -29,10 +29,11 @@ export const useShippingOptionTableQuery = ({
   const { offset, order, q, admin_only, is_return, created_at, updated_at } =
     queryObject
 
-  const searchParams: AdminGetShippingOptionsParams = {
+  const searchParams: HttpTypes.AdminShippingOptionListParams = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
-    region_id: regionId,
+    // TODO: We don't allow region_id in the API yet
+    // region_id: regionId,
     is_return: is_return ? is_return === "true" : undefined,
     admin_only: admin_only ? admin_only === "true" : undefined,
     q,

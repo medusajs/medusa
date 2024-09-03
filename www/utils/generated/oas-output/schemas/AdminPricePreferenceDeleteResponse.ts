@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Price Preference was deleted.
- *   parent:
- *     type: object
- *     description: The price preference's parent.
  * 
 */
 

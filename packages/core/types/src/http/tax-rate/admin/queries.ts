@@ -5,7 +5,7 @@ export interface AdminTaxRateListParams extends
   FindParams, BaseFilterable<AdminTaxRateListParams> {
     q?: string
     tax_region_id?: string | string[] | OperatorMap<string | string[]>
-    is_default?: string
+    is_default?: "true" | "false"
     service_zone_id?: string
     shipping_profile_id?: string
     provider_id?: string

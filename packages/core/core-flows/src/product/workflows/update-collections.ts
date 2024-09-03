@@ -27,7 +27,11 @@ export const updateCollectionsWorkflow = createWorkflow(
     const collectionIdEvents = transform(
       { updatedCollections },
       ({ updatedCollections }) => {
-        return updatedCollections.map((v) => {
+        const arr = Array.isArray(updatedCollections)
+          ? updatedCollections
+          : [updatedCollections]
+
+        return arr?.map((v) => {
           return { id: v.id }
         })
       }

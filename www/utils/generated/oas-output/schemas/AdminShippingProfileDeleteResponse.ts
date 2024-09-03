@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Shipping Profile was deleted.
- *   parent:
- *     type: object
- *     description: The shipping profile's parent.
  * 
 */
 

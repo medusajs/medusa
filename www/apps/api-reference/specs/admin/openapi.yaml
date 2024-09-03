@@ -9,6 +9,9 @@ servers:
   - url: http://localhost:9000
   - url: https://api.medusajs.com
 tags:
+  - name: Auth
+    description: |
+      Auth API routes allow you to manage an admin user's authentication.
   - name: Api Keys
     description: >
       API keys can be used for authentication or resource-scoping.

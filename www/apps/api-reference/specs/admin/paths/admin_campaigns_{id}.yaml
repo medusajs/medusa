@@ -3,7 +3,7 @@ get:
   summary: Get a Campaign
   description: >-
     Retrieve a campaign by its ID. You can expand the campaign's relations or
-    select the fields that should be returned.
+    select the fields that should be returned using the query parameters.
   x-authenticated: true
   parameters:
     - name: id
@@ -313,9 +313,6 @@ delete:
                 type: boolean
                 title: deleted
                 description: Whether the campaign was deleted.
-              parent:
-                type: object
-                description: The campaign's parent.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

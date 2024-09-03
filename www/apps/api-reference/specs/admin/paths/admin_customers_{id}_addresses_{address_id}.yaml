@@ -2,8 +2,8 @@ get:
   operationId: GetCustomersIdAddressesAddress_id
   summary: List Addresses
   description: >-
-    Retrieve a list of addresses in a customer. The addresses can be filtered by
-    fields like FILTER FIELDS. The addresses can also be paginated.
+    Retrieve a list of a customer's addresses. The addresses can be filtered by
+    fields like `company`. The addresses can also be paginated.
   x-authenticated: true
   parameters:
     - name: id
@@ -386,28 +386,32 @@ delete:
       content:
         application/json:
           schema:
-            type: object
+            allOf:
+              - type: object
+                description: SUMMARY
+                required:
+                  - id
+                  - object
+                  - deleted
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The customer's ID.
+                  object:
+                    type: string
+                    title: object
+                    description: The name of the deleted object.
+                  deleted:
+                    type: boolean
+                    title: deleted
+                    description: Whether the Customer was deleted.
+              - type: object
+                description: SUMMARY
+                properties:
+                  parent:
+                    $ref: ../components/schemas/AdminCustomer.yaml
             description: SUMMARY
-            required:
-              - id
-              - object
-              - deleted
-            properties:
-              id:
-                type: string
-                title: id
-                description: The customer's ID.
-              object:
-                type: string
-                title: object
-                description: The customer's object.
-              deleted:
-                type: boolean
-                title: deleted
-                description: The customer's deleted.
-              parent:
-                type: object
-                description: The customer's parent.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

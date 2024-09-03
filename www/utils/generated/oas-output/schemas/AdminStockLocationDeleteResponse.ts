@@ -21,9 +21,6 @@
  *     type: boolean
  *     title: deleted
  *     description: Whether the Stock Location was deleted.
- *   parent:
- *     type: object
- *     description: The stock location's parent.
  * 
 */
 

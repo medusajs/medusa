@@ -63,7 +63,7 @@
  *       schema:
  *         allOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The campaign's details.
  *             required:
  *               - description
  *               - starts_at
@@ -76,7 +76,7 @@
  *               campaign_identifier:
  *                 type: string
  *                 title: campaign_identifier
- *                 description: The campaign's campaign identifier.
+ *                 description: The campaign's identifier.
  *               description:
  *                 type: string
  *                 title: description
@@ -90,37 +90,37 @@
  *                   limit:
  *                     type: number
  *                     title: limit
- *                     description: The budget's limit.
+ *                     description: The campaign budget's limit.
  *               starts_at:
  *                 type: string
  *                 title: starts_at
- *                 description: The campaign's starts at.
+ *                 description: The campaign's start date.
  *                 format: date-time
  *               ends_at:
  *                 type: string
  *                 title: ends_at
- *                 description: The campaign's ends at.
+ *                 description: The campaign's end date.
  *                 format: date-time
  *               promotions:
  *                 type: array
  *                 description: The campaign's promotions.
  *                 items:
  *                   type: object
- *                   description: The promotion's promotions.
+ *                   description: The promotions to add to the campaign.
  *                   required:
  *                     - id
  *                   properties:
  *                     id:
  *                       type: string
  *                       title: id
- *                       description: The promotion's ID.
+ *                       description: A promotion's ID.
  *           - type: object
- *             description: SUMMARY
+ *             description: The campaign's details.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The campaign's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

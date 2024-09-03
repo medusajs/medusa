@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/fulfillment-sets/{id}/service-zones/{zone_id}
  * operationId: PostFulfillmentSetsIdServiceZonesZone_id
- * summary: Add Service Zones to Fulfillment Set
- * description: Add a list of service zones to a fulfillment set.
+ * summary: Update the Service Zone of a Fulfillment Set
+ * x-sidebar-summary: Update Service Zone
+ * description: Update the details of a service zone in a fulfillment set.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +14,7 @@
  *       type: string
  *   - name: zone_id
  *     in: path
- *     description: The fulfillment set's zone id.
+ *     description: The service zone's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -68,21 +69,21 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The service zone's details.
  *         required:
  *           - name
  *         properties:
  *           name:
  *             type: string
  *             title: name
- *             description: The fulfillment set's name.
+ *             description: The service zone's name.
  *           geo_zones:
  *             type: array
- *             description: The fulfillment set's geo zones.
+ *             description: The service zone's associated geo zones.
  *             items:
  *               oneOf:
  *                 - type: object
- *                   description: The geo zone's geo zones.
+ *                   description: A country geo zone.
  *                   required:
  *                     - type
  *                     - metadata
@@ -92,6 +93,7 @@
  *                       type: string
  *                       title: type
  *                       description: The geo zone's type.
+ *                       default: "country"
  *                     metadata:
  *                       type: object
  *                       description: The geo zone's metadata.
@@ -102,9 +104,9 @@
  *                     id:
  *                       type: string
  *                       title: id
- *                       description: The geo zone's ID.
+ *                       description: The ID of an existing geo zone.
  *                 - type: object
- *                   description: The geo zone's geo zones.
+ *                   description: A province geo zone.
  *                   required:
  *                     - type
  *                     - metadata
@@ -115,6 +117,7 @@
  *                       type: string
  *                       title: type
  *                       description: The geo zone's type.
+ *                       default: "province"
  *                     metadata:
  *                       type: object
  *                       description: The geo zone's metadata.
@@ -129,9 +132,9 @@
  *                     id:
  *                       type: string
  *                       title: id
- *                       description: The geo zone's ID.
+ *                       description: The ID of an existing geo zone.
  *                 - type: object
- *                   description: The geo zone's geo zones.
+ *                   description: A city geo zone
  *                   required:
  *                     - type
  *                     - metadata
@@ -143,6 +146,7 @@
  *                       type: string
  *                       title: type
  *                       description: The geo zone's type.
+ *                       default: "city"
  *                     metadata:
  *                       type: object
  *                       description: The geo zone's metadata.
@@ -161,9 +165,9 @@
  *                     id:
  *                       type: string
  *                       title: id
- *                       description: The geo zone's ID.
+ *                       description: The ID of an existing geo zone.
  *                 - type: object
- *                   description: The geo zone's geo zones.
+ *                   description: A ZIP geo zone.
  *                   required:
  *                     - type
  *                     - metadata
@@ -176,6 +180,7 @@
  *                       type: string
  *                       title: type
  *                       description: The geo zone's type.
+ *                       default: "zip"
  *                     metadata:
  *                       type: object
  *                       description: The geo zone's metadata.
@@ -193,11 +198,11 @@
  *                       description: The geo zone's province code.
  *                     postal_expression:
  *                       type: object
- *                       description: The geo zone's postal expression.
+ *                       description: The geo zone's postal expression or ZIP code.
  *                     id:
  *                       type: string
  *                       title: id
- *                       description: The geo zone's ID.
+ *                       description: The ID of an existing geo zone.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

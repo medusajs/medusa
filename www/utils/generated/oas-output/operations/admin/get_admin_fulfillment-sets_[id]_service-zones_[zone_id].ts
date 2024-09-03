@@ -1,8 +1,9 @@
 /**
  * @oas [get] /admin/fulfillment-sets/{id}/service-zones/{zone_id}
  * operationId: GetFulfillmentSetsIdServiceZonesZone_id
- * summary: List Service Zones
- * description: Retrieve a list of service zones in a fulfillment set. The service zones can be filtered by fields like FILTER FIELDS. The service zones can also be paginated.
+ * summary: Get a Service Zone in a Fulfillment Set
+ * x-sidebar-summary: Get a Service Zone
+ * description: Retrieve a service zone that belongs to a fulfillment set. be paginated.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +14,7 @@
  *       type: string
  *   - name: zone_id
  *     in: path
- *     description: The fulfillment set's zone id.
+ *     description: The service zone's ID.
  *     required: true
  *     schema:
  *       type: string

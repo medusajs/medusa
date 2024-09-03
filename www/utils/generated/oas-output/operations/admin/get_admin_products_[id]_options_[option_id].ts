@@ -1,8 +1,9 @@
 /**
  * @oas [get] /admin/products/{id}/options/{option_id}
  * operationId: GetProductsIdOptionsOption_id
- * summary: List Options
- * description: Retrieve a list of options in a product. The options can be filtered by fields like FILTER FIELDS. The options can also be paginated.
+ * summary: Get a Product's Option
+ * x-sidebar-summary: Get Option
+ * description: Retrieve a product's option by its ID.
  * x-authenticated: true
  * parameters:
  *   - name: id

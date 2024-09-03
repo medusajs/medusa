@@ -14,7 +14,7 @@ import {
   TrianglesMini,
   XMarkMini,
 } from "@medusajs/icons"
-import { Text, clx } from "@medusajs/ui"
+import { clx, Text } from "@medusajs/ui"
 import { matchSorter } from "match-sorter"
 import {
   ComponentPropsWithoutRef,
@@ -35,6 +35,7 @@ import { genericForwardRef } from "../../common/generic-forward-ref"
 type ComboboxOption = {
   value: string
   label: string
+  disabled?: boolean
 }
 
 type Value = string[] | string
@@ -96,13 +97,14 @@ const ComboboxImpl = <T extends Value = string>(
 
   const handleValueChange = (newValues?: T) => {
     // check if the value already exists in options
-    const exists = options.find((o) => {
-      if (isArrayValue) {
-        return newValues?.includes(o.value)
-      }
-
-      return o.value === newValues
-    })
+    const exists = options
+      .filter((o) => !o.disabled)
+      .find((o) => {
+        if (isArrayValue) {
+          return newValues?.includes(o.value)
+        }
+        return o.value === newValues
+      })
 
     // If the value does not exist in the options, and the component has a handler
     // for creating new options, call it.
@@ -290,13 +292,20 @@ const ComboboxImpl = <T extends Value = string>(
         }}
         aria-busy={isPending}
       >
-        {results.map(({ value, label }) => (
+        {results.map(({ value, label, disabled }) => (
           <PrimitiveComboboxItem
             key={value}
             value={value}
             focusOnHover
             setValueOnClick={false}
-            className="transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5"
+            disabled={disabled}
+            className={clx(
+              "transition-fg bg-ui-bg-base data-[active-item=true]:bg-ui-bg-base-hover group flex cursor-pointer items-center gap-x-2 rounded-[4px] px-2 py-1.5",
+              {
+                "text-ui-fg-disabled": disabled,
+                "bg-ui-bg-component": disabled,
+              }
+            )}
           >
             <PrimitiveComboboxItemCheck className="flex !size-5 items-center justify-center">
               <EllipseMiniSolid />

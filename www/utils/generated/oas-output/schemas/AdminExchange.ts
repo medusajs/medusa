@@ -97,7 +97,7 @@
  *     description: The exchange's email.
  *     format: email
  *   display_id:
- *     type: string
+ *     type: number
  *     title: display_id
  *     description: The exchange's display id.
  *   shipping_address:

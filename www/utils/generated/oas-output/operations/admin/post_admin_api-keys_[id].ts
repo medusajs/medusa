@@ -1,13 +1,13 @@
 /**
  * @oas [post] /admin/api-keys/{id}
  * operationId: PostApiKeysId
- * summary: Update a Api Key
- * description: Update a api key's details.
+ * summary: Update an API Key
+ * description: Update an API key's details.
  * x-authenticated: true
  * parameters:
  *   - name: id
  *     in: path
- *     description: The api key's ID.
+ *     description: The API key's ID.
  *     required: true
  *     schema:
  *       type: string

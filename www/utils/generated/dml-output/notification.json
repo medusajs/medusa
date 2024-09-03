@@ -25,7 +25,8 @@
 			"original_notification_id": "The ID of the original notification, in case this is a retried notification.",
 			"idempotency_key": "The idempotency key of the notification.",
 			"external_id": "The id of the notification in the external system.",
-			"provider": "The associated provider used to send the notification.\n\n@expandable"
+			"provider": "The associated provider used to send the notification.\n\n@expandable",
+			"status": "The status of the notification"
 		}
 	}
 }

@@ -1,9 +1,10 @@
 get:
   operationId: GetProductsIdOptions
-  summary: List Options
+  summary: List a Product's Options
+  x-sidebar-summary: List Options
   description: >-
-    Retrieve a list of options in a product. The options can be filtered by
-    fields like FILTER FIELDS. The options can also be paginated.
+    Retrieve a list of options of a product. The options can be filtered by
+    fields like `id`. The options can also be paginated.
   x-authenticated: true
   parameters:
     - name: id
@@ -69,12 +70,12 @@ get:
           with `-`.
     - name: q
       in: query
-      description: The product's q.
+      description: Search term to filter the product option's searchable fields.
       required: false
       schema:
         type: string
         title: q
-        description: The product's q.
+        description: Search term to filter the product option's searchable fields.
     - name: id
       in: query
       required: false
@@ -82,13 +83,13 @@ get:
         oneOf:
           - type: string
             title: id
-            description: The product's ID.
+            description: Filter by the product option's ID.
           - type: array
-            description: The product's ID.
+            description: Filter by product option IDs.
             items:
               type: string
               title: id
-              description: The id's ID.
+              description: A product option's ID.
     - name: title
       in: query
       required: false
@@ -96,44 +97,38 @@ get:
         oneOf:
           - type: string
             title: title
-            description: The product's title.
+            description: Filter by a title.
           - type: array
-            description: The product's title.
+            description: Filter by titles.
             items:
               type: string
               title: title
-              description: The title's details.
-    - name: product_id
-      in: query
-      required: false
-      schema:
-        oneOf:
-          - type: string
-            title: product_id
-            description: The product's product id.
-          - type: array
-            description: The product's product id.
-            items:
-              type: string
-              title: product_id
-              description: The product id's details.
+              description: An option's title.
     - name: $and
       in: query
-      description: The product's $and.
+      description: >-
+        Join query parameters with an AND condition. Each object's content is
+        the same type as the expected query parameters.
       required: false
       schema:
         type: array
-        description: The product's $and.
+        description: >-
+          Join query parameters with an AND condition. Each object's content is
+          the same type as the expected query parameters.
         items:
           type: object
         title: $and
     - name: $or
       in: query
-      description: The product's $or.
+      description: >-
+        Join query parameters with an OR condition. Each object's content is the
+        same type as the expected query parameters.
       required: false
       schema:
         type: array
-        description: The product's $or.
+        description: >-
+          Join query parameters with an OR condition. Each object's content is
+          the same type as the expected query parameters.
         items:
           type: object
         title: $or
@@ -156,7 +151,7 @@ get:
           schema:
             allOf:
               - type: object
-                description: SUMMARY
+                description: The paginated list of product options.
                 required:
                   - limit
                   - offset
@@ -165,23 +160,23 @@ get:
                   limit:
                     type: number
                     title: limit
-                    description: The product's limit.
+                    description: The maximum number of items returned.
                   offset:
                     type: number
                     title: offset
-                    description: The product's offset.
+                    description: The number of items skipped before the returned items.
                   count:
                     type: number
                     title: count
-                    description: The product's count.
+                    description: The total number of items.
               - type: object
-                description: SUMMARY
+                description: The paginated list of product options.
                 required:
                   - product_options
                 properties:
                   product_options:
                     type: array
-                    description: The product's product options.
+                    description: The list of product options.
                     items:
                       $ref: ../components/schemas/AdminProductOption.yaml
     '400':

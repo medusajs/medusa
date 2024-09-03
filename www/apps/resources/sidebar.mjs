@@ -129,20 +129,14 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 ],
               },
               {
-                type: "sub-category",
-                title: "Auth Flows",
-                children: [
-                  {
-                    type: "link",
-                    path: "/commerce-modules/auth/authentication-route",
-                    title: "Using API Routes",
-                  },
-                  {
-                    type: "link",
-                    path: "/commerce-modules/auth/auth-flows",
-                    title: "Using Module's Service",
-                  },
-                ],
+                type: "link",
+                path: "/commerce-modules/auth/auth-flows",
+                title: "Auth Flow with Module",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/auth/authentication-route",
+                title: "Auth Flow with Routes",
               },
             ],
           },

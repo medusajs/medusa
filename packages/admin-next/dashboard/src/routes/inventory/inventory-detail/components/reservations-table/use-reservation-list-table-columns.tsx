@@ -1,19 +1,18 @@
-import { InventoryTypes, StockLocationDTO } from "@medusajs/types"
-
-import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
-import { ReservationActions } from "./reservation-actions"
+import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { CreatedAtCell } from "../../../../../components/table/table-cells/common/created-at-cell"
+import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
+import { TextCell, TextHeader } from "../../../../../components/table/table-cells/common/text-cell"
+import { ReservationActions } from "./reservation-actions"
 
 /**
  * Adds missing properties to the InventoryItemDTO type.
  */
-interface ExtendedReservationItem extends InventoryTypes.ReservationItemDTO {
-  line_item: { order_id: string }
-  location: StockLocationDTO
+export interface ExtendedReservationItem extends HttpTypes.AdminReservation {
+  line_item?: { order_id: string }
+  location?: HttpTypes.AdminStockLocation
 }
 
 const columnHelper = createColumnHelper<ExtendedReservationItem>()
@@ -24,17 +23,16 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
   return useMemo(
     () => [
       columnHelper.display({
-        header: t("fields.sku"),
+        id: "sku",
+        header: () => <TextHeader text={t("fields.sku")} />,
         cell: () => {
           return (
-            <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{sku}</span>
-            </div>
+            <TextCell text={sku} />
           )
         },
       }),
       columnHelper.accessor("line_item.order_id", {
-        header: t("inventory.reservation.orderID"),
+        header: () => <TextHeader text={t("inventory.reservation.orderID")} />,
         cell: ({ getValue }) => {
           const orderId = getValue()
 
@@ -43,14 +41,12 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
           }
 
           return (
-            <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{orderId}</span>
-            </div>
+            <TextCell text={orderId} />
           )
         },
       }),
       columnHelper.accessor("description", {
-        header: t("fields.description"),
+        header: () => <TextHeader text={t("fields.description")} />,
         cell: ({ getValue }) => {
           const description = getValue()
 
@@ -59,14 +55,12 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
           }
 
           return (
-            <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{description}</span>
-            </div>
+            <TextCell text={description} />
           )
         },
       }),
       columnHelper.accessor("location.name", {
-        header: t("inventory.reservation.location"),
+        header: () => <TextHeader text={t("inventory.reservation.location")} />,
         cell: ({ getValue }) => {
           const location = getValue()
 
@@ -75,15 +69,19 @@ export const useReservationTableColumn = ({ sku }: { sku: string }) => {
           }
 
           return (
-            <div className="flex size-full items-center overflow-hidden">
-              <span className="truncate">{location}</span>
-            </div>
+            <TextCell text={location} />
           )
         },
       }),
       columnHelper.accessor("created_at", {
-        header: t("fields.createdAt"),
+        header: () => <TextHeader text={t("fields.createdAt")} />,
         cell: ({ getValue }) => <CreatedAtCell date={getValue()} />,
+      }),
+      columnHelper.accessor("quantity", {
+        header: () => <TextHeader text={t("fields.quantity")} align="right" />,
+        cell: ({ getValue }) => {
+          return <TextCell text={getValue()} align="right" />
+        },
       }),
       columnHelper.display({
         id: "actions",

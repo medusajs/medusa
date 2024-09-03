@@ -1,7 +1,7 @@
 /**
  * @schema BaseOrderAddress
  * type: object
- * description: The order's billing address.
+ * description: The exchange's billing address.
  * x-schemaName: BaseOrderAddress
  * required:
  *   - id
