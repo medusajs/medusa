@@ -22,9 +22,7 @@ export const deletePromotionRulesWorkflowStep = createStep(
     }
 
     return new StepResponse(
-      {
-        ids: data.data.rule_ids ?? [],
-      },
+      data.data.rule_ids ?? [],
       transaction
     )
   },
