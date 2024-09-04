@@ -33,11 +33,7 @@ export const deleteShippingOptionRulesStep = createStep(
 
     await fulfillmentModule.deleteShippingOptionRules(ids)
 
-    return new StepResponse({
-      ids,
-      object: "shipping_option_rule",
-      deleted: true,
-    }, shippingOptionRules)
+    return new StepResponse(ids, shippingOptionRules)
   },
   async (shippingOptionRules, { container }) => {
     if (!shippingOptionRules?.length) {
