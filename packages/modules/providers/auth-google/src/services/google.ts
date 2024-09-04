@@ -109,7 +109,6 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
       return {
         success,
         authIdentity,
-        successRedirectUrl: this.config_.successRedirectUrl,
       }
     } catch (error) {
       return { success: false, error: error.message }

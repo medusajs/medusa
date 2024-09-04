@@ -80,7 +80,6 @@ describe("Google auth provider", () => {
       {
         clientId: "test",
         clientSecret: "test",
-        successRedirectUrl: baseUrl,
         callbackUrl: `${baseUrl}/auth/google/callback`,
       }
     )
@@ -178,7 +177,6 @@ describe("Google auth provider", () => {
 
     expect(res).toEqual({
       success: true,
-      successRedirectUrl: baseUrl,
       authIdentity: {
         provider_identities: [
           {
@@ -221,7 +219,6 @@ describe("Google auth provider", () => {
 
     expect(res).toEqual({
       success: true,
-      successRedirectUrl: baseUrl,
       authIdentity: {
         provider_identities: [
           {

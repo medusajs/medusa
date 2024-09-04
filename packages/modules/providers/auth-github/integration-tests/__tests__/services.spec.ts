@@ -81,7 +81,6 @@ describe("Github auth provider", () => {
       {
         clientId: "test",
         clientSecret: "test",
-        successRedirectUrl: baseUrl,
         callbackUrl: `${baseUrl}/auth/github/callback`,
       }
     )
@@ -179,7 +178,6 @@ describe("Github auth provider", () => {
 
     expect(res).toEqual({
       success: true,
-      successRedirectUrl: baseUrl,
       authIdentity: {
         provider_identities: [
           {
@@ -232,7 +230,6 @@ describe("Github auth provider", () => {
 
     expect(res).toEqual({
       success: true,
-      successRedirectUrl: baseUrl,
       authIdentity: {
         provider_identities: [
           {

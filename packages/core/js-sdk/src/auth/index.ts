@@ -55,6 +55,33 @@ export class Auth {
     return token
   }
 
+  // The callback expects all query parameters from the Oauth callback to be passed to the backend, and the provider is in charge of parsing and validating them
+  callback = async (
+    actor: "customer" | "user",
+    method: "emailpass",
+    query?: Record<string, unknown>
+  ) => {
+    const { token } = await this.client.fetch<{ token: string }>(
+      `/auth/${actor}/${method}/callback`,
+      {
+        method: "GET",
+        query,
+      }
+    )
+
+    // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
+    if (this.config?.auth?.type === "session") {
+      await this.client.fetch("/auth/session", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    } else {
+      this.client.setToken(token)
+    }
+
+    return token
+  }
+
   logout = async () => {
     if (this.config?.auth?.type === "session") {
       await this.client.fetch("/auth/session", {
