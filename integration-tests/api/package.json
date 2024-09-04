@@ -28,8 +28,7 @@
     "@medusajs/utils": "workspace:^",
     "@medusajs/workflow-engine-inmemory": "workspace:*",
     "faker": "^5.5.3",
-    "pg": "^8.11.3",
-    "typeorm": "^0.3.16"
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@swc/core": "^1.4.8",
