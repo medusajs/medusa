@@ -66,7 +66,6 @@ export interface OrderSummaryCalculated {
   original_order_total: BigNumberInput
   transaction_total: BigNumberInput
   pending_difference: BigNumberInput
-  temporary_difference: BigNumberInput
   difference_sum: BigNumberInput
   paid_total: BigNumberInput
   refunded_total: BigNumberInput
@@ -113,7 +112,6 @@ export type OrderReferences = {
 
 export interface ActionTypeDefinition {
   isDeduction?: boolean
-  awaitRequired?: boolean
   operation?: (obj: OrderReferences) => BigNumberInput | void
   validate?: (obj: OrderReferences) => void
   [key: string]: unknown

@@ -1,3 +1,4 @@
+import { Acknowledgement } from "../../../workflows-sdk"
 import { PaginatedResponse } from "../../common/response"
 import { AdminWorkflowExecution } from "./entities"
 
@@ -8,3 +9,7 @@ export interface AdminWorkflowExecutionResponse {
 export type AdminWorkflowExecutionListResponse = PaginatedResponse<{
   workflow_executions: AdminWorkflowExecution[]
 }>
+
+export type AdminWorkflowRunResponse = {
+  acknowledgement: Acknowledgement
+}

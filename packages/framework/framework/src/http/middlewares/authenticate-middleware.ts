@@ -87,7 +87,12 @@ export const authenticate = (
     }
 
     // If the entity is authenticated, but there is no registered actor yet, we can continue (eg. in the case of a user invite) if allow unregistered is set
-    if (authContext?.auth_identity_id && options.allowUnregistered) {
+    // We also don't want to allow creating eg. a customer with a token created for a `user` provider.
+    if (
+      authContext?.auth_identity_id &&
+      options.allowUnregistered &&
+      actorTypes.includes(authContext?.actor_type)
+    ) {
       req_.auth_context = authContext
       return next()
     }
