@@ -42,6 +42,12 @@ export type OasArea = "admin" | "store"
 
 type ParameterType = "query" | "path"
 
+type AuthRequests = {
+  exact?: string
+  startsWith?: string
+  requiresAuthentication: boolean
+}
+
 /**
  * OAS generator for API routes. It extends the {@link FunctionKindGenerator}
  * since API routes are functions.
@@ -50,11 +56,18 @@ class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   private MAX_LEVEL = 4
-  readonly AUTH_REQUEST_TYPE = "AuthenticatedMedusaRequest"
   readonly REQUEST_TYPE_NAMES = [
     "MedusaRequest",
     "RequestWithContext",
-    this.AUTH_REQUEST_TYPE,
+    "AuthenticatedMedusaRequest",
+  ]
+  // as it's not always possible to detect authenticated request
+  // use this to override the default detection logic.
+  readonly AUTH_REQUESTS: AuthRequests[] = [
+    {
+      exact: "store/orders",
+      requiresAuthentication: true,
+    },
   ]
   readonly RESPONSE_TYPE_NAMES = ["MedusaResponse"]
   readonly FIELD_QUERY_PARAMS = ["fields", "expand"]
@@ -754,14 +767,16 @@ class OasKindGenerator extends FunctionKindGenerator {
       !isAuthenticationDisabled && oasPath.startsWith("admin")
     const isStoreAuthenticated =
       !isAuthenticationDisabled && oasPath.startsWith("store/customers/me")
-    const hasAuthenticationTypeArg =
-      !isAuthenticationDisabled &&
-      // exclude registration
-      !oasPath.startsWith("store/customers") &&
-      (node.parameters[0].type?.getText().startsWith(this.AUTH_REQUEST_TYPE) ||
-        false)
     const isAuthenticated =
-      isAdminAuthenticated || isStoreAuthenticated || hasAuthenticationTypeArg
+      isAdminAuthenticated ||
+      isStoreAuthenticated ||
+      this.AUTH_REQUESTS.find((authRequest) => {
+        return (
+          authRequest.exact === oasPath ||
+          (authRequest.startsWith && oasPath.startsWith(authRequest.startsWith))
+        )
+      })?.requiresAuthentication ||
+      false
 
     return {
       isAdminAuthenticated,
