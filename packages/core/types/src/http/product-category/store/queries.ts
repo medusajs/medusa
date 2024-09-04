@@ -4,6 +4,6 @@ import {
 } from "../common"
 
 export interface StoreProductCategoryListParams
-  extends BaseProductCategoryListParams {}
+  extends Omit<BaseProductCategoryListParams, "is_internal" | "is_active"> {}
 
 export interface StoreProductCategoryParams extends BaseProductCategoryParams {}

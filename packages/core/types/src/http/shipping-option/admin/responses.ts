@@ -1,5 +1,4 @@
-import { BatchMethodResponse } from "../../../common"
-import { DeleteResponse, PaginatedResponse } from "../../common"
+import { BatchResponse, DeleteResponse, PaginatedResponse } from "../../common"
 import { AdminShippingOption, AdminShippingOptionRule } from "./entities"
 
 export interface AdminShippingOptionResponse {
@@ -13,4 +12,4 @@ export type AdminShippingOptionListResponse = PaginatedResponse<{
 export interface AdminShippingOptionDeleteResponse
   extends DeleteResponse<"shipping_option"> {}
 
-export type AdminUpdateShippingOptionRulesResponse = BatchMethodResponse<AdminShippingOptionRule>
+export type AdminUpdateShippingOptionRulesResponse = BatchResponse<AdminShippingOptionRule>
