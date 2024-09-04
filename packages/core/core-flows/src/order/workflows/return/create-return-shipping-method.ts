@@ -55,7 +55,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     claim_id?: string
     exchange_id?: string
     shipping_option_id: string
-    custom_price?: BigNumberInput | null
+    custom_amount?: BigNumberInput | null
   }): WorkflowResponse<OrderPreviewDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
@@ -119,7 +119,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
       {
         relatedEntity: orderReturn,
         shippingOptions,
-        customPrice: input.custom_price,
+        customPrice: input.custom_amount,
         orderChange,
         input,
       },
@@ -148,7 +148,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
         orderReturn,
         shippingOptions,
         createdMethods,
-        customPrice: input.custom_price,
+        customPrice: input.custom_amount,
         orderChange,
         input,
       },

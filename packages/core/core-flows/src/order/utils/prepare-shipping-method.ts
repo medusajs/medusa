@@ -50,7 +50,7 @@ export function prepareShippingMethodUpdate({
 
   const isCustomPrice = !isDefined(shippingOptions)
   const price = isCustomPrice
-    ? data.custom_price
+    ? data.custom_amount
     : option.calculated_price.calculated_amount
 
   const action = {

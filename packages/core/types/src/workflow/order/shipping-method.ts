@@ -4,7 +4,7 @@ export interface UpdateReturnShippingMethodWorkflowInput {
   return_id: string
   action_id: string
   data: {
-    custom_price?: BigNumberInput | null
+    custom_amount?: BigNumberInput | null
     internal_note?: string | null
     metadata?: Record<string, any> | null
   }
@@ -19,7 +19,7 @@ export interface UpdateClaimShippingMethodWorkflowInput {
   claim_id: string
   action_id: string
   data: {
-    custom_price?: BigNumberInput | null
+    custom_amount?: BigNumberInput | null
     internal_note?: string | null
     metadata?: Record<string, any> | null
   }
@@ -34,7 +34,7 @@ export interface UpdateExchangeShippingMethodWorkflowInput {
   exchange_id: string
   action_id: string
   data: {
-    custom_price?: BigNumberInput | null
+    custom_amount?: BigNumberInput | null
     internal_note?: string | null
     metadata?: Record<string, any> | null
   }
@@ -44,7 +44,7 @@ export interface UpdateOrderEditShippingMethodWorkflowInput {
   order_id: string
   action_id: string
   data: {
-    custom_price?: BigNumberInput | null
+    custom_amount?: BigNumberInput | null
     internal_note?: string | null
     metadata?: Record<string, any> | null
   }

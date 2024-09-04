@@ -604,7 +604,7 @@ medusaIntegrationTestRunner({
             `/admin/claims/${claimId}/outbound/shipping-method`,
             {
               shipping_option_id: outboundShippingOption.id,
-              custom_price: 12.5,
+              custom_amount: 12.5,
             },
             adminHeaders
           )
@@ -624,7 +624,7 @@ medusaIntegrationTestRunner({
           } = await api.post(
             `/admin/claims/${claimId}/outbound/shipping-method/${outboundShippingMethod.actions[0].id}`,
             {
-              custom_price: null,
+              custom_amount: null,
             },
             adminHeaders
           )

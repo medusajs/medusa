@@ -49,7 +49,7 @@ export const createOrderEditShippingMethodWorkflow = createWorkflow(
   function (input: {
     order_id: string
     shipping_option_id: string
-    custom_price?: BigNumberInput | null
+    custom_amount?: BigNumberInput | null
   }): WorkflowResponse<OrderPreviewDTO> {
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
@@ -90,7 +90,7 @@ export const createOrderEditShippingMethodWorkflow = createWorkflow(
     const shippingMethodInput = transform(
       {
         shippingOptions,
-        customPrice: input.custom_price,
+        customPrice: input.custom_amount,
         orderChange,
         input,
       },
@@ -117,7 +117,7 @@ export const createOrderEditShippingMethodWorkflow = createWorkflow(
         order,
         shippingOptions,
         createdMethods,
-        customPrice: input.custom_price,
+        customPrice: input.custom_amount,
         orderChange,
         input,
       },

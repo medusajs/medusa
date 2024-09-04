@@ -98,7 +98,7 @@ export const updateClaimShippingMethodWorkflow = createWorkflow(
     }).config({ name: "order-change-query" })
 
     const shippingOptions = when({ input }, ({ input }) => {
-      return input.data?.custom_price === null
+      return input.data?.custom_amount === null
     }).then(() => {
       const action = transform(
         { orderChange, input, orderClaim },
