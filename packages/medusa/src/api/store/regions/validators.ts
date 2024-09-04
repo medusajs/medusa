@@ -12,7 +12,7 @@ export const StoreGetRegionsParams = createFindParams({
   z.object({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    code: z.union([z.string(), z.array(z.string())]).optional(),
+    currency_code: z.union([z.string(), z.array(z.string())]).optional(),
     name: z.union([z.string(), z.array(z.string())]).optional(),
     $and: z.lazy(() => StoreGetRegionsParams.array()).optional(),
     $or: z.lazy(() => StoreGetRegionsParams.array()).optional(),

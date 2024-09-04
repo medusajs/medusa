@@ -1,5 +1,4 @@
-import { BatchMethodResponse } from "../../../common";
-import { DeleteResponse, PaginatedResponse } from "../../common";
+import { BatchResponse, DeleteResponse, PaginatedResponse } from "../../common";
 import { 
   AdminPromotion, 
   AdminPromotionRule, 
@@ -54,6 +53,6 @@ export type AdminRuleValueOptionsListResponse = {
   values: AdminRuleValueOption[]
 }
 
-export type AdminPromotionRuleBatchResponse = BatchMethodResponse<AdminPromotionRule>
+export type AdminPromotionRuleBatchResponse = BatchResponse<AdminPromotionRule>
 
 export type AdminPromotionDeleteResponse = DeleteResponse<"promotion">

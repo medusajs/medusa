@@ -398,6 +398,8 @@
     },
     "import": {
       "header": "Import Product List",
+      "uploadLabel": "Import Products",
+      "uploadHint": "Drag and drop a CSV file or click to upload",
       "description": "Import products by providing a CSV file in a pre-defined format",
       "template": {
         "title": "Unsure about how to arrange your list?",

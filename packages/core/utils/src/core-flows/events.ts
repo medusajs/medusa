@@ -44,6 +44,7 @@ export const InviteWorkflowEvents = {
   ACCEPTED: "invite.accepted",
   CREATED: "invite.created",
   DELETED: "invite.deleted",
+  RESENT: "invite.resent",
 }
 
 export const RegionWorkflowEvents = {

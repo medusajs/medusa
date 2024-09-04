@@ -26,6 +26,7 @@ export const StoreProductCategoriesParams = createFindParams({
   z.object({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
+    name: z.union([z.string(), z.array(z.string())]).optional(),
     description: z.union([z.string(), z.array(z.string())]).optional(),
     handle: z.union([z.string(), z.array(z.string())]).optional(),
     parent_category_id: z.union([z.string(), z.array(z.string())]).optional(),

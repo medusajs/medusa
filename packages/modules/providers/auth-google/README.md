@@ -3,7 +3,7 @@
 In order to manually test the flow, you can do the following:
 
 1. Register an app in `https://console.cloud.google.com/apis/credentials/consent`
-2. Generate clientID and clientSecret credentials in the console
+2. Generate clientId and clientSecret credentials in the console
 3. Replace the values in the test with your credentials
 4. Remove the `server.listen()` call
 5. Run the tests, get the `location` value from the `authenticate` test, open the browser
