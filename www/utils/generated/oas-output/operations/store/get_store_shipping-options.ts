@@ -1,8 +1,15 @@
 /**
  * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
- * summary: List Shipping Options
- * description: Retrieve a list of shipping options. The shipping options can be filtered by fields such as `id`. The shipping options can also be sorted or paginated.
+ * summary: List Shipping Options for Cart
+ * description: >
+ *   Retrieve a list of shipping options for a cart. The cart's ID is set in the required `cart_id` query parameter.
+ * 
+ *   
+ *   The shipping options also be sorted or paginated.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping
+ *   description: Storefront guide: How to implement shipping during checkout.
  * x-authenticated: false
  * parameters:
  *   - name: expand
@@ -49,12 +56,12 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: cart_id
  *     in: query
- *     description: The shipping option's cart id.
+ *     description: The ID of the cart to retrieve its shipping options.
  *     required: true
  *     schema:
  *       type: string
  *       title: cart_id
- *       description: The shipping option's cart id.
+ *       description: The ID of the cart to retrieve its shipping options.
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.

@@ -1,9 +1,10 @@
 /**
  * @oas [get] /store/orders
  * operationId: GetOrders
- * summary: List Orders
- * description: Retrieve a list of orders. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
- * x-authenticated: false
+ * summary: List Logged-in Customer's Orders
+ * x-sidebar-summary: List Orders
+ * description: Retrieve the orders of the logged-in customer. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
+ * x-authenticated: true
  * parameters:
  *   - name: expand
  *     in: query
@@ -54,27 +55,41 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The order's ID.
+ *           description: Filter by an order ID.
  *         - type: array
- *           description: The order's ID.
+ *           description: Filter by order IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
- *   - name: name
+ *             description: An order ID.
+ *   - name: status
  *     in: query
  *     required: false
  *     schema:
  *       oneOf:
  *         - type: string
- *           title: name
- *           description: The order's name.
+ *           title: status
+ *           description: Filter by an order status.
+ *           enum:
+ *             - pending
+ *             - completed
+ *             - draft
+ *             - archived
+ *             - canceled
+ *             - requires_action
  *         - type: array
- *           description: The order's name.
+ *           description: Filter by order statuses.
  *           items:
  *             type: string
- *             title: name
- *             description: The name's details.
+ *             title: status
+ *             description: An order status.
+ *             enum:
+ *               - pending
+ *               - completed
+ *               - draft
+ *               - archived
+ *               - canceled
+ *               - requires_action
  *   - name: $and
  *     in: query
  *     required: false

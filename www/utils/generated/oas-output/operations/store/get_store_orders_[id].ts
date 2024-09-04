@@ -1,8 +1,8 @@
 /**
  * @oas [get] /store/orders/{id}
  * operationId: GetOrdersId
- * summary: Get a Order
- * description: Retrieve a order by its ID. You can expand the order's relations or select the fields that should be returned.
+ * summary: Get an Order
+ * description: Retrieve an order by its ID. You can expand the order's relations or select the fields that should be returned.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -53,52 +53,6 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
- *   - name: id
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: id
- *           description: The order's ID.
- *         - type: array
- *           description: The order's ID.
- *           items:
- *             type: string
- *             title: id
- *             description: The id's ID.
- *   - name: status
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: status
- *           description: The order's status.
- *         - type: array
- *           description: The order's status.
- *           items:
- *             type: string
- *             title: status
- *             description: The status's details.
- *   - name: $and
- *     in: query
- *     required: false
- *     schema:
- *       type: array
- *       description: The order's $and.
- *       items:
- *         type: object
- *       title: $and
- *   - name: $or
- *     in: query
- *     required: false
- *     schema:
- *       type: array
- *       description: The order's $or.
- *       items:
- *         type: object
- *       title: $or
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

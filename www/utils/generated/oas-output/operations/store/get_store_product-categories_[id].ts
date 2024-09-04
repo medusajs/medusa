@@ -4,6 +4,9 @@
  * summary: Get a Product Category
  * description: Retrieve a product category by its ID. You can expand the product category's relations or select the fields that should be returned.
  * x-authenticated: false
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/categories/retrieve
+ *   description: Storefront guide: How to retrieve a product category.
  * parameters:
  *   - name: id
  *     in: path
@@ -55,20 +58,20 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: include_ancestors_tree
  *     in: query
- *     description: The product category's include ancestors tree.
+ *     description: Whether to retrieve the category's parent. When enabled, the parent category is set in the `parent_category` property.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: include_ancestors_tree
- *       description: The product category's include ancestors tree.
+ *       description: Whether to retrieve the category's parent. When enabled, the parent category is set in the `parent_category` property.
  *   - name: include_descendants_tree
  *     in: query
- *     description: The product category's include descendants tree.
+ *     description: Whether to retrieve a list of child categories. When enabled, the parent categories are added to the `category_children` property.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: include_descendants_tree
- *       description: The product category's include descendants tree.
+ *       description: Whether to retrieve a list of child categories. When enabled, the parent categories are added to the `category_children` property.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

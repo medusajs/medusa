@@ -1,9 +1,13 @@
 /**
  * @oas [get] /store/customers/me/addresses
  * operationId: GetCustomersMeAddresses
- * summary: List Customers
- * description: Retrieve a list of customers. The customers can be filtered by fields such as `id`. The customers can also be sorted or paginated.
+ * summary: List Customer's Addresses
+ * x-sidebary-summary: List Addresses
+ * description: Retrieve the addresses of the logged-in customer. The addresses can be filtered by fields such as `country_code`. The addresses can also be sorted or paginated.
  * x-authenticated: true
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#list-customer-addresses
+ *   description: Storefront guide: How to retrieve the logged-in customer's addresses.
  * parameters:
  *   - name: expand
  *     in: query
@@ -47,117 +51,30 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
- *   - name: metadata
- *     in: query
- *     description: The customer's metadata.
- *     required: true
- *     schema:
- *       type: object
- *       description: The customer's metadata.
- *   - name: first_name
- *     in: query
- *     description: The customer's first name.
- *     required: true
- *     schema:
- *       type: string
- *       title: first_name
- *       description: The customer's first name.
- *   - name: last_name
- *     in: query
- *     description: The customer's last name.
- *     required: true
- *     schema:
- *       type: string
- *       title: last_name
- *       description: The customer's last name.
- *   - name: phone
- *     in: query
- *     description: The customer's phone.
- *     required: true
- *     schema:
- *       type: string
- *       title: phone
- *       description: The customer's phone.
- *   - name: company
- *     in: query
- *     description: The customer's company.
- *     required: true
- *     schema:
- *       type: string
- *       title: company
- *       description: The customer's company.
- *   - name: address_1
- *     in: query
- *     description: The customer's address 1.
- *     required: true
- *     schema:
- *       type: string
- *       title: address_1
- *       description: The customer's address 1.
- *   - name: address_2
- *     in: query
- *     description: The customer's address 2.
- *     required: true
- *     schema:
- *       type: string
- *       title: address_2
- *       description: The customer's address 2.
  *   - name: city
  *     in: query
- *     description: The customer's city.
+ *     description: Filter by the address's city.
  *     required: true
  *     schema:
  *       type: string
  *       title: city
- *       description: The customer's city.
+ *       description: Filter by the address's city.
  *   - name: country_code
  *     in: query
- *     description: The customer's country code.
+ *     description: Filter by the address's country code.
  *     required: true
  *     schema:
  *       type: string
  *       title: country_code
- *       description: The customer's country code.
- *   - name: province
+ *       description: Filter by the address's country code.
+ *   - name: q
  *     in: query
- *     description: The customer's province.
+ *     description: Search term to filter the address's searchable properties.
  *     required: true
  *     schema:
  *       type: string
- *       title: province
- *       description: The customer's province.
- *   - name: postal_code
- *     in: query
- *     description: The customer's postal code.
- *     required: true
- *     schema:
- *       type: string
- *       title: postal_code
- *       description: The customer's postal code.
- *   - name: address_name
- *     in: query
- *     description: The customer's address name.
- *     required: true
- *     schema:
- *       type: string
- *       title: address_name
- *       description: The customer's address name.
- *   - name: is_default_shipping
- *     in: query
- *     description: The customer's is default shipping.
- *     required: false
- *     schema:
- *       type: boolean
- *       title: is_default_shipping
- *       description: The customer's is default shipping.
- *   - name: is_default_billing
- *     in: query
- *     description: The customer's is default billing.
- *     required: false
- *     schema:
- *       type: boolean
- *       title: is_default_billing
- *       description: The customer's is default billing.
+ *       title: q
+ *       description: Search term to filter the address's searchable properties.
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

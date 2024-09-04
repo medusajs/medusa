@@ -2,7 +2,7 @@
  * @oas [get] /store/currencies
  * operationId: GetCurrencies
  * summary: List Currencies
- * description: Retrieve a list of currencies. The currencies can be filtered by fields such as `id`. The currencies can also be sorted or paginated.
+ * description: Retrieve a list of currencies. The currencies can be filtered by fields such as `code`. The currencies can also be sorted or paginated.
  * x-authenticated: false
  * parameters:
  *   - name: expand
@@ -49,12 +49,12 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: q
  *     in: query
- *     description: The currency's q.
+ *     description: Search term to filter the currency's searchable properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: q
- *       description: The currency's q.
+ *       description: Search term to filter the currency's searchable properties.
  *   - name: code
  *     in: query
  *     required: false
@@ -62,13 +62,13 @@
  *       oneOf:
  *         - type: string
  *           title: code
- *           description: The currency's code.
+ *           description: Filter by a currency code.
  *         - type: array
- *           description: The currency's code.
+ *           description: Filter by currency codes.
  *           items:
  *             type: string
  *             title: code
- *             description: The code's details.
+ *             description: A currency code.
  *   - name: $and
  *     in: query
  *     description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.

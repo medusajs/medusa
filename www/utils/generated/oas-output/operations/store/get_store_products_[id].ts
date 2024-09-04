@@ -4,6 +4,9 @@
  * summary: Get a Product
  * description: Retrieve a product by its ID. You can expand the product's relations or select the fields that should be returned.
  * x-authenticated: false
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/price
+ *   description: Storefront guide: How to retrieve a product variants' prices.
  * parameters:
  *   - name: id
  *     in: path
@@ -55,36 +58,39 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: region_id
  *     in: query
- *     description: The product's region id.
+ *     description: The ID of the region the product is being viewed from. This is required if you're retrieving product variant prices with taxes.
  *     required: false
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
+ *       description: Storefront guide: How to show product variants' prices with taxes.
  *     schema:
  *       type: string
  *       title: region_id
- *       description: The product's region id.
+ *       description: The ID of the region the product is being viewed from. This is required if you're retrieving product variant prices with taxes.
  *   - name: country_code
  *     in: query
- *     description: The product's country code.
+ *     description: The country code the product is being viewed from. This is required if you're retrieving product variant prices with taxes.
  *     required: false
  *     schema:
  *       type: string
  *       title: country_code
- *       description: The product's country code.
+ *       description: The country code the product is being viewed from. This is required if you're retrieving product variant prices with taxes.
  *   - name: province
  *     in: query
- *     description: The product's province.
+ *     description: The province the product is being viewed from. This is useful to narrow down the tax context when calculating product variant prices with taxes.
  *     required: false
  *     schema:
  *       type: string
  *       title: province
- *       description: The product's province.
+ *       description: The province the product is being viewed from. This is useful to narrow down the tax context when calculating product variant prices with taxes.
  *   - name: cart_id
  *     in: query
- *     description: The product's cart id.
+ *     description: The ID of the customer's cart. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` properties.
  *     required: false
  *     schema:
  *       type: string
  *       title: cart_id
- *       description: The product's cart id.
+ *       description: The ID of the customer's cart. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` properties.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
