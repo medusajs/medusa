@@ -17,7 +17,7 @@ export default async function ({ port, directory }) {
     const app = express()
 
     try {
-      const { shutdown, gqlSchema, container } = await loaders({
+      const { shutdown, gqlSchema } = await loaders({
         directory,
         expressApp: app,
       })
