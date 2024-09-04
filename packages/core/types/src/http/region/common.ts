@@ -26,7 +26,7 @@ export interface BaseRegionFilters extends BaseFilterable<BaseRegionFilters> {
   q?: string
   id?: string[] | string | OperatorMap<string | string[]>
   name?: string | string[]
-  code?: string | string[]
+  currency_code?: string | string[]
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
 }
