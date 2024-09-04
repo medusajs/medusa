@@ -845,7 +845,7 @@ export const ClaimCreateForm = ({
                           updateInboundShipping(
                             {
                               actionId,
-                              custom_price: customPrice,
+                              custom_amount: customPrice,
                             },
                             {
                               onError: (error) => {
@@ -916,7 +916,7 @@ export const ClaimCreateForm = ({
                           updateOutboundShipping(
                             {
                               actionId,
-                              custom_price: customPrice,
+                              custom_amount: customPrice,
                             },
                             {
                               onError: (error) => {

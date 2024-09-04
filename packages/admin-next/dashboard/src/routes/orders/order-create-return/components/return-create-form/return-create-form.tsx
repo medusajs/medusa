@@ -646,7 +646,7 @@ export const ReturnCreateForm = ({
                         if (actionId) {
                           updateReturnShipping({
                             actionId,
-                            custom_price:
+                            custom_amount:
                               typeof customShippingAmount === "string"
                                 ? null
                                 : customShippingAmount,
