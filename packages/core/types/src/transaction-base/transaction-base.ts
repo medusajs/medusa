@@ -1,3 +1,1 @@
-export interface ITransactionBaseService {
-  withTransaction<TManager = unknown>(transactionManager?: TManager): this
-}
+export interface ITransactionBaseService {}
