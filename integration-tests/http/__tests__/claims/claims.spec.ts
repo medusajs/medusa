@@ -437,7 +437,6 @@ medusaIntegrationTestRunner({
               pending_difference: 0,
               current_order_total: 61,
               original_order_total: 61,
-              temporary_difference: 0,
             })
           )
 
@@ -1106,7 +1105,6 @@ medusaIntegrationTestRunner({
               pending_difference: -11,
               current_order_total: 50,
               original_order_total: 60,
-              temporary_difference: 15,
             })
           )
 

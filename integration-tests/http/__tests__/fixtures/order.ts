@@ -28,9 +28,7 @@ export async function createOrderSeeder({ api }) {
   const inventoryItem = (
     await api.post(
       `/admin/inventory-items`,
-      {
-        sku: `12345-${stockLocation.id}`,
-      },
+      { sku: "test-variant" },
       adminHeaders
     )
   ).data.inventory_item
@@ -70,6 +68,7 @@ export async function createOrderSeeder({ api }) {
         variants: [
           {
             title: "Test variant",
+            sku: "test-variant",
             inventory_items: [
               {
                 inventory_item_id: inventoryItem.id,
