@@ -1,13 +1,18 @@
 {
-  "name": "@medusajs/admin-sdk",
+  "name": "@medusajs/admin-bundler",
   "version": "0.0.1",
-  "description": "Admin SDK for Medusa.",
+  "description": "Bundler for the Medusa admin dashboard.",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "scripts": {
     "build": "tsup && copyfiles -f ./src/index.html ./src/entry.tsx ./src/index.css ./dist"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/admin/admin-bundler"
+  },
   "files": [
     "dist",
     "package.json"

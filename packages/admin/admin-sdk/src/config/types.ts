@@ -1,6 +1,5 @@
+import type { InjectionZone } from "@medusajs/admin-shared"
 import type { ComponentType } from "react"
-
-import { InjectionZone } from "../widgets"
 
 export type WidgetConfig = {
   zone: InjectionZone | InjectionZone[]

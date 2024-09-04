@@ -23,6 +23,11 @@
       "require": "./dist/app.css"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/admin/dashboard"
+  },
   "files": [
     "dist",
     "package.json"
