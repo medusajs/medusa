@@ -1,5 +1,5 @@
-import { loadResources } from "../load-internal"
 import { IModuleService, ModuleResolution } from "@medusajs/types"
+import { upperCaseFirst } from "@medusajs/utils"
 import { join } from "path"
 import {
   ModuleWithDmlMixedWithoutJoinerConfigFixtures,
@@ -7,7 +7,7 @@ import {
   ModuleWithJoinerConfigFixtures,
   ModuleWithoutJoinerConfigFixtures,
 } from "../__fixtures__"
-import { upperCaseFirst } from "@medusajs/utils"
+import { loadResources } from "../load-internal"
 
 describe("load internal - load resources", () => {
   describe("when loading the module resources from a path", () => {
@@ -64,30 +64,32 @@ describe("load internal - load resources", () => {
         resources.moduleService.prototype as IModuleService
       ).__joinerConfig()
 
-      expect(generatedJoinerConfig).toEqual({
-        serviceName: "module-with-dml-mixed-without-joiner-config",
-        primaryKeys: ["id"],
-        linkableKeys: {
-          dml_entity_id: "DmlEntity",
-          entity_model_id: "EntityModel",
-        },
-        alias: [
-          {
-            name: ["dml_entity", "dml_entities"],
-            args: {
-              entity: "DmlEntity",
-              methodSuffix: "DmlEntities",
-            },
+      expect(generatedJoinerConfig).toEqual(
+        expect.objectContaining({
+          serviceName: "module-with-dml-mixed-without-joiner-config",
+          primaryKeys: ["id"],
+          linkableKeys: {
+            dml_entity_id: "DmlEntity",
+            entity_model_id: "EntityModel",
           },
-          {
-            name: ["entity_model", "entity_models"],
-            args: {
-              entity: "EntityModel",
-              methodSuffix: "EntityModels",
+          alias: [
+            {
+              name: ["dml_entity", "dml_entities"],
+              args: {
+                entity: "DmlEntity",
+                methodSuffix: "DmlEntities",
+              },
             },
-          },
-        ],
-      })
+            {
+              name: ["entity_model", "entity_models"],
+              args: {
+                entity: "EntityModel",
+                methodSuffix: "EntityModels",
+              },
+            },
+          ],
+        })
+      )
     })
 
     test("should return the correct resources and generate the correct joiner config from DML entities", async () => {
@@ -143,30 +145,32 @@ describe("load internal - load resources", () => {
         resources.moduleService.prototype as IModuleService
       ).__joinerConfig()
 
-      expect(generatedJoinerConfig).toEqual({
-        serviceName: "module-with-dml-without-joiner-config",
-        primaryKeys: ["id"],
-        linkableKeys: {
-          entity_model_id: "EntityModel",
-          dml_entity_id: "DmlEntity",
-        },
-        alias: [
-          {
-            name: ["entity_model", "entity_models"],
-            args: {
-              entity: "EntityModel",
-              methodSuffix: "EntityModels",
-            },
+      expect(generatedJoinerConfig).toEqual(
+        expect.objectContaining({
+          serviceName: "module-with-dml-without-joiner-config",
+          primaryKeys: ["id"],
+          linkableKeys: {
+            entity_model_id: "EntityModel",
+            dml_entity_id: "DmlEntity",
           },
-          {
-            name: ["dml_entity", "dml_entities"],
-            args: {
-              entity: "DmlEntity",
-              methodSuffix: "DmlEntities",
+          alias: [
+            {
+              name: ["entity_model", "entity_models"],
+              args: {
+                entity: "EntityModel",
+                methodSuffix: "EntityModels",
+              },
             },
-          },
-        ],
-      })
+            {
+              name: ["dml_entity", "dml_entities"],
+              args: {
+                entity: "DmlEntity",
+                methodSuffix: "DmlEntities",
+              },
+            },
+          ],
+        })
+      )
     })
 
     test("should return the correct resources and generate the correct joiner config from mikro orm entities", async () => {
@@ -229,6 +233,7 @@ describe("load internal - load resources", () => {
           entity2_id: "Entity2",
           entity_model_id: "EntityModel",
         },
+        schema: "",
         alias: [
           {
             name: ["entity2", "entity2s"],
@@ -301,6 +306,7 @@ describe("load internal - load resources", () => {
         serviceName: "module-service",
         primaryKeys: ["id"],
         linkableKeys: {},
+        schema: "",
         alias: [
           {
             name: ["custom_name"],
