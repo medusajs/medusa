@@ -59,7 +59,7 @@ export class Auth {
       this.client.setToken(token as string)
     }
 
-    return token
+    return token as string
   }
 
   // The callback expects all query parameters from the Oauth callback to be passed to the backend, and the provider is in charge of parsing and validating them
