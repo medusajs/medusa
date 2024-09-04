@@ -8,6 +8,12 @@ import {
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
 import { Logger } from "../logger"
+import {
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
+} from "./remote-query-object-from-string"
+
+export { RemoteQueryObjectConfig, RemoteQueryObjectFromStringResult }
 
 export type Constructor<T> = new (...args: any[]) => T | (new () => T)
 
@@ -293,11 +299,46 @@ export type ModuleBootstrapDeclaration =
 // | ModuleServiceInitializeOptions
 // | ModuleServiceInitializeCustomDataLayerOptions
 
-export type RemoteQueryFunction = (
-  query: string | RemoteJoinerQuery | object,
-  variables?: Record<string, unknown>,
-  options?: RemoteJoinerOptions
-) => Promise<any> | null
+export type RemoteQueryFunction = {
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  <const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  <const TEntry extends string>(
+    queryConfig: RemoteQueryObjectFromStringResult<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param query
+   * @param options
+   */
+  (query: RemoteJoinerQuery, options?: RemoteJoinerOptions): Promise<any>
+
+  /**
+   * Query wrapper to provide specific GraphQL like API around remoteQuery.query
+   * @param query
+   * @param variables
+   * @param options
+   */
+  gql: (
+    query: string,
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
+  ) => Promise<any>
+}
 
 export interface IModuleService {
   /**

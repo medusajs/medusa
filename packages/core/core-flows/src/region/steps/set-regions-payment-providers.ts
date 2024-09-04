@@ -8,7 +8,6 @@ import {
   ModuleRegistrationName,
   Modules,
   promiseAll,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
@@ -64,16 +63,14 @@ async function getCurrentRegionPaymentProvidersLinks(
     [Modules.PAYMENT]: { payment_provider_id: string }
   }[]
 > {
-  const query = remoteQueryObjectFromString({
+  const regionProviderLinks = (await remoteQuery({
     service: LINKS.RegionPaymentProvider,
     variables: {
       filters: { region_id: regionIds },
       take: null,
     },
     fields: ["region_id", "payment_provider_id"],
-  } as any)
-
-  const regionProviderLinks = (await remoteQuery(query)) as {
+  } as any)) as {
     region_id: string
     payment_provider_id: string
   }[]

@@ -17,6 +17,8 @@ import {
   RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFunction,
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -28,6 +30,7 @@ import {
   Modules,
   ModulesSdkUtils,
   promiseAll,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
@@ -41,7 +44,7 @@ import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
-import {GraphQLSchema} from "graphql/type";
+import { GraphQLSchema } from "graphql/type"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -354,15 +357,17 @@ async function MedusaApp_({
   )
 
   if (loaderOnly) {
+    async function query(...args: Parameters<RemoteQueryFunction>) {
+      throw new Error("Querying not allowed in loaderOnly mode")
+    }
+
     return {
       onApplicationShutdown,
       onApplicationPrepareShutdown,
       onApplicationStart,
       modules: allModules,
       link: undefined,
-      query: async () => {
-        throw new Error("Querying not allowed in loaderOnly mode")
-      },
+      query: query as RemoteQueryFunction,
       runMigrations: async () => {
         throw new Error("Migrations not allowed in loaderOnly mode")
       },
@@ -415,11 +420,74 @@ async function MedusaApp_({
     customRemoteFetchData: remoteFetchData,
   })
 
-  const query = async (
-    query: string | RemoteJoinerQuery | object,
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  async function query<const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param query
+   * @param options
+   */
+  async function query(
+    query: RemoteJoinerQuery,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  async function query<const TEntry extends string>(
+    query: RemoteQueryObjectFromStringResult<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param query
+   * @param options
+   */
+  async function query<const TEntry extends string>(
+    query:
+      | RemoteJoinerQuery
+      | RemoteQueryObjectConfig<TEntry>
+      | RemoteQueryObjectFromStringResult<TEntry>,
+    options?: RemoteJoinerOptions
+  ) {
+    if (!isObject(query)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Invalid query, expected object and received something else."
+      )
+    }
+
+    let normalizedQuery: any = query
+
+    if ("entryPoint" in query || "service" in query) {
+      normalizedQuery = remoteQueryObjectFromString(
+        query as Parameters<typeof remoteQueryObjectFromString>[0]
+      )
+    }
+
+    if ("value" in query) {
+      normalizedQuery = query.value
+    }
+
+    return await remoteQuery.query(normalizedQuery, undefined, options)
+  }
+  /**
+   * Query wrapper to provide specific GraphQL like API around remoteQuery.query
+   * @param query
+   * @param variables
+   * @param options
+   */
+  query.gql = async function (
+    query: string,
     variables?: Record<string, unknown>,
     options?: RemoteJoinerOptions
-  ) => {
+  ) {
     return await remoteQuery.query(query, variables, options)
   }
 

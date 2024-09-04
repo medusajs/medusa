@@ -1,17 +1,8 @@
 import { isObject } from "./is-object"
-import { ObjectToStringPath, RemoteQueryEntryPoints } from "@medusajs/types"
-
-export type Config<TEntry> = {
-  entryPoint: TEntry
-  variables?: any
-  fields: ObjectToStringPath<
-    RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
-  > extends never
-    ? string[]
-    : ObjectToStringPath<
-        RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
-      >[]
-}
+import {
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
+} from "@medusajs/types"
 
 /**
  * Convert a string fields array to a remote query object
@@ -96,10 +87,15 @@ export type Config<TEntry> = {
  * //   },
  * // }
  */
-export function remoteQueryObjectFromString<const TEntry>(
-  config: Config<TEntry>
-): object {
-  const { entryPoint, service, variables, fields } = {
+export function remoteQueryObjectFromString<const TEntry extends string>(
+  config: RemoteQueryObjectConfig<TEntry>
+): RemoteQueryObjectFromStringResult<TEntry> {
+  const {
+    entryPoint,
+    service,
+    variables = {},
+    fields = [],
+  } = {
     ...config,
     entryPoint: "entryPoint" in config ? config.entryPoint : undefined,
     service: "service" in config ? config.service : undefined,
@@ -155,5 +151,7 @@ export function remoteQueryObjectFromString<const TEntry>(
 
   remoteJoinerConfig[entryKey]["__args"] = topLevelArgs ?? {}
 
-  return remoteJoinerConfig
+  return {
+    value: remoteJoinerConfig,
+  } as RemoteQueryObjectFromStringResult<TEntry>
 }

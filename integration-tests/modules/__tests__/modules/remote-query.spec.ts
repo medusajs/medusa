@@ -66,7 +66,6 @@ medusaIntegrationTestRunner({
               },
             },
           },
-          undefined,
           { throwIfKeyNotFound: true }
         )
 
