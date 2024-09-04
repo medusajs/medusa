@@ -52,7 +52,7 @@ export default async function adminLoader({
 }
 
 async function initDevelopmentServer(app: Express, options: IntializedOptions) {
-  const { develop } = await import("@medusajs/admin-sdk")
+  const { develop } = await import("@medusajs/admin-bundler")
 
   const adminMiddleware = await develop(options)
   app.use(options.path, adminMiddleware)
@@ -60,7 +60,7 @@ async function initDevelopmentServer(app: Express, options: IntializedOptions) {
 }
 
 async function serveProductionBuild(app: Express, options: IntializedOptions) {
-  const { serve } = await import("@medusajs/admin-sdk")
+  const { serve } = await import("@medusajs/admin-bundler")
 
   const adminRoute = await serve(options)
 
