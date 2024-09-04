@@ -777,9 +777,9 @@ class OasKindGenerator extends FunctionKindGenerator {
     const isAdminAuthenticated =
       (!isAuthenticationDisabled || hasAuthenticationOverride) &&
       oasPath.startsWith("admin")
-    const isStoreAuthenticated =
-      (!isAuthenticationDisabled || hasAuthenticationOverride) &&
-      oasPath.startsWith("store")
+    const isStoreAuthenticated = hasAuthenticationOverride
+      ? oasPath.startsWith("store")
+      : !isAuthenticationDisabled && oasPath.startsWith("store")
     const isAuthenticated =
       isAdminAuthenticated || isStoreAuthenticated || hasAuthenticationOverride
 
