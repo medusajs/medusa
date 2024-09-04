@@ -43,9 +43,26 @@ You can use the following command to install a full ecommerce store that include
 npx create-medusa-app@latest --with-nextjs-starter
 ```
 
+After running this command, you will be prompted to answer a few questions to set up your project:
+```bash
+Whats the name of your project?  
+Enter an email for your admin dashboard user
+Enter your Postgres username
+Enter your Postgres password 
+```
+> **Note**: You must have PostgreSQL running locally to proceed with this setup. Make sure you enter the correct PostgreSQL credentials.
+
 Refer to the [create-medusa-app](../create-medusa-app.mdx) documentation for more details on prerequisites, steps, and troubleshooting.
 
----
+Alternatively, if you have a cloud-based PostgreSQL setup, you can directly use your connection string by providing it with the `--db-url` flag.
+
+For example, to provide a custom database URL with a specific port:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://user:password@localhost:<YOUR_PORT>/medusa-store"
+```
+
+This method allows you to connect to an existing PostgreSQL instance, either locally or in the cloud. 
 
 ## Option 2: Install Next.js Storefront Only
 
