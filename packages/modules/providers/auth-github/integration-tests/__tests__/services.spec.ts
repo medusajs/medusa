@@ -1,43 +1,35 @@
 import { generateJwtToken, MedusaError } from "@medusajs/utils"
-import { GoogleAuthService } from "../../src/services/google"
+import { GithubAuthService } from "../../src/services/github"
 import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"
 
 jest.setTimeout(100000)
 
 const sampleIdPayload = {
-  iss: "https://accounts.google.com",
-  azp: "199301612397-l1lrg08vd6dvu98r43l7ul0ri2rd2b6r.apps.googleusercontent.com",
-  aud: "199301612397-l1lrg08vd6dvu98r43l7ul0ri2rd2b6r.apps.googleusercontent.com",
-  sub: "113664482950786663866",
-  hd: "medusajs.com",
-  email: "test@medusajs.com",
-  email_verified: true,
-  at_hash: "7DKi89ceSj-Bii1m_V1Pew",
-  name: "Test Admin",
-  picture:
-    "https://lh3.googleusercontent.com/a/ACg8ocJu6nzIGJRzHnl6peAh3fKOzOkrrRCWyMOMuIfCwePDG-ykulA=s96-c",
-  given_name: "Test",
-  family_name: "Admin",
-  iat: 1716891837,
+  login: "octocat",
+  id: 1,
+  node_id: "MDQ6VXNlcjE=",
+  avatar_url: "https://github.com/images/error/octocat_happy.gif",
+  gravatar_id: "",
+  url: "https://api.github.com/users/octocat",
+  name: "monalisa octocat",
+  company: "GitHub",
+  location: "San Francisco",
+  email: "octocat@github.com",
+  two_factor_authentication: true,
 }
-
-const encodedIdToken = generateJwtToken(sampleIdPayload, {
-  secret: "test",
-  expiresIn: "1d",
-})
 
 const baseUrl = "https://someurl.com"
 
 // This is just a network-layer mocking, it doesn't start an actual server
 const server = setupServer(
   http.post(
-    "https://oauth2.googleapis.com/token",
+    "https://github.com/login/oauth/access_token",
     async ({ request, params, cookies }) => {
       const url = request.url
       if (
         url ===
-        "https://oauth2.googleapis.com/token?client_id=test&client_secret=test&code=invalid-code&redirect_uri=https%3A%2F%2Fsomeurl.com%2Fauth%2Fgoogle%2Fcallback&grant_type=authorization_code"
+        "https://github.com/login/oauth/access_token?client_id=test&client_secret=test&code=invalid-code&redirect_uri=https%3A%2F%2Fsomeurl.com%2Fauth%2Fgithub%2Fcallback"
       ) {
         return new HttpResponse(null, {
           status: 401,
@@ -47,18 +39,27 @@ const server = setupServer(
 
       if (
         url ===
-        "https://oauth2.googleapis.com/token?client_id=test&client_secret=test&code=valid-code&redirect_uri=https%3A%2F%2Fsomeurl.com%2Fauth%2Fgoogle%2Fcallback&grant_type=authorization_code"
+        "https://github.com/login/oauth/access_token?client_id=test&client_secret=test&code=valid-code&redirect_uri=https%3A%2F%2Fsomeurl.com%2Fauth%2Fgithub%2Fcallback"
       ) {
         return new HttpResponse(
           JSON.stringify({
             access_token: "test",
             expires_in: 3600,
-            token_type: "Bearer",
             refresh_token: "test",
-            id_token: encodedIdToken,
+            refresh_token_expires_in: 7200,
           })
         )
       }
+    }
+  ),
+
+  http.get(
+    "https://api.github.com/user",
+    async ({ request, params, cookies }) => {
+      return new HttpResponse(JSON.stringify(sampleIdPayload), {
+        status: 200,
+        statusText: "OK",
+      })
     }
   ),
 
@@ -70,10 +71,10 @@ const server = setupServer(
   })
 )
 
-describe("Google auth provider", () => {
-  let googleService: GoogleAuthService
+describe("Github auth provider", () => {
+  let githubService: GithubAuthService
   beforeAll(() => {
-    googleService = new GoogleAuthService(
+    githubService = new GithubAuthService(
       {
         logger: console as any,
       },
@@ -81,7 +82,7 @@ describe("Google auth provider", () => {
         clientId: "test",
         clientSecret: "test",
         successRedirectUrl: baseUrl,
-        callbackUrl: `${baseUrl}/auth/google/callback`,
+        callbackUrl: `${baseUrl}/auth/github/callback`,
       }
     )
 
@@ -98,7 +99,7 @@ describe("Google auth provider", () => {
   it("throw an error if required options are not passed", async () => {
     let msg = ""
     try {
-      GoogleAuthService.validateOptions({
+      GithubAuthService.validateOptions({
         clientId: "test",
         clientSecret: "test",
       } as any)
@@ -106,20 +107,20 @@ describe("Google auth provider", () => {
       msg = e.message
     }
 
-    expect(msg).toEqual("Google callbackUrl is required")
+    expect(msg).toEqual("Github callbackUrl is required")
   })
 
   it("returns a redirect URL on authenticate", async () => {
-    const res = await googleService.authenticate({})
+    const res = await githubService.authenticate({})
     expect(res).toEqual({
       success: true,
       location:
-        "https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https%3A%2F%2Fsomeurl.com%2Fauth%2Fgoogle%2Fcallback&client_id=test&response_type=code&scope=email+profile+openid",
+        "https://github.com/login/oauth/authorize?redirect_uri=https%3A%2F%2Fsomeurl.com%2Fauth%2Fgithub%2Fcallback&client_id=test&response_type=code",
     })
   })
 
   it("validate callback should return an error on empty code", async () => {
-    const res = await googleService.validateCallback(
+    const res = await githubService.validateCallback(
       {
         query: {},
       },
@@ -132,7 +133,7 @@ describe("Google auth provider", () => {
   })
 
   it("validate callback should return on a missing access token for code", async () => {
-    const res = await googleService.validateCallback(
+    const res = await githubService.validateCallback(
       {
         query: {
           code: "invalid-code",
@@ -157,17 +158,17 @@ describe("Google auth provider", () => {
           provider_identities: [
             {
               entity_id: "test@admin.com",
-              provider: "google",
+              provider: "github",
             },
           ],
         }
       }),
       update: jest.fn().mockImplementation(() => {
-        return {}
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
       }),
     }
 
-    const res = await googleService.validateCallback(
+    const res = await githubService.validateCallback(
       {
         query: {
           code: "valid-code",
@@ -183,7 +184,7 @@ describe("Google auth provider", () => {
         provider_identities: [
           {
             entity_id: "test@admin.com",
-            provider: "google",
+            provider: "github",
           },
         ],
       },
@@ -197,7 +198,7 @@ describe("Google auth provider", () => {
           provider_identities: [
             {
               entity_id: "test@admin.com",
-              provider: "google",
+              provider: "github",
             },
           ],
         }
@@ -206,11 +207,21 @@ describe("Google auth provider", () => {
         return {}
       }),
       update: jest.fn().mockImplementation(() => {
-        return {}
+        return {
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "github",
+              provider_metadata: {
+                access_token: "test",
+              },
+            },
+          ],
+        }
       }),
     }
 
-    const res = await googleService.validateCallback(
+    const res = await githubService.validateCallback(
       {
         query: {
           code: "valid-code",
@@ -226,7 +237,10 @@ describe("Google auth provider", () => {
         provider_identities: [
           {
             entity_id: "test@admin.com",
-            provider: "google",
+            provider: "github",
+            provider_metadata: {
+              access_token: "test",
+            },
           },
         ],
       },
