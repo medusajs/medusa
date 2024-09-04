@@ -51,7 +51,7 @@ export interface IPromotionModuleService extends IModuleService {
   registerUsage(computedActions: UsageComputedActions[]): Promise<void>
 
   /**
-   * This message is used to revert the changes made by registerUsage action
+   * This method is used to revert the changes made by registerUsage action
    *
    * @param {UsageComputedActions[]} computedActions - The computed actions to adjust their promotion's campaign budget.
    * @returns {Promise<void>} Resolves when the campaign budgets have been adjusted successfully.

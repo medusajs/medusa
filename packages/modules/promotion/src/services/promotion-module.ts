@@ -124,7 +124,7 @@ export default class PromotionModuleService
   async registerUsage(
     computedActions: PromotionTypes.UsageComputedActions[],
     @MedusaContext()
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const promotionCodes = computedActions
       .map((computedAction) => computedAction.code)
