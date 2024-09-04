@@ -7,7 +7,7 @@ import {
   DataGridCellRenderProps,
   DataGridCoordinates,
 } from "../types"
-import { isCellMatch } from "../utils"
+import { isCellMatch, isSpecialFocusKey } from "../utils"
 
 type UseDataGridCellOptions<TData, TValue> = {
   context: CellContext<TData, TValue>
@@ -159,6 +159,10 @@ export const useDataGridCell = <TData, TValue>({
       }
 
       if (e.key === "Enter") {
+        return
+      }
+
+      if (isSpecialFocusKey(e.nativeEvent)) {
         return
       }
 

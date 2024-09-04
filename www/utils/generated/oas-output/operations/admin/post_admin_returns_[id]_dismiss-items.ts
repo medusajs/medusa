@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/returns/{id}/dismiss-items
  * operationId: PostReturnsIdDismissItems
- * summary: Add Dismiss Items to Return
- * description: Add a list of dismiss items to a return.
+ * summary: Add Damaged Items to Return
+ * x-sidebar-summary: Add Damaged Items
+ * description: Add damaged items, whose quantity is to be dismissed, to a return. These items will have the action `RECEIVE_DAMAGED_RETURN_ITEM`.
  * x-authenticated: true
  * parameters:
  *   - name: id

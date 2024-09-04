@@ -15,6 +15,7 @@ import {
   getProvinceByIso2,
   isProvinceInCountry,
 } from "../../lib/data/country-states"
+import { productLoader } from "../../routes/products/product-detail/loader"
 import { taxRegionLoader } from "../../routes/tax-regions/tax-region-detail/loader"
 import { RouteExtensions } from "./route-extensions"
 import { SettingsExtensions } from "./settings-extensions"
@@ -73,85 +74,105 @@ export const RouteMap: RouteObject[] = [
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/products/product-detail"),
+                errorElement: <ErrorBoundary />,
+                Component: Outlet,
+                loader: productLoader,
                 handle: {
                   crumb: (data: HttpTypes.AdminProductResponse) =>
                     data.product.title,
                 },
                 children: [
                   {
-                    path: "edit",
-                    lazy: () => import("../../routes/products/product-edit"),
+                    path: "",
+                    lazy: () => import("../../routes/products/product-detail"),
+                    children: [
+                      {
+                        path: "edit",
+                        lazy: () =>
+                          import("../../routes/products/product-edit"),
+                      },
+                      {
+                        path: "sales-channels",
+                        lazy: () =>
+                          import(
+                            "../../routes/products/product-sales-channels"
+                          ),
+                      },
+                      {
+                        path: "attributes",
+                        lazy: () =>
+                          import("../../routes/products/product-attributes"),
+                      },
+                      {
+                        path: "organization",
+                        lazy: () =>
+                          import("../../routes/products/product-organization"),
+                      },
+                      {
+                        path: "media",
+                        lazy: () =>
+                          import("../../routes/products/product-media"),
+                      },
+                      {
+                        path: "prices",
+                        lazy: () =>
+                          import("../../routes/products/product-prices"),
+                      },
+                      {
+                        path: "options/create",
+                        lazy: () =>
+                          import("../../routes/products/product-create-option"),
+                      },
+                      {
+                        path: "options/:option_id/edit",
+                        lazy: () =>
+                          import("../../routes/products/product-edit-option"),
+                      },
+                      {
+                        path: "variants/create",
+                        lazy: () =>
+                          import(
+                            "../../routes/products/product-create-variant"
+                          ),
+                      },
+                      {
+                        path: "metadata/edit",
+                        lazy: () =>
+                          import("../../routes/products/product-metadata"),
+                      },
+                    ],
                   },
                   {
-                    path: "sales-channels",
-                    lazy: () =>
-                      import("../../routes/products/product-sales-channels"),
-                  },
-                  {
-                    path: "attributes",
-                    lazy: () =>
-                      import("../../routes/products/product-attributes"),
-                  },
-                  {
-                    path: "organization",
-                    lazy: () =>
-                      import("../../routes/products/product-organization"),
-                  },
-                  {
-                    path: "media",
-                    lazy: () => import("../../routes/products/product-media"),
-                  },
-                  {
-                    path: "prices",
-                    lazy: () => import("../../routes/products/product-prices"),
-                  },
-                  {
-                    path: "options/create",
-                    lazy: () =>
-                      import("../../routes/products/product-create-option"),
-                  },
-                  {
-                    path: "options/:option_id/edit",
-                    lazy: () =>
-                      import("../../routes/products/product-edit-option"),
-                  },
-                  {
-                    path: "variants/create",
-                    lazy: () =>
-                      import("../../routes/products/product-create-variant"),
-                  },
-                  {
-                    path: "metadata/edit",
-                    lazy: () =>
-                      import("../../routes/products/product-metadata"),
-                  },
-                ],
-              },
-              {
-                path: ":id/variants/:variant_id",
-                lazy: () =>
-                  import(
-                    "../../routes/product-variants/product-variant-detail"
-                  ),
-                children: [
-                  {
-                    path: "edit",
-                    lazy: () =>
-                      import(
-                        "../../routes/product-variants/product-variant-edit"
-                      ),
-                  },
-                  {
-                    path: "prices",
-                    lazy: () => import("../../routes/products/product-prices"),
-                  },
-                  {
-                    path: "manage-items",
+                    path: "variants/:variant_id",
                     lazy: () =>
                       import(
-                        "../../routes/product-variants/product-variant-manage-inventory-items"
+                        "../../routes/product-variants/product-variant-detail"
                       ),
+                    handle: {
+                      crumb: (data: HttpTypes.AdminProductVariantResponse) =>
+                        data.variant.title,
+                    },
+                    children: [
+                      {
+                        path: "edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/product-variants/product-variant-edit"
+                          ),
+                      },
+                      {
+                        path: "prices",
+                        lazy: () =>
+                          import("../../routes/products/product-prices"),
+                      },
+                      {
+                        path: "manage-items",
+                        lazy: () =>
+                          import(
+                            "../../routes/product-variants/product-variant-manage-inventory-items"
+                          ),
+                      },
+                    ],
                   },
                 ],
               },

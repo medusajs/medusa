@@ -1,0 +1,152 @@
+import { TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `medusaIntegrationTestRunner Reference`,
+}
+
+# {metadata.title}
+
+This document provides a reference to the `medusaIntegrationTestRunner` function provided by the `medusa-test-utils` package.
+
+## Example
+
+```ts
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
+
+medusaIntegrationTestRunner({
+  testSuite: ({ api, getContainer }) => {
+    // TODO write tests...
+  }
+})
+```
+
+## Parameters
+
+<TypeList
+  types={[
+    {
+      type: "`object`",
+      name: "Input",
+      description: "Object parameter of test options.",
+      children: [
+        {
+          type: "`() => void`",
+          name: "testSuite",
+          description: "The Jest tests to run.",
+          optional: false
+        },
+        {
+          type: "`string`",
+          name: "dbName",
+          description: "A name to use for the database. By default, a random name is generated.",
+        },
+        {
+          type: "`string`",
+          name: "schema",
+          description: "The PostgreSQL schema that the database is created in.",
+        },
+        {
+          type: "`Record<string, any>`",
+          name: "env",
+          description: "Environment variables to use in the test suite."
+        },
+        {
+          type: "`boolean`",
+          name: "debug",
+          description: "Whether to show database log messages.",
+          defaultValue: "false"
+        }
+      ]
+    }
+  ]}
+  sectionTitle="Parameters"
+/>
+
+## Test Suite Parameters
+
+The function passed to `testSuite` accepts the following parameters:
+
+<TypeList
+  types={[
+    {
+      type: "`object`",
+      name: "Input",
+      description: "Object parameter of test utilities.",
+      children: [
+        {
+          type: "Record<string, Function>",
+          name: "api",
+          description: "A set of methods used to send requests to the Medusa application.",
+          optional: false,
+          children: [
+            {
+              type: "(path: string) => Promise<any>",
+              name: "get",
+              description: "Send a GET request to the specified path."
+            },
+            {
+              type: "(path: string, data?: any) => Promise<any>",
+              name: "post",
+              description: "Send a POST request to the specified path."
+            },
+            {
+              type: "(path: string) => Promise<any>",
+              name: "delete",
+              description: "Send a DELETE request to the specified path."
+            },
+          ]
+        },
+        {
+          type: "`() => MedusaContainer`",
+          name: "getContainer",
+          description: "A name to use for the database. By default, a random name is generated.",
+        },
+        {
+          type: "`Record<string, string>`",
+          name: "dbConfig",
+          description: "The created database's configurations",
+          children: [
+            {
+              type: "`string`",
+              name: "dbName",
+              description: "The database's name."
+            },
+            {
+              type: "`string`",
+              name: "schema",
+              description: "The PostgreSQL schema the database is created in."
+            },
+            {
+              type: "`string`",
+              name: "clientUrl",
+              description: "The connection URL to the database."
+            },
+          ]
+        },
+        {
+          type: "`Record<string, Function>`",
+          name: "dbUtils",
+          description: "A set of methods to manage the database",
+          children: [
+            {
+              type: "`(dbName: string) => Promise<void>`",
+              name: "create",
+              description: "Creates a database."
+            },
+            {
+              type: "`(options: { schema?: string }) => Promise<void>`",
+              name: "teardown",
+              description: "Deletes all data in a database's tables."
+            },
+            {
+              type: "`(dbName: string) => Promise<void>`",
+              name: "shutdown",
+              description: "Drops a database."
+            },
+          ]
+        }
+      ]
+    }
+  ]}
+  sectionTitle="Test Suite Parameters"
+/>

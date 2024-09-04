@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/products/{id}/variants/inventory-items/batch
  * operationId: PostProductsIdVariantsInventoryItemsBatch
- * summary: Add Inventory Items to Product
- * description: Add a list of inventory items to a product.
+ * summary: Manage Variants Inventory in a Product
+ * x-sidebar-summary: Manage Variants Inventory
+ * description: Manage a product's variant's inventoris to associate them with inventory items, update their inventory items, or delete their association with inventory items.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -20,14 +21,14 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The product variant inventories to manage.
  *         properties:
  *           create:
  *             type: array
- *             description: The product's create.
+ *             description: 
  *             items:
  *               type: object
- *               description: The create's details.
+ *               description: The associations to create between a product variant and an inventory item.
  *               required:
  *                 - required_quantity
  *                 - inventory_item_id
@@ -36,21 +37,21 @@
  *                 required_quantity:
  *                   type: number
  *                   title: required_quantity
- *                   description: The create's required quantity.
+ *                   description: The variant's quantity.
  *                 inventory_item_id:
  *                   type: string
  *                   title: inventory_item_id
- *                   description: The create's inventory item id.
+ *                   description: The ID of the inventory item to associate the variant with.
  *                 variant_id:
  *                   type: string
  *                   title: variant_id
- *                   description: The create's variant id.
+ *                   description: The ID of the variant.
  *           update:
  *             type: array
- *             description: The product's update.
+ *             description: The product variants to update their association with inventory items.
  *             items:
  *               type: object
- *               description: The update's details.
+ *               description: Update a product variant's association with an inventory item.
  *               required:
  *                 - required_quantity
  *                 - inventory_item_id
@@ -59,21 +60,21 @@
  *                 required_quantity:
  *                   type: number
  *                   title: required_quantity
- *                   description: The update's required quantity.
+ *                   description: The variant's quantity.
  *                 inventory_item_id:
  *                   type: string
  *                   title: inventory_item_id
- *                   description: The update's inventory item id.
+ *                   description: The ID of the inventory item the variant is associated with.
  *                 variant_id:
  *                   type: string
  *                   title: variant_id
- *                   description: The update's variant id.
+ *                   description: The ID of the variant.
  *           delete:
  *             type: array
- *             description: The product's delete.
+ *             description: The product variants to delete their association with inventory items.
  *             items:
  *               type: object
- *               description: The delete's details.
+ *               description: Delete a product variant's association with an inventory item.
  *               required:
  *                 - inventory_item_id
  *                 - variant_id
@@ -81,11 +82,11 @@
  *                 inventory_item_id:
  *                   type: string
  *                   title: inventory_item_id
- *                   description: The delete's inventory item id.
+ *                   description: The ID of the inventory item associated with the variant.
  *                 variant_id:
  *                   type: string
  *                   title: variant_id
- *                   description: The delete's variant id.
+ *                   description: The ID of the variant.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

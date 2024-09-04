@@ -1012,6 +1012,18 @@ export const filesMap = [
     "pathname": "/storefront-development/tips"
   },
   {
+    "filePath": "/www/apps/resources/app/test-tools-reference/medusaIntegrationTestRunner/page.mdx",
+    "pathname": "/test-tools-reference/medusaIntegrationTestRunner"
+  },
+  {
+    "filePath": "/www/apps/resources/app/test-tools-reference/moduleIntegrationTestRunner/page.mdx",
+    "pathname": "/test-tools-reference/moduleIntegrationTestRunner"
+  },
+  {
+    "filePath": "/www/apps/resources/app/test-tools-reference/page.mdx",
+    "pathname": "/test-tools-reference"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/cors-errors/page.mdx",
     "pathname": "/troubleshooting/cors-errors"
   },
@@ -4530,6 +4542,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.refundPaymentWorkflow/page.mdx",
     "pathname": "/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.refundPaymentWorkflow"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.validateRefundStep/page.mdx",
+    "pathname": "/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.validateRefundStep"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Payment/Workflows_Payment/variables/core_flows.Payment.Workflows_Payment.capturePaymentWorkflowId/page.mdx",
