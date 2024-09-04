@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/orders/{id}/fulfillments
  * operationId: PostOrdersIdFulfillments
- * summary: Add Fulfillments to Order
- * description: Add a list of fulfillments to a order.
+ * summary: Create an Order Fulfillment
+ * x-sidebar-summary: Create Fulfillment
+ * description: Create a fulfillment for an order. The creation fails if the order is canceled.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -63,7 +64,7 @@
  *       schema:
  *         allOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The fulfillment's details.
  *             required:
  *               - items
  *               - location_id
@@ -71,10 +72,10 @@
  *             properties:
  *               items:
  *                 type: array
- *                 description: The order's items.
+ *                 description: The items to fulfill.
  *                 items:
  *                   type: object
- *                   description: The item's items.
+ *                   description: An item's details.
  *                   required:
  *                     - id
  *                     - quantity
@@ -86,25 +87,25 @@
  *                     quantity:
  *                       type: number
  *                       title: quantity
- *                       description: The item's quantity.
+ *                       description: The item's quantity to fulfill.
  *               location_id:
  *                 type: string
  *                 title: location_id
- *                 description: The order's location id.
+ *                 description: The ID of the location to fulfill the items from. If not provided, the location associated with the shipping option of the order's shipping method is used.
  *               no_notification:
  *                 type: boolean
  *                 title: no_notification
- *                 description: The order's no notification.
+ *                 description: Whether to send the customer a notification about the created fulfillment.
  *               metadata:
  *                 type: object
- *                 description: The order's metadata.
+ *                 description: The order's metadata. Can hold custom key-value pairs.
  *           - type: object
- *             description: SUMMARY
+ *             description: The fulfillment's details.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The fulfillment's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

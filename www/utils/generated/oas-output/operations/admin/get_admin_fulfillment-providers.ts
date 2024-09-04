@@ -64,7 +64,7 @@
  *   - name: is_enabled
  *     in: query
  *     description: Filter by whether the fulfillment provider is enabled.
- *     required: true
+ *     required: false
  *     schema:
  *       type: boolean
  *       title: is_enabled

@@ -1,8 +1,10 @@
 /**
  * @oas [post] /admin/claims/{id}/inbound/items
  * operationId: PostClaimsIdInboundItems
- * summary: Add Items to Claim
- * description: Add a list of items to a claim.
+ * summary: Add Inbound Items to a Claim
+ * x-sidebar-summary: Add Inbound Items
+ * description: |
+ *   Add inbound (or return) items to a claim. These inbound items will have a `RETURN_ITEM` action.
  * x-authenticated: true
  * parameters:
  *   - name: id

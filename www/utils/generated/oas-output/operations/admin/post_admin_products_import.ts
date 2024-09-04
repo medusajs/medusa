@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/products/import
  * operationId: PostProductsImport
- * summary: Create Product
- * description: Create a product.
+ * summary: Create Product Import
+ * description: Create a new product import process. The products aren't imported until the import is confirmed with the `/admin/products/:transaction-id/import` API route.
  * x-authenticated: true
  * parameters: []
  * security:

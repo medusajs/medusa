@@ -2,6 +2,7 @@
  * @schema AdminCreateProductTag
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminCreateProductTag
  * required:
  *   - value
  * properties:
@@ -12,7 +13,6 @@
  *   metadata:
  *     type: object
  *     description: The product tag's metadata.
- * x-schemaName: AdminCreateProductTag
  * 
 */
 

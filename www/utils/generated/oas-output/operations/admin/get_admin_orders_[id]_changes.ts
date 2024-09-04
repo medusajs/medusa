@@ -3,10 +3,9 @@
  * operationId: GetOrdersIdChanges
  * summary: List Changes on an Order
  * x-sidebar-summary: List Changes
- * description: > 
+ * description: |
  *   Retrieve a list of changes made on an order, including returns, exchanges, etc...
- *   
- *   
+ * 
  *   The changes can be filtered by fields like FILTER FIELDS. The changes can also be paginated.
  * x-authenticated: true
  * parameters:

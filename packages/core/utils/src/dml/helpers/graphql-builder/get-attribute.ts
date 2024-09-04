@@ -1,4 +1,5 @@
 import { PropertyType } from "@medusajs/types"
+import { toPascalCase } from "../../../common"
 import { PrimaryKeyModifier } from "../../properties/primary-key"
 
 /*
@@ -19,6 +20,7 @@ const GRAPHQL_TYPES = {
  * Defines a DML entity schema field as a Mikro ORM property
  */
 export function getGraphQLAttributeFromDMLPropety(
+  modelName: string,
   propertyName: string,
   property: PropertyType<any>
 ): {
@@ -34,55 +36,46 @@ export function getGraphQLAttributeFromDMLPropety(
   let gqlAttr: {
     property: string
     type: string
-  }[] = []
+  }
 
   const specialType = {
     enum: () => {
-      const enumName = field.fieldName + "Enum"
-
+      const enumName = toPascalCase(modelName + "_" + field.fieldName + "Enum")
       const enumValues = field.dataType
-        .options!.choices.forEach((value) => {
+        .options!.choices.map((value) => {
           return `  ${value}`
         })
         .join("\n")
 
-      enumSchema = `enum ${enumName} {\n${enumValues}}\n}`
-
-      gqlAttr.push({
+      enumSchema = `enum ${enumName} {\n${enumValues}\n}`
+      gqlAttr = {
         property: field.fieldName,
         type: enumName,
-      })
+      }
     },
     id: () => {
-      gqlAttr.push({
+      gqlAttr = {
         property: field.fieldName,
         type: GRAPHQL_TYPES.id,
-      })
+      }
     },
   }
 
   if (specialType[fieldType]) {
     specialType[fieldType]()
   } else {
-    gqlAttr.push({
+    gqlAttr = {
       property: field.fieldName,
       type: GRAPHQL_TYPES[fieldType] ?? "String",
-    })
+    }
   }
 
   if (!field.nullable) {
-    gqlAttr.forEach((attr) => {
-      attr.type += "!"
-    })
+    gqlAttr!.type += "!"
   }
-
-  let gqlSchema: string[] = []
-  gqlAttr.forEach((attr) => {
-    gqlSchema.push(`${attr.property}: ${attr.type}`)
-  })
 
   return {
     enum: enumSchema,
-    attribute: gqlSchema.join("\n"),
+    attribute: `${gqlAttr!.property}: ${gqlAttr!.type}`,
   }
 }

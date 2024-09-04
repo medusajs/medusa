@@ -62,10 +62,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
- *         required:
- *           - parent_category_id
- *           - metadata
+ *         description: The properties to update in the product category.
  *         properties:
  *           name:
  *             type: string
@@ -78,26 +75,26 @@
  *           handle:
  *             type: string
  *             title: handle
- *             description: The product category's handle.
+ *             description: The product category's handle. Must be a unique value.
  *           is_internal:
  *             type: boolean
  *             title: is_internal
- *             description: The product category's is internal.
+ *             description: Whether the product category is only used for internal purposes and shouldn't be shown the customer.
  *           is_active:
  *             type: boolean
  *             title: is_active
- *             description: The product category's is active.
+ *             description: Whether the product category is active.
  *           parent_category_id:
  *             type: string
  *             title: parent_category_id
- *             description: The product category's parent category id.
+ *             description: The ID of a parent category.
  *           metadata:
  *             type: object
- *             description: The product category's metadata.
+ *             description: The product category's metadata. Can hold custom key-value pairs.
  *           rank:
  *             type: number
  *             title: rank
- *             description: The product category's rank.
+ *             description: The product category's rank among other categories.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

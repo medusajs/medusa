@@ -55,6 +55,48 @@ In the example above, you define a middleware that logs the message `Received a 
 
 ---
 
+## Request URLs with Trailing Backslashes
+
+A middleware whose `matcher` pattern doesn't end with a backslash won't be applied for requests to URLs with a trailing backslash.
+
+For example, consider you have the following middleware:
+
+```ts
+import { defineMiddlewares } from "@medusajs/medusa"
+import type { 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse, 
+} from "@medusajs/medusa"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom",
+      middlewares: [
+        (
+          req: MedusaRequest, 
+          res: MedusaResponse, 
+          next: MedusaNextFunction
+        ) => {
+          console.log("Received a request!")
+
+          next()
+        },
+      ],
+    },
+  ],
+})
+```
+
+If you send a request to `http://localhost:9000/custom`, the middleware will run.
+
+However, if you send a request to `http://localhost:9000/custom/`, the middleware won't run.
+
+In general, avoid adding trailing backslashes when sending requests to API routes.
+
+---
+
 ## Test the Middleware
 
 To test the middleware:

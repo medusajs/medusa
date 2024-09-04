@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/product-categories/{id}/products
  * operationId: PostProductCategoriesIdProducts
- * summary: Add Products to Product Category
- * description: Add a list of products to a product category.
+ * summary: Manage Products in Product Category
+ * x-sidebar-summary: Manage Products
+ * description: Manage products of a category to add or remove them.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,22 +63,22 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The products to add or remove from the category.
  *         properties:
  *           add:
  *             type: array
- *             description: The product category's add.
+ *             description: The products to add.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A product ID.
  *           remove:
  *             type: array
- *             description: The product category's remove.
+ *             description: The product to remove.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A product ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

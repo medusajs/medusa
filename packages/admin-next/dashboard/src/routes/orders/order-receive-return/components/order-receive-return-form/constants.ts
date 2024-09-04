@@ -3,8 +3,8 @@ import { z } from "zod"
 export const ReceiveReturnSchema = z.object({
   items: z.array(
     z.object({
-      quantity: z.number().nullable(),
-      dismissed_quantity: z.number().nullable(),
+      quantity: z.number().nullish(),
+      dismissed_quantity: z.number().nullish(),
       item_id: z.string(),
     })
   ),

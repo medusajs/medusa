@@ -3,11 +3,9 @@
  * operationId: GetPromotionsRuleValueOptionsRule_typeRule_attribute_id
  * summary: List Rule Values Given a Rule Attribute
  * x-sidebar-summary: List Rule Values
- * description: >
+ * description: |
  *   Retrieve all potential values for promotion rules and target and buy rules based on the specified rule attribute and type.
- * 
- *   For example, if you provide the ID of the `currency_code` rule attribute, and set `rule_type` to `rules`, a list of currencies
- *   are retrieved in label-value pairs.
+ *   For example, if you provide the ID of the `currency_code` rule attribute, and set `rule_type` to `rules`, a list of currencies are retrieved in label-value pairs.
  * x-authenticated: true
  * parameters:
  *   - name: rule_type

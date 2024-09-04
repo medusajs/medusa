@@ -149,6 +149,7 @@ export async function createOrderSeeder({ api }) {
     await api.post(`/store/carts`, {
       currency_code: "usd",
       email: "tony@stark-industries.com",
+      region_id: region.id,
       shipping_address: {
         address_1: "test address 1",
         address_2: "test address 2",

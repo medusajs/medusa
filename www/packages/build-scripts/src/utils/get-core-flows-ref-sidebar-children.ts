@@ -1,6 +1,6 @@
-import { getSidebarItemLink, ItemsToAdd } from "build-scripts"
 import { existsSync, readdirSync } from "fs"
 import path from "path"
+import { getSidebarItemLink, ItemsToAdd } from "../index.js"
 
 export default async function getCoreFlowsRefSidebarChildren(): Promise<
   ItemsToAdd[]

@@ -16,8 +16,11 @@ import {
 import { useTranslation } from "react-i18next"
 
 import { AdminOrderLineItem } from "@medusajs/types"
-import { useClaims } from "../../../../../hooks/api/claims"
-import { useExchanges } from "../../../../../hooks/api/exchanges"
+import { useCancelClaim, useClaims } from "../../../../../hooks/api/claims"
+import {
+  useCancelExchange,
+  useExchanges,
+} from "../../../../../hooks/api/exchanges"
 import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
@@ -283,10 +286,15 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
       const claimReturn = returnMap.get(claim.return_id!)
 
       items.push({
-        title: t("orders.activity.events.claim.created", {
-          claimId: claim.id.slice(-7),
-        }),
-        timestamp: claim.created_at,
+        title: t(
+          claim.canceled_at
+            ? "orders.activity.events.claim.canceled"
+            : "orders.activity.events.claim.created",
+          {
+            claimId: claim.id.slice(-7),
+          }
+        ),
+        timestamp: claim.canceled_at || claim.created_at,
         itemsToSend: claim.additional_items,
         itemsToReturn: claimReturn?.items,
         itemsMap,
@@ -298,10 +306,15 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
       const exchangeReturn = returnMap.get(exchange.return_id!)
 
       items.push({
-        title: t("orders.activity.events.exchange.created", {
-          exchangeId: exchange.id.slice(-7),
-        }),
-        timestamp: exchange.created_at,
+        title: t(
+          exchange.canceled_at
+            ? "orders.activity.events.exchange.canceled"
+            : "orders.activity.events.exchange.created",
+          {
+            exchangeId: exchange.id.slice(-7),
+          }
+        ),
+        timestamp: exchange.canceled_at || exchange.created_at,
         itemsToSend: exchange.additional_items,
         itemsToReturn: exchangeReturn?.items,
         itemsMap,
@@ -428,7 +441,7 @@ const OrderActivityItem = ({
               <Text
                 size="small"
                 leading="compact"
-                className="text-ui-fg-subtle"
+                className="text-ui-fg-subtle text-right"
               >
                 {getRelativeDate(timestamp)}
               </Text>
@@ -647,7 +660,27 @@ const ClaimBody = ({
   claim: AdminClaim
   claimReturn?: AdminReturn
 }) => {
+  const prompt = usePrompt()
   const { t } = useTranslation()
+
+  const isCanceled = !!claim.created_at
+
+  const { mutateAsync: cancelClaim } = useCancelClaim(claim.id, claim.order_id)
+
+  const onCancel = async () => {
+    const res = await prompt({
+      title: t("orders.claims.cancel.title"),
+      description: t("orders.claims.cancel.description"),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await cancelClaim()
+  }
 
   const outboundItems = (claim.additional_items || []).reduce(
     (acc, item) => (acc + item.quantity) as number,
@@ -676,6 +709,17 @@ const ClaimBody = ({
           })}
         </Text>
       )}
+
+      {!isCanceled && (
+        <Button
+          onClick={onCancel}
+          className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+          variant="transparent"
+          size="small"
+        >
+          {t("actions.cancel")}
+        </Button>
+      )}
     </div>
   )
 }
@@ -687,7 +731,30 @@ const ExchangeBody = ({
   exchange: AdminExchange
   exchangeReturn?: AdminReturn
 }) => {
+  const prompt = usePrompt()
   const { t } = useTranslation()
+
+  const isCanceled = !!exchange.canceled_at
+
+  const { mutateAsync: cancelExchange } = useCancelExchange(
+    exchange.id,
+    exchange.order_id
+  )
+
+  const onCancel = async () => {
+    const res = await prompt({
+      title: t("orders.exchanges.cancel.title"),
+      description: t("orders.exchanges.cancel.description"),
+      confirmText: t("actions.confirm"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await cancelExchange()
+  }
 
   const outboundItems = (exchange.additional_items || []).reduce(
     (acc, item) => (acc + item.quantity) as number,
@@ -715,6 +782,17 @@ const ExchangeBody = ({
             count: inboundItems,
           })}
         </Text>
+      )}
+
+      {!isCanceled && (
+        <Button
+          onClick={onCancel}
+          className="text-ui-fg-subtle h-auto px-0 leading-none hover:bg-transparent"
+          variant="transparent"
+          size="small"
+        >
+          {t("actions.cancel")}
+        </Button>
       )}
     </div>
   )

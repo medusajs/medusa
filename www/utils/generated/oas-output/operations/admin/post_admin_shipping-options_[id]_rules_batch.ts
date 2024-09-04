@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/shipping-options/{id}/rules/batch
  * operationId: PostShippingOptionsIdRulesBatch
- * summary: Add Rules to Shipping Option
- * description: Add a list of rules to a shipping option.
+ * summary: Manage the Rules of a Shipping Option
+ * x-sidebar-summary: Manage Rules
+ * description: Manage the rules of a shipping option to create, update, or delete them.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,14 +63,14 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The rules to create, update, or delete.
  *         properties:
  *           create:
  *             type: array
- *             description: The shipping option's create.
+ *             description: The shipping option rules to create.
  *             items:
  *               type: object
- *               description: The create's details.
+ *               description: A shipping option's details.
  *               required:
  *                 - operator
  *                 - attribute
@@ -77,6 +78,7 @@
  *               properties:
  *                 operator:
  *                   type: string
+ *                   description: The operator used to check whether a rule applies.
  *                   enum:
  *                     - in
  *                     - eq
@@ -89,24 +91,27 @@
  *                 attribute:
  *                   type: string
  *                   title: attribute
- *                   description: The create's attribute.
+ *                   description: The name of a property or table that the rule applies to.
+ *                   example: customer_group
  *                 value:
  *                   oneOf:
  *                     - type: string
  *                       title: value
- *                       description: The create's value.
+ *                       description: A value of the attribute that enables this rule.
+ *                       example: cusgroup_123
  *                     - type: array
- *                       description: The create's value.
+ *                       description: Values of the attribute that enable this rule.
  *                       items:
  *                         type: string
  *                         title: value
- *                         description: The value's details.
+ *                         description: A value of the attribute that enables this rule.
+ *                         example: cusgroup_123
  *           update:
  *             type: array
- *             description: The shipping option's update.
+ *             description: The shipping option rules to update.
  *             items:
  *               type: object
- *               description: The update's details.
+ *               description: The properties to update in the shipping option rule.
  *               required:
  *                 - id
  *                 - operator
@@ -116,9 +121,10 @@
  *                 id:
  *                   type: string
  *                   title: id
- *                   description: The update's ID.
+ *                   description: The rule's ID.
  *                 operator:
  *                   type: string
+ *                   description: The operator used to check whether a rule applies.
  *                   enum:
  *                     - in
  *                     - eq
@@ -131,25 +137,28 @@
  *                 attribute:
  *                   type: string
  *                   title: attribute
- *                   description: The update's attribute.
+ *                   description: The name of a property or table that the rule applies to.
+ *                   example: customer_group
  *                 value:
  *                   oneOf:
  *                     - type: string
  *                       title: value
- *                       description: The update's value.
+ *                       description: A value of the attribute that enables this rule.
+ *                       example: cusgroup_123
  *                     - type: array
- *                       description: The update's value.
+ *                       description: Values of the attribute that enable this rule.
  *                       items:
  *                         type: string
  *                         title: value
- *                         description: The value's details.
+ *                         description: A value of the attribute that enables this rule.
+ *                         example: cusgroup_123
  *           delete:
  *             type: array
- *             description: The shipping option's delete.
+ *             description: The shipping option rules to delete.
  *             items:
  *               type: string
  *               title: delete
- *               description: The delete's details.
+ *               description: A rule's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -165,7 +174,7 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The batch operation's result.
  *           required:
  *             - created
  *             - updated
@@ -173,17 +182,17 @@
  *           properties:
  *             created:
  *               type: array
- *               description: The shipping option's created.
+ *               description: The created shipping option rules.
  *               items:
  *                 $ref: "#/components/schemas/AdminShippingOptionRule"
  *             updated:
  *               type: array
- *               description: The shipping option's updated.
+ *               description: The updated shipping option rules.
  *               items:
  *                 $ref: "#/components/schemas/AdminShippingOptionRule"
  *             deleted:
  *               type: object
- *               description: The shipping option's deleted.
+ *               description: The details of the deleted shipping option rules.
  *               required:
  *                 - ids
  *                 - object
@@ -191,15 +200,16 @@
  *               properties:
  *                 ids:
  *                   type: array
- *                   description: The deleted's ids.
+ *                   description: The IDs of the deleted shipping option rules.
  *                   items:
  *                     type: string
  *                     title: ids
- *                     description: The id's ids.
+ *                     description: A shipping option rule's ID.
  *                 object:
  *                   type: string
  *                   title: object
- *                   description: The deleted's object.
+ *                   description: The name of the deleted object.
+ *                   default: shipping_option_rule
  *                 deleted:
  *                   type: boolean
  *                   title: deleted

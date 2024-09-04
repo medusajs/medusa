@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/order-edits/{id}/request
  * operationId: PostOrderEditsIdRequest
- * summary: Add Requests to Order Edit
- * description: Add a list of requests to a order edit.
+ * summary: Request Order Edit
+ * description: Change the status of an active order edit to requested.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -43,10 +43,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: requestOrderEditRequestWorkflow
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

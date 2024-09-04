@@ -2,6 +2,7 @@
  * @schema AdminCreateProductCategory
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminCreateProductCategory
  * required:
  *   - name
  * properties:
@@ -29,14 +30,13 @@
  *     type: string
  *     title: parent_category_id
  *     description: The product category's parent category id.
- *   metadata:
- *     type: object
- *     description: The product category's metadata.
  *   rank:
  *     type: number
  *     title: rank
  *     description: The product category's rank.
- * x-schemaName: AdminCreateProductCategory
+ *   metadata:
+ *     type: object
+ *     description: The product category's metadata.
  * 
 */
 

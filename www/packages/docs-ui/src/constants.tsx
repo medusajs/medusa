@@ -184,12 +184,12 @@ export const mobileSidebarItemsV2: SidebarItem[] = [
 
 export const searchFiltersV2: OptionType[] = [
   {
-    value: "book",
-    label: "Docs v2",
+    value: "guides",
+    label: "Guides",
   },
   {
-    value: "resources",
-    label: "Learning Resources",
+    value: "references-v2",
+    label: "References",
   },
   {
     value: "admin-v2",

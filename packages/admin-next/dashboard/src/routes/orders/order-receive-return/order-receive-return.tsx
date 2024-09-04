@@ -48,7 +48,7 @@ export function OrderReceiveReturn() {
 
       if (preview.order_change) {
         if (preview.order_change.change_type !== "return_receive") {
-          navigate(`/orders/${order.id}`, { replace: true })
+          navigate(`/orders/${id}`, { replace: true })
           toast.error(t("orders.returns.activeChangeError"))
         }
         return

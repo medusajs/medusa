@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/products/batch
  * operationId: PostProductsBatch
- * summary: Create Product
- * description: Create a product.
+ * summary: Manage Products
+ * description: Manage products to create, update, or delete them.
  * x-authenticated: true
  * parameters:
  *   - name: expand
