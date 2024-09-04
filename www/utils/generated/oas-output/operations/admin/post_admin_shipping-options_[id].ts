@@ -213,7 +213,6 @@
  *                     attribute:
  *                       type: string
  *                       title: attribute
- *                       description: The rule's attribute.
  *                       description: The name of a property or table that the rule applies to.
  *                       example: customer_group
  *                     value:
