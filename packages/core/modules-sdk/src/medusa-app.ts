@@ -23,18 +23,19 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
-  isObject,
-  isString,
   MedusaError,
   ModuleRegistrationName,
   Modules,
   ModulesSdkUtils,
+  createMedusaContainer,
+  isObject,
+  isString,
   promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
+import { GraphQLSchema } from "graphql/type"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
@@ -45,7 +46,6 @@ import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
-import { GraphQLSchema } from "graphql/type"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -473,14 +473,15 @@ async function MedusaApp_({
 
     let normalizedQuery: any = query
 
-    if ("entryPoint" in query || "service" in query) {
+    if ("__value" in query) {
+      normalizedQuery = query.__value
+    } else if (
+      "entryPoint" in normalizedQuery ||
+      "service" in normalizedQuery
+    ) {
       normalizedQuery = remoteQueryObjectFromString(
-        query as Parameters<typeof remoteQueryObjectFromString>[0]
-      )
-    }
-
-    if ("value" in query) {
-      normalizedQuery = query.value
+        normalizedQuery as Parameters<typeof remoteQueryObjectFromString>[0]
+      ).__value
     }
 
     return await remoteQuery.query(normalizedQuery, undefined, options)

@@ -1,5 +1,5 @@
-import { RemoteQueryEntryPoints } from "./remote-query-entry-points"
 import { ObjectToStringPath } from "../common"
+import { RemoteQueryEntryPoints } from "./remote-query-entry-points"
 
 export type RemoteQueryObjectConfig<TEntry extends string> = {
   // service: string This property is still supported under the hood but part of the type due to types missmatch towards fields
@@ -20,5 +20,5 @@ export interface RemoteQueryObjectFromStringResult<
 > {
   __TConfig: TConfig
   __TEntry: TEntry
-  value: object
+  __value: object
 }
