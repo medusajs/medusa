@@ -1,1 +1,1 @@
-# admin-sdk
+# @medusajs/admin-sdk

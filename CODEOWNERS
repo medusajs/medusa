@@ -7,6 +7,4 @@ yarn.lock                                       @medusajs/engineering
 /integration-tests/                             @medusajs/engineering
 /docs-util/                                     @medusajs/docs
 /www/                                           @medusajs/docs
-/packages/admin                                 @medusajs/ui
-/packages/admin-ui                              @medusajs/ui
 /packages/design-system/                        @medusajs/ui
