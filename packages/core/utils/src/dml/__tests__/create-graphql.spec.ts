@@ -20,7 +20,9 @@ describe("GraphQL builder", () => {
       spend_limit: model.bigNumber(),
       phones: model.array(),
       group: model.belongsTo(() => group, { mappedBy: "users" }),
-      role: model.enum(["moderator", "admin", "guest"]).default("guest"),
+      role: model
+        .enum(["moderator", "admin", "guest", "new_user"])
+        .default("guest"),
       tags: model.manyToMany(() => tag, {
         pivotTable: "custom_user_tags",
       }),
@@ -56,9 +58,10 @@ describe("GraphQL builder", () => {
       }
 
       enum UserRoleEnum {
-        moderator
-        admin
-        guest
+        MODERATOR
+        ADMIN
+        GUEST
+        NEW_USER
       }
 
       type User {
