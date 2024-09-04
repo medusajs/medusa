@@ -27,14 +27,14 @@ export interface AdminUpdateReturnItems {
 
 export interface AdminAddReturnShipping {
   shipping_option_id: string
-  custom_price?: number
+  custom_amount?: number
   description?: string
   internal_note?: string
   metadata?: Record<string, unknown>
 }
 
 export interface AdminUpdateReturnShipping {
-  custom_price?: number
+  custom_amount?: number
   internal_note?: string
   metadata?: Record<string, unknown>
 }

@@ -24,14 +24,14 @@ interface AdminClaimUpdateItem {
 
 interface AdminClaimAddShippingMethod {
   shipping_option_id: string
-  custom_price?: number
+  custom_amount?: number
   description?: string
   internal_note?: string
   metadata?: Record<string, unknown> | null
 }
 
 interface AdminClaimUpdateShippingMethod {
-  custom_price?: number | null
+  custom_amount?: number | null
   internal_note?: string
   metadata?: Record<string, unknown> | null
 }
