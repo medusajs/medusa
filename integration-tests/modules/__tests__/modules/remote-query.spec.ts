@@ -126,7 +126,6 @@ medusaIntegrationTestRunner({
                 },
               },
             },
-            undefined,
             {
               throwIfRelationNotFound: true,
             }
@@ -170,7 +169,6 @@ medusaIntegrationTestRunner({
                 },
               },
             },
-            undefined,
             {
               throwIfRelationNotFound: [Modules.PAYMENT],
             }
