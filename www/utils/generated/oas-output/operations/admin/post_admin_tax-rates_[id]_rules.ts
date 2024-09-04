@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/tax-rates/{id}/rules
  * operationId: PostTaxRatesIdRules
- * summary: Add Rules to Tax Rate
- * description: Add a list of rules to a tax rate.
+ * summary: Create Tax Rule for a Rate
+ * x-sidebar-summary: Create Tax Rule
+ * description: Create a tax rule for a rate.
  * x-authenticated: true
  * parameters:
  *   - name: id
