@@ -20,3 +20,9 @@ export function isCellMatch(
 
   return cell.row === coords.row && cell.col === coords.col
 }
+
+const SPECIAL_FOCUS_KEYS = [".", ","]
+
+export function isSpecialFocusKey(event: KeyboardEvent) {
+  return SPECIAL_FOCUS_KEYS.includes(event.key) && event.ctrlKey && event.altKey
+}

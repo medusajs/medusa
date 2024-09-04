@@ -20,15 +20,15 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
   protected logger_: Logger
 
   static validateOptions(options: GoogleAuthProviderOptions) {
-    if (!options.clientID) {
-      throw new Error("Google clientID is required")
+    if (!options.clientId) {
+      throw new Error("Google clientId is required")
     }
 
     if (!options.clientSecret) {
       throw new Error("Google clientSecret is required")
     }
 
-    if (!options.callbackURL) {
+    if (!options.callbackUrl) {
       throw new Error("Google callbackUrl is required")
     }
   }
@@ -78,10 +78,10 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
       return { success: false, error: "No code provided" }
     }
 
-    const params = `client_id=${this.config_.clientID}&client_secret=${
+    const params = `client_id=${this.config_.clientId}&client_secret=${
       this.config_.clientSecret
     }&code=${code}&redirect_uri=${encodeURIComponent(
-      this.config_.callbackURL
+      this.config_.callbackUrl
     )}&grant_type=authorization_code`
     const exchangeTokenUrl = new URL(
       `https://oauth2.googleapis.com/token?${params}`
@@ -109,7 +109,6 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
       return {
         success,
         authIdentity,
-        successRedirectUrl: this.config_.successRedirectUrl,
       }
     } catch (error) {
       return { success: false, error: error.message }
@@ -169,9 +168,9 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     }
   }
 
-  private getRedirect({ clientID, callbackURL }: LocalServiceConfig) {
-    const redirectUrlParam = `redirect_uri=${encodeURIComponent(callbackURL)}`
-    const clientIdParam = `client_id=${clientID}`
+  private getRedirect({ clientId, callbackUrl }: LocalServiceConfig) {
+    const redirectUrlParam = `redirect_uri=${encodeURIComponent(callbackUrl)}`
+    const clientIdParam = `client_id=${clientId}`
     const responseTypeParam = "response_type=code"
     const scopeParam = "scope=email+profile+openid"
 

@@ -1,13 +1,6 @@
-import {
-  buildLinkableKeysFromDmlObjects,
-  buildLinkableKeysFromMikroOrmObjects,
-  buildLinkConfigFromLinkableKeys,
-  buildLinkConfigFromModelObjects,
-  defineJoinerConfig,
-} from "../joiner-config-builder"
-import { Modules } from "../definition"
-import { model } from "../../dml"
 import { expectTypeOf } from "expect-type"
+import { upperCaseFirst } from "../../common"
+import { model } from "../../dml"
 import {
   dmlFulfillment,
   dmlFulfillmentProvider,
@@ -26,7 +19,14 @@ import {
   ShippingOptionRule,
   ShippingProfile,
 } from "../__fixtures__/joiner-config/entities"
-import { upperCaseFirst } from "../../common"
+import { Modules } from "../definition"
+import {
+  buildLinkableKeysFromDmlObjects,
+  buildLinkableKeysFromMikroOrmObjects,
+  buildLinkConfigFromLinkableKeys,
+  buildLinkConfigFromModelObjects,
+  defineJoinerConfig,
+} from "../joiner-config-builder"
 
 describe("joiner-config-builder", () => {
   describe("defineJoiner | Mikro orm objects", () => {
@@ -47,7 +47,7 @@ describe("joiner-config-builder", () => {
       expect(joinerConfig).toEqual({
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
-        schema: undefined,
+        schema: "",
         linkableKeys: {
           fulfillment_set_id: FulfillmentSet.name,
           shipping_option_id: ShippingOption.name,
@@ -135,7 +135,7 @@ describe("joiner-config-builder", () => {
       expect(joinerConfig).toEqual({
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
-        schema: undefined,
+        schema: "",
         linkableKeys: {},
         alias: [
           {
@@ -175,7 +175,7 @@ describe("joiner-config-builder", () => {
       expect(joinerConfig).toEqual({
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
-        schema: undefined,
+        schema: "",
         linkableKeys: {
           fulfillment_set_id: FulfillmentSet.name,
           shipping_option_id: ShippingOption.name,
@@ -269,7 +269,7 @@ describe("joiner-config-builder", () => {
       expect(joinerConfig).toEqual({
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
-        schema: undefined,
+        schema: "",
         linkableKeys: {},
         alias: [
           {
@@ -300,7 +300,7 @@ describe("joiner-config-builder", () => {
       expect(joinerConfig).toEqual({
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
-        schema: undefined,
+        schema: "",
         linkableKeys: {
           fulfillment_set_id: FulfillmentSet.name,
         },
@@ -335,7 +335,7 @@ describe("joiner-config-builder", () => {
       expect(joinerConfig).toEqual({
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
-        schema: undefined,
+        schema: expect.any(String),
         linkableKeys: {
           fulfillment_set_id: FulfillmentSet.name,
           shipping_option_id: ShippingOption.name,
@@ -405,6 +405,59 @@ describe("joiner-config-builder", () => {
           },
         ],
       })
+
+      const schemaExpected = `type FulfillmentSet {
+            id: ID!
+            created_at: DateTime!
+            updated_at: DateTime!
+            deleted_at: DateTime
+          }
+          type ShippingOption {
+            id: ID!
+            created_at: DateTime!
+            updated_at: DateTime!
+            deleted_at: DateTime
+          }
+          type ShippingProfile {
+            id: ID!
+            created_at: DateTime!
+            updated_at: DateTime!
+            deleted_at: DateTime
+          }
+          type Fulfillment {
+            id: ID!
+            created_at: DateTime!
+            updated_at: DateTime!
+            deleted_at: DateTime
+          }
+          type FulfillmentProvider {
+            id: ID!
+            created_at: DateTime!
+            updated_at: DateTime!
+            deleted_at: DateTime
+          }
+          type ServiceZone {
+            id: ID!
+            created_at: DateTime!
+            updated_at: DateTime!
+            deleted_at: DateTime
+          }
+          type GeoZone {
+            id: ID!
+            created_at: DateTime!
+            updated_at: DateTime!
+            deleted_at: DateTime
+          }
+          type ShippingOptionRule {
+            id: ID!
+            created_at: DateTime!
+            updated_at: DateTime!
+            deleted_at: DateTime
+          }`
+
+      expect(joinerConfig.schema!.replace(/\s/g, "")).toEqual(
+        schemaExpected.replace(/\s/g, "")
+      )
     })
   })
 
