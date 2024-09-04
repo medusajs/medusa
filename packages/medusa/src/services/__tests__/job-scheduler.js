@@ -32,7 +32,7 @@ describe("JobSchedulerService", () => {
 
     it("creates bull queue", () => {
       expect(Queue).toHaveBeenCalledTimes(1)
-      expect(Queue).toHaveBeenCalledWith("scheduled-jobs:queue", {
+      expect(Queue).toHaveBeenCalledWith("scheduled-jobs-queue", {
         connection: expect.any(Object),
         prefix: "JobSchedulerService",
       })

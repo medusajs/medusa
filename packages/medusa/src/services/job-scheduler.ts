@@ -45,14 +45,14 @@ export default class JobSchedulerService {
         ...(config.projectConfig.redis_options ?? {}),
       })
 
-      this.queue_ = new Queue(`scheduled-jobs:queue`, {
+      this.queue_ = new Queue(`scheduled-jobs-queue`, {
         connection,
         prefix,
       })
 
       // Register scheduled job worker
       this.worker_ = new Worker(
-        "scheduled-jobs:queue",
+        "scheduled-jobs-queue",
         this.scheduledJobsWorker,
         {
           connection,
