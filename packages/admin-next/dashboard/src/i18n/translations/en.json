@@ -842,7 +842,8 @@
       "requestReturn": "Request return",
       "allocateItems": "Allocate items",
       "editOrder": "Edit order",
-      "editOrderContinue": "Continue order edit"
+      "editOrderContinue": "Continue order edit",
+      "inventoryKit": "Consists of {{count}}x inventory items"
     },
     "payment": {
       "title": "Payments",
