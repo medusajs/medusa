@@ -5,8 +5,8 @@ import { model } from "../entity-builder"
 import { DuplicateIdPropertyError } from "../errors"
 import {
   createMikrORMEntity,
-  toMikroORMEntity,
   toMikroOrmEntities,
+  toMikroORMEntity,
 } from "../helpers/create-mikro-orm-entity"
 
 describe("Entity builder", () => {
@@ -682,7 +682,7 @@ describe("Entity builder", () => {
       })
     })
 
-    test.only("mark property nullable", () => {
+    test("mark property nullable", () => {
       const user = model.define("user", {
         id: model.number(),
         username: model.text().nullable(),
