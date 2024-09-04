@@ -68,6 +68,10 @@ class OasKindGenerator extends FunctionKindGenerator {
       exact: "store/orders",
       requiresAuthentication: true,
     },
+    {
+      startsWith: "store/customers/me",
+      requiresAuthentication: true,
+    },
   ]
   readonly RESPONSE_TYPE_NAMES = ["MedusaResponse"]
   readonly FIELD_QUERY_PARAMS = ["fields", "expand"]
@@ -763,20 +767,22 @@ class OasKindGenerator extends FunctionKindGenerator {
       .statements.some((statement) =>
         statement.getText().includes("AUTHENTICATE = false")
       )
-    const isAdminAuthenticated =
-      !isAuthenticationDisabled && oasPath.startsWith("admin")
-    const isStoreAuthenticated =
-      !isAuthenticationDisabled && oasPath.startsWith("store/customers/me")
-    const isAuthenticated =
-      isAdminAuthenticated ||
-      isStoreAuthenticated ||
+    const hasAuthenticationOverride =
       this.AUTH_REQUESTS.find((authRequest) => {
         return (
           authRequest.exact === oasPath ||
           (authRequest.startsWith && oasPath.startsWith(authRequest.startsWith))
         )
-      })?.requiresAuthentication ||
-      false
+      })?.requiresAuthentication === true || false
+    false
+    const isAdminAuthenticated =
+      (!isAuthenticationDisabled || hasAuthenticationOverride) &&
+      oasPath.startsWith("admin")
+    const isStoreAuthenticated =
+      (!isAuthenticationDisabled || hasAuthenticationOverride) &&
+      oasPath.startsWith("store")
+    const isAuthenticated =
+      isAdminAuthenticated || isStoreAuthenticated || hasAuthenticationOverride
 
     return {
       isAdminAuthenticated,
