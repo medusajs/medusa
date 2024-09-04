@@ -16,7 +16,7 @@ export const AdminGetRegionsParams = createFindParams({
   z.object({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    code: z.union([z.string(), z.array(z.string())]).optional(),
+    currency_code: z.union([z.string(), z.array(z.string())]).optional(),
     name: z.union([z.string(), z.array(z.string())]).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),

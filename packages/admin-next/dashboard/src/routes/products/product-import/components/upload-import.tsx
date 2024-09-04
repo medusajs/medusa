@@ -36,8 +36,8 @@ export const UploadImport = ({
   return (
     <div className="flex flex-col gap-y-4">
       <FileUpload
-        label={t("products.media.uploadImagesLabel")}
-        hint={t("products.media.uploadImagesHint")}
+        label={t("products.import.uploadLabel")}
+        hint={t("products.import.uploadHint")}
         multiple={false}
         hasError={!!error}
         formats={SUPPORTED_FORMATS}

@@ -148,7 +148,7 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
       },
     }).then((r) => r.json())
 
-    const entity_id = user.id
+    const entity_id = user.id.toString()
     const userMetadata = {
       profile_url: user.url,
       avatar: user.avatar_url,
