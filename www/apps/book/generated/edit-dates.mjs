@@ -3,7 +3,7 @@ export const generatedEditDates = {
   "app/basics/workflows/page.mdx": "2024-09-03T08:07:16.276Z",
   "app/deployment/page.mdx": "2024-08-05T07:24:05+00:00",
   "app/page.mdx": "2024-09-03T07:09:09.034Z",
-  "app/basics/modules-and-services/page.mdx": "2024-09-03T07:45:28.079Z",
+  "app/basics/modules-and-services/page.mdx": "2024-09-04T15:37:27.695Z",
   "app/basics/commerce-modules/page.mdx": "2024-09-03T07:48:48.148Z",
   "app/advanced-development/workflows/retry-failed-steps/page.mdx": "2024-07-31T17:01:33+03:00",
   "app/advanced-development/workflows/workflow-hooks/page.mdx": "2024-08-13T09:55:37+03:00",
@@ -18,8 +18,6 @@ export const generatedEditDates = {
   "app/advanced-development/workflows/parallel-steps/page.mdx": "2024-07-31T17:01:33+03:00",
   "app/advanced-development/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/first-customizations/page.mdx": "2024-05-07T18:00:28+02:00",
-  "app/debugging-and-testing/page.mdx": "2024-09-02T11:06:13.298Z",
-  "app/basics/medusa-container/page.mdx": "2024-08-05T07:24:27+00:00",
   "app/debugging-and-testing/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/basics/medusa-container/page.mdx": "2024-09-03T07:31:40.214Z",
   "app/architectural-modules/page.mdx": "2024-07-04T17:26:03+03:00",
@@ -73,5 +71,6 @@ export const generatedEditDates = {
   "app/debugging-and-testing/testing-tools/integration-tests/workflows/page.mdx": "2024-09-02T10:57:04.202Z",
   "app/debugging-and-testing/testing-tools/page.mdx": "2024-09-02T10:08:29.388Z",
   "app/debugging-and-testing/testing-tools/unit-tests/module-example/page.mdx": "2024-09-02T11:04:27.232Z",
-  "app/debugging-and-testing/testing-tools/unit-tests/page.mdx": "2024-09-02T11:03:26.997Z"
+  "app/debugging-and-testing/testing-tools/unit-tests/page.mdx": "2024-09-02T11:03:26.997Z",
+  "app/advanced-development/modules/service-constraints/page.mdx": "2024-09-04T15:37:04.166Z"
 }
