@@ -4689,6 +4689,181 @@ moduleIntegrationTestRunner({
 
           expect(JSON.parse(JSON.stringify(result))).toEqual([])
         })
+
+        describe("when scenario is buy x get x", () => {
+          let buyXGetXPromotion
+          let product1 = "prod_tshirt_1"
+          let product2 = "prod_tshirt_2"
+
+          beforeEach(async () => {
+            buyXGetXPromotion = await createDefaultPromotion(service, {
+              type: PromotionType.BUYGET,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                value: 2000,
+                allocation: "each",
+                max_quantity: 2,
+                apply_to_quantity: 2,
+                buy_rules_min_quantity: 2,
+                target_rules: [
+                  {
+                    attribute: "product.id",
+                    operator: "eq",
+                    values: [product1],
+                  },
+                ],
+                buy_rules: [
+                  {
+                    attribute: "product.id",
+                    operator: "eq",
+                    values: [product1],
+                  },
+                ],
+              } as any,
+            })
+          })
+
+          it("should compute adjustment accurately for a single item", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 4,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 2,
+                  subtotal: 2000,
+                  product: { id: product2 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+            ])
+          })
+
+          it("should compute adjustment accurately across items", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 500,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt1",
+                  quantity: 1,
+                  subtotal: 500,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt3",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt1",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+            ])
+          })
+
+          it("should not compute adjustment when required quantity for target isn't met", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 3,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+
+          it("should not compute adjustment when required quantity for target isn't met across items", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt1",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+        })
       })
     })
   },

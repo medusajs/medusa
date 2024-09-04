@@ -374,7 +374,7 @@ export default class PromotionModuleService
         const computedActionsForItems =
           ComputeActionUtils.getComputedActionsForBuyGet(
             promotion,
-            applicationContext[ApplicationMethodTargetType.ITEMS],
+            applicationContext[ApplicationMethodTargetType.ITEMS]!,
             methodIdPromoValueMap
           )
 
