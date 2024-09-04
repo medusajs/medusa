@@ -50,12 +50,15 @@ class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   private MAX_LEVEL = 4
+  readonly AUTH_REQUEST_TYPE = "AuthenticatedMedusaRequest"
   readonly REQUEST_TYPE_NAMES = [
     "MedusaRequest",
     "RequestWithContext",
-    "AuthenticatedMedusaRequest",
+    this.AUTH_REQUEST_TYPE,
   ]
   readonly RESPONSE_TYPE_NAMES = ["MedusaResponse"]
+  readonly FIELD_QUERY_PARAMS = ["fields", "expand"]
+  readonly PAGINATION_QUERY_PARAMS = ["limit", "offset", "order"]
 
   /**
    * This map collects tags of all the generated OAS, then, once the generation process finishes,
@@ -452,6 +455,10 @@ class OasKindGenerator extends FunctionKindGenerator {
       type: "query",
     })
 
+    if (!oas.parameters.length) {
+      oas.parameters = undefined
+    }
+
     // update request schema
     const existingRequestBodySchema = (
       oas.requestBody as OpenAPIV3.RequestBodyObject
@@ -461,7 +468,10 @@ class OasKindGenerator extends FunctionKindGenerator {
       newSchema: requestSchema,
     })
 
-    if (!updatedRequestSchema) {
+    if (
+      !updatedRequestSchema ||
+      Object.keys(updatedRequestSchema).length === 0
+    ) {
       // if there's no request schema, remove it from the OAS
       delete oas.requestBody
     } else {
@@ -531,19 +541,26 @@ class OasKindGenerator extends FunctionKindGenerator {
         delete oas.responses![oldResponseStatus]
       }
 
-      // update the response schema
-      oas.responses![newStatus] = {
-        description: "OK",
-        content: {
-          "application/json": {
-            schema: updatedResponseSchema
-              ? this.oasSchemaHelper.namedSchemaToReference(
-                  updatedResponseSchema
-                ) ||
-                this.oasSchemaHelper.schemaChildrenToRefs(updatedResponseSchema)
-              : updatedResponseSchema,
+      if (updatedResponseSchema && Object.keys(updatedResponseSchema).length) {
+        // update the response schema
+        oas.responses![newStatus] = {
+          description: "OK",
+          content: {
+            "application/json": {
+              schema: updatedResponseSchema
+                ? this.oasSchemaHelper.namedSchemaToReference(
+                    updatedResponseSchema
+                  ) ||
+                  this.oasSchemaHelper.schemaChildrenToRefs(
+                    updatedResponseSchema
+                  )
+                : updatedResponseSchema,
+            },
           },
-        },
+        }
+      } else if (oldResponseStatus) {
+        // delete the old response schema
+        delete oas.responses![oldResponseStatus]
       }
     }
 
@@ -737,7 +754,14 @@ class OasKindGenerator extends FunctionKindGenerator {
       !isAuthenticationDisabled && oasPath.startsWith("admin")
     const isStoreAuthenticated =
       !isAuthenticationDisabled && oasPath.startsWith("store/customers/me")
-    const isAuthenticated = isAdminAuthenticated || isStoreAuthenticated
+    const hasAuthenticationTypeArg =
+      !isAuthenticationDisabled &&
+      // exclude registration
+      !oasPath.startsWith("store/customers") &&
+      (node.parameters[0].type?.getText().startsWith(this.AUTH_REQUEST_TYPE) ||
+        false)
+    const isAuthenticated =
+      isAdminAuthenticated || isStoreAuthenticated || hasAuthenticationTypeArg
 
     return {
       isAdminAuthenticated,
@@ -958,13 +982,26 @@ class OasKindGenerator extends FunctionKindGenerator {
       // TODO for now I'll use the type for validatedQuery until
       // we have an actual approach to infer query types
       const querySymbol = requestType.getProperty("validatedQuery")
-      if (querySymbol && this.shouldAddQueryParams(node)) {
+      if (querySymbol) {
+        const { shouldAddFields, shouldAddPagination } =
+          this.shouldAddQueryParams(node)
         const queryType = this.checker.getTypeOfSymbol(querySymbol)
         const queryTypeName = this.checker.typeToString(queryType)
         queryType.getProperties().forEach((property) => {
+          const propertyName = property.getName()
+          // if this is a field / pagination query parameter and
+          // they're not used in the route, don't add them.
+          if (
+            (this.FIELD_QUERY_PARAMS.includes(propertyName) &&
+              !shouldAddFields) ||
+            (this.PAGINATION_QUERY_PARAMS.includes(propertyName) &&
+              !shouldAddPagination)
+          ) {
+            return
+          }
           const propertyType = this.checker.getTypeOfSymbol(property)
           const descriptionOptions: SchemaDescriptionOptions = {
-            typeStr: property.getName(),
+            typeStr: propertyName,
             parentName: tagName,
             rawParentName: queryTypeName,
             node: property.valueDeclaration,
@@ -973,13 +1010,13 @@ class OasKindGenerator extends FunctionKindGenerator {
           }
           parameters.push(
             this.getParameterObject({
-              name: property.getName(),
+              name: propertyName,
               type: "query",
               description: this.getSchemaDescription(descriptionOptions),
               required: this.isRequired(property),
               schema: this.typeToSchema({
                 itemType: propertyType,
-                title: property.getName(),
+                title: propertyName,
                 descriptionOptions,
                 context: "request",
               }),
@@ -2062,15 +2099,16 @@ class OasKindGenerator extends FunctionKindGenerator {
     }
   }
 
-  shouldAddQueryParams(node: FunctionNode): boolean {
-    const queryParamsUsageIndicators = [
-      `req.filterableFields`,
-      `req.remoteQueryConfig`,
-    ]
+  shouldAddQueryParams(node: FunctionNode): {
+    shouldAddFields: boolean
+    shouldAddPagination: boolean
+  } {
     const fnText = node.getText()
-    return queryParamsUsageIndicators.some((indicator) =>
-      fnText.includes(indicator)
-    )
+
+    return {
+      shouldAddFields: fnText.includes(`req.remoteQueryConfig.fields`),
+      shouldAddPagination: fnText.includes(`req.remoteQueryConfig.pagination`),
+    }
   }
 
   hasResponseType(node: FunctionNode, oas: OpenApiOperation): boolean {
@@ -2081,14 +2119,18 @@ class OasKindGenerator extends FunctionKindGenerator {
       return false
     }
 
-    const responseContent = (oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject).content
+    const responseContent = (
+      oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject
+    ).content
     if (!responseContent) {
       return false
     }
 
     const fnText = node.getText()
 
-    return Object.keys(responseContent).some((responseType) => fnText.includes(responseType))
+    return Object.keys(responseContent).some((responseType) =>
+      fnText.includes(responseType)
+    )
   }
 
   private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
