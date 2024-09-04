@@ -2131,7 +2131,7 @@ describe("Entity builder", () => {
           entity: "Email",
           nullable: false,
           mappedBy: "user",
-          cascade: ["perist", "soft-remove"],
+          cascade: ["persist", "soft-remove"],
         },
         created_at: {
           reference: "scalar",
@@ -2284,7 +2284,7 @@ describe("Entity builder", () => {
           entity: "Email",
           nullable: false,
           mappedBy: "user",
-          cascade: ["perist", "soft-remove"],
+          cascade: ["persist", "soft-remove"],
         },
         created_at: {
           reference: "scalar",
@@ -2891,7 +2891,7 @@ describe("Entity builder", () => {
           entity: "Email",
           orphanRemoval: true,
           mappedBy: "user",
-          cascade: ["perist", "soft-remove"],
+          cascade: ["persist", "soft-remove"],
         },
         created_at: {
           reference: "scalar",
@@ -2981,7 +2981,7 @@ describe("Entity builder", () => {
           entity: "Email",
           orphanRemoval: true,
           mappedBy: "user",
-          cascade: ["perist", "soft-remove"],
+          cascade: ["persist", "soft-remove"],
         },
         created_at: {
           reference: "scalar",
