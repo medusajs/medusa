@@ -364,7 +364,7 @@ export const ExchangeCreateForm = ({
                           updateInboundShipping(
                             {
                               actionId,
-                              custom_price: customPrice,
+                              custom_amount: customPrice,
                             },
                             {
                               onError: (error) => {
@@ -435,7 +435,7 @@ export const ExchangeCreateForm = ({
                           updateOutboundShipping(
                             {
                               actionId,
-                              custom_price: customPrice,
+                              custom_amount: customPrice,
                             },
                             {
                               onError: (error) => {

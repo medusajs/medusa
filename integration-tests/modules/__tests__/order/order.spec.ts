@@ -203,6 +203,7 @@ medusaIntegrationTestRunner({
                 value: "50",
                 precision: 20,
               },
+              is_custom_price: false,
               metadata: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),
