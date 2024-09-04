@@ -12121,6 +12121,14 @@ export const generatedSidebar = [
                     "path": "/references/medusa-workflows/steps/refundPaymentStep",
                     "title": "refundPaymentStep",
                     "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/validateRefundStep",
+                    "title": "validateRefundStep",
+                    "children": []
                   }
                 ],
                 "loaded": true
