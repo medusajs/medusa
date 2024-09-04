@@ -6046,9 +6046,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/cli/medusa-cli"
   dependencies:
-    "@graphql-codegen/cli": ^5.0.2
-    "@graphql-codegen/typescript": ^4.0.9
-    "@medusajs/modules-sdk": ^1.12.12
     "@medusajs/utils": ^1.11.9
     "@swc/core": ^1.5.29
     "@swc/jest": ^0.2.36
@@ -6062,7 +6059,6 @@ __metadata:
     fs-exists-cached: ^1.0.0
     fs-extra: ^10.0.0
     glob: ^7.1.6
-    graphql: ^16.9.0
     hosted-git-info: ^4.0.2
     inquirer: ^8.0.0
     is-valid-path: ^0.1.1
@@ -6172,6 +6168,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
+    "@graphql-codegen/cli": ^5.0.2
+    "@graphql-codegen/typescript": ^4.0.9
     "@graphql-tools/merge": ^9.0.0
     "@graphql-tools/schema": ^10.0.0
     "@medusajs/orchestration": ^0.5.7
@@ -6188,24 +6186,6 @@ __metadata:
     awilix: ^8.0.1
   languageName: unknown
   linkType: soft
-
-"@medusajs/modules-sdk@npm:^1.12.12":
-  version: 1.12.12
-  resolution: "@medusajs/modules-sdk@npm:1.12.12"
-  dependencies:
-    "@graphql-tools/merge": ^9.0.0
-    "@graphql-tools/schema": ^10.0.0
-    "@medusajs/orchestration": ^0.5.8
-    "@medusajs/types": ^1.11.17
-    "@medusajs/utils": ^1.11.10
-    awilix: ^8.0.0
-    graphql: ^16.6.0
-    knex: 2.4.2
-    pg: ^8.11.2
-    resolve-cwd: ^3.0.0
-  checksum: fd0840c1408cfd3632e4c5a95260c607e7a0c9737d1f97c06202bacec4fafd2d0e291466decff177dcf44427ef65318e173547b2058b64974fb896747f7d74f0
-  languageName: node
-  linkType: hard
 
 "@medusajs/notification-local@workspace:packages/modules/providers/notification-local":
   version: 0.0.0-use.local
@@ -6281,18 +6261,6 @@ __metadata:
     awilix: ^8.0.1
   languageName: unknown
   linkType: soft
-
-"@medusajs/orchestration@npm:^0.5.8":
-  version: 0.5.8
-  resolution: "@medusajs/orchestration@npm:0.5.8"
-  dependencies:
-    "@medusajs/types": ^1.11.17
-    "@medusajs/utils": ^1.11.10
-    awilix: ^8.0.0
-    graphql: ^16.6.0
-  checksum: d67d9b6206cb1845a59b7b9289736c0e2b36c78f352c157e478527b34fd6337b084100006b5d365ae6101ea5a88f83e05fbb45f2009ace3df280d4a00132e965
-  languageName: node
-  linkType: hard
 
 "@medusajs/order@workspace:packages/modules/order":
   version: 0.0.0-use.local
@@ -6582,13 +6550,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@npm:^1.11.17":
-  version: 1.11.17
-  resolution: "@medusajs/types@npm:1.11.17"
-  checksum: 544099b215cd4de87682c2154696ff4849704f74290f15e3e383e6cf503a335767b399b9fe2a381ffa4405fa2ec7ed911a8a5eecff6c7f10d5ef95af802064b6
-  languageName: node
-  linkType: hard
-
 "@medusajs/ui-preset@1.1.3, @medusajs/ui-preset@^1.1.3, @medusajs/ui-preset@workspace:packages/design-system/ui-preset":
   version: 0.0.0-use.local
   resolution: "@medusajs/ui-preset@workspace:packages/design-system/ui-preset"
@@ -6729,22 +6690,6 @@ __metadata:
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
-
-"@medusajs/utils@npm:^1.11.10":
-  version: 1.11.10
-  resolution: "@medusajs/utils@npm:1.11.10"
-  dependencies:
-    "@medusajs/types": ^1.11.17
-    "@mikro-orm/core": 5.9.7
-    "@mikro-orm/migrations": 5.9.7
-    "@mikro-orm/postgresql": 5.9.7
-    awilix: ^8.0.1
-    bignumber.js: ^9.1.2
-    knex: 2.4.2
-    ulid: ^2.3.0
-  checksum: 5f9c1e021a029c1176e8fb8e71257a2503e38aa033fb133cad5aa6ac0a73e46b715a2622269b44f6b65a7477e90c288b7b762ae012c65f143c3b6aa460ef3101
-  languageName: node
-  linkType: hard
 
 "@medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
   version: 0.0.0-use.local
@@ -16632,7 +16577,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^9.0.0, commander@npm:^9.1.0, commander@npm:^9.4.1":
+"commander@npm:^9.0.0, commander@npm:^9.4.1":
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
   checksum: 5f7784fbda2aaec39e89eb46f06a999e00224b3763dc65976e05929ec486e174fe9aac2655f03ba6a5e83875bd173be5283dc19309b7c65954701c02025b3c1d
@@ -20835,13 +20780,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^16.9.0":
-  version: 16.9.0
-  resolution: "graphql@npm:16.9.0"
-  checksum: a8850f077ff767377237d1f8b1da2ec70aeb7623cdf1dfc9e1c7ae93accc0c8149c85abe68923be9871a2934b1bce5a2496f846d4d56e1cfb03eaaa7ddba9b6a
-  languageName: node
-  linkType: hard
-
 "gunzip-maybe@npm:^1.4.2":
   version: 1.4.2
   resolution: "gunzip-maybe@npm:1.4.2"
@@ -23581,45 +23519,6 @@ __metadata:
   version: 4.1.5
   resolution: "kleur@npm:4.1.5"
   checksum: e9de6cb49657b6fa70ba2d1448fd3d691a5c4370d8f7bbf1c2f64c24d461270f2117e1b0afe8cb3114f13bbd8e51de158c2a224953960331904e636a5e4c0f2a
-  languageName: node
-  linkType: hard
-
-"knex@npm:2.4.2":
-  version: 2.4.2
-  resolution: "knex@npm:2.4.2"
-  dependencies:
-    colorette: 2.0.19
-    commander: ^9.1.0
-    debug: 4.3.4
-    escalade: ^3.1.1
-    esm: ^3.2.25
-    get-package-type: ^0.1.0
-    getopts: 2.3.0
-    interpret: ^2.2.0
-    lodash: ^4.17.21
-    pg-connection-string: 2.5.0
-    rechoir: ^0.8.0
-    resolve-from: ^5.0.0
-    tarn: ^3.0.2
-    tildify: 2.0.0
-  peerDependenciesMeta:
-    better-sqlite3:
-      optional: true
-    mysql:
-      optional: true
-    mysql2:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    sqlite3:
-      optional: true
-    tedious:
-      optional: true
-  bin:
-    knex: bin/cli.js
-  checksum: b6e2582671ac1503edf073e011b1db1b4d5c719a7acad5d8453d70b45b45296c3fba43f91ea3d26956986fb0ec70a7d26b8af4dfcf5ac1507c6674fc2186400b
   languageName: node
   linkType: hard
 
@@ -26573,13 +26472,6 @@ __metadata:
   version: 1.1.1
   resolution: "pg-cloudflare@npm:1.1.1"
   checksum: a68b957f755be6af813d68ccaf4c906a000fd2ecb362cd281220052cc9e2f6c26da3b88792742387008c30b3bf0d2fa3a0eff04aeb8af4414023c99ae78e07bd
-  languageName: node
-  linkType: hard
-
-"pg-connection-string@npm:2.5.0":
-  version: 2.5.0
-  resolution: "pg-connection-string@npm:2.5.0"
-  checksum: 4b1650132d8000d68864db774c4a99d98acf1cb90525045402b93d3b5a5f36500e5934c653598256cd86b3a310ba4639fbf1e8e1e04cefa46840838541b7626c
   languageName: node
   linkType: hard
 

@@ -6,7 +6,6 @@ import resolveCwd from "resolve-cwd"
 import { newStarter } from "./commands/new"
 import { didYouMean } from "./did-you-mean"
 import reporter from "./reporter"
-import { graphqlToTs } from "./commands/gql-to-ts"
 import { argv } from "yargs"
 
 const yargs = require(`yargs`)
@@ -67,7 +66,12 @@ function buildLocalCommands(cli, isLocalProject) {
   cli
     .command({
       command: "types",
-      handler: handlerP(graphqlToTs),
+      handler: handlerP(
+        getCommandHandler("gql-to-ts", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
     })
     .command({
       command: `new [root] [starter]`,

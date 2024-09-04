@@ -27,6 +27,8 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.9",
     "@graphql-tools/merge": "^9.0.0",
     "@graphql-tools/schema": "^10.0.0",
     "@medusajs/orchestration": "^0.5.7",
