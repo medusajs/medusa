@@ -282,6 +282,74 @@ export default class AuthModuleService
           createdAuthIdentity
         )
       },
+      update: async (
+        entity_id: string,
+        data: {
+          provider_metadata?: Record<string, unknown>
+          user_metadata?: Record<string, unknown>
+        }
+      ) => {
+        const authIdentities = await this.authIdentityService_.list(
+          {
+            provider_identities: {
+              entity_id,
+              provider,
+            },
+          },
+          {
+            relations: ["provider_identities"],
+          }
+        )
+
+        if (!authIdentities.length) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `AuthIdentity with entity_id "${entity_id}" not found`
+          )
+        }
+
+        if (authIdentities.length > 1) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Multiple authIdentities found for entity_id "${entity_id}"`
+          )
+        }
+
+        const providerIdentityData = authIdentities[0].provider_identities.find(
+          (pi) => pi.provider === provider
+        )
+
+        if (!providerIdentityData) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `ProviderIdentity with entity_id "${entity_id}" not found`
+          )
+        }
+
+        const updatedProviderIdentity =
+          await this.providerIdentityService_.update({
+            id: providerIdentityData.id,
+            ...data,
+          })
+
+        const serializedResponse =
+          await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+            authIdentities[0]
+          )
+        const serializedProviderIdentity =
+          await this.baseRepository_.serialize<AuthTypes.ProviderIdentityDTO>(
+            updatedProviderIdentity
+          )
+
+        serializedResponse.provider_identities = [
+          ...(serializedResponse.provider_identities?.filter(
+            (p) => p.provider !== provider
+          ) ?? []),
+          serializedProviderIdentity,
+        ]
+
+        return serializedResponse
+      },
     }
   }
 }
