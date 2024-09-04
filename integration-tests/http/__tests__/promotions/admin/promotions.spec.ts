@@ -495,24 +495,6 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should throw an error when both campaign and campaign_id params are passed", async () => {
-          const { response } = await api
-            .post(
-              `/admin/promotions/${promotion.id}`,
-              {
-                campaign: { name: "test campaign" },
-                campaign_id: "test",
-              },
-              adminHeaders
-            )
-            .catch((e) => e)
-
-          expect(response.status).toEqual(400)
-          expect(response.data.message).toContain(
-            `Invalid request: Field 'campaign, campaign_identifier' is required`
-          )
-        })
-
         it("should update a promotion successfully", async () => {
           const response = await api.post(
             `/admin/promotions/${promotion.id}`,

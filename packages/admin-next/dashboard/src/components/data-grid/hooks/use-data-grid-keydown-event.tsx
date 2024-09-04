@@ -15,6 +15,7 @@ import {
 import { DataGridCoordinates } from "../types"
 
 type UseDataGridKeydownEventOptions<TData, TFieldValues extends FieldValues> = {
+  containerRef: React.RefObject<HTMLDivElement>
   matrix: DataGridMatrix<TData, TFieldValues>
   anchor: DataGridCoordinates | null
   rangeEnd: DataGridCoordinates | null
@@ -23,6 +24,7 @@ type UseDataGridKeydownEventOptions<TData, TFieldValues extends FieldValues> = {
     coords: DataGridCoordinates,
     direction: "horizontal" | "vertical" | "both"
   ) => void
+  setTrapActive: (active: boolean) => void
   setSingleRange: (coordinates: DataGridCoordinates | null) => void
   setRangeEnd: (coordinates: DataGridCoordinates | null) => void
   onEditingChangeHandler: (value: boolean) => void
@@ -44,12 +46,14 @@ const VERTICAL_KEYS = ["ArrowUp", "ArrowDown"]
 
 export const useDataGridKeydownEvent = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
+  containerRef,
   matrix,
   anchor,
   rangeEnd,
   isEditing,
+  setTrapActive,
   scrollToCoordinates,
   setSingleRange,
   setRangeEnd,
@@ -104,8 +108,8 @@ export const useDataGridKeydownEvent = <
         direction === "horizontal"
           ? setSingleRange
           : e.shiftKey
-          ? setRangeEnd
-          : setSingleRange
+            ? setRangeEnd
+            : setSingleRange
 
       if (!basis) {
         return
@@ -115,6 +119,7 @@ export const useDataGridKeydownEvent = <
 
       const handleNavigation = (coords: DataGridCoordinates) => {
         e.preventDefault()
+        e.stopPropagation()
 
         scrollToCoordinates(coords, direction)
         updater(coords)
@@ -138,6 +143,33 @@ export const useDataGridKeydownEvent = <
       setRangeEnd,
       matrix,
     ]
+  )
+
+  const handleTabKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (!anchor) {
+        return
+      }
+
+      e.preventDefault()
+      e.stopPropagation()
+
+      const { row, col } = anchor
+
+      const key = e.shiftKey ? "ArrowLeft" : "ArrowRight"
+      const direction = "horizontal"
+
+      const next = matrix.getValidMovement(
+        row,
+        col,
+        key,
+        e.metaKey || e.ctrlKey
+      )
+
+      scrollToCoordinates(next, direction)
+      setSingleRange(next)
+    },
+    [anchor, scrollToCoordinates, setSingleRange, matrix]
   )
 
   const handleUndo = useCallback(
@@ -460,27 +492,33 @@ export const useDataGridKeydownEvent = <
     [queryTool, isEditing, anchor, restoreSnapshot]
   )
 
-  const handleTabKey = useCallback(
+  const handleSpecialFocusKeys = useCallback(
     (e: KeyboardEvent) => {
-      if (!anchor || isEditing) {
+      if (!containerRef || isEditing) {
         return
       }
 
-      e.preventDefault()
+      const focusableElements = getFocusableElements(containerRef)
 
-      const direction = e.shiftKey ? "ArrowLeft" : "ArrowRight"
+      const focusElement = (element: HTMLElement | null) => {
+        if (element) {
+          setTrapActive(false)
+          element.focus()
+        }
+      }
 
-      const next = matrix.getValidMovement(
-        anchor.row,
-        anchor.col,
-        direction,
-        e.metaKey || e.ctrlKey
-      )
-
-      setSingleRange(next)
-      scrollToCoordinates(next, "horizontal")
+      switch (e.key) {
+        case ".":
+          focusElement(focusableElements.cancel)
+          break
+        case ",":
+          focusElement(focusableElements.shortcuts)
+          break
+        default:
+          break
+      }
     },
-    [anchor, isEditing, scrollToCoordinates, setSingleRange, matrix]
+    [anchor, isEditing, setTrapActive, containerRef]
   )
 
   const handleKeyDownEvent = useCallback(
@@ -533,5 +571,29 @@ export const useDataGridKeydownEvent = <
 
   return {
     handleKeyDownEvent,
+    handleSpecialFocusKeys,
   }
+}
+
+function getFocusableElements(ref: React.RefObject<HTMLDivElement>) {
+  const focusableElements = Array.from(
+    document.querySelectorAll<HTMLElement>(
+      "[tabindex], a, button, input, select, textarea"
+    )
+  )
+
+  const currentElementIndex = focusableElements.indexOf(ref.current!)
+
+  const shortcuts =
+    currentElementIndex > 0 ? focusableElements[currentElementIndex - 1] : null
+
+  let cancel = null
+  for (let i = currentElementIndex + 1; i < focusableElements.length; i++) {
+    if (!ref.current!.contains(focusableElements[i])) {
+      cancel = focusableElements[i]
+      break
+    }
+  }
+
+  return { shortcuts, cancel }
 }

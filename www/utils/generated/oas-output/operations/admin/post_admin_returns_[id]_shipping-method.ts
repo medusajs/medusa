@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/returns/{id}/shipping-method
  * operationId: PostReturnsIdShippingMethod
- * summary: Add Shipping Methods to Return
- * description: Add a list of shipping methods to a return.
+ * summary: Add a Shipping Method to a Return
+ * x-sidebar-summary: Add Shipping Method
+ * description: Add a shipping method to a return. The shipping method will have a `SHIPPING_ADD` action.
  * x-authenticated: true
  * parameters:
  *   - name: id

@@ -12,6 +12,7 @@ type DataGridContextType<TFieldValues extends FieldValues> = {
   // Grid state
   anchor: DataGridCoordinates | null
   trapActive: boolean
+  setTrapActive: (value: boolean) => void
   errors: FieldErrors<TFieldValues>
   // Cell handlers
   getIsCellSelected: (coords: DataGridCoordinates) => boolean

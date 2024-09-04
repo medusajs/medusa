@@ -4,13 +4,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you’ll learn about Medusa’s Medusa container and how to use it.
+In this chapter, you’ll learn about the Medusa container and how to use it.
 
 ## What is the Medusa container?
 
-The Medusa container holds all resources registered in the Medusa application. You have access to it in your customizations.
+The Medusa container holds all resources registered in the Medusa application, such as services.
 
-You use the Medusa container to resolve resources, such as services.
+In your customizations, you use the Medusa container to resolve these resources and use their functionalities.
 
 For example, in a custom API route you can resolve any service registered in the Medusa application using the `scope.resolve` method of the `MedusaRequest` parameter:
 
