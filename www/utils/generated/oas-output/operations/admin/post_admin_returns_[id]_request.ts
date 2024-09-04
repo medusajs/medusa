@@ -1,8 +1,10 @@
 /**
  * @oas [post] /admin/returns/{id}/request
  * operationId: PostReturnsIdRequest
- * summary: Add Requests to Return
- * description: Add a list of requests to a return.
+ * summary: Confirm Return Request
+ * description: >
+ *   Confirm a requested return. The changes are applied on the inventory quantity and the order only after the
+ *   return has been confirmed as received using the `/admin/returns/:id/received/confirm`.
  * x-authenticated: true
  * parameters:
  *   - name: id

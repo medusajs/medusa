@@ -1,13 +1,13 @@
 /**
  * @oas [post] /admin/products/import/{transaction_id}/confirm
  * operationId: PostProductsImportTransaction_idConfirm
- * summary: Add Confirms to Product
- * description: Add a list of confirms to a product.
+ * summary: Confirm Product Import
+ * description: Confirm that a created product import should start importing the products into Medusa.
  * x-authenticated: true
  * parameters:
  *   - name: transaction_id
  *     in: path
- *     description: The product's transaction id.
+ *     description: The ID of the transaction returned when the product import was created.
  *     required: true
  *     schema:
  *       type: string
@@ -36,10 +36,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * x-workflow: importProductsWorkflowId
  * 
 */

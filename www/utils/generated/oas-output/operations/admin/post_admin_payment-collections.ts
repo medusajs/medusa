@@ -56,7 +56,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The payment collection's details.
  *         required:
  *           - order_id
  *           - amount
@@ -64,11 +64,11 @@
  *           order_id:
  *             type: string
  *             title: order_id
- *             description: The payment collection's order id.
+ *             description: The ID of the associated order.
  *           amount:
  *             type: number
  *             title: amount
- *             description: The payment collection's amount.
+ *             description: The amount to be paid.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

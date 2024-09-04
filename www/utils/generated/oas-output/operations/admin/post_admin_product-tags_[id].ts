@@ -62,9 +62,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
- *         required:
- *           - metadata
+ *         description: The properties to update in the product tag.
  *         properties:
  *           value:
  *             type: string
@@ -72,7 +70,7 @@
  *             description: The product tag's value.
  *           metadata:
  *             type: object
- *             description: The product tag's metadata.
+ *             description: The product tag's metadata. Can hold custom key-value pairs.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

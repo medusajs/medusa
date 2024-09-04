@@ -9,9 +9,9 @@ import {
   BeforeCreate,
   ManyToMany,
   ManyToOne,
+  OnInit,
   OneToMany,
   OneToOne,
-  OnInit,
   Property,
   rel,
 } from "@mikro-orm/core"
@@ -24,7 +24,7 @@ import { ManyToMany as DmlManyToMany } from "../../relations/many-to-many"
 import { parseEntityName } from "./parse-entity-name"
 
 type Context = {
-  MANY_TO_MANY_TRACKED_REALTIONS: Record<string, boolean>
+  MANY_TO_MANY_TRACKED_RELATIONS: Record<string, boolean>
 }
 
 /**
@@ -43,7 +43,7 @@ export function defineHasOneRelationship(
     nullable: relationship.nullable,
     mappedBy: relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name),
     cascade: shouldRemoveRelated
-      ? (["perist", "soft-remove"] as any)
+      ? (["persist", "soft-remove"] as any)
       : undefined,
   })(MikroORMEntity.prototype, relationship.name)
 }
@@ -64,7 +64,7 @@ export function defineHasManyRelationship(
     orphanRemoval: true,
     mappedBy: relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name),
     cascade: shouldRemoveRelated
-      ? (["perist", "soft-remove"] as any)
+      ? (["persist", "soft-remove"] as any)
       : undefined,
   })(MikroORMEntity.prototype, relationship.name)
 }
@@ -238,7 +238,7 @@ export function defineManyToManyRelationship(
     relatedModelName,
     pgSchema,
   }: { relatedModelName: string; pgSchema: string | undefined },
-  { MANY_TO_MANY_TRACKED_REALTIONS }: Context
+  { MANY_TO_MANY_TRACKED_RELATIONS }: Context
 ) {
   let mappedBy = relationship.mappedBy
   let inversedBy: undefined | string
@@ -271,12 +271,12 @@ export function defineManyToManyRelationship(
      */
     if (
       otherSideRelation.parse(mappedBy).mappedBy &&
-      MANY_TO_MANY_TRACKED_REALTIONS[`${relatedModelName}.${mappedBy}`]
+      MANY_TO_MANY_TRACKED_RELATIONS[`${relatedModelName}.${mappedBy}`]
     ) {
       inversedBy = mappedBy
       mappedBy = undefined
     } else {
-      MANY_TO_MANY_TRACKED_REALTIONS[
+      MANY_TO_MANY_TRACKED_RELATIONS[
         `${MikroORMEntity.name}.${relationship.name}`
       ] = true
     }

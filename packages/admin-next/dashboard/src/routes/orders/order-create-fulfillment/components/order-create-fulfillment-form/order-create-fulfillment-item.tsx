@@ -1,18 +1,15 @@
-import { Trash } from "@medusajs/icons"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Input, Text } from "@medusajs/ui"
 import { UseFormReturn } from "react-hook-form"
-
-import { ActionMenu } from "../../../../../components/common/action-menu/index.ts"
-import { Form } from "../../../../../components/common/form/index.ts"
-import { Thumbnail } from "../../../../../components/common/thumbnail/index.ts"
-import { MoneyAmountCell } from "../../../../../components/table/table-cells/common/money-amount-cell/index.ts"
-import { useProductVariant } from "../../../../../hooks/api/products.tsx"
-import { getFulfillableQuantity } from "../../../../../lib/order-item.ts"
-import { CreateFulfillmentSchema } from "./constants.ts"
 import { HttpTypes } from "@medusajs/types"
+
+import { Form } from "../../../../../components/common/form/index"
+import { Thumbnail } from "../../../../../components/common/thumbnail/index"
+import { useProductVariant } from "../../../../../hooks/api/products"
+import { getFulfillableQuantity } from "../../../../../lib/order-item"
+import { CreateFulfillmentSchema } from "./constants"
 
 type OrderEditItemProps = {
   item: HttpTypes.AdminOrderLineItem
@@ -24,10 +21,8 @@ type OrderEditItemProps = {
 
 export function OrderCreateFulfillmentItem({
   item,
-  currencyCode,
   form,
   locationId,
-  onItemRemove,
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
@@ -38,8 +33,6 @@ export function OrderCreateFulfillmentItem({
       fields: "*inventory,*inventory.location_levels",
     }
   )
-
-  const hasInventoryItem = !!variant?.inventory.length
 
   const { availableQuantity, inStockQuantity } = useMemo(() => {
     if (!variant || !locationId) {
@@ -70,8 +63,8 @@ export function OrderCreateFulfillmentItem({
 
   return (
     <div className="bg-ui-bg-subtle shadow-elevation-card-rest my-2 rounded-xl ">
-      <div className="flex gap-x-2 border-b p-3 text-sm">
-        <div className="flex flex-grow items-center gap-x-3">
+      <div className="flex flex-col gap-x-2 gap-y-2 border-b p-3 text-sm sm:flex-row">
+        <div className="flex flex-1 items-center gap-x-3">
           <Thumbnail src={item.thumbnail} />
           <div className="flex flex-col">
             <div>
@@ -86,84 +79,86 @@ export function OrderCreateFulfillmentItem({
           </div>
         </div>
 
-        <div className="text-ui-fg-subtle txt-small mr-2 flex flex-shrink-0 flex-col items-center">
-          <MoneyAmountCell
-            className="justify-end"
-            currencyCode={currencyCode}
-            amount={item.total}
-          />
-          {hasInventoryItem && (
-            <span>
-              {t("orders.fulfillment.available")}: {availableQuantity || "N/A"}{" "}
-              · {t("orders.fulfillment.inStock")}: {inStockQuantity || "N/A"}
+        <div className="flex flex-1 items-center gap-x-1">
+          <div className="mr-2 block h-[16px] w-[2px] bg-gray-200" />
+
+          <div className="text-small flex flex-1 flex-col">
+            <span className="text-ui-fg-subtle font-medium">
+              {t("orders.fulfillment.available")}
             </span>
-          )}
-        </div>
+            <span className="text-ui-fg-subtle">
+              {availableQuantity || "N/A"}
+            </span>
+          </div>
 
-        <div className="flex items-center">
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.remove"),
-                    icon: <Trash />,
-                    onClick: () => onItemRemove(item.id),
-                  },
-                ],
-              },
-            ]}
-          />
-        </div>
-      </div>
+          <div className="flex flex-1 items-center gap-x-1">
+            <div className="mr-2 block h-[16px] w-[2px] bg-gray-200" />
 
-      <div className="block p-3 text-sm">
-        <div className="flex-1">
-          <Text weight="plus" className="txt-small mb-2">
-            {t("fields.quantity")}
-          </Text>
-          <Form.Field
-            control={form.control}
-            name={`quantity.${item.id}`}
-            rules={{ required: true, min: minValue, max: maxValue }}
-            render={({ field }) => {
-              return (
-                <Form.Item>
-                  <Form.Control>
-                    <Input
-                      className="bg-ui-bg-base txt-small w-full rounded-lg"
-                      type="number"
-                      {...field}
-                      onChange={(e) => {
-                        const val =
-                          e.target.value === "" ? null : Number(e.target.value)
+            <div className="flex flex-col">
+              <span className="text-ui-fg-subtle font-medium">
+                {t("orders.fulfillment.inStock")}
+              </span>
+              <span className="text-ui-fg-subtle">
+                {inStockQuantity || "N/A"}{" "}
+                {inStockQuantity && (
+                  <span className="font-medium text-red-500">
+                    -{form.getValues(`quantity.${item.id}`)}
+                  </span>
+                )}
+              </span>
+            </div>
+          </div>
 
-                        field.onChange(val)
+          <div className="flex flex-1 items-center gap-1">
+            <Form.Field
+              control={form.control}
+              name={`quantity.${item.id}`}
+              rules={{ required: true, min: minValue, max: maxValue }}
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Control>
+                      <Input
+                        className="bg-ui-bg-base txt-small w-[50px] rounded-lg text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        type="number"
+                        {...field}
+                        onChange={(e) => {
+                          const val =
+                            e.target.value === ""
+                              ? null
+                              : Number(e.target.value)
 
-                        if (!isNaN(val)) {
-                          if (val < minValue || val > maxValue) {
-                            form.setError(`quantity.${item.id}`, {
-                              type: "manual",
-                              message: t(
-                                "orders.fulfillment.error.wrongQuantity",
-                                {
-                                  count: maxValue,
-                                  number: maxValue,
-                                }
-                              ),
-                            })
-                          } else {
-                            form.clearErrors(`quantity.${item.id}`)
+                          field.onChange(val)
+
+                          if (!isNaN(val)) {
+                            if (val < minValue || val > maxValue) {
+                              form.setError(`quantity.${item.id}`, {
+                                type: "manual",
+                                message: t(
+                                  "orders.fulfillment.error.wrongQuantity",
+                                  {
+                                    count: maxValue,
+                                    number: maxValue,
+                                  }
+                                ),
+                              })
+                            } else {
+                              form.clearErrors(`quantity.${item.id}`)
+                            }
                           }
-                        }
-                      }}
-                    />
-                  </Form.Control>
-                  <Form.ErrorMessage />
-                </Form.Item>
-              )
-            }}
-          />
+                        }}
+                      />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+
+            <span className="text-ui-fg-subtle">
+              / {item.quantity} {t("fields.qty")}
+            </span>
+          </div>
         </div>
       </div>
     </div>
