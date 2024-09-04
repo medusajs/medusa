@@ -11,6 +11,11 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/admin/admin-vite-plugin"
+  },
   "files": [
     "dist",
     "package.json"
