@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/stock-locations/{id}/sales-channels
  * operationId: PostStockLocationsIdSalesChannels
- * summary: Add Sales Channels to Stock Location
- * description: Add a list of sales channels to a stock location.
+ * summary: Manage Sales Channels of a Stock Location
+ * x-sidebar-summary: Manage Sales Channels
+ * description: Manage the sales channels in a stock location by adding or removing them.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,22 +63,22 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The sales channels to add or remove.
  *         properties:
  *           add:
  *             type: array
- *             description: The stock location's add.
+ *             description: The sales channels to add.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A sales channel's ID.
  *           remove:
  *             type: array
- *             description: The stock location's remove.
+ *             description: The sales channels to remove.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A sales channel's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
