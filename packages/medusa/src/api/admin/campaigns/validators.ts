@@ -69,7 +69,6 @@ export const CreateCampaign = z
     budget: CreateCampaignBudget.nullish(),
     starts_at: z.coerce.date().nullish(),
     ends_at: z.coerce.date().nullish(),
-    promotions: z.array(z.object({ id: z.string() })).optional(),
   })
   .strict()
 export const AdminCreateCampaign = WithAdditionalData(CreateCampaign)
@@ -82,6 +81,5 @@ export const UpdateCampaign = z.object({
   budget: UpdateCampaignBudget.optional(),
   starts_at: z.coerce.date().nullish(),
   ends_at: z.coerce.date().nullish(),
-  promotions: z.array(z.object({ id: z.string() })).optional(),
 })
 export const AdminUpdateCampaign = WithAdditionalData(UpdateCampaign)

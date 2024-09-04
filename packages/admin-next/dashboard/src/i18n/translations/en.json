@@ -243,7 +243,9 @@
         "selectDown": "Select down",
         "selectUp": "Select up",
         "selectColumnDown": "Select column down",
-        "selectColumnUp": "Select column up"
+        "selectColumnUp": "Select column up",
+        "focusToolbar": "Focus toolbar",
+        "focusCancel": "Focus cancel"
       }
     },
     "errors": {
@@ -576,7 +578,6 @@
         "successToast": "Option {{title}} was successfully created."
       },
       "deleteWarning": "You are about to delete the product option: {{title}}. This action cannot be undone."
-
     },
     "organization": {
       "header": "Organize",
@@ -969,7 +970,6 @@
       "create": "Create Claim",
       "confirm": "Confirm Claim",
       "confirmText": "You are about to confirm a Claim. This action cannot be undone.",
-      "cancel": "Cancel Claim",
       "manage": "Manage Claim",
       "outbound": "Outbound",
       "outboundItemAdded": "{{itemsCount}}x added through claim",
@@ -982,6 +982,10 @@
         "cancelClaim": {
           "successToast": "Claim was successfully canceled."
         }
+      },
+      "cancel": {
+        "title": "Cancel Claim",
+        "description": "Are you sure you want to cancel the claim?"
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
@@ -1000,7 +1004,6 @@
       "manage": "Manage Exchange",
       "confirm": "Confirm Exchange",
       "confirmText": "You are about to confirm an Exchange. This action cannot be undone.",
-      "cancel": "Cancel Exchange",
       "outbound": "Outbound",
       "outboundItemAdded": "{{itemsCount}}x added through exchange",
       "outboundTotal": "Outbound total",
@@ -1012,6 +1015,10 @@
         "cancelExchange": {
           "successToast": "Exchange was successfully canceled."
         }
+      },
+      "cancel": {
+        "title": "Cancel Exchange",
+        "description": "Are you sure you want to cancel the exchange?"
       },
       "tooltips": {
         "onlyReturnShippingOptions": "This list will consist of only return shipping options."
@@ -1069,6 +1076,7 @@
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
       "sendNotificationHint": "Notify customers about the created fulfillment.",
+      "methodDescription": "Choose a different shipping method from the one customer selected",
       "error": {
         "wrongQuantity": "Only one item is available for fulfillment",
         "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
@@ -1160,16 +1168,17 @@
         },
         "claim": {
           "created": "Claim #{{claimId}} requested",
+          "canceled": "Claim #{{claimId}} canceled",
           "itemsInbound": "{{count}} item to return",
           "itemsOutbound": "{{count}} item to send"
         },
         "exchange": {
           "created": "Exchange #{{exchangeId}} requested",
+          "canceled": "Exchange #{{exchangeId}} canceled",
           "itemsInbound": "{{count}} item to return",
           "itemsOutbound": "{{count}} item to send"
         },
         "edit": {
-          "requested": "Order edit #{{editId}} requested",
           "requested": "Order edit #{{editId}} requested",
           "confirmed": "Order edit #{{editId}} confirmed"
         }
@@ -2456,6 +2465,7 @@
     "newPassword": "New Password",
     "repeatNewPassword": "Repeat New Password",
     "categories": "Categories",
+    "shippingMethod": "Shipping method",
     "configurations": "Configurations",
     "conditions": "Conditions",
     "category": "Category",

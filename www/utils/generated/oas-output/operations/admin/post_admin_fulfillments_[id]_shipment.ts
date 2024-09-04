@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/fulfillments/{id}/shipment
  * operationId: PostFulfillmentsIdShipment
- * summary: Add Shipments to Fulfillment
- * description: Add a list of shipments to a fulfillment.
+ * summary: Create a Shipment for a Fulfillment
+ * x-sidebar-summary: Create Shipment
+ * description: Create a shipment for a fulfillment. The fulfillment must not be shipped or canceled.
  * x-authenticated: true
  * parameters:
  *   - name: id

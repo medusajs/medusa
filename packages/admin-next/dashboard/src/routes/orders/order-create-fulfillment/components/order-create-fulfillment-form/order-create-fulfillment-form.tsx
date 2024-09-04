@@ -16,8 +16,9 @@ import {
 import { useCreateOrderFulfillment } from "../../../../../hooks/api/orders"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
-import { CreateFulfillmentSchema } from "./constants"
 import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
+import { CreateFulfillmentSchema } from "./constants"
+import { useShippingOptions } from "../../../../../hooks/api"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -38,24 +39,23 @@ export function OrderCreateFulfillmentForm({
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce(
-        (acc, item) => {
-          acc[item.id] = getFulfillableQuantity(item)
-          return acc
-        },
-        {} as Record<string, number>
-      ),
+      quantity: fulfillableItems.reduce((acc, item) => {
+        acc[item.id] = getFulfillableQuantity(item)
+        return acc
+      }, {} as Record<string, number>),
       send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
   })
 
   const { stock_locations = [] } = useStockLocations()
+  const { shipping_options = [] } = useShippingOptions()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
       await createOrderFulfillment({
         location_id: data.location_id,
+        // shipping_option_id: data.shipping_option_id,
         no_notification: !data.send_notification,
         items: Object.entries(data.quantity)
           .filter(([, value]) => !!value)
@@ -77,23 +77,6 @@ export function OrderCreateFulfillmentForm({
       form.setValue("location_id", stock_locations[0].id)
     }
   }, [stock_locations?.length])
-
-  const onItemRemove = (itemId: string) => {
-    setFulfillableItems((state) => state.filter((i) => i.id !== itemId))
-    form.unregister(`quantity.${itemId}`)
-  }
-
-  const resetItems = () => {
-    const items = (order.items || []).filter(
-      (item) => getFulfillableQuantity(item) > 0
-    )
-    setFulfillableItems(items)
-
-    items.forEach((i) =>
-      form.register(`quantity.${i.id}`, { value: getFulfillableQuantity(i) })
-    )
-    form.clearErrors("root")
-  }
 
   const selectedLocationId = useWatch({
     name: "location_id",
@@ -119,13 +102,10 @@ export function OrderCreateFulfillmentForm({
       })
     }
 
-    const quantityMap = itemsToFulfill.reduce(
-      (acc, item) => {
-        acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
-        return acc
-      },
-      {} as Record<string, number>
-    )
+    const quantityMap = itemsToFulfill.reduce((acc, item) => {
+      acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
+      return acc
+    }, {} as Record<string, number>)
 
     form.setValue("quantity", quantityMap)
   }, [...fulfilledQuantityArray])
@@ -152,41 +132,91 @@ export function OrderCreateFulfillmentForm({
         <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
           <div className="flex size-full flex-col items-center overflow-auto p-16">
             <div className="flex w-full max-w-[736px] flex-col justify-center px-2 pb-2">
-              <div className="flex flex-col divide-y">
-                <div className="flex-1">
+              <div className="flex flex-col divide-y divide-dashed">
+                <div className="pb-8">
                   <Form.Field
                     control={form.control}
                     name="location_id"
                     render={({ field: { onChange, ref, ...field } }) => {
                       return (
                         <Form.Item>
-                          <Form.Label>{t("fields.location")}</Form.Label>
-                          <Form.Hint>
-                            {t("orders.fulfillment.locationDescription")}
-                          </Form.Hint>
-                          <Form.Control>
-                            <Select onValueChange={onChange} {...field}>
-                              <Select.Trigger
-                                className="bg-ui-bg-base"
-                                ref={ref}
-                              >
-                                <Select.Value />
-                              </Select.Trigger>
-                              <Select.Content>
-                                {stock_locations.map((l) => (
-                                  <Select.Item key={l.id} value={l.id}>
-                                    {l.name}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select>
-                          </Form.Control>
+                          <div className="flex flex-col gap-2 xl:flex-row xl:items-center">
+                            <div className="flex-1">
+                              <Form.Label>{t("fields.location")}</Form.Label>
+                              <Form.Hint>
+                                {t("orders.fulfillment.locationDescription")}
+                              </Form.Hint>
+                            </div>
+                            <div className="flex-1">
+                              <Form.Control>
+                                <Select onValueChange={onChange} {...field}>
+                                  <Select.Trigger
+                                    className="bg-ui-bg-base"
+                                    ref={ref}
+                                  >
+                                    <Select.Value />
+                                  </Select.Trigger>
+                                  <Select.Content>
+                                    {stock_locations.map((l) => (
+                                      <Select.Item key={l.id} value={l.id}>
+                                        {l.name}
+                                      </Select.Item>
+                                    ))}
+                                  </Select.Content>
+                                </Select>
+                              </Form.Control>
+                            </div>
+                          </div>
                           <Form.ErrorMessage />
                         </Form.Item>
                       )
                     }}
                   />
+                </div>
 
+                {/*<div className="py-8">*/}
+                {/*  <Form.Field*/}
+                {/*    control={form.control}*/}
+                {/*    name="shipping_option_id"*/}
+                {/*    render={({ field: { onChange, ref, ...field } }) => {*/}
+                {/*      return (*/}
+                {/*        <Form.Item>*/}
+                {/*          <div className="flex flex-col gap-2 xl:flex-row xl:items-center">*/}
+                {/*            <div className="flex-1">*/}
+                {/*              <Form.Label>*/}
+                {/*                {t("fields.shippingMethod")}*/}
+                {/*              </Form.Label>*/}
+                {/*              <Form.Hint>*/}
+                {/*                {t("orders.fulfillment.methodDescription")}*/}
+                {/*              </Form.Hint>*/}
+                {/*            </div>*/}
+                {/*            <div className="flex-1">*/}
+                {/*              <Form.Control>*/}
+                {/*                <Select onValueChange={onChange} {...field}>*/}
+                {/*                  <Select.Trigger*/}
+                {/*                    className="bg-ui-bg-base"*/}
+                {/*                    ref={ref}*/}
+                {/*                  >*/}
+                {/*                    <Select.Value />*/}
+                {/*                  </Select.Trigger>*/}
+                {/*                  <Select.Content>*/}
+                {/*                    {shipping_options.map((o) => (*/}
+                {/*                      <Select.Item key={o.id} value={o.id}>*/}
+                {/*                        {o.name}*/}
+                {/*                      </Select.Item>*/}
+                {/*                    ))}*/}
+                {/*                  </Select.Content>*/}
+                {/*                </Select>*/}
+                {/*              </Form.Control>*/}
+                {/*            </div>*/}
+                {/*          </div>*/}
+                {/*          <Form.ErrorMessage />*/}
+                {/*        </Form.Item>*/}
+                {/*      )*/}
+                {/*    }}*/}
+                {/*  />*/}
+                {/*</div>*/}
+                <div>
                   <Form.Item className="mt-8">
                     <Form.Label>
                       {t("orders.fulfillment.itemsToFulfill")}
@@ -202,9 +232,7 @@ export function OrderCreateFulfillmentForm({
                             key={item.id}
                             form={form}
                             item={item}
-                            onItemRemove={onItemRemove}
                             locationId={selectedLocationId}
-                            currencyCode={order.currency_code}
                           />
                         )
                       })}
@@ -218,14 +246,6 @@ export function OrderCreateFulfillmentForm({
                       classNameInner="flex justify-between flex-1 items-center"
                     >
                       {form.formState.errors.root.message}
-                      <Button
-                        variant="transparent"
-                        size="small"
-                        type="button"
-                        onClick={resetItems}
-                      >
-                        {t("actions.reset")}
-                      </Button>
                     </Alert>
                   )}
                 </div>

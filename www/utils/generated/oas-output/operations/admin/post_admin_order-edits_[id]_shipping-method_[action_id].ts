@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/order-edits/{id}/shipping-method/{action_id}
  * operationId: PostOrderEditsIdShippingMethodAction_id
- * summary: Add Shipping Methods to Order Edit
- * description: Add a list of shipping methods to a order edit.
+ * summary: Update Shipping Method of an Order Edit
+ * x-sidebar-summary: Update Shipping Method
+ * description: |
+ *   Update a shipping method in the order edit by the ID of the method's `SHIPPING_ADD` action.
+ * 
+ *   Every shipping method has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The order edit's action id.
+ *     description: The ID of the shipping method's `SHIPPING_ADD` action.
  *     required: true
  *     schema:
  *       type: string

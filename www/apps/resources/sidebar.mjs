@@ -2343,6 +2343,30 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         isChildSidebar: true,
         custom_autogenerate: "core-flows",
       },
+      {
+        type: "link",
+        title: "Testing Tools Reference",
+        path: "/test-tools-reference",
+        isChildSidebar: true,
+        children: [
+          {
+            type: "category",
+            title: "Functions",
+            children: [
+              {
+                type: "link",
+                title: "medusaIntegrationTestRunner",
+                path: "/test-tools-reference/medusaIntegrationTestRunner",
+              },
+              {
+                type: "link",
+                title: "moduleIntegrationTestRunner",
+                path: "/test-tools-reference/moduleIntegrationTestRunner",
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
   {

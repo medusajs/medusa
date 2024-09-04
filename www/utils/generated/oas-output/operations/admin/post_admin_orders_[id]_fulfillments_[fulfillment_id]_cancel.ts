@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel
  * operationId: PostOrdersIdFulfillmentsFulfillment_idCancel
- * summary: Add Cancels to Order
- * description: Add a list of cancels to a order.
+ * summary: Cancel Fulfillment
+ * description: Cancel an order's fulfillment. The fulfillment can't be canceled if it's shipped.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -69,19 +69,19 @@
  *       schema:
  *         allOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The cancelation details.
  *             properties:
  *               no_notification:
  *                 type: boolean
  *                 title: no_notification
- *                 description: The order's no notification.
+ *                 description: Whether the customer should receive a notification about this change.
  *           - type: object
- *             description: SUMMARY
+ *             description: The cancelation details.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The cancelation details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

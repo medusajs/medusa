@@ -3,9 +3,8 @@
  * operationId: GetWorkflowsExecutionsWorkflow_idSubscribe
  * summary: Subscribe to a Workflow's Execution
  * x-sidebar-summary: Subscribe to Workflow
- * description: >
+ * description: |
  *   Subscribe to a workflow's execution to receive real-time information about its steps, status, and data.
- * 
  *   This route returns an event stream that you can consume using the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource).
  * x-authenticated: true
  * parameters:
@@ -35,7 +34,9 @@
  *         schema:
  *           type: string
  *           description: The step's status update and data changes.
- *           example: "event: success\n data: {}"
+ *           example: |-
+ *             event: success
+ *              data: {}
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

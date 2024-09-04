@@ -2,6 +2,7 @@
  * @schema AdminCreateShippingOptionRule
  * type: object
  * description: The rule's rules.
+ * x-schemaName: AdminCreateShippingOptionRule
  * required:
  *   - operator
  *   - attribute
@@ -9,14 +10,15 @@
  * properties:
  *   operator:
  *     type: string
+ *     description: The rule's operator.
  *     enum:
- *       - in
+ *       - gt
+ *       - lt
  *       - eq
  *       - ne
- *       - gt
- *       - gte
- *       - lt
+ *       - in
  *       - lte
+ *       - gte
  *       - nin
  *   attribute:
  *     type: string
@@ -33,7 +35,6 @@
  *           type: string
  *           title: value
  *           description: The value's details.
- * x-schemaName: AdminCreateShippingOptionRule
  * 
 */
 

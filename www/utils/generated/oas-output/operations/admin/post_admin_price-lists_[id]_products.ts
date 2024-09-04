@@ -1,8 +1,8 @@
 /**
  * @oas [post] /admin/price-lists/{id}/products
  * operationId: PostPriceListsIdProducts
- * summary: Add Products to Price List
- * description: Add a list of products to a price list.
+ * summary: Remove Products from Price List
+ * description: Remove products from a price list.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,22 +62,15 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The removal details.
  *         properties:
- *           add:
- *             type: array
- *             description: The price list's add.
- *             items:
- *               type: string
- *               title: add
- *               description: The add's details.
  *           remove:
  *             type: array
- *             description: The price list's remove.
+ *             description: The products to remove from the price list.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: The ID of a product.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
