@@ -102,7 +102,7 @@ export type AdminPostClaimsShippingReqSchemaType = z.infer<
 >
 
 export const AdminPostClaimsShippingActionReqSchema = z.object({
-  custom_amount: z.number().optional(),
+  custom_amount: z.number().nullish().optional(),
   internal_note: z.string().nullish().optional(),
   metadata: z.record(z.unknown()).nullish().optional(),
 })
