@@ -14,7 +14,11 @@ export type RemoteQueryObjectConfig<TEntry extends string> = {
       >[]
 }
 
-export interface RemoteQueryObjectFromStringResult<TEntry extends string> {
+export interface RemoteQueryObjectFromStringResult<
+  TEntry extends string,
+  TConfig extends RemoteQueryObjectConfig<TEntry>
+> {
+  __TConfig: TConfig
   __TEntry: TEntry
   value: object
 }
