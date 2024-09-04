@@ -59,6 +59,14 @@
  *       type: string
  *       title: city
  *       description: Filter by the address's city.
+ *   - name: postal_code
+ *     in: query
+ *     description: Filter by the address's postal code.
+ *     required: true
+ *     schema:
+ *       type: string
+ *       title: postal_code
+ *       description: Filter by the address's postal code.
  *   - name: country_code
  *     in: query
  *     description: Filter by the address's country code.
