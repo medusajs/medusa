@@ -2150,6 +2150,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.refundPaymentWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.validateRefundStep",
+    "newSlug": "/references/medusa-workflows/validateRefundStep",
+    "filePath": "/www/apps/resources/references/core_flows/Payment/Workflows_Payment/functions/core_flows.Payment.Workflows_Payment.validateRefundStep/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.createPaymentSessionStep",
     "newSlug": "/references/medusa-workflows/steps/createPaymentSessionStep",
     "filePath": "/www/apps/resources/references/core_flows/Payment_Collection/Steps_Payment_Collection/functions/core_flows.Payment_Collection.Steps_Payment_Collection.createPaymentSessionStep/page.mdx"
