@@ -30,17 +30,24 @@ export class Auth {
   }
 
   login = async (
-    actor: "customer" | "user",
-    method: "emailpass",
-    payload: HttpTypes.AdminSignInWithEmailPassword
+    actor: string,
+    method: string,
+    payload: HttpTypes.AdminSignInWithEmailPassword | Record<string, unknown>
   ) => {
-    const { token } = await this.client.fetch<{ token: string }>(
-      `/auth/${actor}/${method}`,
-      {
-        method: "POST",
-        body: payload,
-      }
-    )
+    // There will either be token or location returned from the backend.
+    const { token, location } = await this.client.fetch<{
+      token?: string
+      location?: string
+    }>(`/auth/${actor}/${method}`, {
+      method: "POST",
+      body: payload,
+    })
+
+    // In the case of an oauth login, we return the redirect location to the caller.
+    // They can decide if they do an immediate redirect or put it in an <a> tag.
+    if (location) {
+      return { location }
+    }
 
     // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
     if (this.config?.auth?.type === "session") {
@@ -49,7 +56,7 @@ export class Auth {
         headers: { Authorization: `Bearer ${token}` },
       })
     } else {
-      this.client.setToken(token)
+      this.client.setToken(token as string)
     }
 
     return token
