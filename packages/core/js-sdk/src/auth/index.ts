@@ -12,8 +12,8 @@ export class Auth {
   }
 
   register = async (
-    actor: "customer" | "user",
-    method: "emailpass",
+    actor: string,
+    method: string,
     payload: HttpTypes.AdminSignUpWithEmailPassword
   ) => {
     const { token } = await this.client.fetch<{ token: string }>(
@@ -64,8 +64,8 @@ export class Auth {
 
   // The callback expects all query parameters from the Oauth callback to be passed to the backend, and the provider is in charge of parsing and validating them
   callback = async (
-    actor: "customer" | "user",
-    method: "emailpass",
+    actor: string,
+    method: string,
     query?: Record<string, unknown>
   ) => {
     const { token } = await this.client.fetch<{ token: string }>(
@@ -97,16 +97,5 @@ export class Auth {
     }
 
     this.client.clearToken()
-  }
-
-  create = async (
-    actor: "customer" | "user",
-    method: "emailpass",
-    payload: { email: string; password: string }
-  ): Promise<{ token: string }> => {
-    return await this.client.fetch(`/auth/${actor}/${method}`, {
-      method: "POST",
-      body: payload,
-    })
   }
 }
