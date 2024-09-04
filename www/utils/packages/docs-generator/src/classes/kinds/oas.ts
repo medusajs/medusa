@@ -773,7 +773,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           authRequest.exact === oasPath ||
           (authRequest.startsWith && oasPath.startsWith(authRequest.startsWith))
         )
-      })?.requiresAuthentication === true || false
+      })?.requiresAuthentication === true
     false
     const isAdminAuthenticated =
       (!isAuthenticationDisabled || hasAuthenticationOverride) &&
