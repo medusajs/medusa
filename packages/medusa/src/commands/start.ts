@@ -17,12 +17,12 @@ export default async function ({ port, directory }) {
     const app = express()
 
     try {
-      const { shutdown, gqlSchema } = await loaders({
+      const { shutdown, gqlSchema, container } = await loaders({
         directory,
         expressApp: app,
       })
 
-      if (gqlSchema) {
+      if (gqlSchema && process.env?.NODE_ENV?.startsWith("dev")) {
         const outputDirGeneratedTypes = path.join(directory, "src/.medusa")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
