@@ -527,7 +527,9 @@ function attachOnFinishReleaseEvents(
         )
         .join(EOL + separator + EOL)
 
-      if (allWorkflowErrors) logger.error(allWorkflowErrors)
+      if (allWorkflowErrors) {
+        logger.error(allWorkflowErrors)
+      }
     }
 
     await onFinish?.(args)
