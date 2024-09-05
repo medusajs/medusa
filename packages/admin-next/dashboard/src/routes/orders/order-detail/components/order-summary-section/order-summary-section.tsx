@@ -27,7 +27,6 @@ import {
   Container,
   Copy,
   Heading,
-  IconButton,
   StatusBadge,
   Text,
   toast,
@@ -596,7 +595,7 @@ const InventoryKitBreakdown = ({ item }: { item: AdminOrderLineItem }) => {
       >
         <TriangleDownMini
           style={{
-            transform: `rotate(${isOpen ? -90 : 0}deg)`,
+            transform: `rotate(${isOpen ? 0 : -90}deg)`,
           }}
         />
         <span className="text-ui-fg-muted txt-small select-none">
