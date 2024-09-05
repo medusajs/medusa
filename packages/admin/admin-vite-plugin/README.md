@@ -1,0 +1,1 @@
+# @medusajs/admin-vite-plugin

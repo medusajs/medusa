@@ -154,7 +154,7 @@ export default async function ({ directory }: BuildArgs) {
   if (!adminOptions.disable) {
     try {
       const { build: buildProductionBuild } = await import(
-        "@medusajs/admin-sdk"
+        "@medusajs/admin-bundler"
       )
 
       await buildProductionBuild(adminOptions)

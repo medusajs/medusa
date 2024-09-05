@@ -14,7 +14,9 @@ For example, if you allow only origins starting with `http://localhost:7001` to 
 
 ### CORS Configurations
 
-You configure allowed origins for Store and Admin API Routes using the `storeCors` and `adminCors` properties of the `http` configuration in `medusa-config.js`. Each of these configurations accepts a URL pattern to identify allowed origins.
+The `storeCors` and `adminCors` properties of Medusa's `http` configuration set the allowed origins for routes starting with `/store` and `/admin` respectively.
+
+These configurations accept a URL pattern to identify allowed origins.
 
 For example:
 
@@ -41,8 +43,6 @@ Learn more about the CORS configurations in [this resource guide](!resources!/re
 ---
 
 ## CORS in Store and Admin Routes
-
-Medusa applies the CORS middleware with the specified configurations in `medusa-config.js` on all routes starting with `/store` and `/admin`.
 
 To disable the CORS middleware for a route, export a `CORS` variable in the route file with its value set to `false`.
 
