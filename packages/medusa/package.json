@@ -46,7 +46,7 @@
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",
     "@inquirer/input": "^2.2.9",
-    "@medusajs/admin-sdk": "0.0.1",
+    "@medusajs/admin-bundler": "0.0.1",
     "@medusajs/core-flows": "^0.0.9",
     "@medusajs/framework": "^0.0.1",
     "@medusajs/link-modules": "^0.2.11",

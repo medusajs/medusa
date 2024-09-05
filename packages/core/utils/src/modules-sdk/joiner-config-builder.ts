@@ -4,25 +4,26 @@ import {
   ModuleJoinerConfig,
   PropertyType,
 } from "@medusajs/types"
+import { accessSync } from "fs"
 import * as path from "path"
 import { dirname, join, normalize } from "path"
 import {
+  MapToConfig,
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
   isObject,
   lowerCaseFirst,
-  MapToConfig,
   pluralize,
   toCamelCase,
   upperCaseFirst,
 } from "../common"
-import { loadModels } from "./loaders/load-models"
 import { DmlEntity } from "../dml"
-import { BaseRelationship } from "../dml/relations/base"
+import { toGraphQLSchema } from "../dml/helpers/create-graphql"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
+import { BaseRelationship } from "../dml/relations/base"
+import { loadModels } from "./loaders/load-models"
 import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
-import { accessSync } from "fs"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -145,6 +146,10 @@ export function defineJoinerConfig(
 
     deduplicatedLoadedModels.push(model)
   })
+
+  if (!schema) {
+    schema = toGraphQLSchema([...modelDefinitions.values()])
+  }
 
   if (!linkableKeys) {
     const linkableKeysFromDml = buildLinkableKeysFromDmlObjects([

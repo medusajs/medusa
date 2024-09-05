@@ -54,6 +54,9 @@ export default class OrderShippingMethod {
   @Property({ columnType: "boolean" })
   is_tax_inclusive: boolean = false
 
+  @Property({ columnType: "boolean", default: false })
+  is_custom_amount: boolean = false
+
   @Property({
     columnType: "text",
     nullable: true,

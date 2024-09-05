@@ -665,7 +665,7 @@ medusaIntegrationTestRunner({
         result = await api.post(
           `/admin/returns/${returnId}/shipping-method/${updateShippingActionId}`,
           {
-            custom_price: 1002,
+            custom_amount: 1002,
             internal_note: "cx agent note",
           },
           adminHeaders
