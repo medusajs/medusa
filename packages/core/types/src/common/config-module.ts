@@ -4,7 +4,6 @@ import {
 } from "../modules-sdk"
 
 import type { RedisOptions } from "ioredis"
-import type { LoggerOptions } from "typeorm"
 import type { InlineConfig } from "vite"
 
 /**
@@ -263,7 +262,7 @@ export type ProjectConfigOptions = {
    * })
    * ```
    */
-  databaseLogging?: LoggerOptions
+  databaseLogging?: boolean
 
   /**
    * @ignore
