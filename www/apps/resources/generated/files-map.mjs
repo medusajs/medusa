@@ -15280,6 +15280,14 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminWorkflowExecutionListResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminWorkflowRunResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminWorkflowRunResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.BatchResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.BatchResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.DeleteResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.DeleteResponse"
   },
@@ -15714,6 +15722,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.WorkflowOrchestratorRunDTO/page.mdx",
     "pathname": "/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.WorkflowOrchestratorRunDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/types/types.WorkflowsSdkTypes.Acknowledgement/page.mdx",
+    "pathname": "/references/types/WorkflowsSdkTypes/types/types.WorkflowsSdkTypes.Acknowledgement"
   },
   {
     "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/types/types.WorkflowsSdkTypes.IdempotencyKeyParts/page.mdx",
