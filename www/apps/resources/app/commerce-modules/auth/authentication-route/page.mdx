@@ -61,7 +61,7 @@ It requires the following steps:
 7. The frontend uses the authentication token to create the user with their respective API route.
     - For example, for customers you would use the [Create Customer API route](!api!/store#customers_postcustomers).
     - For admin users, you accept an invite using the [Accept Invite API route](!api!/admin#invites_postinvitesaccept)
-8. The frontend sends a request to the [Refresh Token Route](#refresh-token-route) to retrieve a new token for the user.
+8. The frontend sends a request to the [Refresh Token Route](#refresh-token-route) to retrieve a new token with the user information populated.
 
 After the first registration, you only use the [Auth Route](#auth-route) for subsequent authentication.
 
