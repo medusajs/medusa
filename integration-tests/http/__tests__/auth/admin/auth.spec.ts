@@ -1,5 +1,6 @@
 import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import jwt from "jsonwebtoken"
 import {
   adminHeaders,
   createAdminUser,
@@ -253,6 +254,29 @@ medusaIntegrationTestRunner({
         expect(response.response.status).toEqual(401)
         expect(response.response.data.message).toEqual("Invalid token")
       })
+    })
+
+    it("should refresh the token successfully", async () => {
+      // Make sure issue date is later than the admin one
+      jest.useFakeTimers()
+      jest.advanceTimersByTime(2000)
+
+      const resp = await api.post("/auth/token/refresh", {}, adminHeaders)
+      const decodedOriginalToken = jwt.decode(
+        adminHeaders.headers["authorization"].split(" ")[1]
+      ) as any
+      const decodedRefreshedToken = jwt.decode(resp.data.token) as any
+
+      expect(decodedOriginalToken).toEqual(
+        expect.objectContaining({
+          actor_id: decodedRefreshedToken.actor_id,
+          actor_type: decodedRefreshedToken.actor_type,
+          auth_identity_id: decodedRefreshedToken.auth_identity_id,
+        })
+      )
+
+      expect(decodedOriginalToken.iat).toBeLessThan(decodedRefreshedToken.iat)
+      expect(decodedOriginalToken.exp).toBeLessThan(decodedRefreshedToken.exp)
     })
   },
 })

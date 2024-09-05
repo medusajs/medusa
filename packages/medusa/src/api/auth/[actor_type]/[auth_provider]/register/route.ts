@@ -34,7 +34,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     authData
   )
 
-  if (success) {
+  if (success && authIdentity) {
     const { http } = config.projectConfig
 
     const token = generateJwtTokenForAuthIdentity(
