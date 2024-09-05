@@ -1,8 +1,8 @@
-import { isObject } from "./is-object"
 import {
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
+import { isObject } from "./is-object"
 
 /**
  * Convert a string fields array to a remote query object
@@ -155,6 +155,6 @@ export function remoteQueryObjectFromString<
   remoteJoinerConfig[entryKey]["__args"] = topLevelArgs ?? {}
 
   return {
-    value: remoteJoinerConfig,
+    __value: remoteJoinerConfig,
   } as RemoteQueryObjectFromStringResult<TEntry, TConfig>
 }
