@@ -33,7 +33,7 @@ Learn about the authentication flow in [this guide](../../authentication-route/p
   ]}
 />
 
-To install the Google auth module provider, run the following command in the directory of your Medusa application:
+To install the GitHub auth module provider, run the following command in the directory of your Medusa application:
 
 ```bash npm2yarn
 npm install @medusajs/auth-github@preview
@@ -55,7 +55,7 @@ const modules = {
         // other providers...
         {
           resolve: "@medusajs/auth-github",
-          id: "google",
+          id: "github",
           options: {
             clientId: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
