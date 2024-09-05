@@ -178,10 +178,8 @@ medusaIntegrationTestRunner({
           password: "secret_password",
         })
 
-        const token = await authModule.generateToken({
-          provider: "emailpass",
-          actor_type: "user",
-          entity_id: "test@medusa-commerce.com",
+        const token = await authModule.generateToken("test@medusa-commerce.com", "emailpass", {
+          secret: "test"
         })
 
         const response = await api.post(

@@ -14,7 +14,6 @@ export const UserWorkflowEvents = {
   CREATED: "user.created",
   UPDATED: "user.updated",
   DELETED: "user.deleted",
-  PASSWORD_RESET: "user.password_reset",
 }
 
 export const AuthWorkflowEvents = {

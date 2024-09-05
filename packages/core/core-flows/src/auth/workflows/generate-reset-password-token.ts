@@ -5,12 +5,22 @@ import { generateTokenStep } from "../steps/generate-token"
 
 export const generateResetPasswordTokenWorkflow = createWorkflow(
   "generate-reset-password-token",
-  (input: { payload: { entity_id: string } & Record<string, unknown> }) => {
-    const token = generateTokenStep(input.payload)
+  (input: {
+    entityId: string
+    provider: string
+    secret: string
+    expiry?: number
+  }) => {
+    const token = generateTokenStep({
+      entityId: input.entityId,
+      provider: input.provider,
+      secret: input.secret,
+      expiry: input.expiry,
+    })
 
     emitEventStep({
       eventName: AuthWorkflowEvents.PASSWORD_RESET,
-      data: { entity_id: input.payload.entity_id, token },
+      data: { entity_id: input.entityId, token },
     })
   }
 )

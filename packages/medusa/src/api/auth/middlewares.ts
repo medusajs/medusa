@@ -1,6 +1,7 @@
 import { MiddlewareRoute } from "@medusajs/framework"
 import { authenticate } from "../../utils/middlewares/authenticate-middleware"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
+import { validateToken } from "./utils/validate-token"
 
 export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -42,8 +43,9 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider/update",
     middlewares: [
-      authenticate("*", ["bearer", "session"], { allowUnauthenticated: true }),
       validateScopeProviderAssociation(),
+      validateToken(),
+      authenticate("*", ["bearer", "session"], { allowUnauthenticated: true }),
     ],
   },
 ]
