@@ -1,3 +1,5 @@
+import { Badge } from "@medusajs/ui"
+
 type CellProps = {
   code: string
 }
@@ -9,10 +11,9 @@ type HeaderProps = {
 export const CodeCell = ({ code }: CellProps) => {
   return (
     <div className="flex h-full w-full items-center gap-x-3 overflow-hidden">
-      {/* // TODO: border color inversion*/}
-      <span className="bg-ui-tag-neutral-bg truncate rounded-md border border-neutral-200 p-1 text-xs">
+      <Badge size="2xsmall" className="truncate">
         {code}
-      </span>
+      </Badge>
     </div>
   )
 }
