@@ -8,10 +8,10 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import {
-  Image as ProductImage,
   Product,
   ProductCategory,
   ProductCollection,
+  Image as ProductImage,
   ProductOption,
   ProductOptionValue,
   ProductTag,
@@ -81,6 +81,9 @@ export default class ProductModuleService
     ProductOption: {
       dto: ProductTypes.ProductOptionDTO
     }
+    ProductOptionValue: {
+      dto: ProductTypes.ProductOptionValueDTO
+    }
     ProductTag: {
       dto: ProductTypes.ProductTagDTO
     }
@@ -95,6 +98,7 @@ export default class ProductModuleService
     ProductCategory,
     ProductCollection,
     ProductOption,
+    ProductOptionValue,
     ProductTag,
     ProductType,
     ProductVariant,
