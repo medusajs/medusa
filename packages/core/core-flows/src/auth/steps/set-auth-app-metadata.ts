@@ -6,7 +6,7 @@ import { isDefined, ModuleRegistrationName } from "@medusajs/utils"
 export type SetAuthAppMetadataStepInput = {
   authIdentityId: string
   actorType: string
-  value: string
+  value: string | null // null means delete the key
 }
 
 export const setAuthAppMetadataStepId = "set-auth-app-metadata"
@@ -28,7 +28,11 @@ export const setAuthAppMetadataStep = createStep(
       throw new Error(`Key ${key} already exists in app metadata`)
     }
 
-    appMetadata[key] = data.value
+    if (data.value === null) {
+      delete appMetadata[key]
+    } else {
+      appMetadata[key] = data.value
+    }
 
     await service.updateAuthIdentites({
       id: authIdentity.id,
