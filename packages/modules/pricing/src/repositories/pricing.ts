@@ -76,6 +76,7 @@ export class PricingRepository
           "case when price.price_list_id IS NULL then False else True end"
         ),
       })
+      .where(knex.raw("price.deleted_at IS NULL"))
       .leftJoin("price_rule as pr", "pr.price_id", "price.id")
       .leftJoin("price_list as pl", function () {
         this.on("pl.id", "price.price_list_id").andOn(
