@@ -13,7 +13,12 @@ export function calculateTaxTotal({
   taxableAmount: BigNumberInput
   setTotalField?: string
 }) {
+  if (MathBN.lte(taxableAmount, 0)) {
+    return MathBN.convert(0)
+  }
+
   let taxTotal = MathBN.convert(0)
+
   for (const taxLine of taxLines) {
     const rate = MathBN.div(taxLine.rate, 100)
     let taxAmount = MathBN.mult(taxableAmount, rate)

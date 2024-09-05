@@ -127,7 +127,7 @@ function getLineItemTotals(
   const discountTotal = calculateAdjustmentTotal({
     adjustments: item.adjustments || [],
     includesTax: shouldIncludeTaxOnAmendments,
-    taxRate: shouldIncludeTaxOnAmendments ? sumTaxRate : MathBN.convert(0),
+    taxRate: shouldIncludeTaxOnAmendments ? sumTaxRate : undefined,
   })
 
   const discountTaxTotal = shouldIncludeTaxOnAmendments

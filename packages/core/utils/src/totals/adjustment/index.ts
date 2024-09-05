@@ -35,6 +35,9 @@ export function calculateAdjustmentTotal({
         adj["subtotal"] = new BigNumber(adj.amount)
         adj["total"] = new BigNumber(total)
       }
+    } else {
+      adj["subtotal"] = new BigNumber(total)
+      adj["total"] = new BigNumber(total)
     }
   }
 
