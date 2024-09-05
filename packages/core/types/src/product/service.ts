@@ -1507,7 +1507,7 @@ export interface IProductModuleService extends IModuleService {
    * @example
    * const option = await productModuleService.createProductOptionValues({
    *   value: "Blue",
-   *   product_id: "prod_123",
+   *   option_id: "opt_123",
    * })
    *
    */
