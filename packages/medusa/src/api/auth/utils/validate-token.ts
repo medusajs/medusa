@@ -18,7 +18,7 @@ export const validateToken = () => {
     res: MedusaResponse,
     next: MedusaNextFunction
   ) => {
-    const { actor_type } = req.params
+    const { actor_type, auth_provider } = req.params
     const { token } = req.query
 
     const req_ = req as AuthenticatedMedusaRequest
@@ -33,14 +33,19 @@ export const validateToken = () => {
     ).projectConfig
 
     let verified: JwtPayload | null = null
-
+    
     try {
       verified = verify(token as string, http.jwtSecret!) as JwtPayload
     } catch (error) {
       return res.status(401).json({ message: "Invalid token" })
     }
 
-    if (!verified || !verified.auth_identity_id) {
+
+    if (
+      !verified ||
+      !verified.auth_identity_id ||
+      verified?.provider !== auth_provider
+    ) {
       return res.status(401).json({ message: "Invalid token" })
     }
 
@@ -50,11 +55,18 @@ export const validateToken = () => {
 
     try {
       const [providerIdentity] = await authModule.listProviderIdentities(
-        { auth_identity_id: verified.auth_identity_id },
+        {
+          auth_identity_id: verified.auth_identity_id,
+          provider: auth_provider,
+        },
         {
           select: ["auth_identity_id", "entity_id"],
         }
       )
+
+      if (!providerIdentity) {
+        return res.status(401).json({ message: "Unauthorized" })
+      }
 
       req_.auth_context = {
         actor_type,

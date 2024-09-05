@@ -3,7 +3,11 @@ import {
   generateJwtToken,
   MedusaError,
 } from "@medusajs/utils"
-import { createWorkflow, transform } from "@medusajs/workflows-sdk"
+import {
+  createWorkflow,
+  transform,
+  WorkflowResponse,
+} from "@medusajs/workflows-sdk"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 
 export const generateResetPasswordTokenWorkflow = createWorkflow(
@@ -45,6 +49,7 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
         const token = generateJwtToken(
           {
             auth_identity_id: providerIdentity.id,
+            provider: input.provider,
           },
           { secret: input.secret, expiresIn: "15m" }
         )
@@ -57,5 +62,7 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
       eventName: AuthWorkflowEvents.PASSWORD_RESET,
       data: { entity_id: input.entityId, token },
     })
+
+    return new WorkflowResponse(token)
   }
 )

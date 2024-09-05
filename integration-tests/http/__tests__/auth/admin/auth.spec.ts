@@ -1,5 +1,4 @@
-import { generateJwtToken } from "@medusajs/utils"
-import { JwtPayload, verify } from "jsonwebtoken"
+import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -132,7 +131,7 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe.only("Reset password flows", () => {
+    describe("Reset password flows", () => {
       it("should generate a reset password token", async () => {
         const response = await api.post("/auth/user/emailpass/reset-password", {
           email: "admin@medusa.js",
@@ -168,32 +167,23 @@ medusaIntegrationTestRunner({
       })
 
       it("should successfully reset password", async () => {
-        // Create user
-        const registerResponse = await api.post(
-          "/auth/user/emailpass/register",
-          {
-            email: "test@medusa-commerce.com",
-            password: "secret_password",
-          }
-        )
+        // Register user
+        await api.post("/auth/user/emailpass/register", {
+          email: "test@medusa-commerce.com",
+          password: "secret_password",
+        })
 
-        const token = registerResponse.data.token
-        const decoded = verify(token, "test") as JwtPayload
-
-        const inviteToken = generateJwtToken(
-          {
-            auth_identity_id: decoded.auth_identity_id,
-          },
-          {
+        // The token won't be part of the Rest API response, so we need to generate it manually
+        const token = await generateResetPasswordTokenWorkflow(container).run({
+          input: {
+            entityId: "test@medusa-commerce.com",
+            provider: "emailpass",
             secret: "test",
-            expiresIn: "15m",
-          }
-        )
-
-        console.log("inviteToken", inviteToken)
+          },
+        })
 
         const response = await api.post(
-          `/auth/user/emailpass/update?token=${inviteToken}`,
+          `/auth/user/emailpass/update?token=${token}`,
           {
             email: "test@medusa-commerce.com",
             password: "new_password",
@@ -203,25 +193,52 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(200)
         expect(response.data).toEqual({ success: true })
 
-        //   const failedLogin = await api
-        //     .post("/auth/user/emailpass", {
-        //       email: "test@medusa-commerce.com",
-        //       password: "secret_password",
-        //     })
-        //     .catch((e) => e)
+        const failedLogin = await api
+          .post("/auth/user/emailpass", {
+            email: "test@medusa-commerce.com",
+            password: "secret_password",
+          })
+          .catch((e) => e)
 
-        //   expect(failedLogin.response.status).toEqual(401)
-        //   expect(failedLogin.response.data.message).toEqual(
-        //     "Invalid email or password"
-        //   )
+        expect(failedLogin.response.status).toEqual(401)
+        expect(failedLogin.response.data.message).toEqual(
+          "Invalid email or password"
+        )
 
-        //   const login = await api.post("/auth/user/emailpass", {
-        //     email: "test@medusa-commerce.com",
-        //     password: "new_password",
-        //   })
+        const login = await api.post("/auth/user/emailpass", {
+          email: "test@medusa-commerce.com",
+          password: "new_password",
+        })
 
-        //   expect(login.status).toEqual(200)
-        //   expect(login.data).toEqual({ token: expect.any(String) })
+        expect(login.status).toEqual(200)
+        expect(login.data).toEqual({ token: expect.any(String) })
+      })
+
+      it("should fail if secret doesn't match", async () => {
+        // Register user
+        await api.post("/auth/user/emailpass/register", {
+          email: "test@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        // The token won't be part of the Rest API response, so we need to generate it manually
+        const token = await generateResetPasswordTokenWorkflow(container).run({
+          input: {
+            entityId: "test@medusa-commerce.com",
+            provider: "emailpass",
+            secret: "not-correct",
+          },
+        })
+
+        const result = await api
+          .post(`/auth/user/emailpass/update?token=${token}`, {
+            email: "test@medusa-commerce.com",
+            password: "new_password",
+          })
+          .catch((e) => e)
+
+        expect(result.response.status).toEqual(401)
+        expect(result.response.data.message).toEqual("Unauthorized")
       })
     })
   },
