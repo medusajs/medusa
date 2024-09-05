@@ -17,19 +17,18 @@ import {
   RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFunction,
-  RemoteQueryFunctionReturnType,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  isObject,
+  isString,
   MedusaError,
   ModuleRegistrationName,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  isObject,
-  isString,
   promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -426,21 +425,14 @@ async function MedusaApp_({
    * @param queryConfig
    * @param options
    */
-  async function query<
-    const TEntry extends string,
-    const TConfig extends RemoteQueryObjectConfig<TEntry>
-  >(
-    queryConfig: TConfig | RemoteQueryObjectConfig<TEntry>,
-    options?: RemoteJoinerOptions
-  ): Promise<RemoteQueryFunctionReturnType<TEntry, TConfig>>
-
-  async function query<
-    const TEntry extends string,
-    const TConfig extends RemoteQueryObjectFromStringResult<TEntry, any>
-  >(
-    queryConfig: TConfig | RemoteQueryObjectFromStringResult<TEntry, any>,
+  async function query<const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<any>
+
+  async function query<
+    const TConfig extends RemoteQueryObjectFromStringResult<any>
+  >(queryConfig: TConfig, options?: RemoteJoinerOptions): Promise<any>
 
   /**
    * Query wrapper to provide specific API's and pre processing around remoteQuery.query
@@ -461,7 +453,7 @@ async function MedusaApp_({
     query:
       | RemoteJoinerQuery
       | RemoteQueryObjectConfig<TEntry>
-      | RemoteQueryObjectFromStringResult<TEntry, any>,
+      | RemoteQueryObjectFromStringResult<any>,
     options?: RemoteJoinerOptions
   ) {
     if (!isObject(query)) {

@@ -92,7 +92,7 @@ export function remoteQueryObjectFromString<
   const TConfig extends RemoteQueryObjectConfig<TEntry>
 >(
   config: TConfig | RemoteQueryObjectConfig<TEntry>
-): RemoteQueryObjectFromStringResult<TEntry, TConfig> {
+): RemoteQueryObjectFromStringResult<TConfig> {
   const {
     entryPoint,
     service,
@@ -156,5 +156,5 @@ export function remoteQueryObjectFromString<
 
   return {
     __value: remoteJoinerConfig,
-  } as RemoteQueryObjectFromStringResult<TEntry, TConfig>
+  } as RemoteQueryObjectFromStringResult<TConfig>
 }

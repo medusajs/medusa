@@ -5,16 +5,18 @@ export type RemoteQueryObjectConfig<TEntry extends string> = {
   // service: string This property is still supported under the hood but part of the type due to types missmatch towards fields
   entryPoint: TEntry | keyof RemoteQueryEntryPoints
   variables?: any
-  fields: TEntry extends keyof RemoteQueryEntryPoints
-    ? ObjectToRemoteQueryFields<RemoteQueryEntryPoints[TEntry]>[]
-    : string[]
+  fields: ObjectToRemoteQueryFields<
+    RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
+  > extends never
+    ? string[]
+    : ObjectToRemoteQueryFields<
+        RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
+      >[]
 }
 
-export interface RemoteQueryObjectFromStringResult<
-  TEntry extends string,
-  TConfig extends RemoteQueryObjectConfig<TEntry>
-> {
+export type RemoteQueryObjectFromStringResult<
+  TConfig extends RemoteQueryObjectConfig<any>
+> = {
   __TConfig: TConfig
-  __TEntry: TEntry
   __value: object
 }
