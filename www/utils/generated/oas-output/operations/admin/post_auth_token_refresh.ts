@@ -2,7 +2,7 @@
  * @oas [post] /auth/token/refresh
  * operationId: PostAdminAuthTokenRefresh
  * summary: Refresh Authentication Token
- * description: Refresh the authentication token of a user. This is useful after authenticating a user with a third-party service, or when you don't want users to re-login every day.
+ * description: Refresh the authentication token of a user. This is useful after authenticating a user with a third-party service to ensure the token holds the new user's details, or when you don't want users to re-login every day.
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow
  *   description: Learn about third-party authentication flow.
