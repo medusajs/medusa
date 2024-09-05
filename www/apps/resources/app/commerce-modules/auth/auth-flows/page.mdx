@@ -117,8 +117,6 @@ If the `authenticate` method returns a `location` property, the authentication p
 
 For example, when using the `google` provider, the `location` is the URL that the user is navigated to login.
 
-If the `authenticate` method doesn't return a `location` property and the returned `success` property, the user is successfully authenticated. This happens after the user logs-in with the provider, such as google, the first time.
-
 ![Diagram showcasing the first part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711374847/Medusa%20Resources/third-party-auth-1_enyedy.jpg)
 
 ### validateCallback
@@ -148,6 +146,6 @@ if (success) {
 }
 ```
 
-If the returned `success` property is `true`, the authentication with the third-party provider was successful. Subsequent authentication attempts can use the `authenticate` method only.
+If the returned `success` property is `true`, the authentication with the third-party provider was successful.
 
 ![Diagram showcasing the second part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711375123/Medusa%20Resources/third-party-auth-2_kmjxju.jpg)
