@@ -1,4 +1,8 @@
-import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
+import {
+  AuthenticationInput,
+  ConfigModule,
+  IAuthModuleService,
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -10,6 +14,9 @@ import { generateJwtTokenForAuthIdentity } from "../../../utils/generate-jwt-tok
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
 
+  const config: ConfigModule = req.scope.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const service: IAuthModuleService = req.scope.resolve(
     ModuleRegistrationName.AUTH
   )
