@@ -356,6 +356,11 @@ export const RouteMap: RouteObject[] = [
                     lazy: () => import("../../routes/campaigns/campaign-edit"),
                   },
                   {
+                    path: "configuration",
+                    lazy: () =>
+                      import("../../routes/campaigns/campaign-configuration"),
+                  },
+                  {
                     path: "edit-budget",
                     lazy: () =>
                       import("../../routes/campaigns/campaign-budget-edit"),

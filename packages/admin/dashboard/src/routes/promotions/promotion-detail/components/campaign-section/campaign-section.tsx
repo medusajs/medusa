@@ -1,97 +1,73 @@
-import { PencilSquare } from "@medusajs/icons"
-import { CampaignDTO } from "@medusajs/types"
+import { ArrowUpRightOnBox, PencilSquare } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, Text } from "@medusajs/ui"
-import { format } from "date-fns"
-import { Fragment } from "react"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { DateRangeDisplay } from "../../../../../components/common/date-range-display"
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 
-function formatDate(date?: string | Date) {
-  if (!date) {
-    return "-"
-  }
-
-  return format(new Date(date), "dd MMM yyyy")
-}
-
-const CampaignDetailSection = ({ campaign }: { campaign: CampaignDTO }) => {
-  const { t } = useTranslation()
-
+const CampaignDetailSection = ({
+  campaign,
+}: {
+  campaign: HttpTypes.AdminCampaign
+}) => {
   return (
-    <Fragment>
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("campaigns.fields.name")}
+    <div className="flex flex-col gap-y-3">
+      <div className="text-ui-fg-muted flex items-center gap-x-1.5">
+        <Text size="small" weight="plus" className="text-ui-fg-base">
+          {campaign.name}
         </Text>
-
-        <div className="flex items-center gap-1">
-          <Text size="small" leading="compact" className="text-pretty">
-            {campaign?.name}
-          </Text>
-        </div>
-      </div>
-
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("campaigns.fields.identifier")}
+        <Text size="small" weight="plus">
+          ·
         </Text>
-
-        <div className="flex items-center gap-1">
-          <Text size="small" leading="compact" className="text-pretty">
-            {campaign?.campaign_identifier}
-          </Text>
-        </div>
-      </div>
-
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("campaigns.fields.start_date")}
+        <Text size="small" weight="plus">
+          {campaign.campaign_identifier}
         </Text>
-
-        <div className="flex items-center gap-1">
-          <Text size="small" leading="compact" className="text-pretty">
-            {formatDate(campaign?.starts_at)}
-          </Text>
-        </div>
       </div>
-
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" weight="plus" leading="compact">
-          {t("campaigns.fields.end_date") || "-"}
-        </Text>
-
-        <div className="flex items-center gap-1">
-          <Text size="small" leading="compact" className="text-pretty">
-            {formatDate(campaign?.ends_at)}
-          </Text>
-        </div>
-      </div>
-    </Fragment>
+      <DateRangeDisplay
+        startsAt={campaign.starts_at}
+        endsAt={campaign.ends_at}
+        showTime
+      />
+    </div>
   )
 }
 
-export const CampaignSection = ({ campaign }: { campaign: CampaignDTO }) => {
+export const CampaignSection = ({
+  campaign,
+}: {
+  campaign: HttpTypes.AdminCampaign | null
+}) => {
   const { t } = useTranslation()
   const { id } = useParams()
 
+  const actions = [
+    {
+      label: t("actions.edit"),
+      to: "add-to-campaign",
+      icon: <PencilSquare />,
+    },
+  ]
+
+  if (campaign) {
+    actions.unshift({
+      label: t("promotions.campaign.actions.goToCampaign"),
+      to: `/campaigns/${campaign.id}`,
+      icon: <ArrowUpRightOnBox />,
+    })
+  }
+
   return (
-    <Container className="divide-y p-0">
-      <div className="flex items-center justify-between px-6 py-4">
+    <Container>
+      <div className="flex items-center justify-between">
         <Heading level="h2">{t("promotions.fields.campaign")}</Heading>
 
         <ActionMenu
           groups={[
             {
-              actions: [
-                {
-                  label: t("actions.edit"),
-                  to: "add-to-campaign",
-                  icon: <PencilSquare />,
-                },
-              ],
+              actions,
             },
           ]}
         />
@@ -101,7 +77,7 @@ export const CampaignSection = ({ campaign }: { campaign: CampaignDTO }) => {
         <CampaignDetailSection campaign={campaign} />
       ) : (
         <NoRecords
-          className="h-[180px] p-6 text-center"
+          className="h-[180px] pt-4 text-center"
           title="Not part of a campaign"
           message="Add this promotion to an existing campaign"
           action={{
