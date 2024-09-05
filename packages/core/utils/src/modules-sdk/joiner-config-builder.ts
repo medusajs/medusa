@@ -175,6 +175,7 @@ export function defineJoinerConfig(
         return (Object.values(entityLinkConfig as any) as any[])
           .filter((linkableConfig) => isObject(linkableConfig))
           .map((linkableConfig) => {
+            // @ts-ignore
             return linkableConfig.primaryKey
           })
       })
