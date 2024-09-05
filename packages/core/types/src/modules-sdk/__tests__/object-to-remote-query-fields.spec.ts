@@ -7,6 +7,7 @@ describe("ObjectToRemoteQueryFields", () => {
       id: string
       title: string
       description: string
+      date: Date
       variants: {
         id: string
         sku: string
@@ -17,12 +18,15 @@ describe("ObjectToRemoteQueryFields", () => {
         name: string
         value: string
       }
+      metadata: Record<string, unknown>
     }
 
     type Paths = ObjectToRemoteQueryFields<Object>
 
     expectTypeOf<Paths>().toEqualTypeOf<
       | "*"
+      | "date"
+      | "metadata"
       | "id"
       | "title"
       | "description"
@@ -44,6 +48,7 @@ describe("ObjectToRemoteQueryFields", () => {
       id: string
       title: string
       description: string
+      date: Date
       variants: Maybe<
         Maybe<{
           id: string
@@ -56,6 +61,7 @@ describe("ObjectToRemoteQueryFields", () => {
         name: string
         value: string
       }>
+      metadata: Record<string, unknown>
     }
 
     type Paths = ObjectToRemoteQueryFields<Object>
@@ -63,6 +69,8 @@ describe("ObjectToRemoteQueryFields", () => {
     expectTypeOf<Paths>().toEqualTypeOf<
       | "*"
       | "id"
+      | "metadata"
+      | "date"
       | "title"
       | "description"
       | "variants.*"
@@ -83,6 +91,7 @@ describe("ObjectToRemoteQueryFields", () => {
       id: string
       title: string
       description: string
+      date: Date
       variants: Maybe<
         Maybe<{
           id: string
@@ -95,6 +104,7 @@ describe("ObjectToRemoteQueryFields", () => {
         name: string
         value: string
       }>
+      metadata: Record<string, unknown>
     }
 
     type Paths = ObjectToRemoteQueryFields<Object>
@@ -103,6 +113,8 @@ describe("ObjectToRemoteQueryFields", () => {
       // @ts-expect-error
       | "foo"
       | "*"
+      | "date"
+      | "metadata"
       | "id"
       | "title"
       | "description"
