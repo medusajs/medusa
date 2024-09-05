@@ -16,7 +16,6 @@ import {
   MedusaService,
 } from "@medusajs/utils"
 import { AuthIdentity, ProviderIdentity } from "@models"
-import jwt from "jsonwebtoken"
 import { joinerConfig } from "../joiner-config"
 import AuthProviderService from "./auth-provider"
 
@@ -239,46 +238,6 @@ export default class AuthModuleService
     } catch (error) {
       return { success: false, error: error.message }
     }
-  }
-
-  async generateToken(
-    entityId: string,
-    provider: string,
-    options: {
-      secret: string
-      expiry?: number
-    }
-  ): Promise<string> {
-    if (!entityId) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Identifier `entity_id` is required to generate a token"
-      )
-    }
-
-    if (!options.secret) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Secret `options.secret` is required to generate a token"
-      )
-    }
-
-    const [providerIdentity] = await this.providerIdentityService_.list({
-      entity_id: entityId,
-      provider,
-    })
-
-    const tokenPayload = {
-      provider_identity_id: providerIdentity.id,
-    }
-
-    // TODO: Add config to auth module
-    const expiry = options.expiry ?? DEFAULT_RESET_PASSWORD_TOKEN_DURATION
-    const token = jwt.sign(tokenPayload, options.secret ?? "secret", {
-      expiresIn: expiry,
-    })
-
-    return token
   }
 
   getAuthIdentityProviderService(

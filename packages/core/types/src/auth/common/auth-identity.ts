@@ -211,6 +211,11 @@ export interface FilterableProviderIdentityProps
   entity_id?: string
 
   /**
+   * Filter the provider identities by the ID of the auth identity they are linked to.
+   */
+  auth_identity_id?: string
+
+  /**
    * The provider handle to filter the provider identity by.
    */
   provider?: string

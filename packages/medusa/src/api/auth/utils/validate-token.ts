@@ -40,7 +40,7 @@ export const validateToken = () => {
       return res.status(401).json({ message: "Invalid token" })
     }
 
-    if (!verified || !verified.provider_identity_id) {
+    if (!verified || !verified.auth_identity_id) {
       return res.status(401).json({ message: "Invalid token" })
     }
 
@@ -49,8 +49,8 @@ export const validateToken = () => {
     )
 
     try {
-      const providerIdentity = await authModule.retrieveProviderIdentity(
-        verified.provider_identity_id,
+      const [providerIdentity] = await authModule.listProviderIdentities(
+        { auth_identity_id: verified.auth_identity_id },
         {
           select: ["auth_identity_id", "entity_id"],
         }
@@ -58,7 +58,7 @@ export const validateToken = () => {
 
       req_.auth_context = {
         actor_type,
-        auth_identity_id: providerIdentity.auth_identity_id!,
+        auth_identity_id: verified.auth_identity_id!,
         actor_id: providerIdentity.entity_id,
         app_metadata: {},
       }

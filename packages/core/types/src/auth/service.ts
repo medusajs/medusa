@@ -59,15 +59,6 @@ export interface IAuthModuleService extends IModuleService {
     providerData: Record<string, unknown>
   ): Promise<AuthenticationResponse>
 
-  generateToken(
-    entityId: string,
-    provider: string,
-    options: {
-      secret: string
-      expiry?: number
-    }
-  ): Promise<string>
-
   /**
    * When authenticating users with a third-party provider, such as Google, the user performs an
    * action to finish the authentication, such as enter their credentials in Google's sign-in
