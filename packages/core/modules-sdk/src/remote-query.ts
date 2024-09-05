@@ -145,7 +145,7 @@ export class RemoteQuery {
     return {
       skip: options.skip,
       take: options.take,
-      cursor: options.cursor,
+      // cursor: options.cursor, not yet supported
       // TODO: next cursor
       count,
     }

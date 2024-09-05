@@ -1,15 +1,3 @@
-import {
-  FindManyOptions,
-  FindOneOptions,
-  FindOperator,
-  FindOptionsSelect,
-  FindOptionsWhere,
-  OrderByCondition,
-} from "typeorm"
-
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
-import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
-
 /**
  * Prettify complex types to a flat object structure
  */
@@ -59,17 +47,6 @@ export interface SoftDeletableEntity extends BaseEntity {
    * The date an entity's record was deleted.
    */
   deleted_at: Date | null
-}
-
-/**
- * @ignore
- */
-export type Writable<T> = {
-  -readonly [key in keyof T]:
-    | T[key]
-    | FindOperator<T[key]>
-    | FindOperator<T[key][]>
-    | FindOperator<string[]>
 }
 
 /**
@@ -127,48 +104,6 @@ export interface FindConfig<Entity> {
 /**
  * @ignore
  */
-export type ExtendedFindConfig<TEntity> = (
-  | Omit<FindOneOptions<TEntity>, "where" | "relations" | "select">
-  | Omit<FindManyOptions<TEntity>, "where" | "relations" | "select">
-) & {
-  select?: FindOptionsSelect<TEntity>
-  relations?: FindOptionsRelations<TEntity>
-  where: FindOptionsWhere<TEntity> | FindOptionsWhere<TEntity>[]
-  order?: FindOptionsOrder<TEntity>
-  skip?: number
-  take?: number
-}
-
-/**
- * @ignore
- */
-export type QuerySelector<TEntity> = Selector<TEntity> & {
-  q?: string
-}
-
-/**
- * @ignore
- */
-export type TreeQuerySelector<TEntity> = QuerySelector<TEntity> & {
-  include_descendants_tree?: boolean
-}
-
-/**
- * @ignore
- */
-export type Selector<TEntity> = {
-  [key in keyof TEntity]?:
-    | TEntity[key]
-    | TEntity[key][]
-    | DateComparisonOperator
-    | StringComparisonOperator
-    | NumericalComparisonOperator
-    | FindOperator<TEntity[key][] | string | string[]>
-}
-
-/**
- * @ignore
- */
 export type TotalField =
   | "shipping_total"
   | "discount_total"
@@ -179,29 +114,6 @@ export type TotalField =
   | "refundable_amount"
   | "gift_card_total"
   | "gift_card_tax_total"
-
-/**
- * @ignore
- */
-export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
-  select?: FindManyOptions<TModel>["select"]
-  where?: FindManyOptions<TModel>["where"] & {
-    [P in InKeys]?: TModel[P][]
-  }
-  order?: OrderByCondition
-  skip?: number
-  take?: number
-}
-
-/**
- * @ignore
- */
-export type QueryConfig<TEntity extends BaseEntity> = {
-  deafults?: (keyof TEntity | string)[]
-  allowed?: (keyof TEntity | string)[]
-  defaultLimit?: number
-  isList?: boolean
-}
 
 /**
  * @interface
@@ -389,4 +301,14 @@ export type MetadataType = Record<string, unknown> | null
 export type RawRounding = {
   value: string
   precision: number
+}
+
+/**
+ * @ignore
+ */
+export type QueryConfig<TEntity extends BaseEntity> = {
+  deafults?: (keyof TEntity | string)[]
+  allowed?: (keyof TEntity | string)[]
+  defaultLimit?: number
+  isList?: boolean
 }

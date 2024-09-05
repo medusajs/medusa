@@ -5,17 +5,20 @@ import {
   FilterableSalesChannelProps,
   InternalModuleDeclaration,
   ISalesChannelModuleService,
+  ModuleJoinerConfig,
   ModulesSdkTypes,
   SalesChannelDTO,
   UpdateSalesChannelDTO,
   UpsertSalesChannelDTO,
 } from "@medusajs/types"
 import {
+  defineJoinerConfig,
   InjectManager,
   InjectTransactionManager,
   isString,
   MedusaContext,
   MedusaService,
+  Modules,
   promiseAll,
 } from "@medusajs/utils"
 
@@ -44,6 +47,21 @@ export default class SalesChannelModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.salesChannelService_ = salesChannelService
+  }
+
+  __joinerConfig(): ModuleJoinerConfig {
+    // TODO: POC
+    return defineJoinerConfig(Modules.SALES_CHANNEL, {
+      schema: `
+    type SalesChannel {
+      id: ID!
+      name: String
+      description: String
+      created_at: DateTime
+      updated_at: DateTime
+    }
+  `,
+    })
   }
 
   // @ts-expect-error

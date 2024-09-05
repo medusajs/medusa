@@ -6,12 +6,17 @@ import resolveCwd from "resolve-cwd"
 import { newStarter } from "./commands/new"
 import { didYouMean } from "./did-you-mean"
 import reporter from "./reporter"
+import { argv } from "yargs"
 
 const yargs = require(`yargs`)
 
 const handlerP =
   (fn) =>
   (...args) => {
+    const directory = path.resolve(`.`)
+
+    const projectInfo = { directory }
+    const newArgs = { ...argv, ...projectInfo }
     Promise.resolve(fn(...args)).then(
       () => process.exit(0),
       (err) => console.log(err)
@@ -59,6 +64,15 @@ function buildLocalCommands(cli, isLocalProject) {
   }
 
   cli
+    .command({
+      command: "types",
+      handler: handlerP(
+        getCommandHandler("gql-to-ts", (args, cmd) => {
+          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          return cmd(args)
+        })
+      ),
+    })
     .command({
       command: `new [root] [starter]`,
       builder: (_) =>
