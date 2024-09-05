@@ -11,7 +11,7 @@ import * as z from "zod"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { useSignUpWithEmailPass } from "../../hooks/api/auth"
-import { useAcceptInvite, useInvite } from "../../hooks/api/invites"
+import { useAcceptInvite } from "../../hooks/api/invites"
 import { isFetchError } from "../../lib/is-fetch-error"
 
 const CreateAccountSchema = z
