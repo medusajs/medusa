@@ -312,3 +312,9 @@ export type QueryConfig<TEntity extends BaseEntity> = {
   defaultLimit?: number
   isList?: boolean
 }
+
+export type TransformObjectMethodToAsync<T extends object> = {
+  [K in keyof T]: T[K] extends (...args: infer A) => infer R
+    ? (...args: A) => Promise<Awaited<R>>
+    : T[K] extends object ? TransformObjectMethodToAsync<T[K]> : T[K];
+}
