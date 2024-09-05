@@ -12,7 +12,6 @@ import {
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { formatDate } from "../../../../../components/common/date"
 import { useDeleteCampaign } from "../../../../../hooks/api/campaigns"
 import { currencies } from "../../../../../lib/data/currencies"
 import {
@@ -133,26 +132,6 @@ export const CampaignGeneralSection = ({
           </div>
         </div>
       )}
-
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("campaigns.fields.start_date")}
-        </Text>
-
-        <Text size="small" leading="compact">
-          {campaign.starts_at ? formatDate(campaign.starts_at) : "-"}
-        </Text>
-      </div>
-
-      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
-        <Text size="small" leading="compact" weight="plus">
-          {t("campaigns.fields.end_date")}
-        </Text>
-
-        <Text size="small" leading="compact">
-          {campaign.ends_at ? formatDate(campaign.ends_at) : "-"}
-        </Text>
-      </div>
     </Container>
   )
 }

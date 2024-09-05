@@ -1,5 +1,5 @@
 import { PencilSquare } from "@medusajs/icons"
-import { AdminGetPromotionRulesRes, PromotionRuleTypes } from "@medusajs/types"
+import { HttpTypes, PromotionRuleTypes } from "@medusajs/types"
 import { Badge, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
@@ -8,7 +8,7 @@ import { BadgeListSummary } from "../../../../../components/common/badge-list-su
 import { NoRecords } from "../../../../../components/common/empty-table-content"
 
 type RuleProps = {
-  rule: AdminGetPromotionRulesRes
+  rule: HttpTypes.AdminPromotionRule
 }
 
 function RuleBlock({ rule }: RuleProps) {
@@ -42,7 +42,7 @@ function RuleBlock({ rule }: RuleProps) {
 }
 
 type PromotionConditionsSectionProps = {
-  rules: AdminGetPromotionRulesRes
+  rules: HttpTypes.AdminPromotionRule[]
   ruleType: PromotionRuleTypes
 }
 
