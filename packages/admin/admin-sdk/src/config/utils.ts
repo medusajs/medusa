@@ -1,4 +1,4 @@
-import { RouteConfig, WidgetConfig } from "./types"
+import { CustomFieldsConfig, RouteConfig, WidgetConfig } from "./types"
 
 function createConfigHelper<TConfig extends Record<string, unknown>>(
   config: TConfig
@@ -33,5 +33,17 @@ export function defineWidgetConfig(config: WidgetConfig) {
  * @returns The route configuration.
  */
 export function defineRouteConfig(config: RouteConfig) {
+  return createConfigHelper(config)
+}
+
+/**
+ * Define a custom fields configuration.
+ * 
+ * @param config The custom fields configuration.
+ * @returns The custom fields configuration.
+ * 
+ * @experimental This API is experimental and may change in the future.
+ */
+export function unstable_defineCustomFieldsConfig<TData = any>(config: CustomFieldsConfig<TData>) {
   return createConfigHelper(config)
 }
