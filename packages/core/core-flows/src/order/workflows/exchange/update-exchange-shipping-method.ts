@@ -13,6 +13,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
+  when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import {
@@ -24,6 +25,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { prepareShippingMethodUpdate } from "../../utils/prepare-shipping-method"
 
 /**
  * This step validates that an exchange's shipping method can be updated.
@@ -70,7 +72,13 @@ export const updateExchangeShippingMethodWorkflow = createWorkflow(
   ): WorkflowResponse<OrderPreviewDTO> {
     const orderExchange: OrderExchangeDTO = useRemoteQueryStep({
       entry_point: "order_exchange",
-      fields: ["id", "status", "order_id", "canceled_at"],
+      fields: [
+        "id",
+        "status",
+        "order_id",
+        "canceled_at",
+        "order.currency_code",
+      ],
       variables: { id: input.exchange_id },
       list: false,
       throw_if_key_not_found: true,
@@ -89,6 +97,49 @@ export const updateExchangeShippingMethodWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
+    const shippingOptions = when({ input }, ({ input }) => {
+      return input.data?.custom_amount === null
+    }).then(() => {
+      const action = transform(
+        { orderChange, input, orderExchange },
+        ({ orderChange, input, orderExchange }) => {
+          const originalAction = (orderChange.actions ?? []).find(
+            (a) => a.id === input.action_id
+          ) as OrderChangeActionDTO
+
+          return {
+            shipping_method_id: originalAction.reference_id,
+            currency_code: (orderExchange as any).order.currency_code,
+          }
+        }
+      )
+
+      const shippingMethod = useRemoteQueryStep({
+        entry_point: "order_shipping_method",
+        fields: ["id", "shipping_option_id"],
+        variables: {
+          id: action.shipping_method_id,
+        },
+        list: false,
+      }).config({ name: "fetch-shipping-method" })
+
+      return useRemoteQueryStep({
+        entry_point: "shipping_option",
+        fields: [
+          "id",
+          "name",
+          "calculated_price.calculated_amount",
+          "calculated_price.is_calculated_price_tax_inclusive",
+        ],
+        variables: {
+          id: shippingMethod.shipping_option_id,
+          calculated_price: {
+            context: { currency_code: action.currency_code },
+          },
+        },
+      }).config({ name: "fetch-shipping-option" })
+    })
+
     updateExchangeShippingMethodValidationStep({
       orderExchange,
       orderChange,
@@ -96,31 +147,8 @@ export const updateExchangeShippingMethodWorkflow = createWorkflow(
     })
 
     const updateData = transform(
-      { orderChange, input },
-      ({ input, orderChange }) => {
-        const originalAction = (orderChange.actions ?? []).find(
-          (a) => a.id === input.action_id
-        ) as OrderChangeActionDTO
-
-        const data = input.data
-
-        const action = {
-          id: originalAction.id,
-          amount: data.custom_price,
-          internal_note: data.internal_note,
-        }
-
-        const shippingMethod = {
-          id: originalAction.reference_id,
-          amount: data.custom_price,
-          metadata: data.metadata,
-        }
-
-        return {
-          action,
-          shippingMethod,
-        }
-      }
+      { orderChange, input, shippingOptions },
+      prepareShippingMethodUpdate
     )
 
     parallelize(

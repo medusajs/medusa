@@ -89,7 +89,7 @@ export type AdminPostExchangesRequestItemsReturnActionReqSchemaType = z.infer<
 
 export const AdminPostExchangesShippingReqSchema = z.object({
   shipping_option_id: z.string(),
-  custom_price: z.number().optional(),
+  custom_amount: z.number().optional(),
   description: z.string().optional(),
   internal_note: z.string().optional(),
   metadata: z.record(z.unknown()).optional(),
@@ -100,7 +100,7 @@ export type AdminPostExchangesShippingReqSchemaType = z.infer<
 >
 
 export const AdminPostExchangesShippingActionReqSchema = z.object({
-  custom_price: z.number().optional(),
+  custom_amount: z.number().nullish().optional(),
   internal_note: z.string().nullish().optional(),
   metadata: z.record(z.unknown()).nullish().optional(),
 })

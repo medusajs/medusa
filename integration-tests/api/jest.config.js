@@ -29,6 +29,6 @@ module.exports = {
   },
   setupFiles: ["../setup-env.js"],
   setupFilesAfterEnv: ["../setup.js"],
-  globalSetup: "../globalSetup.js",
-  globalTeardown: "../globalTeardown.js",
+  // globalSetup: "../globalSetup.js",
+  // globalTeardown: "../globalTeardown.js",
 }

@@ -128,6 +128,9 @@ export default class OrderLineItem {
   @Property({ columnType: "jsonb" })
   raw_unit_price: BigNumberRawValue
 
+  @Property({ columnType: "boolean", default: false })
+  is_custom_price: boolean = false
+
   @OneToMany(() => OrderLineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })

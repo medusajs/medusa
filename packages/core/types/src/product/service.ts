@@ -4,12 +4,14 @@ import {
   CreateProductCollectionDTO,
   CreateProductDTO,
   CreateProductOptionDTO,
+  CreateProductOptionValueDTO,
   CreateProductTagDTO,
   CreateProductTypeDTO,
   CreateProductVariantDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductOptionProps,
+  FilterableProductOptionValueProps,
   FilterableProductProps,
   FilterableProductTagProps,
   FilterableProductTypeProps,
@@ -18,6 +20,7 @@ import {
   ProductCollectionDTO,
   ProductDTO,
   ProductOptionDTO,
+  ProductOptionValueDTO,
   ProductTagDTO,
   ProductTypeDTO,
   ProductVariantDTO,
@@ -25,6 +28,7 @@ import {
   UpdateProductCollectionDTO,
   UpdateProductDTO,
   UpdateProductOptionDTO,
+  UpdateProductOptionValueDTO,
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
   UpdateProductVariantDTO,
@@ -1361,6 +1365,270 @@ export interface IProductModuleService extends IModuleService {
    * ])
    */
   restoreProductOptions<TReturnableLinkableKeys extends string = string>(
+    optionIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to retrieve a paginated list of product option values based on optional filters and configuration.
+   *
+   * @param {FilterableProductOptionValueProps} filters - The filters applied on the retrieved product option values.
+   * @param {FindConfig<ProductOptionValueDTO>} config -
+   * The configurations determining how the product option values are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a product option.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO[]>} The list of product option values.
+   *
+   * @example
+   * To retrieve a list of product option values using their IDs:
+   *
+   * ```ts
+   * const options = await productModuleService.listProductOptionValues({
+    id: ["optval_123", "optval_321"],
+   * })
+   * ```
+   *
+   * To specify relations that should be retrieved within the product option values:
+   *
+   * ```ts
+   * const options = await productModuleService.listProductOptionValues(
+   *   {
+   *     id: ["optval_123", "optval_321"],
+   *   }
+   * )
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const options = await productModuleService.listProductOptionValues(
+   *   {
+   *     id: ["optval_123", "optval_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
+   * ```
+   *
+   */
+  listProductOptionValues(
+    filters?: FilterableProductOptionValueProps,
+    config?: FindConfig<ProductOptionValueDTO>,
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO[]>
+
+  /**
+   * This method is used to retrieve a paginated list of product option values along with the total count of available product option values satisfying the provided filters.
+   *
+   * @param {FilterableProductOptionValueProps} filters - The filters applied on the retrieved product option values.
+   * @param {FindConfig<ProductOptionValueDTO>} config -
+   * The configurations determining how the product option values are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a product option.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[ProductOptionValueDTO[], number]>} The list of product option values along with the total count.
+   *
+   * @example
+   * To retrieve a list of product option values using their IDs:
+   *
+   * ```ts
+   * const [options, count] =
+   *   await productModuleService.listAndCountProductOptionValues({
+   *     id: ["optval_123", "optval_321"],
+   *   })
+   * ```
+   *
+   * To specify relations that should be retrieved within the product types:
+   *
+   * ```ts
+   * const [options, count] =
+   *   await productModuleService.listAndCountProductOptionValues(
+   *     {
+   *       id: ["optval_123", "optval_321"],
+   *     }
+   *   )
+   * ```
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const [options, count] =
+   *   await productModuleService.listAndCountProductOptionValues(
+   *     {
+   *       id: ["optval_123", "optval_321"],
+   *     },
+   *     {
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
+   * ```
+   */
+  listAndCountProductOptionValues(
+    filters?: FilterableProductOptionValueProps,
+    config?: FindConfig<ProductOptionValueDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductOptionValueDTO[], number]>
+
+  /**
+   * This method is used to create product option values.
+   *
+   * @param {CreateProductOptionValueDTO[]} data - The product option values to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO[]>} The list of created product option values.
+   *
+   * @example
+   * const options = await productModuleService.createProductOptionValues([
+   *   {
+   *     value: "Blue",
+   *     option_id: "opt_123",
+   *   },
+   *   {
+   *     value: "Green",
+   *     option_id: "opt_123",
+   *   },
+   * ])
+   *
+   */
+  createProductOptionValues(
+    data: CreateProductOptionValueDTO[],
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO[]>
+
+  /**
+   * This method is used to create a product option.
+   *
+   * @param {CreateProductOptionValueDTO} data - The product option to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO>} The created product option.
+   *
+   * @example
+   * const option = await productModuleService.createProductOptionValues({
+   *   value: "Blue",
+   *   option_id: "opt_123",
+   * })
+   *
+   */
+  createProductOptionValues(
+    data: CreateProductOptionValueDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO>
+
+  /**
+   * This method is used to update a option.
+   *
+   * @param {string} id - The ID of the option to be updated.
+   * @param {UpdateProductOptionValueDTO} data - The attributes of the option to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO>} The updated option.
+   *
+   * @example
+   * const option = await productModuleService.updateProductOptionValues(
+   *   "optval_123",
+   *   {
+   *     value: "Green",
+   *   }
+   * )
+   */
+  updateProductOptionValues(
+    id: string,
+    data: UpdateProductOptionValueDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO>
+
+  /**
+   * This method is used to update a list of options matching the specified filters.
+   *
+   * @param {FilterableProductOptionValueProps} selector - The filters specifying which options to update.
+   * @param {UpdateProductOptionValueDTO} data - The attributes to be updated on the selected options
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductOptionValueDTO[]>} The updated options.
+   *
+   * @example
+   * const options = await productModuleService.updateProductOptionValues(
+   *   {
+   *     value: "Green",
+   *   },
+   *   {
+   *     value: ["Red"],
+   *   }
+   * )
+   */
+  updateProductOptionValues(
+    selector: FilterableProductOptionValueProps,
+    data: UpdateProductOptionValueDTO,
+    sharedContext?: Context
+  ): Promise<ProductOptionValueDTO[]>
+
+  /**
+   * This method is used to delete a product option.
+   *
+   * @param {string[]} productOptionValueIds - The IDs of the product option values to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product option values are successfully deleted.
+   *
+   * @example
+   * await productModuleService.deleteProductOptionValues([
+   *   "optval_123",
+   *   "optval_321",
+   * ])
+   */
+  deleteProductOptionValues(
+    productOptionValueIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method is used to delete options. Unlike the {@link delete} method, this method won't completely remove the option. It can still be accessed or retrieved using methods like {@link retrieve} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted options can be restored using the {@link restore} method.
+   *
+   * @param {string[]} optionIds - The IDs of the options to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the options. You can pass to its `returnLinkableKeys`
+   * property any of the option's relation attribute names, such as `option_value_id`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the option entity's relations, and its value is an array of strings, each being the ID of a record associated with the option through this relation.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.softDeleteProductOptionValues([
+   *   "optval_123",
+   *   "optval_321",
+   * ])
+   */
+  softDeleteProductOptionValues<
+    TReturnableLinkableKeys extends string = string
+  >(
+    optionIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore options which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} optionIds - The IDs of the options to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the options. You can pass to its `returnLinkableKeys`
+   * property any of the option's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the option entity's relations, and its value is an array of strings, each being the ID of the record associated with the option through this relation.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.restoreProductOptionValues([
+   *   "optval_123",
+   *   "optval_321",
+   * ])
+   */
+  restoreProductOptionValues<TReturnableLinkableKeys extends string = string>(
     optionIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

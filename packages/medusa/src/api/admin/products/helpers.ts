@@ -1,5 +1,6 @@
 import {
   BatchMethodResponse,
+  BatchResponse,
   HttpTypes,
   LinkDefinition,
   MedusaContainer,
@@ -125,7 +126,7 @@ export const refetchBatchProducts = async (
   batchResult: BatchMethodResponse<ProductDTO>,
   scope: MedusaContainer,
   fields: string[]
-) => {
+): Promise<BatchResponse<ProductDTO>> => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   let created = Promise.resolve<ProductDTO[]>([])
   let updated = Promise.resolve<ProductDTO[]>([])
@@ -158,7 +159,11 @@ export const refetchBatchProducts = async (
   return {
     created: createdRes,
     updated: updatedRes,
-    deleted: batchResult.deleted,
+    deleted: {
+      ids: batchResult.deleted,
+      object: "product",
+      deleted: true,
+    },
   }
 }
 
@@ -166,7 +171,7 @@ export const refetchBatchVariants = async (
   batchResult: BatchMethodResponse<ProductVariantDTO>,
   scope: MedusaContainer,
   fields: string[]
-) => {
+): Promise<BatchResponse<ProductVariantDTO>> => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   let created = Promise.resolve<ProductVariantDTO[]>([])
   let updated = Promise.resolve<ProductVariantDTO[]>([])
@@ -199,7 +204,11 @@ export const refetchBatchVariants = async (
   return {
     created: createdRes,
     updated: updatedRes,
-    deleted: batchResult.deleted,
+    deleted: {
+      ids: batchResult.deleted,
+      object: "variant",
+      deleted: true,
+    },
   }
 }
 

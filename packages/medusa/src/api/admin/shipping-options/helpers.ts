@@ -64,6 +64,10 @@ export const refetchBatchRules = async (
   return {
     created: createdRes,
     updated: updatedRes,
-    deleted: batchResult.deleted,
+    deleted: {
+      ids: batchResult.deleted,
+      object: "shipping_option_rule",
+      deleted: true,
+    },
   }
 }

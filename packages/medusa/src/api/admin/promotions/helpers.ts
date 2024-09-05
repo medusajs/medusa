@@ -1,4 +1,4 @@
-import { BatchMethodResponse } from "@medusajs/types"
+import { BatchMethodResponse, BatchResponse } from "@medusajs/types"
 import { PromotionRuleDTO, MedusaContainer } from "@medusajs/types"
 import {
   promiseAll,
@@ -28,7 +28,7 @@ export const refetchBatchRules = async (
   batchResult: BatchMethodResponse<PromotionRuleDTO>,
   scope: MedusaContainer,
   fields: string[]
-) => {
+): Promise<BatchResponse<PromotionRuleDTO>> => {
   const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   let created = Promise.resolve<PromotionRuleDTO[]>([])
   let updated = Promise.resolve<PromotionRuleDTO[]>([])
@@ -61,6 +61,10 @@ export const refetchBatchRules = async (
   return {
     created: createdRes,
     updated: updatedRes,
-    deleted: batchResult.deleted,
+    deleted: {
+      ids: batchResult.deleted,
+      object: "promotion-rule",
+      deleted: true,
+    },
   }
 }

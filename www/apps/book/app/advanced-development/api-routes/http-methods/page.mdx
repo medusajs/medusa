@@ -20,7 +20,7 @@ import type {
   MedusaResponse,
 } from "@medusajs/medusa"
 
-export const GET = (
+export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
@@ -29,7 +29,7 @@ export const GET = (
   })
 }
 
-export const POST = (
+export const POST = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
