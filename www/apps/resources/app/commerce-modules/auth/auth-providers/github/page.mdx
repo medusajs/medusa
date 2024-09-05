@@ -1,0 +1,152 @@
+import { Table, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `GitHub Auth Module Provider`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about the GitHub Auth Module Provider and how to install and use it in the Auth Module.
+
+The Google Auth Module Provider handles authenticating users with their GitHub account.
+
+<Note title="Tip">
+
+Learn about the authentication flow in [this guide](../../authentication-route/page.mdx).
+
+</Note>
+
+---
+
+## Install the Google Auth Module Provider
+
+<Prerequisites
+  items={[
+    {
+      text: "Register GitHub App. When setting the Callback URL, set it to a URL in your frontend that later uses Medusa's callback route to validate the authentication.",
+      link: "https://docs.github.com/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app"
+    },
+    {
+      text: "Retrieve the client ID and client secret of your GitHub App",
+      link: "https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#using-basic-authentication"
+    }
+  ]}
+/>
+
+To install the Google auth module provider, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/auth-github@preview
+```
+
+Next, add the module to the array of providers passed to the Auth Module:
+
+```js title="medusa-config.js"
+import { Modules } from "@medusajs/utils"
+
+// ...
+
+const modules = {
+  // ...
+  [Modules.AUTH]: {
+    resolve: "@medusajs/auth",
+    options: {
+      providers: [
+        // other providers...
+        {
+          resolve: "@medusajs/auth-github",
+          id: "google",
+          options: {
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            callbackUrl: process.env.GITHUB_CALLBACK_URL,
+          },
+        },
+      ],
+    },
+  },
+}
+```
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```plain
+GITHUB_CLIENT_ID=<YOUR_GITHUB_CLIENT_ID>
+GITHUB_CLIENT_SECRET=<YOUR_GITHUB_CLIENT_SECRET>
+GITHUB_CALLBACK_URL=<YOUR_GITHUB_CALLBACK_URL>
+```
+
+### Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Configuration</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell className="w-1/5">Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `clientId`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the client ID of your GitHub app.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `clientSecret`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the client secret of your GitHub app.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `callbackUrl`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the URL to redirect to in your frontend after the user completes their authentication in GitHub.
+
+      At this URL, the frontend will receive a `code` query parameter. It then sends that  `code` query parameter to the Medusa application's `/auth/{actor_type}/github/callback` route.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Examples
+
+- [How to implement third-party / social login in the storefront.](../../../../storefront-development/customers/third-party-login/page.mdx).

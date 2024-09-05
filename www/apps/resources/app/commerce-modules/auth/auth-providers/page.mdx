@@ -1,3 +1,5 @@
+import { CardList } from "docs-ui"
+
 export const metadata = {
   title: `Auth Providers`,
 }
@@ -12,11 +14,24 @@ An auth module provider handles authenticating customers and users, either using
 
 For example, the EmailPass Auth Module Provider authenticates a user using their email and password, whereas the Google Auth Module Provider authenticates users using their Google account.
 
-<Note type="soon">
+### Auth Providers List
 
-Support for the Google Auth Module Provider is coming soon.
-
-</Note>
+<CardList
+  items={[
+    {
+      title: "Emailpass",
+      href: "/commerce-modules/auth/auth-providers/emailpass"
+    },
+    {
+      title: "Google",
+      href: "/commerce-modules/auth/auth-providers/google"
+    },
+    {
+      title: "GitHub",
+      href: "/commerce-modules/auth/auth-providers/github"
+    },
+  ]}
+/>
 
 ---
 

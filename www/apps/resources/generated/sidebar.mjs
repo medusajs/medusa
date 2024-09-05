@@ -245,16 +245,7 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/auth/auth-providers",
                 "title": "Auth Providers",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/commerce-modules/auth/auth-providers/emailpass",
-                    "title": "Emailpass Auth Provider Module",
-                    "children": []
-                  }
-                ]
+                "children": []
               },
               {
                 "loaded": true,
@@ -286,6 +277,38 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/auth/create-actor-type",
                 "title": "Create an Actor Type",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "sub-category",
+            "title": "Providers",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/emailpass",
+                "title": "Emailpass Provider",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/google",
+                "title": "Google Provider",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/github",
+                "title": "GitHub Provider",
                 "children": []
               }
             ]
@@ -8326,6 +8349,14 @@ export const generatedSidebar = [
             "type": "link",
             "path": "/storefront-development/customers/login",
             "title": "Login Customer",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/customers/third-party-login",
+            "title": "Third-Party (Social) Login",
             "children": []
           },
           {
