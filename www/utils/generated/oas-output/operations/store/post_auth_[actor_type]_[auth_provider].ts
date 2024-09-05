@@ -53,7 +53,9 @@
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AuthResponse"
+ *           oneOf:
+ *             - $ref: "#/components/schemas/AuthResponse"
+ *             - $ref: "#/components/schemas/AuthCallbackResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
