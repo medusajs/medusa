@@ -81,7 +81,7 @@ export class PricingRepository
         this.on("pl.id", "price.price_list_id").andOn(
           "pl.status",
           knex.raw("?", [PriceListStatus.ACTIVE])
-        )
+        ).andOn(knex.raw("pl.deleted_at IS NULL"))
       })
       .leftJoin("price_list_rule as plr", "plr.price_list_id", "pl.id")
       .groupBy("price.id", "pl.id")
