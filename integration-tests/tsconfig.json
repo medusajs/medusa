@@ -22,7 +22,6 @@
   "include": ["./**/*"],
   "exclude": [
     "./dist/**/*",
-    "./**/factories",
     "./**/helpers",
     "./**/__snapshots__",
     "node_modules"

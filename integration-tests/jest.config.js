@@ -7,8 +7,8 @@ const pkgs = glob
 module.exports = {
   testEnvironment: `node`,
   testTimeout: 10000,
-  globalSetup: "<rootDir>/integration-tests/globalSetup.js",
-  globalTeardown: "<rootDir>/integration-tests/globalTeardown.js",
+  // globalSetup: "<rootDir>/integration-tests/globalSetup.js",
+  // globalTeardown: "<rootDir>/integration-tests/globalTeardown.js",
   rootDir: `../`,
   roots: pkgs,
   projects: [
