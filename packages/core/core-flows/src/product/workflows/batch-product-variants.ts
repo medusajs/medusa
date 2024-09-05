@@ -54,11 +54,7 @@ export const batchProductVariantsWorkflow = createWorkflow(
       return {
         created: data.res[0],
         updated: data.res[1],
-        deleted: {
-          ids: data.input.delete ?? [],
-          object: "product_variant",
-          deleted: true,
-        },
+        deleted: data.input.delete ?? [],
       }
     })
 

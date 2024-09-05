@@ -78,10 +78,9 @@ describe("Google auth provider", () => {
         logger: console as any,
       },
       {
-        clientID: "test",
+        clientId: "test",
         clientSecret: "test",
-        successRedirectUrl: baseUrl,
-        callbackURL: `${baseUrl}/auth/google/callback`,
+        callbackUrl: `${baseUrl}/auth/google/callback`,
       }
     )
 
@@ -99,7 +98,7 @@ describe("Google auth provider", () => {
     let msg = ""
     try {
       GoogleAuthService.validateOptions({
-        clientID: "test",
+        clientId: "test",
         clientSecret: "test",
       } as any)
     } catch (e) {
@@ -162,6 +161,9 @@ describe("Google auth provider", () => {
           ],
         }
       }),
+      update: jest.fn().mockImplementation(() => {
+        return {}
+      }),
     }
 
     const res = await googleService.validateCallback(
@@ -175,7 +177,6 @@ describe("Google auth provider", () => {
 
     expect(res).toEqual({
       success: true,
-      successRedirectUrl: baseUrl,
       authIdentity: {
         provider_identities: [
           {
@@ -202,6 +203,9 @@ describe("Google auth provider", () => {
       create: jest.fn().mockImplementation(() => {
         return {}
       }),
+      update: jest.fn().mockImplementation(() => {
+        return {}
+      }),
     }
 
     const res = await googleService.validateCallback(
@@ -215,7 +219,6 @@ describe("Google auth provider", () => {
 
     expect(res).toEqual({
       success: true,
-      successRedirectUrl: baseUrl,
       authIdentity: {
         provider_identities: [
           {

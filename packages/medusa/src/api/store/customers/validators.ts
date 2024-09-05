@@ -50,7 +50,7 @@ export type StoreGetCustomerAddressParamsType = z.infer<
   typeof StoreGetCustomerAddressParams
 >
 export type StoreGetCustomerAddressesParamsType = z.infer<
-  typeof StoreCreateCustomerAddress
+  typeof StoreGetCustomerAddressesParams
 >
 export type StoreCreateCustomerAddressType = z.infer<
   typeof StoreCreateCustomerAddress

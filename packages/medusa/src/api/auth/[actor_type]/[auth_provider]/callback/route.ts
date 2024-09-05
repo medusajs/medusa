@@ -22,8 +22,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const { success, error, authIdentity, successRedirectUrl } =
-    await service.validateCallback(auth_provider, authData)
+  const { success, error, authIdentity } = await service.validateCallback(
+    auth_provider,
+    authData
+  )
 
   const entityIdKey = `${actor_type}_id`
   const entityId = authIdentity?.app_metadata?.[entityIdKey] as
@@ -51,13 +53,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
         expiresIn: jwtExpiresIn,
       }
     )
-
-    if (successRedirectUrl) {
-      const url = new URL(successRedirectUrl!)
-      url.searchParams.append("access_token", token)
-
-      return res.redirect(url.toString())
-    }
 
     return res.json({ token })
   }

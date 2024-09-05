@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/campaigns/{id}/promotions
  * operationId: PostCampaignsIdPromotions
- * summary: Add Promotions to Campaign
- * description: Add a list of promotions to a campaign.
+ * summary: Manage the Promotions of a Campaign
+ * x-sidebar-summary: Manage Promotions
+ * description: Manage the promotions of a campaign, either by adding them or removing them from the campaign.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -62,22 +63,22 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The promotions to add or remove from the campaign.
  *         properties:
  *           add:
  *             type: array
- *             description: The campaign's add.
+ *             description: The promotions to add to the campaign.
  *             items:
  *               type: string
  *               title: add
- *               description: The add's details.
+ *               description: A promotion's ID.
  *           remove:
  *             type: array
- *             description: The campaign's remove.
+ *             description: The promotions to remove from the campaign.
  *             items:
  *               type: string
  *               title: remove
- *               description: The remove's details.
+ *               description: A promotion's ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

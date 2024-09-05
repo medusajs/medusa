@@ -141,7 +141,7 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(201)
       })
 
-      it("should fails to generate token for non-existing user, but still respond with 201", async () => {
+      it("should fail to generate token for non-existing user, but still respond with 201", async () => {
         const response = await api.post("/auth/user/emailpass/reset-password", {
           email: "non-existing-user@medusa.js",
         })
@@ -149,7 +149,7 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(201)
       })
 
-      it("should fails to generate token for existing user but no provider, but still respond with 201", async () => {
+      it("should fail to generate token for existing user but no provider, but still respond with 201", async () => {
         const response = await api.post(
           "/auth/user/non-existing-provider/reset-password",
           { email: "admin@medusa.js" }
@@ -158,7 +158,7 @@ medusaIntegrationTestRunner({
         expect(response.status).toEqual(201)
       })
 
-      it("should fails to generate token for existing user but no provider, but still respond with 201", async () => {
+      it("should fail to generate token for existing user but no provider, but still respond with 201", async () => {
         const response = await api.post(
           "/auth/user/non-existing-provider/reset-password",
           { email: "admin@medusa.js" }

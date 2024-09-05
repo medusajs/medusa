@@ -71,7 +71,6 @@ export class OrderChangeProcessing {
     transformPropertiesToBigNumber(this.order.metadata)
 
     this.summary = {
-      temporary_difference: 0,
       pending_difference: 0,
       difference_sum: 0,
       current_order_total: this.order.total ?? 0,
@@ -121,13 +120,6 @@ export class OrderChangeProcessing {
         )
       }
 
-      if (type.awaitRequired) {
-        summary.temporary_difference = MathBN.add(
-          summary.temporary_difference,
-          amount
-        )
-      }
-
       if (!this.isEventDone(action) && !action.change_id) {
         summary.difference_sum = MathBN.add(summary.difference_sum, amount)
       }
@@ -143,11 +135,6 @@ export class OrderChangeProcessing {
 
     summary.transaction_total = MathBN.sum(
       ...this.transactions.map((tr) => tr.amount)
-    )
-
-    summary.temporary_difference = MathBN.sub(
-      summary.difference_sum,
-      summary.temporary_difference
     )
 
     summary.pending_difference = MathBN.sub(
@@ -208,7 +195,6 @@ export class OrderChangeProcessing {
       transaction_total: new BigNumber(summary.transaction_total),
       original_order_total: new BigNumber(summary.original_order_total),
       current_order_total: new BigNumber(summary.current_order_total),
-      temporary_difference: new BigNumber(summary.temporary_difference),
       pending_difference: new BigNumber(summary.pending_difference),
       difference_sum: new BigNumber(summary.difference_sum),
       paid_total: new BigNumber(summary.paid_total),

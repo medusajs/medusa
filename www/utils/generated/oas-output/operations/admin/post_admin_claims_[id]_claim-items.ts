@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/claims/{id}/claim-items
  * operationId: PostClaimsIdClaimItems
- * summary: Add Claim Items to Claim
- * description: Add a list of claim items to a claim.
+ * summary: Add Claim Items to a Claim
+ * x-sidebar-summary: Add Claim Items
+ * description: Add order items to a claim as claim items. These claim items will have the action `WRITE_OFF_ITEM`.
  * x-authenticated: true
  * parameters:
  *   - name: id

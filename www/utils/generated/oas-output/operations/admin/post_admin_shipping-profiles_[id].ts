@@ -62,7 +62,7 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The properties to update in the shipping profile.
  *         required:
  *           - metadata
  *         properties:

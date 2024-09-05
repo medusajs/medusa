@@ -45,7 +45,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     providerMetadata: Record<string, unknown>,
     authIdentityService: AuthIdentityProviderService
   ) {
-    console.log("update", providerMetadata)
     const { email, password } = providerMetadata ?? {}
 
     if (!email || !isString(email)) {
@@ -61,30 +60,17 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       return { success: true }
     }
 
-    const passwordHash = await this.hashPassword(password)
-
-    let authIdentity: AuthIdentityDTO | undefined
+    let authIdentity
 
     try {
-      authIdentity = await authIdentityService.retrieve({
-        entity_id: email,
-      })
+      const passwordHash = await this.hashPassword(password)
 
-      const emailPassProvider = authIdentity.provider_identities?.find(
-        (pi) => pi.provider === this.provider
-      )
-
-      await authIdentityService.update({
-        id: emailPassProvider!.id,
+      authIdentity = await authIdentityService.update(email, {
         provider_metadata: {
           password: passwordHash,
         },
       })
     } catch (error) {
-      if (error.type === MedusaError.Types.NOT_FOUND) {
-        return { success: false, error: error.message }
-      }
-
       return { success: false, error: error.message }
     }
 

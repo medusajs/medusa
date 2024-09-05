@@ -28,11 +28,20 @@ export const AdminGetOrdersParams = createFindParams({
   offset: 0,
 }).merge(
   z.object({
-    id: z.union([z.string(), z.array(z.string())]).optional(),
-    status: z.union([z.string(), z.array(z.string())]).optional(),
+    id: z
+      .union([z.string(), z.array(z.string()), createOperatorMap()])
+      .optional(),
+    status: z
+      .union([z.string(), z.array(z.string()), createOperatorMap()])
+      .optional(),
+    name: z.union([z.string(), z.array(z.string())]).optional(),
+    sales_channel_id: z.array(z.string()).optional(),
+    fulfillment_status: z.array(z.string()).optional(),
+    payment_status: z.array(z.string()).optional(),
+    region_id: z.array(z.string()).optional(),
+    q: z.string().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
-    deleted_at: createOperatorMap().optional(),
   })
 )
 
@@ -43,11 +52,7 @@ export const AdminArchiveOrder = z.object({
 })
 export type AdminArchiveOrderType = z.infer<typeof AdminArchiveOrder>
 
-export type AdminCompleteOrderType = z.infer<typeof CompleteOrder>
-export const CompleteOrder = z.object({
-  order_id: z.string(),
-})
-export const AdminCompleteOrder = WithAdditionalData(CompleteOrder)
+export const AdminCompleteOrder = WithAdditionalData(z.object({}))
 
 const Item = z.object({
   id: z.string(),

@@ -19,6 +19,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { prepareShippingMethod } from "../../utils/prepare-shipping-method"
 import { createOrderChangeActionsWorkflow } from "../create-order-change-actions"
 import { updateOrderTaxLinesWorkflow } from "../update-tax-lines"
 
@@ -54,11 +55,18 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
     claim_id?: string
     exchange_id?: string
     shipping_option_id: string
-    custom_price?: BigNumberInput
+    custom_amount?: BigNumberInput | null
   }): WorkflowResponse<OrderPreviewDTO> {
     const orderReturn: ReturnDTO = useRemoteQueryStep({
       entry_point: "return",
-      fields: ["id", "status", "order_id", "canceled_at"],
+      fields: [
+        "id",
+        "status",
+        "order_id",
+        "claim_id",
+        "exchange_id",
+        "canceled_at",
+      ],
       variables: { id: input.return_id },
       list: false,
       throw_if_key_not_found: true,
@@ -109,30 +117,13 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
 
     const shippingMethodInput = transform(
       {
-        orderReturn,
+        relatedEntity: orderReturn,
         shippingOptions,
-        customPrice: input.custom_price,
+        customPrice: input.custom_amount,
         orderChange,
         input,
       },
-      (data) => {
-        const option = data.shippingOptions[0]
-        const orderChange = data.orderChange
-
-        return {
-          shipping_option_id: option.id,
-          amount: data.customPrice ?? option.calculated_price.calculated_amount,
-          is_tax_inclusive:
-            !!option.calculated_price.is_calculated_price_tax_inclusive,
-          data: option.data ?? {},
-          name: option.name,
-          version: orderChange.version,
-          order_id: data.orderReturn.order_id,
-          return_id: data.orderReturn.id,
-          claim_id: data.input.claim_id,
-          exchange_id: data.input.exchange_id,
-        }
-      }
+      prepareShippingMethod("return_id")
     )
 
     const createdMethods = createOrderShippingMethods({
@@ -157,7 +148,7 @@ export const createReturnShippingMethodWorkflow = createWorkflow(
         orderReturn,
         shippingOptions,
         createdMethods,
-        customPrice: input.custom_price,
+        customPrice: input.custom_amount,
         orderChange,
         input,
       },

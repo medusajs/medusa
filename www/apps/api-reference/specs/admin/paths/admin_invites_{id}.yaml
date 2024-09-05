@@ -1,9 +1,9 @@
 get:
   operationId: GetInvitesId
-  summary: Get a Invite
+  summary: Get an Invite
   description: >-
-    Retrieve a invite by its ID. You can expand the invite's relations or select
-    the fields that should be returned.
+    Retrieve an invite by its ID. You can expand the invite's relations or
+    select the fields that should be returned.
   x-authenticated: false
   parameters:
     - name: id
@@ -138,9 +138,6 @@ delete:
                 type: boolean
                 title: deleted
                 description: Whether the invite was deleted.
-              parent:
-                type: object
-                description: The invite's parent.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

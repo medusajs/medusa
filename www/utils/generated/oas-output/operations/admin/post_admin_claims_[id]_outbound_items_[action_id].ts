@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/claims/{id}/outbound/items/{action_id}
  * operationId: PostClaimsIdOutboundItemsAction_id
- * summary: Add Items to Claim
- * description: Add a list of items to a claim.
+ * summary: Update Outbound Item of a Claim
+ * x-sidebar-summary: Update Outbound Item
+ * description: |
+ *   Update an outbound (or new) item of a claim using the `ID` of the item's `ITEM_ADD` action.
+ * 
+ *   Every item has an `actions` property, whose value is an array of actions. You can check the action's name using its `action` property, and use the value of the `id` property.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: action_id
  *     in: path
- *     description: The claim's action id.
+ *     description: The ID of the new claim item's `ITEM_ADD` action.
  *     required: true
  *     schema:
  *       type: string

@@ -28,9 +28,7 @@ export async function createOrderSeeder({ api }) {
   const inventoryItem = (
     await api.post(
       `/admin/inventory-items`,
-      {
-        sku: `12345-${stockLocation.id}`,
-      },
+      { sku: "test-variant" },
       adminHeaders
     )
   ).data.inventory_item
@@ -70,6 +68,7 @@ export async function createOrderSeeder({ api }) {
         variants: [
           {
             title: "Test variant",
+            sku: "test-variant",
             inventory_items: [
               {
                 inventory_item_id: inventoryItem.id,
@@ -149,6 +148,7 @@ export async function createOrderSeeder({ api }) {
     await api.post(`/store/carts`, {
       currency_code: "usd",
       email: "tony@stark-industries.com",
+      region_id: region.id,
       shipping_address: {
         address_1: "test address 1",
         address_2: "test address 2",

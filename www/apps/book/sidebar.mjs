@@ -90,8 +90,9 @@ export const sidebar = numberSidebarItems(
       chapterTitle: "Advanced",
       children: [
         {
-          type: "sub-category",
+          type: "link",
           title: "API Routes",
+          path: "/advanced-development/api-routes",
           children: [
             {
               type: "link",
@@ -105,13 +106,28 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
+              path: "/advanced-development/api-routes/responses",
+              title: "Response",
+            },
+            {
+              type: "link",
               path: "/advanced-development/api-routes/middlewares",
               title: "Middlewares",
             },
             {
               type: "link",
+              path: "/advanced-development/api-routes/validation",
+              title: "Validation",
+            },
+            {
+              type: "link",
               path: "/advanced-development/api-routes/protected-routes",
               title: "Protected Routes",
+            },
+            {
+              type: "link",
+              path: "/advanced-development/api-routes/errors",
+              title: "Errors",
             },
             {
               type: "link",
@@ -370,13 +386,42 @@ export const sidebar = numberSidebarItems(
       children: [
         {
           type: "link",
-          path: "/debugging-and-testing/logging",
-          title: "Logging",
+          path: "/debugging-and-testing/testing-tools",
+          title: "Testing Tools",
         },
         {
           type: "link",
-          path: "/debugging-and-testing/tools",
-          title: "Tools",
+          path: "/debugging-and-testing/testing-tools/integration-tests",
+          title: "Integration Tests",
+          children: [
+            {
+              type: "link",
+              path: "/debugging-and-testing/testing-tools/integration-tests/api-routes",
+              title: "Example: API Routes Tests",
+            },
+            {
+              type: "link",
+              path: "/debugging-and-testing/testing-tools/integration-tests/workflows",
+              title: "Example: Workflows Tests",
+            },
+          ],
+        },
+        {
+          type: "link",
+          path: "/debugging-and-testing/testing-tools/modules-tests",
+          title: "Modules Tests",
+          children: [
+            {
+              type: "link",
+              path: "/debugging-and-testing/testing-tools/unit-tests/module-example",
+              title: "Example",
+            },
+          ],
+        },
+        {
+          type: "link",
+          path: "/debugging-and-testing/logging",
+          title: "Logging",
         },
       ],
     },

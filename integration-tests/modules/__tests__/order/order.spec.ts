@@ -1,13 +1,13 @@
 import {
   ICartModuleService,
   IFulfillmentModuleService,
-  IInventoryServiceNext,
+  IInventoryService,
   IOrderModuleService,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -32,8 +32,8 @@ medusaIntegrationTestRunner({
     let productModule: IProductModuleService
     let paymentModule: IPaymentModuleService
     let pricingModule: IPricingModuleService
-    let inventoryModule: IInventoryServiceNext
-    let stockLocationModule: IStockLocationServiceNext
+    let inventoryModule: IInventoryService
+    let stockLocationModule: IStockLocationService
     let fulfillmentModule: IFulfillmentModuleService
     let orderModule: IOrderModuleService
     let remoteLink, remoteQuery
@@ -138,6 +138,7 @@ medusaIntegrationTestRunner({
           display_id: 1,
           payment_collections: [],
           payment_status: "not_paid",
+          region_id: "test_region_id",
           fulfillments: [],
           fulfillment_status: "not_fulfilled",
           summary: expect.objectContaining({
@@ -202,6 +203,7 @@ medusaIntegrationTestRunner({
                 value: "50",
                 precision: 20,
               },
+              is_custom_price: false,
               metadata: null,
               created_at: expect.any(String),
               updated_at: expect.any(String),

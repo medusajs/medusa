@@ -41,7 +41,7 @@ export const POST = async (
     }
   }
 
-  const { success, error } = await authService.updateProviderData(
+  const { success, error } = await authService.updateProvider(
     auth_provider,
     req.body as Record<string, unknown>
   )

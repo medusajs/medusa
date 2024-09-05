@@ -43,9 +43,6 @@
  *               type: boolean
  *               title: deleted
  *               description: Whether the invite was deleted.
- *             parent:
- *               type: object
- *               description: The invite's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

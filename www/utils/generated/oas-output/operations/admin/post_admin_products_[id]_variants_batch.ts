@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/products/{id}/variants/batch
  * operationId: PostProductsIdVariantsBatch
- * summary: Add Variants to Product
- * description: Add a list of variants to a product.
+ * summary: Manage Variants in a Product
+ * x-sidebary-summary: Manage Variants
+ * description: Manage variants in a product to create, update, or delete them.
  * x-authenticated: true
  * parameters:
  *   - name: id

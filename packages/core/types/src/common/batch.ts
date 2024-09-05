@@ -18,11 +18,7 @@ export type BatchMethodRequest<TCreate, TUpdate, TDelete = string> = {
 export type BatchMethodResponse<T> = {
   created: T[]
   updated: T[]
-  deleted: {
-    ids: string[]
-    object: string
-    deleted: boolean
-  }
+  deleted: string[]
 }
 
 export type BatchWorkflowInput<

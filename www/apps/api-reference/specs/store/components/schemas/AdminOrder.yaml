@@ -51,6 +51,14 @@ properties:
     description: The order's fulfillments.
     items:
       $ref: ./BaseOrderFulfillment.yaml
+  sales_channel:
+    $ref: ./AdminSalesChannel.yaml
+  customer:
+    $ref: ./AdminCustomer.yaml
+  shipping_address:
+    $ref: ./AdminOrderAddress.yaml
+  billing_address:
+    $ref: ./AdminOrderAddress.yaml
   id:
     type: string
     title: id
@@ -81,13 +89,9 @@ properties:
     title: currency_code
     description: The order's currency code.
   display_id:
-    type: string
+    type: number
     title: display_id
     description: The order's display id.
-  shipping_address:
-    $ref: ./BaseOrderAddress.yaml
-  billing_address:
-    $ref: ./BaseOrderAddress.yaml
   items:
     type: array
     description: The order's items.

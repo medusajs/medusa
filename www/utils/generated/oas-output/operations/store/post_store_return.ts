@@ -9,7 +9,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/StorePostReturnsReqSchema"
+ *         $ref: "#/components/schemas/StoreCreateReturn"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

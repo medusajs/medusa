@@ -196,7 +196,7 @@ export default class AuthModuleService
     return Array.isArray(data) ? serializedProviders : serializedProviders[0]
   }
 
-  async updateProviderData(
+  async updateProvider(
     provider: string,
     data: Record<string, unknown>
   ): Promise<AuthenticationResponse> {
@@ -336,24 +336,73 @@ export default class AuthModuleService
           createdAuthIdentity
         )
       },
-      update: async (data: {
-        id: string
-        provider_metadata?: Record<string, unknown>
-        user_metadata?: Record<string, unknown>
-      }) => {
-        const normalizedRequest = {
-          id: data.id,
-          provider_metadata: data.provider_metadata,
-          user_metadata: data.user_metadata,
+      update: async (
+        entity_id: string,
+        data: {
+          provider_metadata?: Record<string, unknown>
+          user_metadata?: Record<string, unknown>
+        }
+      ) => {
+        const authIdentities = await this.authIdentityService_.list(
+          {
+            provider_identities: {
+              entity_id,
+              provider,
+            },
+          },
+          {
+            relations: ["provider_identities"],
+          }
+        )
+
+        if (!authIdentities.length) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `AuthIdentity with entity_id "${entity_id}" not found`
+          )
         }
 
-        const updatedAuthIdentity = await this.updateProviderIdentities(
-          normalizedRequest
+        if (authIdentities.length > 1) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Multiple authIdentities found for entity_id "${entity_id}"`
+          )
+        }
+
+        const providerIdentityData = authIdentities[0].provider_identities.find(
+          (pi) => pi.provider === provider
         )
 
-        return await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
-          updatedAuthIdentity
-        )
+        if (!providerIdentityData) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `ProviderIdentity with entity_id "${entity_id}" not found`
+          )
+        }
+
+        const updatedProviderIdentity =
+          await this.providerIdentityService_.update({
+            id: providerIdentityData.id,
+            ...data,
+          })
+
+        const serializedResponse =
+          await this.baseRepository_.serialize<AuthTypes.AuthIdentityDTO>(
+            authIdentities[0]
+          )
+        const serializedProviderIdentity =
+          await this.baseRepository_.serialize<AuthTypes.ProviderIdentityDTO>(
+            updatedProviderIdentity
+          )
+
+        serializedResponse.provider_identities = [
+          ...(serializedResponse.provider_identities?.filter(
+            (p) => p.provider !== provider
+          ) ?? []),
+          serializedProviderIdentity,
+        ]
+
+        return serializedResponse
       },
     }
   }

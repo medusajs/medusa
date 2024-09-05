@@ -49,9 +49,6 @@
  *               type: boolean
  *               title: deleted
  *               description: Whether the return was deleted.
- *             parent:
- *               type: object
- *               description: The return's parent.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

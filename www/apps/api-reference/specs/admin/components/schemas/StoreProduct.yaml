@@ -2,9 +2,9 @@ type: object
 description: The product's details.
 x-schemaName: StoreProduct
 required:
+  - length
   - title
   - status
-  - length
   - options
   - description
   - id
@@ -36,6 +36,10 @@ properties:
       type: object
   type:
     type: object
+  length:
+    type: number
+    title: length
+    description: The product's length.
   title:
     type: string
     title: title
@@ -48,10 +52,6 @@ properties:
       - proposed
       - published
       - rejected
-  length:
-    type: number
-    title: length
-    description: The product's length.
   options:
     type: array
     description: The product's options.

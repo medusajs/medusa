@@ -50,11 +50,18 @@
  *   - name: region_id
  *     in: query
  *     description: The payment provider's region id.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: region_id
- *       description: The payment provider's region id.
+ *       oneOf:
+ *         - type: string
+ *           title: region_id
+ *           description: The payment provider's region id.
+ *         - type: array
+ *           description: The payment provider's region id.
+ *           items:
+ *             type: string
+ *             title: region_id
+ *             description: The region id's details.
  *   - name: id
  *     in: query
  *     required: false

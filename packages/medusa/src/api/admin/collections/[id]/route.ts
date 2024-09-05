@@ -10,6 +10,7 @@ import {
 import { AdminUpdateCollectionType } from "../validators"
 import { refetchCollection } from "../helpers"
 import { HttpTypes } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -28,6 +29,16 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateCollectionType>,
   res: MedusaResponse<HttpTypes.AdminCollectionResponse>
 ) => {
+  const existingCollection = await refetchCollection(req.params.id, req.scope, [
+    "id",
+  ])
+  if (!existingCollection) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Collection with id "${req.params.id}" not found`
+    )
+  }
+
   await updateCollectionsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },

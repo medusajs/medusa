@@ -54,7 +54,7 @@ export interface IAuthModuleService extends IModuleService {
     providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
 
-  updateProviderData(
+  updateProvider(
     provider: string,
     providerData: Record<string, unknown>
   ): Promise<AuthenticationResponse>
@@ -83,7 +83,7 @@ export interface IAuthModuleService extends IModuleService {
    * `req` is an instance of the `MedusaRequest` object:
    *
    * ```ts
-   * const { success, authIdentity, error, successRedirectUrl } =
+   * const { success, authIdentity, error } =
    *   await authModuleService.validateCallback("google", {
    *     url: req.url,
    *     headers: req.headers,

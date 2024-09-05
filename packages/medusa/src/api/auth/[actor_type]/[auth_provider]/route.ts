@@ -35,8 +35,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   )
 
   if (location) {
-    res.redirect(location)
-    return
+    return res.status(200).json({ location })
   }
 
   if (success) {

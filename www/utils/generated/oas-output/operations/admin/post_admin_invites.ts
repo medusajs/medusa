@@ -52,15 +52,18 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The invite's details.
  *         required:
  *           - email
  *         properties:
  *           email:
  *             type: string
  *             title: email
- *             description: The invite's email.
+ *             description: The email of the user to invite.
  *             format: email
+ *           metadata:
+ *             type: object
+ *             description: The invite's metadata. Can be custom data in key-value pairs.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

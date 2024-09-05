@@ -1,8 +1,12 @@
 /**
  * @oas [post] /admin/fulfillments/{id}/cancel
  * operationId: PostFulfillmentsIdCancel
- * summary: Add Cancels to Fulfillment
- * description: Add a list of cancels to a fulfillment.
+ * summary: Cancel a Fulfillment
+ * description: >
+ *   Cancel a fulfillment. The fulfillment can't be shipped or delivered.
+ * 
+ *   
+ *   To cancel the fulfillment, the `cancelFulfillment` method of the associated fulfillment provider is used.
  * x-authenticated: true
  * parameters:
  *   - name: id

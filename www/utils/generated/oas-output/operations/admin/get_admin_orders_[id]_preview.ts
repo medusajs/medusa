@@ -1,8 +1,8 @@
 /**
  * @oas [get] /admin/orders/{id}/preview
  * operationId: GetOrdersIdPreview
- * summary: List Previews
- * description: Retrieve a list of previews in a order. The previews can be filtered by fields like FILTER FIELDS. The previews can also be paginated.
+ * summary: Get Preview
+ * description: Retrieve a preview of an order using its associated change, such as an edit.
  * x-authenticated: true
  * parameters:
  *   - name: id

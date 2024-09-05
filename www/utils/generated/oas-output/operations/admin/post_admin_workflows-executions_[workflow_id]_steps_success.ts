@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/workflows-executions/{workflow_id}/steps/success
  * operationId: PostWorkflowsExecutionsWorkflow_idStepsSuccess
- * summary: Add Successes to Workflows Execution
- * description: Add a list of successes to a workflows execution.
+ * summary: Succeed a Step in a Workflow's Execution
+ * x-sidebar-summary: Succed a Step
+ * description: Set the status of a step in a workflow's execution as successful. This is useful for long-running workflows.
  * x-authenticated: true
  * parameters:
  *   - name: workflow_id
@@ -40,14 +41,14 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The details of succeeding the workflow step.
  *           required:
  *             - success
  *           properties:
  *             success:
  *               type: boolean
  *               title: success
- *               description: The workflows execution's success.
+ *               description: Whether the workflow step was succeeded.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/order-edits/{id}/items/item/{item_id}
  * operationId: PostOrderEditsIdItemsItemItem_id
- * summary: Add Items to Order Edit
- * description: Add a list of items to a order edit.
+ * summary: Update Order Item Quantity of Order Edit
+ * x-sidebar-summary: Update Item Quantity
+ * description: Update an existing order item's quantity of an order edit.
  * x-authenticated: true
  * parameters:
  *   - name: id

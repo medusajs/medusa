@@ -5,8 +5,6 @@
  * x-schemaName: AdminCreateSalesChannel
  * required:
  *   - name
- *   - description
- *   - metadata
  * properties:
  *   name:
  *     type: string

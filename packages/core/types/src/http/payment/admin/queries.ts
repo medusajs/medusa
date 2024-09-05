@@ -3,15 +3,15 @@ import { FindParams } from "../../common"
 import {
   BasePaymentCollectionFilters,
   BasePaymentFilters,
-  BasePaymentProviderFilters,
   BasePaymentSessionFilters,
 } from "../common"
-import { AdminRefund, AdminRefundReason } from "./entities"
+import { AdminRefundReason } from "./entities"
 
-export interface AdminPaymentProviderFilters
-  extends BasePaymentProviderFilters {
-  is_enabled?: boolean
-}
+export interface AdminPaymentProviderFilters extends 
+  FindParams, BaseFilterable<AdminPaymentProviderFilters>{
+    id: string | string[]
+    is_enabled?: boolean
+  }
 export interface AdminPaymentCollectionFilters
   extends BasePaymentCollectionFilters {}
 export interface AdminPaymentSessionFilters extends BasePaymentSessionFilters {}

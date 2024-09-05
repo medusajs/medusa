@@ -53,6 +53,14 @@
  *     description: The order's fulfillments.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderFulfillment"
+ *   sales_channel:
+ *     $ref: "#/components/schemas/AdminSalesChannel"
+ *   customer:
+ *     $ref: "#/components/schemas/AdminCustomer"
+ *   shipping_address:
+ *     $ref: "#/components/schemas/AdminOrderAddress"
+ *   billing_address:
+ *     $ref: "#/components/schemas/AdminOrderAddress"
  *   id:
  *     type: string
  *     title: id
@@ -83,13 +91,9 @@
  *     title: currency_code
  *     description: The order's currency code.
  *   display_id:
- *     type: string
+ *     type: number
  *     title: display_id
  *     description: The order's display id.
- *   shipping_address:
- *     $ref: "#/components/schemas/BaseOrderAddress"
- *   billing_address:
- *     $ref: "#/components/schemas/BaseOrderAddress"
  *   items:
  *     type: array
  *     description: The order's items.

@@ -13,11 +13,13 @@ export interface AuthIdentityProviderService {
     provider_metadata?: Record<string, unknown>
     user_metadata?: Record<string, unknown>
   }) => Promise<AuthIdentityDTO>
-  update: (data: {
-    id: string
-    user_metadata?: Record<string, unknown>
-    provider_metadata?: Record<string, unknown>
-  }) => Promise<AuthIdentityDTO>
+  update: (
+    entity_id: string,
+    data: {
+      provider_metadata?: Record<string, unknown>
+      user_metadata?: Record<string, unknown>
+    }
+  ) => Promise<AuthIdentityDTO>
 }
 
 /**

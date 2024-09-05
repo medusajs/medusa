@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/products/{id}/variants/{variant_id}
  * operationId: PostProductsIdVariantsVariant_id
- * summary: Add Variants to Product
- * description: Add a list of variants to a product.
+ * summary: Update a Product Variant
+ * x-sidebar-summary: Update Variant
+ * description: Update a variant's details.
  * x-authenticated: true
  * parameters:
  *   - name: id
@@ -70,12 +71,12 @@
  *         allOf:
  *           - $ref: "#/components/schemas/AdminUpdateProductVariant"
  *           - type: object
- *             description: SUMMARY
+ *             description: The properties to update in the variant.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The properties to update in the variant.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

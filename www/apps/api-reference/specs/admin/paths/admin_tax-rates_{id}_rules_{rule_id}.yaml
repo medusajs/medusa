@@ -1,9 +1,8 @@
 delete:
   operationId: DeleteTaxRatesIdRulesRule_id
-  summary: Remove Rules from Tax Rate
-  description: >-
-    Remove a list of rules from a tax rate. This doesn't delete the Rule, only
-    the association between the Rule and the tax rate.
+  summary: Remove Rule of Tax Rate
+  x-sidebar-summary: Remove Rule
+  description: Remove a tax rate's rule.
   x-authenticated: true
   parameters:
     - name: id
@@ -14,7 +13,7 @@ delete:
         type: string
     - name: rule_id
       in: path
-      description: The tax rate's rule id.
+      description: The tax rate rule's ID.
       required: true
       schema:
         type: string
@@ -90,28 +89,32 @@ delete:
       content:
         application/json:
           schema:
-            type: object
+            allOf:
+              - type: object
+                description: SUMMARY
+                required:
+                  - id
+                  - object
+                  - deleted
+                properties:
+                  id:
+                    type: string
+                    title: id
+                    description: The tax rate's ID.
+                  object:
+                    type: string
+                    title: object
+                    description: The name of the deleted object.
+                  deleted:
+                    type: boolean
+                    title: deleted
+                    description: Whether the Tax Rate was deleted.
+              - type: object
+                description: SUMMARY
+                properties:
+                  parent:
+                    $ref: ../components/schemas/AdminTaxRate.yaml
             description: SUMMARY
-            required:
-              - id
-              - object
-              - deleted
-            properties:
-              id:
-                type: string
-                title: id
-                description: The tax rate's ID.
-              object:
-                type: string
-                title: object
-                description: The tax rate's object.
-              deleted:
-                type: boolean
-                title: deleted
-                description: The tax rate's deleted.
-              parent:
-                type: object
-                description: The tax rate's parent.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
