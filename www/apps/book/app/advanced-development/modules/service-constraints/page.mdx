@@ -8,7 +8,7 @@ This chapter lists constraints to keep in mind when creating a service.
 
 ## Use Async Methods
 
-A service's methods will always be executed as async by Medusa, such as when used in a workflow.
+Medusa wraps adds wrappers around your service's methods and executes them as async methods.
 
 So, make sure your service's methods are always async to avoid unexpected errors or behavior.
 
