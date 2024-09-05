@@ -42,7 +42,6 @@ export const refetchBatchRules = async (
       fields: fields,
     })
 
-    // @ts-expect-error "Remote query can return null"
     created = remoteQuery(createdQuery)
   }
 
@@ -55,7 +54,6 @@ export const refetchBatchRules = async (
       fields: fields,
     })
 
-    // @ts-expect-error "Remote query can return null"
     updated = remoteQuery(updatedQuery)
   }
 

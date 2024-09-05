@@ -3,9 +3,9 @@ import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
 import { Module, Modules } from "@medusajs/utils"
 import { FulfillmentModuleService, FulfillmentProviderService } from "@services"
 import {
+  SuiteOptions,
   initModules,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
@@ -113,6 +113,7 @@ moduleIntegrationTestRunner({
           "fulfillmentSet",
           "shippingOption",
           "shippingOptionRule",
+          "fulfillmentProvider",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -150,6 +151,14 @@ moduleIntegrationTestRunner({
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "shippingOptionRule",
+            },
+          },
+          fulfillmentProvider: {
+            id: {
+              field: "fulfillmentProvider",
+              linkable: "fulfillment_provider_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
             },
           },
         })

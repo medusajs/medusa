@@ -1,6 +1,7 @@
 import { defineJoinerConfig, Modules } from "@medusajs/utils"
 import {
   Fulfillment,
+  FulfillmentProvider,
   FulfillmentSet,
   ShippingOption,
   ShippingOptionRule,
@@ -14,5 +15,6 @@ export const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
     fulfillment_set_id: FulfillmentSet.name,
     shipping_option_id: ShippingOption.name,
     shipping_option_rule_id: ShippingOptionRule.name,
+    fulfillment_provider_id: FulfillmentProvider.name,
   },
 })

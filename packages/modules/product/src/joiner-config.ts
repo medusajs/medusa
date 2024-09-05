@@ -23,6 +23,29 @@ export const joinerConfig = defineJoinerConfig(Modules.PRODUCT, {
     ProductCollection,
     ProductCategory,
   ],
+  schema: `
+    type Product {
+      id: ID!
+      handle: String!
+      title: String!
+      description: String
+      variants: [ProductVariant]
+    }
+    
+    type ProductVariant {
+      id: ID!
+      handle: String!
+      title: String!
+      
+      product: Product
+    }
+    
+    type ProductCategory {
+      id: ID!
+      handle: String!
+      title: String
+    }
+  `,
   primaryKeys: ["id", "handle"],
   alias: [
     {

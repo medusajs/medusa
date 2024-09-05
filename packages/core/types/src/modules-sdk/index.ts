@@ -1,19 +1,22 @@
-import {
-  JoinerRelationship,
-  JoinerServiceConfig,
-  RemoteJoinerOptions,
-  RemoteJoinerQuery,
-} from "../joiner"
+import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
 
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
 import { Logger } from "../logger"
+import {
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
+} from "./remote-query-object-from-string"
+
+export { RemoteQueryObjectConfig, RemoteQueryObjectFromStringResult }
 
 export type Constructor<T> = new (...args: any[]) => T | (new () => T)
 
 export * from "../common/medusa-container"
 export * from "./medusa-internal-service"
 export * from "./module-provider"
+export * from "./remote-query-entry-points"
+export * from "./remote-query"
 
 export type LogLevel =
   | "query"
@@ -291,12 +294,6 @@ export type ModuleBootstrapDeclaration =
 // TODO: These should be added back when the chain of types are fixed
 // | ModuleServiceInitializeOptions
 // | ModuleServiceInitializeCustomDataLayerOptions
-
-export type RemoteQueryFunction = (
-  query: string | RemoteJoinerQuery | object,
-  variables?: Record<string, unknown>,
-  options?: RemoteJoinerOptions
-) => Promise<any> | null
 
 export interface IModuleService {
   /**
