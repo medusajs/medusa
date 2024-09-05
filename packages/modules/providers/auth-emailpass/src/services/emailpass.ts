@@ -42,10 +42,10 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
   }
 
   async update(
-    providerMetadata: Record<string, unknown>,
+    data: { email: string; password: string },
     authIdentityService: AuthIdentityProviderService
   ) {
-    const { email, password } = providerMetadata ?? {}
+    const { email, password } = data ?? {}
 
     if (!email || !isString(email)) {
       return {
@@ -54,8 +54,6 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       }
     }
 
-    // The only update allowed is the password
-    // Question: Should we throw if not provided?
     if (!password || !isString(password)) {
       return { success: true }
     }
@@ -74,15 +72,9 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       return { success: false, error: error.message }
     }
 
-    const copy = JSON.parse(JSON.stringify(authIdentity))
-    const providerIdentity = copy.provider_identities?.find(
-      (pi) => pi.provider === this.provider
-    )!
-    delete providerIdentity.provider_metadata?.password
-
     return {
       success: true,
-      authIdentity: copy,
+      authIdentity,
     }
   }
 
