@@ -8,38 +8,6 @@ export const metadata = {
 
 The Store Module is the `@medusajs/store` NPM package that provides store-related features in your Medusa and Node.js applications.
 
-## Features
-
-### Store Management
-
-A store holds the main configurations of your commerce store, such as supported currencies, default region and sales channel, and more.
-
-```ts
-const store = await storeModuleService.createStores({
-  name: "My Store",
-  supported_currency_codes: ["usd"],
-})
-```
-
-### Multi-Tenancy Support
-
-You can create multiple stores, each having its own configurations.
-
-```ts
-const stores = await storeModuleService.createStores([
-  {
-    name: "USA Store",
-    supported_currency_codes: ["usd"],
-  },
-  {
-    name: "Europe Store",
-    supported_currency_codes: ["eur"],
-  },
-])
-```
-
----
-
 ## How to Use Store Module's Service
 
 You can use the Store Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.STORE` imported from `@medusajs/utils`.
@@ -104,3 +72,35 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## Features
+
+### Store Management
+
+A store holds the main configurations of your commerce store, such as supported currencies, default region and sales channel, and more.
+
+```ts
+const store = await storeModuleService.createStores({
+  name: "My Store",
+  supported_currency_codes: ["usd"],
+})
+```
+
+### Multi-Tenancy Support
+
+You can create multiple stores, each having its own configurations.
+
+```ts
+const stores = await storeModuleService.createStores([
+  {
+    name: "USA Store",
+    supported_currency_codes: ["usd"],
+  },
+  {
+    name: "Europe Store",
+    supported_currency_codes: ["eur"],
+  },
+])
+```
