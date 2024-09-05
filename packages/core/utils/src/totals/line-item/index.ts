@@ -117,19 +117,20 @@ function getLineItemTotals(
   )
 
   const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
+
   // Consider if taxes need to be applied on discounts
   // In the EU, taxes are applied on the total after discounts are applied.
   // There might be cases where in other countries this would apply, consider
   // introducing a separate flag to enable this for amendments
-  const shouldIncludeTaxOnDiscounts = isTaxInclusive && false
+  const shouldIncludeTaxOnAmendments = false
 
   const discountTotal = calculateAdjustmentTotal({
     adjustments: item.adjustments || [],
-    includesTax: shouldIncludeTaxOnDiscounts,
-    taxRate: sumTaxRate,
+    includesTax: shouldIncludeTaxOnAmendments,
+    taxRate: shouldIncludeTaxOnAmendments ? sumTaxRate : MathBN.convert(0),
   })
 
-  const discountTaxTotal = shouldIncludeTaxOnDiscounts
+  const discountTaxTotal = shouldIncludeTaxOnAmendments
     ? MathBN.mult(discountTotal, MathBN.div(sumTaxRate, 100))
     : MathBN.convert(0)
 
@@ -168,7 +169,7 @@ function getLineItemTotals(
 
   const originalTaxTotal = calculateTaxTotal({
     taxLines: item.tax_lines || [],
-    includesTax: context.includeTax,
+    includesTax: isTaxInclusive,
     taxableAmount,
     setTotalField: "subtotal",
   })
@@ -183,10 +184,7 @@ function getLineItemTotals(
     )
   } else {
     const newTotal = MathBN.add(total, totals.tax_total)
-    const originalTotal = MathBN.add(
-      totals.original_total,
-      totals.original_tax_total
-    )
+    const originalTotal = MathBN.add(totals.subtotal, totals.original_tax_total)
 
     totals.total = new BigNumber(newTotal)
     totals.original_total = new BigNumber(originalTotal)

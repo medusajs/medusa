@@ -21,16 +21,16 @@ export function calculateAdjustmentTotal({
     total = MathBN.add(total, adj.amount)
 
     if (isDefined(taxRate)) {
-      if (includesTax) {
-        const rate = MathBN.div(taxRate, 100)
-        let taxAmount = MathBN.mult(adj.amount, rate)
+      const rate = MathBN.div(taxRate, 100)
+      let taxAmount = MathBN.mult(adj.amount, rate)
 
+      if (includesTax) {
         taxAmount = MathBN.div(taxAmount, MathBN.add(1, rate))
 
         adj["subtotal"] = new BigNumber(MathBN.sub(adj.amount, taxAmount))
         adj["total"] = new BigNumber(adj.amount)
       } else {
-        total = MathBN.convert(adj.amount)
+        total = MathBN.add(adj.amount, taxAmount)
 
         adj["subtotal"] = new BigNumber(adj.amount)
         adj["total"] = new BigNumber(total)
