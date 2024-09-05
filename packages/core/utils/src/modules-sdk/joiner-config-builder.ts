@@ -8,12 +8,12 @@ import { accessSync } from "fs"
 import * as path from "path"
 import { dirname, join, normalize } from "path"
 import {
-  MapToConfig,
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
   isObject,
   lowerCaseFirst,
+  MapToConfig,
   pluralize,
   toCamelCase,
   upperCaseFirst,
@@ -151,18 +151,19 @@ export function defineJoinerConfig(
     schema = toGraphQLSchema([...modelDefinitions.values()])
   }
 
-  if (!linkableKeys) {
-    const linkableKeysFromDml = buildLinkableKeysFromDmlObjects([
-      ...modelDefinitions.values(),
-    ])
-    const linkableKeysFromMikroOrm = buildLinkableKeysFromMikroOrmObjects([
-      ...mikroOrmObjects.values(),
-    ])
-    linkableKeys = {
-      ...linkableKeysFromDml,
-      ...linkableKeysFromMikroOrm,
-    }
+  const linkableKeysFromDml = buildLinkableKeysFromDmlObjects([
+    ...modelDefinitions.values(),
+  ])
+  const linkableKeysFromMikroOrm = buildLinkableKeysFromMikroOrmObjects([
+    ...mikroOrmObjects.values(),
+  ])
+
+  const mergedLinkableKeys = {
+    ...linkableKeysFromDml,
+    ...linkableKeysFromMikroOrm,
+    ...linkableKeys,
   }
+  linkableKeys = mergedLinkableKeys
 
   if (!primaryKeys && modelDefinitions.size) {
     const linkConfig = buildLinkConfigFromModelObjects(

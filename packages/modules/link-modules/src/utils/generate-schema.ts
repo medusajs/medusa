@@ -52,7 +52,7 @@ export function generateGraphQLSchema(
         extend.relationship.primaryKey
       ]
 
-    if (!extendedEntityName || (!isReadOnlyLink && (!primary || !foreign))) {
+    if (!isReadOnlyLink && (!primary || !foreign || !extendedEntityName)) {
       logger.warn(
         `Link modules schema: No linkable key found for ${extend.relationship.primaryKey} on module ${extend.serviceName}.`
       )

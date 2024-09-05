@@ -8,6 +8,7 @@ import {
   FindConfig,
   IApiKeyModuleService,
   InternalModuleDeclaration,
+  ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
 import { ApiKey } from "@models"
@@ -28,6 +29,7 @@ import {
   MedusaService,
   promiseAll,
 } from "@medusajs/utils"
+import { joinerConfig } from "../joiner-config"
 
 const scrypt = util.promisify(crypto.scrypt)
 
@@ -53,6 +55,10 @@ export class ApiKeyModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.apiKeyService_ = apiKeyService
+  }
+
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
   }
 
   //@ts-expect-error

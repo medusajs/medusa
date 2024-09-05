@@ -12,18 +12,17 @@ import {
   UpsertSalesChannelDTO,
 } from "@medusajs/types"
 import {
-  defineJoinerConfig,
   InjectManager,
   InjectTransactionManager,
   isString,
   MedusaContext,
   MedusaService,
-  Modules,
   promiseAll,
 } from "@medusajs/utils"
 
 import { SalesChannel } from "@models"
 import { UpdateSalesChanneInput } from "@types"
+import { joinerConfig } from "../joinfer-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -50,18 +49,7 @@ export default class SalesChannelModuleService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
-    // TODO: POC
-    return defineJoinerConfig(Modules.SALES_CHANNEL, {
-      schema: `
-    type SalesChannel {
-      id: ID!
-      name: String
-      description: String
-      created_at: DateTime
-      updated_at: DateTime
-    }
-  `,
-    })
+    return joinerConfig
   }
 
   // @ts-expect-error
