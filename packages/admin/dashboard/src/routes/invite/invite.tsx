@@ -11,7 +11,7 @@ import * as z from "zod"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { useSignUpWithEmailPass } from "../../hooks/api/auth"
-import { useAcceptInvite } from "../../hooks/api/invites"
+import { useAcceptInvite, useInvite } from "../../hooks/api/invites"
 import { isFetchError } from "../../lib/is-fetch-error"
 
 const CreateAccountSchema = z
@@ -38,6 +38,7 @@ type DecodedInvite = {
   jti: any
   exp: string
   iat: number
+  email: string
 }
 
 export const Invite = () => {
@@ -185,6 +186,7 @@ const InvalidView = () => {
 const CreateView = ({
   onSuccess,
   token,
+  invite,
 }: {
   onSuccess: () => void
   token: string
@@ -196,7 +198,7 @@ const CreateView = ({
   const form = useForm<z.infer<typeof CreateAccountSchema>>({
     resolver: zodResolver(CreateAccountSchema),
     defaultValues: {
-      email: "",
+      email: invite.email || "",
       first_name: "",
       last_name: "",
       password: "",
