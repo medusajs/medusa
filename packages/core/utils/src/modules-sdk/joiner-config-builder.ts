@@ -8,12 +8,12 @@ import { accessSync } from "fs"
 import * as path from "path"
 import { dirname, join, normalize } from "path"
 import {
+  MapToConfig,
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
   isObject,
   lowerCaseFirst,
-  MapToConfig,
   pluralize,
   toCamelCase,
   upperCaseFirst,
@@ -51,7 +51,7 @@ export function defineJoinerConfig(
     alias?: JoinerServiceConfigAlias[]
     schema?: string
     models?: DmlEntity<any, any>[] | { name: string }[]
-    linkableKeys?: Record<string, string>
+    linkableKeys?: ModuleJoinerConfig["linkableKeys"]
     primaryKeys?: string[]
   } = {}
 ): Omit<
@@ -371,6 +371,7 @@ export function buildLinkConfigFromModelObjects<
         const linkableKeyName =
           parsedProperty.dataType.options?.linkable ??
           `${camelToSnakeCase(model.name).toLowerCase()}_${property}`
+
         modelLinkConfig[property] = {
           linkable: linkableKeyName,
           primaryKey: property,
@@ -396,23 +397,27 @@ export function buildLinkConfigFromLinkableKeys<
 >(serviceName: ServiceName, linkableKeys: T): Record<string, any> {
   const linkConfig = {} as Record<string, any>
 
-  for (const [linkable, modelName] of Object.entries(linkableKeys)) {
+  for (const [linkable, modelOrObj] of Object.entries(linkableKeys)) {
+    const linkableConfig_ = isObject(modelOrObj) ? (modelOrObj as any) : {}
+    const modelName = linkableConfig_.entity ?? modelOrObj
     const kebabCasedModelName = camelToSnakeCase(toCamelCase(modelName))
-    const inferredReferenceProperty = linkable.replace(
-      `${kebabCasedModelName}_`,
-      ""
-    )
 
+    const inferredReferenceProperty =
+      linkableConfig_.primaryKey ??
+      linkable.replace(`${kebabCasedModelName}_`, "")
+
+    const keyName = lowerCaseFirst(modelName)
     const config = {
       linkable: linkable,
       primaryKey: inferredReferenceProperty,
       serviceName,
-      field: lowerCaseFirst(modelName),
+      field: keyName,
     }
-    linkConfig[lowerCaseFirst(modelName)] = {
-      [inferredReferenceProperty]: config,
+
+    linkConfig[keyName] ??= {
       toJSON: () => config,
     }
+    linkConfig[keyName][inferredReferenceProperty] = config
   }
 
   return linkConfig as Record<string, any>
@@ -423,14 +428,19 @@ export function buildLinkConfigFromLinkableKeys<
  * @param linkableKeys
  */
 export function buildModelsNameToLinkableKeysMap(
-  linkableKeys: Record<string, string>
+  linkableKeys: ModuleJoinerConfig["linkableKeys"]
 ): MapToConfig {
   const entityLinkableKeysMap: MapToConfig = {}
-  Object.entries(linkableKeys).forEach(([key, value]) => {
-    entityLinkableKeysMap[value] ??= []
-    entityLinkableKeysMap[value].push({
+
+  Object.entries(linkableKeys!).forEach(([key, value]) => {
+    const value_ = isObject(value) ? (value as any) : {}
+    const entityName = value_.entity ?? value
+    const pk = value_.primaryKey ?? key.split("_").pop()!
+
+    entityLinkableKeysMap[entityName] ??= []
+    entityLinkableKeysMap[entityName].push({
       mapTo: key,
-      valueFrom: key.split("_").pop()!,
+      valueFrom: pk,
     })
   })
 

@@ -15,8 +15,8 @@ export type Constructor<T> = new (...args: any[]) => T | (new () => T)
 export * from "../common/medusa-container"
 export * from "./medusa-internal-service"
 export * from "./module-provider"
-export * from "./remote-query-entry-points"
 export * from "./remote-query"
+export * from "./remote-query-entry-points"
 
 export type LogLevel =
   | "query"
@@ -213,7 +213,14 @@ export type ModuleJoinerConfig = Omit<
   /**
    * Keys that can be used to link to other modules. e.g { product_id: "Product" } "Product" being the entity it refers to
    */
-  linkableKeys?: Record<string, string>
+  linkableKeys?: Record<
+    string,
+    | string
+    | {
+        entity: string
+        primaryKey?: string
+      }
+  >
   /**
    * If true it expands a RemoteQuery property but doesn't create a pivot table
    */
