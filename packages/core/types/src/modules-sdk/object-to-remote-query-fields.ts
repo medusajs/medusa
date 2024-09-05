@@ -6,15 +6,18 @@ type ExpandStarSelector<
   T extends object,
   Depth extends number,
   Exclusion extends string[]
-> = ObjectToStringPath<T & { "*": "*" }, Depth, Exclusion>
+> = ObjectToRemoteQueryFields<T & { "*": "*" }, Depth, Exclusion>
+
+type TypeOnly<T> = Required<Exclude<T, null | undefined>>
 
 /**
  * Output an array of strings representing the path to each leaf node in an object
  */
-export type ObjectToStringPath<
-  T,
+export type ObjectToRemoteQueryFields<
+  MaybeT,
   Depth extends number = 2,
-  Exclusion extends string[] = []
+  Exclusion extends string[] = [],
+  T = TypeOnly<MaybeT> & { "*": "*" }
 > = Depth extends never
   ? never
   : T extends object
@@ -23,17 +26,17 @@ export type ObjectToStringPath<
         ? never
         : K extends Exclusion[number]
         ? never
-        : T[K] extends Array<infer R>
-        ? R extends object
+        : TypeOnly<T[K]> extends Array<infer R>
+        ? TypeOnly<R> extends object
           ? `${Exclude<K, symbol>}.${ExpandStarSelector<
-              R,
+              TypeOnly<R>,
               Marker[Depth],
               [K & string, ...Exclusion]
             >}`
           : never
-        : T[K] extends object
+        : TypeOnly<T[K]> extends object
         ? `${Exclude<K, symbol>}.${ExpandStarSelector<
-            T[K],
+            TypeOnly<T[K]>,
             Marker[Depth],
             [K & string, ...Exclusion]
           >}`
