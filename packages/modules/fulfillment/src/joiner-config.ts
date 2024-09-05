@@ -6,8 +6,10 @@ import {
   ShippingOption,
   ShippingOptionRule,
 } from "@models"
+import { default as schema } from "./schema"
 
 export const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
+  schema,
   linkableKeys: {
     fulfillment_id: Fulfillment.name,
     fulfillment_set_id: FulfillmentSet.name,
