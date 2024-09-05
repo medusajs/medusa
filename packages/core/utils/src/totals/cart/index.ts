@@ -96,7 +96,6 @@ export function decorateCartTotals(
 
   const cartItems = items.map((item, index) => {
     const itemTotals = Object.assign(item, itemsTotals[item.id ?? index] ?? {})
-
     const itemSubtotal = itemTotals.subtotal
 
     const itemTotal = MathBN.convert(itemTotals.total)
@@ -195,7 +194,7 @@ export function decorateCartTotals(
     shippingOriginalTotal,
     originalTaxTotal
   )
-  const originalTotal = MathBN.sub(originalTempTotal, discountTotal)
+  const originalTotal = MathBN.sub(originalTempTotal)
   // TODO: subtract (cart.gift_card_total + cart.gift_card_tax_total)
   const tempTotal = MathBN.add(subtotal, taxTotal)
   const total = MathBN.sub(tempTotal, discountTotal)
