@@ -1,11 +1,5 @@
 import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
-import {
-  camelToSnakeCase,
-  isObject,
-  isString,
-  pluralize,
-  toPascalCase,
-} from "../common"
+import { camelToSnakeCase, isObject, pluralize, toPascalCase } from "../common"
 import { composeLinkName } from "../link/compose-link-name"
 
 export const DefineLinkSymbol = Symbol.for("DefineLink")
@@ -181,16 +175,13 @@ ${serviceBObj.module}: {
 
     let aliasAOptions =
       serviceAObj.alias ??
-      serviceAAliases.filter((a) => {
-        const name = isString(serviceAKeyEntity)
-          ? serviceAKeyEntity
-          : serviceAKeyEntity.entity
-        return a.args?.entity == name
-      })
+      serviceAAliases.find((a) => {
+        return a.args?.entity == serviceAKeyEntity
+      })?.name
 
     let aliasA = aliasAOptions
     if (Array.isArray(aliasAOptions)) {
-      aliasA = aliasAOptions[0]?.name ?? aliasAOptions[0]
+      aliasA = aliasAOptions[0]
     }
 
     if (!aliasA) {
@@ -212,16 +203,13 @@ ${serviceBObj.module}: {
 
     let aliasBOptions =
       serviceBObj.alias ??
-      serviceBAliases.find((b) => {
-        const name = isString(serviceBKeyInfo)
-          ? serviceBKeyInfo
-          : serviceBKeyInfo.entity
-        return b.args?.entity == name
-      })
+      serviceBAliases.find((a) => {
+        return a.args?.entity == serviceBKeyInfo
+      })?.name
 
     let aliasB = aliasBOptions
     if (Array.isArray(aliasBOptions)) {
-      aliasB = aliasBOptions[0]?.name ?? aliasBOptions[0]
+      aliasB = aliasBOptions[0]
     }
 
     if (!aliasB) {
@@ -247,7 +235,6 @@ ${serviceBObj.module}: {
 
     const isModuleAPrimaryKeyValid =
       moduleAPrimaryKeys.includes(serviceAPrimaryKey)
-
     if (!isModuleAPrimaryKeyValid) {
       throw new Error(
         `Primary key ${serviceAPrimaryKey} is not defined on service ${serviceAObj.module}`

@@ -2,7 +2,6 @@ import { MedusaModule } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
 import {
   camelToSnakeCase,
-  isObject,
   isString,
   lowerCaseFirst,
   toPascalCase,
@@ -48,22 +47,18 @@ export function generateGraphQLSchema(
       extend.relationship.serviceName
     )*/
 
-    const extendedEntity =
+    const extendedEntityName =
       extendedModule[extend.serviceName].__joinerConfig.linkableKeys[
         extend.relationship.primaryKey
       ]
 
-    if (!isReadOnlyLink && (!primary || !foreign || !extendedEntity)) {
+    if (!isReadOnlyLink && (!primary || !foreign || !extendedEntityName)) {
       logger.warn(
         `Link modules schema: No linkable key found for ${extend.relationship.primaryKey} on module ${extend.serviceName}.`
       )
 
       continue
     }
-
-    const extendedEntityName = isObject(extendedEntity)
-      ? (extendedEntity as any).entity
-      : extendedEntity
 
     const fieldName = camelToSnakeCase(
       lowerCaseFirst(extend.relationship.alias)
@@ -114,11 +109,11 @@ export function generateGraphQLSchema(
           return
         }
 
-        const targetEntity = MedusaModule.getJoinerConfig(
+        const targetEntityName = MedusaModule.getJoinerConfig(
           targetEntityRelation.serviceName
         ).linkableKeys?.[targetEntityRelation.foreignKey]
 
-        if (!targetEntity) {
+        if (!targetEntityName) {
           logger.warn(
             `Link modules schema: No linkable key found for ${targetEntityRelation.foreignKey} on module ${targetEntityRelation.serviceName}.`
           )
@@ -126,16 +121,12 @@ export function generateGraphQLSchema(
           return
         }
 
-        const targetEntityName = isObject(targetEntity)
-          ? targetEntity.entity
-          : targetEntity
-
         // TODO: Re visit field aliases that access properties from a type
-        /*const targetEntityType = `${targetEntity}${
+        /*const targetEntityType = `${targetEntityName}${
           relationshipPropertyPath.length
             ? relationshipPropertyPath.reduce((acc, value) => {
                 return `${acc}[${value}]`
-              }, targetEntity)
+              }, targetEntityName)
             : ""
         }`*/
 

@@ -397,14 +397,13 @@ export function buildLinkConfigFromLinkableKeys<
 >(serviceName: ServiceName, linkableKeys: T): Record<string, any> {
   const linkConfig = {} as Record<string, any>
 
-  for (const [linkable, modelOrObj] of Object.entries(linkableKeys)) {
-    const linkableConfig_ = isObject(modelOrObj) ? (modelOrObj as any) : {}
-    const modelName = linkableConfig_.entity ?? modelOrObj
+  for (const [linkable, modelName] of Object.entries(linkableKeys)) {
     const kebabCasedModelName = camelToSnakeCase(toCamelCase(modelName))
 
-    const inferredReferenceProperty =
-      linkableConfig_.primaryKey ??
-      linkable.replace(`${kebabCasedModelName}_`, "")
+    const inferredReferenceProperty = linkable.replace(
+      `${kebabCasedModelName}_`,
+      ""
+    )
 
     const keyName = lowerCaseFirst(modelName)
     const config = {
@@ -428,21 +427,15 @@ export function buildLinkConfigFromLinkableKeys<
  * @param linkableKeys
  */
 export function buildModelsNameToLinkableKeysMap(
-  linkableKeys: ModuleJoinerConfig["linkableKeys"]
+  linkableKeys: Record<string, string>
 ): MapToConfig {
   const entityLinkableKeysMap: MapToConfig = {}
-
-  Object.entries(linkableKeys!).forEach(([key, value]) => {
-    const value_ = isObject(value) ? (value as any) : {}
-    const entityName = value_.entity ?? value
-    const pk = value_.primaryKey ?? key.split("_").pop()!
-
-    entityLinkableKeysMap[entityName] ??= []
-    entityLinkableKeysMap[entityName].push({
+  Object.entries(linkableKeys).forEach(([key, value]) => {
+    entityLinkableKeysMap[value] ??= []
+    entityLinkableKeysMap[value].push({
       mapTo: key,
-      valueFrom: pk,
+      valueFrom: key.split("_").pop()!,
     })
   })
-
   return entityLinkableKeysMap
 }

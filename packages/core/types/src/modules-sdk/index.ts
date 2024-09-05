@@ -213,14 +213,7 @@ export type ModuleJoinerConfig = Omit<
   /**
    * Keys that can be used to link to other modules. e.g { product_id: "Product" } "Product" being the entity it refers to
    */
-  linkableKeys?: Record<
-    string,
-    | string
-    | {
-        entity: string
-        primaryKey?: string
-      }
-  >
+  linkableKeys?: Record<string, string>
   /**
    * If true it expands a RemoteQuery property but doesn't create a pivot table
    */
