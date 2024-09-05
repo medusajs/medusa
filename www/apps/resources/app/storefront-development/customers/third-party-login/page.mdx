@@ -199,7 +199,7 @@ const queryParams = new URLSearchParams(window.location.search)
 const code = queryParams.get("code")
 
 const sendCallback = async () => {
-  let { token } = await fetch(
+  const { token } = await fetch(
     `http://localhost:9000/auth/customer/google/callback?code=${code}`, 
     {
       credentials: "include",
@@ -234,7 +234,7 @@ import { HttpTypes } from "@medusajs/types"
 import { useEffect, useMemo, useState } from "react"
 import { decodeToken } from "react-jwt"
 
-export default function GoogleCallback () {
+export default function GoogleCallback() {
   const [loading, setLoading] = useState(true)
   const [customer, setCustomer] = useState<HttpTypes.StoreCustomer>()
   // for other than Next.js
@@ -245,7 +245,7 @@ export default function GoogleCallback () {
   }, [])
 
   const sendCallback = async () => {
-    let { token } = await fetch(
+    const { token } = await fetch(
       `http://localhost:9000/auth/customer/google/callback?code=${code}`, 
       {
         credentials: "include",
@@ -458,7 +458,7 @@ const code = queryParams.get("code")
 
 
 const sendCallback = async () => {
-  let { token } = await fetch(
+  const { token } = await fetch(
     `http://localhost:9000/auth/customer/google/callback?code=${code}`, 
     {
       credentials: "include",
@@ -541,7 +541,7 @@ import { HttpTypes } from "@medusajs/types"
 import { useEffect, useMemo, useState } from "react"
 import { decodeToken } from "react-jwt"
 
-export default function GoogleCallback () {
+export default function GoogleCallback() {
   const [loading, setLoading] = useState(true)
   const [customer, setCustomer] = useState<HttpTypes.StoreCustomer>()
   // for other than Next.js
@@ -552,7 +552,7 @@ export default function GoogleCallback () {
   }, [])
 
   const sendCallback = async () => {
-    let { token } = await fetch(
+    const { token } = await fetch(
       `http://localhost:9000/auth/customer/google/callback?code=${code}`, 
       {
         credentials: "include",
