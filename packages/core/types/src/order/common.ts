@@ -968,7 +968,7 @@ export interface OrderItemDTO {
 /**
  * The order's status.
  */
-type OrderStatus =
+export type OrderStatus =
   | "pending"
   | "completed"
   | "draft"

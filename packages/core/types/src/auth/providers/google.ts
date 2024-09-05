@@ -1,6 +1,5 @@
 export interface GoogleAuthProviderOptions {
-  clientID: string
+  clientId: string
   clientSecret: string
-  callbackURL: string
-  successRedirectUrl?: string
+  callbackUrl: string
 }

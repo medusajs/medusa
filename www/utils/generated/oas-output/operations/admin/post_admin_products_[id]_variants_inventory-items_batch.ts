@@ -25,7 +25,7 @@
  *         properties:
  *           create:
  *             type: array
- *             description: 
+ *             description: The The associations to create between product variants and inventory items.
  *             items:
  *               type: object
  *               description: The associations to create between a product variant and an inventory item.

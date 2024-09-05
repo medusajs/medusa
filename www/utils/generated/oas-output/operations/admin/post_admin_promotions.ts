@@ -225,15 +225,15 @@
  *                           oneOf:
  *                             - type: string
  *                               title: values
-  *                              description: The attribute's value.
-  *                              example: prod_123
-  *                            - type: array
-  *                              description: The allowed attribute values.
-  *                              items:
-  *                                type: string
-  *                                title: values
-  *                                description: An attribute value.
-  *                                example: prod_123
+ *                               description: The attribute's value.
+ *                               example: prod_123
+ *                             - type: array
+ *                               description: The allowed attribute values.
+ *                               items:
+ *                                 type: string
+ *                                 title: values
+ *                                 description: An attribute value.
+ *                                 example: prod_123
  *                   buy_rules:
  *                     type: array
  *                     description: The application method's buy rules.
@@ -270,15 +270,15 @@
  *                           oneOf:
  *                             - type: string
  *                               title: values
-  *                              description: The attribute's value.
-  *                              example: prod_123
-  *                            - type: array
-  *                              description: The allowed attribute values.
-  *                              items:
-  *                                type: string
-  *                                title: values
-  *                                description: An attribute value.
-  *                                example: prod_123
+ *                               description: The attribute's value.
+ *                               example: prod_123
+ *                             - type: array
+ *                               description: The allowed attribute values.
+ *                               items:
+ *                                 type: string
+ *                                 title: values
+ *                                 description: An attribute value.
+ *                                 example: prod_123
  *                   apply_to_quantity:
  *                     type: number
  *                     title: apply_to_quantity
@@ -324,14 +324,14 @@
  *                         - type: string
  *                           title: values
  *                           description: The attribute's value.
-  *                          example: prod_123
-  *                            - type: array
-  *                              description: The allowed attribute values.
-  *                              items:
-  *                                type: string
-  *                                title: values
-  *                                description: An attribute value.
-  *                                example: prod_123
+ *                           example: prod_123
+ *                         - type: array
+ *                           description: The allowed attribute values.
+ *                           items:
+ *                             type: string
+ *                             title: values
+ *                             description: An attribute value.
+ *                             example: prod_123
  *           - type: object
  *             description: The promotion's details.
  *             properties:

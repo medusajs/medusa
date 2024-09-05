@@ -1,4 +1,5 @@
 import {
+  HttpTypes,
   IWorkflowEngineService,
   WorkflowOrchestratorRunDTO,
 } from "@medusajs/types"
@@ -11,7 +12,7 @@ import { AdminCreateWorkflowsRunType } from "../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateWorkflowsRunType>,
-  res: MedusaResponse<{ acknowledgement: object }>
+  res: MedusaResponse<HttpTypes.AdminWorkflowRunResponse>
 ) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
     ModuleRegistrationName.WORKFLOW_ENGINE

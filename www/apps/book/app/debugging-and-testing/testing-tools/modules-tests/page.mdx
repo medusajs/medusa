@@ -78,7 +78,9 @@ import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import HelloModuleService from "../service"
 import { model } from "@medusajs/utils"
 
-const DummyModel = model.define("dummy_model", {})
+const DummyModel = model.define("dummy_model", {
+  id: model.id().primaryKey()
+})
 
 moduleIntegrationTestRunner<HelloModuleService>({
   moduleModels: [DummyModel],
