@@ -6,6 +6,7 @@ import {
   FindConfig,
   IOrderModuleService,
   InternalModuleDeclaration,
+  ModuleJoinerConfig,
   ModulesSdkTypes,
   OrderDTO,
   OrderReturnReasonDTO,
@@ -73,6 +74,7 @@ import {
   UpdateOrderShippingMethodTaxLineDTO,
 } from "@types"
 import { UpdateReturnReasonDTO } from "src/types/return-reason"
+import { joinerConfig } from "../joiner-config"
 import {
   ApplyOrderChangeDTO,
   applyChangesToOrder,
@@ -258,6 +260,10 @@ export default class OrderModuleService<
     this.returnItemService_ = returnItemService
     this.orderClaimService_ = orderClaimService
     this.orderExchangeService_ = orderExchangeService
+  }
+
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
   }
 
   private shouldIncludeTotals(config: FindConfig<any>): boolean {
