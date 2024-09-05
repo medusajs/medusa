@@ -13,7 +13,7 @@ type AdminProduct.
 
 ```tsx
 import type { DetailWidgetProps, AdminProduct } from "@medusajs/types"
-import { defineConfig } from "@medusajs/admin-shared"
+import { defineConfig } from "@medusajs/admin-sdk"
 
 const ProductWidget = ({ data }: DetailWidgetProps<AdminProduct>) => {
  return <div>{data.title}</div>
