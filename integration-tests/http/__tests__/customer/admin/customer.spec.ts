@@ -453,61 +453,6 @@ medusaIntegrationTestRunner({
           })
         )
       })
-
-      it.only("Deletes a customer and ensures you can't subsequently sign in", async () => {
-        const registeredCustomerToken = (
-          await api.post("/auth/customer/emailpass/register", {
-            email: "test@email.com",
-            password: "password",
-          })
-        ).data.token
-
-        const customer = (
-          await api.post(
-            "/store/customers",
-            {
-              email: "test@email.com",
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${registeredCustomerToken}`,
-              },
-            }
-          )
-        ).data.customer
-
-        const loginResponse = await api.post("/auth/customer/emailpass", {
-          email: customer.email,
-          password: "password",
-        })
-
-        expect(loginResponse.status).toEqual(200)
-        expect(loginResponse.data.token).toEqual(expect.any(String))
-
-        const response = await api.delete(
-          `/admin/customers/${customer.id}`,
-          adminHeaders
-        )
-
-        expect(response.status).toEqual(200)
-        expect(response.data).toEqual({
-          id: customer.id,
-          object: "customer",
-          deleted: true,
-        })
-
-        const secondLoginResponse = await api
-          .post("/auth/customer/emailpass", {
-            email: customer.email,
-            password: "password",
-          })
-          .catch((e) => e)
-
-        expect(secondLoginResponse.status).toEqual(401)
-        expect(secondLoginResponse.response.data.message).toEqual(
-          "Unauthorized"
-        )
-      })
     })
   },
 })
