@@ -435,16 +435,24 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/auth/updateAuthIdentites",
-                        "title": "updateAuthIdentites",
+                        "path": "/references/auth/updateAuthIdentities",
+                        "title": "updateAuthIdentities",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/auth/updateProviderIdentites",
-                        "title": "updateProviderIdentites",
+                        "path": "/references/auth/updateProvider",
+                        "title": "updateProvider",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/updateProviderIdentities",
+                        "title": "updateProviderIdentities",
                         "children": []
                       },
                       {
@@ -9301,6 +9309,21 @@ export const generatedSidebar = [
             "type": "category",
             "title": "Auth",
             "children": [
+              {
+                "type": "sub-category",
+                "title": "Workflows",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/generateResetPasswordTokenWorkflow",
+                    "title": "generateResetPasswordTokenWorkflow",
+                    "children": []
+                  }
+                ],
+                "loaded": true
+              },
               {
                 "type": "sub-category",
                 "title": "Steps",
