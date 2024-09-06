@@ -53,7 +53,7 @@ async function generateTypes({
 declare module '@medusajs/types' {
   interface RemoteQueryEntryPoints {
     ${entryPoints
-      .map((entry) => `${entry.entryPoint}: ${entry.entityType}`)
+      .map((entry) => `    ${entry.entryPoint}: ${entry.entityType}`)
       .join("\n")}
   }
 }

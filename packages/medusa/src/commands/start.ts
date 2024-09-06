@@ -23,11 +23,12 @@ export default async function ({ port, directory }) {
       })
 
       if (gqlSchema && process.env?.NODE_ENV?.startsWith("dev")) {
-        const outputDirGeneratedTypes = path.join(directory, "src/.medusa")
+        const outputDirGeneratedTypes = path.join(directory, ".medusa")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
           schema: gqlSchema,
         })
+        logger.info("Geneated modules types")
       }
 
       const serverActivity = logger.activity(`Creating server`)

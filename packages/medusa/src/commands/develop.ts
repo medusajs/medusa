@@ -95,7 +95,7 @@ export default async function ({ port, directory }) {
           "static",
           "private",
           "src/admin/**/*",
-          "src/.medusa/**/*",
+          ".medusa/**/*",
         ],
       })
 
