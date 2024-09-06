@@ -39,7 +39,7 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderClaim] = await remoteQuery(queryObject, undefined, {
+  const [orderClaim] = await remoteQuery(queryObject, {
     throwIfKeyNotFound: true,
   })
 

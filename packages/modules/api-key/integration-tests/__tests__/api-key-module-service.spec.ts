@@ -1,12 +1,12 @@
 import { IApiKeyModuleService } from "@medusajs/types"
 import { ApiKeyType, Module, Modules } from "@medusajs/utils"
+import { ApiKeyModuleService } from "@services"
 import crypto from "crypto"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPublishableKeyFixture,
   createSecretKeyFixture,
 } from "../__fixtures__"
-import { ApiKeyModuleService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -47,7 +47,9 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
 
       expect(Object.keys(linkable)).toEqual(["apiKey"])
 
-      linkable.apiKey.toJSON = undefined
+      Object.keys(linkable).forEach((key) => {
+        delete linkable[key].toJSON
+      })
 
       expect(linkable.apiKey).toEqual({
         id: {
@@ -55,6 +57,12 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
           primaryKey: "id",
           serviceName: "apiKey",
           field: "apiKey",
+        },
+        publishable_key_id: {
+          field: "apiKey",
+          linkable: "publishable_key_id",
+          primaryKey: "publishable_key_id",
+          serviceName: "apiKey",
         },
       })
     })

@@ -1,3 +1,7 @@
+import {
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
+} from "@medusajs/types"
 import { isObject } from "./is-object"
 
 /**
@@ -83,20 +87,18 @@ import { isObject } from "./is-object"
  * //   },
  * // }
  */
-export function remoteQueryObjectFromString(
-  config:
-    | {
-        entryPoint: string
-        variables?: any
-        fields: string[]
-      }
-    | {
-        service: string
-        variables?: any
-        fields: string[]
-      }
-): object {
-  const { entryPoint, service, variables, fields } = {
+export function remoteQueryObjectFromString<
+  const TEntry extends string,
+  const TConfig extends RemoteQueryObjectConfig<TEntry>
+>(
+  config: TConfig | RemoteQueryObjectConfig<TEntry>
+): RemoteQueryObjectFromStringResult<TConfig> {
+  const {
+    entryPoint,
+    service,
+    variables = {},
+    fields = [],
+  } = {
     ...config,
     entryPoint: "entryPoint" in config ? config.entryPoint : undefined,
     service: "service" in config ? config.service : undefined,
@@ -114,12 +116,13 @@ export function remoteQueryObjectFromString(
   const usedVariables = new Set()
 
   for (const field of fields) {
-    if (!field.includes(".")) {
+    const fieldAsString = field as string
+    if (!fieldAsString.includes(".")) {
       remoteJoinerConfig[entryKey]["fields"].push(field)
       continue
     }
 
-    const fieldSegments = field.split(".")
+    const fieldSegments = fieldAsString.split(".")
     const fieldProperty = fieldSegments.pop()
 
     let combinedPath = ""
@@ -151,5 +154,7 @@ export function remoteQueryObjectFromString(
 
   remoteJoinerConfig[entryKey]["__args"] = topLevelArgs ?? {}
 
-  return remoteJoinerConfig
+  return {
+    __value: remoteJoinerConfig,
+  } as RemoteQueryObjectFromStringResult<TConfig>
 }
