@@ -1,5 +1,4 @@
 import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -10,18 +9,12 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { auth_provider } = req.params
-
-  const { entity_id } = req.body
-
-  const { http } = req.scope.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  ).projectConfig
+  const { identifier } = req.body
 
   await generateResetPasswordTokenWorkflow(req.scope).run({
     input: {
-      entityId: entity_id,
+      entityId: identifier,
       provider: auth_provider,
-      secret: http.jwtSecret!,
     },
     throwOnError: false, // we don't want to throw on error to avoid leaking information about non-existing identities
   })

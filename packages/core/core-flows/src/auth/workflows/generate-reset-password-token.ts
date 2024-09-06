@@ -2,25 +2,20 @@ import {
   AuthWorkflowEvents,
   generateJwtToken,
   MedusaError,
-} from "@medusajs/utils"
+} from "@medusajs/utils";
 import {
   createWorkflow,
   transform,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
-import { emitEventStep, useRemoteQueryStep } from "../../common"
+} from "@medusajs/workflows-sdk";
+import { emitEventStep, useRemoteQueryStep } from "../../common";
 
 export const generateResetPasswordTokenWorkflow = createWorkflow(
   "generate-reset-password-token",
-  (input: {
-    entityId: string
-    provider: string
-    secret: string
-    expiry?: number
-  }) => {
+  (input: { entityId: string; provider: string }) => {
     const providerIdentities = useRemoteQueryStep({
       entry_point: "provider_identity",
-      fields: ["auth_identity_id"],
+      fields: ["auth_identity_id", "provider_metadata"],
       variables: {
         filters: {
           entity_id: input.entityId,
@@ -43,10 +38,14 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
 
         const token = generateJwtToken(
           {
-            auth_identity_id: providerIdentity.auth_identity_id,
+            entity_id: input.entityId,
             provider: input.provider,
           },
-          { secret: input.secret, expiresIn: "15m" }
+          {
+            // Ensures the token can only be used once per requested reset
+            secret: providerIdentity.provider_metadata.password,
+            expiresIn: "15m",
+          }
         )
 
         return token
