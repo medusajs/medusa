@@ -15,6 +15,7 @@ import {
   PromotionRuleDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
+  UsageComputedActions,
 } from "./common"
 import {
   AddPromotionsToCampaignDTO,
@@ -32,26 +33,42 @@ export interface IPromotionModuleService extends IModuleService {
    * It adjusts the `used` property of a `CampaignBudget` to account for the adjustment amounts in the specified associated
    * computed actions.
    *
-   * @param {ComputeActions[]} computedActions - The computed actions to adjust their promotion's campaign budget.
+   * @param {UsageComputedActions[]} computedActions - The computed actions to adjust their promotion's campaign budget.
    * @returns {Promise<void>} Resolves when the campaign budgets have been adjusted successfully.
    *
    * @example
    * await promotionModuleService.registerUsage([
    *   {
-   *     action: "addItemAdjustment",
-   *     item_id: "cali_123",
    *     amount: 50,
    *     code: "50OFF",
    *   },
    *   {
-   *     action: "addShippingMethodAdjustment",
-   *     shipping_method_id: "casm_123",
    *     amount: 5000,
    *     code: "FREESHIPPING",
    *   },
    * ])
    */
-  registerUsage(computedActions: ComputeActions[]): Promise<void>
+  registerUsage(computedActions: UsageComputedActions[]): Promise<void>
+
+  /**
+   * This method is used to revert the changes made by registerUsage action
+   *
+   * @param {UsageComputedActions[]} computedActions - The computed actions to adjust their promotion's campaign budget.
+   * @returns {Promise<void>} Resolves when the campaign budgets have been adjusted successfully.
+   *
+   * @example
+   * await promotionModuleService.revertUsage([
+   *   {
+   *     amount: 50,
+   *     code: "50OFF",
+   *   },
+   *   {
+   *     amount: 5000,
+   *     code: "FREESHIPPING",
+   *   },
+   * ])
+   */
+  revertUsage(computedActions: UsageComputedActions[]): Promise<void>
 
   /**
    * This method provides the actions to perform on a cart based on the specified promotions
