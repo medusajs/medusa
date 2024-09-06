@@ -3,6 +3,7 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
+  when,
 } from "@medusajs/workflows-sdk"
 import { setAuthAppMetadataStep } from "../../auth"
 import { useRemoteQueryStep } from "../../common"
@@ -40,21 +41,19 @@ export const removeUserAccountWorkflow = createWorkflow(
 
     const authIdentity = transform(
       { authIdentities, input },
-      ({ authIdentities, input }) => {
-        const authIdentity = authIdentities[0]
-
-        if (!authIdentity) {
-          return new WorkflowResponse(input.userId)
-        }
-
-        return authIdentity
+      ({ authIdentities }) => {
+        return authIdentities[0]
       }
     )
 
-    setAuthAppMetadataStep({
-      authIdentityId: authIdentity.id,
-      actorType: "user",
-      value: null,
+    when({ authIdentity }, ({ authIdentity }) => {
+      return !!authIdentity
+    }).then(() => {
+      setAuthAppMetadataStep({
+        authIdentityId: authIdentity.id,
+        actorType: "user",
+        value: null,
+      })
     })
 
     return new WorkflowResponse(input.userId)
