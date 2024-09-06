@@ -37,14 +37,7 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
         if (!providerIdentity) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            "Provider identity required to generate token"
-          )
-        }
-
-        if (!input.secret) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            "Secret required to generate a token"
+            `Provider identity with entity_id ${input.entityId} and provider ${input.provider} not found`
           )
         }
 

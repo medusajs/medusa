@@ -42,10 +42,6 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider/update",
-    middlewares: [
-      validateScopeProviderAssociation(),
-      validateToken(),
-      authenticate("*", ["bearer", "session"], { allowUnauthenticated: true }),
-    ],
+    middlewares: [validateScopeProviderAssociation(), validateToken()],
   },
 ]

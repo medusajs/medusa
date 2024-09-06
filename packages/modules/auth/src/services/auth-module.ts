@@ -19,9 +19,6 @@ import { AuthIdentity, ProviderIdentity } from "@models"
 import { joinerConfig } from "../joiner-config"
 import AuthProviderService from "./auth-provider"
 
-// 15 minutes
-const DEFAULT_RESET_PASSWORD_TOKEN_DURATION = 60 * 15
-
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   authIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
