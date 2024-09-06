@@ -4,7 +4,6 @@
  * summary: Create Return
  * description: Create a return for an order's items. The admin receives the return and process it from their side.
  * x-authenticated: false
- * parameters: []
  * requestBody:
  *   content:
  *     application/json:

@@ -11,12 +11,7 @@
  *   - labels
  *   - order
  *   - order_id
- *   - shipping_option_id
  *   - data
- *   - packed_at
- *   - shipped_at
- *   - delivered_at
- *   - canceled_at
  *   - metadata
  * properties:
  *   location_id:
@@ -30,18 +25,6 @@
  *   delivery_address:
  *     type: object
  *     description: The fulfillment's delivery address.
- *     required:
- *       - first_name
- *       - last_name
- *       - phone
- *       - company
- *       - address_1
- *       - address_2
- *       - city
- *       - country_code
- *       - province
- *       - postal_code
- *       - metadata
  *     properties:
  *       first_name:
  *         type: string
@@ -97,8 +80,6 @@
  *         - sku
  *         - quantity
  *         - barcode
- *         - line_item_id
- *         - inventory_item_id
  *       properties:
  *         title:
  *           type: string

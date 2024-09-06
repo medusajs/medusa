@@ -4,7 +4,6 @@
  * summary: Upload Files
  * description: Upload files to the configured File Module Provider.
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []

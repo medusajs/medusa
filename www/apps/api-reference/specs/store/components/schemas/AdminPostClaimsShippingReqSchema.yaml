@@ -8,10 +8,10 @@ properties:
     type: string
     title: shipping_option_id
     description: The claim's shipping option id.
-  custom_price:
+  custom_amount:
     type: number
-    title: custom_price
-    description: The claim's custom price.
+    title: custom_amount
+    description: The claim's custom amount.
   description:
     type: string
     title: description

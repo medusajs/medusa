@@ -361,30 +361,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -453,30 +429,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -530,30 +482,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -628,30 +556,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -763,30 +667,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -860,30 +740,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -955,30 +811,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1059,30 +891,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -1160,30 +968,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -1245,30 +1029,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -1345,30 +1105,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -2279,30 +2015,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2471,30 +2183,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -2543,30 +2231,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -2630,30 +2294,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -2706,30 +2346,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -2820,117 +2436,59 @@ paths:
             type: string
             title: order
             description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-        - name: metadata
-          in: query
-          description: The customer's metadata.
-          required: true
-          schema:
-            type: object
-            description: The customer's metadata.
-        - name: first_name
-          in: query
-          description: The customer's first name.
-          required: true
-          schema:
-            type: string
-            title: first_name
-            description: The customer's first name.
-        - name: last_name
-          in: query
-          description: The customer's last name.
-          required: true
-          schema:
-            type: string
-            title: last_name
-            description: The customer's last name.
-        - name: phone
-          in: query
-          description: The customer's phone.
-          required: true
-          schema:
-            type: string
-            title: phone
-            description: The customer's phone.
-        - name: company
-          in: query
-          description: The customer's company.
-          required: true
-          schema:
-            type: string
-            title: company
-            description: The customer's company.
-        - name: address_1
-          in: query
-          description: The customer's address 1.
-          required: true
-          schema:
-            type: string
-            title: address_1
-            description: The customer's address 1.
-        - name: address_2
-          in: query
-          description: The customer's address 2.
-          required: true
-          schema:
-            type: string
-            title: address_2
-            description: The customer's address 2.
         - name: city
           in: query
           description: The customer's city.
-          required: true
+          required: false
           schema:
-            type: string
-            title: city
-            description: The customer's city.
+            oneOf:
+              - type: string
+                title: city
+                description: The customer's city.
+              - type: array
+                description: The customer's city.
+                items:
+                  type: string
+                  title: city
+                  description: The city's details.
         - name: country_code
           in: query
           description: The customer's country code.
-          required: true
+          required: false
           schema:
-            type: string
-            title: country_code
-            description: The customer's country code.
-        - name: province
-          in: query
-          description: The customer's province.
-          required: true
-          schema:
-            type: string
-            title: province
-            description: The customer's province.
+            oneOf:
+              - type: string
+                title: country_code
+                description: The customer's country code.
+              - type: array
+                description: The customer's country code.
+                items:
+                  type: string
+                  title: country_code
+                  description: The country code's details.
         - name: postal_code
           in: query
           description: The customer's postal code.
-          required: true
-          schema:
-            type: string
-            title: postal_code
-            description: The customer's postal code.
-        - name: address_name
-          in: query
-          description: The customer's address name.
-          required: true
-          schema:
-            type: string
-            title: address_name
-            description: The customer's address name.
-        - name: is_default_shipping
-          in: query
-          description: The customer's is default shipping.
           required: false
           schema:
-            type: boolean
-            title: is_default_shipping
-            description: The customer's is default shipping.
-        - name: is_default_billing
+            oneOf:
+              - type: string
+                title: postal_code
+                description: The customer's postal code.
+              - type: array
+                description: The customer's postal code.
+                items:
+                  type: string
+                  title: postal_code
+                  description: The postal code's details.
+        - name: q
           in: query
-          description: The customer's is default billing.
+          description: The customer's q.
           required: false
           schema:
-            type: boolean
-            title: is_default_billing
-            description: The customer's is default billing.
+            type: string
+            title: q
+            description: The customer's q.
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -2983,30 +2541,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -3016,19 +2550,6 @@ paths:
             schema:
               type: object
               description: SUMMARY
-              required:
-                - metadata
-                - first_name
-                - last_name
-                - phone
-                - company
-                - address_1
-                - address_2
-                - city
-                - country_code
-                - province
-                - postal_code
-                - address_name
               properties:
                 metadata:
                   type: object
@@ -3157,30 +2678,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -3239,30 +2736,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -3272,19 +2745,6 @@ paths:
             schema:
               type: object
               description: SUMMARY
-              required:
-                - metadata
-                - first_name
-                - last_name
-                - phone
-                - company
-                - address_1
-                - address_2
-                - city
-                - country_code
-                - province
-                - postal_code
-                - address_name
               properties:
                 metadata:
                   type: object
@@ -3412,30 +2872,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       security:
         - cookie_auth: []
         - jwt_token: []
@@ -3497,7 +2933,7 @@ paths:
       operationId: GetOrders
       summary: List Orders
       description: Retrieve a list of orders. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
-      x-authenticated: false
+      x-authenticated: true
       parameters:
         - name: expand
           in: query
@@ -3553,20 +2989,6 @@ paths:
                   type: string
                   title: id
                   description: The id's ID.
-        - name: name
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: name
-                description: The order's name.
-              - type: array
-                description: The order's name.
-                items:
-                  type: string
-                  title: name
-                  description: The name's details.
         - name: $and
           in: query
           required: false
@@ -3585,6 +3007,41 @@ paths:
             items:
               type: object
             title: $or
+        - name: status
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: status
+                description: The order's status.
+              - type: string
+                title: status
+                description: The order's status.
+              - type: string
+                title: status
+                description: The order's status.
+              - type: string
+                title: status
+                description: The order's status.
+              - type: string
+                title: status
+                description: The order's status.
+              - type: string
+                title: status
+                description: The order's status.
+              - type: array
+                description: The order's status.
+                items:
+                  type: string
+                  description: The status's details.
+                  enum:
+                    - canceled
+                    - requires_action
+                    - pending
+                    - completed
+                    - draft
+                    - archived
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -3639,6 +3096,9 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+      security:
+        - cookie_auth: []
+        - jwt_token: []
   /store/orders/{id}:
     get:
       operationId: GetOrdersId
@@ -3668,76 +3128,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-        - name: id
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: id
-                description: The order's ID.
-              - type: array
-                description: The order's ID.
-                items:
-                  type: string
-                  title: id
-                  description: The id's ID.
-        - name: status
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: status
-                description: The order's status.
-              - type: array
-                description: The order's status.
-                items:
-                  type: string
-                  title: status
-                  description: The status's details.
-        - name: $and
-          in: query
-          required: false
-          schema:
-            type: array
-            description: The order's $and.
-            items:
-              type: object
-            title: $and
-        - name: $or
-          in: query
-          required: false
-          schema:
-            type: array
-            description: The order's $or.
-            items:
-              type: object
-            title: $or
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -3786,30 +3176,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -3878,30 +3244,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       requestBody:
         content:
           application/json:
@@ -4002,58 +3344,11 @@ paths:
         - name: region_id
           in: query
           description: The payment provider's region id.
-          required: false
+          required: true
           schema:
-            oneOf:
-              - type: string
-                title: region_id
-                description: The payment provider's region id.
-              - type: array
-                description: The payment provider's region id.
-                items:
-                  type: string
-                  title: region_id
-                  description: The region id's details.
-        - name: id
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: id
-                description: The payment provider's ID.
-              - type: array
-                description: The payment provider's ID.
-                items:
-                  type: string
-                  title: id
-                  description: The id's ID.
-        - name: is_enabled
-          in: query
-          description: The payment provider's is enabled.
-          required: false
-          schema:
-            type: boolean
-            title: is_enabled
-            description: The payment provider's is enabled.
-        - name: $and
-          in: query
-          required: false
-          schema:
-            type: array
-            description: The payment provider's $and.
-            items:
-              type: object
-            title: $and
-        - name: $or
-          in: query
-          required: false
-          schema:
-            type: array
-            description: The payment provider's $or.
-            items:
-              type: object
-            title: $or
+            type: string
+            title: region_id
+            description: The payment provider's region id.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -4960,22 +4255,6 @@ paths:
                   type: string
                   title: name
                   description: The name's details.
-        - name: is_active
-          in: query
-          description: The product category's is active.
-          required: false
-          schema:
-            type: boolean
-            title: is_active
-            description: The product category's is active.
-        - name: is_internal
-          in: query
-          description: The product category's is internal.
-          required: false
-          schema:
-            type: boolean
-            title: is_internal
-            description: The product category's is internal.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -5030,30 +4309,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
         - name: include_ancestors_tree
           in: query
           description: The product category's include ancestors tree.
@@ -5232,21 +4487,6 @@ paths:
               type: string
               title: collection_id
               description: The collection id's details.
-        - name: tags
-          in: query
-          description: The product's tags.
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: tags
-                description: The product's tags.
-              - type: array
-                description: The product's tags.
-                items:
-                  type: string
-                  title: tags
-                  description: The tag's tags.
         - name: type_id
           in: query
           description: The product's type id.
@@ -5923,397 +5163,6 @@ paths:
                 type: boolean
                 title: $exists
                 description: The deleted at's $exists.
-        - name: status
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: status
-                description: The product's status.
-              - type: string
-                title: status
-                description: The product's status.
-              - type: string
-                title: status
-                description: The product's status.
-              - type: string
-                title: status
-                description: The product's status.
-              - type: array
-                description: The product's status.
-                items:
-                  type: string
-                  enum:
-                    - draft
-                    - proposed
-                    - published
-                    - rejected
-        - name: categories
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: object
-                description: The product's categories.
-                required:
-                  - id
-                properties:
-                  id:
-                    type: object
-                    description: The category's ID.
-                    properties:
-                      $and:
-                        type: array
-                        description: The id's $and.
-                        items:
-                          oneOf:
-                            - type: array
-                              description: The $and's details.
-                              items:
-                                type: object
-                              title: $and
-                            - type: object
-                              description: The $and's details.
-                              x-schemaName: RegExp
-                            - type: object
-                              description: The $and's details.
-                            - type: array
-                              description: The $and's details.
-                              items:
-                                oneOf:
-                                  - type: array
-                                    description: The $and's details.
-                                    items:
-                                      type: object
-                                    title: $and
-                                  - type: object
-                                    description: The $and's details.
-                                    x-schemaName: RegExp
-                      $or:
-                        type: array
-                        description: The id's $or.
-                        items:
-                          oneOf:
-                            - type: array
-                              description: The $or's details.
-                              items:
-                                type: object
-                              title: $or
-                            - type: object
-                              description: The $or's details.
-                              x-schemaName: RegExp
-                            - type: object
-                              description: The $or's details.
-                            - type: array
-                              description: The $or's details.
-                              items:
-                                oneOf:
-                                  - type: array
-                                    description: The $or's details.
-                                    items:
-                                      type: object
-                                    title: $or
-                                  - type: object
-                                    description: The $or's details.
-                                    x-schemaName: RegExp
-                      $eq:
-                        oneOf:
-                          - type: string
-                            title: $eq
-                            description: The id's $eq.
-                          - type: object
-                            description: The id's $eq.
-                            x-schemaName: RegExp
-                          - type: array
-                            description: The id's $eq.
-                            items:
-                              oneOf:
-                                - type: string
-                                  title: $eq
-                                  description: The $eq's details.
-                                - type: object
-                                  description: The $eq's details.
-                                  x-schemaName: RegExp
-                      $ne:
-                        oneOf:
-                          - type: string
-                            title: $ne
-                            description: The id's $ne.
-                          - type: object
-                            description: The id's $ne.
-                            x-schemaName: RegExp
-                      $in:
-                        type: array
-                        description: The id's $in.
-                        items:
-                          oneOf:
-                            - type: string
-                              title: $in
-                              description: The $in's details.
-                            - type: object
-                              description: The $in's details.
-                              x-schemaName: RegExp
-                      $nin:
-                        type: array
-                        description: The id's $nin.
-                        items:
-                          oneOf:
-                            - type: string
-                              title: $nin
-                              description: The $nin's details.
-                            - type: object
-                              description: The $nin's details.
-                              x-schemaName: RegExp
-                      $not:
-                        oneOf:
-                          - type: string
-                            title: $not
-                            description: The id's $not.
-                          - type: object
-                            description: The id's $not.
-                            x-schemaName: RegExp
-                          - type: object
-                            description: The id's $not.
-                          - type: array
-                            description: The id's $not.
-                            items:
-                              oneOf:
-                                - type: string
-                                  title: $not
-                                  description: The $not's details.
-                                - type: object
-                                  description: The $not's details.
-                                  x-schemaName: RegExp
-                      $gt:
-                        oneOf:
-                          - type: string
-                            title: $gt
-                            description: The id's $gt.
-                          - type: object
-                            description: The id's $gt.
-                            x-schemaName: RegExp
-                      $gte:
-                        oneOf:
-                          - type: string
-                            title: $gte
-                            description: The id's $gte.
-                          - type: object
-                            description: The id's $gte.
-                            x-schemaName: RegExp
-                      $lt:
-                        oneOf:
-                          - type: string
-                            title: $lt
-                            description: The id's $lt.
-                          - type: object
-                            description: The id's $lt.
-                            x-schemaName: RegExp
-                      $lte:
-                        oneOf:
-                          - type: string
-                            title: $lte
-                            description: The id's $lte.
-                          - type: object
-                            description: The id's $lte.
-                            x-schemaName: RegExp
-                      $like:
-                        type: string
-                        title: $like
-                        description: The id's $like.
-                      $re:
-                        type: string
-                        title: $re
-                        description: The id's $re.
-                      $ilike:
-                        type: string
-                        title: $ilike
-                        description: The id's $ilike.
-                      $fulltext:
-                        type: string
-                        title: $fulltext
-                        description: The id's $fulltext.
-                      $overlap:
-                        type: array
-                        description: The id's $overlap.
-                        items:
-                          type: string
-                          title: $overlap
-                          description: The $overlap's details.
-                      $contains:
-                        type: array
-                        description: The id's $contains.
-                        items:
-                          type: string
-                          title: $contains
-                          description: The $contain's $contains.
-                      $contained:
-                        type: array
-                        description: The id's $contained.
-                        items:
-                          type: string
-                          title: $contained
-                          description: The $contained's details.
-                      $exists:
-                        type: boolean
-                        title: $exists
-                        description: The id's $exists.
-              - type: object
-                description: The product's categories.
-                required:
-                  - id
-                properties:
-                  id:
-                    type: object
-                    description: The category's ID.
-                    properties:
-                      $and:
-                        type: array
-                        description: The id's $and.
-                        items:
-                          type: array
-                          description: The $and's details.
-                          items:
-                            type: array
-                            description: The $and's details.
-                            items:
-                              type: object
-                            title: $and
-                      $or:
-                        type: array
-                        description: The id's $or.
-                        items:
-                          type: array
-                          description: The $or's details.
-                          items:
-                            type: array
-                            description: The $or's details.
-                            items:
-                              type: object
-                            title: $or
-                      $eq:
-                        oneOf:
-                          - type: array
-                            description: The id's $eq.
-                            items:
-                              type: string
-                              title: $eq
-                              description: The $eq's details.
-                          - type: array
-                            description: The id's $eq.
-                            items:
-                              type: array
-                              description: The $eq's details.
-                              items:
-                                type: string
-                                title: $eq
-                                description: The $eq's details.
-                      $ne:
-                        type: array
-                        description: The id's $ne.
-                        items:
-                          type: string
-                          title: $ne
-                          description: The $ne's details.
-                      $in:
-                        type: array
-                        description: The id's $in.
-                        items:
-                          type: array
-                          description: The $in's details.
-                          items:
-                            type: string
-                            title: $in
-                            description: The $in's details.
-                      $nin:
-                        type: array
-                        description: The id's $nin.
-                        items:
-                          type: array
-                          description: The $nin's details.
-                          items:
-                            type: string
-                            title: $nin
-                            description: The $nin's details.
-                      $not:
-                        type: array
-                        description: The id's $not.
-                        items:
-                          oneOf:
-                            - type: string
-                              title: $not
-                              description: The $not's details.
-                            - type: object
-                              description: The $not's details.
-                      $gt:
-                        type: array
-                        description: The id's $gt.
-                        items:
-                          type: string
-                          title: $gt
-                          description: The $gt's details.
-                      $gte:
-                        type: array
-                        description: The id's $gte.
-                        items:
-                          type: string
-                          title: $gte
-                          description: The $gte's details.
-                      $lt:
-                        type: array
-                        description: The id's $lt.
-                        items:
-                          type: string
-                          title: $lt
-                          description: The $lt's details.
-                      $lte:
-                        type: array
-                        description: The id's $lte.
-                        items:
-                          type: string
-                          title: $lte
-                          description: The $lte's details.
-                      $like:
-                        type: string
-                        title: $like
-                        description: The id's $like.
-                      $re:
-                        type: string
-                        title: $re
-                        description: The id's $re.
-                      $ilike:
-                        type: string
-                        title: $ilike
-                        description: The id's $ilike.
-                      $fulltext:
-                        type: string
-                        title: $fulltext
-                        description: The id's $fulltext.
-                      $overlap:
-                        type: array
-                        description: The id's $overlap.
-                        items:
-                          type: string
-                          title: $overlap
-                          description: The $overlap's details.
-                      $contains:
-                        type: array
-                        description: The id's $contains.
-                        items:
-                          type: string
-                          title: $contains
-                          description: The $contain's $contains.
-                      $contained:
-                        type: array
-                        description: The id's $contained.
-                        items:
-                          type: string
-                          title: $contained
-                          description: The $contained's details.
-                      $exists:
-                        type: boolean
-                        title: $exists
-                        description: The id's $exists.
         - name: region_id
           in: query
           description: The product's region id.
@@ -6366,6 +5215,20 @@ paths:
                   type: string
                   title: category_id
                   description: The category id's details.
+        - name: tag_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: tag_id
+                description: The product's tag id.
+              - type: array
+                description: The product's tag id.
+                items:
+                  type: string
+                  title: tag_id
+                  description: The tag id's details.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -6449,30 +5312,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
         - name: region_id
           in: query
           description: The product's region id.
@@ -7022,482 +5861,6 @@ paths:
                   type: string
                   title: name
                   description: The name's details.
-        - name: code
-          in: query
-          required: false
-          schema:
-            oneOf:
-              - type: string
-                title: code
-                description: The region's code.
-              - type: array
-                description: The region's code.
-                items:
-                  type: string
-                  title: code
-                  description: The code's details.
-        - name: created_at
-          in: query
-          description: The region's created at.
-          required: false
-          schema:
-            type: object
-            description: The region's created at.
-            properties:
-              $and:
-                type: array
-                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $and
-              $or:
-                type: array
-                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $or
-              $eq:
-                oneOf:
-                  - type: string
-                    title: $eq
-                    description: Filter by an exact match.
-                  - type: array
-                    description: Filter by an exact match.
-                    items:
-                      type: string
-                      title: $eq
-                      description: Filter by an exact match.
-              $ne:
-                type: string
-                title: $ne
-                description: Filter by values not equal to this parameter.
-              $in:
-                type: array
-                description: Filter by values in this array.
-                items:
-                  type: string
-                  title: $in
-                  description: Filter by values in this array.
-              $nin:
-                type: array
-                description: Filter by values not in this array.
-                items:
-                  type: string
-                  title: $nin
-                  description: Filter by values not in this array.
-              $not:
-                oneOf:
-                  - type: string
-                    title: $not
-                    description: Filter by values not matching the conditions in this parameter.
-                  - type: object
-                    description: Filter by values not matching the conditions in this parameter.
-                    properties:
-                      $and:
-                        type: array
-                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $and
-                      $or:
-                        type: array
-                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $or
-                      $eq:
-                        oneOf:
-                          - type: string
-                            title: $eq
-                            description: Filter by an exact match.
-                          - type: array
-                            description: Filter by an exact match.
-                            items:
-                              type: string
-                              title: $eq
-                              description: Filter by an exact match.
-                      $ne:
-                        type: string
-                        title: $ne
-                        description: Filter by values not equal to this parameter.
-                      $in:
-                        type: array
-                        description: Filter by values in this array.
-                        items:
-                          type: string
-                          title: $in
-                          description: Filter by values in this array.
-                      $nin:
-                        type: array
-                        description: Filter by values not in this array.
-                        items:
-                          type: string
-                          title: $nin
-                          description: Filter by values not in this array.
-                      $not:
-                        oneOf:
-                          - type: string
-                            title: $not
-                            description: Filter by values not matching the conditions in this parameter.
-                          - type: object
-                            description: Filter by values not matching the conditions in this parameter.
-                          - type: array
-                            description: Filter by values not matching the conditions in this parameter.
-                            items:
-                              type: string
-                              title: $not
-                              description: Filter by values not matching the conditions in this parameter.
-                      $gt:
-                        type: string
-                        title: $gt
-                        description: Filter by values greater than this parameter. Useful for numbers and dates only.
-                      $gte:
-                        type: string
-                        title: $gte
-                        description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-                      $lt:
-                        type: string
-                        title: $lt
-                        description: Filter by values less than this parameter. Useful for numbers and dates only.
-                      $lte:
-                        type: string
-                        title: $lte
-                        description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-                      $like:
-                        type: string
-                        title: $like
-                        description: Apply a `like` filter. Useful for strings only.
-                      $re:
-                        type: string
-                        title: $re
-                        description: Apply a regex filter. Useful for strings only.
-                      $ilike:
-                        type: string
-                        title: $ilike
-                        description: Apply a case-insensitive `like` filter. Useful for strings only.
-                      $fulltext:
-                        type: string
-                        title: $fulltext
-                        description: Filter to apply on full-text properties.
-                      $overlap:
-                        type: array
-                        description: Filter arrays that have overlapping values with this parameter.
-                        items:
-                          type: string
-                          title: $overlap
-                          description: Filter arrays that have overlapping values with this parameter.
-                      $contains:
-                        type: array
-                        description: Filter arrays that contain some of the values of this parameter.
-                        items:
-                          type: string
-                          title: $contains
-                          description: Filter arrays that contain some of the values of this parameter.
-                      $contained:
-                        type: array
-                        description: Filter arrays that contain all values of this parameter.
-                        items:
-                          type: string
-                          title: $contained
-                          description: Filter arrays that contain all values of this parameter.
-                      $exists:
-                        type: boolean
-                        title: $exists
-                        description: Filter by whether a value for this parameter exists (not `null`).
-                  - type: array
-                    description: Filter by values not matching the conditions in this parameter.
-                    items:
-                      type: string
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-              $gt:
-                type: string
-                title: $gt
-                description: Filter by values greater than this parameter. Useful for numbers and dates only.
-              $gte:
-                type: string
-                title: $gte
-                description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-              $lt:
-                type: string
-                title: $lt
-                description: Filter by values less than this parameter. Useful for numbers and dates only.
-              $lte:
-                type: string
-                title: $lte
-                description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-              $like:
-                type: string
-                title: $like
-                description: Apply a `like` filter. Useful for strings only.
-              $re:
-                type: string
-                title: $re
-                description: Apply a regex filter. Useful for strings only.
-              $ilike:
-                type: string
-                title: $ilike
-                description: Apply a case-insensitive `like` filter. Useful for strings only.
-              $fulltext:
-                type: string
-                title: $fulltext
-                description: Filter to apply on full-text properties.
-              $overlap:
-                type: array
-                description: Filter arrays that have overlapping values with this parameter.
-                items:
-                  type: string
-                  title: $overlap
-                  description: Filter arrays that have overlapping values with this parameter.
-              $contains:
-                type: array
-                description: Filter arrays that contain some of the values of this parameter.
-                items:
-                  type: string
-                  title: $contains
-                  description: Filter arrays that contain some of the values of this parameter.
-              $contained:
-                type: array
-                description: Filter arrays that contain all values of this parameter.
-                items:
-                  type: string
-                  title: $contained
-                  description: Filter arrays that contain all values of this parameter.
-              $exists:
-                type: boolean
-                title: $exists
-                description: Filter by whether a value for this parameter exists (not `null`).
-        - name: updated_at
-          in: query
-          description: The region's updated at.
-          required: false
-          schema:
-            type: object
-            description: The region's updated at.
-            properties:
-              $and:
-                type: array
-                description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $and
-              $or:
-                type: array
-                description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                items:
-                  type: object
-                title: $or
-              $eq:
-                oneOf:
-                  - type: string
-                    title: $eq
-                    description: Filter by an exact match.
-                  - type: array
-                    description: Filter by an exact match.
-                    items:
-                      type: string
-                      title: $eq
-                      description: Filter by an exact match.
-              $ne:
-                type: string
-                title: $ne
-                description: Filter by values not equal to this parameter.
-              $in:
-                type: array
-                description: Filter by values in this array.
-                items:
-                  type: string
-                  title: $in
-                  description: Filter by values in this array.
-              $nin:
-                type: array
-                description: Filter by values not in this array.
-                items:
-                  type: string
-                  title: $nin
-                  description: Filter by values not in this array.
-              $not:
-                oneOf:
-                  - type: string
-                    title: $not
-                    description: Filter by values not matching the conditions in this parameter.
-                  - type: object
-                    description: Filter by values not matching the conditions in this parameter.
-                    properties:
-                      $and:
-                        type: array
-                        description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $and
-                      $or:
-                        type: array
-                        description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
-                        items:
-                          type: object
-                        title: $or
-                      $eq:
-                        oneOf:
-                          - type: string
-                            title: $eq
-                            description: Filter by an exact match.
-                          - type: array
-                            description: Filter by an exact match.
-                            items:
-                              type: string
-                              title: $eq
-                              description: Filter by an exact match.
-                      $ne:
-                        type: string
-                        title: $ne
-                        description: Filter by values not equal to this parameter.
-                      $in:
-                        type: array
-                        description: Filter by values in this array.
-                        items:
-                          type: string
-                          title: $in
-                          description: Filter by values in this array.
-                      $nin:
-                        type: array
-                        description: Filter by values not in this array.
-                        items:
-                          type: string
-                          title: $nin
-                          description: Filter by values not in this array.
-                      $not:
-                        oneOf:
-                          - type: string
-                            title: $not
-                            description: Filter by values not matching the conditions in this parameter.
-                          - type: object
-                            description: Filter by values not matching the conditions in this parameter.
-                          - type: array
-                            description: Filter by values not matching the conditions in this parameter.
-                            items:
-                              type: string
-                              title: $not
-                              description: Filter by values not matching the conditions in this parameter.
-                      $gt:
-                        type: string
-                        title: $gt
-                        description: Filter by values greater than this parameter. Useful for numbers and dates only.
-                      $gte:
-                        type: string
-                        title: $gte
-                        description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-                      $lt:
-                        type: string
-                        title: $lt
-                        description: Filter by values less than this parameter. Useful for numbers and dates only.
-                      $lte:
-                        type: string
-                        title: $lte
-                        description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-                      $like:
-                        type: string
-                        title: $like
-                        description: Apply a `like` filter. Useful for strings only.
-                      $re:
-                        type: string
-                        title: $re
-                        description: Apply a regex filter. Useful for strings only.
-                      $ilike:
-                        type: string
-                        title: $ilike
-                        description: Apply a case-insensitive `like` filter. Useful for strings only.
-                      $fulltext:
-                        type: string
-                        title: $fulltext
-                        description: Filter to apply on full-text properties.
-                      $overlap:
-                        type: array
-                        description: Filter arrays that have overlapping values with this parameter.
-                        items:
-                          type: string
-                          title: $overlap
-                          description: Filter arrays that have overlapping values with this parameter.
-                      $contains:
-                        type: array
-                        description: Filter arrays that contain some of the values of this parameter.
-                        items:
-                          type: string
-                          title: $contains
-                          description: Filter arrays that contain some of the values of this parameter.
-                      $contained:
-                        type: array
-                        description: Filter arrays that contain all values of this parameter.
-                        items:
-                          type: string
-                          title: $contained
-                          description: Filter arrays that contain all values of this parameter.
-                      $exists:
-                        type: boolean
-                        title: $exists
-                        description: Filter by whether a value for this parameter exists (not `null`).
-                  - type: array
-                    description: Filter by values not matching the conditions in this parameter.
-                    items:
-                      type: string
-                      title: $not
-                      description: Filter by values not matching the conditions in this parameter.
-              $gt:
-                type: string
-                title: $gt
-                description: Filter by values greater than this parameter. Useful for numbers and dates only.
-              $gte:
-                type: string
-                title: $gte
-                description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
-              $lt:
-                type: string
-                title: $lt
-                description: Filter by values less than this parameter. Useful for numbers and dates only.
-              $lte:
-                type: string
-                title: $lte
-                description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-              $like:
-                type: string
-                title: $like
-                description: Apply a `like` filter. Useful for strings only.
-              $re:
-                type: string
-                title: $re
-                description: Apply a regex filter. Useful for strings only.
-              $ilike:
-                type: string
-                title: $ilike
-                description: Apply a case-insensitive `like` filter. Useful for strings only.
-              $fulltext:
-                type: string
-                title: $fulltext
-                description: Filter to apply on full-text properties.
-              $overlap:
-                type: array
-                description: Filter arrays that have overlapping values with this parameter.
-                items:
-                  type: string
-                  title: $overlap
-                  description: Filter arrays that have overlapping values with this parameter.
-              $contains:
-                type: array
-                description: Filter arrays that contain some of the values of this parameter.
-                items:
-                  type: string
-                  title: $contains
-                  description: Filter arrays that contain some of the values of this parameter.
-              $contained:
-                type: array
-                description: Filter arrays that contain all values of this parameter.
-                items:
-                  type: string
-                  title: $contained
-                  description: Filter arrays that contain all values of this parameter.
-              $exists:
-                type: boolean
-                title: $exists
-                description: Filter by whether a value for this parameter exists (not `null`).
         - name: $and
           in: query
           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
@@ -7518,6 +5881,20 @@ paths:
             items:
               type: object
             title: $or
+        - name: currency_code
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: currency_code
+                description: The region's currency code.
+              - type: array
+                description: The region's currency code.
+                items:
+                  type: string
+                  title: currency_code
+                  description: The currency code's details.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -7601,30 +5978,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -7662,7 +6015,6 @@ paths:
       summary: Create Return
       description: Create a return.
       x-authenticated: false
-      parameters: []
       requestBody:
         content:
           application/json:
@@ -7843,30 +6195,6 @@ paths:
             type: string
             title: fields
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -7899,14 +6227,6 @@ paths:
       description: Retrieve a list of shipping options. The shipping options can be filtered by fields such as `id`. The shipping options can also be sorted or paginated.
       x-authenticated: false
       parameters:
-        - name: expand
-          in: query
-          description: Comma-separated relations that should be expanded in the returned data.
-          required: false
-          schema:
-            type: string
-            title: expand
-            description: Comma-separated relations that should be expanded in the returned data.
         - name: fields
           in: query
           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields.
@@ -8894,7 +7214,6 @@ components:
       x-schemaName: AdminCreateCollection
       required:
         - title
-        - metadata
       properties:
         title:
           type: string
@@ -8913,7 +7232,6 @@ components:
       x-schemaName: AdminCreateCustomerGroup
       required:
         - name
-        - metadata
       properties:
         name:
           type: string
@@ -8934,12 +7252,7 @@ components:
         - labels
         - order
         - order_id
-        - shipping_option_id
         - data
-        - packed_at
-        - shipped_at
-        - delivered_at
-        - canceled_at
         - metadata
       properties:
         location_id:
@@ -8953,18 +7266,6 @@ components:
         delivery_address:
           type: object
           description: The fulfillment's delivery address.
-          required:
-            - first_name
-            - last_name
-            - phone
-            - company
-            - address_1
-            - address_2
-            - city
-            - country_code
-            - province
-            - postal_code
-            - metadata
           properties:
             first_name:
               type: string
@@ -9020,8 +7321,6 @@ components:
               - sku
               - quantity
               - barcode
-              - line_item_id
-              - inventory_item_id
             properties:
               title:
                 type: string
@@ -9174,8 +7473,6 @@ components:
       required:
         - title
         - description
-        - starts_at
-        - ends_at
       properties:
         title:
           type: string
@@ -9218,8 +7515,6 @@ components:
               - currency_code
               - amount
               - variant_id
-              - min_quantity
-              - max_quantity
             properties:
               currency_code:
                 type: string
@@ -9888,6 +8183,7 @@ components:
     AdminCreateShippingProfile:
       type: object
       description: SUMMARY
+      x-schemaName: AdminCreateShippingProfile
       required:
         - name
         - type
@@ -9903,7 +8199,6 @@ components:
         metadata:
           type: object
           description: The shipping profile's metadata.
-      x-schemaName: AdminCreateShippingProfile
     AdminCreateStockLocation:
       type: object
       description: SUMMARY
@@ -11964,6 +10259,18 @@ components:
       properties:
         invite:
           $ref: '#/components/schemas/AdminInvite'
+    AdminLinkPriceListProducts:
+      type: object
+      description: The removal details.
+      properties:
+        remove:
+          type: array
+          description: The products to remove from the price list.
+          items:
+            type: string
+            title: remove
+            description: The ID of a product.
+      x-schemaName: AdminLinkPriceListProducts
     AdminNotification:
       type: object
       description: The notification's details.
@@ -12414,8 +10721,8 @@ components:
         - return_requested_total
         - order_change
         - currency_code
-        - id
         - version
+        - id
         - region_id
         - customer_id
         - sales_channel_id
@@ -12874,14 +11181,14 @@ components:
           type: string
           title: currency_code
           description: The order preview's currency code.
-        id:
-          type: string
-          title: id
-          description: The order preview's ID.
         version:
           type: number
           title: version
           description: The order preview's version.
+        id:
+          type: string
+          title: id
+          description: The order preview's ID.
         region_id:
           type: string
           title: region_id
@@ -13460,8 +11767,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminPostClaimsItemsActionReqSchema
-      required:
-        - reason_id
       properties:
         quantity:
           type: number
@@ -13480,10 +11785,10 @@ components:
       description: SUMMARY
       x-schemaName: AdminPostClaimsShippingActionReqSchema
       properties:
-        custom_price:
+        custom_amount:
           type: number
-          title: custom_price
-          description: The claim's custom price.
+          title: custom_amount
+          description: The claim's custom amount.
         internal_note:
           type: string
           title: internal_note
@@ -13502,10 +11807,10 @@ components:
           type: string
           title: shipping_option_id
           description: The claim's shipping option id.
-        custom_price:
+        custom_amount:
           type: number
-          title: custom_price
-          description: The claim's custom price.
+          title: custom_amount
+          description: The claim's custom amount.
         description:
           type: string
           title: description
@@ -13631,10 +11936,10 @@ components:
       description: SUMMARY
       x-schemaName: AdminPostExchangesShippingActionReqSchema
       properties:
-        custom_price:
+        custom_amount:
           type: number
-          title: custom_price
-          description: The exchange's custom price.
+          title: custom_amount
+          description: The exchange's custom amount.
         internal_note:
           type: string
           title: internal_note
@@ -13653,10 +11958,10 @@ components:
           type: string
           title: shipping_option_id
           description: The exchange's shipping option id.
-        custom_price:
+        custom_amount:
           type: number
-          title: custom_price
-          description: The exchange's custom price.
+          title: custom_amount
+          description: The exchange's custom amount.
         description:
           type: string
           title: description
@@ -13675,8 +11980,6 @@ components:
       required:
         - type
         - order_id
-        - reason_id
-        - metadata
       properties:
         type:
           type: string
@@ -13760,7 +12063,6 @@ components:
       x-schemaName: AdminPostOrderEditsReqSchema
       required:
         - order_id
-        - metadata
       properties:
         order_id:
           type: string
@@ -13782,10 +12084,10 @@ components:
       description: SUMMARY
       x-schemaName: AdminPostOrderEditsShippingActionReqSchema
       properties:
-        custom_price:
+        custom_amount:
           type: number
-          title: custom_price
-          description: The order edit's custom price.
+          title: custom_amount
+          description: The order edit's custom amount.
         internal_note:
           type: string
           title: internal_note
@@ -13804,10 +12106,10 @@ components:
           type: string
           title: shipping_option_id
           description: The order edit's shipping option id.
-        custom_price:
+        custom_amount:
           type: number
-          title: custom_price
-          description: The order edit's custom price.
+          title: custom_amount
+          description: The order edit's custom amount.
         description:
           type: string
           title: description
@@ -13840,7 +12142,6 @@ components:
       x-schemaName: AdminPostOrderExchangesReqSchema
       required:
         - order_id
-        - metadata
       properties:
         order_id:
           type: string
@@ -13861,8 +12162,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminPostReceiveReturnsReqSchema
-      required:
-        - metadata
       properties:
         internal_note:
           type: string
@@ -13947,7 +12246,6 @@ components:
       x-schemaName: AdminPostReturnsReqSchema
       required:
         - order_id
-        - metadata
       properties:
         order_id:
           type: string
@@ -14034,8 +12332,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminPostReturnsReturnReqSchema
-      required:
-        - metadata
       properties:
         location_id:
           type: string
@@ -14053,10 +12349,10 @@ components:
       description: SUMMARY
       x-schemaName: AdminPostReturnsShippingActionReqSchema
       properties:
-        custom_price:
+        custom_amount:
           type: number
-          title: custom_price
-          description: The return's custom price.
+          title: custom_amount
+          description: The return's custom amount.
         internal_note:
           type: string
           title: internal_note
@@ -14075,10 +12371,10 @@ components:
           type: string
           title: shipping_option_id
           description: The exchange's shipping option id.
-        custom_price:
+        custom_amount:
           type: number
-          title: custom_price
-          description: The exchange's custom price.
+          title: custom_amount
+          description: The exchange's custom amount.
         description:
           type: string
           title: description
@@ -15167,6 +13463,10 @@ components:
           type: boolean
           title: manage_inventory
           description: The parent's manage inventory.
+        inventory_quantity:
+          type: number
+          title: inventory_quantity
+          description: The parent's inventory quantity.
         hs_code:
           type: string
           title: hs_code
@@ -17522,8 +15822,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminUpdateCollection
-      required:
-        - metadata
       properties:
         title:
           type: string
@@ -17540,8 +15838,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminUpdateCustomerGroup
-      required:
-        - metadata
       properties:
         name:
           type: string
@@ -17554,10 +15850,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminUpdatePriceList
-      required:
-        - description
-        - starts_at
-        - ends_at
       properties:
         title:
           type: string
@@ -18014,9 +16306,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminUpdateSalesChannel
-      required:
-        - description
-        - metadata
       properties:
         name:
           type: string
@@ -18037,9 +16326,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminUpdateStockLocation
-      required:
-        - address_id
-        - metadata
       properties:
         name:
           type: string
@@ -18050,13 +16336,7 @@ components:
           description: The stock location's address.
           required:
             - address_1
-            - address_2
-            - company
-            - city
             - country_code
-            - phone
-            - postal_code
-            - province
           properties:
             address_1:
               type: string
@@ -18101,11 +16381,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminUpdateStore
-      required:
-        - default_sales_channel_id
-        - default_region_id
-        - default_location_id
-        - metadata
       properties:
         name:
           type: string
@@ -18151,9 +16426,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminUpdateTaxRate
-      required:
-        - code
-        - metadata
       properties:
         rate:
           type: number
@@ -18200,10 +16472,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: AdminUpdateUser
-      required:
-        - first_name
-        - last_name
-        - avatar_url
       properties:
         first_name:
           type: string
@@ -21839,8 +20107,8 @@ components:
         - order_change
         - status
         - currency_code
-        - id
         - version
+        - id
         - original_item_total
         - original_item_subtotal
         - original_item_tax_total
@@ -22505,14 +20773,14 @@ components:
           type: string
           title: currency_code
           description: The order preview's currency code.
-        id:
-          type: string
-          title: id
-          description: The order preview's ID.
         version:
           type: number
           title: version
           description: The order preview's version.
+        id:
+          type: string
+          title: id
+          description: The order preview's ID.
         region_id:
           type: string
           title: region_id
@@ -22558,6 +20826,8 @@ components:
             - balance
             - paid_total
             - refunded_total
+            - pending_difference
+            - raw_pending_difference
           properties:
             total:
               oneOf:
@@ -22769,6 +21039,23 @@ components:
                 - type: object
                   description: The summary's refunded total.
                   x-schemaName: IBigNumber
+            pending_difference:
+              oneOf:
+                - type: string
+                  title: pending_difference
+                  description: The summary's pending difference.
+                - type: number
+                  title: pending_difference
+                  description: The summary's pending difference.
+                - type: string
+                  title: pending_difference
+                  description: The summary's pending difference.
+                - type: object
+                  description: The summary's pending difference.
+                  x-schemaName: IBigNumber
+            raw_pending_difference:
+              type: object
+              description: The summary's raw pending difference.
         metadata:
           type: object
           description: The order preview's metadata.
@@ -23525,7 +21812,6 @@ components:
       required:
         - variant_id
         - quantity
-        - metadata
       properties:
         variant_id:
           type: string
@@ -25789,7 +24075,6 @@ components:
       x-schemaName: StoreUpdateCartLineItem
       required:
         - quantity
-        - metadata
       properties:
         quantity:
           type: number
@@ -25802,11 +24087,6 @@ components:
       type: object
       description: SUMMARY
       x-schemaName: StoreUpdateCustomer
-      required:
-        - company_name
-        - first_name
-        - last_name
-        - phone
       properties:
         company_name:
           type: string

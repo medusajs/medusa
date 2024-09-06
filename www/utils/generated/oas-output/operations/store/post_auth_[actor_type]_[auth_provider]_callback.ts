@@ -2,8 +2,18 @@
  * @oas [post] /auth/customer/{auth_provider}/callback
  * operationId: PostActor_typeAuth_providerCallback
  * summary: Validate Authentication Callback
- * description: Third-party authentication providers, such as Google, require an API route to call once authentication with the third-party provider is finished.
- *   This API route validates callback for customers logged-in with third-party providers.
+ * description: >
+ *   This API route is used by your storefront or frontend application when a third-party provider redirects to it after authentication. 
+ * 
+ * 
+ *   It validates the authentication with the third-party provider and, if successful, returns an authentication token.
+ * 
+ *   
+ *   You can decode the JWT token using libraries like [react-jwt](https://www.npmjs.com/package/react-jwt) in the storefront. If the decoded data doesn't 
+ *   have an `actor_id` property, then you must register the customer using the Create Customer API route passing the token in the request's Authorization header.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#2-third-party-service-authenticate-flow
+ *   description: Learn about third-party authentication flow.
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider
@@ -15,8 +25,11 @@
  *       example: "google"
  * x-codeSamples:
  *   - lang: Shell
- *     label: cURL
- *     source: curl -X POST '{backend_url}/auth/customer/{auth_provider}/callback'
+ *     label: Google Provider
+ *     source: curl -X POST '{backend_url}/auth/customer/google/callback?code=123'
+ *   - lang: Shell
+ *     label: GitHub Provider
+ *     source: curl -X POST '{backend_url}/auth/customer/github/callback?code=123'
  * tags:
  *   - Auth
  * responses:

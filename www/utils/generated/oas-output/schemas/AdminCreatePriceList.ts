@@ -6,8 +6,6 @@
  * required:
  *   - title
  *   - description
- *   - starts_at
- *   - ends_at
  * properties:
  *   title:
  *     type: string
@@ -50,8 +48,6 @@
  *         - currency_code
  *         - amount
  *         - variant_id
- *         - min_quantity
- *         - max_quantity
  *       properties:
  *         currency_code:
  *           type: string

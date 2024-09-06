@@ -8,9 +8,9 @@ In this document, you’ll learn about concepts related to identity and actors i
 
 ## What is an Auth Identity?
 
-The [AuthIdentity data model](/references/auth/model/AuthIdentity) represents a previously-authenticated user.
+The [AuthIdentity data model](/references/auth/model/AuthIdentity) represents a registered user.
 
-When a user is authenticated, a record of `AuthIdentity` is created. This record is used to validate the user’s authentication in future requests.
+When a user is registered, a record of `AuthIdentity` is created. This record is used to validate the user’s authentication in future requests.
 
 ---
 
@@ -18,7 +18,7 @@ When a user is authenticated, a record of `AuthIdentity` is created. This record
 
 An actor type is a type of user that can be authenticated. This user is a record of a data model defined by a module.
 
-For example, the `customer` belongs to the Customer Module’s `Customer` data model. Similarly, the `user` belongs to the User Module’s `User` data model.
+For example, the `customer` actor type belongs to the Customer Module’s `Customer` data model. Similarly, the `user` actor type belongs to the User Module’s `User` data model.
 
 ### Protect Routes by Actor Type
 
@@ -48,7 +48,7 @@ export default defineMiddlewares({
 })
 ```
 
-By specifying `user` as the first parameter of `authenticate`, only authenticated users of actor type `user` can access API routes starting with `/custom/admin`.
+By specifying `user` as the first parameter of `authenticate`, only authenticated users of actor type `user` (admin users) can access API routes starting with `/custom/admin`.
 
 ---
 

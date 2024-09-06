@@ -2,7 +2,15 @@
  * @oas [post] /auth/user/{auth_provider}
  * operationId: PostActor_typeAuth_provider
  * summary: Authenticate User
- * description: Authenticate an admin user and receive the JWT token to be used in the header of subsequent requests.
+ * description: >
+ *   Authenticate a user and receive the JWT token to be used in the header of subsequent requests.
+ * 
+ * 
+ *   When used with a third-party provider, such as Google, the request returns a `location` property. You redirect to the
+ *   specified URL in your frontend to continue authentication with the third-party service.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#types-of-authentication-flows
+ *   description: Learn about different authentication flows.
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider
@@ -12,10 +20,31 @@
  *     schema:
  *       type: string
  *       example: "emailpass"
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         type: object
+ *         title: input
+ *         description: The input data necessary for authentication. For example, for email-pass authentication, pass `email` and `password` properties.
  * x-codeSamples:
  *   - lang: Shell
- *     label: cURL
- *     source: curl -X POST '{backend_url}/auth/user/{auth_provider}'
+ *     label: EmailPass Provider
+ *     source:  |-
+ *       curl -X POST '{backend_url}/auth/user/emailpass' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "email": "admin@medusa-test.com",
+ *         "password": "supersecret"
+ *       }'
+ *   - lang: Shell
+ *     label: Google Provider
+ *     source:  |-
+ *       curl -X POST '{backend_url}/auth/user/google'
+ *   - lang: Shell
+ *     label: GitHub Provider
+ *     source:  |-
+ *       curl -X POST '{backend_url}/auth/user/github'
  * tags:
  *   - Auth
  * responses:
@@ -24,7 +53,9 @@
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AuthResponse"
+ *           oneOf:
+ *             - $ref: "#/components/schemas/AuthResponse"
+ *             - $ref: "#/components/schemas/AuthCallbackResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
