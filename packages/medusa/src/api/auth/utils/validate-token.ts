@@ -55,10 +55,7 @@ export const validateToken = () => {
     let verified: JwtPayload | null = null
 
     try {
-      verified = verify(
-        token as string,
-        providerIdentity.provider_metadata?.password as string
-      ) as JwtPayload
+      verified = verify(token as string, http.jwtSecret as string) as JwtPayload
     } catch (error) {
       return res.status(401).json({ message: "Invalid token" })
     }

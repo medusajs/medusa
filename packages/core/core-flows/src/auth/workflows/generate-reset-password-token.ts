@@ -12,7 +12,7 @@ import { emitEventStep, useRemoteQueryStep } from "../../common";
 
 export const generateResetPasswordTokenWorkflow = createWorkflow(
   "generate-reset-password-token",
-  (input: { entityId: string; provider: string }) => {
+  (input: { entityId: string; provider: string; secret: string }) => {
     const providerIdentities = useRemoteQueryStep({
       entry_point: "provider_identity",
       fields: ["auth_identity_id", "provider_metadata"],
@@ -42,8 +42,7 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
             provider: input.provider,
           },
           {
-            // Ensures the token can only be used once per requested reset
-            secret: providerIdentity.provider_metadata.password,
+            secret: input.secret,
             expiresIn: "15m",
           }
         )
