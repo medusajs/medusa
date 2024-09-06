@@ -844,7 +844,8 @@
       "requestReturn": "Request return",
       "allocateItems": "Allocate items",
       "editOrder": "Edit order",
-      "editOrderContinue": "Continue order edit"
+      "editOrderContinue": "Continue order edit",
+      "inventoryKit": "Consists of {{count}}x inventory items"
     },
     "payment": {
       "title": "Payments",
@@ -1693,8 +1694,15 @@
         "title": "Edit buy rules"
       }
     },
-    "addToCampaign": {
-      "title": "Promotion's Campaign"
+    "campaign": {
+      "header": "Campaign",
+      "edit": {
+        "header": "Edit Campaign",
+        "successToast": "Successfully updated the campaign of the promotion."
+      },
+      "actions": {
+        "goToCampaign": "Go to campaign"
+      }
     },
     "campaign_currency": {
       "tooltip": "This is the promotion's currency. Change it from the Details tab."
@@ -1798,6 +1806,14 @@
     "edit": {
       "header": "Edit Campaign",
       "successToast": "Campaign '{{name}}' was successfully updated."
+    },
+    "configuration": {
+      "header": "Configuration",
+      "edit": {
+        "header": "Edit Campaign Configuration",
+        "description": "Edit the configuration of the campaign.",
+        "successToast": "Campaign configuration was successfully updated."
+      }
     },
     "create": {
       "hint": "Create a promotional campaign.",

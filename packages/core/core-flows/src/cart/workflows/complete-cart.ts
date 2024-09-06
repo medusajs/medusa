@@ -1,11 +1,15 @@
-import { OrderDTO } from "@medusajs/types"
+import {
+  CartWorkflowDTO,
+  OrderDTO,
+  UsageComputedActions,
+} from "@medusajs/types"
 import { Modules, OrderStatus, OrderWorkflowEvents } from "@medusajs/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
   createRemoteLinkStep,
@@ -14,6 +18,7 @@ import {
 } from "../../common"
 import { createOrdersStep } from "../../order/steps/create-orders"
 import { authorizePaymentSessionStep } from "../../payment/steps/authorize-payment-session"
+import { registerUsageStep } from "../../promotion/steps/register-usage"
 import { updateCartsStep, validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
 import { validateCartStep } from "../steps/validate-cart"
@@ -61,7 +66,8 @@ export const completeCartWorkflow = createWorkflow(
       (data) => {
         const allItems: any[] = []
         const allVariants: any[] = []
-        data.cart.items.forEach((item) => {
+
+        data.cart?.items?.forEach((item) => {
           allItems.push({
             id: item.id,
             variant_id: item.variant_id,
@@ -187,6 +193,39 @@ export const completeCartWorkflow = createWorkflow(
         data: { id: order.id },
       })
     )
+
+    const promotionUsage = transform(
+      { cart },
+      ({ cart }: { cart: CartWorkflowDTO }) => {
+        const promotionUsage: UsageComputedActions[] = []
+
+        const itemAdjustments = (cart.items ?? [])
+          .map((item) => item.adjustments ?? [])
+          .flat(1)
+
+        const shippingAdjustments = (cart.shipping_methods ?? [])
+          .map((item) => item.adjustments ?? [])
+          .flat(1)
+
+        for (const adjustment of itemAdjustments) {
+          promotionUsage.push({
+            amount: adjustment.amount,
+            code: adjustment.code!,
+          })
+        }
+
+        for (const adjustment of shippingAdjustments) {
+          promotionUsage.push({
+            amount: adjustment.amount,
+            code: adjustment.code!,
+          })
+        }
+
+        return promotionUsage
+      }
+    )
+
+    registerUsageStep(promotionUsage)
 
     return new WorkflowResponse(order)
   }

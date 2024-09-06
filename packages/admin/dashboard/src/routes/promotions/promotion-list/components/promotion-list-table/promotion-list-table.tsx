@@ -13,9 +13,9 @@ import {
   useDeletePromotion,
   usePromotions,
 } from "../../../../../hooks/api/promotions"
-import { usePromotionTableColumns } from "../../../../../hooks/table/columns-v2/use-promotion-table-columns"
-import { usePromotionTableFilters } from "../../../../../hooks/table/filters-v2/use-promotion-table-filters"
-import { usePromotionTableQuery } from "../../../../../hooks/table/query-v2/use-promotion-table-query"
+import { usePromotionTableColumns } from "../../../../../hooks/table/columns/use-promotion-table-columns"
+import { usePromotionTableFilters } from "../../../../../hooks/table/filters/use-promotion-table-filters"
+import { usePromotionTableQuery } from "../../../../../hooks/table/query/use-promotion-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { promotionsLoader } from "../../loader"
 
