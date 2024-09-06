@@ -41,8 +41,6 @@ export const removeUserAccountWorkflow = createWorkflow(
     const authIdentity = transform({ authIdentities }, ({ authIdentities }) => {
       const authIdentity = authIdentities[0]
 
-      console.log("authIdentity", authIdentity)
-
       if (!authIdentity) {
         throw new Error("Auth identity not found")
       }

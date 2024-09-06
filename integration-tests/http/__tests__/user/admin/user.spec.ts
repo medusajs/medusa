@@ -105,7 +105,7 @@ medusaIntegrationTestRunner({
     })
 
     describe.only("DELETE /admin/users", () => {
-      it("Deletes a user and updated associated auth identity", async () => {
+      it("Deletes a user and updates associated auth identity", async () => {
         const { user, authIdentity } = await createUserAndAuthIdentity(
           container
         )
@@ -145,11 +145,6 @@ medusaIntegrationTestRunner({
 
         const updatedAuthIdentity = await authModule.retrieveAuthIdentity(
           authIdentity.id
-        )
-
-        console.log(
-          "updatedAuthIdentity",
-          JSON.stringify(updatedAuthIdentity, null, 2)
         )
 
         expect(updatedAuthIdentity).toEqual(

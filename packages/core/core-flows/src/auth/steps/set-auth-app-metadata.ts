@@ -60,7 +60,7 @@ export const setAuthAppMetadataStep = createStep(
 
     const appMetadata = authIdentity.app_metadata || {}
 
-    // If the value is null, we WERE deleting the association with an actor
+    // If the value is null, we WERE deleting the association with an actor, so we need to restore it
     if (value === null) {
       appMetadata[key] = oldValue
     } else {
