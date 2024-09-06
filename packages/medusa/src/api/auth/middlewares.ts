@@ -16,6 +16,11 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
+    matcher: "/auth/token/refresh",
+    middlewares: [authenticate("*", "bearer", { allowUnregistered: true })],
+  },
+  {
+    method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider/callback",
     middlewares: [validateScopeProviderAssociation()],
   },
