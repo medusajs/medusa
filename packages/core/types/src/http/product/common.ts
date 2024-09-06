@@ -50,6 +50,7 @@ export interface BaseProductVariant {
   upc: string | null
   allow_backorder: boolean | null
   manage_inventory: boolean | null
+  inventory_quantity?: number
   hs_code: string | null
   origin_country: string | null
   mid_code: string | null
