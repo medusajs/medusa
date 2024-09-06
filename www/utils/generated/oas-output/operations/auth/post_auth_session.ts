@@ -4,7 +4,6 @@
  * summary: Create Session
  * description: Create a session.
  * x-authenticated: false
- * parameters: []
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

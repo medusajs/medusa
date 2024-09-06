@@ -852,22 +852,6 @@
  *             type: string
  *             title: name
  *             description: The name's details.
- *   - name: is_active
- *     in: query
- *     description: The product category's is active.
- *     required: false
- *     schema:
- *       type: boolean
- *       title: is_active
- *       description: The product category's is active.
- *   - name: is_internal
- *     in: query
- *     description: The product category's is internal.
- *     required: false
- *     schema:
- *       type: boolean
- *       title: is_internal
- *       description: The product category's is internal.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

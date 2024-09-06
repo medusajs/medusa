@@ -5,7 +5,6 @@
  * x-schemaName: AdminCreateCollection
  * required:
  *   - title
- *   - metadata
  * properties:
  *   title:
  *     type: string
