@@ -1,6 +1,6 @@
 import { IPricingModuleService } from "@medusajs/types"
 import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export interface GetVariantPriceSetsStepInput {
   variantIds: string[]
@@ -24,21 +24,13 @@ export const getVariantPriceSetsStep = createStep(
 
     const remoteQuery = container.resolve("remoteQuery")
 
-    const variantPriceSets = await remoteQuery(
-      {
-        variant: {
-          fields: ["id"],
-          price_set: {
-            fields: ["id"],
-          },
-        },
+    const variantPriceSets = await remoteQuery({
+      entryPoint: "variant",
+      fields: ["id", "price_set.id"],
+      variables: {
+        id: data.variantIds,
       },
-      {
-        variant: {
-          id: data.variantIds,
-        },
-      }
-    )
+    })
 
     const notFound: string[] = []
     const priceSetIds: string[] = []

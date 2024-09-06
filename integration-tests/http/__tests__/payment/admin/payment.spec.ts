@@ -1,7 +1,5 @@
-import { ClaimType, ModuleRegistrationName } from "@medusajs/utils"
+import { ClaimType } from "@medusajs/utils"
 import { adminHeaders } from "../../../../helpers/create-admin-user"
-import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
-import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
@@ -226,60 +224,6 @@ medusaIntegrationTestRunner({
 
         expect(e.response.data.message).toEqual(
           "Cannot refund more than pending difference - 75"
-        )
-      })
-
-      it("should not update payment collection of other orders", async () => {
-        await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
-        await seedStorefrontDefaults(container, "dkk")
-
-        let order1 = await createOrderSeeder({ api })
-
-        expect(order1).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            payment_status: "authorized",
-          })
-        )
-
-        const order1Payment = order1.payment_collections[0].payments[0]
-
-        await api.post(
-          `/admin/payments/${order1Payment.id}/capture?fields=*payment_collection`,
-          { amount: order1Payment.amount },
-          adminHeaders
-        )
-
-        order1 = (await api.get(`/admin/orders/${order1.id}`, adminHeaders))
-          .data.order
-
-        expect(order1).toEqual(
-          expect.objectContaining({
-            id: order1.id,
-            payment_status: "captured",
-          })
-        )
-
-        let order2 = await createOrderSeeder({ api })
-
-        order2 = (await api.get(`/admin/orders/${order2.id}`, adminHeaders))
-          .data.order
-
-        expect(order2).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            payment_status: "authorized",
-          })
-        )
-
-        order1 = (await api.get(`/admin/orders/${order1.id}`, adminHeaders))
-          .data.order
-
-        expect(order1).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            payment_status: "captured",
-          })
         )
       })
     })

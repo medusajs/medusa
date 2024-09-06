@@ -29,3 +29,13 @@ export type PaginatedResponse<T> = {
   offset: number
   count: number
 } & T
+
+export type BatchResponse<T> = {
+  created: T[]
+  updated: T[]
+  deleted: {
+    ids: string[]
+    object: string
+    deleted: boolean
+  }
+}

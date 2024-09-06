@@ -841,6 +841,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: name
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: name
+ *           description: Filter by a product category name.
+ *         - type: array
+ *           description: Filter by product category names.
+ *           items:
+ *             type: string
+ *             title: name
+ *             description: A product category name.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

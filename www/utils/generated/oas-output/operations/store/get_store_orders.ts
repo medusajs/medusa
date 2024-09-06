@@ -62,34 +62,6 @@
  *             type: string
  *             title: id
  *             description: An order ID.
- *   - name: status
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: status
- *           description: Filter by an order status.
- *           enum:
- *             - pending
- *             - completed
- *             - draft
- *             - archived
- *             - canceled
- *             - requires_action
- *         - type: array
- *           description: Filter by order statuses.
- *           items:
- *             type: string
- *             title: status
- *             description: An order status.
- *             enum:
- *               - pending
- *               - completed
- *               - draft
- *               - archived
- *               - canceled
- *               - requires_action
  *   - name: $and
  *     in: query
  *     required: false
@@ -108,6 +80,41 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: status
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: array
+ *           description: The order's status.
+ *           items:
+ *             type: string
+ *             description: The status's details.
+ *             enum:
+ *               - canceled
+ *               - requires_action
+ *               - pending
+ *               - completed
+ *               - draft
+ *               - archived
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -162,6 +169,9 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * 
 */
 

@@ -3,9 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminUpdateTaxRate
- * required:
- *   - code
- *   - metadata
  * properties:
  *   rate:
  *     type: number

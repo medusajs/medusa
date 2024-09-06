@@ -13,7 +13,7 @@ const defaultConfig = {
   borderStyle: `double`,
 } as boxen.Options
 
-export default async function ({ port, directory }) {
+export default async function ({ types, directory }) {
   const args = process.argv
 
   const argv =
@@ -24,6 +24,10 @@ export default async function ({ port, directory }) {
   args.shift()
   args.shift()
   args.shift()
+
+  if (types) {
+    args.push("--types")
+  }
 
   /**
    * Re-constructing the path to Medusa CLI to execute the
@@ -95,6 +99,7 @@ export default async function ({ port, directory }) {
           "static",
           "private",
           "src/admin/**/*",
+          ".medusa/**/*",
         ],
       })
 

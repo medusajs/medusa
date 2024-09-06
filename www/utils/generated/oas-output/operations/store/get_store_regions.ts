@@ -120,6 +120,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: currency_code
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: currency_code
+ *           description: The region's currency code.
+ *         - type: array
+ *           description: The region's currency code.
+ *           items:
+ *             type: string
+ *             title: currency_code
+ *             description: The currency code's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

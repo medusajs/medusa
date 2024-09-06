@@ -2,6 +2,7 @@
  * @schema AdminCreateShippingProfile
  * type: object
  * description: SUMMARY
+ * x-schemaName: AdminCreateShippingProfile
  * required:
  *   - name
  *   - type
@@ -17,7 +18,6 @@
  *   metadata:
  *     type: object
  *     description: The shipping profile's metadata.
- * x-schemaName: AdminCreateShippingProfile
  * 
 */
 

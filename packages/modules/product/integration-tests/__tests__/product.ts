@@ -9,7 +9,7 @@ import {
 } from "../__fixtures__/product"
 
 import { IProductModuleService, ProductDTO } from "@medusajs/types"
-import { kebabCase, Module, Modules, ProductStatus } from "@medusajs/utils"
+import { Module, Modules, ProductStatus, kebabCase } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   ProductCategoryService,
@@ -76,6 +76,12 @@ moduleIntegrationTestRunner<Service>({
             primaryKey: "id",
             serviceName: "productService",
             field: "productVariant",
+          },
+          variant_id: {
+            field: "productVariant",
+            linkable: "variant_id",
+            primaryKey: "variant_id",
+            serviceName: "productService",
           },
         },
         productOption: {

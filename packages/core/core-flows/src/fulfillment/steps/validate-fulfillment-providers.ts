@@ -3,9 +3,8 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
   ModuleRegistrationName,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export type FulfillmentProviderValidationWorkflowInput = {
   id?: string
@@ -21,7 +20,10 @@ export const validateFulfillmentProvidersStepId =
  */
 export const validateFulfillmentProvidersStep = createStep(
   validateFulfillmentProvidersStepId,
-  async (input: FulfillmentProviderValidationWorkflowInput[], { container }) => {
+  async (
+    input: FulfillmentProviderValidationWorkflowInput[],
+    { container }
+  ) => {
     const dataToValidate: {
       service_zone_id: string
       provider_id: string
@@ -83,15 +85,13 @@ export const validateFulfillmentProvidersStep = createStep(
       )
     }
 
-    const serviceZoneQuery = remoteQueryObjectFromString({
+    const serviceZones = await remoteQuery({
       entryPoint: "service_zone",
       fields: ["id", "fulfillment_set.locations.fulfillment_providers.id"],
       variables: {
         id: input.map((d) => d.service_zone_id),
       },
     })
-
-    const serviceZones = await remoteQuery(serviceZoneQuery)
 
     const serviceZonesMap = new Map<
       string,

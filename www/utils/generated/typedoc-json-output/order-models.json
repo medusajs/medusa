@@ -1,5 +1,5 @@
 {
-	"id": 7554,
+	"id": 7553,
 	"name": "order-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 7555,
+			"id": 7554,
 			"name": "OrderAddress",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 7556,
+					"id": 7555,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7557,
+							"id": 7556,
 							"name": "new OrderAddress",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 7555,
+								"target": 7554,
 								"name": "OrderAddress",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -48,7 +48,7 @@
 					]
 				},
 				{
-					"id": 7577,
+					"id": 7576,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -64,7 +64,7 @@
 					}
 				},
 				{
-					"id": 7558,
+					"id": 7557,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -75,7 +75,7 @@
 					}
 				},
 				{
-					"id": 7559,
+					"id": 7558,
 					"name": "customer_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -96,7 +96,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7560,
+					"id": 7559,
 					"name": "company",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117,7 +117,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7561,
+					"id": 7560,
 					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -138,7 +138,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7562,
+					"id": 7561,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -159,7 +159,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7563,
+					"id": 7562,
 					"name": "address_1",
 					"variant": "declaration",
 					"kind": 1024,
@@ -180,7 +180,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7564,
+					"id": 7563,
 					"name": "address_2",
 					"variant": "declaration",
 					"kind": 1024,
@@ -201,7 +201,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7565,
+					"id": 7564,
 					"name": "city",
 					"variant": "declaration",
 					"kind": 1024,
@@ -222,7 +222,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7566,
+					"id": 7565,
 					"name": "country_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -243,7 +243,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7567,
+					"id": 7566,
 					"name": "province",
 					"variant": "declaration",
 					"kind": 1024,
@@ -264,7 +264,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7568,
+					"id": 7567,
 					"name": "postal_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -285,7 +285,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7569,
+					"id": 7568,
 					"name": "phone",
 					"variant": "declaration",
 					"kind": 1024,
@@ -306,7 +306,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7570,
+					"id": 7569,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -342,7 +342,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7571,
+					"id": 7570,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -358,7 +358,7 @@
 					}
 				},
 				{
-					"id": 7572,
+					"id": 7571,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -374,14 +374,14 @@
 					}
 				},
 				{
-					"id": 7573,
+					"id": 7572,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7574,
+							"id": 7573,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -394,14 +394,14 @@
 					]
 				},
 				{
-					"id": 7575,
+					"id": 7574,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7576,
+							"id": 7575,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -418,13 +418,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						7556
+						7555
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						7577,
+						7576,
+						7557,
 						7558,
 						7559,
 						7560,
@@ -438,42 +439,41 @@
 						7568,
 						7569,
 						7570,
-						7571,
-						7572
+						7571
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						7573,
-						7575
+						7572,
+						7574
 					]
 				}
 			]
 		},
 		{
-			"id": 7630,
+			"id": 7629,
 			"name": "OrderClaimItemImage",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 7631,
+					"id": 7630,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7632,
+							"id": 7631,
 							"name": "new OrderClaimItemImage",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 7630,
+								"target": 7629,
 								"name": "OrderClaimItemImage",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -482,7 +482,7 @@
 					]
 				},
 				{
-					"id": 7645,
+					"id": 7644,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -500,7 +500,7 @@
 					}
 				},
 				{
-					"id": 7633,
+					"id": 7632,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -511,7 +511,7 @@
 					}
 				},
 				{
-					"id": 7634,
+					"id": 7633,
 					"name": "claim_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -522,21 +522,21 @@
 					}
 				},
 				{
-					"id": 7635,
+					"id": 7634,
 					"name": "item",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7607,
+						"target": 7606,
 						"name": "OrderClaimItem",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 7636,
+					"id": 7635,
 					"name": "url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -547,7 +547,7 @@
 					}
 				},
 				{
-					"id": 7637,
+					"id": 7636,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -583,7 +583,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7638,
+					"id": 7637,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -599,7 +599,7 @@
 					}
 				},
 				{
-					"id": 7639,
+					"id": 7638,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -615,7 +615,7 @@
 					}
 				},
 				{
-					"id": 7640,
+					"id": 7639,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -641,14 +641,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7641,
+					"id": 7640,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7642,
+							"id": 7641,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -661,14 +661,14 @@
 					]
 				},
 				{
-					"id": 7643,
+					"id": 7642,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7644,
+							"id": 7643,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -685,55 +685,55 @@
 				{
 					"title": "Constructors",
 					"children": [
-						7631
+						7630
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						7645,
+						7644,
+						7632,
 						7633,
 						7634,
 						7635,
 						7636,
 						7637,
 						7638,
-						7639,
-						7640
+						7639
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						7641,
-						7643
+						7640,
+						7642
 					]
 				}
 			]
 		},
 		{
-			"id": 7607,
+			"id": 7606,
 			"name": "OrderClaimItem",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 7608,
+					"id": 7607,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7609,
+							"id": 7608,
 							"name": "new OrderClaimItem",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 7607,
+								"target": 7606,
 								"name": "OrderClaimItem",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -742,7 +742,7 @@
 					]
 				},
 				{
-					"id": 7629,
+					"id": 7628,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -760,7 +760,7 @@
 					}
 				},
 				{
-					"id": 7610,
+					"id": 7609,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -771,7 +771,7 @@
 					}
 				},
 				{
-					"id": 7611,
+					"id": 7610,
 					"name": "images",
 					"variant": "declaration",
 					"kind": 1024,
@@ -785,7 +785,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 7630,
+								"target": 7629,
 								"name": "OrderClaimItemImage",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -801,7 +801,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 7612,
+					"id": 7611,
 					"name": "reason",
 					"variant": "declaration",
 					"kind": 1024,
@@ -827,7 +827,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7613,
+					"id": 7612,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -852,7 +852,7 @@
 					}
 				},
 				{
-					"id": 7614,
+					"id": 7613,
 					"name": "raw_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -868,7 +868,7 @@
 					}
 				},
 				{
-					"id": 7615,
+					"id": 7614,
 					"name": "claim_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -879,21 +879,21 @@
 					}
 				},
 				{
-					"id": 7616,
+					"id": 7615,
 					"name": "claim",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7578,
+						"target": 7577,
 						"name": "OrderClaim",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 7617,
+					"id": 7616,
 					"name": "item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -904,21 +904,21 @@
 					}
 				},
 				{
-					"id": 7618,
+					"id": 7617,
 					"name": "item",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7694,
+						"target": 7693,
 						"name": "OrderLineItem",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 7619,
+					"id": 7618,
 					"name": "is_additional_item",
 					"variant": "declaration",
 					"kind": 1024,
@@ -930,7 +930,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 7620,
+					"id": 7619,
 					"name": "note",
 					"variant": "declaration",
 					"kind": 1024,
@@ -941,7 +941,7 @@
 					}
 				},
 				{
-					"id": 7621,
+					"id": 7620,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -977,7 +977,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7622,
+					"id": 7621,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -993,7 +993,7 @@
 					}
 				},
 				{
-					"id": 7623,
+					"id": 7622,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1009,7 +1009,7 @@
 					}
 				},
 				{
-					"id": 7624,
+					"id": 7623,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1035,14 +1035,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7625,
+					"id": 7624,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7626,
+							"id": 7625,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1055,14 +1055,14 @@
 					]
 				},
 				{
-					"id": 7627,
+					"id": 7626,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7628,
+							"id": 7627,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1079,13 +1079,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						7608
+						7607
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						7629,
+						7628,
+						7609,
 						7610,
 						7611,
 						7612,
@@ -1099,42 +1100,41 @@
 						7620,
 						7621,
 						7622,
-						7623,
-						7624
+						7623
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						7625,
-						7627
+						7624,
+						7626
 					]
 				}
 			]
 		},
 		{
-			"id": 7578,
+			"id": 7577,
 			"name": "OrderClaim",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 7579,
+					"id": 7578,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7580,
+							"id": 7579,
 							"name": "new OrderClaim",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 7578,
+								"target": 7577,
 								"name": "OrderClaim",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -1143,7 +1143,7 @@
 					]
 				},
 				{
-					"id": 7606,
+					"id": 7605,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1161,7 +1161,7 @@
 					}
 				},
 				{
-					"id": 7581,
+					"id": 7580,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1172,7 +1172,7 @@
 					}
 				},
 				{
-					"id": 7582,
+					"id": 7581,
 					"name": "order_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1183,7 +1183,7 @@
 					}
 				},
 				{
-					"id": 7583,
+					"id": 7582,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1197,7 +1197,7 @@
 					}
 				},
 				{
-					"id": 7584,
+					"id": 7583,
 					"name": "return",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1211,7 +1211,7 @@
 					}
 				},
 				{
-					"id": 7585,
+					"id": 7584,
 					"name": "return_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1232,7 +1232,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7586,
+					"id": 7585,
 					"name": "order_version",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1243,7 +1243,7 @@
 					}
 				},
 				{
-					"id": 7587,
+					"id": 7586,
 					"name": "display_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1254,7 +1254,7 @@
 					}
 				},
 				{
-					"id": 7588,
+					"id": 7587,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1270,7 +1270,7 @@
 					}
 				},
 				{
-					"id": 7589,
+					"id": 7588,
 					"name": "no_notification",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1291,7 +1291,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7590,
+					"id": 7589,
 					"name": "refund_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1316,7 +1316,7 @@
 					}
 				},
 				{
-					"id": 7591,
+					"id": 7590,
 					"name": "raw_refund_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1332,7 +1332,7 @@
 					}
 				},
 				{
-					"id": 7592,
+					"id": 7591,
 					"name": "additional_items",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1346,7 +1346,37 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 7607,
+								"target": 7606,
+								"name": "OrderClaimItem",
+								"package": "@medusajs/order",
+								"qualifiedName": "default"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 7592,
+					"name": "claim_items",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 7606,
 								"name": "OrderClaimItem",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -1363,36 +1393,6 @@
 				},
 				{
 					"id": 7593,
-					"name": "claim_items",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 7607,
-								"name": "OrderClaimItem",
-								"package": "@medusajs/order",
-								"qualifiedName": "default"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 7594,
 					"name": "shipping_methods",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1422,7 +1422,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 7595,
+					"id": 7594,
 					"name": "transactions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1436,7 +1436,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8080,
+								"target": 8081,
 								"name": "OrderTransaction",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -1452,7 +1452,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 7596,
+					"id": 7595,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1473,7 +1473,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7597,
+					"id": 7596,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1509,7 +1509,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7598,
+					"id": 7597,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1525,7 +1525,7 @@
 					}
 				},
 				{
-					"id": 7599,
+					"id": 7598,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1541,8 +1541,34 @@
 					}
 				},
 				{
-					"id": 7600,
+					"id": 7599,
 					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 7600,
+					"name": "canceled_at",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -1568,39 +1594,13 @@
 				},
 				{
 					"id": 7601,
-					"name": "canceled_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Date"
-								},
-								"name": "Date",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 7602,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7603,
+							"id": 7602,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1613,14 +1613,14 @@
 					]
 				},
 				{
-					"id": 7604,
+					"id": 7603,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7605,
+							"id": 7604,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1637,13 +1637,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						7579
+						7578
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						7606,
+						7605,
+						7580,
 						7581,
 						7582,
 						7583,
@@ -1663,42 +1664,41 @@
 						7597,
 						7598,
 						7599,
-						7600,
-						7601
+						7600
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						7602,
-						7604
+						7601,
+						7603
 					]
 				}
 			]
 		},
 		{
-			"id": 7674,
+			"id": 7673,
 			"name": "OrderExchangeItem",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 7675,
+					"id": 7674,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7676,
+							"id": 7675,
 							"name": "new OrderExchangeItem",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 7674,
+								"target": 7673,
 								"name": "OrderExchangeItem",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -1707,7 +1707,7 @@
 					]
 				},
 				{
-					"id": 7693,
+					"id": 7692,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1725,7 +1725,7 @@
 					}
 				},
 				{
-					"id": 7677,
+					"id": 7676,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1736,7 +1736,7 @@
 					}
 				},
 				{
-					"id": 7678,
+					"id": 7677,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1761,7 +1761,7 @@
 					}
 				},
 				{
-					"id": 7679,
+					"id": 7678,
 					"name": "raw_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1777,7 +1777,7 @@
 					}
 				},
 				{
-					"id": 7680,
+					"id": 7679,
 					"name": "exchange_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1788,21 +1788,21 @@
 					}
 				},
 				{
-					"id": 7681,
+					"id": 7680,
 					"name": "exchange",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7646,
+						"target": 7645,
 						"name": "OrderExchange",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 7682,
+					"id": 7681,
 					"name": "item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1813,21 +1813,21 @@
 					}
 				},
 				{
-					"id": 7683,
+					"id": 7682,
 					"name": "item",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7694,
+						"target": 7693,
 						"name": "OrderLineItem",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 7684,
+					"id": 7683,
 					"name": "note",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1838,7 +1838,7 @@
 					}
 				},
 				{
-					"id": 7685,
+					"id": 7684,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1874,7 +1874,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7686,
+					"id": 7685,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1890,7 +1890,7 @@
 					}
 				},
 				{
-					"id": 7687,
+					"id": 7686,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1906,7 +1906,7 @@
 					}
 				},
 				{
-					"id": 7688,
+					"id": 7687,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1932,14 +1932,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7689,
+					"id": 7688,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7690,
+							"id": 7689,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1952,14 +1952,14 @@
 					]
 				},
 				{
-					"id": 7691,
+					"id": 7690,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7692,
+							"id": 7691,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1976,13 +1976,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						7675
+						7674
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						7693,
+						7692,
+						7676,
 						7677,
 						7678,
 						7679,
@@ -1993,42 +1994,41 @@
 						7684,
 						7685,
 						7686,
-						7687,
-						7688
+						7687
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						7689,
-						7691
+						7688,
+						7690
 					]
 				}
 			]
 		},
 		{
-			"id": 7646,
+			"id": 7645,
 			"name": "OrderExchange",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 7647,
+					"id": 7646,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7648,
+							"id": 7647,
 							"name": "new OrderExchange",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 7646,
+								"target": 7645,
 								"name": "OrderExchange",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -2037,7 +2037,7 @@
 					]
 				},
 				{
-					"id": 7673,
+					"id": 7672,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2055,7 +2055,7 @@
 					}
 				},
 				{
-					"id": 7649,
+					"id": 7648,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2066,7 +2066,7 @@
 					}
 				},
 				{
-					"id": 7650,
+					"id": 7649,
 					"name": "order_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2077,7 +2077,7 @@
 					}
 				},
 				{
-					"id": 7651,
+					"id": 7650,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2091,7 +2091,7 @@
 					}
 				},
 				{
-					"id": 7652,
+					"id": 7651,
 					"name": "return",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2105,7 +2105,7 @@
 					}
 				},
 				{
-					"id": 7653,
+					"id": 7652,
 					"name": "return_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2126,7 +2126,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7654,
+					"id": 7653,
 					"name": "order_version",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2137,7 +2137,7 @@
 					}
 				},
 				{
-					"id": 7655,
+					"id": 7654,
 					"name": "display_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2148,7 +2148,7 @@
 					}
 				},
 				{
-					"id": 7656,
+					"id": 7655,
 					"name": "no_notification",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2169,7 +2169,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7657,
+					"id": 7656,
 					"name": "difference_due",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2194,7 +2194,7 @@
 					}
 				},
 				{
-					"id": 7658,
+					"id": 7657,
 					"name": "raw_difference_due",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2210,7 +2210,7 @@
 					}
 				},
 				{
-					"id": 7659,
+					"id": 7658,
 					"name": "allow_backorder",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2222,7 +2222,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 7660,
+					"id": 7659,
 					"name": "additional_items",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2236,7 +2236,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 7674,
+								"target": 7673,
 								"name": "OrderExchangeItem",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -2252,7 +2252,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 7661,
+					"id": 7660,
 					"name": "shipping_methods",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2282,7 +2282,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 7662,
+					"id": 7661,
 					"name": "transactions",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2296,7 +2296,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8080,
+								"target": 8081,
 								"name": "OrderTransaction",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -2312,7 +2312,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 7663,
+					"id": 7662,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2333,7 +2333,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7664,
+					"id": 7663,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2369,7 +2369,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7665,
+					"id": 7664,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2385,7 +2385,7 @@
 					}
 				},
 				{
-					"id": 7666,
+					"id": 7665,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2401,7 +2401,7 @@
 					}
 				},
 				{
-					"id": 7667,
+					"id": 7666,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2427,7 +2427,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7668,
+					"id": 7667,
 					"name": "canceled_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2453,14 +2453,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7669,
+					"id": 7668,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7670,
+							"id": 7669,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -2473,14 +2473,14 @@
 					]
 				},
 				{
-					"id": 7671,
+					"id": 7670,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7672,
+							"id": 7671,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2497,13 +2497,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						7647
+						7646
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						7673,
+						7672,
+						7648,
 						7649,
 						7650,
 						7651,
@@ -2522,15 +2523,14 @@
 						7664,
 						7665,
 						7666,
-						7667,
-						7668
+						7667
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						7669,
-						7671
+						7668,
+						7670
 					]
 				}
 			]
@@ -2870,7 +2870,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7694,
+						"target": 7693,
 						"name": "OrderLineItem",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -3021,7 +3021,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7694,
+						"target": 7693,
 						"name": "OrderLineItem",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -3378,28 +3378,28 @@
 			]
 		},
 		{
-			"id": 7694,
+			"id": 7693,
 			"name": "OrderLineItem",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 7695,
+					"id": 7694,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 7696,
+							"id": 7695,
 							"name": "new OrderLineItem",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 7694,
+								"target": 7693,
 								"name": "OrderLineItem",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -3426,7 +3426,7 @@
 					}
 				},
 				{
-					"id": 7697,
+					"id": 7696,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3437,7 +3437,7 @@
 					}
 				},
 				{
-					"id": 7698,
+					"id": 7697,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3448,7 +3448,7 @@
 					}
 				},
 				{
-					"id": 7699,
+					"id": 7698,
 					"name": "subtitle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3469,7 +3469,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7700,
+					"id": 7699,
 					"name": "thumbnail",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3490,7 +3490,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7701,
+					"id": 7700,
 					"name": "variant_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3511,7 +3511,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7702,
+					"id": 7701,
 					"name": "product_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3532,7 +3532,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7703,
+					"id": 7702,
 					"name": "product_title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3553,7 +3553,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7704,
+					"id": 7703,
 					"name": "product_description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3574,7 +3574,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7705,
+					"id": 7704,
 					"name": "product_subtitle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3595,7 +3595,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7706,
+					"id": 7705,
 					"name": "product_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3616,7 +3616,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7707,
+					"id": 7706,
 					"name": "product_collection",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3637,7 +3637,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7708,
+					"id": 7707,
 					"name": "product_handle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3658,7 +3658,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7709,
+					"id": 7708,
 					"name": "variant_sku",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3679,7 +3679,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7710,
+					"id": 7709,
 					"name": "variant_barcode",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3700,7 +3700,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7711,
+					"id": 7710,
 					"name": "variant_title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3721,7 +3721,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7712,
+					"id": 7711,
 					"name": "variant_option_values",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3757,7 +3757,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7713,
+					"id": 7712,
 					"name": "requires_shipping",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3769,7 +3769,7 @@
 					"defaultValue": "true"
 				},
 				{
-					"id": 7714,
+					"id": 7713,
 					"name": "is_discountable",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3781,7 +3781,7 @@
 					"defaultValue": "true"
 				},
 				{
-					"id": 7715,
+					"id": 7714,
 					"name": "is_tax_inclusive",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3793,7 +3793,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 7716,
+					"id": 7715,
 					"name": "compare_at_unit_price",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3825,7 +3825,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7717,
+					"id": 7716,
 					"name": "raw_compare_at_unit_price",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3851,7 +3851,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 7718,
+					"id": 7717,
 					"name": "unit_price",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3876,7 +3876,7 @@
 					}
 				},
 				{
-					"id": 7719,
+					"id": 7718,
 					"name": "raw_unit_price",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3890,6 +3890,18 @@
 						"name": "BigNumberRawValue",
 						"package": "@medusajs/types"
 					}
+				},
+				{
+					"id": 7719,
+					"name": "is_custom_price",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
 				},
 				{
 					"id": 7720,
@@ -4090,13 +4102,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						7695
+						7694
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
 						7730,
+						7696,
 						7697,
 						7698,
 						7699,
@@ -4316,7 +4329,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7578,
+						"target": 7577,
 						"name": "OrderClaim",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -4351,7 +4364,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7646,
+						"target": 7645,
 						"name": "OrderExchange",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -4884,7 +4897,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7578,
+						"target": 7577,
 						"name": "OrderClaim",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -4919,7 +4932,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7646,
+						"target": 7645,
 						"name": "OrderExchange",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -5560,7 +5573,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7694,
+						"target": 7693,
 						"name": "OrderLineItem",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -6187,7 +6200,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7646,
+						"target": 7645,
 						"name": "OrderExchange",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -6221,7 +6234,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7578,
+						"target": 7577,
 						"name": "OrderClaim",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -6875,7 +6888,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 7555,
+								"target": 7554,
 								"name": "OrderAddress",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -6922,7 +6935,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 7555,
+								"target": 7554,
 								"name": "OrderAddress",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -7092,7 +7105,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8080,
+								"target": 8081,
 								"name": "OrderTransaction",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -7541,7 +7554,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7694,
+						"target": 7693,
 						"name": "OrderLineItem",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -8171,7 +8184,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7646,
+						"target": 7645,
 						"name": "OrderExchange",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -8206,7 +8219,7 @@
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7578,
+						"target": 7577,
 						"name": "OrderClaim",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
@@ -8430,7 +8443,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8080,
+								"target": 8081,
 								"name": "OrderTransaction",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -8727,28 +8740,28 @@
 			]
 		},
 		{
-			"id": 8041,
+			"id": 8042,
 			"name": "OrderShippingMethodAdjustment",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8042,
+					"id": 8043,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8043,
+							"id": 8044,
 							"name": "new OrderShippingMethodAdjustment",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8041,
+								"target": 8042,
 								"name": "OrderShippingMethodAdjustment",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -8767,7 +8780,7 @@
 					}
 				},
 				{
-					"id": 8060,
+					"id": 8061,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8790,7 +8803,7 @@
 					}
 				},
 				{
-					"id": 8050,
+					"id": 8051,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8808,7 +8821,7 @@
 					}
 				},
 				{
-					"id": 8051,
+					"id": 8052,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8836,7 +8849,7 @@
 					}
 				},
 				{
-					"id": 8052,
+					"id": 8053,
 					"name": "promotion_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8864,7 +8877,7 @@
 					}
 				},
 				{
-					"id": 8053,
+					"id": 8054,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8892,7 +8905,7 @@
 					}
 				},
 				{
-					"id": 8054,
+					"id": 8055,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8924,7 +8937,7 @@
 					}
 				},
 				{
-					"id": 8055,
+					"id": 8056,
 					"name": "raw_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8947,7 +8960,7 @@
 					}
 				},
 				{
-					"id": 8056,
+					"id": 8057,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8975,7 +8988,7 @@
 					}
 				},
 				{
-					"id": 8057,
+					"id": 8058,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8998,7 +9011,7 @@
 					}
 				},
 				{
-					"id": 8058,
+					"id": 8059,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9021,7 +9034,7 @@
 					}
 				},
 				{
-					"id": 8059,
+					"id": 8060,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9054,7 +9067,7 @@
 					}
 				},
 				{
-					"id": 8044,
+					"id": 8045,
 					"name": "shipping_method",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9068,7 +9081,7 @@
 					}
 				},
 				{
-					"id": 8045,
+					"id": 8046,
 					"name": "shipping_method_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9079,14 +9092,14 @@
 					}
 				},
 				{
-					"id": 8046,
+					"id": 8047,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8047,
+							"id": 8048,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -9099,14 +9112,14 @@
 					]
 				},
 				{
-					"id": 8048,
+					"id": 8049,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8049,
+							"id": 8050,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -9123,14 +9136,13 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8042
+						8043
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8060,
-						8050,
+						8061,
 						8051,
 						8052,
 						8053,
@@ -9140,15 +9152,16 @@
 						8057,
 						8058,
 						8059,
-						8044,
-						8045
+						8060,
+						8045,
+						8046
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8046,
-						8048
+						8047,
+						8049
 					]
 				}
 			],
@@ -9165,28 +9178,28 @@
 			]
 		},
 		{
-			"id": 8061,
+			"id": 8062,
 			"name": "OrderShippingMethodTaxLine",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8062,
+					"id": 8063,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8063,
+							"id": 8064,
 							"name": "new OrderShippingMethodTaxLine",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8061,
+								"target": 8062,
 								"name": "OrderShippingMethodTaxLine",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -9205,7 +9218,7 @@
 					}
 				},
 				{
-					"id": 8064,
+					"id": 8065,
 					"name": "shipping_method",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9219,7 +9232,7 @@
 					}
 				},
 				{
-					"id": 8065,
+					"id": 8066,
 					"name": "shipping_method_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9230,14 +9243,14 @@
 					}
 				},
 				{
-					"id": 8066,
+					"id": 8067,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8067,
+							"id": 8068,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -9250,14 +9263,14 @@
 					]
 				},
 				{
-					"id": 8068,
+					"id": 8069,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8069,
+							"id": 8070,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -9270,7 +9283,7 @@
 					]
 				},
 				{
-					"id": 8070,
+					"id": 8071,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9288,7 +9301,7 @@
 					}
 				},
 				{
-					"id": 8071,
+					"id": 8072,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9316,7 +9329,7 @@
 					}
 				},
 				{
-					"id": 8072,
+					"id": 8073,
 					"name": "tax_rate_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9344,7 +9357,7 @@
 					}
 				},
 				{
-					"id": 8073,
+					"id": 8074,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9362,7 +9375,7 @@
 					}
 				},
 				{
-					"id": 8074,
+					"id": 8075,
 					"name": "rate",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9394,7 +9407,7 @@
 					}
 				},
 				{
-					"id": 8075,
+					"id": 8076,
 					"name": "raw_rate",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9417,7 +9430,7 @@
 					}
 				},
 				{
-					"id": 8076,
+					"id": 8077,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9445,7 +9458,7 @@
 					}
 				},
 				{
-					"id": 8077,
+					"id": 8078,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9468,7 +9481,7 @@
 					}
 				},
 				{
-					"id": 8078,
+					"id": 8079,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9491,7 +9504,7 @@
 					}
 				},
 				{
-					"id": 8079,
+					"id": 8080,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9528,15 +9541,14 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8062
+						8063
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8064,
 						8065,
-						8070,
+						8066,
 						8071,
 						8072,
 						8073,
@@ -9545,14 +9557,15 @@
 						8076,
 						8077,
 						8078,
-						8079
+						8079,
+						8080
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8066,
-						8068
+						8067,
+						8069
 					]
 				}
 			],
@@ -9696,6 +9709,18 @@
 				},
 				{
 					"id": 8029,
+					"name": "is_custom_amount",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "false"
+				},
+				{
+					"id": 8030,
 					"name": "shipping_option_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9716,7 +9741,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8030,
+					"id": 8031,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9752,7 +9777,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8031,
+					"id": 8032,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9788,7 +9813,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8032,
+					"id": 8033,
 					"name": "tax_lines",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9802,7 +9827,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8061,
+								"target": 8062,
 								"name": "OrderShippingMethodTaxLine",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -9818,7 +9843,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8033,
+					"id": 8034,
 					"name": "adjustments",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9832,7 +9857,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8041,
+								"target": 8042,
 								"name": "OrderShippingMethodAdjustment",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -9848,7 +9873,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8034,
+					"id": 8035,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9864,7 +9889,7 @@
 					}
 				},
 				{
-					"id": 8035,
+					"id": 8036,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9880,7 +9905,7 @@
 					}
 				},
 				{
-					"id": 8036,
+					"id": 8037,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -9906,14 +9931,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8037,
+					"id": 8038,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8038,
+							"id": 8039,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -9926,14 +9951,14 @@
 					]
 				},
 				{
-					"id": 8039,
+					"id": 8040,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8040,
+							"id": 8041,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -9969,41 +9994,42 @@
 						8033,
 						8034,
 						8035,
-						8036
+						8036,
+						8037
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8037,
-						8039
+						8038,
+						8040
 					]
 				}
 			]
 		},
 		{
-			"id": 8080,
+			"id": 8081,
 			"name": "OrderTransaction",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8081,
+					"id": 8082,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8082,
+							"id": 8083,
 							"name": "new OrderTransaction",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8080,
+								"target": 8081,
 								"name": "OrderTransaction",
 								"package": "@medusajs/order",
 								"qualifiedName": "default"
@@ -10012,7 +10038,7 @@
 					]
 				},
 				{
-					"id": 8105,
+					"id": 8106,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10030,7 +10056,7 @@
 					}
 				},
 				{
-					"id": 8083,
+					"id": 8084,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10041,7 +10067,7 @@
 					}
 				},
 				{
-					"id": 8084,
+					"id": 8085,
 					"name": "order_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10052,7 +10078,7 @@
 					}
 				},
 				{
-					"id": 8085,
+					"id": 8086,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10066,7 +10092,7 @@
 					}
 				},
 				{
-					"id": 8086,
+					"id": 8087,
 					"name": "return_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10087,7 +10113,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8087,
+					"id": 8088,
 					"name": "return",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10101,7 +10127,7 @@
 					}
 				},
 				{
-					"id": 8088,
+					"id": 8089,
 					"name": "exchange_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10121,21 +10147,21 @@
 					}
 				},
 				{
-					"id": 8089,
+					"id": 8090,
 					"name": "exchange",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7646,
+						"target": 7645,
 						"name": "OrderExchange",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8090,
+					"id": 8091,
 					"name": "claim_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10155,21 +10181,21 @@
 					}
 				},
 				{
-					"id": 8091,
+					"id": 8092,
 					"name": "claim",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 7578,
+						"target": 7577,
 						"name": "OrderClaim",
 						"package": "@medusajs/order",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8092,
+					"id": 8093,
 					"name": "version",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10181,7 +10207,7 @@
 					"defaultValue": "1"
 				},
 				{
-					"id": 8093,
+					"id": 8094,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10206,7 +10232,7 @@
 					}
 				},
 				{
-					"id": 8094,
+					"id": 8095,
 					"name": "raw_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10222,7 +10248,7 @@
 					}
 				},
 				{
-					"id": 8095,
+					"id": 8096,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10233,7 +10259,7 @@
 					}
 				},
 				{
-					"id": 8096,
+					"id": 8097,
 					"name": "reference",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10254,7 +10280,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8097,
+					"id": 8098,
 					"name": "reference_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10275,7 +10301,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8098,
+					"id": 8099,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10291,7 +10317,7 @@
 					}
 				},
 				{
-					"id": 8099,
+					"id": 8100,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10307,7 +10333,7 @@
 					}
 				},
 				{
-					"id": 8100,
+					"id": 8101,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -10333,14 +10359,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8101,
+					"id": 8102,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8102,
+							"id": 8103,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -10353,14 +10379,14 @@
 					]
 				},
 				{
-					"id": 8103,
+					"id": 8104,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8104,
+							"id": 8105,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -10377,14 +10403,13 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8081
+						8082
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8105,
-						8083,
+						8106,
 						8084,
 						8085,
 						8086,
@@ -10401,14 +10426,15 @@
 						8097,
 						8098,
 						8099,
-						8100
+						8100,
+						8101
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8101,
-						8103
+						8102,
+						8104
 					]
 				}
 			]
@@ -10418,15 +10444,15 @@
 		{
 			"title": "Classes",
 			"children": [
-				7555,
-				7630,
-				7607,
-				7578,
-				7674,
-				7646,
+				7554,
+				7629,
+				7606,
+				7577,
+				7673,
+				7645,
 				7731,
 				7751,
-				7694,
+				7693,
 				7839,
 				7802,
 				7871,
@@ -10436,82 +10462,86 @@
 				7974,
 				8000,
 				7941,
-				8041,
-				8061,
+				8042,
+				8062,
 				8020,
-				8080
+				8081
 			]
 		}
 	],
 	"packageName": "@medusajs/order",
 	"symbolIdMap": {
-		"7554": {
+		"7553": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"7555": {
+		"7554": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default"
 		},
-		"7558": {
+		"7557": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.id"
 		},
-		"7559": {
+		"7558": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.customer_id"
 		},
-		"7560": {
+		"7559": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.company"
 		},
-		"7561": {
+		"7560": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.first_name"
 		},
-		"7562": {
+		"7561": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.last_name"
 		},
-		"7563": {
+		"7562": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.address_1"
 		},
-		"7564": {
+		"7563": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.address_2"
 		},
-		"7565": {
+		"7564": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.city"
 		},
-		"7566": {
+		"7565": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.country_code"
 		},
-		"7567": {
+		"7566": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.province"
 		},
-		"7568": {
+		"7567": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.postal_code"
 		},
-		"7569": {
+		"7568": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.phone"
 		},
-		"7570": {
+		"7569": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"7571": {
+		"7570": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"7572": {
+		"7571": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.updated_at"
+		},
+		"7572": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"7573": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
@@ -10519,7 +10549,7 @@
 		},
 		"7574": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.onInit"
 		},
 		"7575": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
@@ -10527,99 +10557,99 @@
 		},
 		"7576": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"7577": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/address.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"7578": {
+		"7577": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default"
 		},
-		"7581": {
+		"7580": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.id"
 		},
-		"7582": {
+		"7581": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.order_id"
 		},
-		"7583": {
+		"7582": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.order"
 		},
-		"7584": {
+		"7583": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.return"
 		},
-		"7585": {
+		"7584": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.return_id"
 		},
-		"7586": {
+		"7585": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.order_version"
 		},
-		"7587": {
+		"7586": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.display_id"
 		},
-		"7588": {
+		"7587": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.type"
 		},
-		"7589": {
+		"7588": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.no_notification"
 		},
-		"7590": {
+		"7589": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.refund_amount"
 		},
-		"7591": {
+		"7590": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.raw_refund_amount"
 		},
-		"7592": {
+		"7591": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.additional_items"
 		},
-		"7593": {
+		"7592": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.claim_items"
 		},
-		"7594": {
+		"7593": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.shipping_methods"
 		},
-		"7595": {
+		"7594": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.transactions"
 		},
-		"7596": {
+		"7595": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.created_by"
 		},
-		"7597": {
+		"7596": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"7598": {
+		"7597": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"7599": {
+		"7598": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"7600": {
+		"7599": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"7601": {
+		"7600": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.canceled_at"
+		},
+		"7601": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"7602": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
@@ -10627,7 +10657,7 @@
 		},
 		"7603": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.onInit"
 		},
 		"7604": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
@@ -10635,75 +10665,75 @@
 		},
 		"7605": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"7606": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"7607": {
+		"7606": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default"
 		},
-		"7610": {
+		"7609": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.id"
 		},
-		"7611": {
+		"7610": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.images"
 		},
-		"7612": {
+		"7611": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.reason"
 		},
-		"7613": {
+		"7612": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.quantity"
 		},
-		"7614": {
+		"7613": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.raw_quantity"
 		},
-		"7615": {
+		"7614": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.claim_id"
 		},
-		"7616": {
+		"7615": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.claim"
 		},
-		"7617": {
+		"7616": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.item_id"
 		},
-		"7618": {
+		"7617": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.item"
 		},
-		"7619": {
+		"7618": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.is_additional_item"
 		},
-		"7620": {
+		"7619": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.note"
 		},
-		"7621": {
+		"7620": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"7622": {
+		"7621": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"7623": {
+		"7622": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"7624": {
+		"7623": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.deleted_at"
+		},
+		"7624": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"7625": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
@@ -10711,7 +10741,7 @@
 		},
 		"7626": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.onInit"
 		},
 		"7627": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
@@ -10719,47 +10749,47 @@
 		},
 		"7628": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"7629": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"7630": {
+		"7629": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default"
 		},
-		"7633": {
+		"7632": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.id"
 		},
-		"7634": {
+		"7633": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.claim_item_id"
 		},
-		"7635": {
+		"7634": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.item"
 		},
-		"7636": {
+		"7635": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.url"
 		},
-		"7637": {
+		"7636": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"7638": {
+		"7637": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"7639": {
+		"7638": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"7640": {
+		"7639": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.deleted_at"
+		},
+		"7640": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"7641": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
@@ -10767,7 +10797,7 @@
 		},
 		"7642": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.onInit"
 		},
 		"7643": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
@@ -10775,95 +10805,95 @@
 		},
 		"7644": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"7645": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/claim-item-image.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"7646": {
+		"7645": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default"
 		},
-		"7649": {
+		"7648": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.id"
 		},
-		"7650": {
+		"7649": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.order_id"
 		},
-		"7651": {
+		"7650": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.order"
 		},
-		"7652": {
+		"7651": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.return"
 		},
-		"7653": {
+		"7652": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.return_id"
 		},
-		"7654": {
+		"7653": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.order_version"
 		},
-		"7655": {
+		"7654": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.display_id"
 		},
-		"7656": {
+		"7655": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.no_notification"
 		},
-		"7657": {
+		"7656": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.difference_due"
 		},
-		"7658": {
+		"7657": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.raw_difference_due"
 		},
-		"7659": {
+		"7658": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.allow_backorder"
 		},
-		"7660": {
+		"7659": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.additional_items"
 		},
-		"7661": {
+		"7660": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.shipping_methods"
 		},
-		"7662": {
+		"7661": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.transactions"
 		},
-		"7663": {
+		"7662": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.created_by"
 		},
-		"7664": {
+		"7663": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"7665": {
+		"7664": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"7666": {
+		"7665": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"7667": {
+		"7666": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"7668": {
+		"7667": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.canceled_at"
+		},
+		"7668": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"7669": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
@@ -10871,7 +10901,7 @@
 		},
 		"7670": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.onInit"
 		},
 		"7671": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
@@ -10879,63 +10909,63 @@
 		},
 		"7672": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"7673": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/exchange.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"7674": {
+		"7673": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default"
 		},
-		"7677": {
+		"7676": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.id"
 		},
-		"7678": {
+		"7677": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.quantity"
 		},
-		"7679": {
+		"7678": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.raw_quantity"
 		},
-		"7680": {
+		"7679": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.exchange_id"
 		},
-		"7681": {
+		"7680": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.exchange"
 		},
-		"7682": {
+		"7681": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.item_id"
 		},
-		"7683": {
+		"7682": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.item"
 		},
-		"7684": {
+		"7683": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.note"
 		},
-		"7685": {
+		"7684": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"7686": {
+		"7685": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"7687": {
+		"7686": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"7688": {
+		"7687": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.deleted_at"
+		},
+		"7688": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"7689": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
@@ -10943,7 +10973,7 @@
 		},
 		"7690": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.onInit"
 		},
 		"7691": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
@@ -10951,107 +10981,107 @@
 		},
 		"7692": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"7693": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/exchange-item.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"7694": {
+		"7693": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default"
 		},
-		"7697": {
+		"7696": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.id"
 		},
-		"7698": {
+		"7697": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.title"
 		},
-		"7699": {
+		"7698": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.subtitle"
 		},
-		"7700": {
+		"7699": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.thumbnail"
 		},
-		"7701": {
+		"7700": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.variant_id"
 		},
-		"7702": {
+		"7701": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.product_id"
 		},
-		"7703": {
+		"7702": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.product_title"
 		},
-		"7704": {
+		"7703": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.product_description"
 		},
-		"7705": {
+		"7704": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.product_subtitle"
 		},
-		"7706": {
+		"7705": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.product_type"
 		},
-		"7707": {
+		"7706": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.product_collection"
 		},
-		"7708": {
+		"7707": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.product_handle"
 		},
-		"7709": {
+		"7708": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.variant_sku"
 		},
-		"7710": {
+		"7709": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.variant_barcode"
 		},
-		"7711": {
+		"7710": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.variant_title"
 		},
-		"7712": {
+		"7711": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.variant_option_values"
 		},
-		"7713": {
+		"7712": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.requires_shipping"
 		},
-		"7714": {
+		"7713": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.is_discountable"
 		},
-		"7715": {
+		"7714": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.is_tax_inclusive"
 		},
-		"7716": {
+		"7715": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.compare_at_unit_price"
 		},
-		"7717": {
+		"7716": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.raw_compare_at_unit_price"
 		},
-		"7718": {
+		"7717": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.unit_price"
 		},
-		"7719": {
+		"7718": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
 			"qualifiedName": "default.raw_unit_price"
+		},
+		"7719": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
+			"qualifiedName": "default.is_custom_price"
 		},
 		"7720": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/line-item.ts",
@@ -12195,39 +12225,39 @@
 		},
 		"8029": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.shipping_option_id"
+			"qualifiedName": "default.is_custom_amount"
 		},
 		"8030": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.data"
+			"qualifiedName": "default.shipping_option_id"
 		},
 		"8031": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.metadata"
+			"qualifiedName": "default.data"
 		},
 		"8032": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.tax_lines"
+			"qualifiedName": "default.metadata"
 		},
 		"8033": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.adjustments"
+			"qualifiedName": "default.tax_lines"
 		},
 		"8034": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.created_at"
+			"qualifiedName": "default.adjustments"
 		},
 		"8035": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default.created_at"
 		},
 		"8036": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.deleted_at"
+			"qualifiedName": "default.updated_at"
 		},
 		"8037": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.deleted_at"
 		},
 		"8038": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
@@ -12235,27 +12265,27 @@
 		},
 		"8039": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.onCreate"
 		},
 		"8040": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
 			"qualifiedName": "default.onInit"
 		},
 		"8041": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"8042": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
 			"qualifiedName": "default"
 		},
-		"8044": {
+		"8045": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
 			"qualifiedName": "default.shipping_method"
 		},
-		"8045": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
-			"qualifiedName": "default.shipping_method_id"
-		},
 		"8046": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.shipping_method_id"
 		},
 		"8047": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
@@ -12263,71 +12293,71 @@
 		},
 		"8048": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.onCreate"
 		},
 		"8049": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
 			"qualifiedName": "default.onInit"
 		},
 		"8050": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.id"
+			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-adjustment.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"8051": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.description"
+			"qualifiedName": "default.id"
 		},
 		"8052": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.promotion_id"
+			"qualifiedName": "default.description"
 		},
 		"8053": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.code"
+			"qualifiedName": "default.promotion_id"
 		},
 		"8054": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.amount"
+			"qualifiedName": "default.code"
 		},
 		"8055": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.raw_amount"
+			"qualifiedName": "default.amount"
 		},
 		"8056": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.provider_id"
+			"qualifiedName": "default.raw_amount"
 		},
 		"8057": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.created_at"
+			"qualifiedName": "default.provider_id"
 		},
 		"8058": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default.created_at"
 		},
 		"8059": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.deleted_at"
+			"qualifiedName": "default.updated_at"
 		},
 		"8060": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
-			"qualifiedName": "default.[OptionalProps]"
+			"qualifiedName": "default.deleted_at"
 		},
 		"8061": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/adjustment-line.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"8062": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
 			"qualifiedName": "default"
 		},
-		"8064": {
+		"8065": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
 			"qualifiedName": "default.shipping_method"
 		},
-		"8065": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
-			"qualifiedName": "default.shipping_method_id"
-		},
 		"8066": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.shipping_method_id"
 		},
 		"8067": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
@@ -12335,131 +12365,131 @@
 		},
 		"8068": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.onCreate"
 		},
 		"8069": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
 			"qualifiedName": "default.onInit"
 		},
 		"8070": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.id"
+			"sourceFileName": "../../../../packages/modules/order/src/models/shipping-method-tax-line.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"8071": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.description"
+			"qualifiedName": "default.id"
 		},
 		"8072": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.tax_rate_id"
+			"qualifiedName": "default.description"
 		},
 		"8073": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.code"
+			"qualifiedName": "default.tax_rate_id"
 		},
 		"8074": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.rate"
+			"qualifiedName": "default.code"
 		},
 		"8075": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.raw_rate"
+			"qualifiedName": "default.rate"
 		},
 		"8076": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.provider_id"
+			"qualifiedName": "default.raw_rate"
 		},
 		"8077": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.created_at"
+			"qualifiedName": "default.provider_id"
 		},
 		"8078": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default.created_at"
 		},
 		"8079": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
-			"qualifiedName": "default.deleted_at"
+			"qualifiedName": "default.updated_at"
 		},
 		"8080": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/tax-line.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"8081": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default"
 		},
-		"8083": {
+		"8084": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.id"
 		},
-		"8084": {
+		"8085": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.order_id"
 		},
-		"8085": {
+		"8086": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.order"
 		},
-		"8086": {
+		"8087": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.return_id"
 		},
-		"8087": {
+		"8088": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.return"
 		},
-		"8088": {
+		"8089": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.exchange_id"
 		},
-		"8089": {
+		"8090": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.exchange"
 		},
-		"8090": {
+		"8091": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.claim_id"
 		},
-		"8091": {
+		"8092": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.claim"
 		},
-		"8092": {
+		"8093": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.version"
 		},
-		"8093": {
+		"8094": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.amount"
 		},
-		"8094": {
+		"8095": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.raw_amount"
 		},
-		"8095": {
+		"8096": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.currency_code"
 		},
-		"8096": {
+		"8097": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.reference"
 		},
-		"8097": {
+		"8098": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.reference_id"
 		},
-		"8098": {
+		"8099": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8099": {
+		"8100": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8100": {
-			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
-			"qualifiedName": "default.deleted_at"
-		},
 		"8101": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.deleted_at"
 		},
 		"8102": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
@@ -12467,13 +12497,17 @@
 		},
 		"8103": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
-			"qualifiedName": "default.onInit"
+			"qualifiedName": "default.onCreate"
 		},
 		"8104": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.onInit"
 		},
 		"8105": {
+			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"8106": {
 			"sourceFileName": "../../../../packages/modules/order/src/models/transaction.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}
@@ -12483,7 +12517,7 @@
 			"1": "../../../../packages/modules/order/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 7554
+			"1": 7553
 		}
 	}
 }

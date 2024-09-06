@@ -6,8 +6,6 @@
  * required:
  *   - type
  *   - order_id
- *   - reason_id
- *   - metadata
  * properties:
  *   type:
  *     type: string

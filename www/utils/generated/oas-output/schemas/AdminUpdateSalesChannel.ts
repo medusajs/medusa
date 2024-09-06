@@ -3,9 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminUpdateSalesChannel
- * required:
- *   - description
- *   - metadata
  * properties:
  *   name:
  *     type: string
