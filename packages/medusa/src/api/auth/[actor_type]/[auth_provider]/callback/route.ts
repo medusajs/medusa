@@ -1,8 +1,4 @@
-import {
-  AuthenticationInput,
-  ConfigModule,
-  IAuthModuleService,
-} from "@medusajs/types"
+import { AuthenticationInput, IAuthModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -13,21 +9,6 @@ import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
-  const config: ConfigModule = req.scope.resolve(
-    ContainerRegistrationKeys.CONFIG_MODULE
-  )
-
-  const authMethodsPerActor =
-    config.projectConfig?.http?.authMethodsPerActor ?? {}
-  // Not having the config defined would allow for all auth providers for the particular actor.
-  if (authMethodsPerActor[actor_type]) {
-    if (!authMethodsPerActor[actor_type].includes(auth_provider)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `The actor type ${actor_type} is not allowed to use the auth provider ${auth_provider}`
-      )
-    }
-  }
 
   const service: IAuthModuleService = req.scope.resolve(
     ModuleRegistrationName.AUTH

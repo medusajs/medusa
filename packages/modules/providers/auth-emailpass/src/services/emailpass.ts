@@ -35,14 +35,56 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     this.logger_ = logger
   }
 
-  protected async createAuthIdentity({ email, password, authIdentityService }) {
+  protected async hashPassword(password: string) {
     const hashConfig = this.config_.hashConfig ?? { logN: 15, r: 8, p: 1 }
     const passwordHash = await Scrypt.kdf(password, hashConfig)
+    return passwordHash.toString("base64")
+  }
+
+  async update(
+    data: { email: string; password: string },
+    authIdentityService: AuthIdentityProviderService
+  ) {
+    const { email, password } = data ?? {}
+
+    if (!email || !isString(email)) {
+      return {
+        success: false,
+        error: `Cannot update ${this.provider} provider identity without email`,
+      }
+    }
+
+    if (!password || !isString(password)) {
+      return { success: true }
+    }
+
+    let authIdentity
+
+    try {
+      const passwordHash = await this.hashPassword(password)
+
+      authIdentity = await authIdentityService.update(email, {
+        provider_metadata: {
+          password: passwordHash,
+        },
+      })
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+
+    return {
+      success: true,
+      authIdentity,
+    }
+  }
+
+  protected async createAuthIdentity({ email, password, authIdentityService }) {
+    const passwordHash = await this.hashPassword(password)
 
     const createdAuthIdentity = await authIdentityService.create({
       entity_id: email,
       provider_metadata: {
-        password: passwordHash.toString("base64"),
+        password: passwordHash,
       },
     })
 
