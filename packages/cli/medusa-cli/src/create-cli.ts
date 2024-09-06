@@ -342,19 +342,26 @@ function buildLocalCommands(cli, isLocalProject) {
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
       builder: (_) =>
-        _.option(`H`, {
-          alias: `host`,
-          type: `string`,
-          default: defaultHost,
-          describe: `Set host. Defaults to ${defaultHost}`,
-        }).option(`p`, {
-          alias: `port`,
-          type: `string`,
-          default: process.env.PORT || defaultPort,
-          describe: process.env.PORT
-            ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
-            : `Set port. Defaults to ${defaultPort}`,
-        }),
+        _.option("types", {
+          type: "boolean",
+          default: true,
+          describe:
+            "Generate automated types for modules inside the .medusa directory",
+        })
+          .option(`H`, {
+            alias: `host`,
+            type: `string`,
+            default: defaultHost,
+            describe: `Set host. Defaults to ${defaultHost}`,
+          })
+          .option(`p`, {
+            alias: `port`,
+            type: `string`,
+            default: process.env.PORT || defaultPort,
+            describe: process.env.PORT
+              ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+              : `Set port. Defaults to ${defaultPort}`,
+          }),
       handler: handlerP(
         getCommandHandler(`develop`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`
@@ -371,19 +378,26 @@ function buildLocalCommands(cli, isLocalProject) {
       command: `start`,
       desc: `Start development server.`,
       builder: (_) =>
-        _.option(`H`, {
-          alias: `host`,
-          type: `string`,
-          default: defaultHost,
-          describe: `Set host. Defaults to ${defaultHost}`,
-        }).option(`p`, {
-          alias: `port`,
-          type: `string`,
-          default: process.env.PORT || defaultPort,
-          describe: process.env.PORT
-            ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
-            : `Set port. Defaults to ${defaultPort}`,
-        }),
+        _.option("types", {
+          type: "boolean",
+          default: false,
+          describe:
+            "Generate automated types for modules inside the .medusa directory",
+        })
+          .option(`H`, {
+            alias: `host`,
+            type: `string`,
+            default: defaultHost,
+            describe: `Set host. Defaults to ${defaultHost}`,
+          })
+          .option(`p`, {
+            alias: `port`,
+            type: `string`,
+            default: process.env.PORT || defaultPort,
+            describe: process.env.PORT
+              ? `Set port. Defaults to ${process.env.PORT} (set by env.PORT) (otherwise defaults ${defaultPort})`
+              : `Set port. Defaults to ${defaultPort}`,
+          }),
       handler: handlerP(
         getCommandHandler(`start`, (args, cmd) => {
           process.env.NODE_ENV = process.env.NODE_ENV || `development`

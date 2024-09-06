@@ -10,7 +10,7 @@ import path from "path"
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
 
-export default async function ({ port, directory }) {
+export default async function ({ port, directory, types }) {
   async function start() {
     track("CLI_START")
 
@@ -22,7 +22,7 @@ export default async function ({ port, directory }) {
         expressApp: app,
       })
 
-      if (gqlSchema && process.env?.NODE_ENV?.startsWith("dev")) {
+      if (gqlSchema && types) {
         const outputDirGeneratedTypes = path.join(directory, ".medusa")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
