@@ -14,6 +14,29 @@ export type RemoteQueryFunctionReturnPagination = {
   count: number
 }
 
+/**
+ * The GraphResultSet presents a typed output for the
+ * result returned by the underlying remote query
+ */
+export type GraphResultSet<TEntry extends string> = {
+  rows: TEntry extends keyof RemoteQueryEntryPoints
+    ? RemoteQueryEntryPoints[TEntry][]
+    : any[]
+  meta?: any
+}
+
+/**
+ * QueryGraphFunction is a wrapper on top of remoteQuery
+ * that simplifies the input it accepts and returns
+ * a normalized/consistent output.
+ */
+export type QueryGraphFunction = {
+  <const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<Prettify<GraphResultSet<TEntry>>>
+}
+
 /*export type RemoteQueryReturnedData<TEntry extends string> =
   TEntry extends keyof RemoteQueryEntryPoints
     ? Prettify<Omit<RemoteQueryEntryPoints[TEntry], ExcludedProps>>
@@ -71,6 +94,13 @@ export type RemoteQueryFunction = {
    * @param options
    */
   (query: RemoteJoinerQuery, options?: RemoteJoinerOptions): Promise<any>
+
+  /**
+   * Graph function uses the remoteQuery under the hood and
+   * returns a result set
+   */
+  graph: QueryGraphFunction
+
   /**
    * Query wrapper to provide specific GraphQL like API around remoteQuery.query
    * @param query
@@ -82,27 +112,4 @@ export type RemoteQueryFunction = {
     variables?: Record<string, unknown>,
     options?: RemoteJoinerOptions
   ) => Promise<any>
-}
-
-/**
- * The GraphResultSet presents a typed output for the
- * result returned by the underlying remote query
- */
-export type GraphResultSet<TEntry extends string> = {
-  rows: TEntry extends keyof RemoteQueryEntryPoints
-    ? RemoteQueryEntryPoints[TEntry][]
-    : any[]
-  meta?: any
-}
-
-/**
- * QueryGraphFunction is a wrapper on top of remoteQuery
- * that simplifies the input it accepts and returns
- * a normalized/consistent output.
- */
-export type QueryGraphFunction = {
-  <const TEntry extends string>(
-    queryConfig: RemoteQueryObjectConfig<TEntry>,
-    options?: RemoteJoinerOptions
-  ): Promise<Prettify<GraphResultSet<TEntry>>>
 }

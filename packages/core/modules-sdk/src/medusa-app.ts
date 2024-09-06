@@ -54,6 +54,7 @@ declare module "@medusajs/types" {
     [ContainerRegistrationKeys.CONFIG_MODULE]: ConfigModule
     [ContainerRegistrationKeys.PG_CONNECTION]: Knex<any>
     [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
+    [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
     [ContainerRegistrationKeys.LOGGER]: Logger
   }
 }
@@ -420,53 +421,24 @@ async function MedusaApp_({
     customRemoteFetchData: remoteFetchData,
   })
 
-  /**
-   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
-   * @param queryConfig
-   * @param options
-   */
-  async function query<const TEntry extends string>(
-    queryConfig: RemoteQueryObjectConfig<TEntry>,
+  const query: RemoteQueryFunction = async (
+    queryOptions:
+      | RemoteQueryObjectConfig<any>
+      | RemoteQueryObjectFromStringResult<any>
+      | RemoteJoinerQuery,
     options?: RemoteJoinerOptions
-  ): Promise<any>
-
-  async function query<
-    const TConfig extends RemoteQueryObjectFromStringResult<any>
-  >(queryConfig: TConfig, options?: RemoteJoinerOptions): Promise<any>
-
-  /**
-   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
-   * @param query
-   * @param options
-   */
-  async function query(
-    query: RemoteJoinerQuery,
-    options?: RemoteJoinerOptions
-  ): Promise<any>
-
-  /**
-   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
-   * @param query
-   * @param options
-   */
-  async function query<const TEntry extends string>(
-    query:
-      | RemoteJoinerQuery
-      | RemoteQueryObjectConfig<TEntry>
-      | RemoteQueryObjectFromStringResult<any>,
-    options?: RemoteJoinerOptions
-  ) {
-    if (!isObject(query)) {
+  ) => {
+    if (!isObject(queryOptions)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Invalid query, expected object and received something else."
       )
     }
 
-    let normalizedQuery: any = query
+    let normalizedQuery: any = queryOptions
 
-    if ("__value" in query) {
-      normalizedQuery = query.__value
+    if ("__value" in queryOptions) {
+      normalizedQuery = queryOptions.__value
     } else if (
       "entryPoint" in normalizedQuery ||
       "service" in normalizedQuery
@@ -478,18 +450,24 @@ async function MedusaApp_({
 
     return await remoteQuery.query(normalizedQuery, undefined, options)
   }
+
   /**
    * Query wrapper to provide specific GraphQL like API around remoteQuery.query
    * @param query
    * @param variables
    * @param options
    */
-  query.gql = async function (
-    query: string,
-    variables?: Record<string, unknown>,
-    options?: RemoteJoinerOptions
-  ) {
+  query.gql = async function (query, variables?, options?) {
     return await remoteQuery.query(query, variables, options)
+  }
+
+  /**
+   * Graph function uses the remoteQuery under the hood and
+   * returns a result set
+   */
+  query.graph = async function (queryOptions, options) {
+    const normalizedQuery = remoteQueryObjectFromString(queryOptions).__value
+    return await remoteQuery.query(normalizedQuery, undefined, options)
   }
 
   const applyMigration = async ({
