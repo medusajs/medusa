@@ -72,6 +72,7 @@ export function decorateCartTotals(
   let subtotal = MathBN.convert(0)
 
   let discountTotal = MathBN.convert(0)
+  let discountSubtotal = MathBN.convert(0)
   let discountTaxTotal = MathBN.convert(0)
 
   let itemsSubtotal = MathBN.convert(0)
@@ -105,12 +106,14 @@ export function decorateCartTotals(
     const itemOriginalTaxTotal = MathBN.convert(itemTotals.original_tax_total)
 
     const itemDiscountTotal = MathBN.convert(itemTotals.discount_total)
+    const itemDiscountSubTotal = MathBN.convert(itemTotals.discount_subtotal)
 
     const itemDiscountTaxTotal = MathBN.convert(itemTotals.discount_tax_total)
 
     subtotal = MathBN.add(subtotal, itemSubtotal)
 
     discountTotal = MathBN.add(discountTotal, itemDiscountTotal)
+    discountSubtotal = MathBN.add(discountSubtotal, itemDiscountSubTotal)
     discountTaxTotal = MathBN.add(discountTaxTotal, itemDiscountTaxTotal)
 
     itemsTotal = MathBN.add(itemsTotal, itemTotal)
@@ -154,6 +157,9 @@ export function decorateCartTotals(
     )
 
     const methodDiscountTotal = MathBN.convert(methodTotals.discount_total)
+    const methodDiscountSubtotal = MathBN.convert(
+      methodTotals.discount_subtotal
+    )
     const methodDiscountTaxTotal = MathBN.convert(
       methodTotals.discount_tax_total
     )
@@ -175,6 +181,7 @@ export function decorateCartTotals(
       methodOriginalTaxTotal
     )
     discountTotal = MathBN.add(discountTotal, methodDiscountTotal)
+    discountSubtotal = MathBN.add(discountSubtotal, methodDiscountSubtotal)
     discountTaxTotal = MathBN.add(discountTaxTotal, methodDiscountTaxTotal)
 
     return methodTotals
@@ -196,8 +203,7 @@ export function decorateCartTotals(
 
   // TODO: subtract (cart.gift_card_total + cart.gift_card_tax_total)
   const tempTotal = MathBN.add(subtotal, taxTotal)
-  const total = MathBN.sub(tempTotal, discountTotal)
-
+  const total = MathBN.sub(tempTotal, discountSubtotal)
   const cart = cartLike as any
 
   cart.total = new BigNumber(total)
@@ -205,6 +211,7 @@ export function decorateCartTotals(
   cart.tax_total = new BigNumber(taxTotal)
 
   cart.discount_total = new BigNumber(discountTotal)
+  cart.discount_subtotal = new BigNumber(discountSubtotal)
   cart.discount_tax_total = new BigNumber(discountTaxTotal)
 
   // cart.gift_card_total = giftCardTotal.total || 0

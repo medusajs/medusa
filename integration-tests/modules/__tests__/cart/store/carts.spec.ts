@@ -1400,7 +1400,7 @@ medusaIntegrationTestRunner({
                   adjustments: [
                     expect.objectContaining({
                       code: "PROMOTION_APPLIED",
-                      amount: 177.86561264822134,
+                      amount: 177.92885223894908,
                     }),
                   ],
                 }),
@@ -1414,7 +1414,7 @@ medusaIntegrationTestRunner({
                     expect.objectContaining({
                       id: expect.not.stringContaining(lineItemAdjustment.id),
                       code: "PROMOTION_APPLIED",
-                      amount: 122.13438735177866,
+                      amount: 122.07114776105092,
                     }),
                   ],
                 }),
@@ -2056,8 +2056,9 @@ medusaIntegrationTestRunner({
               total: 95.4,
               subtotal: 100,
               tax_total: 5.4,
-              discount_total: 10,
-              discount_tax_total: 0,
+              discount_total: 10.6,
+              discount_subtotal: 10,
+              discount_tax_total: 0.6,
               original_total: 106,
               original_tax_total: 6,
               item_total: 95.4,
@@ -2082,8 +2083,9 @@ medusaIntegrationTestRunner({
                   total: 95.4,
                   subtotal: 100,
                   original_total: 106,
-                  discount_total: 10,
-                  discount_tax_total: 0,
+                  discount_total: 10.6,
+                  discount_subtotal: 10,
+                  discount_tax_total: 0.6,
                   original_tax_total: 6,
                   tax_lines: [
                     expect.objectContaining({
@@ -2096,7 +2098,7 @@ medusaIntegrationTestRunner({
                       promotion_id: promotion.id,
                       code: promotion.code,
                       subtotal: 10,
-                      total: 10,
+                      total: 10.6,
                     }),
                   ],
                 }),

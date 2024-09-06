@@ -25,6 +25,7 @@ export interface GetShippingMethodTotalOutput {
   original_total: BigNumber
 
   discount_total: BigNumber
+  discount_subtotal: BigNumber
   discount_tax_total: BigNumber
 
   tax_total: BigNumber
@@ -64,7 +65,10 @@ export function getShippingMethodTotals(
     ...(shippingMethod.tax_lines?.map((taxLine) => taxLine.rate) ?? [])
   )
 
-  const discountTotal = calculateAdjustmentTotal({
+  const {
+    adjustmentsTotal: discountTotal,
+    adjustmentsSubtotal: discountSubtotal,
+  } = calculateAdjustmentTotal({
     adjustments: shippingMethod.adjustments || [],
     includesTax: context.includeTax,
     taxRate: sumTaxRate,
@@ -85,6 +89,7 @@ export function getShippingMethodTotals(
     original_total: new BigNumber(amount),
 
     discount_total: new BigNumber(discountTotal),
+    discount_subtotal: new BigNumber(discountSubtotal),
     discount_tax_total: new BigNumber(discountTaxTotal),
 
     tax_total: new BigNumber(0),
