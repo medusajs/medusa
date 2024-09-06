@@ -124,12 +124,16 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/auth-identity-and-actor-types"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/_google/page.mdx",
-    "pathname": "/commerce-modules/auth/auth-providers/_google"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass/page.mdx",
     "pathname": "/commerce-modules/auth/auth-providers/emailpass"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/github/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-providers/github"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/google/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-providers/google"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/page.mdx",
@@ -918,6 +922,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/storefront-development/customers/retrieve/page.mdx",
     "pathname": "/storefront-development/customers/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/third-party-login/page.mdx",
+    "pathname": "/storefront-development/customers/third-party-login"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/page.mdx",

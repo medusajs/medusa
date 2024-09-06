@@ -5,7 +5,6 @@
  * x-schemaName: StoreUpdateCartLineItem
  * required:
  *   - quantity
- *   - metadata
  * properties:
  *   quantity:
  *     type: number
