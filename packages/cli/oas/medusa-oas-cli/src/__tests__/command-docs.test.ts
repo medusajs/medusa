@@ -208,7 +208,7 @@ describe("command docs", () => {
       configFile = path.resolve(outDir, "redocly-config.json")
       await writeJson(configFile, config)
       configYamlFile = path.resolve(outDir, "redocly-config.yaml")
-      await writeYaml(configYamlFile, config)
+      await writeYaml(configYamlFile, JSON.stringify(config))
     })
 
     it("should fail with unhandled circular reference", async () => {
