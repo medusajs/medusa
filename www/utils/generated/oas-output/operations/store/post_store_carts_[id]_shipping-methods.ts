@@ -1,8 +1,12 @@
 /**
  * @oas [post] /store/carts/{id}/shipping-methods
  * operationId: PostCartsIdShippingMethods
- * summary: Add Shipping Methods to Cart
- * description: Add a list of shipping methods to a cart.
+ * summary: Add Shipping Method to Cart
+ * x-sidebar-summary: Add Shipping Method
+ * description: Add a shipping method to a cart. Use this API route when the customer chooses their preferred shipping option.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping
+ *   description: Storefront guide: How to implement shipping during checkout.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -58,17 +62,20 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The shipping method's details.
  *         required:
  *           - option_id
  *         properties:
  *           option_id:
  *             type: string
  *             title: option_id
- *             description: The cart's option id.
+ *             description: The ID of the shipping option this method is created from.
  *           data:
  *             type: object
- *             description: The cart's data.
+ *             description: Any additional data relevant for the third-party fulfillment provider to process the shipment.
+ *             externalDocs:
+ *               url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping#data-request-body-parameter
+ *               description: Learn more about the `data` parameter.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

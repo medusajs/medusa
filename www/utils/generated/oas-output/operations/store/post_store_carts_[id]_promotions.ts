@@ -2,6 +2,7 @@
  * @oas [post] /store/carts/{id}/promotions
  * operationId: PostCartsIdPromotions
  * summary: Add Promotions to Cart
+ * x-sidebar-summary: Add Promotions
  * description: Add a list of promotions to a cart.
  * x-authenticated: false
  * parameters:
@@ -58,17 +59,17 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The promotion's details.
  *         required:
  *           - promo_codes
  *         properties:
  *           promo_codes:
  *             type: array
- *             description: The cart's promo codes.
+ *             description: Promotion codes to add to the cart.
  *             items:
  *               type: string
  *               title: promo_codes
- *               description: The promo code's promo codes.
+ *               description: A promotion code.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

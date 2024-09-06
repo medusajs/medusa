@@ -1,13 +1,17 @@
 /**
  * @oas [post] /store/customers/me/addresses/{address_id}
  * operationId: PostCustomersMeAddressesAddress_id
- * summary: Add Addresses to Customer
- * description: Add a list of addresses to a customer.
+ * summary: Update Customer's Address
+ * x-sidebar-summary: Update Address
+ * description: Update the logged-in customer's address.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#edit-an-address
+ *   description: Storefront guide: How to update an address of the logged-in customer.
  * x-authenticated: true
  * parameters:
  *   - name: address_id
  *     in: path
- *     description: The customer's address id.
+ *     description: The address's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -61,24 +65,8 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
- *         required:
- *           - metadata
- *           - first_name
- *           - last_name
- *           - phone
- *           - company
- *           - address_1
- *           - address_2
- *           - city
- *           - country_code
- *           - province
- *           - postal_code
- *           - address_name
+ *         description: The properties to update in the address.
  *         properties:
- *           metadata:
- *             type: object
- *             description: The customer's metadata.
  *           first_name:
  *             type: string
  *             title: first_name
@@ -94,43 +82,46 @@
  *           company:
  *             type: string
  *             title: company
- *             description: The customer's company.
+ *             description: The address's company.
  *           address_1:
  *             type: string
  *             title: address_1
- *             description: The customer's address 1.
+ *             description: The address's first line.
  *           address_2:
  *             type: string
  *             title: address_2
- *             description: The customer's address 2.
+ *             description: The address's second line.
  *           city:
  *             type: string
  *             title: city
- *             description: The customer's city.
+ *             description: The address's city.
  *           country_code:
  *             type: string
  *             title: country_code
- *             description: The customer's country code.
+ *             description: The address's country code.
  *           province:
  *             type: string
  *             title: province
- *             description: The customer's province.
+ *             description: The address's province.
  *           postal_code:
  *             type: string
  *             title: postal_code
- *             description: The customer's postal code.
+ *             description: The address's postal code.
  *           address_name:
  *             type: string
  *             title: address_name
- *             description: The customer's address name.
+ *             description: The address's name.
  *           is_default_shipping:
  *             type: boolean
  *             title: is_default_shipping
- *             description: The customer's is default shipping.
+ *             description: Whether the address is used by default for shipping during checkout.
  *           is_default_billing:
  *             type: boolean
  *             title: is_default_billing
- *             description: The customer's is default billing.
+ *             description: Whether the address is used by default for billing during checkout.
+ *           metadata:
+ *             type: object
+ *             description: Holds custom key-value pairs.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -139,18 +130,7 @@
  *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "metadata": {},
  *         "first_name": "{value}",
- *         "last_name": "{value}",
- *         "phone": "{value}",
- *         "company": "{value}",
- *         "address_1": "{value}",
- *         "address_2": "{value}",
- *         "city": "{value}",
- *         "country_code": "{value}",
- *         "province": "{value}",
- *         "postal_code": "{value}",
- *         "address_name": "{value}"
  *       }'
  * tags:
  *   - Customers
