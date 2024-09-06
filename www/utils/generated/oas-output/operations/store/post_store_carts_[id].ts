@@ -2,7 +2,7 @@
  * @oas [post] /store/carts/{id}
  * operationId: PostCartsId
  * summary: Update a Cart
- * description: Update a cart's details.
+ * description: Update a cart's details. This unsets the shipping an payment methods chosen before, and the customer would have to choose them again.
  * x-authenticated: false
  * parameters:
  *   - name: id
