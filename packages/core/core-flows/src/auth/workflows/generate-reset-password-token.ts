@@ -18,9 +18,9 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
     secret: string
     expiry?: number
   }) => {
-    const providerIdentity = useRemoteQueryStep({
+    const providerIdentities = useRemoteQueryStep({
       entry_point: "provider_identity",
-      fields: ["auth_identity.id"],
+      fields: ["auth_identity_id"],
       variables: {
         filters: {
           entity_id: input.entityId,
@@ -30,8 +30,10 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
     })
 
     const token = transform(
-      { input, providerIdentity },
-      ({ input, providerIdentity }) => {
+      { input, providerIdentities },
+      ({ input, providerIdentities }) => {
+        const providerIdentity = providerIdentities?.[0]
+
         if (!providerIdentity) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
@@ -48,7 +50,7 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
 
         const token = generateJwtToken(
           {
-            auth_identity_id: providerIdentity.id,
+            auth_identity_id: providerIdentity.auth_identity_id,
             provider: input.provider,
           },
           { secret: input.secret, expiresIn: "15m" }

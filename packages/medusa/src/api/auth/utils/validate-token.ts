@@ -33,13 +33,12 @@ export const validateToken = () => {
     ).projectConfig
 
     let verified: JwtPayload | null = null
-    
+
     try {
       verified = verify(token as string, http.jwtSecret!) as JwtPayload
     } catch (error) {
       return res.status(401).json({ message: "Invalid token" })
     }
-
 
     if (
       !verified ||
