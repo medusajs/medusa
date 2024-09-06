@@ -5114,6 +5114,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/product/createProductOptionValues",
+                        "title": "createProductOptionValues",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/product/createProductOptions",
                         "title": "createProductOptions",
                         "children": []
@@ -5164,6 +5172,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/product/deleteProductCollections",
                         "title": "deleteProductCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/product/deleteProductOptionValues",
+                        "title": "deleteProductOptionValues",
                         "children": []
                       },
                       {
@@ -5226,6 +5242,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/product/listAndCountProductOptionValues",
+                        "title": "listAndCountProductOptionValues",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/product/listAndCountProductOptions",
                         "title": "listAndCountProductOptions",
                         "children": []
@@ -5282,6 +5306,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/product/listProductOptionValues",
+                        "title": "listProductOptionValues",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/product/listProductOptions",
                         "title": "listProductOptions",
                         "children": []
@@ -5332,6 +5364,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/product/restoreProductCollections",
                         "title": "restoreProductCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/product/restoreProductOptionValues",
+                        "title": "restoreProductOptionValues",
                         "children": []
                       },
                       {
@@ -5450,6 +5490,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/product/softDeleteProductOptionValues",
+                        "title": "softDeleteProductOptionValues",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/product/softDeleteProductOptions",
                         "title": "softDeleteProductOptions",
                         "children": []
@@ -5500,6 +5548,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/product/updateProductCollections",
                         "title": "updateProductCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/product/updateProductOptionValues",
+                        "title": "updateProductOptionValues",
                         "children": []
                       },
                       {
@@ -5975,6 +6031,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/promotion/retrievePromotion",
                         "title": "retrievePromotion",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/promotion/revertUsage",
+                        "title": "revertUsage",
                         "children": []
                       },
                       {
