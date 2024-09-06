@@ -1,17 +1,20 @@
+import { IAuthModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
+  createUserAndAuthIdentity,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let user
+    let user, container
 
     beforeEach(async () => {
-      const container = getContainer()
+      container = getContainer()
       const { user: adminUser } = await createAdminUser(
         dbConnection,
         adminHeaders,
@@ -101,21 +104,62 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe("DELETE /admin/users", () => {
-      it("Deletes a user", async () => {
-        const userId = "member-user"
+    describe.only("DELETE /admin/users", () => {
+      it("Deletes a user and updated associated auth identity", async () => {
+        const { user, authIdentity } = await createUserAndAuthIdentity(
+          container
+        )
+
+        expect(authIdentity).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            provider_identities: [
+              expect.objectContaining({
+                provider: "emailpass",
+                provider_metadata: {
+                  password: expect.any(String),
+                },
+              }),
+            ],
+            app_metadata: {
+              user_id: user.id,
+            },
+          })
+        )
 
         const response = await api.delete(
-          `/admin/users/${userId}`,
+          `/admin/users/${user.id}`,
           adminHeaders
         )
 
         expect(response.status).toEqual(200)
         expect(response.data).toEqual({
-          id: userId,
+          id: user.id,
           object: "user",
           deleted: true,
         })
+
+        const authModule: IAuthModuleService = container.resolve(
+          ModuleRegistrationName.AUTH
+        )
+
+        const updatedAuthIdentity = await authModule.retrieveAuthIdentity(
+          authIdentity.id
+        )
+
+        console.log(
+          "updatedAuthIdentity",
+          JSON.stringify(updatedAuthIdentity, null, 2)
+        )
+
+        expect(updatedAuthIdentity).toEqual(
+          expect.objectContaining({
+            id: authIdentity.id,
+            app_metadata: expect.not.objectContaining({
+              user_id: user.id,
+            }),
+          })
+        )
       })
 
       // TODO: Migrate when analytics config is implemented in 2.0

@@ -7,6 +7,39 @@ export const adminHeaders = {
   headers: { "x-medusa-access-token": "test_token" },
 }
 
+export const createUserAndAuthIdentity = async (container?) => {
+  const appContainer = container ?? getContainer()!
+
+  const userModule: IUserModuleService = appContainer.resolve(
+    ModuleRegistrationName.USER
+  )
+  const authModule: IAuthModuleService = appContainer.resolve(
+    ModuleRegistrationName.AUTH
+  )
+  const user = await userModule.createUsers({
+    first_name: "Tony",
+    last_name: "Start",
+    email: "tony@start.com",
+  })
+
+  const authIdentity = await authModule.createAuthIdentities({
+    provider_identities: [
+      {
+        provider: "emailpass",
+        entity_id: "tony@start.com",
+        provider_metadata: {
+          password: "somepassword",
+        },
+      },
+    ],
+    app_metadata: {
+      user_id: user.id,
+    },
+  })
+
+  return { user, authIdentity }
+}
+
 export const createAdminUser = async (
   dbConnection,
   adminHeaders,

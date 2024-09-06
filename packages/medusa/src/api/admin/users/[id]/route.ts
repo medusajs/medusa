@@ -1,4 +1,7 @@
-import { deleteUsersWorkflow, updateUsersWorkflow } from "@medusajs/core-flows"
+import {
+  removeUserAccountWorkflow,
+  updateUsersWorkflow,
+} from "@medusajs/core-flows"
 import { HttpTypes, UpdateUserDTO } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
@@ -10,8 +13,8 @@ import {
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { AdminUpdateUserType } from "../validators"
 import { refetchUser } from "../helpers"
+import { AdminUpdateUserType } from "../validators"
 
 // Get user
 export const GET = async (
@@ -71,10 +74,10 @@ export const DELETE = async (
   res: MedusaResponse<HttpTypes.AdminUserDeleteResponse>
 ) => {
   const { id } = req.params
-  const workflow = deleteUsersWorkflow(req.scope)
+  const workflow = removeUserAccountWorkflow(req.scope)
 
   await workflow.run({
-    input: { ids: [id] },
+    input: { userId: id },
   })
 
   res.status(200).json({
