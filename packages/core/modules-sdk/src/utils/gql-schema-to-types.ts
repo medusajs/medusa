@@ -1,9 +1,8 @@
-import { MedusaModule } from "../medusa-module"
-import { FileSystem } from "@medusajs/utils"
-import { GraphQLSchema } from "graphql/type"
-import { parse, printSchema } from "graphql"
 import { codegen } from "@graphql-codegen/core"
-import * as typescriptPlugin from "@graphql-codegen/typescript"
+import { FileSystem } from "@medusajs/utils"
+import { parse, printSchema } from "graphql"
+import { GraphQLSchema } from "graphql/type"
+import { MedusaModule } from "../medusa-module"
 
 function buildEntryPointsTypeMap(
   schema: string
@@ -74,6 +73,8 @@ export async function gqlSchemaToTypes({
   schema: GraphQLSchema
   outputDir: string
 }) {
+  const typescriptPlugin = await import("@graphql-codegen/typescript")
+
   const config = {
     documents: [],
     config: {
