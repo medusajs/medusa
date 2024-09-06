@@ -2,8 +2,7 @@ post:
   operationId: PostReturn
   summary: Create Return
   description: Create a return.
-  x-authenticated: false
-  parameters: []
+  x-authenticated: true
   requestBody:
     content:
       application/json:
@@ -36,3 +35,6 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: createAndCompleteReturnOrderWorkflow
+  security:
+    - cookie_auth: []
+    - jwt_token: []

@@ -3,7 +3,7 @@
  * operationId: GetProductCategories
  * summary: List Product Categories
  * description: Retrieve a list of product categories. The product categories can be filtered by fields such as `id`. The product categories can also be sorted or paginated.
- * x-authenticated: false
+ * x-authenticated: true
  * parameters:
  *   - name: expand
  *     in: query
@@ -852,22 +852,6 @@
  *             type: string
  *             title: name
  *             description: The name's details.
- *   - name: is_active
- *     in: query
- *     description: The product category's is active.
- *     required: false
- *     schema:
- *       type: boolean
- *       title: is_active
- *       description: The product category's is active.
- *   - name: is_internal
- *     in: query
- *     description: The product category's is internal.
- *     required: false
- *     schema:
- *       type: boolean
- *       title: is_internal
- *       description: The product category's is internal.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -893,6 +877,9 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * 
 */
 

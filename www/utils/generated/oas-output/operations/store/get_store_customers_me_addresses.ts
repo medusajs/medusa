@@ -47,117 +47,59 @@
  *       type: string
  *       title: order
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
- *   - name: metadata
- *     in: query
- *     description: The customer's metadata.
- *     required: true
- *     schema:
- *       type: object
- *       description: The customer's metadata.
- *   - name: first_name
- *     in: query
- *     description: The customer's first name.
- *     required: true
- *     schema:
- *       type: string
- *       title: first_name
- *       description: The customer's first name.
- *   - name: last_name
- *     in: query
- *     description: The customer's last name.
- *     required: true
- *     schema:
- *       type: string
- *       title: last_name
- *       description: The customer's last name.
- *   - name: phone
- *     in: query
- *     description: The customer's phone.
- *     required: true
- *     schema:
- *       type: string
- *       title: phone
- *       description: The customer's phone.
- *   - name: company
- *     in: query
- *     description: The customer's company.
- *     required: true
- *     schema:
- *       type: string
- *       title: company
- *       description: The customer's company.
- *   - name: address_1
- *     in: query
- *     description: The customer's address 1.
- *     required: true
- *     schema:
- *       type: string
- *       title: address_1
- *       description: The customer's address 1.
- *   - name: address_2
- *     in: query
- *     description: The customer's address 2.
- *     required: true
- *     schema:
- *       type: string
- *       title: address_2
- *       description: The customer's address 2.
  *   - name: city
  *     in: query
  *     description: The customer's city.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: city
- *       description: The customer's city.
+ *       oneOf:
+ *         - type: string
+ *           title: city
+ *           description: The customer's city.
+ *         - type: array
+ *           description: The customer's city.
+ *           items:
+ *             type: string
+ *             title: city
+ *             description: The city's details.
  *   - name: country_code
  *     in: query
  *     description: The customer's country code.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: country_code
- *       description: The customer's country code.
- *   - name: province
- *     in: query
- *     description: The customer's province.
- *     required: true
- *     schema:
- *       type: string
- *       title: province
- *       description: The customer's province.
+ *       oneOf:
+ *         - type: string
+ *           title: country_code
+ *           description: The customer's country code.
+ *         - type: array
+ *           description: The customer's country code.
+ *           items:
+ *             type: string
+ *             title: country_code
+ *             description: The country code's details.
  *   - name: postal_code
  *     in: query
  *     description: The customer's postal code.
- *     required: true
- *     schema:
- *       type: string
- *       title: postal_code
- *       description: The customer's postal code.
- *   - name: address_name
- *     in: query
- *     description: The customer's address name.
- *     required: true
- *     schema:
- *       type: string
- *       title: address_name
- *       description: The customer's address name.
- *   - name: is_default_shipping
- *     in: query
- *     description: The customer's is default shipping.
  *     required: false
  *     schema:
- *       type: boolean
- *       title: is_default_shipping
- *       description: The customer's is default shipping.
- *   - name: is_default_billing
+ *       oneOf:
+ *         - type: string
+ *           title: postal_code
+ *           description: The customer's postal code.
+ *         - type: array
+ *           description: The customer's postal code.
+ *           items:
+ *             type: string
+ *             title: postal_code
+ *             description: The postal code's details.
+ *   - name: q
  *     in: query
- *     description: The customer's is default billing.
+ *     description: The customer's q.
  *     required: false
  *     schema:
- *       type: boolean
- *       title: is_default_billing
- *       description: The customer's is default billing.
+ *       type: string
+ *       title: q
+ *       description: The customer's q.
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []

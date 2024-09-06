@@ -5,7 +5,7 @@ get:
     Retrieve a list of payment providers. The payment providers can be filtered
     by fields such as `id`. The payment providers can also be sorted or
     paginated.
-  x-authenticated: false
+  x-authenticated: true
   parameters:
     - name: expand
       in: query
@@ -65,58 +65,11 @@ get:
     - name: region_id
       in: query
       description: The payment provider's region id.
-      required: false
+      required: true
       schema:
-        oneOf:
-          - type: string
-            title: region_id
-            description: The payment provider's region id.
-          - type: array
-            description: The payment provider's region id.
-            items:
-              type: string
-              title: region_id
-              description: The region id's details.
-    - name: id
-      in: query
-      required: false
-      schema:
-        oneOf:
-          - type: string
-            title: id
-            description: The payment provider's ID.
-          - type: array
-            description: The payment provider's ID.
-            items:
-              type: string
-              title: id
-              description: The id's ID.
-    - name: is_enabled
-      in: query
-      description: The payment provider's is enabled.
-      required: false
-      schema:
-        type: boolean
-        title: is_enabled
-        description: The payment provider's is enabled.
-    - name: $and
-      in: query
-      required: false
-      schema:
-        type: array
-        description: The payment provider's $and.
-        items:
-          type: object
-        title: $and
-    - name: $or
-      in: query
-      required: false
-      schema:
-        type: array
-        description: The payment provider's $or.
-        items:
-          type: object
-        title: $or
+        type: string
+        title: region_id
+        description: The payment provider's region id.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -172,3 +125,6 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  security:
+    - cookie_auth: []
+    - jwt_token: []

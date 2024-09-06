@@ -3,8 +3,7 @@
  * operationId: PostReturn
  * summary: Create Return
  * description: Create a return.
- * x-authenticated: false
- * parameters: []
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -55,6 +54,9 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createAndCompleteReturnOrderWorkflow
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * 
 */
 

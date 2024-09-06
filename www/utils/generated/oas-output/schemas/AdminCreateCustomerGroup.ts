@@ -5,7 +5,6 @@
  * x-schemaName: AdminCreateCustomerGroup
  * required:
  *   - name
- *   - metadata
  * properties:
  *   name:
  *     type: string

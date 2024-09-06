@@ -63,6 +63,10 @@
  *     type: boolean
  *     title: manage_inventory
  *     description: The parent's manage inventory.
+ *   inventory_quantity:
+ *     type: number
+ *     title: inventory_quantity
+ *     description: The parent's inventory quantity.
  *   hs_code:
  *     type: string
  *     title: hs_code

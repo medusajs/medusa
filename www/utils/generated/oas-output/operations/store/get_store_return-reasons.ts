@@ -3,7 +3,7 @@
  * operationId: GetReturnReasons
  * summary: List Return Reasons
  * description: Retrieve a list of return reasons. The return reasons can be filtered by fields such as `id`. The return reasons can also be sorted or paginated.
- * x-authenticated: false
+ * x-authenticated: true
  * parameters:
  *   - name: expand
  *     in: query
@@ -101,6 +101,9 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * 
 */
 
