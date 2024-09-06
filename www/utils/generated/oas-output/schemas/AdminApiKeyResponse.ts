@@ -1,7 +1,7 @@
 /**
  * @schema AdminApiKeyResponse
  * type: object
- * description: SUMMARY
+ * description: The API key's details.
  * x-schemaName: AdminApiKeyResponse
  * required:
  *   - api_key

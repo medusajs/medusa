@@ -32,15 +32,15 @@
  *   campaign_identifier:
  *     type: string
  *     title: campaign_identifier
- *     description: The campaign's campaign identifier.
+ *     description: The campaign's identifier.
  *   starts_at:
  *     type: string
  *     title: starts_at
- *     description: The campaign's starts at.
+ *     description: The date and time that the campaign starts.
  *   ends_at:
  *     type: string
  *     title: ends_at
- *     description: The campaign's ends at.
+ *     description: The date and time that the campaign ends.
  *   budget:
  *     type: object
  *     description: The campaign's budget.
@@ -57,7 +57,9 @@
  *         description: The budget's ID.
  *       type:
  *         type: string
- *         description: The budget's type.
+ *         description: >
+ *           The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions; `usage` means the limit is set on the total
+ *           number of times the campaign's promotions can be used.
  *         enum:
  *           - spend
  *           - usage
@@ -72,7 +74,9 @@
  *       used:
  *         type: number
  *         title: used
- *         description: The budget's used.
+ *         description: >
+ *           How much of the budget has been used. If the limit is `spend`, this property holds the total amount discounted so far. If the limit is `usage`, it holds
+ *           the number of times the campaign's promotions have been used so far.
  * 
 */
 

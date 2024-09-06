@@ -1,7 +1,7 @@
 /**
  * @schema AdminBatchProductResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the products created, updated, or deleted.
  * x-schemaName: AdminBatchProductResponse
  * required:
  *   - created
@@ -10,17 +10,17 @@
  * properties:
  *   created:
  *     type: array
- *     description: The product's created.
+ *     description: The created products
  *     items:
  *       $ref: "#/components/schemas/AdminProduct"
  *   updated:
  *     type: array
- *     description: The product's updated.
+ *     description: The updated products.
  *     items:
  *       $ref: "#/components/schemas/AdminProduct"
  *   deleted:
  *     type: object
- *     description: SUMMARY
+ *     description: The deleted products' details.
  *     required:
  *       - ids
  *       - object
@@ -28,19 +28,20 @@
  *     properties:
  *       ids:
  *         type: array
- *         description: The deleted's ids.
+ *         description: The IDs of deleted products.
  *         items:
  *           type: string
  *           title: ids
- *           description: The id's ids.
+ *           description: The ID of a deleted product.
  *       object:
  *         type: string
  *         title: object
- *         description: SUMMARY
+ *         description: The name of the deleted objects.
+ *         default: product
  *       deleted:
  *         type: boolean
  *         title: deleted
- *         description: SUMMARY
+ *         description: Whether the products were deleted.
  * 
 */
 
