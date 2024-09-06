@@ -5360,6 +5360,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCollections/page.mdx"
   },
   {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptionValues",
+    "newSlug": "/references/product/createProductOptionValues",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptionValues/page.mdx"
+  },
+  {
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptions",
     "newSlug": "/references/product/createProductOptions",
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptions/page.mdx"
@@ -5393,6 +5398,11 @@ export const slugChanges = [
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCollections",
     "newSlug": "/references/product/deleteProductCollections",
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCollections/page.mdx"
+  },
+  {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptionValues",
+    "newSlug": "/references/product/deleteProductOptionValues",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptionValues/page.mdx"
   },
   {
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptions",
@@ -5430,6 +5440,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCollections/page.mdx"
   },
   {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptionValues",
+    "newSlug": "/references/product/listAndCountProductOptionValues",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptionValues/page.mdx"
+  },
+  {
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptions",
     "newSlug": "/references/product/listAndCountProductOptions",
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptions/page.mdx"
@@ -5465,6 +5480,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCollections/page.mdx"
   },
   {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptionValues",
+    "newSlug": "/references/product/listProductOptionValues",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptionValues/page.mdx"
+  },
+  {
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptions",
     "newSlug": "/references/product/listProductOptions",
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptions/page.mdx"
@@ -5498,6 +5518,11 @@ export const slugChanges = [
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCollections",
     "newSlug": "/references/product/restoreProductCollections",
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCollections/page.mdx"
+  },
+  {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptionValues",
+    "newSlug": "/references/product/restoreProductOptionValues",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptionValues/page.mdx"
   },
   {
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptions",
@@ -5570,6 +5595,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCollections/page.mdx"
   },
   {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptionValues",
+    "newSlug": "/references/product/softDeleteProductOptionValues",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptionValues/page.mdx"
+  },
+  {
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptions",
     "newSlug": "/references/product/softDeleteProductOptions",
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptions/page.mdx"
@@ -5603,6 +5633,11 @@ export const slugChanges = [
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCollections",
     "newSlug": "/references/product/updateProductCollections",
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCollections/page.mdx"
+  },
+  {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptionValues",
+    "newSlug": "/references/product/updateProductOptionValues",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptionValues/page.mdx"
   },
   {
     "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptions",
@@ -5828,6 +5863,11 @@ export const slugChanges = [
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrievePromotion",
     "newSlug": "/references/promotion/retrievePromotion",
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrievePromotion/page.mdx"
+  },
+  {
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.revertUsage",
+    "newSlug": "/references/promotion/revertUsage",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.revertUsage/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeleteCampaigns",

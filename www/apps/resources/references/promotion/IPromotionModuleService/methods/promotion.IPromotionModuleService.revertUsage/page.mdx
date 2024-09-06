@@ -1,0 +1,36 @@
+---
+displayed_sidebar: promotionReference
+slug: /references/promotion/revertUsage
+sidebar_label: revertUsage
+---
+
+import { TypeList } from "docs-ui"
+
+# revertUsage - Promotion Module Reference
+
+This documentation provides a reference to the `revertUsage` method. This belongs to the Promotion Module.
+
+This method is used to revert the changes made by registerUsage action
+
+## Example
+
+```ts
+await promotionModuleService.revertUsage([
+  {
+    amount: 50,
+    code: "50OFF",
+  },
+  {
+    amount: 5000,
+    code: "FREESHIPPING",
+  },
+])
+```
+
+## Parameters
+
+<TypeList types={[{"name":"computedActions","type":"[UsageComputedActions](../../../types/promotion.UsageComputedActions/page.mdx)[]","description":"The computed actions to adjust their promotion's campaign budget.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"amount","type":"[BigNumberInput](../../../types/promotion.BigNumberInput/page.mdx)","description":"The amount to remove off the shipping method's total.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"numeric","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw","type":"[BigNumberRawValue](../../../types/promotion.BigNumberRawValue/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"bigNumber","type":"`BigNumber`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"code","type":"`string`","description":"The promotion's code.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="revertUsage"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the campaign budgets have been adjusted successfully.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="revertUsage"/>
