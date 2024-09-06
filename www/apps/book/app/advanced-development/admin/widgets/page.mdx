@@ -28,7 +28,7 @@ export const widgetHighlights = [
 ]
 
 ```tsx title="src/admin/widgets/product-widget.tsx" highlights={widgetHighlights}
-import { defineWidgetConfig } from "@medusajs/admin-shared"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { Container, Heading } from "@medusajs/ui"
 
 // The widget
@@ -50,7 +50,7 @@ export default ProductWidget
 
 The widget only shows the heading `Product Widget`.
 
-Use the `defineWidgetConfig` function imported from `@medusajs/admin-shared` to create and export the widget's configurations. It accepts as a parameter an object with the following property:
+Use the `defineWidgetConfig` function imported from `@medusajs/admin-sdk` to create and export the widget's configurations. It accepts as a parameter an object with the following property:
 
 - `zone`: A string or an array of strings, each being the name of the zone to inject the widget into.
 
@@ -89,7 +89,7 @@ export const detailHighlights = [
 ]
 
 ```tsx title="src/admin/widgets/product-widget.tsx" highlights={detailHighlights}
-import { defineWidgetConfig } from "@medusajs/admin-shared"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
 import { Container, Heading } from "@medusajs/ui"
 import { 
   DetailWidgetProps, 

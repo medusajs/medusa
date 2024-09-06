@@ -28,7 +28,6 @@ export const POST = async (
       },
       fields: ["return_id"],
     }),
-    undefined,
     {
       throwIfKeyNotFound: true,
     }

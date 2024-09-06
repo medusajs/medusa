@@ -30,7 +30,7 @@ export const setAuthAppMetadataStep = createStep(
 
     appMetadata[key] = data.value
 
-    await service.updateAuthIdentites({
+    await service.updateAuthIdentities({
       id: authIdentity.id,
       app_metadata: appMetadata,
     })
@@ -58,7 +58,7 @@ export const setAuthAppMetadataStep = createStep(
       delete appMetadata[key]
     }
 
-    await service.updateAuthIdentites({
+    await service.updateAuthIdentities({
       id: authIdentity.id,
       app_metadata: appMetadata,
     })

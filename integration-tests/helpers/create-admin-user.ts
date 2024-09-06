@@ -47,7 +47,10 @@ export const createAdminUser = async (
       actor_type: "user",
       auth_identity_id: authIdentity.id,
     },
-    "test"
+    "test",
+    {
+      expiresIn: "1d",
+    }
   )
 
   adminHeaders.headers["authorization"] = `Bearer ${token}`

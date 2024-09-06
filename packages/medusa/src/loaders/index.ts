@@ -13,6 +13,7 @@ import {
   container,
   expressLoader,
   featureFlagsLoader,
+  GraphQLSchema,
   JobLoader,
   LinkLoader,
   logger,
@@ -133,6 +134,7 @@ export default async ({
   container: MedusaContainer
   app: Express
   shutdown: () => Promise<void>
+  gqlSchema?: GraphQLSchema
 }> => {
   const container = await initializeContainer(rootDirectory)
   const configModule = container.resolve(
@@ -149,6 +151,7 @@ export default async ({
     onApplicationStart,
     onApplicationShutdown,
     onApplicationPrepareShutdown,
+    gqlSchema,
   } = await new MedusaAppLoader().load()
 
   const workflowsSourcePaths = plugins.map((p) => join(p.resolve, "workflows"))
@@ -184,5 +187,6 @@ export default async ({
     container,
     app: expressApp,
     shutdown,
+    gqlSchema,
   }
 }

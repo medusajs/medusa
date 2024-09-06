@@ -1,4 +1,4 @@
-import { PromotionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 
 export enum PromotionStatus {
   SCHEDULED = "SCHEDULED",
@@ -7,7 +7,7 @@ export enum PromotionStatus {
   DISABLED = "DISABLED",
 }
 
-export const getPromotionStatus = (promotion: PromotionDTO) => {
+export const getPromotionStatus = (promotion: HttpTypes.AdminPromotion) => {
   const date = new Date()
   const campaign = promotion.campaign
 

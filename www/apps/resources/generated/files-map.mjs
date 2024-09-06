@@ -11668,6 +11668,10 @@ export const filesMap = [
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCollections"
   },
   {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptionValues/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptionValues"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptions/page.mdx",
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptions"
   },
@@ -11694,6 +11698,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCollections/page.mdx",
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCollections"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptionValues/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptionValues"
   },
   {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptions/page.mdx",
@@ -11724,6 +11732,10 @@ export const filesMap = [
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCollections"
   },
   {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptionValues/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptionValues"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptions/page.mdx",
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptions"
   },
@@ -11752,6 +11764,10 @@ export const filesMap = [
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCollections"
   },
   {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptionValues/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptionValues"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptions/page.mdx",
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptions"
   },
@@ -11778,6 +11794,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCollections/page.mdx",
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCollections"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptionValues/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptionValues"
   },
   {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptions/page.mdx",
@@ -11836,6 +11856,10 @@ export const filesMap = [
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCollections"
   },
   {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptionValues/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptionValues"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptions/page.mdx",
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptions"
   },
@@ -11862,6 +11886,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCollections/page.mdx",
     "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCollections"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptionValues/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptionValues"
   },
   {
     "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptions/page.mdx",
@@ -11936,6 +11964,10 @@ export const filesMap = [
     "pathname": "/references/product/interfaces/product.CreateProductOptionDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/product/interfaces/product.CreateProductOptionValueDTO/page.mdx",
+    "pathname": "/references/product/interfaces/product.CreateProductOptionValueDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/interfaces/product.CreateProductTagDTO/page.mdx",
     "pathname": "/references/product/interfaces/product.CreateProductTagDTO"
   },
@@ -11958,6 +11990,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/product/interfaces/product.FilterableProductOptionProps/page.mdx",
     "pathname": "/references/product/interfaces/product.FilterableProductOptionProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/interfaces/product.FilterableProductOptionValueProps/page.mdx",
+    "pathname": "/references/product/interfaces/product.FilterableProductOptionValueProps"
   },
   {
     "filePath": "/www/apps/resources/references/product/interfaces/product.FilterableProductProps/page.mdx",
@@ -12066,6 +12102,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/product/interfaces/product.UpdateProductOptionDTO/page.mdx",
     "pathname": "/references/product/interfaces/product.UpdateProductOptionDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/interfaces/product.UpdateProductOptionValueDTO/page.mdx",
+    "pathname": "/references/product/interfaces/product.UpdateProductOptionValueDTO"
   },
   {
     "filePath": "/www/apps/resources/references/product/interfaces/product.UpdateProductTagDTO/page.mdx",
@@ -12342,6 +12382,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrievePromotion/page.mdx",
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrievePromotion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.revertUsage/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.revertUsage"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeleteCampaigns/page.mdx",
@@ -12638,6 +12682,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.Scalar/page.mdx",
     "pathname": "/references/promotion/types/promotion.Scalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.UsageComputedActions/page.mdx",
+    "pathname": "/references/promotion/types/promotion.UsageComputedActions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion_models/classes/promotion_models.ApplicationMethod/page.mdx",
