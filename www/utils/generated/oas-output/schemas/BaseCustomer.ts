@@ -1,10 +1,9 @@
 /**
- * @schema AdminCustomer
+ * @schema BaseCustomer
  * type: object
  * description: The customer's details.
- * x-schemaName: AdminCustomer
+ * x-schemaName: BaseCustomer
  * required:
- *   - has_account
  *   - id
  *   - email
  *   - default_billing_address_id
@@ -18,15 +17,6 @@
  *     type: string
  *     title: id
  *     description: The customer's ID.
- *   has_account:
- *     type: boolean
- *     title: has_account
- *     description: Whether the customer is registered.
- *   groups:
- *     type: array
- *     description: The customer's groups.
- *     items:
- *       $ref: "#/components/schemas/AdminCustomerGroup"
  *   email:
  *     type: string
  *     title: email
