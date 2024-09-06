@@ -179,7 +179,7 @@ export const AddProductsToCollectionForm = ({
             isLoading={isLoading}
             layout="fill"
             pagination
-            search
+            search="autofocus"
           />
         </RouteFocusModal.Body>
       </form>
