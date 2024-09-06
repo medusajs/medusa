@@ -1,26 +1,26 @@
 /**
  * @schema AdminBatchProductVariantRequest
  * type: object
- * description: SUMMARY
+ * description: The product variants to create, update, or delete.
  * x-schemaName: AdminBatchProductVariantRequest
  * properties:
  *   create:
  *     type: array
- *     description: The product's create.
+ *     description: The product variants to create.
  *     items:
  *       $ref: "#/components/schemas/AdminCreateProductVariant"
  *   update:
  *     type: array
- *     description: The product's update.
+ *     description: The product variants to update.
  *     items:
  *       $ref: "#/components/schemas/AdminUpdateProductVariant"
  *   delete:
  *     type: array
- *     description: The product's delete.
+ *     description: The product variants to delete.
  *     items:
  *       type: string
  *       title: delete
- *       description: The delete's details.
+ *       description: A product variant's ID.
  * 
 */
 
