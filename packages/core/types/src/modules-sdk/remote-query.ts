@@ -1,4 +1,6 @@
+import { Prettify } from "../common"
 import { RemoteJoinerOptions, RemoteJoinerQuery } from "../joiner"
+import { RemoteQueryEntryPoints } from "./remote-query-entry-points"
 import {
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
@@ -80,4 +82,27 @@ export type RemoteQueryFunction = {
     variables?: Record<string, unknown>,
     options?: RemoteJoinerOptions
   ) => Promise<any>
+}
+
+/**
+ * The GraphResultSet presents a typed output for the
+ * result returned by the underlying remote query
+ */
+export type GraphResultSet<TEntry extends string> = {
+  rows: TEntry extends keyof RemoteQueryEntryPoints
+    ? RemoteQueryEntryPoints[TEntry][]
+    : any[]
+  meta?: any
+}
+
+/**
+ * QueryGraphFunction is a wrapper on top of remoteQuery
+ * that simplifies the input it accepts and returns
+ * a normalized/consistent output.
+ */
+export type QueryGraphFunction = {
+  <const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<Prettify<GraphResultSet<TEntry>>>
 }
