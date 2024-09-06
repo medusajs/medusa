@@ -3,8 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminPostReturnsReturnReqSchema
- * required:
- *   - metadata
  * properties:
  *   location_id:
  *     type: string

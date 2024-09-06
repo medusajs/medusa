@@ -6,7 +6,6 @@
  * required:
  *   - variant_id
  *   - quantity
- *   - metadata
  * properties:
  *   variant_id:
  *     type: string

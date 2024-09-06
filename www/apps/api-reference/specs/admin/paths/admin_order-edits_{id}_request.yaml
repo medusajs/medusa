@@ -1,7 +1,7 @@
 post:
   operationId: PostOrderEditsIdRequest
-  summary: Add Requests to Order Edit
-  description: Add a list of requests to a order edit.
+  summary: Request Order Edit
+  description: Change the status of an active order edit to requested.
   x-authenticated: true
   parameters:
     - name: id
@@ -41,7 +41,3 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: requestOrderEditRequestWorkflow
-  requestBody:
-    content:
-      application/json:
-        schema: {}

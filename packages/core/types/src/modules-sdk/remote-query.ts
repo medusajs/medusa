@@ -1,0 +1,83 @@
+import { RemoteJoinerOptions, RemoteJoinerQuery } from "../joiner"
+import {
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
+} from "./remote-query-object-from-string"
+
+/*type ExcludedProps = "__typename"*/
+
+export type RemoteQueryFunctionReturnPagination = {
+  skip: number
+  take: number
+  count: number
+}
+
+/*export type RemoteQueryReturnedData<TEntry extends string> =
+  TEntry extends keyof RemoteQueryEntryPoints
+    ? Prettify<Omit<RemoteQueryEntryPoints[TEntry], ExcludedProps>>
+    : any*/
+
+/*export type NarrowRemoteFunctionReturnType<
+  TConfig extends RemoteQueryObjectConfig<any>
+> = TConfig extends RemoteQueryObjectConfig<infer TEntry>
+  ? TConfig extends { variables: infer Variables }
+    ? Variables extends { skip: number }
+      ? {
+          rows: RemoteQueryReturnedData<TEntry>[]
+          metadata: RemoteQueryFunctionReturnPagination
+        }
+      : Variables extends { skip?: number | undefined } | { skip?: number }
+      ? // TODO: the real type is the one in parenthsis but we put any for now as the current API is broken and need fixin in a separate iteration (RemoteQueryReturnedData<TEntry>[] | {rows: RemoteQueryReturnedData<TEntry>[] metadata: RemoteQueryFunctionReturnPagination })
+        any
+      : RemoteQueryReturnedData<TEntry>[]
+    : RemoteQueryReturnedData<TEntry>[]
+  : never*/
+
+/*export type RemoteQueryFunctionReturnType<
+  TConfig extends
+    | RemoteQueryObjectConfig<any>
+    | RemoteQueryObjectFromStringResult<any>
+> = TConfig extends RemoteQueryObjectFromStringResult<any>
+  ? NarrowRemoteFunctionReturnType<TConfig['__value']>
+  : TConfig extends RemoteQueryObjectConfig<any>
+  ? NarrowRemoteFunctionReturnType<TConfig>
+  : never*/
+
+export type RemoteQueryFunction = {
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  <const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  <const TConfig extends RemoteQueryObjectFromStringResult<any>>(
+    queryConfig: TConfig,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param query
+   * @param options
+   */
+  (query: RemoteJoinerQuery, options?: RemoteJoinerOptions): Promise<any>
+  /**
+   * Query wrapper to provide specific GraphQL like API around remoteQuery.query
+   * @param query
+   * @param variables
+   * @param options
+   */
+  gql: (
+    query: string,
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
+  ) => Promise<any>
+}

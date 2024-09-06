@@ -17,20 +17,24 @@ import {
   RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFunction,
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  isObject,
+  isString,
   MedusaError,
   ModuleRegistrationName,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  isObject,
-  isString,
   promiseAll,
+  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
+import { GraphQLSchema } from "graphql/type"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
@@ -227,6 +231,7 @@ export type MedusaAppOutput = {
   link: RemoteLink | undefined
   query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
+  gqlSchema?: GraphQLSchema
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
   revertMigrations: RevertMigrationFn
@@ -352,15 +357,17 @@ async function MedusaApp_({
   )
 
   if (loaderOnly) {
+    async function query(...args: Parameters<RemoteQueryFunction>) {
+      throw new Error("Querying not allowed in loaderOnly mode")
+    }
+
     return {
       onApplicationShutdown,
       onApplicationPrepareShutdown,
       onApplicationStart,
       modules: allModules,
       link: undefined,
-      query: async () => {
-        throw new Error("Querying not allowed in loaderOnly mode")
-      },
+      query: query as RemoteQueryFunction,
       runMigrations: async () => {
         throw new Error("Migrations not allowed in loaderOnly mode")
       },
@@ -413,11 +420,75 @@ async function MedusaApp_({
     customRemoteFetchData: remoteFetchData,
   })
 
-  const query = async (
-    query: string | RemoteJoinerQuery | object,
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  async function query<const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  async function query<
+    const TConfig extends RemoteQueryObjectFromStringResult<any>
+  >(queryConfig: TConfig, options?: RemoteJoinerOptions): Promise<any>
+
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param query
+   * @param options
+   */
+  async function query(
+    query: RemoteJoinerQuery,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param query
+   * @param options
+   */
+  async function query<const TEntry extends string>(
+    query:
+      | RemoteJoinerQuery
+      | RemoteQueryObjectConfig<TEntry>
+      | RemoteQueryObjectFromStringResult<any>,
+    options?: RemoteJoinerOptions
+  ) {
+    if (!isObject(query)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Invalid query, expected object and received something else."
+      )
+    }
+
+    let normalizedQuery: any = query
+
+    if ("__value" in query) {
+      normalizedQuery = query.__value
+    } else if (
+      "entryPoint" in normalizedQuery ||
+      "service" in normalizedQuery
+    ) {
+      normalizedQuery = remoteQueryObjectFromString(
+        normalizedQuery as Parameters<typeof remoteQueryObjectFromString>[0]
+      ).__value
+    }
+
+    return await remoteQuery.query(normalizedQuery, undefined, options)
+  }
+  /**
+   * Query wrapper to provide specific GraphQL like API around remoteQuery.query
+   * @param query
+   * @param variables
+   * @param options
+   */
+  query.gql = async function (
+    query: string,
     variables?: Record<string, unknown>,
     options?: RemoteJoinerOptions
-  ) => {
+  ) {
     return await remoteQuery.query(query, variables, options)
   }
 
@@ -524,6 +595,7 @@ async function MedusaApp_({
     link: remoteLink,
     query,
     entitiesMap: schema.getTypeMap(),
+    gqlSchema: schema,
     notFound,
     runMigrations,
     revertMigrations,

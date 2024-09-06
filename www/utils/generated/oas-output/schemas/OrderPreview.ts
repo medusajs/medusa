@@ -7,8 +7,8 @@
  *   - order_change
  *   - status
  *   - currency_code
- *   - id
  *   - version
+ *   - id
  *   - original_item_total
  *   - original_item_subtotal
  *   - original_item_tax_total
@@ -673,14 +673,14 @@
  *     type: string
  *     title: currency_code
  *     description: The order preview's currency code.
- *   id:
- *     type: string
- *     title: id
- *     description: The order preview's ID.
  *   version:
  *     type: number
  *     title: version
  *     description: The order preview's version.
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The order preview's ID.
  *   region_id:
  *     type: string
  *     title: region_id
@@ -726,6 +726,8 @@
  *       - balance
  *       - paid_total
  *       - refunded_total
+ *       - pending_difference
+ *       - raw_pending_difference
  *     properties:
  *       total:
  *         oneOf:
@@ -937,6 +939,23 @@
  *           - type: object
  *             description: The summary's refunded total.
  *             x-schemaName: IBigNumber
+ *       pending_difference:
+ *         oneOf:
+ *           - type: string
+ *             title: pending_difference
+ *             description: The summary's pending difference.
+ *           - type: number
+ *             title: pending_difference
+ *             description: The summary's pending difference.
+ *           - type: string
+ *             title: pending_difference
+ *             description: The summary's pending difference.
+ *           - type: object
+ *             description: The summary's pending difference.
+ *             x-schemaName: IBigNumber
+ *       raw_pending_difference:
+ *         type: object
+ *         description: The summary's raw pending difference.
  *   metadata:
  *     type: object
  *     description: The order preview's metadata.

@@ -1,10 +1,6 @@
 type: object
 description: SUMMARY
 x-schemaName: AdminUpdateUser
-required:
-  - first_name
-  - last_name
-  - avatar_url
 properties:
   first_name:
     type: string

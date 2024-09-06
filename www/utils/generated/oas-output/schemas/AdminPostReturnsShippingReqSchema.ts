@@ -10,10 +10,10 @@
  *     type: string
  *     title: shipping_option_id
  *     description: The exchange's shipping option id.
- *   custom_price:
+ *   custom_amount:
  *     type: number
- *     title: custom_price
- *     description: The exchange's custom price.
+ *     title: custom_amount
+ *     description: The exchange's custom amount.
  *   description:
  *     type: string
  *     title: description

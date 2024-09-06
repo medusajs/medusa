@@ -3,8 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminUpdateCustomerGroup
- * required:
- *   - metadata
  * properties:
  *   name:
  *     type: string

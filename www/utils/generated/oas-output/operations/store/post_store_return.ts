@@ -4,7 +4,6 @@
  * summary: Create Return
  * description: Create a return.
  * x-authenticated: false
- * parameters: []
  * requestBody:
  *   content:
  *     application/json:

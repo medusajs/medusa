@@ -215,7 +215,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           let error
 
           try {
-            await service.updateAuthIdentites([
+            await service.updateAuthIdentities([
               {
                 id: "does-not-exist",
               },
@@ -230,7 +230,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         })
 
         it("should update authIdentity", async () => {
-          await service.updateAuthIdentites([
+          await service.updateAuthIdentities([
             {
               id,
               app_metadata: { email: "test@email.com" },
@@ -364,7 +364,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           let error
 
           try {
-            await service.updateProviderIdentites([
+            await service.updateProviderIdentities([
               {
                 id: "does-not-exist",
               },
@@ -382,18 +382,18 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           let [providerIdentity] = await service.listProviderIdentities({
             entity_id,
           })
-          await service.updateProviderIdentites([
+          await service.updateProviderIdentities([
             {
               id: providerIdentity.id,
               provider_metadata: { email: "test@email.com" },
             },
           ])
 
-          const providerIdentites = await service.listProviderIdentities({
+          const providerIdentities = await service.listProviderIdentities({
             id: [providerIdentity.id],
           })
 
-          expect(providerIdentites[0]).toEqual(
+          expect(providerIdentities[0]).toEqual(
             expect.objectContaining({
               provider_metadata: expect.objectContaining({
                 email: "test@email.com",

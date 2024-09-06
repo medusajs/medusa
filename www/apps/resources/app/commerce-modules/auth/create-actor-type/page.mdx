@@ -251,7 +251,7 @@ To authenticate managers:
 1. Send a `POST` request to `/auth/manager/emailpass/register` to create an auth identity for the manager:
 
 ```bash
-curl -X POST 'http://localhost:9000/auth/manager/emailpass' \
+curl -X POST 'http://localhost:9000/auth/manager/emailpass/register' \
 -H 'Content-Type: application/json' \
 --data-raw '{
     "email": "manager@gmail.com",

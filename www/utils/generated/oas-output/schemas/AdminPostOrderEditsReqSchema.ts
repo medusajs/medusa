@@ -5,7 +5,6 @@
  * x-schemaName: AdminPostOrderEditsReqSchema
  * required:
  *   - order_id
- *   - metadata
  * properties:
  *   order_id:
  *     type: string
