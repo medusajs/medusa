@@ -8169,6 +8169,14 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/storefront-development/products/inventory",
+            "title": "Retrieve Variant Inventory",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/products/categories",
             "title": "Categories",
             "children": [
