@@ -2,7 +2,7 @@
  * @oas [post] /store/carts/{id}
  * operationId: PostCartsId
  * summary: Update a Cart
- * description: Update a cart's details.
+ * description: Update a cart's details. This unsets the shipping an payment methods chosen before, and the customer would have to choose them again.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -36,12 +36,12 @@
  *         allOf:
  *           - $ref: "#/components/schemas/UpdateCartData"
  *           - type: object
- *             description: SUMMARY
+ *             description: The properties to update in the cart item.
  *             properties:
  *               additional_data:
  *                 type: object
  *                 description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *         description: SUMMARY
+ *         description: The properties to update in the cart item.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -55,7 +55,7 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The updated cart's details.
  *           required:
  *             - cart
  *           properties:
