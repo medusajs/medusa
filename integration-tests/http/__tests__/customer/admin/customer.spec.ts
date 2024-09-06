@@ -397,8 +397,8 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe.only("DELETE /admin/customers/:id", () => {
-      it("should delete a customer", async () => {
+    describe("DELETE /admin/customers/:id", () => {
+      it("should delete a customer and update auth identity", async () => {
         const registeredCustomerToken = (
           await api.post("/auth/customer/emailpass/register", {
             email: "test@email.com",

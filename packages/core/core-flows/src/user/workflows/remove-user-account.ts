@@ -38,15 +38,18 @@ export const removeUserAccountWorkflow = createWorkflow(
       },
     })
 
-    const authIdentity = transform({ authIdentities }, ({ authIdentities }) => {
-      const authIdentity = authIdentities[0]
+    const authIdentity = transform(
+      { authIdentities, input },
+      ({ authIdentities, input }) => {
+        const authIdentity = authIdentities[0]
 
-      if (!authIdentity) {
-        throw new Error("Auth identity not found")
+        if (!authIdentity) {
+          return new WorkflowResponse(input.userId)
+        }
+
+        return authIdentity
       }
-
-      return authIdentity
-    })
+    )
 
     setAuthAppMetadataStep({
       authIdentityId: authIdentity.id,

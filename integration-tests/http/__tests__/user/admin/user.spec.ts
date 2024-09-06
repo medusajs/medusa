@@ -4,24 +4,24 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
-  createUserAndAuthIdentity,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let user, container
+    let user, container, authIdentity
 
     beforeEach(async () => {
       container = getContainer()
-      const { user: adminUser } = await createAdminUser(
+      const { user: adminUser, authIdentity: authId } = await createAdminUser(
         dbConnection,
         adminHeaders,
         container
       )
 
       user = adminUser
+      authIdentity = authId
     })
 
     describe("GET /admin/users/:id", () => {
@@ -104,29 +104,8 @@ medusaIntegrationTestRunner({
       })
     })
 
-    describe.only("DELETE /admin/users", () => {
+    describe("DELETE /admin/users", () => {
       it("Deletes a user and updates associated auth identity", async () => {
-        const { user, authIdentity } = await createUserAndAuthIdentity(
-          container
-        )
-
-        expect(authIdentity).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            provider_identities: [
-              expect.objectContaining({
-                provider: "emailpass",
-                provider_metadata: {
-                  password: expect.any(String),
-                },
-              }),
-            ],
-            app_metadata: {
-              user_id: user.id,
-            },
-          })
-        )
-
         const response = await api.delete(
           `/admin/users/${user.id}`,
           adminHeaders
@@ -147,6 +126,7 @@ medusaIntegrationTestRunner({
           authIdentity.id
         )
 
+        // Ensure the auth identity has been updated to not contain the user's id
         expect(updatedAuthIdentity).toEqual(
           expect.objectContaining({
             id: authIdentity.id,
@@ -155,6 +135,27 @@ medusaIntegrationTestRunner({
             }),
           })
         )
+
+        // Authentication should still succeed
+        const authenticateToken = (
+          await api.post(`/auth/user/emailpass`, {
+            email: user.email,
+            password: "somepassword",
+          })
+        ).data.token
+
+        expect(authenticateToken).toEqual(expect.any(String))
+
+        // However, it should not be possible to access routes any longer
+        const meResponse = await api
+          .get(`/admin/users/me`, {
+            headers: {
+              authorization: `Bearer ${authenticateToken}`,
+            },
+          })
+          .catch((e) => e)
+
+        expect(meResponse.response.status).toEqual(401)
       })
 
       // TODO: Migrate when analytics config is implemented in 2.0
