@@ -3,7 +3,7 @@
  * operationId: PostPaymentCollectionsIdPaymentSessions
  * summary: Add Payment Sessions to Payment Collection
  * description: Add a list of payment sessions to a payment collection.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -79,9 +79,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createPaymentSessionsWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

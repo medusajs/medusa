@@ -4,7 +4,7 @@ get:
   description: >-
     Retrieve a list of shipping options. The shipping options can be filtered by
     fields such as `id`. The shipping options can also be sorted or paginated.
-  x-authenticated: true
+  x-authenticated: false
   parameters:
     - name: fields
       in: query
@@ -114,6 +114,3 @@ get:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: listShippingOptionsForCartWorkflow
-  security:
-    - cookie_auth: []
-    - jwt_token: []

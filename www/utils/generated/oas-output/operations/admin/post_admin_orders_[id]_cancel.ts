@@ -4,7 +4,13 @@
  * summary: Cancel Order
  * description: |
  *   Cancel an order. The cancelation fails if:
- *   - The order has captured payments. - The order has refund payments. - The order has fulfillments that aren't canceled.
+ *   - The order has captured payments.
+ * 
+ * 
+ *   - The order has refund payments.
+ * 
+ * 
+ *   - The order has fulfillments that aren't canceled.
  * x-authenticated: true
  * parameters:
  *   - name: id

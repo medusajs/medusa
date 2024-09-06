@@ -3,7 +3,7 @@
  * operationId: PostCartsIdShippingMethods
  * summary: Add Shipping Methods to Cart
  * description: Add a list of shipping methods to a cart.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -76,9 +76,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: addShippingMethodToWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

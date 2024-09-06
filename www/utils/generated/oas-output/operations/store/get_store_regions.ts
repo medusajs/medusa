@@ -3,7 +3,7 @@
  * operationId: GetRegions
  * summary: List Regions
  * description: Retrieve a list of regions. The regions can be filtered by fields such as `id`. The regions can also be sorted or paginated.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: expand
  *     in: query
@@ -580,9 +580,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

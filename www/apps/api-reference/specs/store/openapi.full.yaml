@@ -343,7 +343,7 @@ paths:
       operationId: PostCarts
       summary: Create Cart
       description: Create a cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -400,15 +400,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createCartWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/carts/{id}:
     get:
       operationId: GetCartsId
       summary: Get a Cart
       description: Retrieve a cart by its ID. You can expand the cart's relations or select the fields that should be returned.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -457,14 +454,11 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
     post:
       operationId: PostCartsId
       summary: Update a Cart
       description: Update a cart's details.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -533,15 +527,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateCartWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/carts/{id}/complete:
     post:
       operationId: PostCartsIdComplete
       summary: Add Completes to Cart
       description: Add a list of completes to a cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -647,15 +638,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: completeCartWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/carts/{id}/line-items:
     post:
       operationId: PostCartsIdLineItems
       summary: Add Line Items to Cart
       description: Add a list of line items to a cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -717,15 +705,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: addToCartWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/carts/{id}/line-items/{line_id}:
     post:
       operationId: PostCartsIdLineItemsLine_id
       summary: Add Line Items to Cart
       description: Add a list of line items to a cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -792,14 +777,11 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateLineItemInCartWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
     delete:
       operationId: DeleteCartsIdLineItemsLine_id
       summary: Remove Line Items from Cart
       description: Remove a list of line items from a cart. This doesn't delete the Line Item, only the association between the Line Item and the cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -880,15 +862,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteLineItemsWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/carts/{id}/promotions:
     post:
       operationId: PostCartsIdPromotions
       summary: Add Promotions to Cart
       description: Add a list of promotions to a cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -961,14 +940,11 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateCartPromotionsWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
     delete:
       operationId: DeleteCartsIdPromotions
       summary: Remove Promotions from Cart
       description: Remove a list of promotions from a cart. This doesn't delete the Promotion, only the association between the Promotion and the cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -1024,15 +1000,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateCartPromotionsWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/carts/{id}/shipping-methods:
     post:
       operationId: PostCartsIdShippingMethods
       summary: Add Shipping Methods to Cart
       description: Add a list of shipping methods to a cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -1103,15 +1076,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: addShippingMethodToWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/carts/{id}/taxes:
     post:
       operationId: PostCartsIdTaxes
       summary: Add Taxes to Cart
       description: Add a list of taxes to a cart.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -1166,15 +1136,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateTaxLinesWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/collections:
     get:
       operationId: GetCollections
       summary: List Collections
       description: Retrieve a list of collections. The collections can be filtered by fields such as `id`. The collections can also be sorted or paginated.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -2019,15 +1986,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/collections/{id}:
     get:
       operationId: GetCollectionsId
       summary: Get a Collection
       description: Retrieve a collection by its ID. You can expand the collection's relations or select the fields that should be returned.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -2076,15 +2040,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/currencies:
     get:
       operationId: GetCurrencies
       summary: List Currencies
       description: Retrieve a list of currencies. The currencies can be filtered by fields such as `id`. The currencies can also be sorted or paginated.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -2193,15 +2154,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/currencies/{code}:
     get:
       operationId: GetCurrenciesCode
       summary: Get a Currency
       description: Retrieve a currency by its ID. You can expand the currency's relations or select the fields that should be returned.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: code
           in: path
@@ -2250,15 +2208,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/customers:
     post:
       operationId: PostCustomers
       summary: Create Customer
       description: Create a customer.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -2316,9 +2271,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createCustomerAccountWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/customers/me:
     get:
       operationId: GetCustomersMe
@@ -3152,7 +3104,7 @@ paths:
       operationId: GetOrdersId
       summary: Get a Order
       description: Retrieve a order by its ID. You can expand the order's relations or select the fields that should be returned.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -3201,15 +3153,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/payment-collections:
     post:
       operationId: PostPaymentCollections
       summary: Create Payment Collection
       description: Create a payment collection.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -3266,15 +3215,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createPaymentCollectionForCartWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/payment-collections/{id}/payment-sessions:
     post:
       operationId: PostPaymentCollectionsIdPaymentSessions
       summary: Add Payment Sessions to Payment Collection
       description: Add a list of payment sessions to a payment collection.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -3348,15 +3294,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createPaymentSessionsWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/payment-providers:
     get:
       operationId: GetPaymentProviders
       summary: List Payment Providers
       description: Retrieve a list of payment providers. The payment providers can be filtered by fields such as `id`. The payment providers can also be sorted or paginated.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -3460,15 +3403,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/product-categories:
     get:
       operationId: GetProductCategories
       summary: List Product Categories
       description: Retrieve a list of product categories. The product categories can be filtered by fields such as `id`. The product categories can also be sorted or paginated.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -4340,15 +4280,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/product-categories/{id}:
     get:
       operationId: GetProductCategoriesId
       summary: Get a Product Category
       description: Retrieve a product category by its ID. You can expand the product category's relations or select the fields that should be returned.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -4413,15 +4350,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/products:
     get:
       operationId: GetProducts
       summary: List Products
       description: Retrieve a list of products. The products can be filtered by fields such as `id`. The products can also be sorted or paginated.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -5349,15 +5283,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/products/{id}:
     get:
       operationId: GetProductsId
       summary: Get a Product
       description: Retrieve a product by its ID. You can expand the product's relations or select the fields that should be returned.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -5438,15 +5369,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/regions:
     get:
       operationId: GetRegions
       summary: List Regions
       description: Retrieve a list of regions. The regions can be filtered by fields such as `id`. The regions can also be sorted or paginated.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -6021,15 +5949,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/regions/{id}:
     get:
       operationId: GetRegionsId
       summary: Get a Region
       description: Retrieve a region by its ID. You can expand the region's relations or select the fields that should be returned.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -6084,15 +6009,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/return:
     post:
       operationId: PostReturn
       summary: Create Return
       description: Create a return.
-      x-authenticated: true
+      x-authenticated: false
       requestBody:
         content:
           application/json:
@@ -6143,15 +6065,12 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createAndCompleteReturnOrderWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/return-reasons:
     get:
       operationId: GetReturnReasons
       summary: List Return Reasons
       description: Retrieve a list of return reasons. The return reasons can be filtered by fields such as `id`. The return reasons can also be sorted or paginated.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: expand
           in: query
@@ -6247,15 +6166,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/return-reasons/{id}:
     get:
       operationId: GetReturnReasonsId
       summary: Get a Return Reason
       description: Retrieve a return reason by its ID. You can expand the return reason's relations or select the fields that should be returned.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: id
           in: path
@@ -6304,15 +6220,12 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
-      security:
-        - cookie_auth: []
-        - jwt_token: []
   /store/shipping-options:
     get:
       operationId: GetShippingOptions
       summary: List Shipping Options
       description: Retrieve a list of shipping options. The shipping options can be filtered by fields such as `id`. The shipping options can also be sorted or paginated.
-      x-authenticated: true
+      x-authenticated: false
       parameters:
         - name: fields
           in: query
@@ -6400,9 +6313,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: listShippingOptionsForCartWorkflow
-      security:
-        - cookie_auth: []
-        - jwt_token: []
 components:
   schemas:
     AdminApiKey:

@@ -20240,7 +20240,13 @@ paths:
       summary: Cancel Order
       description: |
         Cancel an order. The cancelation fails if:
-        - The order has captured payments. - The order has refund payments. - The order has fulfillments that aren't canceled.
+        - The order has captured payments.
+
+
+        - The order has refund payments.
+
+
+        - The order has fulfillments that aren't canceled.
       x-authenticated: true
       parameters:
         - name: id
@@ -29755,7 +29761,9 @@ paths:
       description: |
         Retrieve a list of attributes for the promotion and application method types specified in the query parameters.
         Only the attributes of the rule type specified in the path parameter are retrieved:
-        - If `rule_type` is `rules`, the attributes of the promotion's type are retrieved. - If `rule_type` is `target-rules`, the target rules' attributes of the application method's type are retrieved. - If `rule_type` is `buy-rules`, the buy rules' attributes of the application method's type are retrieved.
+        - If `rule_type` is `rules`, the attributes of the promotion's type are retrieved.
+
+        - If `rule_type` is `target-rules`, the target rules' attributes of the application method's type are retrieved. - If `rule_type` is `buy-rules`, the buy rules' attributes of the application method's type are retrieved.
       x-authenticated: true
       parameters:
         - name: rule_type
@@ -30852,7 +30860,9 @@ paths:
       x-sidebar-summary: List Rules
       description: |
         Retrieve a list of rules in a promotion. The type of rules retrieved depend on the value of the `rule_type` path parameter:
-        - If `rule_type` is `rules`, the promotion's rules are retrivied. - If `rule_type` is `target-rules`, the target rules of the promotion's application method are retrieved. - If `rule_type` is `buy-rules`, the buy rules of the promotion's application method are retrieved.
+        - If `rule_type` is `rules`, the promotion's rules are retrivied. - If `rule_type` is `target-rules`, the target rules of the promotion's application method are retrieved.
+
+        - If `rule_type` is `buy-rules`, the buy rules of the promotion's application method are retrieved.
       x-authenticated: true
       parameters:
         - name: id

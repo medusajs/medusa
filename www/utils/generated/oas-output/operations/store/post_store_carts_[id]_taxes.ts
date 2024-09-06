@@ -3,7 +3,7 @@
  * operationId: PostCartsIdTaxes
  * summary: Add Taxes to Cart
  * description: Add a list of taxes to a cart.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -60,9 +60,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateTaxLinesWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

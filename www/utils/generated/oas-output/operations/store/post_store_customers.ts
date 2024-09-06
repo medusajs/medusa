@@ -3,7 +3,7 @@
  * operationId: PostCustomers
  * summary: Create Customer
  * description: Create a customer.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: expand
  *     in: query
@@ -63,9 +63,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createCustomerAccountWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

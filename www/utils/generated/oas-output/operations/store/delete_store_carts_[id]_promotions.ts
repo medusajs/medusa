@@ -3,7 +3,7 @@
  * operationId: DeleteCartsIdPromotions
  * summary: Remove Promotions from Cart
  * description: Remove a list of promotions from a cart. This doesn't delete the Promotion, only the association between the Promotion and the cart.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -61,9 +61,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateCartPromotionsWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

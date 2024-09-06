@@ -3,7 +3,7 @@
  * operationId: PostCartsId
  * summary: Update a Cart
  * description: Update a cart's details.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -74,9 +74,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateCartWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

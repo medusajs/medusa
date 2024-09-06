@@ -2,7 +2,7 @@ post:
   operationId: PostCartsIdPromotions
   summary: Add Promotions to Cart
   description: Add a list of promotions to a cart.
-  x-authenticated: true
+  x-authenticated: false
   parameters:
     - name: id
       in: path
@@ -79,16 +79,13 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: updateCartPromotionsWorkflow
-  security:
-    - cookie_auth: []
-    - jwt_token: []
 delete:
   operationId: DeleteCartsIdPromotions
   summary: Remove Promotions from Cart
   description: >-
     Remove a list of promotions from a cart. This doesn't delete the Promotion,
     only the association between the Promotion and the cart.
-  x-authenticated: true
+  x-authenticated: false
   parameters:
     - name: id
       in: path
@@ -155,6 +152,3 @@ delete:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: updateCartPromotionsWorkflow
-  security:
-    - cookie_auth: []
-    - jwt_token: []

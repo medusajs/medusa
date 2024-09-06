@@ -4,7 +4,7 @@ get:
   description: >-
     Retrieve a list of return reasons. The return reasons can be filtered by
     fields such as `id`. The return reasons can also be sorted or paginated.
-  x-authenticated: true
+  x-authenticated: false
   parameters:
     - name: expand
       in: query
@@ -116,6 +116,3 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  security:
-    - cookie_auth: []
-    - jwt_token: []

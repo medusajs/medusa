@@ -3,7 +3,7 @@
  * operationId: GetPaymentProviders
  * summary: List Payment Providers
  * description: Retrieve a list of payment providers. The payment providers can be filtered by fields such as `id`. The payment providers can also be sorted or paginated.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: expand
  *     in: query
@@ -109,9 +109,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

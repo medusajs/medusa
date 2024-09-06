@@ -3,7 +3,7 @@
  * operationId: GetProducts
  * summary: List Products
  * description: Retrieve a list of products. The products can be filtered by fields such as `id`. The products can also be sorted or paginated.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: expand
  *     in: query
@@ -933,9 +933,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

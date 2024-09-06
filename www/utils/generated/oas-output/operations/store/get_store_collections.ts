@@ -3,7 +3,7 @@
  * operationId: GetCollections
  * summary: List Collections
  * description: Retrieve a list of collections. The collections can be filtered by fields such as `id`. The collections can also be sorted or paginated.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: expand
  *     in: query
@@ -850,9 +850,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

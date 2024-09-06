@@ -3,7 +3,7 @@
  * operationId: PostCartsIdComplete
  * summary: Add Completes to Cart
  * description: Add a list of completes to a cart.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -111,9 +111,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: completeCartWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

@@ -2,7 +2,7 @@ post:
   operationId: PostCarts
   summary: Create Cart
   description: Create a cart.
-  x-authenticated: true
+  x-authenticated: false
   parameters:
     - name: expand
       in: query
@@ -73,6 +73,3 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: createCartWorkflow
-  security:
-    - cookie_auth: []
-    - jwt_token: []

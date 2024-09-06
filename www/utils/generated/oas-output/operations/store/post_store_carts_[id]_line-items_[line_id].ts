@@ -3,7 +3,7 @@
  * operationId: PostCartsIdLineItemsLine_id
  * summary: Add Line Items to Cart
  * description: Add a list of line items to a cart.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -72,9 +72,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateLineItemInCartWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

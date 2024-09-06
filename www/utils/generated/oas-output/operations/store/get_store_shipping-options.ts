@@ -3,7 +3,7 @@
  * operationId: GetShippingOptions
  * summary: List Shipping Options
  * description: Retrieve a list of shipping options. The shipping options can be filtered by fields such as `id`. The shipping options can also be sorted or paginated.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: fields
  *     in: query
@@ -93,9 +93,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: listShippingOptionsForCartWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

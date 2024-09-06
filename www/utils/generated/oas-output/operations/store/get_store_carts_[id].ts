@@ -3,7 +3,7 @@
  * operationId: GetCartsId
  * summary: Get a Cart
  * description: Retrieve a cart by its ID. You can expand the cart's relations or select the fields that should be returned.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -54,9 +54,6 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

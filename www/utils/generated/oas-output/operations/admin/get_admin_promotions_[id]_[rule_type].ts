@@ -6,7 +6,10 @@
  * description: >
  *   Retrieve a list of rules in a promotion. The type of rules retrieved depend on the value of the `rule_type` path parameter:
  * 
- *   - If `rule_type` is `rules`, the promotion's rules are retrivied. - If `rule_type` is `target-rules`, the target rules of the promotion's application method are retrieved. - If `rule_type` is `buy-rules`, the buy rules of the promotion's application method are retrieved.
+ *   - If `rule_type` is `rules`, the promotion's rules are retrivied. - If `rule_type` is `target-rules`, the target rules of the promotion's application method are retrieved.
+ * 
+ * 
+ *   - If `rule_type` is `buy-rules`, the buy rules of the promotion's application method are retrieved.
  * x-authenticated: true
  * parameters:
  *   - name: id

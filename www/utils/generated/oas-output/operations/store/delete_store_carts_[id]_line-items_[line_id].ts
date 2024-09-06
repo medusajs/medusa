@@ -3,7 +3,7 @@
  * operationId: DeleteCartsIdLineItemsLine_id
  * summary: Remove Line Items from Cart
  * description: Remove a list of line items from a cart. This doesn't delete the Line Item, only the association between the Line Item and the cart.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: id
  *     in: path
@@ -86,9 +86,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deleteLineItemsWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 

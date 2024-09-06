@@ -4,7 +4,7 @@ get:
   description: >-
     Retrieve a cart by its ID. You can expand the cart's relations or select the
     fields that should be returned.
-  x-authenticated: true
+  x-authenticated: false
   parameters:
     - name: id
       in: path
@@ -64,14 +64,11 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  security:
-    - cookie_auth: []
-    - jwt_token: []
 post:
   operationId: PostCartsId
   summary: Update a Cart
   description: Update a cart's details.
-  x-authenticated: true
+  x-authenticated: false
   parameters:
     - name: id
       in: path
@@ -154,6 +151,3 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: updateCartWorkflow
-  security:
-    - cookie_auth: []
-    - jwt_token: []

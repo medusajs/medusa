@@ -3,7 +3,7 @@
  * operationId: PostPaymentCollections
  * summary: Create Payment Collection
  * description: Create a payment collection.
- * x-authenticated: true
+ * x-authenticated: false
  * parameters:
  *   - name: expand
  *     in: query
@@ -62,9 +62,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createPaymentCollectionForCartWorkflow
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
  * 
 */
 
