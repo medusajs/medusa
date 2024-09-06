@@ -241,14 +241,10 @@ export default async ({
       `SELECT * FROM "api_key" WHERE type = 'publishable'`
     )
 
-    console.log(apiKeys)
-
     if (apiKeys.rowCount) {
       const nextjsEnvPath = path.join(nextjsDirectory, fs.existsSync(path.join(nextjsDirectory, ".env.local")) ? ".env.local" : ".env.template")
 
       const originalContent = fs.readFileSync(nextjsEnvPath, "utf-8")
-
-      console.log(originalContent, originalContent.replace("NEXT_PUBLIC_PUBLISHABLE_KEY=", `NEXT_PUBLIC_PUBLISHABLE_KEY=${apiKeys.rows[0].token}`))
 
       fs.appendFileSync(nextjsEnvPath, originalContent.replace("NEXT_PUBLIC_PUBLISHABLE_KEY=", `NEXT_PUBLIC_PUBLISHABLE_KEY=${apiKeys.rows[0].token}`))
     }
