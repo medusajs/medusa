@@ -2,7 +2,7 @@
  * @oas [get] /store/currencies/{code}
  * operationId: GetCurrenciesCode
  * summary: Get a Currency
- * description: Retrieve a currency by its ID. You can expand the currency's relations or select the fields that should be returned.
+ * description: Retrieve a currency by its code. You can expand the currency's relations or select the fields that should be returned.
  * x-authenticated: false
  * parameters:
  *   - name: code

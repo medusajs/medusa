@@ -2,7 +2,7 @@
  * @oas [delete] /store/carts/{id}/promotions
  * operationId: DeleteCartsIdPromotions
  * summary: Remove Promotions from Cart
- * description: Remove a list of promotions from a cart. This doesn't delete the Promotion, only the association between the Promotion and the cart.
+ * description: Remove a list of promotions from a cart.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -42,7 +42,7 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The cart's details.
  *           required:
  *             - cart
  *           properties:

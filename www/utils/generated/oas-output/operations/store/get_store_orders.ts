@@ -1,8 +1,9 @@
 /**
  * @oas [get] /store/orders
  * operationId: GetOrders
- * summary: List Orders
- * description: Retrieve a list of orders. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
+ * summary: List Logged-in Customer's Orders
+ * x-sidebar-summary: List Orders
+ * description: Retrieve the orders of the logged-in customer. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
  * x-authenticated: true
  * parameters:
  *   - name: expand
@@ -54,13 +55,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The order's ID.
+ *           description: Filter by an order ID.
  *         - type: array
- *           description: The order's ID.
+ *           description: Filter by order IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
+ *             description: An order ID.
  *   - name: $and
  *     in: query
  *     required: false

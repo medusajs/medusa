@@ -1,9 +1,13 @@
 /**
  * @oas [get] /store/customers/me
  * operationId: GetCustomersMe
- * summary: List Customers
- * description: Retrieve a list of customers. The customers can be filtered by fields such as `id`. The customers can also be sorted or paginated.
+ * summary: Get Logged-in Customer
+ * x-sidebar-summary: Get Customer
+ * description: Retrieve the logged-in customer. You can expand the customer's relations or select the fields that should be returned.
  * x-authenticated: true
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/retrieve
+ *   description: Storefront guide: How to retrieve the logged-in customer.
  * parameters:
  *   - name: expand
  *     in: query

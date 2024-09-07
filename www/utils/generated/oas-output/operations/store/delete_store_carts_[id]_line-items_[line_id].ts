@@ -1,8 +1,12 @@
 /**
  * @oas [delete] /store/carts/{id}/line-items/{line_id}
  * operationId: DeleteCartsIdLineItemsLine_id
- * summary: Remove Line Items from Cart
- * description: Remove a list of line items from a cart. This doesn't delete the Line Item, only the association between the Line Item and the cart.
+ * summary: Remove Line Item from Cart
+ * x-sidebar-summary: Remove Line Item
+ * description: Remove a line item from a cart.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items#remove-line-item-from-cart
+ *   description: Storefront guide: How to remove line item from cart.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -13,7 +17,7 @@
  *       type: string
  *   - name: line_id
  *     in: path
- *     description: The cart's line id.
+ *     description: The line item's ID.
  *     required: true
  *     schema:
  *       type: string
@@ -49,7 +53,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The deletion's details.
  *               required:
  *                 - id
  *                 - object
@@ -58,21 +62,23 @@
  *                 id:
  *                   type: string
  *                   title: id
- *                   description: The cart's ID.
+ *                   description: The ID of the deleted line item.
  *                 object:
  *                   type: string
  *                   title: object
  *                   description: The name of the deleted object.
+ *                   default: "line-item"
  *                 deleted:
  *                   type: boolean
  *                   title: deleted
- *                   description: Whether the Cart was deleted.
+ *                   description: Whether the item was deleted.
  *             - type: object
- *               description: SUMMARY
+ *               description: The deletion's details.
  *               properties:
  *                 parent:
  *                   $ref: "#/components/schemas/StoreCart"
- *           description: SUMMARY
+ *                   description: The cart that the item belonged to.
+ *           description: The deletion's details.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

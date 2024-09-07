@@ -1,9 +1,13 @@
 /**
  * @oas [get] /store/customers/me/addresses
  * operationId: GetCustomersMeAddresses
- * summary: List Customers
- * description: Retrieve a list of customers. The customers can be filtered by fields such as `id`. The customers can also be sorted or paginated.
+ * summary: List Customer's Addresses
+ * x-sidebary-summary: List Addresses
+ * description: Retrieve the addresses of the logged-in customer. The addresses can be filtered by fields such as `country_code`. The addresses can also be sorted or paginated.
  * x-authenticated: true
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#list-customer-addresses
+ *   description: Storefront guide: How to retrieve the logged-in customer's addresses.
  * parameters:
  *   - name: expand
  *     in: query
@@ -49,57 +53,36 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: city
  *     in: query
- *     description: The customer's city.
- *     required: false
+ *     description: Filter by the address's city.
+ *     required: true
  *     schema:
- *       oneOf:
- *         - type: string
- *           title: city
- *           description: The customer's city.
- *         - type: array
- *           description: The customer's city.
- *           items:
- *             type: string
- *             title: city
- *             description: The city's details.
- *   - name: country_code
- *     in: query
- *     description: The customer's country code.
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: country_code
- *           description: The customer's country code.
- *         - type: array
- *           description: The customer's country code.
- *           items:
- *             type: string
- *             title: country_code
- *             description: The country code's details.
+ *       type: string
+ *       title: city
+ *       description: Filter by the address's city.
  *   - name: postal_code
  *     in: query
- *     description: The customer's postal code.
- *     required: false
+ *     description: Filter by the address's postal code.
+ *     required: true
  *     schema:
- *       oneOf:
- *         - type: string
- *           title: postal_code
- *           description: The customer's postal code.
- *         - type: array
- *           description: The customer's postal code.
- *           items:
- *             type: string
- *             title: postal_code
- *             description: The postal code's details.
+ *       type: string
+ *       title: postal_code
+ *       description: Filter by the address's postal code.
+ *   - name: country_code
+ *     in: query
+ *     description: Filter by the address's country code.
+ *     required: true
+ *     schema:
+ *       type: string
+ *       title: country_code
+ *       description: Filter by the address's country code.
  *   - name: q
  *     in: query
- *     description: The customer's q.
- *     required: false
+ *     description: Search term to filter the address's searchable properties.
+ *     required: true
  *     schema:
  *       type: string
  *       title: q
- *       description: The customer's q.
+ *       description: Search term to filter the address's searchable properties.
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []
