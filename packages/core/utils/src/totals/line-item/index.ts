@@ -94,7 +94,6 @@ function setRefundableTotal(
 
   const taxTotal = calculateTaxTotal({
     taxLines: item.tax_lines || [],
-    includesTax: context.includeTax,
     taxableAmount: refundableSubTotal,
   })
   const refundableTotal = MathBN.add(refundableSubTotal, taxTotal)
@@ -111,11 +110,11 @@ function getLineItemTotals(
   item: GetItemTotalInput,
   context: GetLineItemsTotalsContext
 ) {
-  const isTaxInclusive = context.includeTax ?? item.is_tax_inclusive
+  const isTaxInclusive = item.is_tax_inclusive ?? context.includeTax
   const sumTax = MathBN.sum(
     ...((item.tax_lines ?? []).map((taxLine) => taxLine.rate) ?? [])
   )
-  // TODO: We might be storing the tax percentage in the tax table instead of rate
+
   const sumTaxRate = MathBN.div(sumTax, 100)
   const totalItemPrice = MathBN.mult(item.unit_price, item.quantity)
 
@@ -137,56 +136,41 @@ function getLineItemTotals(
     taxRate: sumTaxRate,
   })
 
-  const subtotalWithoutDiscounts = MathBN.sub(subtotal, discountsSubtotal)
+  const taxTotal = calculateTaxTotal({
+    taxLines: item.tax_lines || [],
+    taxableAmount: MathBN.sub(subtotal, discountsSubtotal),
+    setTotalField: "total",
+  })
+
+  const originalTaxTotal = calculateTaxTotal({
+    taxLines: item.tax_lines || [],
+    taxableAmount: subtotal,
+    setTotalField: "subtotal",
+  })
 
   const totals: GetItemTotalOutput = {
     quantity: item.quantity,
     unit_price: item.unit_price,
 
     subtotal: new BigNumber(subtotal),
-    total: new BigNumber(subtotalWithoutDiscounts),
+    total: new BigNumber(
+      MathBN.sum(MathBN.sub(subtotal, discountsSubtotal), taxTotal)
+    ),
 
-    original_total: new BigNumber(subtotal),
+    original_total: new BigNumber(
+      isTaxInclusive ? totalItemPrice : MathBN.add(subtotal, originalTaxTotal)
+    ),
 
     discount_total: new BigNumber(discountsTotal),
     discount_subtotal: new BigNumber(discountsSubtotal),
     discount_tax_total: new BigNumber(discountTaxTotal),
 
-    tax_total: new BigNumber(0),
-    original_tax_total: new BigNumber(0),
+    tax_total: new BigNumber(taxTotal),
+    original_tax_total: new BigNumber(originalTaxTotal),
   }
-
-  const taxTotal = calculateTaxTotal({
-    taxLines: item.tax_lines || [],
-    includesTax: context.includeTax,
-    taxableAmount: subtotalWithoutDiscounts,
-    setTotalField: "total",
-  })
-
-  totals.tax_total = new BigNumber(taxTotal)
 
   if (isDefined(item.detail?.return_requested_quantity)) {
     setRefundableTotal(item, discountsTotal, totals, context)
-  }
-
-  const originalTaxTotal = calculateTaxTotal({
-    taxLines: item.tax_lines || [],
-    includesTax: isTaxInclusive,
-    taxableAmount: subtotal,
-    setTotalField: "subtotal",
-  })
-  totals.original_tax_total = new BigNumber(originalTaxTotal)
-
-  if (isTaxInclusive) {
-    totals.subtotal = new BigNumber(
-      MathBN.sub(totalItemPrice, originalTaxTotal)
-    )
-  } else {
-    const newTotal = MathBN.add(totals.total, totals.tax_total)
-    const originalTotal = MathBN.add(totals.subtotal, totals.original_tax_total)
-
-    totals.total = new BigNumber(newTotal)
-    totals.original_total = new BigNumber(originalTotal)
   }
 
   const div = MathBN.eq(item.quantity, 0) ? 1 : item.quantity
