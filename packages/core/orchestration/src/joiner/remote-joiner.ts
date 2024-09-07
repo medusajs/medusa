@@ -92,7 +92,16 @@ export class RemoteJoiner {
   }
 
   private static getNestedItems(items: any[], property: string): any[] {
-    return items.flatMap((item) => item?.[property])
+    const result: unknown[] = []
+    for (const item of items) {
+      for (const value of item?.[property] ?? []) {
+        if (isDefined(value)) {
+          result.push(value)
+        }
+      }
+    }
+
+    return result
   }
 
   private static createRelatedDataMap(
@@ -377,7 +386,11 @@ export class RemoteJoiner {
     const isObj = isDefined(response.path)
     let resData = isObj ? response.data[response.path!] : response.data
 
-    resData = Array.isArray(resData) ? resData : [resData]
+    resData = isDefined(resData)
+      ? Array.isArray(resData)
+        ? resData
+        : [resData]
+      : []
 
     this.checkIfKeysExist(
       uniqueIds,
