@@ -1,9 +1,12 @@
 /**
  * @oas [post] /store/carts/{id}/complete
  * operationId: PostCartsIdComplete
- * summary: Add Completes to Cart
- * description: Add a list of completes to a cart.
+ * summary: Complete Cart
+ * description: Complete a cart and place an order.
  * x-authenticated: false
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/complete-cart
+ *   description: Storefront guide: How to implement cart completion during checkout.
  * parameters:
  *   - name: id
  *     in: path
@@ -29,17 +32,6 @@
  *       title: fields
  *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
  *         fields. without prefix it will replace the entire default fields.
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         description: SUMMARY
- *         properties:
- *           idempotency_key:
- *             type: string
- *             title: idempotency_key
- *             description: The cart's idempotency key.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -54,7 +46,20 @@
  *         schema:
  *           oneOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The created order's details.
+ *               required:
+ *                 - type
+ *                 - order
+ *               properties:
+ *                 type:
+ *                   type: string
+ *                   title: type
+ *                   description: The type of the returned object.
+ *                   default: order
+ *                 order:
+ *                   $ref: "#/components/schemas/StoreOrder"
+ *             - type: object
+ *               description: The details of why the cart completion failed.
  *               required:
  *                 - type
  *                 - cart
@@ -63,12 +68,13 @@
  *                 type:
  *                   type: string
  *                   title: type
- *                   description: The cart's type.
+ *                   description: The type of the returned object.
+ *                   default: cart
  *                 cart:
  *                   $ref: "#/components/schemas/StoreCart"
  *                 error:
  *                   type: object
- *                   description: The cart's error.
+ *                   description: The error's details.
  *                   required:
  *                     - message
  *                     - name
@@ -85,19 +91,9 @@
  *                     type:
  *                       type: string
  *                       title: type
- *                       description: The error's type.
- *             - type: object
- *               description: SUMMARY
- *               required:
- *                 - type
- *                 - order
- *               properties:
- *                 type:
- *                   type: string
- *                   title: type
- *                   description: The cart's type.
- *                 order:
- *                   $ref: "#/components/schemas/StoreOrder"
+ *                       description: >
+ *                         The error's type. Can be a [MedusaError type](https://docs.medusajs.com/v2/advanced-development/api-routes/errors#medusaerror-types)
+ *                         or `payment_authorization_error` or `payment_requires_more_error` for payment-related errors.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

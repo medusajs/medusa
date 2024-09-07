@@ -1,8 +1,9 @@
 /**
  * @oas [post] /store/carts/{id}/taxes
  * operationId: PostCartsIdTaxes
- * summary: Add Taxes to Cart
- * description: Add a list of taxes to a cart.
+ * summary: Calculate Cart Taxes
+ * x-sidebar-summary: Calculate Taxes
+ * description: Calculate the cart's tax lines and amounts.
  * x-authenticated: false
  * parameters:
  *   - name: id
