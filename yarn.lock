@@ -6058,6 +6058,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/cli/medusa-cli"
   dependencies:
+    "@graphql-codegen/cli": ^5.0.2
+    "@graphql-codegen/typescript": ^4.0.9
     "@medusajs/utils": ^1.11.9
     "@swc/core": ^1.5.29
     "@swc/jest": ^0.2.36
@@ -6551,8 +6553,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/core/types"
   dependencies:
-    "@graphql-codegen/cli": ^5.0.2
-    "@graphql-codegen/typescript": ^4.0.9
     awilix: ^8.0.1
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
