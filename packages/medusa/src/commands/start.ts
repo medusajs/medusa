@@ -2,10 +2,10 @@ import express from "express"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
-import { gqlSchemaToTypes, logger } from "@medusajs/framework"
+import { ConfigManager, gqlSchemaToTypes, logger } from "@medusajs/framework"
 import { GracefulShutdownServer } from "@medusajs/utils"
-import loaders from "../loaders"
 import path from "path"
+import loaders from "../loaders"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -14,6 +14,7 @@ export default async function ({ port, directory, types }) {
   async function start() {
     track("CLI_START")
 
+    const configManager = new ConfigManager()
     const app = express()
 
     try {
@@ -22,7 +23,7 @@ export default async function ({ port, directory, types }) {
         expressApp: app,
       })
 
-      if (gqlSchema && types) {
+      if (!configManager.isProduction && gqlSchema && types) {
         const outputDirGeneratedTypes = path.join(directory, ".medusa")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
