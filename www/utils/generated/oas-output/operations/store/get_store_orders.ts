@@ -1,9 +1,10 @@
 /**
  * @oas [get] /store/orders
  * operationId: GetOrders
- * summary: List Orders
- * description: Retrieve a list of orders. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
- * x-authenticated: false
+ * summary: List Logged-in Customer's Orders
+ * x-sidebar-summary: List Orders
+ * description: Retrieve the orders of the logged-in customer. The orders can be filtered by fields such as `id`. The orders can also be sorted or paginated.
+ * x-authenticated: true
  * parameters:
  *   - name: expand
  *     in: query
@@ -54,27 +55,13 @@
  *       oneOf:
  *         - type: string
  *           title: id
- *           description: The order's ID.
+ *           description: Filter by an order ID.
  *         - type: array
- *           description: The order's ID.
+ *           description: Filter by order IDs.
  *           items:
  *             type: string
  *             title: id
- *             description: The id's ID.
- *   - name: name
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: name
- *           description: The order's name.
- *         - type: array
- *           description: The order's name.
- *           items:
- *             type: string
- *             title: name
- *             description: The name's details.
+ *             description: An order ID.
  *   - name: $and
  *     in: query
  *     required: false
@@ -93,6 +80,41 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: status
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: string
+ *           title: status
+ *           description: The order's status.
+ *         - type: array
+ *           description: The order's status.
+ *           items:
+ *             type: string
+ *             description: The status's details.
+ *             enum:
+ *               - canceled
+ *               - requires_action
+ *               - pending
+ *               - completed
+ *               - draft
+ *               - archived
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -147,6 +169,9 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * 
 */
 

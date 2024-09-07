@@ -2,8 +2,11 @@
  * @oas [get] /store/payment-providers
  * operationId: GetPaymentProviders
  * summary: List Payment Providers
- * description: Retrieve a list of payment providers. The payment providers can be filtered by fields such as `id`. The payment providers can also be sorted or paginated.
+ * description: Retrieve a list of payment providers. You must provide the `region_id` query parameter to retrieve the payment providers enabled in that region.
  * x-authenticated: false
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment
+ *   description: Storefront guide: How to implement payment during checkout.
  * parameters:
  *   - name: expand
  *     in: query
@@ -49,59 +52,12 @@
  *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: region_id
  *     in: query
- *     description: The payment provider's region id.
- *     required: false
+ *     description: Filter by a region ID to get the payment providers enabled in that region.
+ *     required: true
  *     schema:
- *       oneOf:
- *         - type: string
- *           title: region_id
- *           description: The payment provider's region id.
- *         - type: array
- *           description: The payment provider's region id.
- *           items:
- *             type: string
- *             title: region_id
- *             description: The region id's details.
- *   - name: id
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: id
- *           description: The payment provider's ID.
- *         - type: array
- *           description: The payment provider's ID.
- *           items:
- *             type: string
- *             title: id
- *             description: The id's ID.
- *   - name: is_enabled
- *     in: query
- *     description: The payment provider's is enabled.
- *     required: false
- *     schema:
- *       type: boolean
- *       title: is_enabled
- *       description: The payment provider's is enabled.
- *   - name: $and
- *     in: query
- *     required: false
- *     schema:
- *       type: array
- *       description: The payment provider's $and.
- *       items:
- *         type: object
- *       title: $and
- *   - name: $or
- *     in: query
- *     required: false
- *     schema:
- *       type: array
- *       description: The payment provider's $or.
- *       items:
- *         type: object
- *       title: $or
+ *       type: string
+ *       title: region_id
+ *       description: Filter by a region ID.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -116,7 +72,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The list of payment providers.
  *               required:
  *                 - limit
  *                 - offset
@@ -125,23 +81,23 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The payment provider's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The payment provider's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The payment provider's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The list of payment providers.
  *               required:
  *                 - payment_providers
  *               properties:
  *                 payment_providers:
  *                   type: array
- *                   description: The payment provider's payment providers.
+ *                   description: The list of payment providers.
  *                   items:
  *                     $ref: "#/components/schemas/StorePaymentProvider"
  *   "400":

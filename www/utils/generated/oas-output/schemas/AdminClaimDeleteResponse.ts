@@ -1,7 +1,7 @@
 /**
  * @schema AdminClaimDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the deleted claim.
  * x-schemaName: AdminClaimDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Claim was deleted.
+ *     description: Whether the claim was deleted.
  * 
 */
 

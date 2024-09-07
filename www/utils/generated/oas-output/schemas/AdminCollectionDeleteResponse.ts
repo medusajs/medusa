@@ -1,7 +1,7 @@
 /**
  * @schema AdminCollectionDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the deleted collection.
  * x-schemaName: AdminCollectionDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Collection was deleted.
+ *     description: Whether the collection was deleted.
  * 
 */
 

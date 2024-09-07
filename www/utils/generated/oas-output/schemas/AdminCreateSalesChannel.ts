@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateSalesChannel
  * type: object
- * description: SUMMARY
+ * description: The sales channel's details.
  * x-schemaName: AdminCreateSalesChannel
  * required:
  *   - name
@@ -17,10 +17,10 @@
  *   is_disabled:
  *     type: boolean
  *     title: is_disabled
- *     description: The sales channel's is disabled.
+ *     description: Whether the sales channel is disabled.
  *   metadata:
  *     type: object
- *     description: The sales channel's metadata.
+ *     description: The sales channel's metadata, used to store custom key-value pairs.
  * 
 */
 

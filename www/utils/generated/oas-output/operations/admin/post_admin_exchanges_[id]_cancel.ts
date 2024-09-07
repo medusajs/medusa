@@ -2,7 +2,7 @@
  * @oas [post] /admin/exchanges/{id}/cancel
  * operationId: PostExchangesIdCancel
  * summary: Cancel an Exchange
- * description: Cancel an exchange and its associated return. 
+ * description: Cancel an exchange and its associated return.
  * x-authenticated: true
  * parameters:
  *   - name: id

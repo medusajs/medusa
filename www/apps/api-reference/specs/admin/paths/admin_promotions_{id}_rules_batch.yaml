@@ -1,7 +1,8 @@
 post:
   operationId: PostPromotionsIdRulesBatch
-  summary: Add Rules to Promotion
-  description: Add a list of rules to a promotion.
+  summary: Manage a Promotion's Rules
+  x-sidebar-summary: Manage Rules
+  description: Manage the rules of a promotion to create, update, or delete them.
   x-authenticated: true
   parameters:
     - name: id
@@ -36,35 +37,6 @@ post:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
-    - name: offset
-      in: query
-      description: The number of items to skip when retrieving a list.
-      required: false
-      schema:
-        type: number
-        title: offset
-        description: The number of items to skip when retrieving a list.
-    - name: limit
-      in: query
-      description: Limit the number of items returned in the list.
-      required: false
-      schema:
-        type: number
-        title: limit
-        description: Limit the number of items returned in the list.
-    - name: order
-      in: query
-      description: >-
-        The field to sort the data by. By default, the sort order is ascending.
-        To change the order to descending, prefix the field name with `-`.
-      required: false
-      schema:
-        type: string
-        title: order
-        description: >-
-          The field to sort the data by. By default, the sort order is
-          ascending. To change the order to descending, prefix the field name
-          with `-`.
   security:
     - api_token: []
     - cookie_auth: []
@@ -74,22 +46,25 @@ post:
       application/json:
         schema:
           type: object
-          description: SUMMARY
+          description: The rules to create, update, or delete.
           properties:
             create:
               type: array
-              description: The promotion's create.
+              description: The rules to create.
               items:
                 type: object
-                description: The create's details.
+                description: A rule's details.
                 required:
                   - operator
-                  - description
                   - attribute
                   - values
                 properties:
                   operator:
                     type: string
+                    description: >-
+                      The operator used to check whether the rule applies on a
+                      cart. For example, `eq` means that the cart's value for
+                      the specified attribute must match the specified value.
                     enum:
                       - gte
                       - lte
@@ -101,39 +76,47 @@ post:
                   description:
                     type: string
                     title: description
-                    description: The create's description.
+                    description: The rule's description.
                   attribute:
                     type: string
                     title: attribute
-                    description: The create's attribute.
+                    description: >-
+                      The attribute to compare against when checking whether a
+                      promotion can be applied on a cart.
+                    example: items.product.id
                   values:
                     oneOf:
                       - type: string
                         title: values
-                        description: The create's values.
+                        description: The attribute's value.
+                        example: prod_123
                       - type: array
-                        description: The create's values.
+                        description: The allowed attribute values.
                         items:
                           type: string
                           title: values
-                          description: The value's values.
+                          description: An attribute value.
+                          example: prod_123
             update:
               type: array
-              description: The promotion's update.
+              description: The rules to update.
               items:
                 type: object
-                description: The update's details.
+                description: The properties to update in a rule.
                 required:
                   - id
-                  - description
                   - values
                 properties:
                   id:
                     type: string
                     title: id
-                    description: The update's ID.
+                    description: The rule's ID.
                   operator:
                     type: string
+                    description: >-
+                      The operator used to check whether the rule applies on a
+                      cart. For example, `eq` means that the cart's value for
+                      the specified attribute must match the specified value.
                     enum:
                       - gte
                       - lte
@@ -145,29 +128,34 @@ post:
                   description:
                     type: string
                     title: description
-                    description: The update's description.
+                    description: The rule's description.
                   attribute:
                     type: string
                     title: attribute
-                    description: The update's attribute.
+                    description: >-
+                      The attribute to compare against when checking whether a
+                      promotion can be applied on a cart.
+                    example: items.product.id
                   values:
                     oneOf:
                       - type: string
                         title: values
-                        description: The update's values.
+                        description: The attribute's value.
+                        example: prod_123
                       - type: array
-                        description: The update's values.
+                        description: The allowed attribute values.
                         items:
                           type: string
                           title: values
-                          description: The value's values.
+                          description: An attribute value.
+                          example: prod_123
             delete:
               type: array
-              description: The promotion's delete.
+              description: The rules to delete.
               items:
                 type: string
                 title: delete
-                description: The delete's details.
+                description: A rule's ID.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -182,7 +170,7 @@ post:
         application/json:
           schema:
             type: object
-            description: SUMMARY
+            description: The result of the batch operations.
             required:
               - created
               - updated
@@ -190,17 +178,17 @@ post:
             properties:
               created:
                 type: array
-                description: The promotion's created.
+                description: The created rules.
                 items:
                   $ref: ../components/schemas/AdminPromotionRule.yaml
               updated:
                 type: array
-                description: The promotion's updated.
+                description: The updated rules.
                 items:
                   $ref: ../components/schemas/AdminPromotionRule.yaml
               deleted:
                 type: object
-                description: The promotion's deleted.
+                description: The details of the deleted buy rules.
                 required:
                   - ids
                   - object
@@ -208,19 +196,20 @@ post:
                 properties:
                   ids:
                     type: array
-                    description: The deleted's ids.
+                    description: The IDs of the deleted rules.
                     items:
                       type: string
                       title: ids
-                      description: The id's ids.
+                      description: A rule's ID.
                   object:
                     type: string
                     title: object
-                    description: The deleted's object.
+                    description: The name of the object that was deleted.
+                    default: promotion-rule
                   deleted:
                     type: boolean
                     title: deleted
-                    description: The deleted's details.
+                    description: Whether the rules were deleted.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

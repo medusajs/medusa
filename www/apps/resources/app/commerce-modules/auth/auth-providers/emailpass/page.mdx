@@ -8,8 +8,6 @@ export const metadata = {
 
 In this document, you’ll learn about the Emailpass auth module provider and how to install and use it in the Auth Module.
 
-## Features
-
 Using the Emailpass auth module provider, you allow users to register and login with an email and password.
 
 ---
@@ -31,6 +29,7 @@ const modules = {
     resolve: "@medusajs/auth",
     options: {
       providers: [
+        // other providers...
         {
           resolve: "@medusajs/auth-emailpass",
           id: "emailpass",

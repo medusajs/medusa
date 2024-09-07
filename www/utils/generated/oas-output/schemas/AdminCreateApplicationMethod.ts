@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateApplicationMethod
  * type: object
- * description: The promotion's application method.
+ * description: The application method's details.
  * x-schemaName: AdminCreateApplicationMethod
  * required:
  *   - value
@@ -15,7 +15,7 @@
  *   value:
  *     type: number
  *     title: value
- *     description: The application method's value.
+ *     description: The discounted amount applied by the associated promotion based on the `type`.
  *   currency_code:
  *     type: string
  *     title: currency_code
@@ -23,23 +23,23 @@
  *   max_quantity:
  *     type: number
  *     title: max_quantity
- *     description: The application method's max quantity.
+ *     description: The max quantity allowed in the cart for the associated promotion to be applied.
  *   type:
  *     type: string
- *     description: The application method's type.
+ *     description: The type of the application method indicating how the associated promotion is applied.
  *     enum:
  *       - fixed
  *       - percentage
  *   target_type:
  *     type: string
- *     description: The application method's target type.
+ *     description: The target type of the application method indicating whether the associated promotion is applied to the cart's items, shipping methods, or the whole order.
  *     enum:
  *       - items
  *       - shipping_methods
  *       - order
  *   allocation:
  *     type: string
- *     description: The application method's allocation.
+ *     description: The allocation value that indicates whether the associated promotion is applied on each item in a cart or split between the items in the cart.
  *     enum:
  *       - each
  *       - across
@@ -56,11 +56,11 @@
  *   apply_to_quantity:
  *     type: number
  *     title: apply_to_quantity
- *     description: The application method's apply to quantity.
+ *     description: The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value f this attribute is `1`.
  *   buy_rules_min_quantity:
  *     type: number
  *     title: buy_rules_min_quantity
- *     description: The application method's buy rules min quantity.
+ *     description: The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
  * 
 */
 

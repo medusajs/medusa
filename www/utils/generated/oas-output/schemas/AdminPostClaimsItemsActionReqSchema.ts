@@ -3,8 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminPostClaimsItemsActionReqSchema
- * required:
- *   - reason_id
  * properties:
  *   quantity:
  *     type: number
