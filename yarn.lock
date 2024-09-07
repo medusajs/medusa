@@ -6551,6 +6551,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/core/types"
   dependencies:
+    "@graphql-codegen/cli": ^5.0.2
+    "@graphql-codegen/typescript": ^4.0.9
     awilix: ^8.0.1
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
