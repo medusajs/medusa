@@ -94,7 +94,9 @@ export class RemoteJoiner {
   private static getNestedItems(items: any[], property: string): any[] {
     const result: unknown[] = []
     for (const item of items) {
-      for (const value of item?.[property] ?? []) {
+      const allValues = item?.[property] ?? []
+      const values = Array.isArray(allValues) ? allValues : [allValues]
+      for (const value of values) {
         if (isDefined(value)) {
           result.push(value)
         }
