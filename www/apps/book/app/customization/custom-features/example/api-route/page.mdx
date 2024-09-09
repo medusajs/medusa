@@ -1,0 +1,87 @@
+export const metadata = {
+  title: `${pageNumber} Brand Example: 3. Create API Route`,
+}
+
+# {metadata.title}
+
+The last step of creating the brand example is to create an API route that allows admin users to create a brand.
+
+Create the file `src/api/admin/brands/route.ts` with the following content:
+
+```ts
+import {
+  MedusaRequest,
+  MedusaResponse
+} from "@medusajs/medusa"
+import { 
+  CreateBrandInput, 
+  createBrandWorkflow
+} from "../../../workflows/create-brand"
+
+export const POST = async (
+  req: MedusaRequest<CreateBrandInput>,
+  res: MedusaResponse
+) => {
+  const { result } = await createBrandWorkflow(req.scope)
+    .run({
+      input: req.body
+    })
+
+  res.json({ brand: result })
+}
+```
+
+This adds a `POST` API route at `/admin/brands`. In the API route's handler, you execute the `createBrandWorkflow`, passing it the request body as input.
+
+You return in the response the created brand.
+
+---
+
+## Test API Route
+
+To test it out, first, retrieve an authenticated token of your admin user by sending a `POST` request to the `/auth/user/emailpass` API Route:
+
+```bash
+curl -X POST 'http://localhost:9000/auth/user/emailpass' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "email": "admin@medusa-test.com",
+    "password": "supersecret"
+}'
+```
+
+Make sure to replace the email and password with your user's credentials.
+
+Then, send a `POST` request to `/admin/brands`, passing the token received from the previous request in the `Authorization` header:
+
+```bash
+curl -X POST 'http://localhost:9000/admin/brands' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data '{
+    "name": "Acme"
+}'
+```
+
+This returns the created brand in the response:
+
+```json
+{
+  "brand": {
+    "id": "01J7AX9ES4X113HKY6C681KDZJ",
+    "name": "Acme",
+    "created_at": "2024-09-09T08:09:34.244Z",
+    "updated_at": "2024-09-09T08:09:34.244Z"
+  }
+}
+```
+
+---
+
+## Summary
+
+By following the three steps of this example, you implemented a custom feature that allows admin users to create a brand by:
+
+1. Creating a module that defines and manages the `Brand` data model.
+2. Creating a workflow that uses the module's main service to create a brand record, and implements a roll-back feature to delete that brand in case an error occurs.
+3. Creating an API route that allows admin users to create a brand.

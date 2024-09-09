@@ -85,6 +85,114 @@ export const sidebar = numberSidebarItems(
     },
     {
       type: "link",
+      path: "/customization",
+      title: "Custom Development",
+      chapterTitle: "Customization",
+      children: [
+        {
+          type: "link",
+          title: "Build Custom Features",
+          path: "/customization/custom-features",
+          children: [
+            {
+              type: "link",
+              title: "Brands Example",
+              path: "/customization/custom-features/example",
+              children: [
+                {
+                  type: "link",
+                  title: "Brand Module",
+                  path: "/customization/custom-features/example/module",
+                },
+                {
+                  type: "link",
+                  title: "Create Brand Workflow",
+                  path: "/customization/custom-features/example/workflow",
+                },
+                {
+                  type: "link",
+                  title: "Create Brand API Route",
+                  path: "/customization/custom-features/example/api-route",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "link",
+          title: "Extend Models",
+          path: "/customization/extend-models",
+          children: [
+            {
+              type: "link",
+              title: "Define Links",
+              path: "#",
+            },
+            {
+              type: "link",
+              title: "Query Data",
+              path: "#",
+            },
+            {
+              type: "link",
+              title: "Link Records",
+              path: "#",
+            },
+            {
+              type: "link",
+              title: "Extend Routes",
+              path: "#",
+            },
+          ],
+        },
+        {
+          type: "link",
+          title: "Customize Admin",
+          path: "#",
+          children: [
+            {
+              type: "link",
+              title: "Add Widgets",
+              path: "#",
+            },
+            {
+              type: "link",
+              title: "Add Pages",
+              path: "#",
+            },
+          ],
+        },
+        {
+          type: "link",
+          title: "Perform Async Tasks",
+          path: "#",
+          children: [
+            {
+              type: "link",
+              title: "Handle Events",
+              path: "#",
+            },
+            {
+              type: "link",
+              title: "Schedule Tasks",
+              path: "#",
+            },
+            {
+              type: "link",
+              title: "Long Background Tasks",
+              path: "#",
+            },
+          ],
+        },
+        {
+          type: "link",
+          title: "Next Steps",
+          path: "#",
+        },
+      ],
+    },
+    {
+      type: "link",
       path: "/advanced-development",
       title: "Advanced Development",
       chapterTitle: "Advanced",

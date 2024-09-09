@@ -1,0 +1,41 @@
+export const metadata = {
+  title: `${pageNumber} How to Extend Data Models`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about Medusa's approach to extending data models.
+
+## Extend Models Use Case
+
+In many use cases, you may need to extend existing data models for your custom development.
+
+For example, after you added brands in your Medusa application in the previous chapters, you want to associate products with those brands.
+
+However, the `product` and `brand` data models are created in different modules. So, how do you extend the `product` model to associate it with a brand?
+
+---
+
+## Modules Isolation
+
+A module is unaware of any resources other than its own, such as services or data models. This means it can't access these resources if they're implemented in another module.
+
+For example, your custom module can't resolve the Product Module's main service or have direct relationships from its data model to the Product Module's data models.
+
+### Why are Modules Isolated?
+
+Through module isolation, you can:
+
+- Integrate your module into any Medusa application without side-effects to your setup.
+- Replace existing modules with your custom implementation, if it's drastically different.
+- Use modules in other environments, such as Edge functions and Next.js apps.
+
+---
+
+## Introducing Module Links
+
+Medusa still provides the necessary tools and concepts that are similar to extending a data model while maintaining module isolation.
+
+The main concept that replaces extending modules is creating a module link. A module link forms an association between two data models of different modules.
+
+The next chapters explain how to define links between data models of different modules, how to retrieved the data of linked records, and more.
