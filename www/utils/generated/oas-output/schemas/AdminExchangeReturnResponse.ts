@@ -1,7 +1,7 @@
 /**
  * @schema AdminExchangeReturnResponse
  * type: object
- * description: SUMMARY
+ * description: The details of an exchange's return.
  * x-schemaName: AdminExchangeReturnResponse
  * required:
  *   - order_preview
