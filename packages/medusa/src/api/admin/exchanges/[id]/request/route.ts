@@ -39,7 +39,7 @@ export const POST = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderExchange] = await remoteQuery(queryObject, undefined, {
+  const [orderExchange] = await remoteQuery(queryObject, {
     throwIfKeyNotFound: true,
   })
 

@@ -3,9 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminUpdateStockLocation
- * required:
- *   - address_id
- *   - metadata
  * properties:
  *   name:
  *     type: string
@@ -16,13 +13,7 @@
  *     description: The stock location's address.
  *     required:
  *       - address_1
- *       - address_2
- *       - company
- *       - city
  *       - country_code
- *       - phone
- *       - postal_code
- *       - province
  *     properties:
  *       address_1:
  *         type: string

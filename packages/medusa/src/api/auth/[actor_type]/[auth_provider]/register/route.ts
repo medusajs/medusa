@@ -17,18 +17,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     ContainerRegistrationKeys.CONFIG_MODULE
   )
 
-  const authMethodsPerActor =
-    config.projectConfig?.http?.authMethodsPerActor ?? {}
-  // Not having the config defined would allow for all auth providers for the particular actor.
-  if (authMethodsPerActor[actor_type]) {
-    if (!authMethodsPerActor[actor_type].includes(auth_provider)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `The actor type ${actor_type} is not allowed to use the auth provider ${auth_provider}`
-      )
-    }
-  }
-
   const service: IAuthModuleService = req.scope.resolve(
     ModuleRegistrationName.AUTH
   )
@@ -46,7 +34,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     authData
   )
 
-  if (success) {
+  if (success && authIdentity) {
     const { http } = config.projectConfig
 
     const token = generateJwtTokenForAuthIdentity(

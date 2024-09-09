@@ -1,7 +1,7 @@
 /**
  * @schema AdminCollection
  * type: object
- * description: The parent's collection.
+ * description: The product collection's details.
  * x-schemaName: AdminCollection
  * required:
  *   - id
@@ -28,17 +28,17 @@
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The collection's created at.
+ *     description: The collection's creation date.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The collection's updated at.
+ *     description: The collection's update date.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The collection's deleted at.
+ *     description: The collection's deletion date.
  *   products:
  *     type: array
  *     description: The collection's products.
@@ -46,7 +46,7 @@
  *       $ref: "#/components/schemas/AdminProduct"
  *   metadata:
  *     type: object
- *     description: The collection's metadata.
+ *     description: The collection's metadata, used to store custom key-value pairs.
  * 
 */
 

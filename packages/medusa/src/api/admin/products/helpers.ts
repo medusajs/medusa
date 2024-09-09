@@ -140,7 +140,6 @@ export const refetchBatchProducts = async (
       fields: remapKeysForProduct(fields ?? []),
     })
 
-    // @ts-expect-error "Remote query can return null"
     created = remoteQuery(createdQuery)
   }
 
@@ -153,7 +152,6 @@ export const refetchBatchProducts = async (
       fields: remapKeysForProduct(fields ?? []),
     })
 
-    // @ts-expect-error "Remote query can return null"
     updated = remoteQuery(updatedQuery)
   }
 
@@ -187,7 +185,6 @@ export const refetchBatchVariants = async (
       fields: remapKeysForVariant(fields ?? []),
     })
 
-    // @ts-expect-error "Remote query can return null"
     created = remoteQuery(createdQuery)
   }
 
@@ -200,7 +197,6 @@ export const refetchBatchVariants = async (
       fields: remapKeysForVariant(fields ?? []),
     })
 
-    // @ts-expect-error "Remote query can return null"
     updated = remoteQuery(updatedQuery)
   }
 

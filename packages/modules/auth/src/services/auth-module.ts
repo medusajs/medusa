@@ -9,17 +9,14 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
-
-import { AuthIdentity, ProviderIdentity } from "@models"
-
-import { joinerConfig } from "../joiner-config"
-
 import {
   InjectManager,
   MedusaContext,
   MedusaError,
   MedusaService,
 } from "@medusajs/utils"
+import { AuthIdentity, ProviderIdentity } from "@models"
+import { joinerConfig } from "../joiner-config"
 import AuthProviderService from "./auth-provider"
 
 type InjectedDependencies = {
@@ -92,18 +89,19 @@ export default class AuthModuleService
   }
 
   // TODO: Update to follow convention
-  updateAuthIdentites(
+  // @ts-expect-error
+  updateAuthIdentities(
     data: AuthTypes.UpdateAuthIdentityDTO[],
     sharedContext?: Context
   ): Promise<AuthTypes.AuthIdentityDTO[]>
 
-  updateAuthIdentites(
+  updateAuthIdentities(
     data: AuthTypes.UpdateAuthIdentityDTO,
     sharedContext?: Context
   ): Promise<AuthTypes.AuthIdentityDTO>
 
   @InjectManager("baseRepository_")
-  async updateAuthIdentites(
+  async updateAuthIdentities(
     data: AuthTypes.UpdateAuthIdentityDTO | AuthTypes.UpdateAuthIdentityDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthIdentityDTO | AuthTypes.AuthIdentityDTO[]> {
@@ -135,6 +133,7 @@ export default class AuthModuleService
       return { success: false, error: error.message }
     }
   }
+
   // @ts-expect-error
   createProviderIdentities(
     data: AuthTypes.CreateProviderIdentityDTO[],
@@ -163,18 +162,19 @@ export default class AuthModuleService
     >(providerIdentities)
   }
 
-  updateProviderIdentites(
+  // @ts-expect-error
+  updateProviderIdentities(
     data: AuthTypes.UpdateProviderIdentityDTO[],
     sharedContext?: Context
   ): Promise<AuthTypes.ProviderIdentityDTO[]>
 
-  updateProviderIdentites(
+  updateProviderIdentities(
     data: AuthTypes.UpdateProviderIdentityDTO,
     sharedContext?: Context
   ): Promise<AuthTypes.ProviderIdentityDTO>
 
   @InjectManager("baseRepository_")
-  async updateProviderIdentites(
+  async updateProviderIdentities(
     data:
       | AuthTypes.UpdateProviderIdentityDTO
       | AuthTypes.UpdateProviderIdentityDTO[],
@@ -190,6 +190,21 @@ export default class AuthModuleService
     >(updatedProviders)
 
     return Array.isArray(data) ? serializedProviders : serializedProviders[0]
+  }
+
+  async updateProvider(
+    provider: string,
+    data: Record<string, unknown>
+  ): Promise<AuthenticationResponse> {
+    try {
+      return await this.authProviderService_.update(
+        provider,
+        data,
+        this.getAuthIdentityProviderService(provider)
+      )
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
   }
 
   async authenticate(

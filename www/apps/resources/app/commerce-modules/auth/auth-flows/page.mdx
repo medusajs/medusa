@@ -50,24 +50,38 @@ This method calls the `authenticate` method of the provider specified in the fir
 
 ## Auth Flow 1: Basic Authentication
 
-The basic authentication flow requires first using the `register` method, then the `authenticate` method.
-
-If the `authenticate` method returns the following object:
+The basic authentication flow requires first using the `register` method, then the `authenticate` method:
 
 ```ts
-data = {
-	success: true,
-	authIdentity: {
+const { success, authIdentity } = await authModuleService.register(
+  "emailpass",
+  // passed to auth provider
+  {
     // ...
-  },
+  }
+)
+
+// later (can be another route for log-in)
+const { success, authIdentity, location } = await authModuleService.authenticate(
+  "emailpass",
+  // passed to auth provider
+  {
+    // ...
+  }
+)
+
+if (success && !location) {
+  // user is authenticated
 }
 ```
 
-Then, the user is authenticated successfully, and their authentication details are available within the `authIdentity` object.
+If `success` is true and `location` isn't set, the user is authenticated successfully, and their authentication details are available within the `authIdentity` object.
+
+The next section explains the flow if `location` is set.
 
 <Note>
 
-Check out the [AuthIdentity](/references/auth/models/AuthIdentity) reference for the expected properties in `authIdentity`.
+Check out the [AuthIdentity](/references/auth/models/AuthIdentity) reference for the received properties in `authIdentity`.
 
 </Note>
 
@@ -77,18 +91,31 @@ Check out the [AuthIdentity](/references/auth/models/AuthIdentity) reference for
 
 ## Auth Flow 2: Third-Party Service Authentication
 
-The third-party service authentication method requires using the `authenticate` method first.
-
-If the `authenticate` method returns the following object:
+The third-party service authentication method requires using the `authenticate` method first:
 
 ```ts
-data = {
-  success: true,
-  location: "https://....",
+const { success, authIdentity, location } = await authModuleService.authenticate(
+  "emailpass",
+  // passed to auth provider
+  {
+    // ...
+  }
+)
+
+if (location) {
+  // return the location for the front-end to redirect to
 }
+
+if (!success) {
+  // authentication failed
+}
+
+// authentication successful
 ```
 
-It means the authentication process requires the user to perform an action with a third-party service. For example, when using the `google` provider, the user goes to the URL specified in the `location`'s value to log in with their Google account. 
+If the `authenticate` method returns a `location` property, the authentication process requires the user to perform an action with a third-party service. So, you return the `location` to the front-end or client to redirect to that URL.
+
+For example, when using the `google` provider, the `location` is the URL that the user is navigated to login.
 
 ![Diagram showcasing the first part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711374847/Medusa%20Resources/third-party-auth-1_enyedy.jpg)
 
@@ -96,27 +123,29 @@ It means the authentication process requires the user to perform an action with 
 
 Providers handling this authentication flow must implement the `validateCallback` method. It implements the logic to validate the authentication with the third-party service.
 
-So, once the user performs the required action, the third-party service must redirect to an API route that uses the [validateCallback method of the Auth Module's main service](/references/auth/validateCallback). The method calls the specified provider’s `validateCallback` method passing it the authentication details it received in the second parameter:
+So, once the user performs the required action with the third-party service (for example, log-in with Google), the frontend must redirect to an API route that uses the [validateCallback method of the Auth Module's main service](/references/auth/validateCallback).
+
+The method calls the specified provider’s `validateCallback` method passing it the authentication details it received in the second parameter:
 
 ```ts
-const data = await authModuleService.validateCallback(
-    "google",
-    // passed to auth provider
-    {
-      // ...
-    }
-  )
-```
+const { success, authIdentity } = await authModuleService.validateCallback(
+  "google",
+  // passed to auth provider
+  {
+    // request data, such as
+    url,
+    headers,
+    query,
+    body,
+    protocol,
+  }
+)
 
-If the authentication is successful, the `validateCallback` method returns the same data as the basic authentication:
-
-```ts
-data = {
-	success: true,
-	authIdentity: {
-    // ...
-  },
+if (success) {
+  // authentication succeeded
 }
 ```
+
+If the returned `success` property is `true`, the authentication with the third-party provider was successful.
 
 ![Diagram showcasing the second part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711375123/Medusa%20Resources/third-party-auth-2_kmjxju.jpg)

@@ -1,11 +1,10 @@
 /**
  * @schema AdminCreateCustomerGroup
  * type: object
- * description: SUMMARY
+ * description: The customer group's details.
  * x-schemaName: AdminCreateCustomerGroup
  * required:
  *   - name
- *   - metadata
  * properties:
  *   name:
  *     type: string
@@ -13,7 +12,7 @@
  *     description: The customer group's name.
  *   metadata:
  *     type: object
- *     description: The customer group's metadata.
+ *     description: The customer group's metadata, used to store custom key-value pairs.
  * 
 */
 

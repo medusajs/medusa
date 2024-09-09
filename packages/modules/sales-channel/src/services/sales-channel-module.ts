@@ -5,6 +5,7 @@ import {
   FilterableSalesChannelProps,
   InternalModuleDeclaration,
   ISalesChannelModuleService,
+  ModuleJoinerConfig,
   ModulesSdkTypes,
   SalesChannelDTO,
   UpdateSalesChannelDTO,
@@ -21,6 +22,7 @@ import {
 
 import { SalesChannel } from "@models"
 import { UpdateSalesChanneInput } from "@types"
+import { joinerConfig } from "../joinfer-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -44,6 +46,10 @@ export default class SalesChannelModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.salesChannelService_ = salesChannelService
+  }
+
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
   }
 
   // @ts-expect-error

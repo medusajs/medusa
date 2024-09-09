@@ -1,7 +1,8 @@
 post:
   operationId: PostOrdersIdFulfillmentsFulfillment_idShipments
-  summary: Add Shipments to Order
-  description: Add a list of shipments to a order.
+  summary: Create Shipment for an Order's Fulfillment
+  x-sidebar-summary: Create Shipment
+  description: Create a shipment for an order's fulfillment.
   x-authenticated: true
   parameters:
     - name: id
@@ -12,7 +13,7 @@ post:
         type: string
     - name: fulfillment_id
       in: path
-      description: The order's fulfillment id.
+      description: The fulfillment's ID.
       required: true
       schema:
         type: string
@@ -42,35 +43,6 @@ post:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
-    - name: offset
-      in: query
-      description: The number of items to skip when retrieving a list.
-      required: false
-      schema:
-        type: number
-        title: offset
-        description: The number of items to skip when retrieving a list.
-    - name: limit
-      in: query
-      description: Limit the number of items returned in the list.
-      required: false
-      schema:
-        type: number
-        title: limit
-        description: Limit the number of items returned in the list.
-    - name: order
-      in: query
-      description: >-
-        The field to sort the data by. By default, the sort order is ascending.
-        To change the order to descending, prefix the field name with `-`.
-      required: false
-      schema:
-        type: string
-        title: order
-        description: >-
-          The field to sort the data by. By default, the sort order is
-          ascending. To change the order to descending, prefix the field name
-          with `-`.
   security:
     - api_token: []
     - cookie_auth: []
@@ -81,17 +53,17 @@ post:
         schema:
           allOf:
             - type: object
-              description: SUMMARY
+              description: The shipment's details.
               required:
                 - items
                 - metadata
               properties:
                 items:
                   type: array
-                  description: The order's items.
+                  description: The items to create shipment for.
                   items:
                     type: object
-                    description: The item's items.
+                    description: The details of the item to create shipment for.
                     required:
                       - id
                       - quantity
@@ -103,10 +75,10 @@ post:
                       quantity:
                         type: number
                         title: quantity
-                        description: The item's quantity.
+                        description: The item's quantity to ship.
                 labels:
                   type: array
-                  description: The order's labels.
+                  description: The labels to create for the shipment.
                   items:
                     type: object
                     description: The label's labels.
@@ -126,16 +98,18 @@ post:
                       label_url:
                         type: string
                         title: label_url
-                        description: The label's label url.
+                        description: The label's url.
                 no_notification:
                   type: boolean
                   title: no_notification
-                  description: The order's no notification.
+                  description: >-
+                    Whether to send the customer a notification about the
+                    created shipment.
                 metadata:
                   type: object
-                  description: The order's metadata.
+                  description: The shipment's metadata. Can hold custom key-value pairs.
             - type: object
-              description: SUMMARY
+              description: The shipment's details.
               properties:
                 additional_data:
                   type: object
@@ -143,7 +117,7 @@ post:
                     Pass additional custom data to the API route. This data is
                     passed to the underlying workflow under the
                     `additional_data` parameter.
-          description: SUMMARY
+          description: The shipment's details.
   x-codeSamples:
     - lang: Shell
       label: cURL

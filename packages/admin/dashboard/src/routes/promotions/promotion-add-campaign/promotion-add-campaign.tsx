@@ -35,7 +35,7 @@ export const PromotionAddCampaign = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("promotions.addToCampaign.title")}</Heading>
+        <Heading>{t("promotions.campaign.edit.header")}</Heading>
       </RouteDrawer.Header>
 
       {!isPending && !areCampaignsLoading && promotion && campaigns && (

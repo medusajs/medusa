@@ -115,9 +115,8 @@ const { success, authIdentity, location } =
     protocol: req.protocol,
   } as AuthenticationInput)
 
-if (!authIdentity && location) {
-  res.redirect(location)
-  return
+if (location) {
+  return res.json({ location })
 }
 
 // in callback API route

@@ -1,7 +1,7 @@
 /**
  * @schema AdminClaimPreviewResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the claim, as well as a preview of the order when the claim is applied.
  * x-schemaName: AdminClaimPreviewResponse
  * required:
  *   - order_preview

@@ -3,10 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminUpdatePriceList
- * required:
- *   - description
- *   - starts_at
- *   - ends_at
  * properties:
  *   title:
  *     type: string

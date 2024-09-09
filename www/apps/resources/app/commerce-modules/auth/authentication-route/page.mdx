@@ -18,30 +18,66 @@ These routes are added by Medusa's application layer, not the Auth Module.
 
 This authentication flow doesn't require validation with third-party services.
 
-It requires the following steps:
+<Note title="Example">
 
-1. Registering the user with the [Register Route](#register-route).
-2. Authenticating the user with the [Auth Route](#auth-route).
+[How to register customer in storefront using basic authentication flow](../../../storefront-development/customers/register/page.mdx).
+
+</Note>
+
+The steps are:
+
+![Diagram showcasing the basic authentication flow between the frontend and the Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1725539370/Medusa%20Resources/basic-auth-routes_pgpjch.jpg)
+
+1. Register the user with the [Register Route](#register-route).
+5. Use the authentication token to create the user with their respective API route.
+    - For example, for customers you would use the [Create Customer API route](!api!/store#customers_postcustomers).
+    - For admin users, you accept an invite using the [Accept Invite API route](!api!/admin#invites_postinvitesaccept)
+2. Authenticate the user with the [Auth Route](#auth-route).
+
+After registration, you only use the [Auth Route](#auth-route) for subsequent authentication.
 
 ### 2. Third-Party Service Authenticate Flow
 
 This authentication flow authenticates the user with a third-party service, such as Google.
 
+<Note title="Example">
+
+[How to authenticate customer with a third-party provider in the storefront.](../../../storefront-development/customers/third-party-login/page.mdx).
+
+</Note>
+
 It requires the following steps:
 
-1. Authenticate the user with the [Auth Route](#auth-route).
-2. If the authentication requires more action with the third-party service:
-    1. The auth route redirects to the third-party service's authentication portal. The URL is returned by the Auth Module Provider.
-    2. Once the authentication with the third-party service finishes, it redirects back to the [Callback Route](#callback-route). So, make sure your third-party service is configured to redirect to the [Callback Route](#callback-route).
-    3. If the callback validation is successful, you'll receive the authentication token.
+![Diagram showcasing the authentication flow between the frontend, Medusa application, and third-party service](https://res.cloudinary.com/dza7lstvk/image/upload/v1725528159/Medusa%20Resources/Third_Party_Auth_tvf4ng.jpg)
 
-You may then use the [Auth Route](#auth-route) for subsequent authentication.
+1. Authenticate the user with the [Auth Route](#auth-route).
+2. The auth route returns a URL to authenticate with third-party service, such as login with Google. The frontend (such as a storefront), when it receives a `location` property in the response, must redirect to the returned location.
+3. Once the authentication with the third-party service finishes, it redirects back to the frontend with a `code` query parameter. So, make sure your third-party service is configured to redirect to your frontend page after successful authentication.
+4. The frontend sends a request to the [Callback Route](#callback-route) passing the `code` query parameter.
+5. If the callback validation is successful, the frontend receives the authentication token.
+6. Decode the received token in the frontend using tools like [react-jwt](https://www.npmjs.com/package/react-jwt).
+    - If the decoded data has an `actor_id` property, then the user is already registered. So, use this token for subsequent authenticated requests.
+    - If not, follow the rest of the steps.
+7. The frontend uses the authentication token to create the user with their respective API route.
+    - For example, for customers you would use the [Create Customer API route](!api!/store#customers_postcustomers).
+    - For admin users, you accept an invite using the [Accept Invite API route](!api!/admin#invites_postinvitesaccept)
+8. The frontend sends a request to the [Refresh Token Route](#refresh-token-route) to retrieve a new token with the user information populated.
+
 
 ---
 
 ## Register Route
 
 The Medusa application defines an API route at `/auth/{actor_type}/{provider}/register` that creates an auth identity for an actor type, such as a `customer`. It returns a JWT token that you pass to an API route that creates the user.
+
+```bash
+curl -X POST http://localhost:9000/auth/{actor_type}/{providers}/register
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "email": "Whitney_Schultz@gmail.com"
+  // ...
+}'
+```
 
 <Note>
 
@@ -77,17 +113,22 @@ If the authentication is successful, you'll receive a `token` field in the respo
 }
 ```
 
-<Note title="Example">
-
-[How to register Customers using the authentication route](../../../storefront-development/customers/register/page.mdx).
-
-</Note>
+Use that token in the header of subsequent requests to send authenticated requests.
 
 ---
 
 ## Auth Route
 
 The Medusa application defines an API route at `/auth/{actor_type}/{provider}` that authenticates a user of an actor type. It returns a JWT token that can be passed in [the header of subsequent requests](!api!/store#authentication) to send authenticated requests.
+
+```bash
+curl -X POST http://localhost:9000/auth/{actor_type}/{providers}
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "email": "Whitney_Schultz@gmail.com"
+  // ...
+}'
+```
 
 For example, if you're authenticating a customer, you send a request to `/auth/customer/emailpass`.
 
@@ -114,6 +155,18 @@ If the authentication is successful, you'll receive a `token` field in the respo
 }
 ```
 
+Use that token in the header of subsequent requests to send authenticated requests.
+
+If the authentication requires more action with a third-party service, you'll receive a `location` property:
+
+```json
+{
+  "location": "https://..."
+}
+```
+
+Redirect to that URL in the frontend to continue the authentication process with the third-party service.
+
 <Note title="Example">
 
 [How to login Customers using the authentication route](../../../storefront-development/customers/login/page.mdx).
@@ -124,17 +177,17 @@ If the authentication is successful, you'll receive a `token` field in the respo
 
 ## Validate Callback Route
 
-The Medusa application defines an API route at `/auth/{actor_type}/{provider}/callback` that's useful for authenticating users with third-party services, such as Google.
+The Medusa application defines an API route at `/auth/{actor_type}/{provider}/callback` that's useful for validating the authentication callback or redirect from third-party services like Google.
 
-When integrating with a third-party service, you use [Auth Route](#auth-route) first to authenticate the user. If the authentication requires more action with the third-party provider, the request redirects to the authentication provider's authentication portal.
+```bash
+curl -X POST http://localhost:9000/auth/{actor_type}/{providers}/callback?code=123
+```
 
 <Note title="Tip">
 
-The URL of the authentication portal is received from the Auth Module Provider.
+Refer to the [third-party authentication flow](#2-third-party-service-authenticate-flow) section to see how this route fits into the authentication flow.
 
 </Note>
-
-Once the authentication with the third-party provider finishes, it should redirect back to this API route. So, make sure to add the necessary configuration in your provider to ensure this flow.
 
 ### Path Parameters
 
@@ -143,9 +196,9 @@ Its path parameters are:
 - `{actor_type}`: the actor type of the user you're authenticating. For example, `customer`.
 - `{provider}`: the auth provider to handle the authentication. For example, `google`.
 
-### Request Body Parameters
+### Query Parameters
 
-This route accepts in the request body the data from the third-party service, and passes it along to the authentication provider to validate whether the customer was authenticated.
+This route accepts a `code` query parameter, which is the code received from the third-party provider.
 
 ### Response Fields
 
@@ -156,3 +209,33 @@ If the authentication is successful, you'll receive a `token` field in the respo
   "token": "..."
 }
 ```
+
+In your frontend, decode the token using tools like [react-jwt](https://www.npmjs.com/package/react-jwt):
+
+- If the decoded data has an `actor_id` property, the user is already registered. So, use this token for subsequent authenticated requests.
+- If not, use the token in the header of a request that creates the user, such as the [Create Customer API route](!api!/store#customers_postcustomers).
+
+---
+
+## Refresh Token Route
+
+The Medusa application defines an API route at `/auth/token/refresh` that's useful after authenticating a user with a third-party service to populate the user's token with their new information.
+
+It requires the user's JWT token that they received from the authentication or callback routes.
+
+```bash
+curl -X POST http://localhost:9000/auth/token/refresh \
+-H 'Authorization: Bearer {token}'
+```
+
+### Response Fields
+
+If the token was refreshed successfully, you'll receive a `token` field in the response body object:
+
+```json
+{
+  "token": "..."
+}
+```
+
+Use that token in the header of subsequent requests to send authenticated requests.
