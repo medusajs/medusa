@@ -1,18 +1,10 @@
 import { resolve } from "path"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Entity, PrimaryKey } from "@mikro-orm/core"
 import { IFileModuleService } from "@medusajs/types"
 import { Module, Modules } from "@medusajs/utils"
 import { FileModuleService } from "@services"
 
 jest.setTimeout(100000)
-
-// The test runner throws if a model is not passed, so we create a dummy entity
-@Entity({ tableName: "dummy_file_entity" })
-export default class DummyEntity {
-  @PrimaryKey()
-  id: string
-}
 
 const moduleOptions = {
   providers: [
