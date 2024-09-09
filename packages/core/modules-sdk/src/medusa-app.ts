@@ -14,11 +14,7 @@ import {
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
-  RemoteJoinerOptions,
-  RemoteJoinerQuery,
   RemoteQueryFunction,
-  RemoteQueryObjectConfig,
-  RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -30,7 +26,6 @@ import {
   Modules,
   ModulesSdkUtils,
   promiseAll,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
@@ -42,7 +37,7 @@ import {
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { RemoteQuery } from "./remote-query"
+import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
 
@@ -421,68 +416,6 @@ async function MedusaApp_({
     customRemoteFetchData: remoteFetchData,
   })
 
-  const query: RemoteQueryFunction = async (
-    queryOptions:
-      | RemoteQueryObjectConfig<any>
-      | RemoteQueryObjectFromStringResult<any>
-      | RemoteJoinerQuery,
-    options?: RemoteJoinerOptions
-  ) => {
-    if (!isObject(queryOptions)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Invalid query, expected object and received something else."
-      )
-    }
-
-    let normalizedQuery: any = queryOptions
-
-    if ("__value" in queryOptions) {
-      normalizedQuery = queryOptions.__value
-    } else if (
-      "entryPoint" in normalizedQuery ||
-      "service" in normalizedQuery
-    ) {
-      normalizedQuery = remoteQueryObjectFromString(
-        normalizedQuery as Parameters<typeof remoteQueryObjectFromString>[0]
-      ).__value
-    }
-
-    return await remoteQuery.query(normalizedQuery, undefined, options)
-  }
-
-  /**
-   * Query wrapper to provide specific GraphQL like API around remoteQuery.query
-   * @param query
-   * @param variables
-   * @param options
-   */
-  query.gql = async function (query, variables?, options?) {
-    return await remoteQuery.query(query, variables, options)
-  }
-
-  /**
-   * Graph function uses the remoteQuery under the hood and
-   * returns a result set
-   */
-  query.graph = async function (queryOptions, options) {
-    const normalizedQuery = remoteQueryObjectFromString(queryOptions).__value
-    const response = await remoteQuery.query(
-      normalizedQuery,
-      undefined,
-      options
-    )
-
-    if (Array.isArray(response)) {
-      return { data: response, metadata: undefined }
-    }
-
-    return {
-      data: response.rows,
-      metadata: response.metadata,
-    }
-  }
-
   const applyMigration = async ({
     modulesNames,
     action = "run",
@@ -584,7 +517,7 @@ async function MedusaApp_({
     onApplicationStart,
     modules: allModules,
     link: remoteLink,
-    query,
+    query: createQuery(remoteQuery),
     entitiesMap: schema.getTypeMap(),
     gqlSchema: schema,
     notFound,
