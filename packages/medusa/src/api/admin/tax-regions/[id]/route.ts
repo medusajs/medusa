@@ -1,8 +1,5 @@
 import { deleteTaxRegionsWorkflow } from "@medusajs/core-flows"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -13,16 +10,16 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminTaxRegionResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const filters = { id: req.params.id }
-  const [taxRegion] = await remoteQuery(
-    remoteQueryObjectFromString({
-      entryPoint: "tax_region",
-      variables: { filters },
-      fields: req.remoteQueryConfig.fields,
-    })
-  )
+  const {
+    data: [taxRegion],
+  } = await query.graph({
+    entryPoint: "tax_region",
+    variables: { filters },
+    fields: req.remoteQueryConfig.fields,
+  })
 
   res.status(200).json({ tax_region: taxRegion })
 }

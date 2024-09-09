@@ -1,8 +1,5 @@
 import { createTaxRegionsWorkflow } from "@medusajs/core-flows"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -35,23 +32,21 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminTaxRegionListParams>,
   res: MedusaResponse<HttpTypes.AdminTaxRegionListResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { rows: tax_regions, metadata } = await remoteQuery(
-    remoteQueryObjectFromString({
-      entryPoint: "tax_regions",
-      variables: {
-        filters: req.filterableFields,
-        ...req.remoteQueryConfig.pagination,
-      },
-      fields: req.remoteQueryConfig.fields,
-    })
-  )
+  const { data: taxRegions, metadata } = await query.graph({
+    entryPoint: "tax_region",
+    variables: {
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
   res.status(200).json({
-    tax_regions,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    tax_regions: taxRegions,
+    count: metadata?.count,
+    offset: metadata?.skip,
+    limit: metadata?.take,
   })
 }
