@@ -3,8 +3,8 @@ import {
   ModulesSdkUtils,
   toMikroOrmEntities,
 } from "@medusajs/utils"
-import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
-import { InitModulesOptions, initModules } from "./init-modules"
+import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
+import { initModules, InitModulesOptions } from "./init-modules"
 import { default as MockEventBusService } from "./mock-event-bus-service"
 
 export interface SuiteOptions<TService = unknown> {
@@ -43,8 +43,12 @@ export function moduleIntegrationTestRunner<TService = any>({
 
   process.env.LOG_LEVEL = "error"
 
-  moduleModels ??= Object.values(require(`${process.cwd()}/src/models`))
-  moduleModels = toMikroOrmEntities(moduleModels)
+  try {
+    moduleModels ??= Object.values(require(`${process.cwd()}/src/models`))
+    moduleModels = toMikroOrmEntities(moduleModels)
+  } catch (e) {
+    moduleModels ??= []
+  }
 
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   const dbName = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
@@ -117,7 +121,9 @@ export function moduleIntegrationTestRunner<TService = any>({
   } as SuiteOptions<TService>
 
   const beforeEach_ = async () => {
-    await MikroOrmWrapper.setupDatabase()
+    if (moduleModels.length) {
+      await MikroOrmWrapper.setupDatabase()
+    }
     const output = await initModules(moduleOptions_)
     shutdown = output.shutdown
     medusaApp = output.medusaApp
@@ -125,7 +131,9 @@ export function moduleIntegrationTestRunner<TService = any>({
   }
 
   const afterEach_ = async () => {
-    await MikroOrmWrapper.clearDatabase()
+    if (moduleModels.length) {
+      await MikroOrmWrapper.clearDatabase()
+    }
     await shutdown()
     moduleService = {}
     medusaApp = {}
