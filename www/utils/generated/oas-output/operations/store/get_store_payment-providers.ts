@@ -6,7 +6,7 @@
  * x-authenticated: false
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment
- *   description: Storefront guide: How to implement payment during checkout.
+ *   description: "Storefront guide: How to implement payment during checkout."
  * parameters:
  *   - name: expand
  *     in: query

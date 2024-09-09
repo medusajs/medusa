@@ -6,7 +6,7 @@
  * description: Create an address for the logged-in customer.
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#add-customer-address
- *   description: Storefront guide: How to create an address for the logged-in customer.
+ *   description: "Storefront guide: How to create an address for the logged-in customer."
  * x-authenticated: true
  * parameters:
  *   - name: expand
