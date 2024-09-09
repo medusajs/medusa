@@ -2,13 +2,13 @@ import {
   ContainerRegistrationKeys,
   loadModels,
   ModulesSdkUtils,
+  normalizeImportPathWithSource,
   toMikroOrmEntities,
 } from "@medusajs/utils"
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { initModules, InitModulesOptions } from "./init-modules"
 import { default as MockEventBusService } from "./mock-event-bus-service"
 import * as fs from "fs"
-import * as path from "path"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -47,7 +47,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   process.env.LOG_LEVEL = "error"
 
   if (!moduleModels) {
-    const basePath = path.join(process.cwd(), resolve ?? "")
+    const basePath = normalizeImportPathWithSource(resolve ?? process.cwd())
 
     const modelsPath = fs.existsSync(`${basePath}/src/models`)
       ? "/src/models"
@@ -57,8 +57,12 @@ export function moduleIntegrationTestRunner<TService = any>({
       ? "/models"
       : ""
 
-    moduleModels = loadModels(`${basePath}${modelsPath}`)
-    moduleModels = toMikroOrmEntities(moduleModels)
+    if (modelsPath) {
+      moduleModels = loadModels(`${basePath}${modelsPath}`)
+      moduleModels = toMikroOrmEntities(moduleModels)
+    } else {
+      moduleModels = []
+    }
   }
 
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
