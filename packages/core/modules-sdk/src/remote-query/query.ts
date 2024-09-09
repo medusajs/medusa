@@ -1,8 +1,10 @@
 import { RemoteQuery } from "./remote-query"
 import {
+  GraphResultSet,
   RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFunction,
+  RemoteQueryFunctionReturnPagination,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
@@ -32,6 +34,21 @@ function unwrapQueryConfig(
   }
 
   return normalizedQuery
+}
+
+function unwrapRemoteQueryResponse(
+  response:
+    | any[]
+    | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
+): GraphResultSet<any> {
+  if (Array.isArray(response)) {
+    return { data: response, metadata: undefined }
+  }
+
+  return {
+    data: response.rows,
+    metadata: response.metadata,
+  }
 }
 
 /**
@@ -75,7 +92,10 @@ export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
    * Graph function uses the remoteQuery under the hood and
    * returns a result set
    */
-  query.graph = async function (queryOptions, options) {
+  query.graph = async function <const TEntry extends string>(
+    queryOptions: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<GraphResultSet<TEntry>> {
     const normalizedQuery = remoteQueryObjectFromString(queryOptions).__value
     const response = await remoteQuery.query(
       normalizedQuery,
@@ -83,14 +103,7 @@ export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
       options
     )
 
-    if (Array.isArray(response)) {
-      return { data: response, metadata: undefined }
-    }
-
-    return {
-      data: response.rows,
-      metadata: response.metadata,
-    }
+    return unwrapRemoteQueryResponse(response)
   }
 
   query_ = query
