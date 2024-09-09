@@ -1,63 +1,47 @@
-import { MedusaError } from "@medusajs/utils"
+import { MedusaStoreRequest } from "@medusajs/framework"
+import { arrayDifference, MedusaError } from "@medusajs/utils"
 import { NextFunction } from "express"
-import { AuthenticatedMedusaRequest } from "../../../../types/routing"
 import { refetchEntity } from "../../refetch-entity"
-import { arrayDifference } from "@medusajs/utils"
 
 // Selection of sales channels happens in the following priority:
 // - If a publishable API key is passed, we take the sales channels attached to it and filter them down based on the query params
 // - If a sales channel id is passed through query params, we use that
 // - If not, we use the default sales channel for the store
 export function filterByValidSalesChannels() {
-  return async (req: AuthenticatedMedusaRequest, _, next: NextFunction) => {
-    const publishableApiKey = req.get("x-publishable-api-key")
-    const salesChannelIds = req.filterableFields.sales_channel_id as
-      | string[]
-      | undefined
+  return async (req: MedusaStoreRequest, _, next: NextFunction) => {
+    const idsFromRequest = req.filterableFields.sales_channel_id
+    const { sales_channel_ids: idsFromPublishableKey = [] } =
+      req.publishable_key_context
 
-    if (publishableApiKey) {
-      const apiKey = await refetchEntity(
-        "api_key",
-        { token: publishableApiKey },
-        req.scope,
-        ["id", "sales_channels_link.sales_channel_id"]
+    // If all sales channel ids are not in the publishable key, we throw an error
+    if (Array.isArray(idsFromRequest) && idsFromRequest.length) {
+      const uniqueInParams = arrayDifference(
+        idsFromRequest,
+        idsFromPublishableKey
       )
 
-      if (!apiKey) {
+      if (uniqueInParams.length) {
         return next(
           new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Publishable API key not found`
+            `Requested sales channel is not part of the publishable key`
           )
         )
       }
-      let result = apiKey.sales_channels_link.map(
-        (link) => link.sales_channel_id
-      )
 
-      if (salesChannelIds?.length) {
-        // If all sales channel ids are not in the publishable key, we throw an error
-        const uniqueInParams = arrayDifference(salesChannelIds, result)
-        if (uniqueInParams.length) {
-          return next(
-            new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Requested sales channel is not part of the publishable key mappings`
-            )
-          )
-        }
-        result = salesChannelIds
-      }
+      req.filterableFields.sales_channel_id = idsFromRequest
 
-      req.filterableFields.sales_channel_id = result
       return next()
     }
 
-    if (salesChannelIds?.length) {
-      req.filterableFields.sales_channel_id = salesChannelIds
+    if (idsFromPublishableKey?.length) {
+      req.filterableFields.sales_channel_id = idsFromPublishableKey
+
       return next()
     }
 
+    // Q: If no sales channel IDs were found in the publishable key, should we throw an error
+    // here instead of going forward with this with the default sales channel
     const store = await refetchEntity("stores", {}, req.scope, [
       "default_sales_channel_id",
     ])
@@ -68,9 +52,16 @@ export function filterByValidSalesChannels() {
       )
     }
 
-    if (store.default_sales_channel_id) {
-      req.filterableFields.sales_channel_id = [store.default_sales_channel_id]
+    if (!store.default_sales_channel_id) {
+      return next(
+        new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Default sales channel not found`
+        )
+      )
     }
+
+    req.filterableFields.sales_channel_id = [store.default_sales_channel_id]
 
     return next()
   }

@@ -2,6 +2,7 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
+  createPublishableKey,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
@@ -9,6 +10,7 @@ jest.setTimeout(50000)
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     beforeEach(async () => {
+      await createPublishableKey()
       await createAdminUser(dbConnection, adminHeaders, getContainer())
     })
 

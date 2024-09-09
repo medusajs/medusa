@@ -3,6 +3,8 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
@@ -10,20 +12,27 @@ jest.setTimeout(30000)
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer }) => {
     let appContainer: MedusaContainer
+    let storeHeaders
 
     beforeEach(async () => {
       appContainer = getContainer()
+      const publishableKey = await generatePublishableKey(appContainer)
+      storeHeaders = generateStoreHeaders({ publishableKey })
       await createAdminUser(dbConnection, adminHeaders, appContainer)
     })
 
-    describe("POST /admin/customers", () => {
+    describe("POST /store/customers", () => {
       it("should fails to create a customer without an identity", async () => {
         const customer = await api
-          .post("/store/customers", {
-            email: "newcustomer@medusa.js",
-            first_name: "John",
-            last_name: "Doe",
-          })
+          .post(
+            "/store/customers",
+            {
+              email: "newcustomer@medusa.js",
+              first_name: "John",
+              last_name: "Doe",
+            },
+            storeHeaders
+          )
           .catch((e) => e)
 
         expect(customer.response.status).toEqual(401)
@@ -48,6 +57,7 @@ medusaIntegrationTestRunner({
           {
             headers: {
               authorization: `Bearer ${signup.data.token}`,
+              ...storeHeaders.headers,
             },
           }
         )
@@ -102,6 +112,7 @@ medusaIntegrationTestRunner({
           {
             headers: {
               authorization: `Bearer ${signup.data.token}`,
+              ...storeHeaders.headers,
             },
           }
         )
@@ -161,6 +172,7 @@ medusaIntegrationTestRunner({
           {
             headers: {
               authorization: `Bearer ${firstSignup.data.token}`,
+              ...storeHeaders.headers,
             },
           }
         )
@@ -181,6 +193,7 @@ medusaIntegrationTestRunner({
             {
               headers: {
                 authorization: `Bearer ${firstSignin.data.token}`,
+                ...storeHeaders.headers,
               },
             }
           )
@@ -190,6 +203,53 @@ medusaIntegrationTestRunner({
         expect(customer.response.data.message).toEqual(
           "Request already authenticated as a customer."
         )
+      })
+
+      describe("With ensurePublishableApiKey middleware", () => {
+        it("should fail when no publishable key is passed in the header", async () => {
+          const { response } = await api
+            .post(
+              "/store/customers",
+              {
+                email: "newcustomer@medusa.js",
+                first_name: "John",
+                last_name: "Doe",
+              },
+              {
+                headers: {},
+              }
+            )
+            .catch((e) => e)
+
+          expect(response.data).toEqual({
+            message: "x-publishable-api-key request header is required",
+            type: "not_allowed",
+          })
+        })
+
+        it("should fail when publishable keys are invalid", async () => {
+          const { response } = await api
+            .post(
+              "/store/customers",
+              {
+                email: "newcustomer@medusa.js",
+                first_name: "John",
+                last_name: "Doe",
+              },
+              {
+                headers: {
+                  "x-publishable-api-key": ["test1", "test2"],
+                },
+              }
+            )
+            .catch((e) => e)
+
+          expect(response.data).toEqual({
+            message:
+              "A valid publishable key is required to proceed with the request",
+            type: "not_allowed",
+          })
+        })
       })
     })
   },
