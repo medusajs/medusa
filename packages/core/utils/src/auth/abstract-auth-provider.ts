@@ -297,9 +297,15 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * The frontend should then send a request to the Medusa application's validate callback API route, passing it the code.
    * That route uses this method to verify the callback's code.
    * 
-   * If the callback is verified successfully, the provider creates an auth identity for the user.
+   * If the callback is verified successfully, the provider creates an auth identity for the user, or updates the auth identity's user information.
    * 
-   * Related Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route).
+   * In the auth identity, yuse the following properties to store additional data:
+   * 
+   * - `provider_metadata`: Store metadata useful for the provider, such as a password hash.
+   * - `user_metadata`: Store metadata of the user's details. For example, if the third-party service returns the user's information such as email
+   * or name, you store this data in this property.
+   * 
+   * Related Guide: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route).
    *
    * @param {AuthenticationInput} data - The details of the authentication request.
    * @param {AuthIdentityProviderService} authIdentityProviderService - The service used to retrieve or
@@ -307,9 +313,6 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * and `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity
    * using this service.
    * @returns {Promise<AuthenticationResponse>} The authentication response.
-   *
-   * @privateRemarks
-   * TODO add a link to the authentication flow document once it's public.
    *
    * @example
    * import {
@@ -354,6 +357,9 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *         provider: this.provider,
    *         provider_metadata: {
    *           // can include password or any other relevant information
+   *         },
+   *         user_metadata: {
+   *           // can include data retrieved from the third-party service
    *         }
    *       })
    *     }
