@@ -2,24 +2,34 @@ import express from "express"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
-import { logger } from "@medusajs/framework"
+import { gqlSchemaToTypes, logger } from "@medusajs/framework"
 import { GracefulShutdownServer } from "@medusajs/utils"
 import loaders from "../loaders"
+import path from "path"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
 
-export default async function ({ port, directory }) {
+export default async function ({ port, directory, types }) {
   async function start() {
     track("CLI_START")
 
     const app = express()
 
     try {
-      const { shutdown } = await loaders({
+      const { shutdown, gqlSchema } = await loaders({
         directory,
         expressApp: app,
       })
+
+      if (gqlSchema && types) {
+        const outputDirGeneratedTypes = path.join(directory, ".medusa")
+        await gqlSchemaToTypes({
+          outputDir: outputDirGeneratedTypes,
+          schema: gqlSchema,
+        })
+        logger.info("Geneated modules types")
+      }
 
       const serverActivity = logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(

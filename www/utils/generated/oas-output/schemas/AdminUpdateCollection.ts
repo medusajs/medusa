@@ -3,8 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminUpdateCollection
- * required:
- *   - metadata
  * properties:
  *   title:
  *     type: string

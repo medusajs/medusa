@@ -3,9 +3,9 @@ import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
 import { Module, Modules } from "@medusajs/utils"
 import { FulfillmentModuleService, FulfillmentProviderService } from "@services"
 import {
+  SuiteOptions,
   initModules,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
@@ -109,10 +109,18 @@ moduleIntegrationTestRunner({
         }).linkable
 
         expect(Object.keys(linkable)).toEqual([
-          "fulfillment",
+          "fulfillmentAddress",
+          "fulfillmentItem",
+          "fulfillmentLabel",
+          "fulfillmentProvider",
           "fulfillmentSet",
-          "shippingOption",
+          "fulfillment",
+          "geoZone",
+          "serviceZone",
           "shippingOptionRule",
+          "shippingOptionType",
+          "shippingOption",
+          "shippingProfile",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -120,12 +128,36 @@ moduleIntegrationTestRunner({
         })
 
         expect(linkable).toEqual({
-          fulfillment: {
+          fulfillmentAddress: {
             id: {
-              linkable: "fulfillment_id",
+              linkable: "fulfillment_address_id",
               primaryKey: "id",
               serviceName: "fulfillment",
-              field: "fulfillment",
+              field: "fulfillmentAddress",
+            },
+          },
+          fulfillmentItem: {
+            id: {
+              linkable: "fulfillment_item_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "fulfillmentItem",
+            },
+          },
+          fulfillmentLabel: {
+            id: {
+              linkable: "fulfillment_label_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "fulfillmentLabel",
+            },
+          },
+          fulfillmentProvider: {
+            id: {
+              linkable: "fulfillment_provider_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "fulfillmentProvider",
             },
           },
           fulfillmentSet: {
@@ -136,12 +168,28 @@ moduleIntegrationTestRunner({
               field: "fulfillmentSet",
             },
           },
-          shippingOption: {
+          fulfillment: {
             id: {
-              linkable: "shipping_option_id",
+              linkable: "fulfillment_id",
               primaryKey: "id",
               serviceName: "fulfillment",
-              field: "shippingOption",
+              field: "fulfillment",
+            },
+          },
+          geoZone: {
+            id: {
+              linkable: "geo_zone_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "geoZone",
+            },
+          },
+          serviceZone: {
+            id: {
+              linkable: "service_zone_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "serviceZone",
             },
           },
           shippingOptionRule: {
@@ -150,6 +198,30 @@ moduleIntegrationTestRunner({
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "shippingOptionRule",
+            },
+          },
+          shippingOptionType: {
+            id: {
+              linkable: "shipping_option_type_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "shippingOptionType",
+            },
+          },
+          shippingOption: {
+            id: {
+              linkable: "shipping_option_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "shippingOption",
+            },
+          },
+          shippingProfile: {
+            id: {
+              linkable: "shipping_profile_id",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "shippingProfile",
             },
           },
         })

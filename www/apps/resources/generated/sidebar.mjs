@@ -245,16 +245,7 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/auth/auth-providers",
                 "title": "Auth Providers",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/commerce-modules/auth/auth-providers/emailpass",
-                    "title": "Emailpass Auth Provider Module",
-                    "children": []
-                  }
-                ]
+                "children": []
               },
               {
                 "loaded": true,
@@ -286,6 +277,38 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/auth/create-actor-type",
                 "title": "Create an Actor Type",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "sub-category",
+            "title": "Providers",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/emailpass",
+                "title": "Emailpass Provider",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/google",
+                "title": "Google Provider",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/github",
+                "title": "GitHub Provider",
                 "children": []
               }
             ]
@@ -412,16 +435,24 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/auth/updateAuthIdentites",
-                        "title": "updateAuthIdentites",
+                        "path": "/references/auth/updateAuthIdentities",
+                        "title": "updateAuthIdentities",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/auth/updateProviderIdentites",
-                        "title": "updateProviderIdentites",
+                        "path": "/references/auth/updateProvider",
+                        "title": "updateProvider",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/updateProviderIdentities",
+                        "title": "updateProviderIdentities",
                         "children": []
                       },
                       {
@@ -8404,6 +8435,14 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/storefront-development/customers/third-party-login",
+            "title": "Third-Party (Social) Login",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/customers/retrieve",
             "title": "Retrieve Customer",
             "children": []
@@ -9278,6 +9317,21 @@ export const generatedSidebar = [
             "type": "category",
             "title": "Auth",
             "children": [
+              {
+                "type": "sub-category",
+                "title": "Workflows",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/generateResetPasswordTokenWorkflow",
+                    "title": "generateResetPasswordTokenWorkflow",
+                    "children": []
+                  }
+                ],
+                "loaded": true
+              },
               {
                 "type": "sub-category",
                 "title": "Steps",

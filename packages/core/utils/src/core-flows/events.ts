@@ -10,6 +10,16 @@ export const OrderWorkflowEvents = {
   COMPLETED: "order.completed",
 }
 
+export const UserWorkflowEvents = {
+  CREATED: "user.created",
+  UPDATED: "user.updated",
+  DELETED: "user.deleted",
+}
+
+export const AuthWorkflowEvents = {
+  PASSWORD_RESET: "auth.password_reset",
+}
+
 export const SalesChannelWorkflowEvents = {
   CREATED: "sales-channel.created",
   UPDATED: "sales-channel.updated",

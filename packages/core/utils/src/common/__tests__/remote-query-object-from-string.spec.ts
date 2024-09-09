@@ -45,7 +45,7 @@ describe("remoteQueryObjectFromString", function () {
       fields,
     })
 
-    expect(output).toEqual({
+    expect(output.__value).toEqual({
       product: {
         __args: {
           q: "name",
@@ -101,9 +101,9 @@ describe("remoteQueryObjectFromString", function () {
       service: "product",
       variables: {},
       fields,
-    })
+    } as any)
 
-    expect(output).toEqual({
+    expect(output.__value).toEqual({
       product: {
         __args: {},
         fields: [

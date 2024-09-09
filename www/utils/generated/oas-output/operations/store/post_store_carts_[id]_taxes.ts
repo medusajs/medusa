@@ -1,8 +1,9 @@
 /**
  * @oas [post] /store/carts/{id}/taxes
  * operationId: PostCartsIdTaxes
- * summary: Add Taxes to Cart
- * description: Add a list of taxes to a cart.
+ * summary: Calculate Cart Taxes
+ * x-sidebar-summary: Calculate Taxes
+ * description: Calculate the cart's tax lines and amounts.
  * x-authenticated: false
  * parameters:
  *   - name: id
@@ -29,30 +30,6 @@
  *       title: fields
  *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
  *         fields. without prefix it will replace the entire default fields.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  * requestBody:
  *   content:
  *     application/json:
