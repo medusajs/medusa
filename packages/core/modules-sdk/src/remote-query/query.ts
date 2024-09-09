@@ -14,9 +14,6 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-// Memoisation of the query function
-let query_: RemoteQueryFunction
-
 function unwrapQueryConfig(
   config:
     | RemoteQueryObjectConfig<any>
@@ -56,10 +53,6 @@ function unwrapRemoteQueryResponse(
  * @param remoteQuery
  */
 export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
-  if (query_) {
-    return query_
-  }
-
   const query: RemoteQueryFunction = async (
     queryOptions:
       | RemoteQueryObjectConfig<any>
@@ -106,6 +99,5 @@ export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
     return unwrapRemoteQueryResponse(response)
   }
 
-  query_ = query
-  return query_
+  return query
 }
