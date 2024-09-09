@@ -8,6 +8,7 @@ import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { initModules, InitModulesOptions } from "./init-modules"
 import { default as MockEventBusService } from "./mock-event-bus-service"
 import * as fs from "fs"
+import * as path from "path"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -45,15 +46,20 @@ export function moduleIntegrationTestRunner<TService = any>({
 
   process.env.LOG_LEVEL = "error"
 
-  const doesSrcModelsExist = fs.existsSync(`${process.cwd()}/src/models`)
+  if (!moduleModels) {
+    const basePath = path.join(process.cwd(), resolve ?? "")
 
-  if (doesSrcModelsExist) {
-    moduleModels ??= loadModels(`${process.cwd()}/src/models`)
-  } else {
-    moduleModels ??= loadModels(`${process.cwd()}/dist/models`)
+    const modelsPath = fs.existsSync(`${basePath}/src/models`)
+      ? "/src/models"
+      : fs.existsSync(`${basePath}/dist/models`)
+      ? "/dist/models"
+      : fs.existsSync(`${basePath}/models`)
+      ? "/models"
+      : ""
+
+    moduleModels = loadModels(`${basePath}${modelsPath}`)
+    moduleModels = toMikroOrmEntities(moduleModels)
   }
-
-  moduleModels = toMikroOrmEntities(moduleModels)
 
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   const dbName = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
