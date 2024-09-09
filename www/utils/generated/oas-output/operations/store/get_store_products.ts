@@ -6,7 +6,7 @@
  * x-authenticated: false
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/price
- *   description: Storefront guide: How to retrieve a product variants' prices.
+ *   description: "Storefront guide: How to retrieve a product variants' prices."
  * parameters:
  *   - name: expand
  *     in: query
@@ -134,11 +134,11 @@
  *     in: query
  *     description: Filter by a collection's ID to retrieve the products in it.
  *     required: false
- *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/collections/products
- *       description: Storefront guides: Retrieve a collection's products.
  *     schema:
  *       description: Filter by a collection's ID to retrieve the products in it.
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/v2/resources/storefront-development/products/collections/products
+ *         description: "Storefront guide: Retrieve a collection's products."
  *       items:
  *         type: string
  *         title: collection_id
@@ -870,13 +870,13 @@
  *     in: query
  *     description: The ID of the region the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
  *     required: false
- *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
- *       description: Storefront guide: How to show product variants' prices with taxes.
  *     schema:
  *       type: string
  *       title: region_id
  *       description: The ID of the region the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
+ *       externalDocs:
+ *         url: https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
+ *         description: "Storefront guide: How to show product variants' prices with taxes."
  *   - name: country_code
  *     in: query
  *     description: The country code the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
