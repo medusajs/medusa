@@ -148,17 +148,17 @@ export const sidebar = numberSidebarItems(
         {
           type: "link",
           title: "Customize Admin",
-          path: "#",
+          path: "/customization/customize-admin",
           children: [
             {
               type: "link",
               title: "Add Widgets",
-              path: "#",
+              path: "/customization/customize-admin/widget",
             },
             {
               type: "link",
               title: "Add Pages",
-              path: "#",
+              path: "/customization/customize-admin/route",
             },
           ],
         },

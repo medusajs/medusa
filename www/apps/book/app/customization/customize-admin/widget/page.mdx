@@ -1,0 +1,144 @@
+export const metadata = {
+  title: `${pageNumber} Create Admin Widget`,
+}
+
+# {metadata.title}
+
+In this example, you'll learn how to create an admin widget.
+
+## How to Create an Admin Widget
+
+A widget is a React component that can be injected into an existing page in the admin dashboard.
+
+For example, create the file `src/admin/widgets/product-widget.tsx` with the following content:
+
+```tsx title="src/admin/widgets/product-widget.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+
+const ProductWidget = () => {
+  return (
+    <Container>
+      <Heading>Product Widget</Heading>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+Use the `defineWidgetConfig` function imported from `@medusajs/admin-sdk` to create and export the widget's configurations. It accepts as a parameter an object with the following property:
+
+- `zone`: A string or an array of strings, each being the name of the zone to inject the widget into.
+
+In the example above, the widget is injected at the top of a product’s details.
+
+<Note title="Important" type="warning">
+
+The widget component must be created as an arrow function.
+
+</Note>
+
+### Test the Widget
+
+To test out the widget, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, open a product’s details page in the Medusa Admin. You’ll find your custom widget at the top of the page.
+
+---
+
+## Example: Show Product's Brands
+
+Continuing with the brands example, consider you have the following API route created at `src/api/admin/products/[id]/brand/route.ts` to retrieve a product's brand:
+
+```ts title="src/api/admin/products/[id]/brand/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse
+} from "@medusajs/medusa"
+import {
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const remoteQuery = req.scope.resolve("remoteQuery")
+
+  const query = remoteQueryObjectFromString({
+    entryPoint: "product",
+    fields: ["brand.*"],
+    variables: {
+      filters: {
+        id: req.params.id
+      }
+    }
+  })
+
+  const result = await remoteQuery(query)
+
+  res.json({ brand: result[0].brand })
+}
+```
+
+To show a product's brand in its details page, create the file `src/admin/widgets/product-brand.tsx` with the following content:
+
+```tsx title="src/admin/widgets/product-brand.tsx"
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { DetailWidgetProps, AdminProduct } from "@medusajs/types"
+import { useEffect, useState } from "react"
+import { Container, Heading } from "@medusajs/ui"
+
+const ProductBrandWidget = ({ 
+  data,
+}: DetailWidgetProps<AdminProduct>) => {
+  const [brand, setBrand] = useState<
+    Record<string, string> | undefined
+  >()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!loading) {
+      return
+    }
+
+    fetch(`/admin/products/${data.id}/brand`, {
+      credentials: "include"
+    })
+    .then((res) => res.json())
+    .then(({ brand }) => {
+      setBrand(brand)
+      setLoading(false)
+    })
+  }, [loading])
+  
+  return (
+    <Container>
+      <Heading level="h2">Brand</Heading>
+      {loading && <span>Loading...</span>}
+      {brand && <span>Name: {brand.name}</span>}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductBrandWidget
+```
+
+This adds a widget at the beginning of the product's details page. In the widget, you fetch the product's brand from the `/admin/products/:id/brand` API route and display it.
+
+Notice that widgets created in a details page receive the targetted item in a `data` prop. So, the `ProductBrandWidget` receives the product's details in the `data` prop.
+
+If you run your Medusa application and go to a product's details page in the Medusa Admin, you'll find a new block at the top of the page showing the product's brand.
