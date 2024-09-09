@@ -11,7 +11,6 @@ import {
   StoreAddCartPromotions,
   StoreAddCartShippingMethods,
   StoreCalculateCartTaxes,
-  StoreCompleteCart,
   StoreCreateCart,
   StoreGetCartsCart,
   StoreRemoveCartPromotions,
@@ -134,7 +133,6 @@ export const storeCartRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/store/carts/:id/complete",
     middlewares: [
-      validateAndTransformBody(StoreCompleteCart),
       validateAndTransformQuery(
         StoreGetOrderParams,
         OrderQueryConfig.retrieveTransformQueryConfig

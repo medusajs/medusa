@@ -129,7 +129,7 @@ export interface UpdateTaxRateDTO {
   /**
    * Whether the tax rate is combinable.
    *
-   * Learn more [here](https://docs.medusajs.com/experimental/tax/tax-rates-and-rules/#combinable-tax-rates).
+   * Learn more [here](https://docs.medusajs.com/v2/resources/commerce-modules/tax/tax-rates-and-rules#combinable-tax-rates).
    */
   is_combinable?: boolean
 
