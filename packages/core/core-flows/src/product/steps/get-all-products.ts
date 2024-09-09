@@ -1,8 +1,5 @@
 import { FilterableProductProps, RemoteQueryFunction } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export type GetAllProductsStepInput = {
@@ -27,7 +24,7 @@ export const getAllProductsStep = createStep(
 
     // We intentionally fetch the products serially here to avoid putting too much load on the DB
     while (true) {
-      const remoteQueryObject = remoteQueryObjectFromString({
+      const { rows: products } = await remoteQuery({
         entryPoint: "product",
         variables: {
           filters: data.filter,
@@ -36,8 +33,6 @@ export const getAllProductsStep = createStep(
         },
         fields: data.select,
       })
-
-      const { rows: products } = await remoteQuery(remoteQueryObject)
       allProducts.push(...products)
 
       if (products.length < pageSize) {

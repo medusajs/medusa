@@ -120,13 +120,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/commerce-modules/auth/auth-providers",
                 title: "Auth Providers",
-                children: [
-                  {
-                    type: "link",
-                    path: "/commerce-modules/auth/auth-providers/emailpass",
-                    title: "Emailpass Auth Provider Module",
-                  },
-                ],
               },
               {
                 type: "link",
@@ -148,6 +141,27 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 type: "link",
                 path: "/commerce-modules/auth/create-actor-type",
                 title: "Create an Actor Type",
+              },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "Providers",
+            children: [
+              {
+                type: "link",
+                path: "/commerce-modules/auth/auth-providers/emailpass",
+                title: "Emailpass Provider",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/auth/auth-providers/google",
+                title: "Google Provider",
+              },
+              {
+                type: "link",
+                path: "/commerce-modules/auth/auth-providers/github",
+                title: "GitHub Provider",
               },
             ],
           },
@@ -1918,6 +1932,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "link",
+            path: "/storefront-development/products/inventory",
+            title: "Retrieve Variant Inventory",
+          },
+          {
+            type: "link",
             path: "/storefront-development/products/categories",
             title: "Categories",
             children: [
@@ -2064,6 +2083,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "link",
             path: "/storefront-development/customers/login",
             title: "Login Customer",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/third-party-login",
+            title: "Third-Party (Social) Login",
           },
           {
             type: "link",

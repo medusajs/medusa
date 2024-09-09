@@ -157,7 +157,7 @@ export default class UserModuleService
         expires_at: new Date().setMilliseconds(
           new Date().getMilliseconds() + this.config.expiresIn
         ),
-        token: this.generateToken({ id: invite.id }),
+        token: this.generateToken({ id: invite.id, email: invite.email }),
       }
     })
 
@@ -316,7 +316,7 @@ export default class UserModuleService
         expires_at: new Date().setMilliseconds(
           new Date().getMilliseconds() + this.config.expiresIn
         ),
-        token: this.generateToken({ id: invite.id }),
+        token: this.generateToken({ id: invite.id, email: invite.email }),
       }
     })
 

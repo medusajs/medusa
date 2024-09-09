@@ -1,8 +1,9 @@
 /**
  * @oas [post] /admin/workflows-executions/{workflow_id}/steps/failure
  * operationId: PostWorkflowsExecutionsWorkflow_idStepsFailure
- * summary: Add Failures to Workflows Execution
- * description: Add a list of failures to a workflows execution.
+ * summary: Fail a Step in a Workflow's Execution
+ * x-sidebar-summary: Fail a Step
+ * description: Set the status of a step in a workflow's execution as failed. This is useful for long-running workflows.
  * x-authenticated: true
  * parameters:
  *   - name: workflow_id
@@ -40,14 +41,14 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The details of failing the workflow step.
  *           required:
  *             - success
  *           properties:
  *             success:
  *               type: boolean
  *               title: success
- *               description: The workflows execution's success.
+ *               description: Whether the workflow step has failed successfully.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

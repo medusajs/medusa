@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# TransformObjectMethodToAsync
+
+ **TransformObjectMethodToAsync**: &#123; [K in keyof T]: T[K] extends Function ? Function : T[K] extends object ? TransformObjectMethodToAsync&#60;T[K]&#62; : T[K] &#125;
+
+## Type Parameters
+
+<TypeList types={[{"name":"T","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="TransformObjectMethodToAsync"/>

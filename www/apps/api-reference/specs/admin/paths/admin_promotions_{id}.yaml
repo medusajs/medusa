@@ -38,35 +38,6 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
-    - name: offset
-      in: query
-      description: The number of items to skip when retrieving a list.
-      required: false
-      schema:
-        type: number
-        title: offset
-        description: The number of items to skip when retrieving a list.
-    - name: limit
-      in: query
-      description: Limit the number of items returned in the list.
-      required: false
-      schema:
-        type: number
-        title: limit
-        description: Limit the number of items returned in the list.
-    - name: order
-      in: query
-      description: >-
-        The field to sort the data by. By default, the sort order is ascending.
-        To change the order to descending, prefix the field name with `-`.
-      required: false
-      schema:
-        type: string
-        title: order
-        description: >-
-          The field to sort the data by. By default, the sort order is
-          ascending. To change the order to descending, prefix the field name
-          with `-`.
   security:
     - api_token: []
     - cookie_auth: []
@@ -135,35 +106,6 @@ post:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
-    - name: offset
-      in: query
-      description: The number of items to skip when retrieving a list.
-      required: false
-      schema:
-        type: number
-        title: offset
-        description: The number of items to skip when retrieving a list.
-    - name: limit
-      in: query
-      description: Limit the number of items returned in the list.
-      required: false
-      schema:
-        type: number
-        title: limit
-        description: Limit the number of items returned in the list.
-    - name: order
-      in: query
-      description: >-
-        The field to sort the data by. By default, the sort order is ascending.
-        To change the order to descending, prefix the field name with `-`.
-      required: false
-      schema:
-        type: string
-        title: order
-        description: >-
-          The field to sort the data by. By default, the sort order is
-          ascending. To change the order to descending, prefix the field name
-          with `-`.
   security:
     - api_token: []
     - cookie_auth: []
@@ -174,7 +116,7 @@ post:
         schema:
           allOf:
             - type: object
-              description: SUMMARY
+              description: The properties to update in a promotion.
               required:
                 - campaign_id
               properties:
@@ -185,93 +127,35 @@ post:
                 is_automatic:
                   type: boolean
                   title: is_automatic
-                  description: The promotion's is automatic.
+                  description: Whether the promotion is applied automatically.
                 type:
                   type: string
+                  description: The promotion's type.
+                  externalDocs:
+                    url: >-
+                      https://docs.medusajs.com/v2/resources/commerce-modules/promotion/concepts#what-is-a-promotion
                   enum:
                     - standard
                     - buyget
                 campaign_id:
                   type: string
                   title: campaign_id
-                  description: The promotion's campaign id.
-                campaign:
-                  type: object
-                  description: The promotion's campaign.
-                  required:
-                    - name
-                    - campaign_identifier
-                    - description
-                    - budget
-                    - starts_at
-                    - ends_at
-                  properties:
-                    name:
-                      type: string
-                      title: name
-                      description: The campaign's name.
-                    campaign_identifier:
-                      type: string
-                      title: campaign_identifier
-                      description: The campaign's campaign identifier.
-                    description:
-                      type: string
-                      title: description
-                      description: The campaign's description.
-                    budget:
-                      type: object
-                      description: The campaign's budget.
-                      required:
-                        - type
-                        - limit
-                        - currency_code
-                      properties:
-                        type:
-                          type: string
-                          enum:
-                            - spend
-                            - usage
-                        limit:
-                          type: number
-                          title: limit
-                          description: The budget's limit.
-                        currency_code:
-                          type: string
-                          title: currency_code
-                          description: The budget's currency code.
-                    starts_at:
-                      type: string
-                      title: starts_at
-                      description: The campaign's starts at.
-                      format: date-time
-                    ends_at:
-                      type: string
-                      title: ends_at
-                      description: The campaign's ends at.
-                      format: date-time
-                    promotions:
-                      type: array
-                      description: The campaign's promotions.
-                      items:
-                        type: object
-                        description: The promotion's promotions.
-                        required:
-                          - id
-                        properties:
-                          id:
-                            type: string
-                            title: id
-                            description: The promotion's ID.
+                  description: The ID of the campaign that the promotion belongs to.
                 application_method:
                   type: object
-                  description: The promotion's application method.
+                  description: The properties to update in the application method.
                   required:
+                    - id
                     - description
                     - max_quantity
                     - currency_code
                     - apply_to_quantity
                     - buy_rules_min_quantity
                   properties:
+                    id:
+                      type: string
+                      title: id
+                      description: The application method's ID.
                     description:
                       type: string
                       title: description
@@ -279,164 +163,63 @@ post:
                     value:
                       type: number
                       title: value
-                      description: The application method's value.
+                      description: >-
+                        The discounted amount applied by the associated
+                        promotion based on the `type`.
                     max_quantity:
                       type: number
                       title: max_quantity
-                      description: The application method's max quantity.
+                      description: >-
+                        The max quantity allowed in the cart for the associated
+                        promotion to be applied.
                     currency_code:
                       type: string
                       title: currency_code
                       description: The application method's currency code.
                     type:
                       type: string
+                      description: >-
+                        The type of the application method indicating how the
+                        associated promotion is applied.
                       enum:
                         - fixed
                         - percentage
                     target_type:
                       type: string
+                      description: >-
+                        The target type of the application method indicating
+                        whether the associated promotion is applied to the
+                        cart's items, shipping methods, or the whole order.
                       enum:
                         - order
                         - shipping_methods
                         - items
                     allocation:
                       type: string
+                      description: >-
+                        The allocation value that indicates whether the
+                        associated promotion is applied on each item in a cart
+                        or split between the items in the cart.
                       enum:
                         - each
                         - across
-                    target_rules:
-                      type: array
-                      description: The application method's target rules.
-                      items:
-                        type: object
-                        description: The target rule's target rules.
-                        required:
-                          - operator
-                          - description
-                          - attribute
-                          - values
-                        properties:
-                          operator:
-                            type: string
-                            enum:
-                              - gte
-                              - lte
-                              - gt
-                              - lt
-                              - eq
-                              - ne
-                              - in
-                          description:
-                            type: string
-                            title: description
-                            description: The target rule's description.
-                          attribute:
-                            type: string
-                            title: attribute
-                            description: The target rule's attribute.
-                          values:
-                            oneOf:
-                              - type: string
-                                title: values
-                                description: The target rule's values.
-                              - type: array
-                                description: The target rule's values.
-                                items:
-                                  type: string
-                                  title: values
-                                  description: The value's values.
-                    buy_rules:
-                      type: array
-                      description: The application method's buy rules.
-                      items:
-                        type: object
-                        description: The buy rule's buy rules.
-                        required:
-                          - operator
-                          - description
-                          - attribute
-                          - values
-                        properties:
-                          operator:
-                            type: string
-                            enum:
-                              - gte
-                              - lte
-                              - gt
-                              - lt
-                              - eq
-                              - ne
-                              - in
-                          description:
-                            type: string
-                            title: description
-                            description: The buy rule's description.
-                          attribute:
-                            type: string
-                            title: attribute
-                            description: The buy rule's attribute.
-                          values:
-                            oneOf:
-                              - type: string
-                                title: values
-                                description: The buy rule's values.
-                              - type: array
-                                description: The buy rule's values.
-                                items:
-                                  type: string
-                                  title: values
-                                  description: The value's values.
                     apply_to_quantity:
                       type: number
                       title: apply_to_quantity
-                      description: The application method's apply to quantity.
+                      description: >-
+                        The quantity that results from matching the `buyget`
+                        promotion's condition. For example, if the promotion is
+                        a "Buy 2 shirts get 1 free", the value f this attribute
+                        is `1`.
                     buy_rules_min_quantity:
                       type: number
                       title: buy_rules_min_quantity
-                      description: The application method's buy rules min quantity.
-                rules:
-                  type: array
-                  description: The promotion's rules.
-                  items:
-                    type: object
-                    description: The rule's rules.
-                    required:
-                      - operator
-                      - description
-                      - attribute
-                      - values
-                    properties:
-                      operator:
-                        type: string
-                        enum:
-                          - gte
-                          - lte
-                          - gt
-                          - lt
-                          - eq
-                          - ne
-                          - in
-                      description:
-                        type: string
-                        title: description
-                        description: The rule's description.
-                      attribute:
-                        type: string
-                        title: attribute
-                        description: The rule's attribute.
-                      values:
-                        oneOf:
-                          - type: string
-                            title: values
-                            description: The rule's values.
-                          - type: array
-                            description: The rule's values.
-                            items:
-                              type: string
-                              title: values
-                              description: The value's values.
+                      description: >-
+                        The minimum quantity required for a `buyget` promotion
+                        to be applied. For example, if the promotion is a "Buy 2
+                        shirts get 1 free", the value of this attribute is `2`.
             - type: object
-              description: SUMMARY
+              description: The properties to update in a promotion.
               properties:
                 additional_data:
                   type: object
@@ -444,7 +227,7 @@ post:
                     Pass additional custom data to the API route. This data is
                     passed to the underlying workflow under the
                     `additional_data` parameter.
-          description: SUMMARY
+          description: The properties to update in a promotion.
   x-codeSamples:
     - lang: Shell
       label: cURL

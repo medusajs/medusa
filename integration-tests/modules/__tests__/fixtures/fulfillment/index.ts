@@ -49,7 +49,6 @@ export function generateCreateFulfillmentData(
         label_url: "test-label-url_" + randomString,
       },
     ],
-    order: data.order ?? {},
     order_id: data.order_id,
   }
 }

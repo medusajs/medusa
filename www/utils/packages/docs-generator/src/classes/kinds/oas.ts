@@ -42,6 +42,12 @@ export type OasArea = "admin" | "store"
 
 type ParameterType = "query" | "path"
 
+type AuthRequests = {
+  exact?: string
+  startsWith?: string
+  requiresAuthentication: boolean
+}
+
 /**
  * OAS generator for API routes. It extends the {@link FunctionKindGenerator}
  * since API routes are functions.
@@ -55,7 +61,21 @@ class OasKindGenerator extends FunctionKindGenerator {
     "RequestWithContext",
     "AuthenticatedMedusaRequest",
   ]
+  // as it's not always possible to detect authenticated request
+  // use this to override the default detection logic.
+  readonly AUTH_REQUESTS: AuthRequests[] = [
+    {
+      exact: "store/orders",
+      requiresAuthentication: true,
+    },
+    {
+      startsWith: "store/customers",
+      requiresAuthentication: true,
+    },
+  ]
   readonly RESPONSE_TYPE_NAMES = ["MedusaResponse"]
+  readonly FIELD_QUERY_PARAMS = ["fields", "expand"]
+  readonly PAGINATION_QUERY_PARAMS = ["limit", "offset", "order"]
 
   /**
    * This map collects tags of all the generated OAS, then, once the generation process finishes,
@@ -452,6 +472,10 @@ class OasKindGenerator extends FunctionKindGenerator {
       type: "query",
     })
 
+    if (!oas.parameters.length) {
+      oas.parameters = undefined
+    }
+
     // update request schema
     const existingRequestBodySchema = (
       oas.requestBody as OpenAPIV3.RequestBodyObject
@@ -461,7 +485,10 @@ class OasKindGenerator extends FunctionKindGenerator {
       newSchema: requestSchema,
     })
 
-    if (!updatedRequestSchema) {
+    if (
+      !updatedRequestSchema ||
+      Object.keys(updatedRequestSchema).length === 0
+    ) {
       // if there's no request schema, remove it from the OAS
       delete oas.requestBody
     } else {
@@ -531,19 +558,26 @@ class OasKindGenerator extends FunctionKindGenerator {
         delete oas.responses![oldResponseStatus]
       }
 
-      // update the response schema
-      oas.responses![newStatus] = {
-        description: "OK",
-        content: {
-          "application/json": {
-            schema: updatedResponseSchema
-              ? this.oasSchemaHelper.namedSchemaToReference(
-                  updatedResponseSchema
-                ) ||
-                this.oasSchemaHelper.schemaChildrenToRefs(updatedResponseSchema)
-              : updatedResponseSchema,
+      if (updatedResponseSchema && Object.keys(updatedResponseSchema).length) {
+        // update the response schema
+        oas.responses![newStatus] = {
+          description: "OK",
+          content: {
+            "application/json": {
+              schema: updatedResponseSchema
+                ? this.oasSchemaHelper.namedSchemaToReference(
+                    updatedResponseSchema
+                  ) ||
+                  this.oasSchemaHelper.schemaChildrenToRefs(
+                    updatedResponseSchema
+                  )
+                : updatedResponseSchema,
+            },
           },
-        },
+        }
+      } else if (oldResponseStatus) {
+        // delete the old response schema
+        delete oas.responses![oldResponseStatus]
       }
     }
 
@@ -733,11 +767,23 @@ class OasKindGenerator extends FunctionKindGenerator {
       .statements.some((statement) =>
         statement.getText().includes("AUTHENTICATE = false")
       )
+    const hasAuthenticationOverride =
+      this.AUTH_REQUESTS.find((authRequest) => {
+        return (
+          authRequest.exact === oasPath ||
+          (authRequest.startsWith && oasPath.startsWith(authRequest.startsWith))
+        )
+      })?.requiresAuthentication === true
     const isAdminAuthenticated =
-      !isAuthenticationDisabled && oasPath.startsWith("admin")
-    const isStoreAuthenticated =
-      !isAuthenticationDisabled && oasPath.startsWith("store/customers/me")
-    const isAuthenticated = isAdminAuthenticated || isStoreAuthenticated
+      (!isAuthenticationDisabled || hasAuthenticationOverride) &&
+      oasPath.startsWith("admin")
+    const isStoreAuthenticated = hasAuthenticationOverride
+      ? oasPath.startsWith("store")
+      : !isAuthenticationDisabled &&
+        hasAuthenticationOverride &&
+        oasPath.startsWith("store")
+    const isAuthenticated =
+      isAdminAuthenticated || isStoreAuthenticated || hasAuthenticationOverride
 
     return {
       isAdminAuthenticated,
@@ -958,13 +1004,26 @@ class OasKindGenerator extends FunctionKindGenerator {
       // TODO for now I'll use the type for validatedQuery until
       // we have an actual approach to infer query types
       const querySymbol = requestType.getProperty("validatedQuery")
-      if (querySymbol && this.shouldAddQueryParams(node)) {
+      if (querySymbol) {
+        const { shouldAddFields, shouldAddPagination } =
+          this.shouldAddQueryParams(node)
         const queryType = this.checker.getTypeOfSymbol(querySymbol)
         const queryTypeName = this.checker.typeToString(queryType)
         queryType.getProperties().forEach((property) => {
+          const propertyName = property.getName()
+          // if this is a field / pagination query parameter and
+          // they're not used in the route, don't add them.
+          if (
+            (this.FIELD_QUERY_PARAMS.includes(propertyName) &&
+              !shouldAddFields) ||
+            (this.PAGINATION_QUERY_PARAMS.includes(propertyName) &&
+              !shouldAddPagination)
+          ) {
+            return
+          }
           const propertyType = this.checker.getTypeOfSymbol(property)
           const descriptionOptions: SchemaDescriptionOptions = {
-            typeStr: property.getName(),
+            typeStr: propertyName,
             parentName: tagName,
             rawParentName: queryTypeName,
             node: property.valueDeclaration,
@@ -973,13 +1032,13 @@ class OasKindGenerator extends FunctionKindGenerator {
           }
           parameters.push(
             this.getParameterObject({
-              name: property.getName(),
+              name: propertyName,
               type: "query",
               description: this.getSchemaDescription(descriptionOptions),
               required: this.isRequired(property),
               schema: this.typeToSchema({
                 itemType: propertyType,
-                title: property.getName(),
+                title: propertyName,
                 descriptionOptions,
                 context: "request",
               }),
@@ -1202,18 +1261,30 @@ class OasKindGenerator extends FunctionKindGenerator {
       return schemaFromFactory
     }
 
+    const isEnum = itemType.flags === ts.TypeFlags.Enum
+    const isEnumParent =
+      itemType.symbol &&
+      "parent" in itemType.symbol &&
+      (itemType.symbol.parent as ts.Symbol)?.valueDeclaration?.kind ===
+        ts.SyntaxKind.EnumDeclaration
+
     switch (true) {
-      case itemType.flags === ts.TypeFlags.Enum:
+      case isEnum || isEnumParent:
         const enumMembers: string[] = []
-        symbol?.members?.forEach((enumMember) => {
-          if ((enumMember.valueDeclaration as ts.EnumMember).initializer) {
-            enumMembers.push(
-              (
-                enumMember.valueDeclaration as ts.EnumMember
-              ).initializer!.getText()
-            )
-          }
-        })
+        if (isEnum) {
+          symbol?.members?.forEach((enumMember) => {
+            if ((enumMember.valueDeclaration as ts.EnumMember).initializer) {
+              enumMembers.push(
+                (
+                  enumMember.valueDeclaration as ts.EnumMember
+                ).initializer!.getText()
+              )
+            }
+          })
+        } else {
+          // the item itself is the enum member so add it to the array
+          enumMembers.push(itemType.symbol.getName())
+        }
         return {
           type: "string",
           description,
@@ -1553,8 +1624,9 @@ class OasKindGenerator extends FunctionKindGenerator {
             break
           }
 
+          const expressionName = (expression.name as ts.Identifier).getText()
           isRequired =
-            (expression.name as ts.Identifier).getText() !== "optional"
+            expressionName !== "optional" && expressionName !== "nullish"
           break
         case ts.SyntaxKind.QuestionToken:
           isRequired = false
@@ -2062,15 +2134,16 @@ class OasKindGenerator extends FunctionKindGenerator {
     }
   }
 
-  shouldAddQueryParams(node: FunctionNode): boolean {
-    const queryParamsUsageIndicators = [
-      `req.filterableFields`,
-      `req.remoteQueryConfig`,
-    ]
+  shouldAddQueryParams(node: FunctionNode): {
+    shouldAddFields: boolean
+    shouldAddPagination: boolean
+  } {
     const fnText = node.getText()
-    return queryParamsUsageIndicators.some((indicator) =>
-      fnText.includes(indicator)
-    )
+
+    return {
+      shouldAddFields: fnText.includes(`req.remoteQueryConfig.fields`),
+      shouldAddPagination: fnText.includes(`req.remoteQueryConfig.pagination`),
+    }
   }
 
   hasResponseType(node: FunctionNode, oas: OpenApiOperation): boolean {
@@ -2081,14 +2154,18 @@ class OasKindGenerator extends FunctionKindGenerator {
       return false
     }
 
-    const responseContent = (oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject).content
+    const responseContent = (
+      oas.responses![oldResponseStatus] as OpenAPIV3.ResponseObject
+    ).content
     if (!responseContent) {
       return false
     }
 
     const fnText = node.getText()
 
-    return Object.keys(responseContent).some((responseType) => fnText.includes(responseType))
+    return Object.keys(responseContent).some((responseType) =>
+      fnText.includes(responseType)
+    )
   }
 
   private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {

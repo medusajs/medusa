@@ -1,7 +1,7 @@
 /**
  * @schema AdminCustomer
  * type: object
- * description: The order's customer.
+ * description: The customer's details.
  * x-schemaName: AdminCustomer
  * required:
  *   - has_account
@@ -14,19 +14,19 @@
  *   - last_name
  *   - addresses
  * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The customer's ID.
  *   has_account:
  *     type: boolean
  *     title: has_account
- *     description: The customer's has account.
+ *     description: Whether the customer is registered.
  *   groups:
  *     type: array
  *     description: The customer's groups.
  *     items:
  *       $ref: "#/components/schemas/AdminCustomerGroup"
- *   id:
- *     type: string
- *     title: id
- *     description: The customer's ID.
  *   email:
  *     type: string
  *     title: email
@@ -35,11 +35,11 @@
  *   default_billing_address_id:
  *     type: string
  *     title: default_billing_address_id
- *     description: The customer's default billing address id.
+ *     description: The ID of the address used as the default billing address.
  *   default_shipping_address_id:
  *     type: string
  *     title: default_shipping_address_id
- *     description: The customer's default shipping address id.
+ *     description: The ID of the address used as the default shipping address.
  *   company_name:
  *     type: string
  *     title: company_name
@@ -63,26 +63,26 @@
  *     description: The customer's phone.
  *   metadata:
  *     type: object
- *     description: The customer's metadata.
+ *     description: The customer's metadata, used to store custom key-value pairs.
  *   created_by:
  *     type: string
  *     title: created_by
- *     description: The customer's created by.
- *   deleted_at:
- *     type: string
- *     format: date-time
- *     title: deleted_at
- *     description: The customer's deleted at.
+ *     description: The ID of the user that created this customer, if available.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The customer's created at.
+ *     description: The customer's creation date.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The customer's updated at.
+ *     description: The customer's update date.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The customer's deletion date.
  * 
 */
 

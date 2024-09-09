@@ -1,11 +1,10 @@
 /**
  * @schema AdminCreateCollection
  * type: object
- * description: SUMMARY
+ * description: the product collection's details.
  * x-schemaName: AdminCreateCollection
  * required:
  *   - title
- *   - metadata
  * properties:
  *   title:
  *     type: string
@@ -17,7 +16,7 @@
  *     description: The collection's handle.
  *   metadata:
  *     type: object
- *     description: The collection's metadata.
+ *     description: The collection's metadata, used to store custom key-value pairs.
  * 
 */
 

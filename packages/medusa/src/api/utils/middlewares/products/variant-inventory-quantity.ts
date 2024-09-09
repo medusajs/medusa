@@ -29,7 +29,7 @@ export async function getVariantInventoryItems({
       "inventory.*",
       "inventory.location_levels.*",
     ],
-  })
+  } as any)
 
   const links = await remoteQuery(linkQuery)
 

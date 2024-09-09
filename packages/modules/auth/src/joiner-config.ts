@@ -1,6 +1,6 @@
-import { AuthIdentity } from "@models"
 import { defineJoinerConfig, Modules } from "@medusajs/utils"
+import { AuthIdentity, ProviderIdentity } from "@models"
 
 export const joinerConfig = defineJoinerConfig(Modules.AUTH, {
-  models: [AuthIdentity],
+  models: [AuthIdentity, ProviderIdentity],
 })

@@ -3,7 +3,6 @@ import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
-  AdminArchiveOrder,
   AdminCompleteOrder,
   AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
@@ -58,7 +57,6 @@ export const adminOrderRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/orders/:id/archive",
     middlewares: [
-      validateAndTransformBody(AdminArchiveOrder),
       validateAndTransformQuery(
         AdminGetOrdersOrderParams,
         QueryConfig.retrieveTransformQueryConfig

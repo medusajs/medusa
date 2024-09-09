@@ -1,10 +1,9 @@
 /**
  * @oas [post] /admin/uploads
  * operationId: PostUploads
- * summary: Create Upload
- * description: Create a upload.
+ * summary: Upload Files
+ * description: Upload files to the configured File Module Provider.
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -15,17 +14,17 @@
  *       schema:
  *         oneOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The files to upload.
  *             required:
  *               - files
  *             properties:
  *               files:
  *                 type: array
- *                 description: The upload's files.
+ *                 description: The files to upload.
  *                 items:
  *                   oneOf:
  *                     - type: object
- *                       description: The file's files.
+ *                       description: A file's details.
  *                       required:
  *                         - name
  *                         - content
@@ -37,10 +36,10 @@
  *                         content:
  *                           type: string
  *                           title: content
- *                           description: The file's content.
+ *                           description: The file's base64 content.
  *                     - $ref: "#/components/schemas/File"
  *           - $ref: "#/components/schemas/FileList"
- *         description: SUMMARY
+ *         description: The files to upload.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

@@ -9,13 +9,13 @@
  * @example
  * ```tsx
  * import type { DetailWidgetProps, AdminProduct } from "@medusajs/types"
- * import { defineConfig } from "@medusajs/admin-shared"
+ * import { defineWidgetConfig } from "@medusajs/admin-sdk"
  *
  * const ProductWidget = ({ data }: DetailWidgetProps<AdminProduct>) => {
  *  return <div>{data.title}</div>
  * }
  *
- * export const config = defineConfig({
+ * export const config = defineWidgetConfig({
  *  zone: "product.details.after",
  * })
  *

@@ -90,8 +90,9 @@ export const sidebar = numberSidebarItems(
       chapterTitle: "Advanced",
       children: [
         {
-          type: "sub-category",
+          type: "link",
           title: "API Routes",
+          path: "/advanced-development/api-routes",
           children: [
             {
               type: "link",
@@ -105,13 +106,28 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
+              path: "/advanced-development/api-routes/responses",
+              title: "Response",
+            },
+            {
+              type: "link",
               path: "/advanced-development/api-routes/middlewares",
               title: "Middlewares",
             },
             {
               type: "link",
+              path: "/advanced-development/api-routes/validation",
+              title: "Validation",
+            },
+            {
+              type: "link",
               path: "/advanced-development/api-routes/protected-routes",
               title: "Protected Routes",
+            },
+            {
+              type: "link",
+              path: "/advanced-development/api-routes/errors",
+              title: "Errors",
             },
             {
               type: "link",

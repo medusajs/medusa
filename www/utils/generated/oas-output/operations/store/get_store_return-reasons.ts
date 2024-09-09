@@ -2,7 +2,7 @@
  * @oas [get] /store/return-reasons
  * operationId: GetReturnReasons
  * summary: List Return Reasons
- * description: Retrieve a list of return reasons. The return reasons can be filtered by fields such as `id`. The return reasons can also be sorted or paginated.
+ * description: Retrieve a list of return reasons. The return reasons can be sorted or paginated.
  * x-authenticated: false
  * parameters:
  *   - name: expand
@@ -61,7 +61,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of return reasons.
  *               required:
  *                 - limit
  *                 - offset
@@ -70,23 +70,23 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The return reason's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The return reason's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The return reason's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of return reasons.
  *               required:
  *                 - return_reasons
  *               properties:
  *                 return_reasons:
  *                   type: array
- *                   description: The return reason's return reasons.
+ *                   description: The list of return reasons.
  *                   items:
  *                     $ref: "#/components/schemas/StoreReturnReason"
  *   "400":

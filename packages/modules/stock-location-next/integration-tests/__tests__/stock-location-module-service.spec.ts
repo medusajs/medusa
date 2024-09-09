@@ -15,14 +15,31 @@ moduleIntegrationTestRunner<IStockLocationService>({
           service: StockLocationModuleService,
         }).linkable
 
-        expect(Object.keys(linkable)).toEqual(["stockLocation"])
+        expect(Object.keys(linkable)).toEqual([
+          "stockLocationAddress",
+          "stockLocation",
+        ])
 
         Object.keys(linkable).forEach((key) => {
           delete linkable[key].toJSON
         })
 
         expect(linkable).toEqual({
+          stockLocationAddress: {
+            id: {
+              linkable: "stock_location_address_id",
+              primaryKey: "id",
+              serviceName: "stockLocationService",
+              field: "stockLocationAddress",
+            },
+          },
           stockLocation: {
+            id: {
+              field: "stockLocation",
+              linkable: "stock_location_id",
+              primaryKey: "id",
+              serviceName: "stockLocationService",
+            },
             location_id: {
               linkable: "location_id",
               primaryKey: "location_id",

@@ -1,7 +1,8 @@
 post:
   operationId: PostInventoryItemsIdLocationLevelsBatch
-  summary: Add Location Levels to Inventory Item
-  description: Add a list of location levels to a inventory item.
+  summary: Manage Inventory Levels of Inventory Item
+  x-sidebar-summary: Manage Inventory Levels
+  description: Manage the inventory levels of an inventory item to create or delete them.
   x-authenticated: true
   parameters:
     - name: id
@@ -19,51 +20,51 @@ post:
       application/json:
         schema:
           type: object
-          description: SUMMARY
+          description: The inventory levels to create or delete.
           properties:
             create:
               type: array
-              description: The inventory item's create.
+              description: The inventory levels to create.
               items:
                 type: object
-                description: The create's details.
+                description: The inventory level's details.
                 required:
                   - location_id
                 properties:
                   location_id:
                     type: string
                     title: location_id
-                    description: The create's location id.
+                    description: The ID of the associated location.
                   stocked_quantity:
                     type: number
                     title: stocked_quantity
-                    description: The create's stocked quantity.
+                    description: The inventory level's stocked quantity.
                   incoming_quantity:
                     type: number
                     title: incoming_quantity
-                    description: The create's incoming quantity.
+                    description: The inventory level's incoming quantity.
             update:
               type: array
-              description: The inventory item's update.
+              description: The inventory levels to update.
               items:
                 type: object
-                description: The update's details.
+                description: The inventory level's details.
                 properties:
                   stocked_quantity:
                     type: number
                     title: stocked_quantity
-                    description: The update's stocked quantity.
+                    description: The inventory level's stocked quantity.
                   incoming_quantity:
                     type: number
                     title: incoming_quantity
-                    description: The update's incoming quantity.
+                    description: The inventory level's incoming quantity.
             delete:
               type: array
-              description: The inventory item's delete.
+              description: The inventory levels to delete.
               items:
                 type: string
                 title: delete
-                description: The delete's details.
+                description: The ID of the inventory level to delete.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -79,7 +80,7 @@ post:
         application/json:
           schema:
             type: object
-            description: SUMMARY
+            description: The inventory item's details.
             required:
               - inventory_item
             properties:

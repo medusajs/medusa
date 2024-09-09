@@ -1,7 +1,7 @@
 /**
  * @schema AdminClaimResponse
  * type: object
- * description: SUMMARY
+ * description: The claim's details.
  * x-schemaName: AdminClaimResponse
  * required:
  *   - claim

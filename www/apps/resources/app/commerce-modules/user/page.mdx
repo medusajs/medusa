@@ -8,41 +8,6 @@ export const metadata = {
 
 The User Module is the `@medusajs/user` NPM package that provides user-related features in your Medusa and Node.js applications.
 
-## Features
-
-### User Management
-
-Manage and store your users through Create, Read, Update, and Delete (CRUD) operations:
-
-```ts
-const user = await userModuleService.createUsers({
-  email: "user@example.com",
-  first_name: "John",
-  last_name: "Smith",
-})
-```
-
-### Invite Users
-
-Invite users to join your store and manage those invites, with expiry and revalidation features.
-
-```ts
-const invite = await userModuleService.createInvites({
-  email: "user2@example.com",
-})
-
-// refresh token later
-await userModuleService.refreshInviteTokens([invite.id])
-```
-
----
-
-## Configure User Module
-
-Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
-
----
-
 ## How to Use User Module's Service
 
 You can use the User Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.USER` imported from `@medusajs/utils`.
@@ -107,3 +72,38 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## Features
+
+### User Management
+
+Manage and store your users through Create, Read, Update, and Delete (CRUD) operations:
+
+```ts
+const user = await userModuleService.createUsers({
+  email: "user@example.com",
+  first_name: "John",
+  last_name: "Smith",
+})
+```
+
+### Invite Users
+
+Invite users to join your store and manage those invites, with expiry and revalidation features.
+
+```ts
+const invite = await userModuleService.createInvites({
+  email: "user2@example.com",
+})
+
+// refresh token later
+await userModuleService.refreshInviteTokens([invite.id])
+```
+
+---
+
+## Configure User Module
+
+Refer to [this documentation](./module-options/page.mdx) for details on the module's options.

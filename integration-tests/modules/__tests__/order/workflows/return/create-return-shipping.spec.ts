@@ -95,7 +95,7 @@ medusaIntegrationTestRunner({
               input: {
                 return_id: returnOrder.id,
                 shipping_option_id: shippingOptionId,
-                custom_price: 20,
+                custom_amount: 20,
               },
             })
 

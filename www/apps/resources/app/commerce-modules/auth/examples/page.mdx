@@ -52,7 +52,7 @@ export async function POST(
   }
 
   if (location) {
-    res.redirect(location)
+    res.json({ location })
     return
   }
 
@@ -90,8 +90,7 @@ export async function POST(request: Request) {
   }
 
   if (location) {
-    return NextResponse.redirect(location)
-    return
+    return NextResponse.json({ location })
   }
 
   const token = jwt.sign(authIdentity, "supersecret")

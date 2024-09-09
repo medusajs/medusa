@@ -54,6 +54,11 @@ export interface IAuthModuleService extends IModuleService {
     providerData: AuthenticationInput
   ): Promise<AuthenticationResponse>
 
+  updateProvider(
+    provider: string,
+    providerData: Record<string, unknown>
+  ): Promise<AuthenticationResponse>
+
   /**
    * When authenticating users with a third-party provider, such as Google, the user performs an
    * action to finish the authentication, such as enter their credentials in Google's sign-in
@@ -244,13 +249,13 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO[]>} The updated auths.
    *
    * @example
-   * const authIdentities = await authModuleService.updateAuthIdentites([
+   * const authIdentities = await authModuleService.updateAuthIdentities([
    *   {
    *     id: "authusr_123",
    *   },
    * ])
    */
-  updateAuthIdentites(
+  updateAuthIdentities(
     data: UpdateAuthIdentityDTO[],
     sharedContext?: Context
   ): Promise<AuthIdentityDTO[]>
@@ -263,11 +268,11 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO>} The updated auth.
    *
    * @example
-   * const authIdentity = await authModuleService.updateAuthIdentites({
+   * const authIdentity = await authModuleService.updateAuthIdentities({
    *   id: "authusr_123",
    * })
    */
-  updateAuthIdentites(
+  updateAuthIdentities(
     data: UpdateAuthIdentityDTO,
     sharedContext?: Context
   ): Promise<AuthIdentityDTO>
@@ -399,7 +404,7 @@ export interface IAuthModuleService extends IModuleService {
    *   },
    * ])
    */
-  updateProviderIdentites(
+  updateProviderIdentities(
     data: UpdateProviderIdentityDTO[],
     sharedContext?: Context
   ): Promise<ProviderIdentityDTO[]>
@@ -412,11 +417,11 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<ProviderIdentityDTO>} The updated provider identity.
    *
    * @example
-   * const providerIdentity = await authModuleService.updateProviderIdentites({
+   * const providerIdentity = await authModuleService.updateProviderIdentities({
    *   id: "provider_123",
    * })
    */
-  updateProviderIdentites(
+  updateProviderIdentities(
     data: UpdateProviderIdentityDTO,
     sharedContext?: Context
   ): Promise<ProviderIdentityDTO>
