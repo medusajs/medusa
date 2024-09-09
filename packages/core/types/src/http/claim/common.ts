@@ -21,7 +21,7 @@ export interface BaseClaim
   extends Omit<BaseOrder, "status" | "version" | "items"> {
   order_id: string
   claim_items: BaseClaimItem[]
-  additional_items: any[]
+  additional_items: BaseClaimItem[]
   return?: ReturnDTO
   return_id?: string
   no_notification?: boolean

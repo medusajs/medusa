@@ -7,18 +7,17 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { AdminArchiveOrderType } from "../../validators"
 import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminArchiveOrderType>,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const { id } = req.params
 
   await archiveOrderWorkflow(req.scope).run({
-    input: { orderIds: [req.validatedBody.order_id] },
+    input: { orderIds: [id] },
   })
 
   const queryObject = remoteQueryObjectFromString({
