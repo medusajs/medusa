@@ -65,58 +65,11 @@ get:
     - name: region_id
       in: query
       description: The payment provider's region id.
-      required: false
+      required: true
       schema:
-        oneOf:
-          - type: string
-            title: region_id
-            description: The payment provider's region id.
-          - type: array
-            description: The payment provider's region id.
-            items:
-              type: string
-              title: region_id
-              description: The region id's details.
-    - name: id
-      in: query
-      required: false
-      schema:
-        oneOf:
-          - type: string
-            title: id
-            description: The payment provider's ID.
-          - type: array
-            description: The payment provider's ID.
-            items:
-              type: string
-              title: id
-              description: The id's ID.
-    - name: is_enabled
-      in: query
-      description: The payment provider's is enabled.
-      required: false
-      schema:
-        type: boolean
-        title: is_enabled
-        description: The payment provider's is enabled.
-    - name: $and
-      in: query
-      required: false
-      schema:
-        type: array
-        description: The payment provider's $and.
-        items:
-          type: object
-        title: $and
-    - name: $or
-      in: query
-      required: false
-      schema:
-        type: array
-        description: The payment provider's $or.
-        items:
-          type: object
-        title: $or
+        type: string
+        title: region_id
+        description: The payment provider's region id.
   x-codeSamples:
     - lang: Shell
       label: cURL

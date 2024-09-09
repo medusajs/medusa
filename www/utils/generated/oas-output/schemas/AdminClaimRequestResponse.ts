@@ -1,7 +1,7 @@
 /**
  * @schema AdminClaimRequestResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the claim, its return, and a preview of the order when the claim is applied.
  * x-schemaName: AdminClaimRequestResponse
  * required:
  *   - return

@@ -4,7 +4,6 @@
  * summary: Create Order Edit
  * description: Create an order edit.
  * x-authenticated: true
- * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []

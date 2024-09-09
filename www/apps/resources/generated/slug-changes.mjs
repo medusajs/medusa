@@ -110,14 +110,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveProviderIdentity/page.mdx"
   },
   {
-    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentites",
-    "newSlug": "/references/auth/updateAuthIdentites",
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentites/page.mdx"
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentities",
+    "newSlug": "/references/auth/updateAuthIdentities",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentities/page.mdx"
   },
   {
-    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProviderIdentites",
-    "newSlug": "/references/auth/updateProviderIdentites",
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProviderIdentites/page.mdx"
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProvider",
+    "newSlug": "/references/auth/updateProvider",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProvider/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProviderIdentities",
+    "newSlug": "/references/auth/updateProviderIdentities",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProviderIdentities/page.mdx"
   },
   {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.validateCallback",
@@ -498,6 +503,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep",
     "newSlug": "/references/medusa-workflows/steps/setAuthAppMetadataStep",
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.generateResetPasswordTokenWorkflow",
+    "newSlug": "/references/medusa-workflows/generateResetPasswordTokenWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.generateResetPasswordTokenWorkflow/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.addShippingMethodToCartStep",

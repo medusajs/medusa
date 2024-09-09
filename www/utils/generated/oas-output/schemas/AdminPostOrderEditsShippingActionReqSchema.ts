@@ -4,10 +4,10 @@
  * description: SUMMARY
  * x-schemaName: AdminPostOrderEditsShippingActionReqSchema
  * properties:
- *   custom_price:
+ *   custom_amount:
  *     type: number
- *     title: custom_price
- *     description: The order edit's custom price.
+ *     title: custom_amount
+ *     description: The order edit's custom amount.
  *   internal_note:
  *     type: string
  *     title: internal_note

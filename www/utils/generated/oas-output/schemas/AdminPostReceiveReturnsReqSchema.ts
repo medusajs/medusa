@@ -3,8 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminPostReceiveReturnsReqSchema
- * required:
- *   - metadata
  * properties:
  *   internal_note:
  *     type: string

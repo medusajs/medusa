@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateProductOption
  * type: object
- * description: SUMMARY
+ * description: The product option's details.
  * x-schemaName: AdminCreateProductOption
  * required:
  *   - title
@@ -10,14 +10,14 @@
  *   title:
  *     type: string
  *     title: title
- *     description: The product's title.
+ *     description: The product option's title.
  *   values:
  *     type: array
- *     description: The product's values.
+ *     description: The product option's values.
  *     items:
  *       type: string
  *       title: values
- *       description: The value's values.
+ *       description: A value.
  * 
 */
 

@@ -4,6 +4,9 @@
  * summary: Get a Product Category
  * description: Retrieve a product category by its ID. You can expand the product category's relations or select the fields that should be returned.
  * x-authenticated: false
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/categories/retrieve
+ *   description: Storefront guide: How to retrieve a product category.
  * parameters:
  *   - name: id
  *     in: path
@@ -29,46 +32,22 @@
  *       title: fields
  *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
  *         fields. without prefix it will replace the entire default fields.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  *   - name: include_ancestors_tree
  *     in: query
- *     description: The product category's include ancestors tree.
+ *     description: Whether to retrieve the category's parent. When enabled, the parent category is set in the `parent_category` property.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: include_ancestors_tree
- *       description: The product category's include ancestors tree.
+ *       description: Whether to retrieve the category's parent. When enabled, the parent category is set in the `parent_category` property.
  *   - name: include_descendants_tree
  *     in: query
- *     description: The product category's include descendants tree.
+ *     description: Whether to retrieve a list of child categories. When enabled, the parent categories are added to the `category_children` property.
  *     required: false
  *     schema:
  *       type: boolean
  *       title: include_descendants_tree
- *       description: The product category's include descendants tree.
+ *       description: Whether to retrieve a list of child categories. When enabled, the parent categories are added to the `category_children` property.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

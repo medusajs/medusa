@@ -1,7 +1,7 @@
 /**
  * @schema AdminCustomerAddressResponse
  * type: object
- * description: SUMMARY
+ * description: The address's details.
  * x-schemaName: AdminCustomerAddressResponse
  * required:
  *   - address

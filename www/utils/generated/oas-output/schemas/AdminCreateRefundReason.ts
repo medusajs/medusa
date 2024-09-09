@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateRefundReason
  * type: object
- * description: SUMMARY
+ * description: The refund reason's details.
  * x-schemaName: AdminCreateRefundReason
  * required:
  *   - label

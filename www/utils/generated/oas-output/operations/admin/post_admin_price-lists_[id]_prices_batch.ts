@@ -33,8 +33,6 @@
  *                 - currency_code
  *                 - amount
  *                 - variant_id
- *                 - min_quantity
- *                 - max_quantity
  *               properties:
  *                 currency_code:
  *                   type: string
@@ -70,8 +68,6 @@
  *               required:
  *                 - id
  *                 - variant_id
- *                 - min_quantity
- *                 - max_quantity
  *               properties:
  *                 id:
  *                   type: string

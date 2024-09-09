@@ -1160,7 +1160,7 @@ export default defineMiddlewares({
       method: ["POST", "DELETE"],
       matcher: "/restaurants/:id/**",
       middlewares: [
-        authenticate(["restaurant", "admin"], "bearer"),
+        authenticate(["restaurant", "user"], "bearer"),
       ],
     },
   ],
