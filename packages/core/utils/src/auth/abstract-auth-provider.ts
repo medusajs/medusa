@@ -287,6 +287,49 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
     )
   }
 
+  /**
+   * This method is used to update an auth identity's details.
+   * 
+   * For example, the `emailpass` provider's implementation of this method updates a user's password.
+   * 
+   * @param data - Data relevant to identify the auth identity and what to update in it. For example,
+   * the `emailpass` provider expects in this object an `email` and `password` properties.
+   * @param authIdentityProviderService - The service used to retrieve or
+   * create an auth identity. It has two methods: `create` to create an auth identity,
+   * and `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity
+   * using this service.
+   * @returns The updated authentication identity if no errors occur.
+   * 
+   * @example
+   * import {
+   *   AuthIdentityProviderService,
+   *   AuthenticationInput,
+   *   AuthenticationResponse
+   * } from "@medusajs/types"
+   * import { MedusaError } from "@medusajs/utils"
+   * // ...
+   *
+   * class MyAuthProviderService extends AbstractAuthModuleProvider {
+   *   // ...
+   *   async update(
+   *     data: Record<string, unknown>,
+   *     authIdentityProviderService: AuthIdentityProviderService
+   *   ): Promise<AuthenticationResponse> {
+   *     try {
+   *       const authIdentity = await authIdentityService.update(
+   *         data.email, // email or some ID used to identify the auth identity
+   *         {
+   *           user: data.user // example
+   *         }
+   *       )
+   *     
+   *       return { success: true, authIdentity }
+   *     } catch (error) {
+   *       return { success: false, error: error.message }
+   *     }
+   *   }
+   * }
+   */
   update(
     data: Record<string, unknown>,
     authIdentityProviderService: AuthIdentityProviderService
