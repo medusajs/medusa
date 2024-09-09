@@ -1,3 +1,4 @@
+import { MedusaError } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -56,7 +57,10 @@ export const removeCustomerAccountWorkflow = createWorkflow(
           const authIdentity = authIdentities[0]
 
           if (!authIdentity) {
-            throw new Error("Auth identity not found")
+            throw new MedusaError(
+              MedusaError.Types.NOT_FOUND,
+              "Auth identity not found"
+            )
           }
 
           return authIdentity

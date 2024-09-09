@@ -158,6 +158,25 @@ medusaIntegrationTestRunner({
         expect(meResponse.response.status).toEqual(401)
       })
 
+      it("throws if you attempt to delete another user", async () => {
+        const userModule = container.resolve(ModuleRegistrationName.USER)
+
+        const userTwo = await userModule.createUsers({
+          email: "test@test.com",
+          password: "test",
+          role: "member",
+        })
+
+        const error = await api
+          .delete(`/admin/users/${userTwo.id}`, adminHeaders)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          "You are not allowed to delete other users"
+        )
+      })
+
       // TODO: Migrate when analytics config is implemented in 2.0
       it.skip("Deletes a user and their analytics config", async () => {
         const userId = "member-user"

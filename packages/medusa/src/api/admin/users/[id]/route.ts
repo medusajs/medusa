@@ -74,6 +74,15 @@ export const DELETE = async (
   res: MedusaResponse<HttpTypes.AdminUserDeleteResponse>
 ) => {
   const { id } = req.params
+  const { actor_id } = req.auth_context
+
+  if (actor_id !== id) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "You are not allowed to delete other users"
+    )
+  }
+
   const workflow = removeUserAccountWorkflow(req.scope)
 
   await workflow.run({
