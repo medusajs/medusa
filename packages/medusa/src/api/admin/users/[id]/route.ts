@@ -5,11 +5,7 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { AdminUpdateUserType } from "../validators"
 import { refetchUser } from "../helpers"
 
@@ -18,16 +14,17 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminUserResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { id } = req.params
 
-  const query = remoteQueryObjectFromString({
+  const {
+    data: [user],
+  } = await query.graph({
     entryPoint: "user",
     variables: { id },
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [user] = await remoteQuery(query)
   if (!user) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,

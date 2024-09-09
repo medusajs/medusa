@@ -1,8 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -12,9 +9,9 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUserListParams>,
   res: MedusaResponse<HttpTypes.AdminUserListResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const query = remoteQueryObjectFromString({
+  const { data: users, metadata } = await query.graph({
     entryPoint: "user",
     variables: {
       filters: req.filterableFields,
@@ -23,12 +20,11 @@ export const GET = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: users, metadata } = await remoteQuery(query)
   res.status(200).json({
     users,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    count: metadata?.count,
+    offset: metadata?.skip,
+    limit: metadata?.take,
   })
 }
 

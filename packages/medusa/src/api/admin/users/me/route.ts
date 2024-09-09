@@ -1,8 +1,4 @@
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -14,19 +10,19 @@ export const GET = async (
   res: MedusaResponse<HttpTypes.AdminUserResponse>
 ) => {
   const id = req.auth_context.actor_id
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   if (!id) {
     throw new MedusaError(MedusaError.Types.NOT_FOUND, `User ID not found`)
   }
 
-  const query = remoteQueryObjectFromString({
+  const {
+    data: [user],
+  } = await query.graph({
     entryPoint: "user",
     variables: { id },
     fields: req.remoteQueryConfig.fields,
   })
-
-  const [user] = await remoteQuery(query)
 
   if (!user) {
     throw new MedusaError(

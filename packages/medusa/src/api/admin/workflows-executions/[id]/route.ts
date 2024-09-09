@@ -5,24 +5,22 @@ import {
 } from "../../../../types/routing"
 
 import { AdminGetWorkflowExecutionDetailsParamsType } from "../validators"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetWorkflowExecutionDetailsParamsType>,
   res: MedusaResponse<HttpTypes.AdminWorkflowExecutionResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const variables = { id: req.params.id }
 
-  const queryObject = remoteQueryObjectFromString({
+  const {
+    data: [workflowExecution],
+  } = await query.graph({
     entryPoint: "workflow_execution",
     variables,
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [workflowExecution] = await remoteQuery(queryObject)
   res.status(200).json({ workflow_execution: workflowExecution })
 }
