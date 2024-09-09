@@ -19,10 +19,10 @@ export type RemoteQueryFunctionReturnPagination = {
  * result returned by the underlying remote query
  */
 export type GraphResultSet<TEntry extends string> = {
-  rows: TEntry extends keyof RemoteQueryEntryPoints
+  data: TEntry extends keyof RemoteQueryEntryPoints
     ? RemoteQueryEntryPoints[TEntry][]
     : any[]
-  meta?: any
+  metadata?: any
 }
 
 /**

@@ -467,7 +467,20 @@ async function MedusaApp_({
    */
   query.graph = async function (queryOptions, options) {
     const normalizedQuery = remoteQueryObjectFromString(queryOptions).__value
-    return await remoteQuery.query(normalizedQuery, undefined, options)
+    const response = await remoteQuery.query(
+      normalizedQuery,
+      undefined,
+      options
+    )
+
+    if (Array.isArray(response)) {
+      return { data: response, metadata: undefined }
+    }
+
+    return {
+      data: response.rows,
+      metadata: response.metadata,
+    }
   }
 
   const applyMigration = async ({

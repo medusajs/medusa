@@ -12,8 +12,8 @@ describe("Query", () => {
       })
 
       expectTypeOf(result).toEqualTypeOf<{
-        rows: FixtureEntryPoints["product"][]
-        meta?: any
+        data: FixtureEntryPoints["product"][]
+        metadata?: any
       }>()
     })
 
@@ -25,8 +25,8 @@ describe("Query", () => {
       })
 
       expectTypeOf(result).toEqualTypeOf<{
-        rows: any[]
-        meta?: any
+        data: any[]
+        metadata?: any
       }>()
     })
   })
