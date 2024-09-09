@@ -847,7 +847,7 @@ medusaIntegrationTestRunner({
           expect(error.response.status).toEqual(400)
           expect(error.response.data).toEqual({
             message: `A valid publishable key is required to proceed with the request`,
-            type: "invalid_data",
+            type: "not_allowed",
           })
         })
 
