@@ -14,10 +14,10 @@ When you retrieve products either with the [List Products](!api!/store#products_
 
 You also must pass at least one of the following query parameters to retrieve the correct product variant price:
 
-- `region_id`: The ID of the customer's region. This parameter must be included if you want to apply taxes on the product's price.
-- `country_code`: The customer's country code. This parameter must be included if you want to apply taxes on the product's price.
-- `customer_id`: The ID of the customer viewing the prices. This is useful when you have a promotion or price list overriding a product's price for specific customer groups.
-- `customer_group_id`: The ID of the group of the customer viewing the prices. This is useful when you have a promotion or price list overriding a product's price for specific customer groups.
+- `region_id`: The ID of the customer's region. This parameter must be included if you want to apply taxes on the product variant's price.
+- `country_code`: The customer's country code. This parameter must be included if you want to apply taxes on the product variant's price.
+- `province`: The province, which can be taken from a customer's address. This parameter helps further narrowing down the taxes applied on a the product variant's prices.
+- `cart_id`: The ID of the customer's cart, if available. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` parameters.
 
 For example:
 
@@ -41,6 +41,12 @@ fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
 ```
 
 In this example, you pass the selected region's ID as a query parameter with the `fields` query parameter set to `*variants.calculated_price`.
+
+### Prices for Authenticated Customer
+
+If you pass the customer's authentication token / session in the request, the customer and their group, if available, are used to retrieve more accurate prices.
+
+For example, if a promotion applies to the customer's group, the promotion's prices are used.
 
 ---
 

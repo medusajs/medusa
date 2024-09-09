@@ -8,49 +8,6 @@ export const metadata = {
 
 The Sales Channel Module is the `@medusajs/sales-channel` NPM package that provides sales-channel-related features in your Medusa and Node.js applications.
 
-## What's a Sales Channel?
-
-A sales channel indicates an online or offline platform that you sell products on.
-
-Some use case examples for using a sales channel:
-
-- Implement a B2B Ecommerce Store.
-- Specify different products for each channel you sell in.
-- Support omnichannel in your ecommerce store.
-
----
-
-## Features
-
-### Sales Channel Management
-
-Manage sales channels in your store. Each sales channel has different meta information such as name or description, allowing you to easily differentiate between sales channels.
-
-```ts
-const salesChannels = await salesChannelModuleService.createSalesChannels([
-  {
-    name: "B2B",
-  },
-  {
-    name: "Mobile App",
-  },
-])
-```
-
-### Product Availability
-
-Medusa links the Product and Sales Channel modules, allowing merchants to specify a product's availability per sales channel.
-
-For example, B2B customers viewing products only see products in the B2B sales channel.
-
-### Cart and Order Scoping
-
-Carts, available through the Cart Module, are scoped to a sales channel. Paired with the product availability feature, you benefit from more features like allowing only products available in sales channel in a cart.
-
-Orders are also scoped to a sales channel due to the relation between the Sales Channel and Order modules.
-
----
-
 ## How to Use Sales Channel Module's Service
 
 You can use the Sales Channel Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.SALES_CHANNEL` imported from `@medusajs/utils`.
@@ -112,3 +69,46 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## What's a Sales Channel?
+
+A sales channel indicates an online or offline platform that you sell products on.
+
+Some use case examples for using a sales channel:
+
+- Implement a B2B Ecommerce Store.
+- Specify different products for each channel you sell in.
+- Support omnichannel in your ecommerce store.
+
+---
+
+## Features
+
+### Sales Channel Management
+
+Manage sales channels in your store. Each sales channel has different meta information such as name or description, allowing you to easily differentiate between sales channels.
+
+```ts
+const salesChannels = await salesChannelModuleService.createSalesChannels([
+  {
+    name: "B2B",
+  },
+  {
+    name: "Mobile App",
+  },
+])
+```
+
+### Product Availability
+
+Medusa links the Product and Sales Channel modules, allowing merchants to specify a product's availability per sales channel.
+
+For example, B2B customers viewing products only see products in the B2B sales channel.
+
+### Cart and Order Scoping
+
+Carts, available through the Cart Module, are scoped to a sales channel. Paired with the product availability feature, you benefit from more features like allowing only products available in sales channel in a cart.
+
+Orders are also scoped to a sales channel due to the relation between the Sales Channel and Order modules.
