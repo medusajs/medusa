@@ -969,6 +969,7 @@ export const generatedEditDates = {
   "references/promotion/interfaces/promotion.IPromotionModuleService/page.mdx": "2024-09-06T00:11:38.306Z",
   "references/types/EventBusTypes/interfaces/types.EventBusTypes.IEventBusService/page.mdx": "2024-09-06T00:11:07.298Z",
   "references/types/TransactionBaseTypes/interfaces/types.TransactionBaseTypes.ITransactionBaseService/page.mdx": "2024-09-06T00:11:08.494Z",
+  "app/storefront-development/products/inventory/page.mdx": "2024-09-06T10:24:49.161Z",
   "references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentities/page.mdx": "2024-09-06T11:11:37.710Z",
   "references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProvider/page.mdx": "2024-09-06T11:11:37.686Z",
   "references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateProviderIdentities/page.mdx": "2024-09-06T11:11:37.726Z",
