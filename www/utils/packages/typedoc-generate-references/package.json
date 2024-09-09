@@ -37,7 +37,7 @@
     "typedoc": "0.26.x"
   },
   "devDependencies": {
-    "@types/node": "^20.9.4",
+    "@types/node": "^20.12.10",
     "@types/pluralize": "^0.0.33",
     "cross-env": "^7.0.3"
   }

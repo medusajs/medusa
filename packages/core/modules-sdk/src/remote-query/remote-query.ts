@@ -15,7 +15,7 @@ import {
   RemoteNestedExpands,
 } from "@medusajs/types"
 import { isString, toPascalCase } from "@medusajs/utils"
-import { MedusaModule } from "./medusa-module"
+import { MedusaModule } from "../medusa-module"
 
 export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
