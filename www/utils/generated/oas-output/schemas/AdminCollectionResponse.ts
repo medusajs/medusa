@@ -1,7 +1,7 @@
 /**
  * @schema AdminCollectionResponse
  * type: object
- * description: SUMMARY
+ * description: The collection's details.
  * x-schemaName: AdminCollectionResponse
  * required:
  *   - collection

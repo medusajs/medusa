@@ -8,31 +8,6 @@ export const metadata = {
 
 The Currency Module is the `@medusajs/currency` NPM package that provides currency-related features in your Medusa and Node.js applications.
 
-## Features
-
-### Currency Retrieval
-
-List and retrieve currencies stored in your application.
-
-```ts
-const currency = await currencyModuleService.retrieveCurrency("usd")
-```
-
-### Support Currencies in Modules
-
-Other commerce modules use currency codes in their data models or operations. You can use the Currency Module to retrieve a currency code and its details.
-
-An example with the Region Module:
-
-```ts
-const region = await regionModuleService.retrieveCurrency("reg_123")
-const currency = await currencyModuleService.retrieveCurrency(
-  region.currency_code
-)
-```
-
----
-
 ## How to Use Currency Module's Service
 
 You can use the Currency Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.CURRENCY` imported from `@medusajs/utils`.
@@ -97,3 +72,28 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## Features
+
+### Currency Retrieval
+
+List and retrieve currencies stored in your application.
+
+```ts
+const currency = await currencyModuleService.retrieveCurrency("usd")
+```
+
+### Support Currencies in Modules
+
+Other commerce modules use currency codes in their data models or operations. You can use the Currency Module to retrieve a currency code and its details.
+
+An example with the Region Module:
+
+```ts
+const region = await regionModuleService.retrieveCurrency("reg_123")
+const currency = await currencyModuleService.retrieveCurrency(
+  region.currency_code
+)
+```

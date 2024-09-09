@@ -8,6 +8,72 @@ export const metadata = {
 
 The Order Module is the `@medusajs/order` NPM package that provides order-related features in your Medusa and Node.js applications.
 
+## How to Use Order Module's Service
+
+You can use the Order Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.ORDER` imported from `@medusajs/utils`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IOrderModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const orderModuleService: IOrderModuleService = req.scope.resolve(
+    ModuleRegistrationName.ORDER
+  )
+
+  res.json({
+    orders: await orderModuleService.listOrders(),
+  })
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IOrderModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
+
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const orderModuleService: IOrderModuleService = container.resolve(
+    ModuleRegistrationName.ORDER
+  )
+
+  const orders = await orderModuleService.listOrders()
+}
+```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IOrderModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
+
+const step1 = createStep("step-1", async (_, { container }) => {
+  const orderModuleService: IOrderModuleService = container.resolve(
+    ModuleRegistrationName.ORDER
+  )
+  const orders = await orderModuleService.listOrders()
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
 ## Features
 
 ### Order Management
@@ -77,69 +143,3 @@ const orderReturn = await orderModuleService.createReturn({
   }],
 })
 ```
-
----
-
-## How to Use Order Module's Service
-
-You can use the Order Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.ORDER` imported from `@medusajs/utils`.
-
-For example:
-
-<CodeTabs groupId="resource-type">
-  <CodeTab label="API Route" value="api-route">
-
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IOrderModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
-
-export async function GET(
-  req: MedusaRequest,
-  res: MedusaResponse
-): Promise<void> {
-  const orderModuleService: IOrderModuleService = req.scope.resolve(
-    ModuleRegistrationName.ORDER
-  )
-
-  res.json({
-    orders: await orderModuleService.listOrders(),
-  })
-}
-```
-
-  </CodeTab>
-  <CodeTab label="Subscriber" value="subscribers">
-
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
-  import { IOrderModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
-
-export default async function subscriberHandler({ container }: SubscriberArgs) {
-  const orderModuleService: IOrderModuleService = container.resolve(
-    ModuleRegistrationName.ORDER
-  )
-
-  const orders = await orderModuleService.listOrders()
-}
-```
-
-  </CodeTab>
-  <CodeTab label="Workflow Step" value="workflow-step">
-
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { IOrderModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
-
-const step1 = createStep("step-1", async (_, { container }) => {
-  const orderModuleService: IOrderModuleService = container.resolve(
-    ModuleRegistrationName.ORDER
-  )
-  const orders = await orderModuleService.listOrders()
-})
-```
-
-  </CodeTab>
-</CodeTabs>

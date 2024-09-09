@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateProductCategory
  * type: object
- * description: SUMMARY
+ * description: The product category's details.
  * x-schemaName: AdminCreateProductCategory
  * required:
  *   - name
@@ -21,22 +21,22 @@
  *   is_internal:
  *     type: boolean
  *     title: is_internal
- *     description: The product category's is internal.
+ *     description: Whether the product category is only used and seen by admin users.
  *   is_active:
  *     type: boolean
  *     title: is_active
- *     description: The product category's is active.
+ *     description: Whether the product category is active.
  *   parent_category_id:
  *     type: string
  *     title: parent_category_id
- *     description: The product category's parent category id.
+ *     description: The ID of a category that's the parent of this one.
  *   rank:
  *     type: number
  *     title: rank
- *     description: The product category's rank.
+ *     description: The sorting order of the product category among sibling categories.
  *   metadata:
  *     type: object
- *     description: The product category's metadata.
+ *     description: The product category's metadata, used to store custom key-value pairs.
  * 
 */
 
