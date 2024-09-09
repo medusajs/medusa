@@ -1,0 +1,133 @@
+export const metadata = {
+  title: `${pageNumber} How to Define a Module Link`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn what a module link is and how to define a link between modules' data models.
+
+## What is a Module Link?
+
+A module link forms an association between two data models of different modules, while maintaining module isolation.
+
+When you define a module link, the Medusa application creates a table in the database to store the associations between records of the data models.
+
+You can retrieve data across the linked modules, and manage their linked records.
+
+<Note title="Use module links when" type="success">
+
+You want to create a relation between data models from different modules.
+
+</Note>
+
+<Note title="Don't use module links if" type="error">
+
+You want to create a relationship between data models in the same module. Use data model relationships instead.
+
+</Note>
+
+---
+
+## How to Define a Module Link?
+
+Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/utils` and exports it.
+
+For example, create the file `src/links/product-brand.ts` with the following content:
+
+export const highlights = [
+  ["6", "linkable", "Special `linkable` property that holds the linkable data models of `ProductModule`."],
+  ["7", "linkable", "Special `linkable` property that holds the linkable data models of `BrandModule`."],
+]
+
+```ts title="src/links/product-brand.ts" highlights={highlights}
+import BrandModule from "../modules/brand"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  ProductModule.linkable.product,
+  BrandModule.linkable.brand
+)
+```
+
+The `defineLink` function accepts as parameters the link configurations of each module's data model. A module has a special `linkable` property that holds these configurations for its data models.
+
+In this example, you define a module link between the Brand Module's `brand` data model and the Product Module's `product` data model.
+
+### Define a List Link
+
+A brand can has more than one product. However, by default, the defined link establishes a one-to-one relation: a record of a data model is linked to one record of the other data model.
+
+To specify that a data model can have multiple of its records linked to the other data model's record, use the `isList` option.
+
+For example:
+
+```ts
+import BrandModule from "../modules/brand"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  {
+    linkable: ProductModule.linkable.product,
+    isList: true,
+  },
+  BrandModule.linkable.brand
+)
+```
+
+In this case, you pass an object of configuration as a parameter instead. The object accepts the following properties:
+
+- `linkable`: The data model's link configuration.
+- `isList`: Whether multiple records can be linked to one record of the other data model.
+
+In this example, a record of `brand` can be linked to more than one record of `product`.
+
+---
+
+## Sync Links
+
+To reflect your link in the database by creating the table that stores their association, run the `db:sync-links` command:
+
+```bash
+npx medusa db:sync-links
+```
+
+Use this command whenever you make changes to your links. For example, run this command if you remove your link definition file.
+
+<Note title="Tip">
+
+You can also use the `db:migrate` command, which both runs the migrations and syncs the links.
+
+</Note>
+
+---
+
+## Set Delete Cascades on Link
+
+To enable delete cascade on a link so that when a record is deleted, its linked records are also deleted, pass the `deleteCascades` property in the object passed to `defineLink`.
+
+For example:
+
+```ts
+import BrandModule from "../modules/brand"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  {
+    linkable: ProductModule.linkable.product,
+    isList: true,
+    deleteCascades: true,
+  },
+  BrandModule.linkable.brand
+)
+```
+
+In this example, when a brand is deleted, its linked `product` records are also deleted.
+
+---
+
+## Next: Manage Links Between Records
+
+In the next chapter, you'll learn how to manage links between records of linked data models so that you can link a brand record to a product record.

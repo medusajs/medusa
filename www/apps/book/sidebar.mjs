@@ -125,23 +125,23 @@ export const sidebar = numberSidebarItems(
           children: [
             {
               type: "link",
-              title: "Define Links",
-              path: "#",
+              title: "Define Link",
+              path: "/customizations/extend-models/define-link",
             },
             {
               type: "link",
-              title: "Query Data",
-              path: "#",
+              title: "Manage Linked Records",
+              path: "/customizations/extend-models/manage-links",
             },
             {
               type: "link",
-              title: "Link Records",
-              path: "#",
+              title: "Query Linked Records",
+              path: "/customizations/extend-models/query-linked-records",
             },
             {
               type: "link",
               title: "Extend Routes",
-              path: "#",
+              path: "/customizations/extend-models/additional-data",
             },
           ],
         },
