@@ -1,7 +1,7 @@
 /**
  * @schema AdminFulfillmentItem
  * type: object
- * description: The item's items.
+ * description: The details of a fulfillment's item.
  * x-schemaName: AdminFulfillmentItem
  * required:
  *   - id
@@ -27,11 +27,11 @@
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The item's quantity.
+ *     description: The item's quantity to be fulfilled.
  *   sku:
  *     type: string
  *     title: sku
- *     description: The item's sku.
+ *     description: The item's SKU.
  *   barcode:
  *     type: string
  *     title: barcode
@@ -39,30 +39,30 @@
  *   line_item_id:
  *     type: string
  *     title: line_item_id
- *     description: The item's line item id.
+ *     description: The ID of the order's line item to be fulfilled.
  *   inventory_item_id:
  *     type: string
  *     title: inventory_item_id
- *     description: The item's inventory item id.
+ *     description: The ID of the inventory item of the underlying product variant.
  *   fulfillment_id:
  *     type: string
  *     title: fulfillment_id
- *     description: The item's fulfillment id.
+ *     description: The ID of the fulfillment the item belongs to.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The item's created at.
+ *     description: The date the item was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The item's updated at.
+ *     description: The date the item was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The item's deleted at.
+ *     description: The date the item was deleted.
  * 
 */
 
