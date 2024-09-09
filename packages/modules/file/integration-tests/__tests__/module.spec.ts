@@ -29,7 +29,6 @@ const moduleOptions = {
 moduleIntegrationTestRunner<IFileModuleService>({
   moduleName: Modules.FILE,
   moduleOptions: moduleOptions,
-  moduleModels: [DummyEntity],
   testSuite: ({ service }) => {
     describe("File Module Service", () => {
       it(`should export the appropriate linkable configuration`, () => {
