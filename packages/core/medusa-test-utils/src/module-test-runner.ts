@@ -47,6 +47,10 @@ export function moduleIntegrationTestRunner<TService = any>({
     moduleModels ??= Object.values(require(`${process.cwd()}/src/models`))
     moduleModels = toMikroOrmEntities(moduleModels)
   } catch (e) {
+    if (e.code !== "MODULE_NOT_FOUND") {
+      throw e
+    }
+
     moduleModels ??= []
   }
 
