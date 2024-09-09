@@ -1,9 +1,12 @@
 /**
  * @oas [post] /store/customers
  * operationId: PostCustomers
- * summary: Create Customer
- * description: Create a customer.
- * x-authenticated: false
+ * summary: Register Customer
+ * description: Register a customer. Use the `/auth/customer/emailpass/register` API route first to retrieve the registration token and pass it in the header of the request.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/register
+ *   description: "Storefront guide: How to register a customer."
+ * x-authenticated: true
  * parameters:
  *   - name: expand
  *     in: query
@@ -33,6 +36,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/store/customers' \
+ *       -H 'Authorization: Bearer {token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "email": "Monserrate.Leannon88@yahoo.com",

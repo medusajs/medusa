@@ -135,10 +135,12 @@ export async function execute(cliParams: OptionValues): Promise<void> {
 
   const srcFileSanitized = path.resolve(tmpDir, "tmp.oas.yaml")
   await sanitizeOAS(srcFile, srcFileSanitized, configTmpFile)
-  await fixCirclularReferences(srcFileSanitized, dryRun)
+  await fixCirclularReferences(srcFileSanitized)
 
   if (dryRun) {
     console.log(`⚫️ Dry run - no files generated`)
+    // check out possible changes in redocly config
+    await execa("git", ["checkout", path.join(basePath, "redocly", "redocly-config.yaml")])
     return
   }
   if (shouldPreview) {
@@ -223,7 +225,7 @@ const sanitizeOAS = async (
   console.log(logs)
 }
 
-const fixCirclularReferences = async (srcFile: string, dryRun = false): Promise<void> => {
+const fixCirclularReferences = async (srcFile: string): Promise<void> => {
   const { circularRefs, oas } = await getCircularReferences(srcFile)
   if (circularRefs.length) {
     const recommendation = getCircularPatchRecommendation(circularRefs, oas)
@@ -234,12 +236,6 @@ const fixCirclularReferences = async (srcFile: string, dryRun = false): Promise<
 ${hint}
 ###
 `
-      if (dryRun) {
-        throw new Error(
-          `🔴 Unhandled circular references - Please manually patch using --config ./redocly-config.yaml
-Within redocly-config.yaml, try adding the following:` + hintMessage
-        )
-      }
       const redoclyConfigPath = path.join(basePath, "redocly", "redocly-config.yaml")
       const originalContent = await readYaml(redoclyConfigPath) as CircularReferenceConfig
       originalContent.decorators["medusa/circular-patch"].schemas = Object.assign(

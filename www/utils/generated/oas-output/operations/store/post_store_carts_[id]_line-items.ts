@@ -1,8 +1,12 @@
 /**
  * @oas [post] /store/carts/{id}/line-items
  * operationId: PostCartsIdLineItems
- * summary: Add Line Items to Cart
- * description: Add a list of line items to a cart.
+ * summary: Add Line Item to Cart
+ * x-sidebar-summary: Add Line Item
+ * description: Add a product variant as a line item in the cart.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items#add-product-variant-to-cart
+ *   description: "Storefront guide: How to add a product variant to the cart."
  * x-authenticated: false
  * parameters:
  *   - name: id

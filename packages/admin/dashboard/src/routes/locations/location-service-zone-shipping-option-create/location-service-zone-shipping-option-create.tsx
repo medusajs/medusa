@@ -10,18 +10,16 @@ export function LocationServiceZoneShippingOptionCreate() {
   const [searchParams] = useSearchParams()
   const isReturn = searchParams.has("is_return")
 
-  const { stock_location, isPending, isError, error } = useStockLocation(
-    location_id!,
-    {
+  const { stock_location, isPending, isFetching, isError, error } =
+    useStockLocation(location_id!, {
       fields: LOC_CREATE_SHIPPING_OPTION_FIELDS,
-    }
-  )
+    })
 
   const zone = stock_location?.fulfillment_sets
     ?.find((f) => f.id === fset_id)
     ?.service_zones?.find((z) => z.id === zone_id)
 
-  if (!isPending && !zone) {
+  if (!isPending && !isFetching && !zone) {
     throw json(
       { message: `Service zone with ID ${zone_id} was not found` },
       404
@@ -32,11 +30,9 @@ export function LocationServiceZoneShippingOptionCreate() {
     throw error
   }
 
-  const ready = !isPending && !!zone
-
   return (
     <RouteFocusModal prev={`/settings/locations/${location_id}`}>
-      {ready && (
+      {zone && (
         <CreateShippingOptionsForm
           zone={zone}
           isReturn={isReturn}

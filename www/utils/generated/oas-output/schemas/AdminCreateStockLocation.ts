@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateStockLocation
  * type: object
- * description: SUMMARY
+ * description: The stock location's details.
  * x-schemaName: AdminCreateStockLocation
  * required:
  *   - name
@@ -13,12 +13,12 @@
  *   address_id:
  *     type: string
  *     title: address_id
- *     description: The stock location's address id.
+ *     description: The ID of the stock location's address.
  *   address:
  *     $ref: "#/components/schemas/AdminUpsertStockLocationAddress"
  *   metadata:
  *     type: object
- *     description: The stock location's metadata.
+ *     description: The stock location's metadata, used to store custom key-value pairs.
  * 
 */
 

@@ -8,58 +8,6 @@ export const metadata = {
 
 The Product Module is the `@medusajs/product` NPM package that provides product-related features in your Medusa and Node.js applications.
 
-## Features
-
-### Products Management
-
-Store and manage products. Products have custom options, such as color or size, and each variant in the product sets the value for these options.
-
-```ts
-const products = await productService.createProducts([
-  {
-    title: "Medusa Shirt",
-    options: [
-      {
-        title: "Color",
-      },
-    ],
-    variants: [
-      {
-        title: "Black Shirt",
-        options: [
-          {
-            value: "Black",
-          },
-        ],
-      },
-    ],
-  },
-])
-```
-
-### Product Organization
-
-The Product Module provides different data models used to organize products, including categories, collections, tags, and more.
-
-```ts
-const category = await productService.createProductCategories({
-  name: "Shirts",
-})
-
-const products = await productService.updateProducts([
-  {
-    id: product.id,
-    categories: [
-      {
-        id: category.id,
-      },
-    ],
-  },
-])
-```
-
----
-
 ## How to Use Product Module's Service
 
 You can use the Product Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.PRODUCT` imported from `@medusajs/utils`.
@@ -121,3 +69,55 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## Features
+
+### Products Management
+
+Store and manage products. Products have custom options, such as color or size, and each variant in the product sets the value for these options.
+
+```ts
+const products = await productService.createProducts([
+  {
+    title: "Medusa Shirt",
+    options: [
+      {
+        title: "Color",
+      },
+    ],
+    variants: [
+      {
+        title: "Black Shirt",
+        options: [
+          {
+            value: "Black",
+          },
+        ],
+      },
+    ],
+  },
+])
+```
+
+### Product Organization
+
+The Product Module provides different data models used to organize products, including categories, collections, tags, and more.
+
+```ts
+const category = await productService.createProductCategories({
+  name: "Shirts",
+})
+
+const products = await productService.updateProducts([
+  {
+    id: product.id,
+    categories: [
+      {
+        id: category.id,
+      },
+    ],
+  },
+])
+```

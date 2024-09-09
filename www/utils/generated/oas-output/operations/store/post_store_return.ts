@@ -2,7 +2,7 @@
  * @oas [post] /store/return
  * operationId: PostReturn
  * summary: Create Return
- * description: Create a return.
+ * description: Create a return for an order's items. The admin receives the return and process it from their side.
  * x-authenticated: false
  * requestBody:
  *   content:

@@ -43,62 +43,63 @@
  *   - original_shipping_subtotal
  *   - original_shipping_tax_total
  * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The claim's ID.
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The claim's order id.
+ *     description: The ID of the order associated with the claim.
  *   claim_items:
  *     type: array
- *     description: The claim's claim items.
+ *     description: The order items targetted by the claim.
  *     items:
  *       $ref: "#/components/schemas/BaseClaimItem"
  *   additional_items:
  *     type: array
- *     description: The claim's additional items.
- *     items: {}
+ *     description: The outbound or new items of the claim.
+ *     items:
+ *       $ref: "#/components/schemas/BaseClaimItem"
  *   return:
  *     $ref: "#/components/schemas/Return"
  *   return_id:
  *     type: string
  *     title: return_id
- *     description: The claim's return id.
+ *     description: The ID of the associated return.
  *   no_notification:
  *     type: boolean
  *     title: no_notification
- *     description: The claim's no notification.
+ *     description: Whether the customer should be notified about changes in the claim.
  *   refund_amount:
  *     type: number
  *     title: refund_amount
- *     description: The claim's refund amount.
+ *     description: The amount to be refunded.
  *   currency_code:
  *     type: string
  *     title: currency_code
  *     description: The claim's currency code.
- *   id:
- *     type: string
- *     title: id
- *     description: The claim's ID.
  *   region_id:
  *     type: string
  *     title: region_id
- *     description: The claim's region id.
+ *     description: The ID of the region associated with the claim.
  *   customer_id:
  *     type: string
  *     title: customer_id
- *     description: The claim's customer id.
+ *     description: The ID of the customer associated with the claim's order.
  *   sales_channel_id:
  *     type: string
  *     title: sales_channel_id
- *     description: The claim's sales channel id.
+ *     description: The ID of the sales channel the claim's order is created in.
  *   email:
  *     type: string
  *     title: email
- *     description: The claim's email.
+ *     description: The email associated with the claim's order.
  *     format: email
  *   display_id:
  *     type: number
  *     title: display_id
- *     description: The claim's display id.
+ *     description: The claim's display ID.
  *   shipping_address:
  *     $ref: "#/components/schemas/BaseOrderAddress"
  *   billing_address:
@@ -147,63 +148,66 @@
  *   transactions:
  *     type: array
  *     description: The claim's transactions.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/order/transactions
+ *       description: Learn more about transactions of orders and associated models.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderTransaction"
  *   summary:
  *     $ref: "#/components/schemas/BaseOrderSummary"
  *   metadata:
  *     type: object
- *     description: The claim's metadata.
+ *     description: The claim's metadata, used to store custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The claim's created at.
+ *     description: The claim's creation date.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The claim's updated at.
+ *     description: The claim's update date.
  *   original_item_total:
  *     type: number
  *     title: original_item_total
- *     description: The claim's original item total.
+ *     description: The total of the original items in the associated order.
  *   original_item_subtotal:
  *     type: number
  *     title: original_item_subtotal
- *     description: The claim's original item subtotal.
+ *     description: The subtotal of the original items in the associated order.
  *   original_item_tax_total:
  *     type: number
  *     title: original_item_tax_total
- *     description: The claim's original item tax total.
+ *     description: The tax total of the original items in the associated order.
  *   item_total:
  *     type: number
  *     title: item_total
- *     description: The claim's item total.
+ *     description: The total of the claim's items.
  *   item_subtotal:
  *     type: number
  *     title: item_subtotal
- *     description: The claim's item subtotal.
+ *     description: The subtotal of the claim's items.
  *   item_tax_total:
  *     type: number
  *     title: item_tax_total
- *     description: The claim's item tax total.
+ *     description: The tax total of the claim's items.
  *   original_total:
  *     type: number
  *     title: original_total
- *     description: The claim's original total.
+ *     description: The associated order's original total.
  *   original_subtotal:
  *     type: number
  *     title: original_subtotal
- *     description: The claim's original subtotal.
+ *     description: The associated order's original subtotal.
  *   original_tax_total:
  *     type: number
  *     title: original_tax_total
- *     description: The claim's original tax total.
+ *     description: The associated order's original tax total.
  *   total:
  *     type: number
  *     title: total
- *     description: The claim's total.
+ *     description: The associated order's total.
  *   subtotal:
  *     type: number
  *     title: subtotal
@@ -243,15 +247,15 @@
  *   original_shipping_total:
  *     type: number
  *     title: original_shipping_total
- *     description: The claim's original shipping total.
+ *     description: The associated order's original shipping total.
  *   original_shipping_subtotal:
  *     type: number
  *     title: original_shipping_subtotal
- *     description: The claim's original shipping subtotal.
+ *     description: The associated order's original shipping subtotal.
  *   original_shipping_tax_total:
  *     type: number
  *     title: original_shipping_tax_total
- *     description: The claim's original shipping tax total.
+ *     description: The associated order's original shipping tax total.
  * 
 */
 

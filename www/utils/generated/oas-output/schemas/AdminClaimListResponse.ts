@@ -1,7 +1,7 @@
 /**
  * @schema AdminClaimListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of claims.
  * x-schemaName: AdminClaimListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The claim's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The claim's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The claim's count.
+ *     description: The total number of items.
  *   claims:
  *     type: array
- *     description: The claim's claims.
+ *     description: The list of claims.
  *     items:
  *       $ref: "#/components/schemas/AdminClaim"
  * 
