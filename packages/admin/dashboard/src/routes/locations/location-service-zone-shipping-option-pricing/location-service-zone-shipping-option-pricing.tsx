@@ -7,16 +7,21 @@ import { EditShippingOptionsPricingForm } from "./components/create-shipping-opt
 export function LocationServiceZoneShippingOptionPricing() {
   const { so_id, location_id } = useParams()
 
-  const { shipping_options, isPending } = useShippingOptions({
-    // TODO: change this when GET option by id endpoint is implemented
-    id: [so_id!],
-    fields: "*prices,*prices.price_rules",
-  })
+  const { shipping_options, isPending, isFetching, isError, error } =
+    useShippingOptions({
+      // TODO: change this when GET option by id endpoint is implemented
+      id: [so_id!],
+      fields: "*prices,*prices.price_rules",
+    })
 
   const shippingOption = shipping_options?.find((so) => so.id === so_id)
 
-  if (!isPending && !shippingOption) {
+  if (!isPending && !isFetching && !shippingOption) {
     throw json(`Shipping option with id: ${so_id} not found`, { status: 404 })
+  }
+
+  if (isError) {
+    throw error
   }
 
   return (
