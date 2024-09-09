@@ -7,7 +7,7 @@
  * x-authenticated: true
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/retrieve
- *   description: Storefront guide: How to retrieve the logged-in customer.
+ *   description: "Storefront guide: How to retrieve the logged-in customer."
  * parameters:
  *   - name: expand
  *     in: query
