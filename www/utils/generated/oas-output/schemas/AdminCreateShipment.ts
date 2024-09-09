@@ -1,17 +1,17 @@
 /**
  * @schema AdminCreateShipment
  * type: object
- * description: SUMMARY
+ * description: The shipment's details.
  * x-schemaName: AdminCreateShipment
  * required:
  *   - labels
  * properties:
  *   labels:
  *     type: array
- *     description: The fulfillment's labels.
+ *     description: The shipment's labels.
  *     items:
  *       type: object
- *       description: The label's labels.
+ *       description: A shipment label's details.
  *       required:
  *         - tracking_number
  *         - tracking_url
@@ -24,11 +24,11 @@
  *         tracking_url:
  *           type: string
  *           title: tracking_url
- *           description: The label's tracking url.
+ *           description: The label's tracking URL.
  *         label_url:
  *           type: string
  *           title: label_url
- *           description: The label's label url.
+ *           description: The label's URL.
  * 
 */
 

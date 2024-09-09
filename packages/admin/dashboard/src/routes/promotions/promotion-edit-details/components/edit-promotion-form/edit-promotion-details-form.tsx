@@ -1,23 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PromotionDTO } from "@medusajs/types"
-import {
-  Button,
-  clx,
-  CurrencyInput,
-  Input,
-  RadioGroup,
-  Text,
-} from "@medusajs/ui"
+import { Button, CurrencyInput, Input, RadioGroup, Text } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 
@@ -80,9 +70,12 @@ export const EditPromotionDetailsForm = ({
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <RouteDrawer.Body>
-          <div className="flex h-full flex-col gap-y-8">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-1 flex-col overflow-hidden"
+      >
+        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-y-auto">
+          <div className="flex flex-col gap-y-8">
             <Form.Field
               control={form.control}
               name="is_automatic"
@@ -98,10 +91,6 @@ export const EditPromotionDetailsForm = ({
                         onValueChange={field.onChange}
                       >
                         <RadioGroup.ChoiceBox
-                          className={clx("basis-1/2", {
-                            "border-ui-border-interactive border-2":
-                              "false" === field.value,
-                          })}
                           value={"false"}
                           label={t("promotions.form.method.code.title")}
                           description={t(
@@ -109,10 +98,6 @@ export const EditPromotionDetailsForm = ({
                           )}
                         />
                         <RadioGroup.ChoiceBox
-                          className={clx("basis-1/2", {
-                            "border-ui-border-interactive border-2":
-                              "true" === field.value,
-                          })}
                           value={"true"}
                           label={t("promotions.form.method.automatic.title")}
                           description={t(
@@ -171,10 +156,6 @@ export const EditPromotionDetailsForm = ({
                         onValueChange={field.onChange}
                       >
                         <RadioGroup.ChoiceBox
-                          className={clx("basis-1/2", {
-                            "border-ui-border-interactive border-2":
-                              "fixed" === field.value,
-                          })}
                           value={"fixed"}
                           label={t("promotions.form.value_type.fixed.title")}
                           description={t(
@@ -183,10 +164,6 @@ export const EditPromotionDetailsForm = ({
                         />
 
                         <RadioGroup.ChoiceBox
-                          className={clx("basis-1/2", {
-                            "border-ui-border-interactive border-2":
-                              "percentage" === field.value,
-                          })}
                           value={"percentage"}
                           label={t(
                             "promotions.form.value_type.percentage.title"
@@ -263,10 +240,6 @@ export const EditPromotionDetailsForm = ({
                         onValueChange={field.onChange}
                       >
                         <RadioGroup.ChoiceBox
-                          className={clx("basis-1/2", {
-                            "border-ui-border-interactive border-2":
-                              "each" === field.value,
-                          })}
                           value={"each"}
                           label={t("promotions.form.allocation.each.title")}
                           description={t(
@@ -275,10 +248,6 @@ export const EditPromotionDetailsForm = ({
                         />
 
                         <RadioGroup.ChoiceBox
-                          className={clx("basis-1/2", {
-                            "border-ui-border-interactive border-2":
-                              "across" === field.value,
-                          })}
                           value={"across"}
                           label={t("promotions.form.allocation.across.title")}
                           description={t(

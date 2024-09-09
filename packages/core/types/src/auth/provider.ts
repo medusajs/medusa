@@ -41,4 +41,8 @@ export interface IAuthProvider {
     data: AuthenticationInput,
     authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse>
+  update: (
+    data: Record<string, unknown>,
+    authIdentityProviderService: AuthIdentityProviderService
+  ) => Promise<AuthenticationResponse>
 }

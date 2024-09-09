@@ -6,8 +6,10 @@ import {
   PaymentSession,
   RefundReason,
 } from "@models"
+import { default as schema } from "./schema"
 
 export const joinerConfig = defineJoinerConfig(Modules.PAYMENT, {
+  schema,
   models: [
     Payment,
     PaymentCollection,

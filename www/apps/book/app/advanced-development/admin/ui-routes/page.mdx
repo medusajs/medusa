@@ -64,7 +64,7 @@ export const highlights = [
 ]
 
 ```tsx title="src/admin/routes/custom/page.tsx" highlights={[["21"], ["22"], ["23"], ["24"], ["25"], ["26"]]}
-import { defineRouteConfig } from "@medusajs/admin-shared"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { ChatBubbleLeftRight } from "@medusajs/icons"
 import { Container } from "@medusajs/ui"
 
@@ -80,7 +80,7 @@ export const config = defineRouteConfig({
 export default CustomPage
 ```
 
-The configuration object is created using the `defineRouteConfig` function imported from `@medusajs/admin-shared`. It accepts the following properties:
+The configuration object is created using the `defineRouteConfig` function imported from `@medusajs/admin-sdk`. It accepts the following properties:
 
 - `label`: the sidebar item’s label.
 - `icon`: an optional React component used as an icon in the sidebar.
@@ -96,7 +96,7 @@ To create a page under the settings section of the admin dashboard, create the U
 For example:
 
 ```tsx title="src/admin/routes/settings/custom/page.tsx"
-import { defineRouteConfig } from "@medusajs/admin-shared"
+import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { Container, Heading } from "@medusajs/ui"
 
 const CustomSettingPage = () => {

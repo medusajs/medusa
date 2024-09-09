@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateTaxRateRule
  * type: object
- * description: SUMMARY
+ * description: The tax rate rule's details.
  * x-schemaName: AdminCreateTaxRateRule
  * required:
  *   - reference
@@ -10,11 +10,13 @@
  *   reference:
  *     type: string
  *     title: reference
- *     description: The tax rate's reference.
+ *     description: The name of a table in the database that this rule points to.
+ *     example: product_type
  *   reference_id:
  *     type: string
  *     title: reference_id
- *     description: The tax rate's reference id.
+ *     description: The ID of a record in the table specified in reference.
+ *     example: ptype_123
  * 
 */
 

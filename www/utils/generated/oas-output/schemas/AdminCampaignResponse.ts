@@ -1,7 +1,7 @@
 /**
  * @schema AdminCampaignResponse
  * type: object
- * description: SUMMARY
+ * description: The campaign's details.
  * x-schemaName: AdminCampaignResponse
  * required:
  *   - campaign

@@ -19,7 +19,7 @@ async function bootstrapApp({
     expressApp: app,
   })
 
-  const PORT = await getPort()
+  const PORT = process.env.PORT ? parseInt(process.env.PORT) : await getPort()
 
   return {
     shutdown,

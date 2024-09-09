@@ -78,8 +78,12 @@ export const CreateCampaignForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit}>
-        <RouteFocusModal.Header>
+      <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
+        <RouteFocusModal.Header />
+        <RouteFocusModal.Body className="flex size-full flex-col items-center overflow-auto py-16">
+          <CreateCampaignFormFields form={form} />
+        </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
           <div className="flex items-center justify-end gap-x-2">
             <RouteFocusModal.Close asChild>
               <Button size="small" variant="secondary">
@@ -95,11 +99,7 @@ export const CreateCampaignForm = () => {
               {t("actions.create")}
             </Button>
           </div>
-        </RouteFocusModal.Header>
-
-        <RouteFocusModal.Body className="flex flex-col items-center py-16">
-          <CreateCampaignFormFields form={form} />
-        </RouteFocusModal.Body>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )

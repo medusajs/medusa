@@ -234,6 +234,22 @@ export default async ({
     })
   }
 
+  // if installation includes Next.js, retrieve the publishable API key
+  // from the backend and add it as an enviornment variable
+  if (nextjsDirectory && client) {
+    const apiKeys = await client.query(
+      `SELECT * FROM "api_key" WHERE type = 'publishable'`
+    )
+
+    if (apiKeys.rowCount) {
+      const nextjsEnvPath = path.join(nextjsDirectory, fs.existsSync(path.join(nextjsDirectory, ".env.local")) ? ".env.local" : ".env.template")
+
+      const originalContent = fs.readFileSync(nextjsEnvPath, "utf-8")
+
+      fs.appendFileSync(nextjsEnvPath, originalContent.replace("NEXT_PUBLIC_PUBLISHABLE_KEY=", `NEXT_PUBLIC_PUBLISHABLE_KEY=${apiKeys.rows[0].token}`))
+    }
+  }
+
   displayFactBox({ ...factBoxOptions, message: "Finished Preparation" })
 
   return inviteToken
