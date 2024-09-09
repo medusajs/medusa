@@ -7,7 +7,7 @@
  * x-authenticated: true
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#delete-customer-address
- *   description: Storefront guide: How to delete a customer's address.
+ *   description: "Storefront guide: How to delete a customer's address."
  * parameters:
  *   - name: address_id
  *     in: path

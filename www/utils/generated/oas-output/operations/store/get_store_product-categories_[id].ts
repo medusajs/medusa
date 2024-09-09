@@ -6,7 +6,7 @@
  * x-authenticated: false
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/categories/retrieve
- *   description: Storefront guide: How to retrieve a product category.
+ *   description: "Storefront guide: How to retrieve a product category."
  * parameters:
  *   - name: id
  *     in: path

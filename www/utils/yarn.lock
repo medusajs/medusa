@@ -1459,19 +1459,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.8.3, @types/node@npm:^20.9.4":
+"@types/node@npm:*":
   version: 20.10.0
   resolution: "@types/node@npm:20.10.0"
   dependencies:
     undici-types: ~5.26.4
   checksum: f379e57d9d28cb5f3d8eab943de0c54a0ca2f95ee356e1fe2a1a4fa718b740103ae522c50ce107cffd52c3642ef3244cfc55bf5369081dd6c48369c8587b21ae
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^16.11.10":
-  version: 16.18.91
-  resolution: "@types/node@npm:16.18.91"
-  checksum: fcae3647e11477801061dc38e8137d4f2eb3da7e0d1995e7e5401aa56a099bc6d1c22bc5c27f22d983430bced0267e8ba1fc54b2cef22bee779e7a905779e72e
   languageName: node
   linkType: hard
 
@@ -1481,6 +1474,15 @@ __metadata:
   dependencies:
     undici-types: ~5.26.4
   checksum: 34b9ceb3366fc616f35a3f3a1467478182cc265ff142c02000503161a679d3036d8bbc410d343ae4012a868e879941d64d656bd509674b055c8735aba24d98e2
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.12.10":
+  version: 20.16.5
+  resolution: "@types/node@npm:20.16.5"
+  dependencies:
+    undici-types: ~6.19.2
+  checksum: 6af7994129815010bcbc4cf8221865559c8116ff43e74a6549525c2108267596fc2d18aff5d5ecfe089fb60a119f975631343e2c65c52bfa0955ed9dc56733d6
   languageName: node
   linkType: hard
 
@@ -2373,7 +2375,7 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^8.4.0
     "@octokit/core": ^5.0.2
-    "@types/node": ^20.9.4
+    "@types/node": ^20.12.10
     "@types/pluralize": ^0.0.33
     commander: ^11.1.0
     dotenv: ^16.3.1
@@ -4640,7 +4642,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-docs-generator@workspace:packages/react-docs-generator"
   dependencies:
-    "@types/node": ^20.9.4
+    "@types/node": ^20.12.10
     chalk: ^5.3.0
     commander: ^11.1.0
     glob: ^10.3.10
@@ -4847,7 +4849,7 @@ __metadata:
     "@actions/core": ^1.10.1
     "@linear/sdk": ^1.22.0
     "@octokit/core": ^4.0.5
-    "@types/node": ^20.8.3
+    "@types/node": ^20.12.10
     "@types/randomcolor": ^0.5.8
     chalk: ^5.3.0
     glob: ^10.3.10
@@ -5353,7 +5355,7 @@ __metadata:
   dependencies:
     "@medusajs/core-flows": "link:../../../../packages/core/core-flows"
     "@medusajs/workflows-sdk": "link:../../../../packages/core/workflows-sdk"
-    "@types/node": ^20.9.4
+    "@types/node": ^20.12.10
     "@types/pluralize": ^0.0.33
     chalk: ^5.3.0
     commander: ^11.1.0
@@ -5380,7 +5382,7 @@ __metadata:
   resolution: "typedoc-plugin-custom@workspace:packages/typedoc-plugin-custom"
   dependencies:
     "@types/eslint": ^8.56.6
-    "@types/node": ^16.11.10
+    "@types/node": ^20.12.10
     eslint: ^8.53.0
     glob: ^10.3.10
     minimatch: ^10.0.1
@@ -5397,7 +5399,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "typedoc-plugin-markdown-medusa@workspace:packages/typedoc-plugin-markdown-medusa"
   dependencies:
-    "@types/node": ^16.11.10
+    "@types/node": ^20.12.10
     copyfiles: ^2.4.1
     handlebars: ^4.7.8
     typedoc: ^0.26.2
@@ -5427,7 +5429,7 @@ __metadata:
     "@medusajs/core-flows": "link:../../../../packages/core/core-flows"
     "@medusajs/workflows-sdk": "link:../../../../packages/core/workflows-sdk"
     "@types/eslint": ^8.56.6
-    "@types/node": ^16.11.10
+    "@types/node": ^20.12.10
     eslint: ^8.53.0
     glob: ^10.3.10
     types: "*"
@@ -5542,6 +5544,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~6.19.2":
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: 078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
+  languageName: node
+  linkType: hard
+
 "undici@npm:^5.25.4":
   version: 5.28.0
   resolution: "undici@npm:5.28.0"
@@ -5623,7 +5632,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "utils@workspace:packages/utils"
   dependencies:
-    "@types/node": ^16.11.10
+    "@types/node": ^20.12.10
     octokit: ^3.1.2
     rimraf: ^5.0.5
     typescript: 5.5
@@ -5710,7 +5719,7 @@ __metadata:
   dependencies:
     "@medusajs/workflows-sdk": latest
     "@mermaid-js/mermaid-cli": ^10.6.1
-    "@types/node": ^20.9.4
+    "@types/node": ^20.12.10
     commander: ^11.1.0
     ts-node: ^10.9.1
     typescript: 5.5

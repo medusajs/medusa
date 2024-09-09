@@ -6,7 +6,7 @@
  * x-authenticated: false
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/products/collections/retrieve
- *   description: Storefront guide: How to retrieve a collection.
+ *   description: "Storefront guide: How to retrieve a collection."
  * parameters:
  *   - name: id
  *     in: path

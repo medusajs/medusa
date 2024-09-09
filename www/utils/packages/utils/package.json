@@ -18,7 +18,7 @@
     "typedoc": "0.26.x"
   },
   "devDependencies": {
-    "@types/node": "^16.11.10",
+    "@types/node": "^20.12.10",
     "typescript": "5.5"
   },
   "dependencies": {

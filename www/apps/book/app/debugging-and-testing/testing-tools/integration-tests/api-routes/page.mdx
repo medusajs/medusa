@@ -1,3 +1,5 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Example: Write Integration Tests for API Routes`,
 }
@@ -5,6 +7,15 @@ export const metadata = {
 # {metadata.title}
 
 In this chapter, you'll learn how to write integration tests for API routes using the [medusaIntegrationTestRunner utility function](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
 
 ## Test a GET API Route
 
@@ -73,7 +84,7 @@ If you don't have a `test:integration` script in `package.json`, refer to the [M
 
 </Note>
 
-This runs your Medusa application and runs the tests available under the `src/integrations` directory.
+This runs your Medusa application and runs the tests available under the `src/integrations/http` directory.
 
 ---
 
