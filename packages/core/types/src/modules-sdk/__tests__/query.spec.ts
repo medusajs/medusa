@@ -1,6 +1,9 @@
 import { expectTypeOf } from "expect-type"
 import { FixtureEntryPoints } from "../__fixtures__/remote-query"
-import { QueryGraphFunction } from "../remote-query"
+import {
+  QueryGraphFunction,
+  RemoteQueryFunctionReturnPagination,
+} from "../remote-query"
 
 describe("Query", () => {
   describe("Infer via queryConfig", () => {
@@ -13,7 +16,7 @@ describe("Query", () => {
 
       expectTypeOf(result).toEqualTypeOf<{
         data: FixtureEntryPoints["product"][]
-        metadata?: any
+        metadata?: RemoteQueryFunctionReturnPagination
       }>()
     })
 
@@ -26,7 +29,7 @@ describe("Query", () => {
 
       expectTypeOf(result).toEqualTypeOf<{
         data: any[]
-        metadata?: any
+        metadata?: RemoteQueryFunctionReturnPagination
       }>()
     })
   })
