@@ -3,18 +3,15 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetWorkflowExecutionsParams>,
   res: MedusaResponse<HttpTypes.AdminWorkflowExecutionListResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const queryObject = remoteQueryObjectFromString({
+  const { data: workflowExecutions, metadata } = await query.graph({
     entryPoint: "workflow_execution",
     variables: {
       filters: req.filterableFields,
@@ -23,12 +20,10 @@ export const GET = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: workflowExecutions, metadata } = await remoteQuery(queryObject)
-
   res.json({
     workflow_executions: workflowExecutions,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    count: metadata?.count,
+    offset: metadata?.skip,
+    limit: metadata?.take,
   })
 }
