@@ -8,11 +8,13 @@ export const refetchTaxRegion = async (
 ) => {
   const query = scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const taxRegions = await query.graph({
+  const {
+    data: [taxRegion],
+  } = await query.graph({
     entryPoint: "taxRegion",
-    variables: { id: taxRegionId },
+    variables: { filters: { id: taxRegionId } },
     fields: fields,
   })
 
-  return taxRegions[0]
+  return taxRegion
 }

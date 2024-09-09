@@ -34,7 +34,7 @@ export const GET = async (
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data: taxRegions, metadata } = await query.graph({
+  const { data: tax_regions, metadata } = await query.graph({
     entryPoint: "tax_region",
     variables: {
       filters: req.filterableFields,
@@ -44,7 +44,7 @@ export const GET = async (
   })
 
   res.status(200).json({
-    tax_regions: taxRegions,
+    tax_regions,
     count: metadata?.count,
     offset: metadata?.skip,
     limit: metadata?.take,
