@@ -8,65 +8,6 @@ export const metadata = {
 
 The Region Module is the `@medusajs/region` NPM package that provides region-related features in your Medusa and Node.js applications.
 
-## What is a Region?
-
-A region represents the area you sell products in. Each region can cover multiple countries, but uses a single currency.
-
----
-
-## Features
-
-### Region Management
-
-You can manage your regions to create, update, retrieve, or delete them.
-
-```ts
-const region = await regionModuleService.createRegions({
-  name: "Europe",
-  currency_code: "eur",
-})
-```
-
-### Multi-Currency Support
-
-As each region has a currency, you can support multiple currencies in your store by creating multiple regions.
-
-```ts
-const regions = await regionModuleService.createRegions([
-  {
-    name: "Europe",
-    currency_code: "eur",
-  },
-  {
-    name: "United States of America",
-    currency_code: "usd",
-  },
-])
-```
-
-### Different Settings Per Region
-
-Each region has its own settings, such as what countries belong to a region or its tax settings. Each region has different tax rates, payment providers, and more provided by other commerce modules.
-
-```ts
-const regions = await regionModuleService.createRegions([
-  {
-    name: "Europe",
-    currency_code: "eur",
-    countries: ["dk", "de", "fr", "it", "pt"],
-    automatic_taxes: true,
-  },
-  {
-    name: "United States of America",
-    currency_code: "usd",
-    countries: ["us"],
-    payment_providers: ["stripe"],
-  },
-])
-```
-
----
-
 ## How to Use Region Module's Service
 
 You can use the Region Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.REGION` imported from `@medusajs/utils`.
@@ -131,3 +72,62 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## What is a Region?
+
+A region represents the area you sell products in. Each region can cover multiple countries, but uses a single currency.
+
+---
+
+## Features
+
+### Region Management
+
+You can manage your regions to create, update, retrieve, or delete them.
+
+```ts
+const region = await regionModuleService.createRegions({
+  name: "Europe",
+  currency_code: "eur",
+})
+```
+
+### Multi-Currency Support
+
+As each region has a currency, you can support multiple currencies in your store by creating multiple regions.
+
+```ts
+const regions = await regionModuleService.createRegions([
+  {
+    name: "Europe",
+    currency_code: "eur",
+  },
+  {
+    name: "United States of America",
+    currency_code: "usd",
+  },
+])
+```
+
+### Different Settings Per Region
+
+Each region has its own settings, such as what countries belong to a region or its tax settings. Each region has different tax rates, payment providers, and more provided by other commerce modules.
+
+```ts
+const regions = await regionModuleService.createRegions([
+  {
+    name: "Europe",
+    currency_code: "eur",
+    countries: ["dk", "de", "fr", "it", "pt"],
+    automatic_taxes: true,
+  },
+  {
+    name: "United States of America",
+    currency_code: "usd",
+    countries: ["us"],
+    payment_providers: ["stripe"],
+  },
+])
+```

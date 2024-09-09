@@ -9,68 +9,6 @@ export const metadata = {
 
 The Payment Module is the `@medusajs/payment` NPM package that provides payment-related features in your Medusa and Node.js applications.
 
-## Features
-
-### Add Payment Functionalities to Any Resource
-
-The Payment Module provides payment functionalities that allow you to process payment of any resource, such as a cart.
-
-All payment processing starts with creating a payment collection.
-
-```ts
-const paymentCollection = await paymentModuleService.createPaymentCollections({
-  region_id: "reg_123",
-  currency_code: "usd",
-  amount: 5000,
-})
-```
-
-### Authorize, Capture, and Refund Payment
-
-The Payment Module provides essential features to receive and handle payments, including authorizing, capturing, and refunding payment.
-
-```ts
-await paymentModuleService.capturePayment({
-  payment_id: "pay_1",
-})
-```
-
-### Integrate Third-Party Payment Providers
-
-Use payment providers like Stripe to handle and process payments.
-
-```ts
-const payment = await paymentModuleService.createPaymentSession("pay_col_1", {
-  provider_id: "stripe",
-  amount: 1000,
-  currency_code: "usd",
-  data: {
-    // necessary data for the payment provider
-  },
-})
-```
-
-### Handle Webhook Events
-
-The Payment Module allows you to handle webhook events from third-party providers and process the associated payment.
-
-```ts
-await paymentModuleService.processEvent({
-  provider: "stripe",
-  payload: {
-    // webhook payload
-  },
-})
-```
-
----
-
-## Configure Payment Module
-
-Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
-
----
-
 ## How to Use Payment Module's Service
 
 You can use the Payment Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.PAYMENT` imported from `@medusajs/utils`.
@@ -137,3 +75,65 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## Features
+
+### Add Payment Functionalities to Any Resource
+
+The Payment Module provides payment functionalities that allow you to process payment of any resource, such as a cart.
+
+All payment processing starts with creating a payment collection.
+
+```ts
+const paymentCollection = await paymentModuleService.createPaymentCollections({
+  region_id: "reg_123",
+  currency_code: "usd",
+  amount: 5000,
+})
+```
+
+### Authorize, Capture, and Refund Payment
+
+The Payment Module provides essential features to receive and handle payments, including authorizing, capturing, and refunding payment.
+
+```ts
+await paymentModuleService.capturePayment({
+  payment_id: "pay_1",
+})
+```
+
+### Integrate Third-Party Payment Providers
+
+Use payment providers like Stripe to handle and process payments.
+
+```ts
+const payment = await paymentModuleService.createPaymentSession("pay_col_1", {
+  provider_id: "stripe",
+  amount: 1000,
+  currency_code: "usd",
+  data: {
+    // necessary data for the payment provider
+  },
+})
+```
+
+### Handle Webhook Events
+
+The Payment Module allows you to handle webhook events from third-party providers and process the associated payment.
+
+```ts
+await paymentModuleService.processEvent({
+  provider: "stripe",
+  payload: {
+    // webhook payload
+  },
+})
+```
+
+---
+
+## Configure Payment Module
+
+Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
