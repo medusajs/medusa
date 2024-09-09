@@ -22,7 +22,7 @@ export type GraphResultSet<TEntry extends string> = {
   data: TEntry extends keyof RemoteQueryEntryPoints
     ? RemoteQueryEntryPoints[TEntry][]
     : any[]
-  metadata?: any
+  metadata?: RemoteQueryFunctionReturnPagination
 }
 
 /**
