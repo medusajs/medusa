@@ -6,7 +6,7 @@
  * description: Update a line item's details in the cart.
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items#update-line-item-in-cart
- *   description: Storefront guide: How to update a cart's line item.
+ *   description: "Storefront guide: How to update a cart's line item."
  * x-authenticated: false
  * parameters:
  *   - name: id
