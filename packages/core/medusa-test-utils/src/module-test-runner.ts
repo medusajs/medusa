@@ -49,9 +49,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   if (!moduleModels) {
     const basePath = normalizeImportPathWithSource(resolve ?? process.cwd())
 
-    const modelsPath = fs.existsSync(`${basePath}/src/models`)
-      ? "/src/models"
-      : fs.existsSync(`${basePath}/dist/models`)
+    const modelsPath = fs.existsSync(`${basePath}/dist/models`)
       ? "/dist/models"
       : fs.existsSync(`${basePath}/models`)
       ? "/models"
