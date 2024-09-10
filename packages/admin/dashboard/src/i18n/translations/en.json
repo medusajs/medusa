@@ -1714,7 +1714,11 @@
       "campaign": {
         "existing": {
           "title": "Existing Campaign",
-          "description": "Add promotion to an existing campaign."
+          "description": "Add promotion to an existing campaign.",
+          "placeholder": {
+            "title": "No existing campaigns",
+            "desc": "You can create one to track multiple promotions and set budget limits."
+          }
         },
         "new": {
           "title": "New Campaign",
