@@ -91,7 +91,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const [address] = await customerModuleService.listAddresses({
+        const [address] = await customerModuleService\.listCustomerAddresses({
           customer_id: customer.id,
           is_default_shipping: true,
         })
@@ -126,7 +126,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const [address] = await customerModuleService.listAddresses({
+        const [address] = await customerModuleService\.listCustomerAddresses({
           customer_id: customer.id,
           is_default_billing: true,
         })
