@@ -18,7 +18,7 @@ Remote Query is now deprecated in favor of Query. Follow this documentation to s
 
 Query fetches data across modules. It’s a set of methods registered in the Medusa container under the `query` key.
 
-In your resources, such as API routes or workflows, you can resolve the Query to fetch data across custom modules and Medusa’s commerce modules.
+In your resources, such as API routes or workflows, you can resolve Query to fetch data across custom modules and Medusa’s commerce modules.
 
 ---
 
@@ -27,7 +27,7 @@ In your resources, such as API routes or workflows, you can resolve the Query to
 For example, create the route `src/api/store/query/route.ts` with the following content:
 
 export const exampleHighlights = [
-  ["13", "", "Resolve the Query from the Medusa container."],
+  ["13", "", "Resolve Query from the Medusa container."],
   ["15", "graph", "Run a query to retrieve data."],
   ["16", "entryPoint", "The name of the data model you're querying."],
   ["17", "fields", "An array of the data model’s properties to retrieve in the result."],
@@ -57,7 +57,7 @@ export const GET = async (
 }
 ```
 
-In the above example, you resolve the Query from the Medusa container using the `ContainerRegistrationKeys.QUERY` (`query`) key.
+In the above example, you resolve Query from the Medusa container using the `ContainerRegistrationKeys.QUERY` (`query`) key.
 
 Then, you run a query using its `graph` method. This method accepts as a parameter an object with the following required properties:
 

@@ -563,7 +563,7 @@ To create the API route that retrieves the vendor’s products, create the file 
 
 export const retrieveProductHighlights = [
   ["16", "retrieveVendorAdmin", "Retrive the vendor admin to retrieve its vendor's ID."],
-  ["23", "graph", "Retrieve the vendor's products using the Query."]
+  ["23", "graph", "Retrieve the vendor's products using Query."]
 ]
 
 ```ts title="src/api/vendors/products/route.ts" highlights={retrieveProductHighlights}
@@ -605,7 +605,7 @@ export const GET = async (
 }
 ```
 
-This adds a `GET` API route at `/vendors/products` that, using the Query, retrieves the list of products of the vendor and returns them in the response.
+This adds a `GET` API route at `/vendors/products` that, using Query, retrieves the list of products of the vendor and returns them in the response.
 
 To add the create product API route, add to the same file the following:
 
@@ -780,7 +780,7 @@ curl 'http://localhost:9000/vendors/products' \
 
 ### Further Reads
 
-- [How to use the Query](!docs!/advanced-development/modules/query)
+- [How to use Query](!docs!/advanced-development/modules/query)
 - [How to use the Remote Link](!docs!/advanced-development/modules/remote-link)
 
 ---
