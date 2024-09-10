@@ -1,3 +1,5 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Write Tests for Modules`,
 }
@@ -5,6 +7,15 @@ export const metadata = {
 # {metadata.title}
 
 In this chapter, you'll learn about the `moduleIntegrationTestRunner` utility function and how to use it to write integration tests for a module's main service.
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
 
 ## moduleIntegrationTestRunner Utility
 
@@ -47,6 +58,24 @@ The tests in the `testSuite` function are written using [Jest](https://jestjs.io
 
 ---
 
+## Run Tests
+
+Run the following command to run your module integration tests:
+
+```bash npm2yarn
+npm run test:modules
+```
+
+<Note title="Tip">
+
+If you don't have a `test:modules` script in `package.json`, refer to the [Medusa Testing Tools chapter](../page.mdx#add-test-commands).
+
+</Note>
+
+This runs your Medusa application and runs the tests available in any `__tests__` directory under the `src/modules` directory.
+
+---
+
 ## Pass Module Options
 
 If your module accepts options, you can set them using the `moduleOptions` property of the `moduleIntegrationTestRunner`'s parameter.
@@ -78,7 +107,9 @@ import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import HelloModuleService from "../service"
 import { model } from "@medusajs/utils"
 
-const DummyModel = model.define("dummy_model", {})
+const DummyModel = model.define("dummy_model", {
+  id: model.id().primaryKey()
+})
 
 moduleIntegrationTestRunner<HelloModuleService>({
   moduleModels: [DummyModel],

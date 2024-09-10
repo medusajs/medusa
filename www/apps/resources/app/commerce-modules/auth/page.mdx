@@ -8,74 +8,6 @@ export const metadata = {
 
 The Auth Module is the `@medusajs/auth` NPM package that provides authentication-related features in your Medusa and Node.js applications.
 
-## Features
-
-### Basic User Authentication
-
-With the Auth Module, authenticate users using their email and password credentials.
-
-```ts
-const { success, authIdentity, error } = await authModuleService.authenticate(
-  "emailpass",
-  {
-    url: req.url,
-    headers: req.headers,
-    query: req.query,
-    body: req.body,
-    authScope: "admin",
-    protocol: req.protocol,
-  } as AuthenticationInput
-)
-
-if (!success) {
-  // incorrect authentication details
-  throw new Error(error)
-}
-```
-
-### Third-Party and Social Authentication
-
-The Auth Module supports a variety of authentication methods, such as authenticating with third-party services and social platforms.
-
-```ts
-// in authentication API route
-const { success, authIdentity, location } =
-  await authModuleService.authenticate("google", {
-    url: req.url,
-    headers: req.headers,
-    query: req.query,
-    body: req.body,
-    authScope: "admin",
-    protocol: req.protocol,
-  } as AuthenticationInput)
-
-if (!authIdentity && location) {
-  res.redirect(location)
-  return
-}
-
-// in callback API route
-const { success, authIdentity } = await authModuleService.validateCallback(
-  "google",
-  {
-    url: req.url,
-    headers: req.headers,
-    query: req.query,
-    body: req.body,
-    authScope: "admin",
-    protocol: req.protocol,
-  } as AuthenticationInput
-)
-```
-
----
-
-## Configure Auth Module
-
-Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
-
----
-
 ## How to Use Auth Module's Service
 
 You can use the Auth Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.AUTH` imported from `@medusajs/utils`.
@@ -139,3 +71,70 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## Features
+
+### Basic User Authentication
+
+With the Auth Module, authenticate users using their email and password credentials.
+
+```ts
+const { success, authIdentity, error } = await authModuleService.authenticate(
+  "emailpass",
+  {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput
+)
+
+if (!success) {
+  // incorrect authentication details
+  throw new Error(error)
+}
+```
+
+### Third-Party and Social Authentication
+
+The Auth Module supports a variety of authentication methods, such as authenticating with third-party services and social platforms.
+
+```ts
+// in authentication API route
+const { success, authIdentity, location } =
+  await authModuleService.authenticate("google", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput)
+
+if (location) {
+  return res.json({ location })
+}
+
+// in callback API route
+const { success, authIdentity } = await authModuleService.validateCallback(
+  "google",
+  {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput
+)
+```
+
+---
+
+## Configure Auth Module
+
+Refer to [this documentation](./module-options/page.mdx) for details on the module's options.

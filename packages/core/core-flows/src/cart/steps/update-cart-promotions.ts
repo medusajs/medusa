@@ -5,7 +5,7 @@ import {
   Modules,
   PromotionActions,
 } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export interface UpdateCartPromotionStepInput {
   id: string
@@ -33,9 +33,10 @@ export const updateCartPromotionsStep = createStep(
     )
 
     const existingCartPromotionLinks = await remoteQuery({
-      cart_promotion: {
-        __args: { cart_id: [id] },
-        fields: ["cart_id", "promotion_id"],
+      entryPoint: "cart_promotion",
+      fields: ["cart_id", "promotion_id"],
+      variables: {
+        cart_id: [id],
       },
     })
 

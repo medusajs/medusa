@@ -13,9 +13,17 @@ export type ComputeActions =
 /**
  * These computed action types can affect a campaign's budget.
  */
-export type UsageComputedActions =
-  | AddShippingMethodAdjustment
-  | AddItemAdjustmentAction
+export type UsageComputedActions = {
+  /**
+   * The amount to remove off the shipping method's total.
+   */
+  amount: BigNumberInput
+
+  /**
+   * The promotion's code.
+   */
+  code: string
+}
 
 /**
  * This action indicates that the promotions within a campaign can no longer be used

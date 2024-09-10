@@ -49,10 +49,11 @@
  *                 workflowId:
  *                   type: string
  *                   description: The ID of the executed workflow.
- *                   name: workflowId
+ *                   title: workflowId
  *                 transactionId:
  *                   type: string
  *                   description: The ID of the workflow exection's transaction. Use this later to track the workflow execution's progress or succeed / fail its steps.
+ *                   title: transactionId
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

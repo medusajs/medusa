@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateVariantInventoryItem
  * type: object
- * description: SUMMARY
+ * description: The details of the variant-inventory item association.
  * x-schemaName: AdminCreateVariantInventoryItem
  * required:
  *   - required_quantity
@@ -10,11 +10,11 @@
  *   required_quantity:
  *     type: number
  *     title: required_quantity
- *     description: The product's required quantity.
+ *     description: The quantity of the variant in the inventory item.
  *   inventory_item_id:
  *     type: string
  *     title: inventory_item_id
- *     description: The product's inventory item id.
+ *     description: The inventory item's ID.
  * 
 */
 

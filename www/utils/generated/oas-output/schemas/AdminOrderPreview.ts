@@ -7,8 +7,8 @@
  *   - return_requested_total
  *   - order_change
  *   - currency_code
- *   - id
  *   - version
+ *   - id
  *   - region_id
  *   - customer_id
  *   - sales_channel_id
@@ -467,14 +467,14 @@
  *     type: string
  *     title: currency_code
  *     description: The order preview's currency code.
- *   id:
- *     type: string
- *     title: id
- *     description: The order preview's ID.
  *   version:
  *     type: number
  *     title: version
  *     description: The order preview's version.
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The order preview's ID.
  *   region_id:
  *     type: string
  *     title: region_id

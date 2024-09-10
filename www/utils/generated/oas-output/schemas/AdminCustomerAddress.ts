@@ -30,39 +30,39 @@
  *   address_name:
  *     type: string
  *     title: address_name
- *     description: The address's address name.
+ *     description: The address's name.
  *   is_default_shipping:
  *     type: boolean
  *     title: is_default_shipping
- *     description: The address's is default shipping.
+ *     description: Whether the address is the default shipping address.
  *   is_default_billing:
  *     type: boolean
  *     title: is_default_billing
- *     description: The address's is default billing.
+ *     description: Whether the address is the default billing address.
  *   customer_id:
  *     type: string
  *     title: customer_id
- *     description: The address's customer id.
+ *     description: The ID of the customer that this address belongs to.
  *   company:
  *     type: string
  *     title: company
- *     description: The address's company.
+ *     description: The customer's company.
  *   first_name:
  *     type: string
  *     title: first_name
- *     description: The address's first name.
+ *     description: The customer's first name.
  *   last_name:
  *     type: string
  *     title: last_name
- *     description: The address's last name.
+ *     description: The customer's last name.
  *   address_1:
  *     type: string
  *     title: address_1
- *     description: The address's address 1.
+ *     description: The address's first line.
  *   address_2:
  *     type: string
  *     title: address_2
- *     description: The address's address 2.
+ *     description: The address's second line.
  *   city:
  *     type: string
  *     title: city
@@ -71,6 +71,7 @@
  *     type: string
  *     title: country_code
  *     description: The address's country code.
+ *     example: us
  *   province:
  *     type: string
  *     title: province
@@ -85,17 +86,17 @@
  *     description: The address's phone.
  *   metadata:
  *     type: object
- *     description: The address's metadata.
+ *     description: The address's metadata, used to store custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The address's created at.
+ *     description: The address's creation date.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The address's updated at.
+ *     description: The address's update date.
  * 
 */
 

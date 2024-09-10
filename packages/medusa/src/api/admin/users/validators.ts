@@ -38,3 +38,4 @@ export const AdminUpdateUser = z.object({
   last_name: z.string().nullish(),
   avatar_url: z.string().nullish(),
 })
+

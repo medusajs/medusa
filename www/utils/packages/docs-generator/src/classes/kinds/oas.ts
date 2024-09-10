@@ -69,7 +69,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       requiresAuthentication: true,
     },
     {
-      startsWith: "store/customers/me",
+      startsWith: "store/customers",
       requiresAuthentication: true,
     },
   ]
@@ -779,7 +779,9 @@ class OasKindGenerator extends FunctionKindGenerator {
       oasPath.startsWith("admin")
     const isStoreAuthenticated = hasAuthenticationOverride
       ? oasPath.startsWith("store")
-      : !isAuthenticationDisabled && oasPath.startsWith("store")
+      : !isAuthenticationDisabled &&
+        hasAuthenticationOverride &&
+        oasPath.startsWith("store")
     const isAuthenticated =
       isAdminAuthenticated || isStoreAuthenticated || hasAuthenticationOverride
 
@@ -1259,18 +1261,30 @@ class OasKindGenerator extends FunctionKindGenerator {
       return schemaFromFactory
     }
 
+    const isEnum = itemType.flags === ts.TypeFlags.Enum
+    const isEnumParent =
+      itemType.symbol &&
+      "parent" in itemType.symbol &&
+      (itemType.symbol.parent as ts.Symbol)?.valueDeclaration?.kind ===
+        ts.SyntaxKind.EnumDeclaration
+
     switch (true) {
-      case itemType.flags === ts.TypeFlags.Enum:
+      case isEnum || isEnumParent:
         const enumMembers: string[] = []
-        symbol?.members?.forEach((enumMember) => {
-          if ((enumMember.valueDeclaration as ts.EnumMember).initializer) {
-            enumMembers.push(
-              (
-                enumMember.valueDeclaration as ts.EnumMember
-              ).initializer!.getText()
-            )
-          }
-        })
+        if (isEnum) {
+          symbol?.members?.forEach((enumMember) => {
+            if ((enumMember.valueDeclaration as ts.EnumMember).initializer) {
+              enumMembers.push(
+                (
+                  enumMember.valueDeclaration as ts.EnumMember
+                ).initializer!.getText()
+              )
+            }
+          })
+        } else {
+          // the item itself is the enum member so add it to the array
+          enumMembers.push(itemType.symbol.getName())
+        }
         return {
           type: "string",
           description,
@@ -1610,8 +1624,9 @@ class OasKindGenerator extends FunctionKindGenerator {
             break
           }
 
+          const expressionName = (expression.name as ts.Identifier).getText()
           isRequired =
-            (expression.name as ts.Identifier).getText() !== "optional"
+            expressionName !== "optional" && expressionName !== "nullish"
           break
         case ts.SyntaxKind.QuestionToken:
           isRequired = false

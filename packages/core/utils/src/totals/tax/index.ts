@@ -4,23 +4,22 @@ import { MathBN } from "../math"
 
 export function calculateTaxTotal({
   taxLines,
-  includesTax,
   taxableAmount,
   setTotalField,
 }: {
   taxLines: Pick<TaxLineDTO, "rate">[]
-  includesTax?: boolean
   taxableAmount: BigNumberInput
   setTotalField?: string
 }) {
+  if (MathBN.lte(taxableAmount, 0)) {
+    return MathBN.convert(0)
+  }
+
   let taxTotal = MathBN.convert(0)
+
   for (const taxLine of taxLines) {
     const rate = MathBN.div(taxLine.rate, 100)
     let taxAmount = MathBN.mult(taxableAmount, rate)
-
-    if (includesTax) {
-      taxAmount = MathBN.div(taxAmount, MathBN.add(1, rate))
-    }
 
     if (setTotalField) {
       ;(taxLine as any)[setTotalField] = new BigNumber(taxAmount)
@@ -41,10 +40,18 @@ export function calculateAmountsWithTax({
   amount: number
   includesTax?: boolean
 }) {
+  const sumTaxRate = MathBN.div(
+    MathBN.sum(...((taxLines ?? []).map((taxLine) => taxLine.rate) ?? [])),
+    100
+  )
+
+  const taxableAmount = includesTax
+    ? MathBN.div(amount, MathBN.add(1, sumTaxRate))
+    : amount
+
   const tax = calculateTaxTotal({
     taxLines,
-    includesTax,
-    taxableAmount: amount,
+    taxableAmount,
   })
 
   return {

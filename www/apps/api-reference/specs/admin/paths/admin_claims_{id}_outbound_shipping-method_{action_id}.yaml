@@ -1,7 +1,15 @@
 post:
   operationId: PostClaimsIdOutboundShippingMethodAction_id
-  summary: Add Shipping Methods to Claim
-  description: Add a list of shipping methods to a claim.
+  summary: Update Outbound Shipping Method of a Claim
+  x-sidebar-summary: Update Outbound Shipping
+  description: >
+    Update the shipping method for delivering outbound items in a claim using
+    the `ID` of the method's `SHIPPING_ADD` action.
+
+
+    Every shipping method has an `actions` property, whose value is an array of
+    actions. You can check the action's name using its `action` property, and
+    use the value of the `id` property.
   x-authenticated: true
   parameters:
     - name: id
@@ -12,7 +20,7 @@ post:
         type: string
     - name: action_id
       in: path
-      description: The claim's action id.
+      description: The ID of the shipping method's `SHIPPING_ADD` action.
       required: true
       schema:
         type: string
@@ -42,35 +50,6 @@ post:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
-    - name: offset
-      in: query
-      description: The number of items to skip when retrieving a list.
-      required: false
-      schema:
-        type: number
-        title: offset
-        description: The number of items to skip when retrieving a list.
-    - name: limit
-      in: query
-      description: Limit the number of items returned in the list.
-      required: false
-      schema:
-        type: number
-        title: limit
-        description: Limit the number of items returned in the list.
-    - name: order
-      in: query
-      description: >-
-        The field to sort the data by. By default, the sort order is ascending.
-        To change the order to descending, prefix the field name with `-`.
-      required: false
-      schema:
-        type: string
-        title: order
-        description: >-
-          The field to sort the data by. By default, the sort order is
-          ascending. To change the order to descending, prefix the field name
-          with `-`.
   security:
     - api_token: []
     - cookie_auth: []
@@ -160,35 +139,6 @@ delete:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
-    - name: offset
-      in: query
-      description: The number of items to skip when retrieving a list.
-      required: false
-      schema:
-        type: number
-        title: offset
-        description: The number of items to skip when retrieving a list.
-    - name: limit
-      in: query
-      description: Limit the number of items returned in the list.
-      required: false
-      schema:
-        type: number
-        title: limit
-        description: Limit the number of items returned in the list.
-    - name: order
-      in: query
-      description: >-
-        The field to sort the data by. By default, the sort order is ascending.
-        To change the order to descending, prefix the field name with `-`.
-      required: false
-      schema:
-        type: string
-        title: order
-        description: >-
-          The field to sort the data by. By default, the sort order is
-          ascending. To change the order to descending, prefix the field name
-          with `-`.
   security:
     - api_token: []
     - cookie_auth: []

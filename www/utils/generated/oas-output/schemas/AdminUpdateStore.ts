@@ -3,11 +3,6 @@
  * type: object
  * description: SUMMARY
  * x-schemaName: AdminUpdateStore
- * required:
- *   - default_sales_channel_id
- *   - default_region_id
- *   - default_location_id
- *   - metadata
  * properties:
  *   name:
  *     type: string

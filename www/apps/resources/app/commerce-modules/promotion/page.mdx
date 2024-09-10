@@ -8,68 +8,6 @@ export const metadata = {
 
 The Promotion Module is the `@medusajs/promotion` NPM package that provides promotion-related features in your Medusa and Node.js applications.
 
-## Features
-
-### Discount Functionalities
-
-A promotion discounts an amount or percentage of a cart's items, shipping methods, or the entire order.
-
-The Promotion Module allows you to store and manage promotions.
-
-```ts
-const promotion = await promotionModuleService.createPromotions({
-  code: "10%OFF",
-  type: "standard",
-  application_method: {
-    type: "percentage",
-    target_type: "order",
-    value: "10",
-    currency_code: "usd",
-  },
-})
-```
-
-### Flexible Promotion Rules
-
-A promotion has rules that restricts when it's applied. For example, you can create a promotion that's only applied to VIP customers.
-
-```ts
-const promotion = await promotionModuleService.createPromotions({
-  code: "10%OFF",
-  type: "standard",
-  application_method: {
-    type: "percentage",
-    target_type: "order",
-    value: "10",
-    currency_code: "usd",
-  },
-  rules: [
-    {
-      attribute: "customer_group_id",
-      operator: "eq",
-      values: ["VIP"],
-    },
-  ],
-})
-```
-
-### Campaign Management
-
-A campaign combines promotions under the same conditions, such as start and end dates.
-
-A campaign can also have an identifier for tracking purposes, such as tracking through tools like Google Analytics.
-
-```ts
-const campaign = await promotionModuleService.createCampaigns({
-  name: "Summer Discounts",
-  campaign_identifier: "G-123445",
-  starts_at: new Date("2024-05-02"),
-  ends_at: new Date("2024-07-20"),
-})
-```
-
----
-
 ## How to Use the Promotion Module's Service
 
 You can use the Promotion Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.PROMOTION` imported from `@medusajs/utils`.
@@ -134,3 +72,65 @@ const step1 = createStep("step-1", async (_, { container }) => {
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## Features
+
+### Discount Functionalities
+
+A promotion discounts an amount or percentage of a cart's items, shipping methods, or the entire order.
+
+The Promotion Module allows you to store and manage promotions.
+
+```ts
+const promotion = await promotionModuleService.createPromotions({
+  code: "10%OFF",
+  type: "standard",
+  application_method: {
+    type: "percentage",
+    target_type: "order",
+    value: "10",
+    currency_code: "usd",
+  },
+})
+```
+
+### Flexible Promotion Rules
+
+A promotion has rules that restricts when it's applied. For example, you can create a promotion that's only applied to VIP customers.
+
+```ts
+const promotion = await promotionModuleService.createPromotions({
+  code: "10%OFF",
+  type: "standard",
+  application_method: {
+    type: "percentage",
+    target_type: "order",
+    value: "10",
+    currency_code: "usd",
+  },
+  rules: [
+    {
+      attribute: "customer_group_id",
+      operator: "eq",
+      values: ["VIP"],
+    },
+  ],
+})
+```
+
+### Campaign Management
+
+A campaign combines promotions under the same conditions, such as start and end dates.
+
+A campaign can also have an identifier for tracking purposes, such as tracking through tools like Google Analytics.
+
+```ts
+const campaign = await promotionModuleService.createCampaigns({
+  name: "Summer Discounts",
+  campaign_identifier: "G-123445",
+  starts_at: new Date("2024-05-02"),
+  ends_at: new Date("2024-07-20"),
+})
+```

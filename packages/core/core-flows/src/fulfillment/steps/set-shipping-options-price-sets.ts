@@ -6,7 +6,6 @@ import {
   LINKS,
   Modules,
   promiseAll,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
 export type SetShippingOptionsPriceSetsStepInput = {
@@ -28,16 +27,14 @@ async function getCurrentShippingOptionPriceSetsLinks(
   shippingOptionIds: string[],
   { remoteQuery }: { remoteQuery: RemoteQueryFunction }
 ): Promise<LinkItems> {
-  const query = remoteQueryObjectFromString({
+  const shippingOptionPriceSetLinks = (await remoteQuery({
     service: LINKS.ShippingOptionPriceSet,
     variables: {
       filters: { shipping_option_id: shippingOptionIds },
       take: null,
     },
     fields: ["shipping_option_id", "price_set_id"],
-  })
-
-  const shippingOptionPriceSetLinks = (await remoteQuery(query)) as {
+  } as any)) as {
     shipping_option_id: string
     price_set_id: string
   }[]

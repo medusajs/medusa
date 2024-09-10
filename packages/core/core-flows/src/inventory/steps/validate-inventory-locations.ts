@@ -1,8 +1,7 @@
 import {
+  arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
-  arrayDifference,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
 import { InventoryTypes } from "@medusajs/types"
@@ -19,15 +18,13 @@ export const validateInventoryLocationsStep = createStep(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
 
-    const locationQuery = remoteQueryObjectFromString({
+    const stockLocations = await remoteQuery({
       entryPoint: "stock_location",
       variables: {
         id: data.map((d) => d.location_id),
       },
       fields: ["id"],
     })
-
-    const stockLocations = await remoteQuery(locationQuery)
 
     const diff = arrayDifference(
       data.map((d) => d.location_id),

@@ -1812,6 +1812,7 @@ medusaIntegrationTestRunner({
         let paymentSession
         let stockLocation
         let inventoryItem
+        let promotion
 
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
@@ -1925,6 +1926,43 @@ medusaIntegrationTestRunner({
             },
           ])
 
+          promotion = (
+            await api.post(
+              `/admin/promotions`,
+              {
+                code: "TEST",
+                type: PromotionType.STANDARD,
+                is_automatic: true,
+                campaign: {
+                  campaign_identifier: "test",
+                  name: "test",
+                  budget: {
+                    type: "spend",
+                    limit: 1000,
+                    currency_code: region.currency_code,
+                  },
+                },
+                application_method: {
+                  target_type: "items",
+                  type: "fixed",
+                  allocation: "each",
+                  currency_code: region.currency_code,
+                  value: 10,
+                  max_quantity: 1,
+                  target_rules: [
+                    {
+                      attribute: "product_id",
+                      operator: "eq",
+                      values: [product.id],
+                    },
+                  ],
+                },
+                rules: [],
+              },
+              adminHeaders
+            )
+          ).data.promotion
+
           await api.post(
             `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
             { add: ["manual_test-provider"] },
@@ -2015,16 +2053,17 @@ medusaIntegrationTestRunner({
             type: "order",
             order: expect.objectContaining({
               id: expect.any(String),
-              total: 106,
+              total: 95.4,
               subtotal: 100,
-              tax_total: 6,
-              discount_total: 0,
-              discount_tax_total: 0,
+              tax_total: 5.4,
+              discount_total: 10.6,
+              discount_subtotal: 10,
+              discount_tax_total: 0.6,
               original_total: 106,
               original_tax_total: 6,
-              item_total: 106,
+              item_total: 95.4,
               item_subtotal: 100,
-              item_tax_total: 6,
+              item_tax_total: 5.4,
               original_item_total: 106,
               original_item_subtotal: 100,
               original_item_tax_total: 6,
@@ -2040,17 +2079,28 @@ medusaIntegrationTestRunner({
                   product_id: product.id,
                   unit_price: 100,
                   quantity: 1,
-                  tax_total: 6,
+                  tax_total: 5.4,
+                  total: 95.4,
                   subtotal: 100,
-                  total: 106,
                   original_total: 106,
-                  discount_total: 0,
+                  discount_total: 10.6,
+                  discount_subtotal: 10,
+                  discount_tax_total: 0.6,
+                  original_tax_total: 6,
                   tax_lines: [
                     expect.objectContaining({
                       rate: 6,
                     }),
                   ],
-                  adjustments: [],
+                  adjustments: [
+                    expect.objectContaining({
+                      amount: 10,
+                      promotion_id: promotion.id,
+                      code: promotion.code,
+                      subtotal: 10,
+                      total: 10.6,
+                    }),
+                  ],
                 }),
               ],
               shipping_address: expect.objectContaining({
@@ -2061,6 +2111,12 @@ medusaIntegrationTestRunner({
               }),
             }),
           })
+
+          promotion = (
+            await api.get(`/admin/promotions/${promotion.id}`, adminHeaders)
+          ).data.promotion
+
+          expect(promotion.campaign.budget.used).toEqual(10)
 
           const reservation = await api.get(`/admin/reservations`, adminHeaders)
           const reservationItem = reservation.data.reservations[0]
@@ -2086,7 +2142,7 @@ medusaIntegrationTestRunner({
               payment_collections: [
                 expect.objectContaining({
                   currency_code: "usd",
-                  amount: 106,
+                  amount: 95.4,
                   status: "authorized",
                 }),
               ],

@@ -11,7 +11,7 @@
       "packages/cli/*",
       "packages/cli/oas/*",
       "packages/*",
-      "packages/admin-next/*",
+      "packages/admin/*",
       "packages/design-system/*",
       "packages/generated/*",
       "integration-tests/**/*"
