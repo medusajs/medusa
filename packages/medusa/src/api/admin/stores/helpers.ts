@@ -1,7 +1,6 @@
 import { MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
 export const refetchStore = async (
@@ -9,8 +8,9 @@ export const refetchStore = async (
   scope: MedusaContainer,
   fields: string[]
 ) => {
-  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const queryObject = remoteQueryObjectFromString({
+  const query = scope.resolve(ContainerRegistrationKeys.QUERY))
+
+  const { data: [store] } = await query.graph({
     entryPoint: "store",
     variables: {
       filters: { id: storeId },
@@ -18,6 +18,5 @@ export const refetchStore = async (
     fields: fields,
   })
 
-  const stores = await remoteQuery(queryObject)
-  return stores[0]
+  return store
 }

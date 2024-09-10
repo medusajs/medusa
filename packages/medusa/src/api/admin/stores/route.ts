@@ -1,7 +1,4 @@
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -12,9 +9,12 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminStoreListParams>,
   res: MedusaResponse<HttpTypes.AdminStoreListResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const queryObject = remoteQueryObjectFromString({
+  const {
+    data: [stores],
+    metadata,
+  } = await query.graph({
     entryPoint: "store",
     variables: {
       filters: req.filterableFields,
@@ -23,11 +23,10 @@ export const GET = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: stores, metadata } = await remoteQuery(queryObject)
   res.json({
     stores,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    count: metadata?.count,
+    offset: metadata?.skip,
+    limit: metadata?.take,
   })
 }

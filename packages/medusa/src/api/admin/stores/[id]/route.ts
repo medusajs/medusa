@@ -16,16 +16,15 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetStoreParamsType>,
   res: MedusaResponse<HttpTypes.AdminStoreResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const variables = { id: req.params.id }
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const variables = { id: req.params.id })
 
-  const queryObject = remoteQueryObjectFromString({
+  const { data: [store] } = await query.graph({
     entryPoint: "store",
     variables,
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [store] = await remoteQuery(queryObject)
   res.status(200).json({ store })
 }
 
