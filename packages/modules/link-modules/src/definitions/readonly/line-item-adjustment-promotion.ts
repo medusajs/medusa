@@ -9,6 +9,7 @@ export const LineItemAdjustmentPromotion: ModuleJoinerConfig = {
       serviceName: Modules.CART,
       relationship: {
         serviceName: Modules.PROMOTION,
+        entity: "Promotion",
         primaryKey: "id",
         foreignKey: "promotion_id",
         alias: "promotion",

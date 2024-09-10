@@ -139,7 +139,7 @@ export const initialize = async (
     for (const alias of definition.alias) {
       alias.args ??= {}
 
-      alias.args.entity = toPascalCase(
+      alias.entity = toPascalCase(
         "Link_" +
           (definition.databaseConfig?.tableName ??
             composeTableName(
