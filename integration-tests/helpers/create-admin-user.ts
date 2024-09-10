@@ -1,6 +1,7 @@
 import { IAuthModuleService, IUserModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
+import Scrypt from "scrypt-kdf"
 import { getContainer } from "../environment-helpers/use-container"
 
 export const adminHeaders = {
@@ -26,13 +27,16 @@ export const createAdminUser = async (
     email: "admin@medusa.js",
   })
 
+  const hashConfig = { logN: 15, r: 8, p: 1 }
+  const passwordHash = await Scrypt.kdf("somepassword", hashConfig)
+
   const authIdentity = await authModule.createAuthIdentities({
     provider_identities: [
       {
         provider: "emailpass",
         entity_id: "admin@medusa.js",
         provider_metadata: {
-          password: "somepassword",
+          password: passwordHash.toString("base64"),
         },
       },
     ],
@@ -55,5 +59,5 @@ export const createAdminUser = async (
 
   adminHeaders.headers["authorization"] = `Bearer ${token}`
 
-  return { user }
+  return { user, authIdentity }
 }
