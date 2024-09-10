@@ -1,14 +1,12 @@
 export const metadata = {
-  title: `${pageNumber} How to Pass Additional Data to Extend API Routes`,
+  title: `${pageNumber} Pass Additional Data to Extend API Routes`,
 }
+
+# {metadata.title}
 
 In this chapter, you'll learn how to extend existing API routes to pass additional data and perform additional functionalities.
 
 ## When to Pass Additional Data to API Routes?
-
-After you define links between data models, you want to expose functionalities in API routes that manage these links.
-
-For example, after linking brands to products, you want an admin user to set the brand of a product.
 
 Some API routes, such as the [Create Product API route](https://docs.medusajs.com/v2/api/admin#products_postproducts), accept an `additional_data` request body parameter. This parameter allows you to pass custom data to the API route, then use it to perform additional actions.
 

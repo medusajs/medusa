@@ -1,7 +1,7 @@
 import { CodeTab, CodeTabs, TypeList, Tabs, TabsList, TabsTriggerVertical, TabsContent, TabsContentWrapper } from "docs-ui"
 
 export const metadata = {
-  title: `${pageNumber} How to Query Linked Records`,
+  title: `${pageNumber} Query Linked Records using Remote Query`,
 }
 
 # {metadata.title}
@@ -49,7 +49,7 @@ export async function GET(
   })
 
   res.json({
-    my_customs: await remoteQuery(query),
+    brands: await remoteQuery(query),
   })
 }
 ```
@@ -76,7 +76,7 @@ For example, to retrieve the products of a brand:
 
 ```ts highlights={[["6"]]}
 const query = remoteQueryObjectFromString({
-  entryPoint: "my_custom",
+  entryPoint: "brand",
   fields: [
     "id", 
     "name",

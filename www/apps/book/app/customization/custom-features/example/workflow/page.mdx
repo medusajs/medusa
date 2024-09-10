@@ -61,7 +61,7 @@ export const createBrandStep = createStep(
 )
 ```
 
-This defines a `createBrandStep`. In the step, you resolve the Brand Module's main service and use its `createBrands` method, which accepts one or more brands to create.
+This defines a `createBrandStep`. In the step, you resolve the Brand Module's main service and use its generated `createBrands` method, which accepts one or more brands to create.
 
 The step returns the created brand in the first parameter of the `StepResponse`'s constructor.
 
@@ -84,7 +84,7 @@ export const createBrandStep = createStep(
 )
 ```
 
-The compensation function resolves the Brand Module's main service and uses its `deleteBrands` method to delete the brand created by the step. The `deleteBrands` method accepts an ID or an array of IDs of brands to delete.
+The compensation function resolves the Brand Module's main service and uses its generated `deleteBrands` method to delete the brand created by the step. The `deleteBrands` method accepts an ID or an array of IDs of brands to delete.
 
 So, when an error occurs during the workflow, the brand that was created by the step is deleted to maintain data consistency.
 

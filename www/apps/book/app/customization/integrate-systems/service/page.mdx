@@ -1,0 +1,143 @@
+export const metadata = {
+  title: `${pageNumber} Brand Example: Integration using Service`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll find an example of how to create a service in the Brand Module that integrates a third-party system.
+
+## 1. Create Service
+
+Start by creating the file `src/modules/brand/services/client.ts` with the following content:
+
+```ts title="src/modules/brand/services/client.ts"
+import { Logger } from "@medusajs/types"
+
+export type BrandClientOptions = {
+  apiKey: string
+}
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+export class BrandClient {
+  private options_: BrandClientOptions
+  private logger_: Logger
+
+  constructor ({ logger }: InjectedDependencies) {
+    this.logger_ = logger
+  }
+
+  setOptions(options: BrandClientOptions) {
+    this.options_ = options
+  }
+}
+```
+
+This creates a `BrandClient` service that, for now, resolves the `logger` from the container using dependency injection. The `logger` is used to log messages in the Medusa application's logs.
+
+You also define an `options_` property in your service to store the module's options, which are useful for connecting to a third-party system.
+
+Next, add the following methods to simulate sending requests to the third-party system:
+
+```ts title="src/modules/brand/services/client.ts"
+export class BrandClient {
+  // ...
+
+  // a dummy method to simulate sending a request,
+  // in a realistic scenario, you'd use an SDK, fetch, or axios clients
+  private async sendRequest(url: string, method: string, data?: any) {
+    this.logger_.info(`Sending a ${
+      method
+    } request to ${url}. data: ${JSON.stringify(data, null, 2)}`)
+    this.logger_.info(`Client Options: ${
+      JSON.stringify(this.options_, null, 2)
+    }`)
+  }
+
+  async createBrand(brand: Record<string, string>) {
+    await this.sendRequest("/brands", "POST", brand)
+  }
+
+  async deleteBrand(id: string) {
+    await this.sendRequest(`/brands/${id}`, "DELETE")
+  }
+
+  async retrieveBrands() {
+    await this.sendRequest("/brands", "GET")
+
+    return []
+  }
+}
+```
+
+The `sendRequest` method is a dummy method to simulate sending a request to a third-party system.
+
+You also add three methods that use the `sendRequest` method:
+
+- `createBrand` that creates a brand in the third-party system.
+- `deleteBrand` that deletes the brand in the third-party system.
+- `retrieveBrands` to retrieve a brand from the third-party system.
+
+---
+
+## 2. Export Service
+
+If the service integrating the third-party system is the module's main service, you only need to export it in the module definition.
+
+However, since this service is an internal service in the Brand Module, you must export it in an `src/modules/brand/services/index.ts` file:
+
+```ts title="src/modules/brand/services/index.ts"
+export * from "./client"
+```
+
+This registers the service in the Module's container, allowing you to access it in the module's main service.
+
+---
+
+## 3. Add Internal Service in Main Service
+
+In the main service at `src/modules/brand/service.ts`, add the following imports and types at the top of the file:
+
+```ts title="src/modules/brand/service.ts"
+// other imports...
+import { BrandClient, BrandClientOptions } from "./services";
+
+type InjectedDependencies = {
+  brandClient: BrandClient
+}
+```
+
+Then, add the following in the `BrandModuleService` class:
+
+```ts title="src/modules/brand/service.ts"
+class BrandModuleService extends MedusaService({
+  Brand
+}) {
+  public client: BrandClient
+
+  constructor({ brandClient }: InjectedDependencies, moduleOptions: BrandClientOptions) {
+    super(...arguments)
+
+    this.client = brandClient
+    this.client.setOptions(moduleOptions)
+  }
+}
+```
+
+In the main module service, you first resolve through dependency injection the `brandClient` from the container and set it in a public property `client`.
+
+Then, you use the `setOptions` method of the client to set its options to the module's options. That's because only the main service receives the module options as a second parameter in the constructor.
+
+<Note title="Tip">
+
+If the service integrating the third-party system was a main service, you'd use the options passed as a second parameter to its constructor instead.
+
+</Note>
+
+---
+
+## Next Steps: Implement Two-Way Sync
+
+In the next chapters, you'll learn how to implement two way syncs using the `BrandClient` service by handling events and scheduling tasks.

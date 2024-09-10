@@ -1,0 +1,239 @@
+export const metadata = {
+  title: `${pageNumber} Brand Example: Schedule Syncing Data from Third-Party System`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to use workflows and scheduled jobs to schedule syncing data from a third-party system. You'll use the Brand Module as an example.
+
+## 1. Implement Syncing Workflow
+
+Start by defining the workflow that syncs the data from the third-party system.
+
+The workflow has the following steps:
+
+1. Retrieve brands from the third-party system.
+2. Create new brands.
+3. Update existing brands.
+
+### Retrieve Brands Step
+
+To create the step that retrieves the brands from the third-party service, create the file `src/workflows/sync-brands-from-system/steps/retrieve-brands-from-system.ts` with the following content:
+
+```ts title="src/workflows/sync-brands-from-system/steps/retrieve-brands-from-system.ts"
+import {
+  createStep,
+  StepResponse
+} from "@medusajs/workflows-sdk"
+import BrandModuleService from "../../../modules/brand/service"
+import { BRAND_MODULE } from "../../../modules/brand"
+
+export const retrieveBrandsFromSystemStep = createStep(
+  "retrieve-brands-from-system",
+  async (_, { container }) => {
+    const brandModuleService: BrandModuleService = container.resolve(
+      BRAND_MODULE
+    )
+
+    const brands = await brandModuleService.client.retrieveBrands()
+
+    return new StepResponse(brands)
+  }
+)
+```
+
+This step resolved the Brand Module's main service from the container, and uses its client service to retrieve the brands from the third-party system.
+
+The step returns the retrieved brands.
+
+### Create Brands Step
+
+Next, create the step that creates new brands in the file `src/workflows/sync-brands-from-system/steps/create-brands.ts`:
+
+```ts title="src/workflows/sync-brands-from-system/steps/create-brands.ts"
+import {
+  createStep,
+  StepResponse
+} from "@medusajs/workflows-sdk"
+import BrandModuleService from "../../../modules/brand/service"
+import { BRAND_MODULE } from "../../../modules/brand"
+
+type CreateBrandsInput = {
+  brands: Record<string, string>[]
+}
+
+export const createBrandsStep = createStep(
+  "create-brand-step",
+  async (input: CreateBrandsInput, { container }) => {
+    const brandModuleService: BrandModuleService = container.resolve(
+      BRAND_MODULE
+    )
+
+    const brands = await brandModuleService.createBrands(input.brands)
+
+    return new StepResponse(brands, brands.map((brand) => brand.id))
+  },
+  async (ids: string[], { container }) => {
+    const brandModuleService: BrandModuleService = container.resolve(
+      BRAND_MODULE
+    )
+
+    await brandModuleService.deleteBrands(ids)
+  }
+)
+```
+
+This step receives the brands to create as input. It resolves the Brand Module's main service and uses its `createBrands` method to create the brands.
+
+The created brands are returned. Their IDs are passed to the compensation function, which deletes the brands if an error occurs.
+
+### Update Brands Step
+
+To create the step that updates existing brands, create the file `src/workflows/sync-brands-from-system/steps/update-brands.ts` with the following content:
+
+```ts title="src/workflows/sync-brands-from-system/steps/update-brands.ts"
+import {
+  createStep,
+  StepResponse
+} from "@medusajs/workflows-sdk"
+import BrandModuleService from "../../../modules/brand/service"
+import { BRAND_MODULE } from "../../../modules/brand"
+
+type UpdateBrandsInput = {
+  brands: Record<string, string>[]
+}
+
+export const updateBrandsStep = createStep(
+  "update-brand-step",
+  async ({ brands }: UpdateBrandsInput, { container }) => {
+    const brandModuleService: BrandModuleService = container.resolve(
+      BRAND_MODULE
+    )
+
+    const prevUpdatedBrands = await brandModuleService.listBrands({
+      id: brands.map((brand) => brand.id)
+    })
+
+    const updatedBrands = await brandModuleService.updateBrands(brands)
+
+    return new StepResponse(updatedBrands, prevUpdatedBrands)
+  },
+  async (prevUpdatedBrands, { container }) => {
+    const brandModuleService: BrandModuleService = container.resolve(
+      BRAND_MODULE
+    )
+
+    await brandModuleService.updateBrands(prevUpdatedBrands)
+  }
+)
+```
+
+This step receives the brands to update as input. It retrieves the brands first to pass them later to the compensation function, then updates and returns the brands.
+
+In the compensation function, the brands are updated again but to their data before the brands were updated.
+
+### Create Workflow
+
+Finally, create the workflow in the file `src/workflows/sync-brands-from-system/index.ts` with the following content:
+
+```ts title="src/workflows/sync-brands-from-system/index.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+  transform
+} from "@medusajs/workflows-sdk"
+import { retrieveBrandsFromSystemStep } from "./steps/retrieve-brands-from-system"
+import { createBrandsStep } from "./steps/create-brands"
+import { updateBrandsStep } from "./steps/update-brands"
+
+export const syncBrandsFromSystemWorkflow = createWorkflow(
+  "sync-brands-from-system",
+  () => {
+    const brands = retrieveBrandsFromSystemStep()
+
+    // TODO create and update brands
+  }
+)
+```
+
+For now, the workflow only retrieves the brands using the `retrieveBrandsFromSystemStep`.
+
+Next, you need to identify which brands must be created or updated. Using the `transform` utility function imported from `@medusajs/workflows-sdk`, you can loop over the brands to separate them into brands to be created or updated.
+
+Replace the `TODO` with the following:
+
+```ts title="src/workflows/sync-brands-from-system/index.ts"
+const { toCreate, toUpdate } = transform(
+  {
+    brands
+  },
+  (data) => {
+    const toCreate: Record<string, string>[] = []
+    const toUpdate: Record<string, string>[] = []
+
+    data.brands.forEach((brand) => {
+      if (brand.external_id) {
+        toUpdate.push({
+          ...brand,
+          id: brand.external_id
+        })
+      } else {
+        toCreate.push(brand)
+      }
+    })
+
+    return { toCreate, toUpdate }
+  }
+)
+
+const created = createBrandsStep({ brands: toCreate })
+const updated = updateBrandsStep({ brands: toUpdate })
+
+return new WorkflowResponse({
+  created,
+  updated
+})
+```
+
+`transform` accepts two parameters: the first is the data to be passed to the function in the second parameter. The function in the second parameter is only executed when the workflow is executed, and its value is returned to be consumed by the rest of the workflow.
+
+In the second function parameter of `transform`, you loop over the brands retrieved from the third-party system. If a brand has an `external_id`, referring to the brand's ID in Medusa, you consider it as a brand to be updated. Otherwise, you consider it as a brand to be created.
+
+Then, you pass the brands to be created to the `createBrandsStep`, and the brands to be updated to the `updateBrandsStep`.
+
+Finally, you return the created and updated brands.
+
+---
+
+## 2. Schedule Syncing Task
+
+To schedule a task that syncs brands from the third-party system, create a scheduled job at `src/jobs/sync-brands-from-system.ts`:
+
+```ts title="src/jobs/sync-brands-from-system.ts"
+import { MedusaContainer } from "@medusajs/types";
+import { syncBrandsFromSystemWorkflow } from "../workflows/sync-brands-from-system";
+
+export default async function (container: MedusaContainer) {
+  const logger = container.resolve("logger")
+
+  const { result } = await syncBrandsFromSystemWorkflow(container).run()
+
+  logger.info(
+    `Synced brands from third-party system: ${
+      result.created.length
+    } brands created and ${result.updated.length} brands updated.`)
+}
+
+export const config = {
+  name: "sync-brands-from-system",
+  schedule: "* * * * *",
+}
+```
+
+This defines a scheduled job that runs every minute (for testing purposes). The scheduled job executes the `syncBrandsFromSystemWorkflow` and prints how many brands were created and updated.
+
+---
+
+## Test it Out
+
+To test it out, start the Medusa application. In a minute, the scheduled job will run and you'll see a logged message indicating how many brands were created or updated.

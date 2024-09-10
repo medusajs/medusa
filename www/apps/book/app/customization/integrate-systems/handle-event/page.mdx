@@ -1,0 +1,171 @@
+export const metadata = {
+  title: `${pageNumber} Brand Example: Handle Event to Sync Third-Party System`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to emit a custom event in your workflow, then handle that event in a subscriber.
+
+## 1. Emit Custom Event
+
+To handle brand-creation event, you'll emit a custom event when a brand is created.
+
+In the `createBrandWorkflow` defined in `src/workflows/create-brand/index.ts`, use the `emitEventStep` helper step imported from `@medusajs/core-flows` after the `createBrandStep`:
+
+
+```ts title="src/workflows/create-brand/index.ts"
+// other imports...
+import { 
+  emitEventStep
+} from "@medusajs/core-flows"
+
+// ...
+
+export const createBrandWorkflow = createWorkflow(
+  "create-brand",
+  (input: CreateBrandInput) => {
+    // ...
+
+    emitEventStep({
+      eventName: "brand.created",
+      data: brand
+    })
+
+    return new WorkflowResponse(brand)
+  }
+)
+```
+
+This emits the `brand.created` custom event, and passes in the event payload the created brand.
+
+---
+
+## 2. Add Sync to Third-Party System Workflow
+
+Next, you'll add the workflow that syncs the created brand to the third-party system.
+
+Create the file `src/workflows/sync-brand-to-system/index.ts` with the following content:
+
+```ts title="src/workflows/sync-brand-to-system/index.ts"
+import {
+  createWorkflow,
+  WorkflowResponse
+} from "@medusajs/workflows-sdk"
+import { createBrandInSystemStep } from "./steps/create-brand-in-system"
+
+export type SyncBrandToSystemInput = {
+  brand: Record<string, string>
+}
+
+export const syncBrandToSystemWorkflow = createWorkflow(
+  "sync-brand-to-system",
+  (input: SyncBrandToSystemInput) => {
+    // ...
+  }
+)
+```
+
+This defines an empty workflow and its expected input.
+
+Next, create the step that syncs the brand in the file `src/workflows/sync-brand-to-system/steps/create-brand-in-system.ts`:
+
+```ts title="src/workflows/sync-brand-to-system/steps/create-brand-in-system.ts"
+import {
+  createStep,
+  StepResponse
+} from "@medusajs/workflows-sdk"
+import { SyncBrandToSystemInput } from ".."
+import BrandModuleService from "../../../modules/brand/service"
+import { BRAND_MODULE } from "../../../modules/brand"
+
+export const createBrandInSystemStep = createStep(
+  "create-brand-in-system",
+  async ({ brand }: SyncBrandToSystemInput, { container }) => {
+    const brandModuleService: BrandModuleService = container.resolve(
+      BRAND_MODULE
+    )
+  
+    await brandModuleService.client.createBrand(brand)
+
+    return new StepResponse(null, brand.id)
+  },
+  async (id, { container }) => {
+    const brandModuleService: BrandModuleService = container.resolve(
+      BRAND_MODULE
+    )
+
+    await brandModuleService.client.deleteBrand(id)
+  }
+)
+```
+
+This step uses the `BrandClient`'s `createBrand` method to create the brand in the third-party system.
+
+In the compensation function, it deletes the brand from the third-party system.
+
+Finally, add the step to the `syncBrandToSystemWorkflow` in `src/workflows/sync-brand-to-system/index.ts`:
+
+```ts title="src/workflows/sync-brand-to-system/index.ts"
+// other imports...
+import { createBrandInSystemStep } from "./steps/create-brand-in-system"
+
+// ...
+
+export const syncBrandToSystemWorkflow = createWorkflow(
+  "sync-brand-to-system",
+  (input: SyncBrandToSystemInput) => {
+    createBrandInSystemStep(input)
+
+    return new WorkflowResponse(undefined)
+  }
+)
+```
+
+The workflow now calls the step and returned an `undefined` result.
+
+---
+
+## 3. Handle brand.created Event
+
+To handle the `brand.created` event, create a subscriber at `src/subscribers/brand-created.ts`:
+
+```ts title="src/subscribers/brand-created.ts"
+import type {
+  SubscriberConfig,
+  SubscriberArgs
+} from "@medusajs/medusa"
+import { syncBrandToSystemWorkflow } from "../workflows/sync-brand-to-system"
+
+export default async function brandCreatedHandler({
+  event: { data },
+  container
+}: SubscriberArgs<Record<string, string>>) {
+  await syncBrandToSystemWorkflow(container).run({
+    input: {
+      brand: data
+    }
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "brand.created",
+}
+```
+
+The subscriber handler accesses the event payload (that is, the brand) in the `event.data` property of its object parameter.
+
+It then executes the `syncBrandToSystemWorkflow`, passing it the brand to create.
+
+---
+
+## Test it Out
+
+To test it out, create a brand using the API route created in a [previous chapter](../../custom-features/example/api-route/page.mdx).
+
+If you check the logs, you'll find the `brand.created` event was emitted, and that the request to the third-party system was simulated.
+
+---
+
+## Next: Sync from Third-Party System to Medusa
+
+In the next chapter, you'll learn how to implement the other syncing direction, by syncing data from the third-party system to the Medusa application.

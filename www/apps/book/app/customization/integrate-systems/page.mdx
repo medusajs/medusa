@@ -1,0 +1,32 @@
+export const metadata = {
+  title: `${pageNumber} Integrate Third-Party Systems`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn the different approaches to integrating a third-party system.
+
+## Example Use Case: Syncing Brands
+
+Consider that the Brand Module you created in previous chapters is actually connected to a third-party system, such as a Content-Management System (CMS).
+
+In this use case scenario, you want to maintain two-way sync between the Medusa application's brands and the brands in the third-party system so that:
+
+1. When you create a brand in Medusa, you also want to create the brand in the third-party system.
+2. While the Medusa application is running, you want to sync the brands from the third-party system into Medusa.
+
+---
+
+## Integrate Third-Party Systems with Services
+
+As mentioned previously, integrations to third-party systems are implemented in services. It can either be the main module's service, or an internal service in the module that's used by the main one.
+
+Then, when you implement a feature that integrates the third-party system, you implement it in a workflow that uses the service. Steps' compensation functions, which roll-back changes when error occurs, ensure that there are no data inconsistency between your Medusa application and the third-party system.
+
+Finally, you can use the workflow in other resources, such as a subscriber to handle events, or a scheduled job to perform an action at specified time interval.
+
+---
+
+## Next: Syncing Brands Example
+
+The next chapters give examples of how to implement the features in the use case mentioned previously to sync brands with a third-party system.
