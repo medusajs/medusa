@@ -198,10 +198,11 @@ ${serviceBObj.module}: {
       )
     }
 
+    const serviceAObjEntryPoint = camelToSnakeCase(serviceAObj.field)
     const serviceAMethodSuffix = serviceAAliases.find((serviceAlias) => {
       return Array.isArray(serviceAlias.name)
-        ? serviceAlias.name.includes(serviceAObj.field)
-        : serviceAlias.name === serviceAObj.field
+        ? serviceAlias.name.includes(serviceAObjEntryPoint)
+        : serviceAlias.name === serviceAObjEntryPoint
     })?.args?.methodSuffix
 
     let serviceBAliases = serviceBInfo.alias ?? []
@@ -226,10 +227,11 @@ ${serviceBObj.module}: {
       )
     }
 
+    const serviceBObjEntryPoint = camelToSnakeCase(serviceBObj.field)
     const serviceBMethodSuffix = serviceBAliases.find((serviceAlias) => {
       return Array.isArray(serviceAlias.name)
-        ? serviceAlias.name.includes(serviceBObj.field)
-        : serviceAlias.name === serviceBObj.field
+        ? serviceAlias.name.includes(serviceBObjEntryPoint)
+        : serviceAlias.name === serviceBObjEntryPoint
     })?.args?.methodSuffix
 
     const moduleAPrimaryKeys = serviceAInfo.primaryKeys ?? []
