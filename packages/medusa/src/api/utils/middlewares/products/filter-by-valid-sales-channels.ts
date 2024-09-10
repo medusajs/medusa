@@ -1,7 +1,6 @@
 import { MedusaStoreRequest } from "@medusajs/framework"
 import { arrayDifference, MedusaError } from "@medusajs/utils"
 import { NextFunction } from "express"
-import { refetchEntity } from "../../refetch-entity"
 
 // Selection of sales channels happens in the following priority:
 // - If a publishable API key is passed, we take the sales channels attached to it and filter them down based on the query params
@@ -40,29 +39,11 @@ export function filterByValidSalesChannels() {
       return next()
     }
 
-    // Q: If no sales channel IDs were found in the publishable key, should we throw an error
-    // here instead of going forward with this with the default sales channel
-    const store = await refetchEntity("stores", {}, req.scope, [
-      "default_sales_channel_id",
-    ])
-
-    if (!store) {
-      return next(
-        new MedusaError(MedusaError.Types.INVALID_DATA, `Store not found`)
+    return next(
+      new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Publishable key needs to have a sales channel configured`
       )
-    }
-
-    if (!store.default_sales_channel_id) {
-      return next(
-        new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Default sales channel not found`
-        )
-      )
-    }
-
-    req.filterableFields.sales_channel_id = [store.default_sales_channel_id]
-
-    return next()
+    )
   }
 }
