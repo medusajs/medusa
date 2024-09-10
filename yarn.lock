@@ -24573,6 +24573,11 @@ __metadata:
     randomatic: ^3.1.1
     rimraf: ^3.0.2
     typescript: ^5.1.6
+  peerDependencies:
+    "@medusajs/medusa": "*"
+  peerDependenciesMeta:
+    "@medusajs/medusa":
+      optional: true
   languageName: unknown
   linkType: soft
 

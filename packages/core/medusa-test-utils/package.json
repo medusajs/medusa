@@ -42,5 +42,13 @@
     "pg-god": "^1.0.12",
     "randomatic": "^3.1.1"
   },
+  "peerDependencies": {
+    "@medusajs/medusa": "*"
+  },
+  "peerDependenciesMeta": {
+    "@medusajs/medusa": {
+      "optional": true
+    }
+  },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
 }
