@@ -6126,7 +6126,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6177,7 +6177,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.1.44, @medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
+"@medusajs/modules-sdk@*, @medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
@@ -15084,17 +15084,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.28.0":
-  version: 0.28.1
-  resolution: "axios@npm:0.28.1"
-  dependencies:
-    follow-redirects: ^1.15.0
-    form-data: ^4.0.0
-    proxy-from-env: ^1.1.0
-  checksum: 0437f851bb3552645cb44151bddeecf6bc85b41ea8f355f954fb5338f922d8ddcd255fc1eeffe83d9dd175dcdc1fb613f546ba607fa96cd33670738b30f7ca60
-  languageName: node
-  linkType: hard
-
 "axios@npm:^1.6.1, axios@npm:^1.6.8":
   version: 1.6.8
   resolution: "axios@npm:1.6.8"
@@ -20107,16 +20096,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.15.0":
-  version: 1.15.9
-  resolution: "follow-redirects@npm:1.15.9"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: 5829165bd112c3c0e82be6c15b1a58fa9dcfaede3b3c54697a82fe4a62dd5ae5e8222956b448d2f98e331525f05d00404aba7d696de9e761ef6e42fdc780244f
-  languageName: node
-  linkType: hard
-
 "for-each@npm:^0.3.3":
   version: 0.3.3
   resolution: "for-each@npm:0.3.3"
@@ -20476,7 +20455,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-port@npm:^5.1, get-port@npm:^5.1.1":
+"get-port@npm:^5.1.0, get-port@npm:^5.1.1":
   version: 5.1.1
   resolution: "get-port@npm:5.1.1"
   checksum: 2873877a469b24e6d5e0be490724a17edb39fafc795d1d662e7bea951ca649713b4a50117a473f9d162312cb0e946597bd0e049ed2f866e79e576e8e213d3d1c
@@ -24558,26 +24537,22 @@ __metadata:
   resolution: "medusa-test-utils@workspace:packages/core/medusa-test-utils"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    "@medusajs/modules-sdk": ^1.1.44
+    "@medusajs/medusa": "*"
+    "@medusajs/modules-sdk": "*"
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
-    axios: ^0.28.0
+    axios: ^0.21.4
     cross-env: ^5.2.1
     express: ^4.18.3
-    get-port: ^5.1
+    get-port: ^5.1.0
     jest: ^29.7.0
     pg-god: ^1.0.12
     randomatic: ^3.1.1
     rimraf: ^3.0.2
     typescript: ^5.1.6
-  peerDependencies:
-    "@medusajs/medusa": "*"
-  peerDependenciesMeta:
-    "@medusajs/medusa":
-      optional: true
   languageName: unknown
   linkType: soft
 
