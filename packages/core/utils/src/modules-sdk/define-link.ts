@@ -326,6 +326,7 @@ ${serviceBObj.module}: {
             [serviceBObj.isList ? pluralize(aliasB) : aliasB]: {
               path: aliasB + "_link." + aliasB,
               isList: serviceBObj.isList,
+              forwardArgumentsOnPath: [aliasB + "_link." + aliasB],
             },
           },
           relationship: {
@@ -342,6 +343,7 @@ ${serviceBObj.module}: {
             [serviceAObj.isList ? pluralize(aliasA) : aliasA]: {
               path: aliasA + "_link." + aliasA,
               isList: serviceAObj.isList,
+              forwardArgumentsOnPath: [aliasA + "_link." + aliasA],
             },
           },
           relationship: {
