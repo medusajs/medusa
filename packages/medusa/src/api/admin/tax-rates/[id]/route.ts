@@ -2,11 +2,7 @@ import {
   deleteTaxRatesWorkflow,
   updateTaxRatesWorkflow,
 } from "@medusajs/core-flows"
-import {
-  ContainerRegistrationKeys,
-  MedusaError,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -50,16 +46,17 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetTaxRateParamsType>,
   res: MedusaResponse<HttpTypes.AdminTaxRateResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const variables = { id: req.params.id }
 
-  const queryObject = remoteQueryObjectFromString({
+  const {
+    data: [taxRate],
+  } = await query.graph({
     entryPoint: "tax_rate",
     variables,
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [taxRate] = await remoteQuery(queryObject)
   res.status(200).json({ tax_rate: taxRate })
 }
 
