@@ -26,7 +26,7 @@ medusaIntegrationTestRunner({
           appContainer
         )
 
-        const address = await customerModuleService.createAddresses({
+        const address = await customerModuleService.createCustomerAddresses({
           customer_id: customer.id,
           first_name: "John",
           last_name: "Doe",
@@ -59,7 +59,7 @@ medusaIntegrationTestRunner({
           last_name: "Doe",
         })
 
-        const address = await customerModuleService.createAddresses({
+        const address = await customerModuleService.createCustomerAddresses({
           customer_id: otherCustomer.id,
           first_name: "John",
           last_name: "Doe",

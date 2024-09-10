@@ -26,7 +26,7 @@ medusaIntegrationTestRunner({
           appContainer
         )
 
-        await customerModuleService.createAddresses([
+        await customerModuleService.createCustomerAddresses([
           {
             first_name: "Test",
             last_name: "Test",
