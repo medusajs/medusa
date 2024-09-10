@@ -1,7 +1,7 @@
 /**
  * @schema AdminDraftOrderResponse
  * type: object
- * description: SUMMARY
+ * description: The draft order's details.
  * x-schemaName: AdminDraftOrderResponse
  * required:
  *   - draft_order

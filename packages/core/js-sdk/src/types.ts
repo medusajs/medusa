@@ -37,3 +37,22 @@ export type ClientFetch = (
   input: FetchInput,
   init?: FetchArgs
 ) => Promise<Response>
+
+// Defined in deno's standard library, and returned by fetch-event-stream package.
+export interface ServerSentEventMessage {
+  /** Ignored by the client. */
+  comment?: string
+  /** A string identifying the type of event described. */
+  event?: string
+  /** The data field for the message. Split by new lines. */
+  data?: string
+  /** The event ID to set the {@linkcode EventSource} object's last event ID value. */
+  id?: string | number
+  /** The reconnection time. */
+  retry?: number
+}
+
+export interface FetchStreamResponse {
+  stream: AsyncGenerator<ServerSentEventMessage, void, unknown> | null
+  abort: () => void
+}

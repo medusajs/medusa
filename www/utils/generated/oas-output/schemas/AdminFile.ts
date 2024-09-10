@@ -1,7 +1,7 @@
 /**
  * @schema AdminFile
  * type: object
- * description: The upload's file.
+ * description: A file's details.
  * x-schemaName: AdminFile
  * required:
  *   - id
@@ -14,7 +14,7 @@
  *   url:
  *     type: string
  *     title: url
- *     description: The file's url.
+ *     description: The file's URL.
  * 
 */
 
