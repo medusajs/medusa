@@ -1,13 +1,14 @@
 /**
  * @oas [get] /store/customers/me/addresses/{address_id}
  * operationId: GetCustomersMeAddressesAddress_id
- * summary: List Addresses
- * description: Retrieve a list of addresses in a customer. The addresses can be filtered by fields like FILTER FIELDS. The addresses can also be paginated.
+ * summary: Get Customer's Address
+ * x-sidebar-summary: Get Address
+ * description: Retrieve an address of the logged-in customer. You can expand the address's relations or select the fields that should be returned.
  * x-authenticated: true
  * parameters:
  *   - name: address_id
  *     in: path
- *     description: The customer's address id.
+ *     description: The address's ID.
  *     required: true
  *     schema:
  *       type: string

@@ -1932,6 +1932,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "link",
+            path: "/storefront-development/products/inventory",
+            title: "Retrieve Variant Inventory",
+          },
+          {
+            type: "link",
             path: "/storefront-development/products/categories",
             title: "Categories",
             children: [

@@ -10,7 +10,8 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl -X POST '{backend_url}/auth/token/refresh' \
+ *     source: |-
+ *       curl -X POST '{backend_url}/auth/token/refresh' \
  *       -H 'Authorization: Bearer {token}'
  * tags:
  *   - Auth

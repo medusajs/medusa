@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateFulfillment
  * type: object
- * description: SUMMARY
+ * description: The filfillment's details.
  * x-schemaName: AdminCreateFulfillment
  * required:
  *   - location_id
@@ -17,27 +17,27 @@
  *   location_id:
  *     type: string
  *     title: location_id
- *     description: The fulfillment's location id.
+ *     description: The ID of the location the items are fulfilled from.
  *   provider_id:
  *     type: string
  *     title: provider_id
- *     description: The fulfillment's provider id.
+ *     description: The ID of the provider handling this fulfillment.
  *   delivery_address:
  *     type: object
- *     description: The fulfillment's delivery address.
+ *     description: The address to deliver the items to.
  *     properties:
  *       first_name:
  *         type: string
  *         title: first_name
- *         description: The delivery address's first name.
+ *         description: The customer's first name.
  *       last_name:
  *         type: string
  *         title: last_name
- *         description: The delivery address's last name.
+ *         description: The customer's last name.
  *       phone:
  *         type: string
  *         title: phone
- *         description: The delivery address's phone.
+ *         description: The customer's phone.
  *       company:
  *         type: string
  *         title: company
@@ -45,11 +45,11 @@
  *       address_1:
  *         type: string
  *         title: address_1
- *         description: The delivery address's address 1.
+ *         description: The delivery address's first line.
  *       address_2:
  *         type: string
  *         title: address_2
- *         description: The delivery address's address 2.
+ *         description: The delivery address's second line.
  *       city:
  *         type: string
  *         title: city
@@ -68,13 +68,13 @@
  *         description: The delivery address's postal code.
  *       metadata:
  *         type: object
- *         description: The delivery address's metadata.
+ *         description: The delivery address's metadata, used to store custom key-value pairs.
  *   items:
  *     type: array
- *     description: The fulfillment's items.
+ *     description: The items to fulfill.
  *     items:
  *       type: object
- *       description: The item's items.
+ *       description: An item to fulfill.
  *       required:
  *         - title
  *         - sku
@@ -88,11 +88,11 @@
  *         sku:
  *           type: string
  *           title: sku
- *           description: The item's sku.
+ *           description: The item's SKU.
  *         quantity:
  *           type: number
  *           title: quantity
- *           description: The item's quantity.
+ *           description: The quantity to fulfill of the item.
  *         barcode:
  *           type: string
  *           title: barcode
@@ -100,17 +100,17 @@
  *         line_item_id:
  *           type: string
  *           title: line_item_id
- *           description: The item's line item id.
+ *           description: The ID of the associated line item.
  *         inventory_item_id:
  *           type: string
  *           title: inventory_item_id
- *           description: The item's inventory item id.
+ *           description: The ID of the inventory item associated with the underlying variant.
  *   labels:
  *     type: array
- *     description: The fulfillment's labels.
+ *     description: The labels for the fulfillment's shipments.
  *     items:
  *       type: object
- *       description: The label's labels.
+ *       description: A shipment's label.
  *       required:
  *         - tracking_number
  *         - tracking_url
@@ -123,48 +123,48 @@
  *         tracking_url:
  *           type: string
  *           title: tracking_url
- *           description: The label's tracking url.
+ *           description: The label's tracking URL.
  *         label_url:
  *           type: string
  *           title: label_url
- *           description: The label's label url.
- *   order:
- *     type: object
- *     description: The fulfillment's order.
+ *           description: The label's URL.
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The fulfillment's order id.
+ *     description: The ID of the order this fulfillment is created for.
  *   shipping_option_id:
  *     type: string
  *     title: shipping_option_id
- *     description: The fulfillment's shipping option id.
+ *     description: The ID of the shipping option used in the order.
  *   data:
  *     type: object
- *     description: The fulfillment's data.
+ *     description: Any data useful for the fulfillment provider to handle the fulfillment.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
+ *       description: Learn more about the data property.
  *   packed_at:
  *     type: string
  *     title: packed_at
- *     description: The fulfillment's packed at.
+ *     description: The date and time the fulfillment was packed.
  *     format: date-time
  *   shipped_at:
  *     type: string
  *     title: shipped_at
- *     description: The fulfillment's shipped at.
+ *     description: The date and time the fulfillment was shipped.
  *     format: date-time
  *   delivered_at:
  *     type: string
  *     title: delivered_at
- *     description: The fulfillment's delivered at.
+ *     description: The date and time the fulfillment was delivered.
  *     format: date-time
  *   canceled_at:
  *     type: string
  *     title: canceled_at
- *     description: The fulfillment's canceled at.
+ *     description: The date and time the fulfillment was canceled.
  *     format: date-time
  *   metadata:
  *     type: object
- *     description: The fulfillment's metadata.
+ *     description: The fulfillment's metadata, used to store custom key-value pairs.
  * 
 */
 

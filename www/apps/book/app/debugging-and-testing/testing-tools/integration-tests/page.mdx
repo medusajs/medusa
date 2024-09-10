@@ -1,3 +1,5 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Write Integration Tests`,
 }
@@ -5,6 +7,15 @@ export const metadata = {
 # {metadata.title}
 
 In this chapter, you'll learn about the `medusaIntegrationTestRunner` utility function used to write integration tests.
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
 
 ## medusaIntegrationTestRunner Utility
 
@@ -39,7 +50,27 @@ The `medusaIntegrationTestRunner` function accepts an object as a parameter. The
 
 The tests in the `testSuite` function are written using [Jest](https://jestjs.io/).
 
-### Other Options and Inputs
+---
+
+### Run Tests
+
+Run the following command to run your tests:
+
+```bash npm2yarn
+npm run test:integration
+```
+
+<Note title="Tip">
+
+If you don't have a `test:integration` script in `package.json`, refer to the [Medusa Testing Tools chapter](../page.mdx#add-test-commands).
+
+</Note>
+
+This runs your Medusa application and runs the tests available under the `src/integrations/http` directory.
+
+---
+
+## Other Options and Inputs
 
 Refer to [this reference in the Learning Resources documentation](!resources!/test-tools-reference/medusaIntegrationTestRunner) for other available parameter options and inputs of the `testSuite` function.
 

@@ -968,6 +968,10 @@ export const filesMap = [
     "pathname": "/storefront-development/products/collections/retrieve"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/products/inventory/page.mdx",
+    "pathname": "/storefront-development/products/inventory"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/products/list/page.mdx",
     "pathname": "/storefront-development/products/list"
   },

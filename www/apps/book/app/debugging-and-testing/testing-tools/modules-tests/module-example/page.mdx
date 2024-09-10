@@ -1,3 +1,5 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Example: Integration Tests for a Module`,
 }
@@ -5,6 +7,15 @@ export const metadata = {
 # {metadata.title}
 
 In this chapter, find an example of writing an integration test for a module using the [moduleIntegrationTestRunner utility function](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
 
 ## Write Integration Test for Module
 
@@ -67,4 +78,4 @@ If you don't have a `test:modules` script in `package.json`, refer to the [Medus
 
 </Note>
 
-This runs your Medusa application and runs the tests available in any `__tests__` directory under the `src` directory.
+This runs your Medusa application and runs the tests available in any `__tests__` directory under the `src/modules` directory.

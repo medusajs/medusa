@@ -1,8 +1,12 @@
 /**
  * @oas [post] /store/customers/me/addresses
  * operationId: PostCustomersMeAddresses
- * summary: Create Customer
- * description: Create a customer.
+ * summary: Create Address for Logged-In Customer
+ * x-sidebar-summary: Create Address
+ * description: Create an address for the logged-in customer.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/addresses#add-customer-address
+ *   description: "Storefront guide: How to create an address for the logged-in customer."
  * x-authenticated: true
  * parameters:
  *   - name: expand
@@ -31,11 +35,8 @@
  *     application/json:
  *       schema:
  *         type: object
- *         description: SUMMARY
+ *         description: The address's details.
  *         properties:
- *           metadata:
- *             type: object
- *             description: The customer's metadata.
  *           first_name:
  *             type: string
  *             title: first_name
@@ -51,43 +52,46 @@
  *           company:
  *             type: string
  *             title: company
- *             description: The customer's company.
+ *             description: The address's company.
  *           address_1:
  *             type: string
  *             title: address_1
- *             description: The customer's address 1.
+ *             description: The address's first line.
  *           address_2:
  *             type: string
  *             title: address_2
- *             description: The customer's address 2.
+ *             description: The address's second line.
  *           city:
  *             type: string
  *             title: city
- *             description: The customer's city.
+ *             description: The address's city.
  *           country_code:
  *             type: string
  *             title: country_code
- *             description: The customer's country code.
+ *             description: The address's country code.
  *           province:
  *             type: string
  *             title: province
- *             description: The customer's province.
+ *             description: The address's province.
  *           postal_code:
  *             type: string
  *             title: postal_code
- *             description: The customer's postal code.
+ *             description: The address's postal code.
  *           address_name:
  *             type: string
  *             title: address_name
- *             description: The customer's address name.
+ *             description: The address's name.
  *           is_default_shipping:
  *             type: boolean
  *             title: is_default_shipping
- *             description: The customer's is default shipping.
+ *             description: Whether the address is used by default for shipping during checkout.
  *           is_default_billing:
  *             type: boolean
  *             title: is_default_billing
- *             description: The customer's is default billing.
+ *             description: Whether the address is used by default for billing during checkout.
+ *           metadata:
+ *             type: object
+ *             description: Holds custom key-value pairs.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

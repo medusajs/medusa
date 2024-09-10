@@ -1,7 +1,7 @@
 /**
  * @schema AdminCollectionListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of product collections.
  * x-schemaName: AdminCollectionListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The collection's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The collection's offset.
+ *     description: The number of items skipped before retrieving the returned results.
  *   count:
  *     type: number
  *     title: count
- *     description: The collection's count.
+ *     description: The total number of items.
  *   collections:
  *     type: array
- *     description: The collection's collections.
+ *     description: The list of product collections.
  *     items:
  *       $ref: "#/components/schemas/AdminCollection"
  * 

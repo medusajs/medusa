@@ -1,8 +1,11 @@
 /**
  * @oas [post] /store/customers/me
  * operationId: PostCustomersMe
- * summary: Create Customer
- * description: Create a customer.
+ * summary: Update Customer
+ * description: Update the logged-in customer's details.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/profile
+ *   description: "Storefront guide: How to edit a customer's profile."
  * x-authenticated: true
  * parameters:
  *   - name: expand
