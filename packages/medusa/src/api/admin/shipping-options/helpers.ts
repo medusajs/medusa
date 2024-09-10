@@ -3,19 +3,18 @@ import {
   MedusaContainer,
   ShippingOptionRuleDTO,
 } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  promiseAll,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 
 export const refetchShippingOption = async (
   shippingOptionId: string,
   scope: MedusaContainer,
   fields: string[]
 ) => {
-  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const queryObject = remoteQueryObjectFromString({
+  const query = scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const {
+    data: [shippingOption],
+  } = await query.graph({
     entryPoint: "shipping_option",
     variables: {
       filters: { id: shippingOptionId },
@@ -23,8 +22,7 @@ export const refetchShippingOption = async (
     fields: fields,
   })
 
-  const shippingOptions = await remoteQuery(queryObject)
-  return shippingOptions[0]
+  return shippingOption
 }
 
 export const refetchBatchRules = async (
@@ -32,35 +30,35 @@ export const refetchBatchRules = async (
   scope: MedusaContainer,
   fields: string[]
 ) => {
-  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  let created = Promise.resolve<ShippingOptionRuleDTO[]>([])
-  let updated = Promise.resolve<ShippingOptionRuleDTO[]>([])
+  const query = scope.resolve(ContainerRegistrationKeys.QUERY)
+  let created = Promise.resolve<{ data: ShippingOptionRuleDTO[] }>({ data: [] })
+  let updated = Promise.resolve<{ data: ShippingOptionRuleDTO[] }>({ data: [] })
 
   if (batchResult.created.length) {
-    const createdQuery = remoteQueryObjectFromString({
+    created = query.graph({
       entryPoint: "shipping_option_rule",
       variables: {
         filters: { id: batchResult.created.map((p) => p.id) },
       },
       fields: fields,
     })
-
-    created = remoteQuery(createdQuery)
   }
 
   if (batchResult.updated.length) {
-    const updatedQuery = remoteQueryObjectFromString({
+    updated = query.graph({
       entryPoint: "shipping_option_rule",
       variables: {
         filters: { id: batchResult.updated.map((p) => p.id) },
       },
       fields: fields,
     })
-
-    updated = remoteQuery(updatedQuery)
   }
 
-  const [createdRes, updatedRes] = await promiseAll([created, updated])
+  const [{ data: createdRes }, { data: updatedRes }] = await promiseAll([
+    created,
+    updated,
+  ])
+
   return {
     created: createdRes,
     updated: updatedRes,

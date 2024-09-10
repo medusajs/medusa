@@ -1,9 +1,6 @@
 import { createShippingOptionsWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -14,9 +11,9 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminShippingOptionListParams>,
   res: MedusaResponse<HttpTypes.AdminShippingOptionListResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const queryObject = remoteQueryObjectFromString({
+  const { data: shipping_options, metadata } = await query.graph({
     entryPoint: "shipping_options",
     variables: {
       filters: req.filterableFields,
@@ -25,13 +22,11 @@ export const GET = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: shipping_options, metadata } = await remoteQuery(queryObject)
-
   res.json({
     shipping_options,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    count: metadata?.count,
+    offset: metadata?.skip,
+    limit: metadata?.take,
   })
 }
 
