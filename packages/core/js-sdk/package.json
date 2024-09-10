@@ -28,6 +28,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "fetch-event-stream": "^0.1.5",
     "qs": "^6.12.1"
   },
   "scripts": {
