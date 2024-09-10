@@ -27,7 +27,7 @@ function createMikroOrmWrapper(options: {
   dbConfig: any
 }): {
   MikroOrmWrapper: TestDatabase
-  moduleModels: (Function | DmlEntity<any, any>)[]
+  models: (Function | DmlEntity<any, any>)[]
 } {
   let moduleModels: (Function | DmlEntity<any, any>)[] =
     options.moduleModels ?? []
@@ -51,13 +51,14 @@ function createMikroOrmWrapper(options: {
   }
 
   moduleModels = toMikroOrmEntities(moduleModels)
+
   const MikroOrmWrapper = getMikroOrmWrapper({
     mikroOrmEntities: moduleModels,
     clientUrl: options.dbConfig.clientUrl,
     schema: options.dbConfig.schema,
   })
 
-  return { MikroOrmWrapper, moduleModels }
+  return { MikroOrmWrapper, models: moduleModels }
 }
 
 export function moduleIntegrationTestRunner<TService = any>({
@@ -98,14 +99,13 @@ export function moduleIntegrationTestRunner<TService = any>({
   // Use a unique connection for all the entire suite
   const connection = ModulesSdkUtils.createPgConnection(dbConfig)
 
-  const { MikroOrmWrapper, moduleModels: normalizedModuleModels } =
-    createMikroOrmWrapper({
-      moduleModels,
-      resolve,
-      dbConfig,
-    })
+  const { MikroOrmWrapper, models } = createMikroOrmWrapper({
+    moduleModels,
+    resolve,
+    dbConfig,
+  })
 
-  moduleModels = normalizedModuleModels
+  moduleModels = models
 
   const modulesConfig_ = {
     [moduleName]: {
