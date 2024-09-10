@@ -1,9 +1,5 @@
 import { updateStoresWorkflow } from "@medusajs/core-flows"
-import {
-  remoteQueryObjectFromString,
-  ContainerRegistrationKeys,
-  MedusaError,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -17,9 +13,11 @@ export const GET = async (
   res: MedusaResponse<HttpTypes.AdminStoreResponse>
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
-  const variables = { id: req.params.id })
+  const variables = { id: req.params.id }
 
-  const { data: [store] } = await query.graph({
+  const {
+    data: [store],
+  } = await query.graph({
     entryPoint: "store",
     variables,
     fields: req.remoteQueryConfig.fields,
