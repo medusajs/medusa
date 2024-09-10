@@ -1,5 +1,6 @@
 import {
   ContainerRegistrationKeys,
+  DmlEntity,
   loadModels,
   ModulesSdkUtils,
   normalizeImportPathWithSource,
@@ -18,6 +19,45 @@ export interface SuiteOptions<TService = unknown> {
     schema: string
     clientUrl: string
   }
+}
+
+function createMikroOrmWrapper(options: {
+  moduleModels?: (Function | DmlEntity<any, any>)[]
+  resolve?: string
+  dbConfig: any
+}): {
+  MikroOrmWrapper: TestDatabase
+  moduleModels: (Function | DmlEntity<any, any>)[]
+} {
+  let moduleModels: (Function | DmlEntity<any, any>)[] =
+    options.moduleModels ?? []
+
+  if (!options.moduleModels) {
+    const basePath = normalizeImportPathWithSource(
+      options.resolve ?? process.cwd()
+    )
+
+    const modelsPath = fs.existsSync(`${basePath}/dist/models`)
+      ? "/dist/models"
+      : fs.existsSync(`${basePath}/models`)
+      ? "/models"
+      : ""
+
+    if (modelsPath) {
+      moduleModels = loadModels(`${basePath}${modelsPath}`)
+    } else {
+      moduleModels = []
+    }
+  }
+
+  moduleModels = toMikroOrmEntities(moduleModels)
+  const MikroOrmWrapper = getMikroOrmWrapper({
+    mikroOrmEntities: moduleModels,
+    clientUrl: options.dbConfig.clientUrl,
+    schema: options.dbConfig.schema,
+  })
+
+  return { MikroOrmWrapper, moduleModels }
 }
 
 export function moduleIntegrationTestRunner<TService = any>({
@@ -46,23 +86,6 @@ export function moduleIntegrationTestRunner<TService = any>({
 
   process.env.LOG_LEVEL = "error"
 
-  if (!moduleModels) {
-    const basePath = normalizeImportPathWithSource(resolve ?? process.cwd())
-
-    const modelsPath = fs.existsSync(`${basePath}/dist/models`)
-      ? "/dist/models"
-      : fs.existsSync(`${basePath}/models`)
-      ? "/models"
-      : ""
-
-    if (modelsPath) {
-      moduleModels = loadModels(`${basePath}${modelsPath}`)
-      moduleModels = toMikroOrmEntities(moduleModels)
-    } else {
-      moduleModels = []
-    }
-  }
-
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   const dbName = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
 
@@ -75,11 +98,14 @@ export function moduleIntegrationTestRunner<TService = any>({
   // Use a unique connection for all the entire suite
   const connection = ModulesSdkUtils.createPgConnection(dbConfig)
 
-  const MikroOrmWrapper = getMikroOrmWrapper({
-    mikroOrmEntities: moduleModels,
-    clientUrl: dbConfig.clientUrl,
-    schema: dbConfig.schema,
-  })
+  const { MikroOrmWrapper, moduleModels: normalizedModuleModels } =
+    createMikroOrmWrapper({
+      moduleModels,
+      resolve,
+      dbConfig,
+    })
+
+  moduleModels = normalizedModuleModels
 
   const modulesConfig_ = {
     [moduleName]: {
