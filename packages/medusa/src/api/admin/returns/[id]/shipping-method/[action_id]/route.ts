@@ -2,10 +2,7 @@ import {
   removeReturnShippingMethodWorkflow,
   updateReturnShippingMethodWorkflow,
 } from "@medusajs/core-flows"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -19,7 +16,7 @@ export const POST = async (
 ) => {
   const { id, action_id } = req.params
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { result } = await updateReturnShippingMethodWorkflow(req.scope).run({
     input: {
@@ -29,7 +26,9 @@ export const POST = async (
     },
   })
 
-  const queryObject = remoteQueryObjectFromString({
+  const {
+    data: [orderReturn],
+  } = await query.graph({
     entryPoint: "return",
     variables: {
       id,
@@ -39,8 +38,6 @@ export const POST = async (
     },
     fields: req.remoteQueryConfig.fields,
   })
-
-  const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result as unknown as HttpTypes.AdminOrderPreview,
@@ -52,7 +49,7 @@ export const DELETE = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminReturnPreviewResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const quiery = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { id, action_id } = req.params
 
@@ -65,7 +62,9 @@ export const DELETE = async (
     },
   })
 
-  const queryObject = remoteQueryObjectFromString({
+  const {
+    data: [orderReturn],
+  } = await quiery.graph({
     entryPoint: "return",
     variables: {
       id,
@@ -75,7 +74,6 @@ export const DELETE = async (
     },
     fields: req.remoteQueryConfig.fields,
   })
-  const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: orderPreview as unknown as HttpTypes.AdminOrderPreview,

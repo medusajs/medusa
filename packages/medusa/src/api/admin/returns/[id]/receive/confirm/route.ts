@@ -1,9 +1,6 @@
 import { confirmReturnReceiveWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -16,7 +13,7 @@ export const POST = async (
 ) => {
   const { id } = req.params
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { result } = await confirmReturnReceiveWorkflow(req.scope).run({
     input: {
@@ -25,7 +22,9 @@ export const POST = async (
     },
   })
 
-  const queryObject = remoteQueryObjectFromString({
+  const {
+    data: [orderReturn],
+  } = await query.graph({
     entryPoint: "return",
     variables: {
       id,
@@ -35,8 +34,6 @@ export const POST = async (
     },
     fields: req.remoteQueryConfig.fields,
   })
-
-  const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result as unknown as HttpTypes.AdminOrderPreview,

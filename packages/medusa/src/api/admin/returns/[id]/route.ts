@@ -1,8 +1,5 @@
 import { updateReturnWorkflow } from "@medusajs/core-flows"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -14,24 +11,26 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminReturnResponse>
 ) => {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const { id } = req.params
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "return",
-    variables: {
-      id,
-      filters: {
-        ...req.filterableFields,
+  const {
+    data: [orderReturn],
+  } = await query.graph(
+    {
+      entryPoint: "return",
+      variables: {
+        id,
+        filters: {
+          ...req.filterableFields,
+        },
       },
+      fields: req.remoteQueryConfig.fields,
     },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [orderReturn] = await remoteQuery(queryObject, {
-    throwIfKeyNotFound: true,
-  })
+    {
+      throwIfKeyNotFound: true,
+    }
+  )
 
   res.json({
     return: orderReturn,
@@ -44,13 +43,15 @@ export const POST = async (
 ) => {
   const { id } = req.params
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { result } = await updateReturnWorkflow(req.scope).run({
     input: { return_id: id, ...req.validatedBody },
   })
 
-  const queryObject = remoteQueryObjectFromString({
+  const {
+    data: [orderReturn],
+  } = await query.graph({
     entryPoint: "return",
     variables: {
       id,
@@ -60,8 +61,6 @@ export const POST = async (
     },
     fields: req.remoteQueryConfig.fields,
   })
-
-  const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
     order_preview: result as unknown as HttpTypes.AdminOrderPreview,

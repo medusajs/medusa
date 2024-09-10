@@ -4,7 +4,6 @@ import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   promiseAll,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -16,9 +15,9 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminOrderFilters>,
   res: MedusaResponse<HttpTypes.AdminReturnsResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const queryObject = remoteQueryObjectFromString({
+  const { data: returns, metadata } = await query.graph({
     entryPoint: "returns",
     variables: {
       filters: {
@@ -29,13 +28,11 @@ export const GET = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: returns, metadata } = await remoteQuery(queryObject)
-
   res.json({
     returns,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    count: metadata?.count,
+    offset: metadata?.skip,
+    limit: metadata?.take,
   })
 }
 
@@ -48,7 +45,7 @@ export const POST = async (
     created_by: req.auth_context.actor_id,
   }
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
 
   const workflow = beginReturnOrderWorkflow(req.scope)
@@ -56,20 +53,23 @@ export const POST = async (
     input,
   })
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "return",
-    variables: {
-      id: result.return_id,
-      filters: {
-        ...req.filterableFields,
-      },
+  const [
+    order,
+    {
+      data: [orderReturn],
     },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [order, orderReturn] = await promiseAll([
+  ] = await promiseAll([
     orderModuleService.retrieveOrder(result.order_id),
-    remoteQuery(queryObject),
+    query.graph({
+      entryPoint: "return",
+      variables: {
+        id: result.return_id,
+        filters: {
+          ...req.filterableFields,
+        },
+      },
+      fields: req.remoteQueryConfig.fields,
+    }),
   ])
 
   res.json({

@@ -6,7 +6,6 @@ import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   promiseAll,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
@@ -19,7 +18,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReceiveReturnsReqSchemaType>,
   res: MedusaResponse<HttpTypes.AdminOrderReturnResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
 
   const { id } = req.params
@@ -32,20 +31,23 @@ export const POST = async (
     },
   })
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "return",
-    variables: {
-      id: result.return_id,
-      filters: {
-        ...req.filterableFields,
-      },
+  const [
+    order,
+    {
+      data: [orderReturn],
     },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [order, orderReturn] = await promiseAll([
+  ] = await promiseAll([
     orderModuleService.retrieveOrder(result.order_id),
-    remoteQuery(queryObject),
+    query.graph({
+      entryPoint: "return",
+      variables: {
+        id: result.return_id,
+        filters: {
+          ...req.filterableFields,
+        },
+      },
+      fields: req.remoteQueryConfig.fields,
+    }),
   ])
 
   res.json({
