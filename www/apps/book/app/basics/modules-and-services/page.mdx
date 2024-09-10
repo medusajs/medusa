@@ -38,7 +38,7 @@ For example, create the file `src/modules/hello/service.ts` with the following c
 
 ```ts title="src/modules/hello/service.ts"
 export default class HelloModuleService {
-  getMessage() {
+  async getMessage() {
     return "Hello, world!"
   }
 }
@@ -121,7 +121,7 @@ export async function GET(
   )
 
   res.json({
-    message: helloModuleService.getMessage(),
+    message: await helloModuleService.getMessage(),
   })
 }
 ```
