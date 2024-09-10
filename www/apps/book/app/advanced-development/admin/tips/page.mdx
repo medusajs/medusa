@@ -31,7 +31,7 @@ const ProductWidget = () => {
     }
 
     fetch(`/admin/products`, {
-      credentials: "include"
+      credentials: "include",
     })
     .then((res) => res.json())
     .then(({ count }) => {

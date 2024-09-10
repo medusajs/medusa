@@ -288,7 +288,7 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/medusa"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -299,9 +299,12 @@ export const GET = async (
     limit = 20, 
     offset = 0,
   } = req.validatedQuery || {}
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const query = remoteQueryObjectFromString({
+  const { 
+    data: digitalProducts,
+    metadata: { count, take, skip },
+  } = await query.graph({
     entryPoint: "digital_product",
     fields: [
       "*",
@@ -315,13 +318,8 @@ export const GET = async (
     },
   })
 
-  const { 
-    rows, 
-    metadata: { count, take, skip },
-  } = await remoteQuery(query)
-
   res.json({
-    digital_products: rows,
+    digital_products: digitalProducts,
     count,
     limit: take,
     offset: skip,
@@ -331,7 +329,7 @@ export const GET = async (
 
 This adds a `GET` API route at `/admin/digital-products`.
 
-In the route handler, you use the remote query to retrieve the list of digital products and their relations. The route handler also supports pagination.
+In the route handler, you use Query to retrieve the list of digital products and their relations. The route handler also supports pagination.
 
 ### Test API Route
 
@@ -364,7 +362,7 @@ Make sure to replace `{token}` with the JWT token you retrieved.
 ### Further Reads
 
 - [How to Create an API Route](!docs!/basics/api-routes)
-- [Learn more about the remote query](!docs!/advanced-development/modules/remote-query)
+- [Learn more about Query](!docs!/advanced-development/modules/query)
 
 ---
 
@@ -1830,7 +1828,7 @@ Create the file `digital-product/src/subscribers/handle-digital-order.ts` with t
 export const subscriberHighlight = [
   ["20", "notificationModuleService", "Resolve the Notification Module's service to use it later to send a notification."],
   ["22", "fileModuleService", "Resolve the File Module's service to use it later to retrieve a media's URL."],
-  ["26", "query", "Assemble the query to retrieve the digital product order."]
+  ["26", "query", "Run the query to retrieve the digital product order."]
 ]
 
 ```ts title="digital-product/src/subscribers/handle-digital-order.ts" highlights={subscriberHighlight} collapsibleLines="1-14" expandMoreLabel="Show Imports"
@@ -1844,7 +1842,7 @@ import {
 } from "@medusajs/types"
 import { 
   ModuleRegistrationName,
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 import { MediaType } from "../modules/digital-product/types"
 
@@ -1852,14 +1850,14 @@ async function digitalProductOrderCreatedHandler({
   event: { data },
   container,
 }: SubscriberArgs<{ id: string }>) {
-  const remoteQuery = container.resolve("remoteQuery")
+  const query = container.resolve(ContainerRegistrationKeys.QUERY)
   const notificationModuleService: INotificationModuleService = container
     .resolve(ModuleRegistrationName.NOTIFICATION)
   const fileModuleService: IFileModuleService = container.resolve(
     ModuleRegistrationName.FILE
   )
 
-  const query = remoteQueryObjectFromString({
+  const { data: [digitalProductOrder] } = await query.graph({
     entryPoint: "digital_product_order",
     fields: [
       "*",
@@ -1873,8 +1871,6 @@ async function digitalProductOrderCreatedHandler({
       },
     },
   })
-
-  const digitalProductOrder = (await remoteQuery(query))[0]
 
   // TODO format and send notification
 }
@@ -2031,7 +2027,7 @@ You return in the response the preview files.
 Create the file `src/api/store/customers/me/digital-products/route.ts` with the following content:
 
 export const purchasedDpHighlights = [
-  ["15", "remoteQueryObjectFromString", "Retrieve the customer's purchased digital products."]
+  ["15", "graph", "Retrieve the customer's purchased digital products."]
 ]
 
 ```ts title="src/api/store/customers/me/digital-products/route.ts" highlights={purchasedDpHighlights} collapsibleLines="1-8" expandMoreLabel="Show Imports"
@@ -2040,16 +2036,16 @@ import {
   MedusaResponse,
 } from "@medusajs/medusa"
 import { 
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const query = remoteQueryObjectFromString({
+  const { data: [customer] } = await query.graph({
     entryPoint: "customer",
     fields: [
       "orders.digital_product_order.products.*",
@@ -2062,11 +2058,9 @@ export const GET = async (
     },
   })
 
-  const result = await remoteQuery(query)
-
   const digitalProducts = {}
 
-  result[0].orders.forEach((order) => {
+  customer.orders.forEach((order) => {
     order.digital_product_order.products.forEach((product) => {
       digitalProducts[product.id] = product
     })
@@ -2076,23 +2070,22 @@ export const GET = async (
     digital_products: Object.values(digitalProducts),
   })
 }
-
 ```
 
 This adds a `GET` API route at `/store/customers/me/digital-products`. All API routes under `/store/customers/me` require customer authentication.
 
-In the route handler, you use remote query to retrieve the customer’s orders and linked digital product orders, and return the purchased digital products in the response.
+In the route handler, you use Query to retrieve the customer’s orders and linked digital product orders, and return the purchased digital products in the response.
 
 ### Get Digital Product Media Download URL API Route
 
 Create the file `src/api/store/customers/me/digital-products/[mediaId]/download/route.ts` with the following content:
 
 export const downloadUrlHighlights = [
-  ["20", "remoteQueryObjectFromString", "Get the customer's orders and linked digital orders."],
-  ["37", "remoteQueryObjectFromString", "Get the digital product orders of the customer and associated products and media."],
-  ["62", "foundMedia", "Set `foundMedia` if the media's ID is equal to the ID passed as a route parameter."],
-  ["68", "!foundMedia", "If `foundMedia` isn't set, throw an error."],
-  ["75", "retrieveFile", "Retrieve the details of the media's file."]
+  ["20", "query.graph", "Get the customer's orders and linked digital orders."],
+  ["36", "query.graph", "Get the digital product orders of the customer and associated products and media."],
+  ["56", "foundMedia", "Set `foundMedia` if the media's ID is equal to the ID passed as a route parameter."],
+  ["65", "!foundMedia", "If `foundMedia` isn't set, throw an error."],
+  ["72", "retrieveFile", "Retrieve the details of the media's file."]
 ]
 
 ```ts title="src/api/store/customers/me/digital-products/[mediaId]/download/route.ts" highlights={downloadUrlHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
@@ -2102,7 +2095,7 @@ import {
 } from "@medusajs/medusa"
 import { 
   ModuleRegistrationName,
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
   MedusaError,
 } from "@medusajs/utils"
 
@@ -2113,9 +2106,9 @@ export const POST = async (
   const fileModuleService = req.scope.resolve(
     ModuleRegistrationName.FILE
   )
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const customerQuery = remoteQueryObjectFromString({
+  const { data: [customer] } = await query.graph({
     entryPoint: "customer",
     fields: [
       "orders.digital_product_order.*",
@@ -2127,12 +2120,11 @@ export const POST = async (
     },
   })
 
-  const customerResult = await remoteQuery(customerQuery)
-  const customerDigitalOrderIds = customerResult[0].orders
+  const customerDigitalOrderIds = customer.orders
     .filter((order) => order.digital_product_order !== undefined)
     .map((order) => order.digital_product_order.id)
 
-  const dpoQuery = remoteQueryObjectFromString({
+  const { data: dpoResult } = await query.graph({
     entryPoint: "digital_product_order",
     fields: [
       "products.medias.*",
@@ -2143,8 +2135,6 @@ export const POST = async (
       },
     },
   })
-
-  const dpoResult = await remoteQuery(dpoQuery)
 
   if (!dpoResult.length) {
     throw new MedusaError(

@@ -4689,6 +4689,389 @@ moduleIntegrationTestRunner({
 
           expect(JSON.parse(JSON.stringify(result))).toEqual([])
         })
+
+        describe("when scenario is buy x get x", () => {
+          let buyXGetXPromotion
+          let product1 = "prod_tshirt_1"
+          let product2 = "prod_tshirt_2"
+
+          beforeEach(async () => {
+            buyXGetXPromotion = await createDefaultPromotion(service, {
+              type: PromotionType.BUYGET,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                value: 2000,
+                allocation: "each",
+                max_quantity: 2,
+                apply_to_quantity: 2,
+                buy_rules_min_quantity: 2,
+                target_rules: [
+                  {
+                    attribute: "product.id",
+                    operator: "eq",
+                    values: [product1],
+                  },
+                ],
+                buy_rules: [
+                  {
+                    attribute: "product.id",
+                    operator: "eq",
+                    values: [product1],
+                  },
+                ],
+              } as any,
+            })
+          })
+
+          it("should compute adjustment accurately for a single item", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 4,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 2,
+                  subtotal: 2000,
+                  product: { id: product2 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+            ])
+          })
+
+          it("should compute adjustment accurately for a single item when multiple buyget promos are applied", async () => {
+            const buyXGetXPromotionBulk1 = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY50GET1000",
+                type: PromotionType.BUYGET,
+                campaign_id: null,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  value: 20000,
+                  allocation: "each",
+                  max_quantity: 1000,
+                  apply_to_quantity: 1000,
+                  buy_rules_min_quantity: 50,
+                  target_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const buyXGetXPromotionBulk2 = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY10GET20",
+                type: PromotionType.BUYGET,
+                campaign_id: null,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  value: 20000,
+                  allocation: "each",
+                  max_quantity: 20,
+                  apply_to_quantity: 20,
+                  buy_rules_min_quantity: 10,
+                  target_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1080,
+                  subtotal: 2700,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotionBulk1.code!, buyXGetXPromotionBulk2.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 2500,
+                code: "BUY50GET1000",
+              },
+              {
+                action: "addItemAdjustment",
+                amount: 50,
+                code: "BUY10GET20",
+                item_id: "item_cotton_tshirt",
+              },
+            ])
+          })
+
+          it("should compute adjustment accurately for multiple items when multiple buyget promos are applied", async () => {
+            const buyXGetXPromotionBulk1 = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY50GET1000",
+                type: PromotionType.BUYGET,
+                campaign_id: null,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  value: 20000,
+                  allocation: "each",
+                  max_quantity: 1000,
+                  apply_to_quantity: 1000,
+                  buy_rules_min_quantity: 50,
+                  target_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const buyXGetXPromotionBulk2 = await createDefaultPromotion(
+              service,
+              {
+                code: "BUY10GET20",
+                type: PromotionType.BUYGET,
+                campaign_id: null,
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  value: 20000,
+                  allocation: "each",
+                  max_quantity: 20,
+                  apply_to_quantity: 20,
+                  buy_rules_min_quantity: 10,
+                  target_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                  buy_rules: [
+                    {
+                      attribute: "product.id",
+                      operator: "eq",
+                      values: [product1],
+                    },
+                  ],
+                } as any,
+              }
+            )
+
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 540,
+                  subtotal: 1350,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 540,
+                  subtotal: 1350,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotionBulk1.code!, buyXGetXPromotionBulk2.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt2",
+                amount: 1225,
+                code: "BUY50GET1000",
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 1275,
+                code: "BUY50GET1000",
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt2",
+                amount: 50,
+                code: "BUY10GET20",
+              },
+            ])
+          })
+
+          it("should compute adjustment accurately across items", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 500,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt1",
+                  quantity: 1,
+                  subtotal: 500,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt3",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt1",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cotton_tshirt",
+                amount: 500,
+                code: "PROMOTION_TEST",
+              },
+            ])
+          })
+
+          it("should not compute adjustment when required quantity for target isn't met", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 3,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+
+          it("should not compute adjustment when required quantity for target isn't met across items", async () => {
+            const context = {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt1",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+                {
+                  id: "item_cotton_tshirt2",
+                  quantity: 1,
+                  subtotal: 1000,
+                  product: { id: product1 },
+                },
+              ],
+            }
+
+            const result = await service.computeActions(
+              [buyXGetXPromotion.code!],
+              context
+            )
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([])
+          })
+        })
       })
     })
   },

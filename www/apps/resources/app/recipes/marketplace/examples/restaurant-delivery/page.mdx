@@ -627,16 +627,16 @@ In the file `src/api/restaurants/route.ts` add the following API route:
 ```ts title="src/api/restaurants/route.ts"
 // other imports...
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 // ...
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const { currency_code = "eur", ...queryFilters } = req.query
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const restaurantsQuery = remoteQueryObjectFromString({
+  const { data: restaurants } = await query.graph({
     entryPoint: "restaurants",
     fields: [
       "id",
@@ -662,13 +662,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     },
   })
 
-  const restaurants = await remoteQuery(restaurantsQuery)
-
   return res.status(200).json({ restaurants })
 }
 ```
 
-This creates a `GET` API route at `/restaurants`. It uses remote query to retrieve a restaurant, its products, and the product variant’s prices for a specified currency.
+This creates a `GET` API route at `/restaurants`. It uses Query to retrieve a restaurant, its products, and the product variant’s prices for a specified currency.
 
 ### Test it Out
 
@@ -682,7 +680,7 @@ This returns the list of restaurants in the response.
 
 ### Further Reads
 
-- [What is Remote Query and how to use it](!docs!/advanced-development/modules/remote-query)
+- [What is and how to use it](!docs!/advanced-development/modules/query)
 - [How to Retrieve Prices for Product Variants](../../../../commerce-modules/product/guides/price/page.mdx)
 
 ---
@@ -1502,14 +1500,14 @@ Create the file `src/workflows/delivery/steps/notify-restaurant.ts` with the fol
 
 export const notifyRestaurantStepHighlights = [
   ["11", "async", "Set the step as async."],
-  ["18", "deliveryQuery", "Retrieve the delivery and its restaurant."],
-  ["32", "emit", "Emit a custom event that can be used to notify the restaurant that a new delivery is created."]
+  ["18", "graph", "Retrieve the delivery and its restaurant."],
+  ["30", "emit", "Emit a custom event that can be used to notify the restaurant that a new delivery is created."]
 ]
 
 ```ts title="src/workflows/delivery/steps/notify-restaurant.ts" highlights={notifyRestaurantStepHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import {
   ModuleRegistrationName,
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
 
@@ -1522,9 +1520,9 @@ export const notifyRestaurantStep = createStep(
     maxRetries: 2,
   },
   async function (deliveryId: string, { container }) {
-    const remoteQuery = container.resolve("remoteQuery")
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-    const deliveryQuery = remoteQueryObjectFromString({
+    const { data: [delivery] } = await query.graph({
       entryPoint: "deliveries",
       variables: {
         filters: {
@@ -1533,8 +1531,6 @@ export const notifyRestaurantStep = createStep(
       },
       fields: ["id", "restaurant.id"],
     })
-
-    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0])
 
     const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
 
@@ -1547,7 +1543,6 @@ export const notifyRestaurantStep = createStep(
     })
   }
 )
-
 ```
 
 In this step, you:
@@ -1600,7 +1595,7 @@ import { CreateOrderShippingMethodDTO } from "@medusajs/types"
 import {
   ModuleRegistrationName,
   Modules,
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { DELIVERY_MODULE } from "../../../modules/delivery"
@@ -1608,9 +1603,9 @@ import { DELIVERY_MODULE } from "../../../modules/delivery"
 export const createOrderStep = createStep(
   "create-order-step",
   async function (deliveryId: string, { container }) {
-    const remoteQuery = container.resolve("remoteQuery")
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
-    const deliveryQuery = remoteQueryObjectFromString({
+    const { data: [delivery] } = await query.graph({
       entryPoint: "deliveries",
       variables: {
         filters: {
@@ -1626,8 +1621,6 @@ export const createOrderStep = createStep(
         "cart.shipping_methods.*",
       ],
     })
-
-    const delivery = await remoteQuery(deliveryQuery).then((res) => res[0])
 
     // TODO create order
   },
@@ -2409,8 +2402,8 @@ Start by creating the file `src/api/utils/is-delivery-restaurant.ts` with the fo
 
 export const isDeliveryRestaurantHighlights = [
   ["21", "restaurantAdmin", "Retrieve the logged-in restaurant admin."],
-  ["28", "query", "Retrieve the delivery based on the ID in the path parameter."],
-  ["42", "", "If the restaurant admin doesn't belong to the delivery's restaurant, return an unauthorized response."]
+  ["28", "graph", "Retrieve the delivery based on the ID in the path parameter."],
+  ["40", "", "If the restaurant admin doesn't belong to the delivery's restaurant, return an unauthorized response."]
 ]
 
 ```ts title="src/api/utils/is-delivery-restaurant.ts" highlights={isDeliveryRestaurantHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
@@ -2420,7 +2413,7 @@ import {
   MedusaResponse,
 } from "@medusajs/medusa"
 import {
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 import { RESTAURANT_MODULE } from "../../modules/restaurant"
 
@@ -2429,7 +2422,7 @@ export const isDeliveryRestaurant = async (
   res: MedusaResponse,
   next: MedusaNextFunction
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const restaurantModuleService = req.scope.resolve(
     RESTAURANT_MODULE
   )
@@ -2441,7 +2434,7 @@ export const isDeliveryRestaurant = async (
     }
   )
 
-  const query = remoteQueryObjectFromString({
+  const { data: [delivery] } = await query.graph({
     entryPoint: "delivery",
     fields: [
       "restaurant.*",
@@ -2453,9 +2446,7 @@ export const isDeliveryRestaurant = async (
     },
   })
 
-  const result = await remoteQuery(query)
-
-  if (result[0].restaurant.id !== restaurantAdmin.restaurant.id) {
+  if (delivery.restaurant.id !== restaurantAdmin.restaurant.id) {
     return res.status(403).json({
       message: "unauthorized",
     })

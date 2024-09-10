@@ -27,7 +27,7 @@ import { z } from "zod"
 
 export const PostStoreCustomSchema = z.object({
   a: z.number(),
-  b: z.number()
+  b: z.number(),
 })
 ```
 
@@ -48,7 +48,7 @@ For example, create the file `src/api/middlewares.ts` with the following content
 ```ts title="src/api/middlewares.ts"
 import { defineMiddlewares } from "@medusajs/medusa"
 import { 
-  validateAndTransformBody
+  validateAndTransformBody,
 } from "@medusajs/medusa/dist/api/utils/validate-body"
 import { PostStoreCustomSchema } from "./store/custom/validators"
 
@@ -58,7 +58,7 @@ export default defineMiddlewares({
       matcher: "/store/custom",
       method: "POST",
       middlewares: [
-        validateAndTransformBody(PostStoreCustomSchema)
+        validateAndTransformBody(PostStoreCustomSchema),
       ],
     },
   ],
@@ -87,9 +87,9 @@ export const routeHighlights = [
 ]
 
 ```ts title="src/api/store/custom/route.ts" highlights={routeHighlights}
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { z } from "zod"
-import { PostStoreCustomSchema } from "./validators";
+import { PostStoreCustomSchema } from "./validators"
 
 type PostStoreCustomSchemaType = z.infer<
   typeof PostStoreCustomSchema
@@ -100,7 +100,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   res.json({
-    sum: req.validatedBody.a + req.validatedBody.b
+    sum: req.validatedBody.a + req.validatedBody.b,
   })
 }
 ```

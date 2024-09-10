@@ -22,10 +22,10 @@ export const highlights = [
 
 ```ts highlights={highlights}
 import { 
-  createWorkflow
+  createWorkflow,
 } from "@medusajs/workflows-sdk"
 import {
-  emitEventStep
+  emitEventStep,
 } from "@medusajs/core-flows"
 
 const helloWorldWorkflow = createWorkflow(
@@ -36,8 +36,8 @@ const helloWorldWorkflow = createWorkflow(
     emitEventStep({
       eventName: "custom.created",
       data: {
-        id: "123"
-      }
+        id: "123",
+      },
     })
   }
 )

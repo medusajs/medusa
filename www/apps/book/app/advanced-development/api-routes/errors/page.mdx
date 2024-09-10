@@ -256,7 +256,7 @@ import {
   defineMiddlewares, 
   MedusaNextFunction, 
   MedusaRequest, 
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { MedusaError } from "@medusajs/utils"
 
@@ -268,9 +268,9 @@ export default defineMiddlewares({
     next: MedusaNextFunction
   ) => {
     res.status(400).json({
-      error: "Something happened."
+      error: "Something happened.",
     })
-  }
+  },
 })
 ```
 

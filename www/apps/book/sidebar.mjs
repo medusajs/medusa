@@ -172,8 +172,8 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
-              path: "/advanced-development/modules/remote-query",
-              title: "Remote Query",
+              path: "/advanced-development/modules/query",
+              title: "Query",
             },
             {
               type: "link",
