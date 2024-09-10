@@ -8,25 +8,21 @@ import { FulfillmentSetType } from "../common/constants"
 export function LocationCreateServiceZone() {
   const { fset_id, location_id } = useParams()
 
-  const { stock_location, isLoading, isError, error } = useStockLocation(
-    location_id!,
-    {
+  const { stock_location, isPending, isFetching, isError, error } =
+    useStockLocation(location_id!, {
       fields: "*fulfillment_sets",
-    }
-  )
+    })
 
   const fulfillmentSet = stock_location?.fulfillment_sets?.find(
     (f) => f.id === fset_id
   )
-
-  const ready = !isLoading && !!stock_location && !!fulfillmentSet
 
   const type: FulfillmentSetType =
     fulfillmentSet?.type === FulfillmentSetType.Pickup
       ? FulfillmentSetType.Pickup
       : FulfillmentSetType.Shipping
 
-  if (!isLoading && !fulfillmentSet) {
+  if (!isPending && !isFetching && !fulfillmentSet) {
     throw json(
       { message: `Fulfillment set with ID: ${fset_id} was not found.` },
       404
@@ -39,11 +35,11 @@ export function LocationCreateServiceZone() {
 
   return (
     <RouteFocusModal prev={`/settings/locations/${location_id}`}>
-      {ready && (
+      {fulfillmentSet && (
         <CreateServiceZoneForm
           fulfillmentSet={fulfillmentSet}
+          location={stock_location!}
           type={type}
-          location={stock_location}
         />
       )}
     </RouteFocusModal>

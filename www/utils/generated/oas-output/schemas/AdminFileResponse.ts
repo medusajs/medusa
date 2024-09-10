@@ -1,7 +1,7 @@
 /**
  * @schema AdminFileResponse
  * type: object
- * description: SUMMARY
+ * description: A file's details.
  * x-schemaName: AdminFileResponse
  * required:
  *   - file

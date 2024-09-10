@@ -9,6 +9,7 @@ export const defaultStoreCartFields = [
   "subtotal",
   "tax_total",
   "discount_total",
+  "discount_subtotal",
   "discount_tax_total",
   "original_total",
   "original_tax_total",

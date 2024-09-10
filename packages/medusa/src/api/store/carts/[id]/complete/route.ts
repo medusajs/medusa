@@ -5,11 +5,10 @@ import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
 import { refetchOrder } from "../../../orders/helpers"
 import { refetchCart } from "../../helpers"
 import { defaultStoreCartFields } from "../../query-config"
-import { StoreCompleteCartType } from "../../validators"
 import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
-  req: MedusaRequest<StoreCompleteCartType>,
+  req: MedusaRequest,
   res: MedusaResponse<HttpTypes.StoreCompleteCartResponse>
 ) => {
   const cart_id = req.params.id

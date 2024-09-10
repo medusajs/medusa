@@ -279,9 +279,6 @@ export const AdminBatchUpdateProduct = UpdateProduct.extend({
   id: z.string(),
 })
 
-export type AdminExportProductType = z.infer<typeof AdminExportProduct>
-export const AdminExportProduct = z.object({})
-
 export const AdminCreateVariantInventoryItem = z.object({
   required_quantity: z.number(),
   inventory_item_id: z.string(),

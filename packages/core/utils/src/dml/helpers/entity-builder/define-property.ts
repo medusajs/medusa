@@ -72,6 +72,7 @@ const SPECIAL_PROPERTIES: {
       columnType: "timestamptz",
       type: "date",
       nullable: false,
+      fieldName: field.fieldName,
       defaultRaw: "now()",
       onCreate: () => new Date(),
     })(MikroORMEntity.prototype, field.fieldName)
@@ -81,6 +82,7 @@ const SPECIAL_PROPERTIES: {
       columnType: "timestamptz",
       type: "date",
       nullable: false,
+      fieldName: field.fieldName,
       defaultRaw: "now()",
       onCreate: () => new Date(),
       onUpdate: () => new Date(),
@@ -124,6 +126,7 @@ export function defineProperty(
   if (field.dataType.name === "bigNumber") {
     MikroOrmBigNumberProperty({
       nullable: field.nullable,
+      fieldName: field.fieldName,
       /**
        * MikroORM does not ignore undefined values for default when generating
        * the database schema SQL. Conditionally add it here to prevent undefined
@@ -138,6 +141,7 @@ export function defineProperty(
   if (field.dataType.name === "array") {
     Property({
       type: ArrayType,
+      fieldName: field.fieldName,
       nullable: field.nullable,
       /**
        * MikroORM does not ignore undefined values for default when generating
@@ -157,6 +161,7 @@ export function defineProperty(
     Enum({
       items: () => field.dataType.options!.choices,
       nullable: field.nullable,
+      fieldName: field.fieldName,
       type: Utils.getObjectType(field.dataType.options!.choices[0]),
       /**
        * MikroORM does not ignore undefined values for default when generating
@@ -178,11 +183,13 @@ export function defineProperty(
           columnType: "text",
           type: "string",
           nullable: false,
+          fieldName: field.fieldName,
         })
       : Property({
           columnType: "text",
           type: "string",
           nullable: false,
+          fieldName: field.fieldName,
         })
 
     IdDecorator(MikroORMEntity.prototype, field.fieldName)
@@ -208,6 +215,27 @@ export function defineProperty(
   }
 
   /**
+   * Handling JSON property separately to stringify its default value
+   */
+  if (field.dataType.name === "json") {
+    Property({
+      columnType: "jsonb",
+      type: "any",
+      nullable: field.nullable,
+      fieldName: field.fieldName,
+      /**
+       * MikroORM does not ignore undefined values for default when generating
+       * the database schema SQL. Conditionally add it here to prevent undefined
+       * from being set as default value in SQL.
+       */
+      ...(isDefined(field.defaultValue) && {
+        default: JSON.stringify(field.defaultValue),
+      }),
+    })(MikroORMEntity.prototype, field.fieldName)
+    return
+  }
+
+  /**
    * Define rest of properties
    */
   const columnType = COLUMN_TYPES[field.dataType.name]
@@ -221,6 +249,7 @@ export function defineProperty(
       columnType,
       type: propertyType,
       nullable: false,
+      fieldName: field.fieldName,
     })(MikroORMEntity.prototype, field.fieldName)
 
     return
@@ -230,6 +259,7 @@ export function defineProperty(
     columnType,
     type: propertyType,
     nullable: field.nullable,
+    fieldName: field.fieldName,
     /**
      * MikroORM does not ignore undefined values for default when generating
      * the database schema SQL. Conditionally add it here to prevent undefined
