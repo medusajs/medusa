@@ -534,6 +534,12 @@ medusaIntegrationTestRunner({
           [product.id, product2.id, product3.id, product4.id]
         )
 
+        await api.post(
+          `/admin/api-keys/${publishableKey.id}/sales-channels`,
+          { add: [defaultSalesChannel.id] },
+          adminHeaders
+        )
+
         const service = appContainer.resolve(ModuleRegistrationName.STORE)
         const [store] = await service.listStores()
 
@@ -799,6 +805,12 @@ medusaIntegrationTestRunner({
           )
 
           publishableKey1 = api1Res.data.api_key
+
+          await api.post(
+            `/admin/api-keys/${publishableKey.id}/sales-channels`,
+            { add: [salesChannel1.id, salesChannel2.id] },
+            adminHeaders
+          )
 
           await api.post(
             `/admin/api-keys/${publishableKey1.id}/sales-channels`,
@@ -1140,6 +1152,12 @@ medusaIntegrationTestRunner({
           [product.id]
         )
 
+        await api.post(
+          `/admin/api-keys/${publishableKey.id}/sales-channels`,
+          { add: [defaultSalesChannel.id] },
+          adminHeaders
+        )
+
         const service = appContainer.resolve(ModuleRegistrationName.STORE)
         const [store] = await service.listStores()
 
@@ -1305,6 +1323,12 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.sales_channel
+
+        await api.post(
+          `/admin/api-keys/${publishableKey.id}/sales-channels`,
+          { add: [salesChannel.id] },
+          adminHeaders
+        )
 
         const store = (await api.get("/admin/stores", adminHeaders)).data
           .stores[0]
@@ -1486,7 +1510,6 @@ medusaIntegrationTestRunner({
       })
 
       it("should not return tax pricing if the context is not sufficient when listing products", async () => {
-        console.log("wut")
         const products = (
           await api.get(
             `/store/products?fields=id,*variants.calculated_price&region_id=${usRegion.id}`,
