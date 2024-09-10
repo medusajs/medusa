@@ -13,6 +13,8 @@ export interface DefineLinkExport {
 type InputSource = {
   serviceName: string
   field: string
+  entity?: string
+  alias?: string
   linkable: string
   primaryKey: string
 }
@@ -44,7 +46,9 @@ type DefineLinkInputSource = InputSource | InputOptions | CombinedSource
 
 type ModuleLinkableKeyConfig = {
   module: string
+  entity?: string
   key: string
+  field: string
   isList?: boolean
   deleteCascade?: boolean
   primaryKey: string
@@ -74,11 +78,13 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
 
     serviceConfig = {
       key: source.linkable,
-      alias: camelToSnakeCase(source.field),
+      alias: source.alias ?? camelToSnakeCase(source.field),
+      field: source.field,
       primaryKey: source.primaryKey,
       isList: false,
       deleteCascade: false,
       module: source.serviceName,
+      entity: source.entity,
     }
   } else if (isInputOptions(input)) {
     const source = isToJSON(input.linkable)
@@ -87,11 +93,13 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
 
     serviceConfig = {
       key: source.linkable,
-      alias: camelToSnakeCase(source.field),
+      alias: source.alias ?? camelToSnakeCase(source.field),
+      field: source.field,
       primaryKey: source.primaryKey,
       isList: input.isList ?? false,
       deleteCascade: input.deleteCascade ?? false,
       module: source.serviceName,
+      entity: source.entity,
     }
   } else {
     throw new Error(
@@ -192,8 +200,8 @@ ${serviceBObj.module}: {
 
     const serviceAMethodSuffix = serviceAAliases.find((serviceAlias) => {
       return Array.isArray(serviceAlias.name)
-        ? serviceAlias.name.includes(aliasA)
-        : serviceAlias.name === aliasA
+        ? serviceAlias.name.includes(serviceAObj.field)
+        : serviceAlias.name === serviceAObj.field
     })?.args?.methodSuffix
 
     let serviceBAliases = serviceBInfo.alias ?? []
@@ -220,8 +228,8 @@ ${serviceBObj.module}: {
 
     const serviceBMethodSuffix = serviceBAliases.find((serviceAlias) => {
       return Array.isArray(serviceAlias.name)
-        ? serviceAlias.name.includes(aliasB)
-        : serviceAlias.name === aliasB
+        ? serviceAlias.name.includes(serviceBObj.field)
+        : serviceAlias.name === serviceBObj.field
     })?.args?.methodSuffix
 
     const moduleAPrimaryKeys = serviceAInfo.primaryKeys ?? []
@@ -290,6 +298,7 @@ ${serviceBObj.module}: {
       relationships: [
         {
           serviceName: serviceAObj.module,
+          entity: serviceAObj.entity,
           primaryKey: serviceAPrimaryKey,
           foreignKey: serviceAObj.key,
           alias: aliasA,
@@ -300,6 +309,7 @@ ${serviceBObj.module}: {
         },
         {
           serviceName: serviceBObj.module,
+          entity: serviceBObj.entity,
           primaryKey: serviceBPrimaryKey!,
           foreignKey: serviceBObj.key,
           alias: aliasB,
