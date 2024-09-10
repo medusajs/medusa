@@ -662,11 +662,11 @@ export const completeCartHighlights = [
 ```ts title="src/api/store/carts/[id]/complete/route.ts" highlights={completeCartHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
 import { 
   MedusaRequest, 
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { 
   ContainerRegistrationKeys,
-  MedusaError
+  MedusaError,
 } from "@medusajs/utils"
 import createSubscriptionWorkflow from "../../../../../workflows/create-subscription"
 
@@ -679,13 +679,13 @@ export const POST = async (
   const { data: [cart] } = await query.graph({
     entryPoint: "cart",
     fields: [
-      "metadata"
+      "metadata",
     ],
     variables: {
       filters: {
-        id: [req.params.id]
-      }
-    }
+        id: [req.params.id],
+      },
+    },
   })
   
   const { metadata } = cart
@@ -704,14 +704,14 @@ export const POST = async (
       cart_id: req.params.id,
       subscription_data: {
         interval: metadata.subscription_interval,
-        period: metadata.subscription_period
-      }
-    }
+        period: metadata.subscription_period,
+      },
+    },
   })
 
   res.json({
     type: "order",
-    ...result
+    ...result,
   })
 }
 ```
@@ -979,8 +979,8 @@ export const listSubscriptionsAdminHighlight = [
 ```ts title="src/api/admin/subscriptions/route.ts" highlights={listSubscriptionsAdminHighlight}
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
@@ -1003,22 +1003,22 @@ export const GET = async (
       "*",
       "orders.*",
       "customer.*",
-      ...(req.validatedQuery?.fields.split(",") || [])
+      ...(req.validatedQuery?.fields.split(",") || []),
     ],
     variables: {
       skip: offset,
       take: limit,
       order: {
-        subscription_date: "DESC"
-      }
-    }
+        subscription_date: "DESC",
+      },
+    },
   })
 
   res.json({
     subscriptions,
     count,
     limit: take,
-    offset: skip
+    offset: skip,
   })
 }
 ```
@@ -1040,8 +1040,8 @@ export const getSubscriptionsAdminHighlight = [
 ```ts title="src/api/admin/subscriptions/[id]/route.ts" highlights={getSubscriptionsAdminHighlight}
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
@@ -1056,17 +1056,17 @@ export const GET = async (
       "*",
       "orders.*",
       "customer.*",
-      ...(req.validatedQuery?.fields.split(",") || [])
+      ...(req.validatedQuery?.fields.split(",") || []),
     ],
     variables: {
       filters: {
-        id: [req.params.id]
-      }
-    }
+        id: [req.params.id],
+      },
+    },
   })
 
   res.json({
-    subscription
+    subscription,
   })
 }
 ```
@@ -2124,8 +2124,8 @@ Create the file `src/api/store/customers/me/subscriptions/route.ts` with the fol
 ```ts title="src/api/store/customers/me/subscriptions/route.ts"
 import { 
   AuthenticatedMedusaRequest, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
@@ -2137,17 +2137,17 @@ export const GET = async (
   const { data: [customer] } = await query.graph({
     entryPoint: "customer",
     fields: [
-      "subscriptions.*"
+      "subscriptions.*",
     ],
     variables: {
       filters: {
-        id: [req.auth_context.actor_id]
-      }
-    }
+        id: [req.auth_context.actor_id],
+      },
+    },
   })
 
   res.json({
-    subscriptions: customer.subscriptions
+    subscriptions: customer.subscriptions,
   })
 }
 ```

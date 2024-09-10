@@ -585,7 +585,7 @@ export const GET = async (
   const vendorAdmin = await marketplaceModuleService.retrieveVendorAdmin(
     req.auth_context.actor_id,
     {
-      relations: ["vendor"]
+      relations: ["vendor"],
     }
   )
 
@@ -600,7 +600,7 @@ export const GET = async (
   })
 
   res.json({
-    products: vendor.products
+    products: vendor.products,
   })
 }
 ```
@@ -834,9 +834,9 @@ const groupVendorItemsStep = createStep(
         fields: ["vendor.*"],
         variables: {
           filters: {
-            id: [item.product_id]
-          }
-        }
+            id: [item.product_id],
+          },
+        },
       })
 
       const vendorId = product.vendor?.id
@@ -846,12 +846,12 @@ const groupVendorItemsStep = createStep(
       }
       vendorsItems[vendorId] = [
         ...(vendorsItems[vendorId] || []),
-        item
+        item,
       ]
     }))
 
     return new StepResponse({
-      vendorsItems
+      vendorsItems,
     })
   }
 )
@@ -1252,11 +1252,11 @@ export const getOrderHighlights = [
 ]
 
 ```ts title="src/api/vendors/orders/route.ts" highlights={getOrderHighlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { getOrdersListWorkflow } from "@medusajs/core-flows"
-import MarketplaceModuleService from "../../../modules/marketplace/service";
-import { MARKETPLACE_MODULE } from "../../../modules/marketplace";
+import MarketplaceModuleService from "../../../modules/marketplace/service"
+import { MARKETPLACE_MODULE } from "../../../modules/marketplace"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -1269,7 +1269,7 @@ export const GET = async (
   const vendorAdmin = await marketplaceModuleService.retrieveVendorAdmin(
     req.auth_context.actor_id,
     {
-      relations: ["vendor"]
+      relations: ["vendor"],
     }
   )
 
@@ -1278,9 +1278,9 @@ export const GET = async (
     fields: ["orders.*"],
     variables: {
       filters: {
-        id: [vendorAdmin.vendor.id]
-      }
-    }
+        id: [vendorAdmin.vendor.id],
+      },
+    },
   })
 
   const { result: orders } = await getOrdersListWorkflow(req.scope)
@@ -1304,14 +1304,14 @@ export const GET = async (
         ],
         variables: {
           filters: {
-            id: vendor.orders.map((order) => order.id)
-          }
-        }
-      }
+            id: vendor.orders.map((order) => order.id),
+          },
+        },
+      },
     })
 
   res.json({
-    orders
+    orders,
   })
 }
 ```

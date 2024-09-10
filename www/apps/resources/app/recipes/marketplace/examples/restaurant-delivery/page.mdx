@@ -634,7 +634,7 @@ import { ContainerRegistrationKeys } from "@medusajs/utils"
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const { currency_code = "eur", ...queryFilters } = req.query
 
-  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: restaurants } = await query.graph({
     entryPoint: "restaurants",
@@ -650,19 +650,19 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "products.*",
       "products.categories.*",
       "products.variants.*",
-      "products.variants.calculated_price.*"
+      "products.variants.calculated_price.*",
     ],
     variables: {
       filters: queryFilters,
       "products.variants.calculated_price": {
         context: {
-          currency_code
-        }
-      }
+          currency_code,
+        },
+      },
     },
-  });
+  })
 
-  return res.status(200).json({ restaurants });
+  return res.status(200).json({ restaurants })
 }
 ```
 
@@ -1508,10 +1508,10 @@ export const notifyRestaurantStepHighlights = [
 import {
   ModuleRegistrationName,
   ContainerRegistrationKeys,
-} from "@medusajs/utils";
-import { createStep } from "@medusajs/workflows-sdk";
+} from "@medusajs/utils"
+import { createStep } from "@medusajs/workflows-sdk"
 
-export const notifyRestaurantStepId = "notify-restaurant-step";
+export const notifyRestaurantStepId = "notify-restaurant-step"
 export const notifyRestaurantStep = createStep(
   {
     name: notifyRestaurantStepId,
@@ -1520,7 +1520,7 @@ export const notifyRestaurantStep = createStep(
     maxRetries: 2,
   },
   async function (deliveryId: string, { container }) {
-    const query = container.resolve(ContainerRegistrationKeys.QUERY);
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const { data: [delivery] } = await query.graph({
       entryPoint: "deliveries",
@@ -1532,7 +1532,7 @@ export const notifyRestaurantStep = createStep(
       fields: ["id", "restaurant.id"],
     })
 
-    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS);
+    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
 
     await eventBus.emit({
       name: "notify.restaurant",
@@ -1540,7 +1540,7 @@ export const notifyRestaurantStep = createStep(
         restaurant_id: delivery.restaurant.id,
         delivery_id: delivery.id,
       },
-    });
+    })
   }
 )
 ```
@@ -1603,7 +1603,7 @@ import { DELIVERY_MODULE } from "../../../modules/delivery"
 export const createOrderStep = createStep(
   "create-order-step",
   async function (deliveryId: string, { container }) {
-    const query = container.resolve(ContainerRegistrationKeys.QUERY);
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const { data: [delivery] } = await query.graph({
       entryPoint: "deliveries",
@@ -1618,9 +1618,9 @@ export const createOrderStep = createStep(
         "cart.shipping_address.*",
         "cart.billing_address.*",
         "cart.items.*",
-        "cart.shipping_methods.*"
+        "cart.shipping_methods.*",
       ],
-    });
+    })
 
     // TODO create order
   },
@@ -2410,12 +2410,12 @@ export const isDeliveryRestaurantHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaNextFunction, 
-  MedusaResponse
-} from "@medusajs/medusa";
+  MedusaResponse,
+} from "@medusajs/medusa"
 import {
   ContainerRegistrationKeys,
 } from "@medusajs/utils"
-import { RESTAURANT_MODULE } from "../../modules/restaurant";
+import { RESTAURANT_MODULE } from "../../modules/restaurant"
 
 export const isDeliveryRestaurant = async (
   req: AuthenticatedMedusaRequest,
@@ -2430,25 +2430,25 @@ export const isDeliveryRestaurant = async (
   const restaurantAdmin = await restaurantModuleService.retrieveRestaurantAdmin(
     req.auth_context.actor_id,
     {
-      relations: ["restaurant"]
+      relations: ["restaurant"],
     }
   )
 
   const { data: [delivery] } = await query.graph({
     entryPoint: "delivery",
     fields: [
-      "restaurant.*"
+      "restaurant.*",
     ],
     variables: {
       filters: {
-        id: req.params.id
-      }
-    }
+        id: req.params.id,
+      },
+    },
   })
 
   if (delivery.restaurant.id !== restaurantAdmin.restaurant.id) {
     return res.status(403).json({
-      message: "unauthorized"
+      message: "unauthorized",
     })
   }
 

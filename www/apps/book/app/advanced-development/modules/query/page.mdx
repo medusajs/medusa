@@ -36,10 +36,10 @@ export const exampleHighlights = [
 ```ts title="src/api/store/query/route.ts" highlights={exampleHighlights} apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/query" collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
   MedusaRequest,
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import {
-  ContainerRegistrationKeys
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 
 export const GET = async (
@@ -188,7 +188,7 @@ The `order` property is an object whose keys are property names, and values are 
 ```ts highlights={[["8", "skip", "The number of records to skip before fetching the results."], ["9", "take", "The number of records to fetch."]]}
 const { 
   data: myCustoms,
-  metadata: { count, take, skip }
+  metadata: { count, take, skip },
 } = await query.graph({
   entryPoint: "my_custom",
   fields: ["id", "name"],
