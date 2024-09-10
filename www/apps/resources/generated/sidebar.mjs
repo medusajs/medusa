@@ -8736,6 +8736,14 @@ export const generatedSidebar = [
         "loaded": true,
         "isPathHref": true,
         "type": "link",
+        "path": "/events-reference",
+        "title": "Events List",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
         "path": "/admin-widget-injection-zones",
         "title": "Admin Widget Injection Zones",
         "children": []
