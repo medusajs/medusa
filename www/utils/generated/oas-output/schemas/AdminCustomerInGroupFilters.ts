@@ -1,35 +1,35 @@
 /**
  * @schema AdminCustomerInGroupFilters
  * type: object
- * description: The customer group's customers.
+ * description: Filters to apply on customers to retrieve their groups.
  * x-schemaName: AdminCustomerInGroupFilters
  * properties:
  *   id:
  *     oneOf:
  *       - type: string
  *         title: id
- *         description: The customer's ID.
+ *         description: Filter by a customer's ID.
  *       - type: array
- *         description: The customer's ID.
+ *         description: Filter by customer IDs.
  *         items:
  *           type: string
  *           title: id
- *           description: The id's ID.
+ *           description: A customer's ID.
  *   email:
  *     oneOf:
  *       - type: string
  *         title: email
- *         description: The customer's email.
+ *         description: Filter by a customer's email.
  *         format: email
  *       - type: array
- *         description: The customer's email.
+ *         description: Filter by customer emails.
  *         items:
  *           type: string
  *           title: email
- *           description: The email's details.
+ *           description: A customer's email.
  *           format: email
  *       - type: object
- *         description: The customer's email.
+ *         description: Apply filters on the customer's email.
  *         properties:
  *           $and:
  *             type: array
@@ -49,7 +49,7 @@
  *                 title: $eq
  *                 description: Filter by an exact match.
  *               - type: array
- *                 description: Filter by an exact match.
+ *                 description: Filter by exact matches
  *                 items:
  *                   type: string
  *                   title: $eq
@@ -146,71 +146,71 @@
  *     oneOf:
  *       - type: string
  *         title: default_billing_address_id
- *         description: The customer's default billing address id.
+ *         description: Filter by the ID of a customer's default billing address.
  *       - type: array
- *         description: The customer's default billing address id.
+ *         description: Filter by the IDs of a customers' default billing address.
  *         items:
  *           type: string
  *           title: default_billing_address_id
- *           description: The default billing address id's details.
+ *           description: The ID of a customer's default billing address.
  *   default_shipping_address_id:
  *     oneOf:
  *       - type: string
  *         title: default_shipping_address_id
- *         description: The customer's default shipping address id.
+ *         description: Filter by the ID of a customer's default shipping address.
  *       - type: array
- *         description: The customer's default shipping address id.
+ *         description: Filter by the IDs of a customers' default shipping address.
  *         items:
  *           type: string
  *           title: default_shipping_address_id
- *           description: The default shipping address id's details.
+ *           description: The ID of a customer's default shipping address.
  *   company_name:
  *     oneOf:
  *       - type: string
  *         title: company_name
- *         description: The customer's company name.
+ *         description: Filter by a customer's company name.
  *       - type: array
- *         description: The customer's company name.
+ *         description: Filter by customers' company names.
  *         items:
  *           type: string
  *           title: company_name
- *           description: The company name's details.
+ *           description: A company name.
  *   first_name:
  *     oneOf:
  *       - type: string
  *         title: first_name
- *         description: The customer's first name.
+ *         description: Filter by a customer's first name.
  *       - type: array
- *         description: The customer's first name.
+ *         description: Filter by customers' first names.
  *         items:
  *           type: string
  *           title: first_name
- *           description: The first name's details.
+ *           description: A first name.
  *   last_name:
  *     oneOf:
  *       - type: string
  *         title: last_name
- *         description: The customer's last name.
+ *         description: Filter by a customer's last name.
  *       - type: array
- *         description: The customer's last name.
+ *         description: Filter by customers' last names.
  *         items:
  *           type: string
  *           title: last_name
- *           description: The last name's details.
+ *           description: A last name.
  *   created_by:
  *     oneOf:
  *       - type: string
  *         title: created_by
- *         description: The customer's created by.
+ *         description: Filter by the ID of a user to retrieve the groups of the customers they created.
  *       - type: array
- *         description: The customer's created by.
+ *         description: Filter by the ID of users to retrieve the groups of the customers they created.
  *         items:
  *           type: string
  *           title: created_by
- *           description: The created by's details.
+ *           description: A user's ID.
  *   created_at:
  *     type: object
- *     description: The customer's created at.
+ *     description: Filter the customer's creation date.
  *     properties:
  *       $and:
  *         type: array
@@ -230,7 +230,7 @@
  *             title: $eq
  *             description: Filter by an exact match.
  *           - type: array
- *             description: Filter by an exact match.
+ *             description: Filter by exact matches
  *             items:
  *               type: string
  *               title: $eq
@@ -325,7 +325,7 @@
  *         description: Filter by whether a value for this parameter exists (not `null`).
  *   updated_at:
  *     type: object
- *     description: The customer's updated at.
+ *     description: Filter the customer's update date.
  *     properties:
  *       $and:
  *         type: array
@@ -440,7 +440,7 @@
  *         description: Filter by whether a value for this parameter exists (not `null`).
  *   deleted_at:
  *     type: object
- *     description: The customer's deleted at.
+ *     description: Filter the customer's deletion date.
  *     properties:
  *       $and:
  *         type: array

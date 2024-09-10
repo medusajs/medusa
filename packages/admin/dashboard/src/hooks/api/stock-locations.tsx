@@ -168,7 +168,6 @@ export const useCreateStockLocationFulfillmentSet = (
     onSuccess: async (data, variables, context) => {
       await queryClient.invalidateQueries({
         queryKey: stockLocationsQueryKeys.all,
-        refetchType: "all",
       })
 
       options?.onSuccess?.(data, variables, context)
