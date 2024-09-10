@@ -9,9 +9,9 @@ import {
   BeforeCreate,
   ManyToMany,
   ManyToOne,
-  OnInit,
   OneToMany,
   OneToOne,
+  OnInit,
   Property,
   rel,
 } from "@mikro-orm/core"
@@ -279,6 +279,40 @@ export function defineManyToManyRelationship(
       MANY_TO_MANY_TRACKED_RELATIONS[
         `${MikroORMEntity.name}.${relationship.name}`
       ] = true
+    }
+  } else {
+    /**
+     * Since we dont have the information about the other side of the
+     * relationship, we will try to find by finding all the other side many to many that refers to the current entity.
+     * If there is any, we will try to find if at least on of them has a mappedBy.
+     */
+    const potentialOtherSides = Object.entries(relatedEntity.schema)
+      .filter(([, propConfig]) => DmlManyToMany.isManyToMany(propConfig))
+      .filter(([prop, propConfig]) => {
+        const parsedProp = propConfig.parse(prop) as RelationshipMetadata
+        const relatedEntity =
+          typeof parsedProp.entity === "function"
+            ? parsedProp.entity()
+            : undefined
+
+        if (!relatedEntity) {
+          throw new Error(
+            `Invalid relationship reference for "${relatedModelName}.${prop}". Make sure to define the relationship using a factory function`
+          )
+        }
+
+        return parseEntityName(relatedEntity).modelName === MikroORMEntity.name
+      }) as unknown as [string, RelationshipType<any>][]
+
+    if (potentialOtherSides.length) {
+      const hasMappedBy = potentialOtherSides.some(
+        ([, propConfig]) => !!propConfig.parse("").mappedBy
+      )
+      if (!hasMappedBy) {
+        throw new Error(
+          `Invalid relationship reference for "${MikroORMEntity.name}.${relationship.name}". "mappedBy" should be defined on one side or the other.`
+        )
+      }
     }
   }
 

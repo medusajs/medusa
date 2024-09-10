@@ -186,4 +186,40 @@ describe("manyToMany - manyToMany", () => {
       ]),
     })
   })
+
+  it(`should fail to load the dml's if both side of the relation are missing the mappedBy options`, () => {
+    const team = model.define("team", {
+      id: model.id().primaryKey(),
+      name: model.text(),
+      users: model.manyToMany(() => user, {
+        pivotEntity: () => squad,
+      }),
+    })
+
+    const squad = model.define("teamUsers", {
+      id: model.id().primaryKey(),
+      user: model.belongsTo(() => user, { mappedBy: "squads" }),
+      squad: model.belongsTo(() => team, { mappedBy: "users" }),
+    })
+
+    const user = model.define("user", {
+      id: model.id().primaryKey(),
+      username: model.text(),
+      squads: model.manyToMany(() => team, {
+        pivotEntity: () => squad,
+      }),
+    })
+
+    let error!: Error
+    try {
+      ;[User, Squad, Team] = toMikroOrmEntities([user, squad, team])
+    } catch (e) {
+      error = e
+    }
+
+    expect(error).toBeTruthy()
+    expect(error.message).toEqual(
+      'Invalid relationship reference for "User.squads". "mappedBy" should be defined on one side or the other.'
+    )
+  })
 })
