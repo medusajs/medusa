@@ -6126,7 +6126,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.20.3, @medusajs/medusa@^1.20.4, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -24537,7 +24537,6 @@ __metadata:
   resolution: "medusa-test-utils@workspace:packages/core/medusa-test-utils"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    "@medusajs/medusa": "*"
     "@medusajs/modules-sdk": "*"
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
@@ -24553,6 +24552,11 @@ __metadata:
     randomatic: ^3.1.1
     rimraf: ^3.0.2
     typescript: ^5.1.6
+  peerDependencies:
+    "@medusajs/medusa": "*"
+  peerDependenciesMeta:
+    "@medusajs/medusa":
+      optional: true
   languageName: unknown
   linkType: soft
 
