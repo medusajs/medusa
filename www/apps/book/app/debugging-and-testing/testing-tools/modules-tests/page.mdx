@@ -35,7 +35,7 @@ moduleIntegrationTestRunner<HelloModuleService>({
   resolve: "./modules/hello",
   testSuite: ({ service }) => {
     // TODO write tests
-  }
+  },
 })
 ```
 
@@ -88,7 +88,7 @@ import HelloModuleService from "../service"
 
 moduleIntegrationTestRunner<HelloModuleService>({
   moduleOptions: {
-    apiKey: "123"
+    apiKey: "123",
   },
   // ...
 })
@@ -108,7 +108,7 @@ import HelloModuleService from "../service"
 import { model } from "@medusajs/utils"
 
 const DummyModel = model.define("dummy_model", {
-  id: model.id().primaryKey()
+  id: model.id().primaryKey(),
 })
 
 moduleIntegrationTestRunner<HelloModuleService>({

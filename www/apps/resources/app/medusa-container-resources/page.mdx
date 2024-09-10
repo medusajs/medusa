@@ -8,6 +8,12 @@ export const metadata = {
 
 This documentation page includes the list of resources registered in the Medusa container of your Medusa application.
 
+<Note>
+
+Use the `ContainerRegistrationKeys` enum imported from `@medusajs/utils` to resolve these resources' names.
+
+</Note>
+
 <Table>
   <Table.Header>
     <Table.Row>
@@ -43,7 +49,7 @@ This documentation page includes the list of resources registered in the Medusa 
       </Table.Cell>
       <Table.Cell>
 
-      `configModule`
+      `configModule` or `ContainerRegistrationKeys.CONFIG_MODULE`
 
       </Table.Cell>
     </Table.Row>
@@ -61,7 +67,7 @@ This documentation page includes the list of resources registered in the Medusa 
       </Table.Cell>
       <Table.Cell>
 
-      `logger`
+      `logger` or `ContainerRegistrationKeys.LOGGER`
 
       </Table.Cell>
     </Table.Row>
@@ -69,17 +75,17 @@ This documentation page includes the list of resources registered in the Medusa 
     <Table.Row>
       <Table.Cell>
 
-      Remote Query
+      Query
 
       </Table.Cell>
       <Table.Cell>
 
-      The remote query function.
+      The Query utility methods.
 
       </Table.Cell>
       <Table.Cell>
 
-      `remoteQuery`
+      `query` or `ContainerRegistrationKeys.QUERY`
 
       </Table.Cell>
     </Table.Row>
@@ -97,7 +103,7 @@ This documentation page includes the list of resources registered in the Medusa 
       </Table.Cell>
       <Table.Cell>
 
-      `remoteLink`
+      `remoteLink` or `ContainerRegistrationKeys.REMOTE_LINK`
 
       </Table.Cell>
     </Table.Row>

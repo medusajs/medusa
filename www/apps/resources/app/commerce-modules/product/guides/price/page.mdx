@@ -3,29 +3,29 @@ sidebar_label: "Get Product Variant Prices"
 ---
 
 export const metadata = {
-  title: `Get Product Variant Prices using Remote Query`,
+  title: `Get Product Variant Prices using Query`,
 }
 
 # {metadata.title}
 
-In this document, you'll learn how to retrieve product variant prices in the Medusa application using the [remote query](!docs!/advanced-development/modules/remote-query).
+In this document, you'll learn how to retrieve product variant prices in the Medusa application using the [Query](!docs!/advanced-development/modules/query).
 
-<Note title="Why use the Remote Query?">
+<Note title="Why use Query?">
 
 The Product Module doesn't provide pricing functionalities. The Medusa application links the Product Module's `ProductVariant` data model to the Pricing Module's `PriceSet` data model.
 
-So, to retrieve data across the linked records of the two modules, you use the remote query.
+So, to retrieve data across the linked records of the two modules, you use Query.
 
 </Note>
 
 ## Retrieve All Product Variant Prices
 
-To retrieve all product variant prices, retrieve the product using the remote query and include among its fields `variants.prices.*`.
+To retrieve all product variant prices, retrieve the product using Query and include among its fields `variants.prices.*`.
 
 For example:
 
 ```ts highlights={[["6"]]}
-const query = remoteQueryObjectFromString({
+const { data: products } = await query.graph({
   entryPoint: "product",
   fields: [
     "*",
@@ -40,9 +40,6 @@ const query = remoteQueryObjectFromString({
     },
   },
 })
-
-// `result` is array of products
-const result = await remoteQuery(query)
 ```
 
 Each variant in the retrieved products has a `prices` array property with all the product variant prices. Each price object has the properties of the [Pricing Module's Price data model](/references/pricing/models/Price).
@@ -59,7 +56,7 @@ Learn more about prices calculation in [this Pricing Module documentation](../..
 
 </Note>
 
-To retrieve calculated prices of variants based on a context, retrieve the products using remote query and:
+To retrieve calculated prices of variants based on a context, retrieve the products using Query and:
 
 - Pass `variants.calculated_price.*` in the `fields` property.
 - Pass in the `variables` property a `variants.calculated_price` property whose value is the [calculation context object](../../../pricing/price-calculation/page.mdx#calculation-context).
@@ -67,7 +64,7 @@ To retrieve calculated prices of variants based on a context, retrieve the produ
 For example:
 
 ```ts highlights={[["6"], ["12"], ["13"], ["14"], ["15"], ["16"], ["17"]]}
-const query = remoteQueryObjectFromString({
+const { data: products } = await query.graph({
   entryPoint: "product",
   fields: [
     "*",
@@ -76,7 +73,7 @@ const query = remoteQueryObjectFromString({
   ],
   variables: {
     filters: {
-      id,
+      id: "prod_123",
     },
     "variants.calculated_price": {
       context: {
@@ -86,9 +83,6 @@ const query = remoteQueryObjectFromString({
     },
   },
 })
-
-// `result` is array of products
-const result = await remoteQuery(query)
 ```
 
 The `variants.calculated_price` property of `variables` is an object that has a `context` property. `context`'s value is an object whose keys are price rules, such as `region_id`, and value is the rule's value in this context, such as the customer's region's ID.
