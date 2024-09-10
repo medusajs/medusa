@@ -1,3 +1,6 @@
+import { IAuthModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import jwt from "jsonwebtoken"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -13,9 +16,10 @@ medusaIntegrationTestRunner({
     let customer3
     let customer4
     let customer5
+    let container
     beforeEach(async () => {
-      const appContainer = getContainer()
-      await createAdminUser(dbConnection, adminHeaders, appContainer)
+      container = getContainer()
+      await createAdminUser(dbConnection, adminHeaders, container)
 
       customer1 = (
         await api.post(
@@ -388,6 +392,64 @@ medusaIntegrationTestRunner({
               }),
             ],
             groups: [],
+          })
+        )
+      })
+    })
+
+    describe("DELETE /admin/customers/:id", () => {
+      it("should delete a customer and update auth identity", async () => {
+        const registeredCustomerToken = (
+          await api.post("/auth/customer/emailpass/register", {
+            email: "test@email.com",
+            password: "password",
+          })
+        ).data.token
+
+        const customer = (
+          await api.post(
+            "/store/customers",
+            {
+              email: "test@email.com",
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${registeredCustomerToken}`,
+              },
+            }
+          )
+        ).data.customer
+
+        const response = await api.delete(
+          `/admin/customers/${customer.id}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual(
+          expect.objectContaining({
+            id: customer.id,
+            deleted: true,
+            object: "customer",
+          })
+        )
+
+        const { auth_identity_id } = jwt.decode(registeredCustomerToken)
+
+        const authModule: IAuthModuleService = container.resolve(
+          ModuleRegistrationName.AUTH
+        )
+
+        const authIdentity = await authModule.retrieveAuthIdentity(
+          auth_identity_id
+        )
+
+        expect(authIdentity).toEqual(
+          expect.objectContaining({
+            id: authIdentity.id,
+            app_metadata: expect.not.objectContaining({
+              customer_id: expect.any(String),
+            }),
           })
         )
       })

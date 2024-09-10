@@ -1,3 +1,5 @@
+import { IAuthModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -8,17 +10,18 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let user
+    let user, container, authIdentity
 
     beforeEach(async () => {
-      const container = getContainer()
-      const { user: adminUser } = await createAdminUser(
+      container = getContainer()
+      const { user: adminUser, authIdentity: authId } = await createAdminUser(
         dbConnection,
         adminHeaders,
         container
       )
 
       user = adminUser
+      authIdentity = authId
     })
 
     describe("GET /admin/users/:id", () => {
@@ -102,20 +105,76 @@ medusaIntegrationTestRunner({
     })
 
     describe("DELETE /admin/users", () => {
-      it("Deletes a user", async () => {
-        const userId = "member-user"
-
+      it("Deletes a user and updates associated auth identity", async () => {
         const response = await api.delete(
-          `/admin/users/${userId}`,
+          `/admin/users/${user.id}`,
           adminHeaders
         )
 
         expect(response.status).toEqual(200)
         expect(response.data).toEqual({
-          id: userId,
+          id: user.id,
           object: "user",
           deleted: true,
         })
+
+        const authModule: IAuthModuleService = container.resolve(
+          ModuleRegistrationName.AUTH
+        )
+
+        const updatedAuthIdentity = await authModule.retrieveAuthIdentity(
+          authIdentity.id
+        )
+
+        // Ensure the auth identity has been updated to not contain the user's id
+        expect(updatedAuthIdentity).toEqual(
+          expect.objectContaining({
+            id: authIdentity.id,
+            app_metadata: expect.not.objectContaining({
+              user_id: user.id,
+            }),
+          })
+        )
+
+        // Authentication should still succeed
+        const authenticateToken = (
+          await api.post(`/auth/user/emailpass`, {
+            email: user.email,
+            password: "somepassword",
+          })
+        ).data.token
+
+        expect(authenticateToken).toEqual(expect.any(String))
+
+        // However, it should not be possible to access routes any longer
+        const meResponse = await api
+          .get(`/admin/users/me`, {
+            headers: {
+              authorization: `Bearer ${authenticateToken}`,
+            },
+          })
+          .catch((e) => e)
+
+        expect(meResponse.response.status).toEqual(401)
+      })
+
+      it("throws if you attempt to delete another user", async () => {
+        const userModule = container.resolve(ModuleRegistrationName.USER)
+
+        const userTwo = await userModule.createUsers({
+          email: "test@test.com",
+          password: "test",
+          role: "member",
+        })
+
+        const error = await api
+          .delete(`/admin/users/${userTwo.id}`, adminHeaders)
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          "You are not allowed to delete other users"
+        )
       })
 
       // TODO: Migrate when analytics config is implemented in 2.0
