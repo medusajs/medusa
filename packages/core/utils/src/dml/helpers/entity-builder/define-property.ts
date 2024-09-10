@@ -215,6 +215,27 @@ export function defineProperty(
   }
 
   /**
+   * Handling JSON property separately to stringify its default value
+   */
+  if (field.dataType.name === "json") {
+    Property({
+      columnType: "jsonb",
+      type: "any",
+      nullable: field.nullable,
+      fieldName: field.fieldName,
+      /**
+       * MikroORM does not ignore undefined values for default when generating
+       * the database schema SQL. Conditionally add it here to prevent undefined
+       * from being set as default value in SQL.
+       */
+      ...(isDefined(field.defaultValue) && {
+        default: JSON.stringify(field.defaultValue),
+      }),
+    })(MikroORMEntity.prototype, field.fieldName)
+    return
+  }
+
+  /**
    * Define rest of properties
    */
   const columnType = COLUMN_TYPES[field.dataType.name]

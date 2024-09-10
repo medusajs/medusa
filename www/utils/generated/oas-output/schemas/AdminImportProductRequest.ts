@@ -1,7 +1,7 @@
 /**
  * @schema AdminImportProductRequest
  * type: object
- * description: SUMMARY
+ * description: The import's details.
  * x-schemaName: AdminImportProductRequest
  * required:
  *   - file

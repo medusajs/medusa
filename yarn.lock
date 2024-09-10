@@ -6023,6 +6023,7 @@ __metadata:
   dependencies:
     "@medusajs/types": ^1.11.16
     cross-env: ^5.2.1
+    fetch-event-stream: ^0.1.5
     jest: ^29.7.0
     msw: ^2.3.0
     qs: ^6.12.1
@@ -19798,6 +19799,13 @@ __metadata:
     node-domexception: ^1.0.0
     web-streams-polyfill: ^3.0.3
   checksum: 60054bf47bfa10fb0ba6cb7742acec2f37c1f56344f79a70bb8b1c48d77675927c720ff3191fa546410a0442c998d27ab05e9144c32d530d8a52fbe68f843b69
+  languageName: node
+  linkType: hard
+
+"fetch-event-stream@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "fetch-event-stream@npm:0.1.5"
+  checksum: f5979cbff7bcfc554ba9d80783c972fab99d5e0ab0e0f24bad14d461b31ae847d510bb53a5a06c7ec6e243a7b397475441bc23b6d1e325edc3eda4d0f50f7bbd
   languageName: node
   linkType: hard
 
