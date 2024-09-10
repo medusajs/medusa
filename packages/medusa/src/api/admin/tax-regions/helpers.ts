@@ -11,7 +11,7 @@ export const refetchTaxRegion = async (
   const {
     data: [taxRegion],
   } = await query.graph({
-    entryPoint: "taxRegion",
+    entryPoint: "tax_region",
     variables: { filters: { id: taxRegionId } },
     fields: fields,
   })
