@@ -1,9 +1,5 @@
 export const filesMap = [
   {
-    "filePath": "/www/apps/resources/app/_events-reference/page.mdx",
-    "pathname": "/_events-reference"
-  },
-  {
     "filePath": "/www/apps/resources/app/admin-widget-injection-zones/page.mdx",
     "pathname": "/admin-widget-injection-zones"
   },
@@ -84,14 +80,6 @@ export const filesMap = [
     "pathname": "/architectural-modules/workflow-engine/redis"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/api-key/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/api-key/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/api-key/_events/page.mdx",
-    "pathname": "/commerce-modules/api-key/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/api-key/concepts/page.mdx",
     "pathname": "/commerce-modules/api-key/concepts"
   },
@@ -106,14 +94,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/api-key/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/api-key/relations-to-other-modules"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/auth/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/_events/page.mdx",
-    "pathname": "/commerce-modules/auth/_events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-flows/page.mdx",
@@ -160,14 +140,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/cart/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/cart/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/cart/_events/page.mdx",
-    "pathname": "/commerce-modules/cart/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/concepts/page.mdx",
     "pathname": "/commerce-modules/cart/concepts"
   },
@@ -192,14 +164,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/cart/tax-lines"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/currency/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/currency/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/currency/_events/page.mdx",
-    "pathname": "/commerce-modules/currency/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/currency/examples/page.mdx",
     "pathname": "/commerce-modules/currency/examples"
   },
@@ -210,14 +174,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/currency/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/currency/relations-to-other-modules"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/customer/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/customer/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/customer/_events/page.mdx",
-    "pathname": "/commerce-modules/customer/_events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/customer-accounts/page.mdx",
@@ -234,14 +190,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/customer/relations-to-other-modules"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/fulfillment/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/_events/page.mdx",
-    "pathname": "/commerce-modules/fulfillment/_events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/fulfillment/concepts/page.mdx",
@@ -272,14 +220,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/fulfillment/shipping-option"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/inventory/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/inventory/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/inventory/_events/page.mdx",
-    "pathname": "/commerce-modules/inventory/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/concepts/page.mdx",
     "pathname": "/commerce-modules/inventory/concepts"
   },
@@ -298,14 +238,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/inventory/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/inventory/relations-to-other-modules"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/order/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/order/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/order/_events/page.mdx",
-    "pathname": "/commerce-modules/order/_events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/claim/page.mdx",
@@ -352,14 +284,6 @@ export const filesMap = [
     "pathname": "/commerce-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/payment/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/payment/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/payment/_events/page.mdx",
-    "pathname": "/commerce-modules/payment/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/payment/examples/page.mdx",
     "pathname": "/commerce-modules/payment/examples"
   },
@@ -404,14 +328,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/payment/webhook-events"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/pricing/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/pricing/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/pricing/_events/page.mdx",
-    "pathname": "/commerce-modules/pricing/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/pricing/concepts/page.mdx",
     "pathname": "/commerce-modules/pricing/concepts"
   },
@@ -440,14 +356,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/pricing/tax-inclusive-pricing"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/product/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/product/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/product/_events/page.mdx",
-    "pathname": "/commerce-modules/product/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/product/examples/page.mdx",
     "pathname": "/commerce-modules/product/examples"
   },
@@ -466,14 +374,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/product/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/product/relations-to-other-modules"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/promotion/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/promotion/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/promotion/_events/page.mdx",
-    "pathname": "/commerce-modules/promotion/_events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/promotion/actions/page.mdx",
@@ -504,14 +404,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/promotion/relations-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/region/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/region/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/region/_events/page.mdx",
-    "pathname": "/commerce-modules/region/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/region/examples/page.mdx",
     "pathname": "/commerce-modules/region/examples"
   },
@@ -522,14 +414,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/region/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/region/relations-to-other-modules"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/sales-channel/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/_events/page.mdx",
-    "pathname": "/commerce-modules/sales-channel/_events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/sales-channel/examples/page.mdx",
@@ -548,14 +432,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/sales-channel/relations-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/stock-location/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/stock-location/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/stock-location/_events/page.mdx",
-    "pathname": "/commerce-modules/stock-location/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/stock-location/concepts/page.mdx",
     "pathname": "/commerce-modules/stock-location/concepts"
   },
@@ -572,14 +448,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/stock-location/relations-to-other-modules"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/store/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/store/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/store/_events/page.mdx",
-    "pathname": "/commerce-modules/store/_events"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/store/examples/page.mdx",
     "pathname": "/commerce-modules/store/examples"
   },
@@ -590,14 +458,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/store/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/store/relations-to-other-modules"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/tax/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/tax/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/tax/_events/page.mdx",
-    "pathname": "/commerce-modules/tax/_events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/tax/examples/page.mdx",
@@ -622,14 +482,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/tax/tax-region/page.mdx",
     "pathname": "/commerce-modules/tax/tax-region"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/user/_events/_events-table/page.mdx",
-    "pathname": "/commerce-modules/user/_events/_events-table"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/user/_events/page.mdx",
-    "pathname": "/commerce-modules/user/_events"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/user/examples/page.mdx",
@@ -674,6 +526,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/deployment/storefront/vercel/page.mdx",
     "pathname": "/deployment/storefront/vercel"
+  },
+  {
+    "filePath": "/www/apps/resources/app/events-reference/page.mdx",
+    "pathname": "/events-reference"
   },
   {
     "filePath": "/www/apps/resources/app/integrations/page.mdx",

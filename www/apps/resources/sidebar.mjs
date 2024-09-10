@@ -2198,6 +2198,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         title: "Medusa Container Resources",
       },
       {
+        type: "link",
         path: "/events-reference",
         title: "Events List",
       },
