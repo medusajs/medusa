@@ -94,7 +94,7 @@ This property is an object that holds additional data passed to the workflow.
 To pass that additional data when executing the workflow, pass it as a parameter to the `.run` method of the workflow:
 
 ```ts highlights={[["10", "additional_data"]]}
-import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { createProductsWorkflow } from "@medusajs/core-flows"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
@@ -104,8 +104,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         // ...
       ], 
       additional_data: {
-        custom_field: "test"
-      }
+        custom_field: "test",
+      },
     },
   })
 }

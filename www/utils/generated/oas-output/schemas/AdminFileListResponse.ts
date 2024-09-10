@@ -1,14 +1,14 @@
 /**
  * @schema AdminFileListResponse
  * type: object
- * description: SUMMARY
+ * description: The list of uploaded files.
  * x-schemaName: AdminFileListResponse
  * required:
  *   - files
  * properties:
  *   files:
  *     type: array
- *     description: The upload's files.
+ *     description: The list of uploaded files.
  *     items:
  *       $ref: "#/components/schemas/AdminFile"
  * 

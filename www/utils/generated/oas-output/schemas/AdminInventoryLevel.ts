@@ -1,7 +1,7 @@
 /**
  * @schema AdminInventoryLevel
  * type: object
- * description: The location level's location levels.
+ * description: The inventory level's details.
  * x-schemaName: AdminInventoryLevel
  * required:
  *   - id
@@ -22,60 +22,51 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The location level's ID.
- *   created_at:
- *     type: string
- *     format: date-time
- *     title: created_at
- *     description: The location level's created at.
- *   updated_at:
- *     type: string
- *     format: date-time
- *     title: updated_at
- *     description: The location level's updated at.
- *   deleted_at:
- *     type: string
- *     format: date-time
- *     title: deleted_at
- *     description: The location level's deleted at.
+ *     description: The inventory level's ID.
  *   inventory_item_id:
  *     type: string
  *     title: inventory_item_id
- *     description: The location level's inventory item id.
+ *     description: The ID of the inventory item this level belongs to.
  *   location_id:
  *     type: string
  *     title: location_id
- *     description: The location level's location id.
+ *     description: The ID of the stock location this level belongs to.
  *   stocked_quantity:
  *     type: number
  *     title: stocked_quantity
- *     description: The location level's stocked quantity.
- *   raw_stocked_quantity:
- *     type: object
- *     description: The location level's raw stocked quantity.
+ *     description: The quantity of the associated inventory item stocked in the associated stock location.
  *   reserved_quantity:
  *     type: number
  *     title: reserved_quantity
- *     description: The location level's reserved quantity.
- *   raw_reserved_quantity:
- *     type: object
- *     description: The location level's raw reserved quantity.
+ *     description: The reserved quantity of the associated inventory item stocked in the associated stock location.
  *   incoming_quantity:
  *     type: number
  *     title: incoming_quantity
- *     description: The location level's incoming quantity.
- *   raw_incoming_quantity:
- *     type: object
- *     description: The location level's raw incoming quantity.
+ *     description: The incoming quantity of the associated inventory item stocked in the associated stock location.
  *   metadata:
  *     type: object
- *     description: The location level's metadata.
+ *     description: The location level's metadata, can hold custom key-value pairs.
  *   inventory_item:
  *     $ref: "#/components/schemas/AdminInventoryItem"
  *   available_quantity:
  *     type: number
  *     title: available_quantity
- *     description: The location level's available quantity.
+ *     description: The quantity available for order of the associated inventory item in the associated stock location.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The date the inventory level was created.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The date the inventory level was updated.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The date the inventory level was deleted.
  * 
 */
 

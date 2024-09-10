@@ -1,3 +1,5 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Example: Write Integration Tests for API Routes`,
 }
@@ -5,6 +7,15 @@ export const metadata = {
 # {metadata.title}
 
 In this chapter, you'll learn how to write integration tests for API routes using the [medusaIntegrationTestRunner utility function](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
 
 ## Test a GET API Route
 
@@ -18,7 +29,7 @@ export async function GET(
   res: MedusaResponse
 ){
   res.json({
-    message: "Hello, World!"
+    message: "Hello, World!",
   })
 }
 ```
@@ -47,7 +58,7 @@ medusaIntegrationTestRunner({
         })
       })
     })
-  }
+  },
 })
 ```
 
@@ -73,7 +84,7 @@ If you don't have a `test:integration` script in `package.json`, refer to the [M
 
 </Note>
 
-This runs your Medusa application and runs the tests available under the `src/integrations` directory.
+This runs your Medusa application and runs the tests available under the `src/integrations/http` directory.
 
 ---
 
@@ -96,7 +107,7 @@ And consider that the file `src/api/store/custom/route.ts` defines another route
 
 ```ts title="src/api/store/custom/route.ts"
 // other imports...
-import HelloModuleService from "../../../modules/hello/service";
+import HelloModuleService from "../../../modules/hello/service"
 
 // ...
 
@@ -113,7 +124,7 @@ export async function POST(
   )
 
   res.json({
-    my_custom: myCustom
+    my_custom: myCustom,
   })
 }
 ```
@@ -144,7 +155,7 @@ medusaIntegrationTestRunner({
             `/store/custom`,
             {
               id,
-              name: "Test"
+              name: "Test",
             }
           )
   
@@ -159,7 +170,7 @@ medusaIntegrationTestRunner({
         })
       })
     })
-  }
+  },
 })
 ```
 
@@ -199,7 +210,7 @@ medusaIntegrationTestRunner({
         })
       })
     })
-  }
+  },
 })
 ```
 
@@ -212,8 +223,8 @@ The `afterAll` hook resolves the `HelloModuleService` and use its `deleteMyCusto
 Consider a `/store/custom/:id` API route created at `src/api/store/custom/[id]/route.ts`:
 
 ```ts title="src/api/store/custom/[id]/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
-import HelloModuleService from "../../../modules/hello/service";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import HelloModuleService from "../../../modules/hello/service"
 
 export async function DELETE(
   req: MedusaRequest,
@@ -226,7 +237,7 @@ export async function DELETE(
   await helloModuleService.deleteMyCustoms(req.params.id)
 
   res.json({
-    success: true
+    success: true,
   })
 }
 ```
@@ -255,7 +266,7 @@ medusaIntegrationTestRunner({
 
           await helloModuleService.createMyCustoms({
             id,
-            name: "Test"
+            name: "Test",
           })
         })
 
@@ -270,7 +281,7 @@ medusaIntegrationTestRunner({
         })
       })
     })
-  }
+  },
 })
 ```
 

@@ -2548,6 +2548,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
             total: 0,
             original_total: 100,
             discount_total: 100,
+            discount_subtotal: 100,
             discount_tax_total: 0,
             tax_total: 0,
             original_tax_total: 0,
@@ -2564,6 +2565,10 @@ moduleIntegrationTestRunner<ICartModuleService>({
               precision: 20,
             },
             raw_discount_total: {
+              value: "100",
+              precision: 20,
+            },
+            raw_discount_subtotal: {
               value: "100",
               precision: 20,
             },
@@ -2647,6 +2652,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
             total: 200,
             original_total: 400,
             discount_total: 200,
+            discount_subtotal: 200,
             discount_tax_total: 0,
             tax_total: 0,
             original_tax_total: 0,
@@ -2663,6 +2669,10 @@ moduleIntegrationTestRunner<ICartModuleService>({
               precision: 20,
             },
             raw_discount_total: {
+              value: "200",
+              precision: 20,
+            },
+            raw_discount_subtotal: {
               value: "200",
               precision: 20,
             },
@@ -2704,6 +2714,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
             total: 10,
             original_total: 10,
             discount_total: 0,
+            discount_subtotal: 0,
             discount_tax_total: 0,
             tax_total: 0,
             original_tax_total: 0,
@@ -2720,6 +2731,10 @@ moduleIntegrationTestRunner<ICartModuleService>({
               precision: 20,
             },
             raw_discount_total: {
+              value: "0",
+              precision: 20,
+            },
+            raw_discount_subtotal: {
               value: "0",
               precision: 20,
             },
@@ -2741,8 +2756,9 @@ moduleIntegrationTestRunner<ICartModuleService>({
         subtotal: 510,
         tax_total: 0,
         discount_total: 300,
+        discount_subtotal: 300,
         discount_tax_total: 0,
-        original_total: 210,
+        original_total: 510,
         original_tax_total: 0,
         item_total: 200,
         item_subtotal: 500,
@@ -2772,12 +2788,16 @@ moduleIntegrationTestRunner<ICartModuleService>({
           value: "300",
           precision: 20,
         },
+        raw_discount_subtotal: {
+          value: "300",
+          precision: 20,
+        },
         raw_discount_tax_total: {
           value: "0",
           precision: 20,
         },
         raw_original_total: {
-          value: "210",
+          value: "510",
           precision: 20,
         },
         raw_original_tax_total: {

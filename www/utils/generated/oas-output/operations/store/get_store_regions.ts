@@ -6,7 +6,7 @@
  * x-authenticated: false
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/regions/list
- *   description: Storefront guide: How to retrieve a list of regions.
+ *   description: "Storefront guide: How to retrieve a list of regions."
  * parameters:
  *   - name: expand
  *     in: query
@@ -120,20 +120,6 @@
  *       items:
  *         type: object
  *       title: $or
- *   - name: currency_code
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: currency_code
- *           description: The region's currency code.
- *         - type: array
- *           description: The region's currency code.
- *           items:
- *             type: string
- *             title: currency_code
- *             description: The currency code's details.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
