@@ -46,31 +46,32 @@
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The exchange's order id.
+ *     description: The ID of the order the exchange is created for.
  *   return_items:
  *     type: array
- *     description: The exchange's return items.
+ *     description: The items returned (inbound) by the exchange.
  *     items:
  *       $ref: "#/components/schemas/AdminReturnItem"
  *   additional_items:
  *     type: array
- *     description: The exchange's additional items.
+ *     description: The new items (outbound) sent by the exchange.
  *     items:
  *       $ref: "#/components/schemas/BaseExchangeItem"
  *   no_notification:
  *     type: boolean
  *     title: no_notification
- *     description: The exchange's no notification.
+ *     description: Whether to send the customer notifications when the exchange is updated.
  *   difference_due:
  *     type: number
  *     title: difference_due
- *     description: The exchange's difference due.
+ *     description: The amount to be exchanged or refunded. If the amount is negative, it must be refunded. If positive, additional payment is required from the customer.
  *   return:
+ *     description: the return associated with the exchange.
  *     $ref: "#/components/schemas/AdminReturn"
  *   return_id:
  *     type: string
  *     title: return_id
- *     description: The exchange's return id.
+ *     description: The ID of the associated exchange.
  *   currency_code:
  *     type: string
  *     title: currency_code
@@ -82,31 +83,33 @@
  *   region_id:
  *     type: string
  *     title: region_id
- *     description: The exchange's region id.
+ *     description: The ID of the associated order's region.
  *   customer_id:
  *     type: string
  *     title: customer_id
- *     description: The exchange's customer id.
+ *     description: The ID of the customer that placed the order.
  *   sales_channel_id:
  *     type: string
  *     title: sales_channel_id
- *     description: The exchange's sales channel id.
+ *     description: The ID of the sales channel the associated order belongs to.
  *   email:
  *     type: string
  *     title: email
- *     description: The exchange's email.
+ *     description: The email used when placing the order.
  *     format: email
  *   display_id:
  *     type: number
  *     title: display_id
- *     description: The exchange's display id.
+ *     description: The exchange's display ID.
  *   shipping_address:
+ *     description: The shipping address to send new items to.
  *     $ref: "#/components/schemas/BaseOrderAddress"
  *   billing_address:
+ *     description: The customer's billing address.
  *     $ref: "#/components/schemas/BaseOrderAddress"
  *   shipping_methods:
  *     type: array
- *     description: The exchange's shipping methods.
+ *     description: The shipping methods used to send the new (outbound) items.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderShippingMethod"
  *   payment_collections:
@@ -130,7 +133,7 @@
  *       - requires_action
  *   fulfillments:
  *     type: array
- *     description: The exchange's fulfillments.
+ *     description: The exchange's fulfillments of new (outbound) items.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderFulfillment"
  *   fulfillment_status:
@@ -148,87 +151,90 @@
  *   transactions:
  *     type: array
  *     description: The exchange's transactions.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/order/transactions
  *     items:
  *       $ref: "#/components/schemas/BaseOrderTransaction"
  *   summary:
+ *     description: The totals summary of the exchange.
  *     $ref: "#/components/schemas/BaseOrderSummary"
  *   metadata:
  *     type: object
- *     description: The exchange's metadata.
+ *     description: The exchange's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The exchange's created at.
+ *     description: The date that the exchange was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The exchange's updated at.
+ *     description: The date that the exchange was updated.
  *   original_item_total:
  *     type: number
  *     title: original_item_total
- *     description: The exchange's original item total.
+ *     description: The total of the original items in the order.
  *   original_item_subtotal:
  *     type: number
  *     title: original_item_subtotal
- *     description: The exchange's original item subtotal.
+ *     description: The subtotal of the original items in the order.
  *   original_item_tax_total:
  *     type: number
  *     title: original_item_tax_total
- *     description: The exchange's original item tax total.
+ *     description: The total tax of the original items in the order.
  *   item_total:
  *     type: number
  *     title: item_total
- *     description: The exchange's item total.
+ *     description: The total of the exchange's new items.
  *   item_subtotal:
  *     type: number
  *     title: item_subtotal
- *     description: The exchange's item subtotal.
+ *     description: The subtotal of the exchange's new items.
  *   item_tax_total:
  *     type: number
  *     title: item_tax_total
- *     description: The exchange's item tax total.
+ *     description: The tax total of the exchange's new items.
  *   original_total:
  *     type: number
  *     title: original_total
- *     description: The exchange's original total.
+ *     description: The total of the order.
  *   original_subtotal:
  *     type: number
  *     title: original_subtotal
- *     description: The exchange's original subtotal.
+ *     description: The subtotal of the order.
  *   original_tax_total:
  *     type: number
  *     title: original_tax_total
- *     description: The exchange's original tax total.
+ *     description: The tax total of the order.
  *   total:
  *     type: number
  *     title: total
- *     description: The exchange's total.
+ *     description: The total of the exchange.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The exchange's subtotal.
+ *     description: The subtotal of the exchange.
  *   tax_total:
  *     type: number
  *     title: tax_total
- *     description: The exchange's tax total.
+ *     description: The tax total of the exchange.
  *   discount_total:
  *     type: number
  *     title: discount_total
- *     description: The exchange's discount total.
+ *     description: The discount total of the exchange.
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The exchange's discount tax total.
+ *     description: The total taxes on discount of the exchange.
  *   gift_card_total:
  *     type: number
  *     title: gift_card_total
- *     description: The exchange's gift card total.
+ *     description: The gift cards total of the exchange.
  *   gift_card_tax_total:
  *     type: number
  *     title: gift_card_tax_total
- *     description: The exchange's gift card tax total.
+ *     description: The total taxes on the gift card of the exchange.
  *   shipping_total:
  *     type: number
  *     title: shipping_total
@@ -244,15 +250,15 @@
  *   original_shipping_total:
  *     type: number
  *     title: original_shipping_total
- *     description: The exchange's original shipping total.
+ *     description: The order's shipping total.
  *   original_shipping_subtotal:
  *     type: number
  *     title: original_shipping_subtotal
- *     description: The exchange's original shipping subtotal.
+ *     description: The order's shipping subtotal.
  *   original_shipping_tax_total:
  *     type: number
  *     title: original_shipping_tax_total
- *     description: The exchange's original shipping tax total.
+ *     description: The order's shipping tax total.
  * 
 */
 

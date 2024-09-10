@@ -9,13 +9,11 @@ export const ProductEditOption = () => {
   const { id, option_id } = useParams()
   const { t } = useTranslation()
 
-  const { product, isLoading, isError, error } = useProduct(id!)
+  const { product, isPending, isFetching, isError, error } = useProduct(id!)
 
   const option = product?.options.find((o) => o.id === option_id)
 
-  const ready = !isLoading && option
-
-  if (!isLoading && !option) {
+  if (!isPending && !isFetching && !option) {
     throw json({ message: `An option with ID ${option_id} was not found` }, 404)
   }
 
@@ -28,7 +26,7 @@ export const ProductEditOption = () => {
       <RouteDrawer.Header>
         <Heading>{t("products.options.edit.header")}</Heading>
       </RouteDrawer.Header>
-      {ready && <CreateProductOptionForm option={option} />}
+      {option && <CreateProductOptionForm option={option} />}
     </RouteDrawer>
   )
 }

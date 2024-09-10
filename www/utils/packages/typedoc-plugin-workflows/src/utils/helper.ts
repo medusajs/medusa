@@ -173,7 +173,7 @@ export default class Helper {
   }): string {
     let str = `import { ${workflowName} } from "@medusajs/core-flows"\n\n`
 
-    str += `${workflowName}.hooks.${hookName}(\n\tasync (({`
+    str += `${workflowName}.hooks.${hookName}(\n\t(async ({`
 
     if (
       parameter.type?.type === "reference" &&

@@ -16,7 +16,6 @@ import {
   AdminCreateProductOption,
   AdminCreateProductVariant,
   AdminCreateVariantInventoryItem,
-  AdminExportProduct,
   AdminGetProductOptionParams,
   AdminGetProductOptionsParams,
   AdminGetProductParams,
@@ -82,7 +81,6 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/products/export",
     middlewares: [
-      validateAndTransformBody(AdminExportProduct),
       validateAndTransformQuery(
         AdminGetProductsParams,
         QueryConfig.listProductQueryConfig

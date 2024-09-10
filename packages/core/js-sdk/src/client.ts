@@ -1,5 +1,13 @@
 import qs from "qs"
-import { ClientFetch, Config, FetchArgs, FetchInput, Logger } from "./types"
+import { events } from "fetch-event-stream"
+import {
+  ClientFetch,
+  Config,
+  FetchArgs,
+  FetchInput,
+  FetchStreamResponse,
+  Logger,
+} from "./types"
 
 export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"
 
@@ -110,9 +118,37 @@ export class Client {
    * @param init: FetchArgs
    * @returns Promise<T>
    */
-
   fetch<T extends any>(input: FetchInput, init?: FetchArgs): Promise<T> {
     return this.fetch_(input, init) as unknown as Promise<T>
+  }
+
+  /**
+   * `fetchStream` is a helper method to deal with server-sent events. It returns an object with a stream and an abort function.
+   * It follows a very similar interface to `fetch`, with the return value being an async generator.
+   * The stream is an async generator that yields `ServerSentEventMessage` objects, which contains the event name, stringified data, and few other properties.
+   * The caller is responsible for handling `disconnect` events and aborting the stream. The caller is also responsible for parsing the data field.
+   *
+   * @param input: FetchInput
+   * @param init: FetchArgs
+   * @returns FetchStreamResponse
+   */
+  async fetchStream(
+    input: FetchInput,
+    init?: FetchArgs
+  ): Promise<FetchStreamResponse> {
+    let abort = new AbortController()
+
+    let res = await this.fetch_(input, {
+      ...init,
+      signal: abort.signal,
+      headers: { ...init?.headers, accept: "text/event-stream" },
+    })
+
+    if (res.ok) {
+      return { stream: events(res, abort.signal), abort: abort.abort }
+    }
+
+    return { stream: null, abort: abort.abort }
   }
 
   setToken(token: string) {

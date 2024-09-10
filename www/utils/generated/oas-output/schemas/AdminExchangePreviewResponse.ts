@@ -1,7 +1,7 @@
 /**
  * @schema AdminExchangePreviewResponse
  * type: object
- * description: SUMMARY
+ * description: A preview of the order once the exchange is applied.
  * x-schemaName: AdminExchangePreviewResponse
  * required:
  *   - order_preview

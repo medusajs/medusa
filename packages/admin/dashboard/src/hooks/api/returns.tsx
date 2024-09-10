@@ -97,7 +97,7 @@ export const useCancelReturn = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
-        refetchType: "all",
+        refetchType: "all", // We want preview to be updated in the cache immediately
       })
 
       queryClient.invalidateQueries({
@@ -163,7 +163,7 @@ export const useCancelReturnRequest = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
-        refetchType: "all",
+        refetchType: "all", // We want preview to be updated in the cache immediately
       })
 
       queryClient.invalidateQueries({
@@ -625,7 +625,7 @@ export const useCancelReceiveReturn = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
-        refetchType: "all", // For some reason RQ will refetch this but will return stale record from the cache
+        refetchType: "all", // We want preview to be updated in the cache immediately
       })
 
       queryClient.invalidateQueries({

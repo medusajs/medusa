@@ -1,7 +1,7 @@
 /**
  * @schema AdminExchangeDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of deleting an exchange.
  * x-schemaName: AdminExchangeDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Exchange was deleted.
+ *     description: Whether the exchange was deleted.
  * 
 */
 

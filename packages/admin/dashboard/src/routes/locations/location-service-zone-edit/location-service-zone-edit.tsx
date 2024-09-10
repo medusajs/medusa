@@ -10,26 +10,24 @@ export const LocationServiceZoneEdit = () => {
   const { t } = useTranslation()
   const { location_id, fset_id, zone_id } = useParams()
 
-  const { stock_location, isPending, isError, error } = useStockLocation(
-    location_id!,
-    {
+  const { stock_location, isPending, isFetching, isError, error } =
+    useStockLocation(location_id!, {
       fields: "*fulfillment_sets.service_zones",
-    }
-  )
+    })
 
   const serviceZone = stock_location?.fulfillment_sets
     ?.find((f) => f.id === fset_id)
     ?.service_zones.find((z) => z.id === zone_id)
 
-  if (isError) {
-    throw error
-  }
-
-  if (!isPending && !serviceZone) {
+  if (!isPending && !isFetching && !serviceZone) {
     throw json(
       { message: `Service zone with ID ${zone_id} was not found` },
       404
     )
+  }
+
+  if (isError) {
+    throw error
   }
 
   return (
@@ -37,7 +35,7 @@ export const LocationServiceZoneEdit = () => {
       <RouteDrawer.Header>
         <Heading>{t("stockLocations.serviceZones.edit.header")}</Heading>
       </RouteDrawer.Header>
-      {!isPending && serviceZone && (
+      {serviceZone && (
         <EditServiceZoneForm
           zone={serviceZone}
           fulfillmentSetId={fset_id!}
