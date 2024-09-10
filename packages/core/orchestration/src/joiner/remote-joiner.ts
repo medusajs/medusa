@@ -1027,18 +1027,6 @@ export class RemoteJoiner {
 
       partialPath.push(partial)
 
-      console.log("parseAlias -----------++++++******", {
-        parentPath,
-        completePath,
-        partial,
-        CURRENT_SERVICE: currentServiceConfig.serviceName,
-      })
-
-      global.A ??= 0
-      if (global.A++ > 10) {
-        process.exit(0)
-      }
-
       parsedExpands.set(completePath.join("."), {
         property: partial,
         serviceConfig: currentServiceConfig,
