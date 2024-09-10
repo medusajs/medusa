@@ -14,17 +14,18 @@ In this document, you'll learn how to calculate a product variant's price with t
 
 You'll need the following resources for the taxes calculation:
 
-1. Remote query to retrieve the product's variants' prices for a context. Learn more about that in [this guide](../price/page.mdx).
+1. Query to retrieve the product's variants' prices for a context. Learn more about that in [this guide](../price/page.mdx).
 2. The Tax Module's main service to get the tax lines for each product.
 
 ```ts
 // other imports...
 import {
   ModuleRegistrationName,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 
 // In an API route, workflow step, etc...
-const remoteQuery = container.resolve("remoteQuery")
+const query = container.resolve(ContainerRegistrationKeys.QUERY)
 const taxModuleService = container.resolve(
   ModuleRegistrationName.TAX
 )
@@ -34,16 +35,10 @@ const taxModuleService = container.resolve(
 
 ## Step 1: Retrieve Prices for a Context
 
-After resolving the resources, use the remote query to retrieve the products with the variants' prices for a context:
+After resolving the resources, use the Query to retrieve the products with the variants' prices for a context:
 
 ```ts
-// other imports...
-import {
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-
-// ...
-const query = remoteQueryObjectFromString({
+const { data: products } = await query.graph({
   entryPoint: "product",
   fields: [
     "*",
@@ -52,18 +47,16 @@ const query = remoteQueryObjectFromString({
   ],
   variables: {
     filters: {
-      id,
+      id: "prod_123",
     },
     "variants.calculated_price": {
       context: {
-        region_id,
-        currency_code,
+        region_id: "region_123",
+        currency_code: "usd",
       },
     },
   },
 })
-
-const products = await remoteQuery(query)
 ```
 
 <Note>
