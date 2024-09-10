@@ -138,6 +138,12 @@ const { data: myCustoms } = await query.graph({
 })
 ```
 
+<Note>
+
+Filters don't apply on fields of linked data models from other modules.
+
+</Note>
+
 The `query.graph` function accepts a `variables` property. You can use this property to filter retrieved records.
 
 <TypeList
@@ -173,6 +179,12 @@ const { data: myCustoms } = await query.graph({
   },
 })
 ```
+
+<Note>
+
+Sorting doesn't work on fields of linked data models from other modules.
+
+</Note>
 
 To sort returned records, pass an `order` property to `variables`.
 
