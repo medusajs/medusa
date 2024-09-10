@@ -66,6 +66,11 @@ export interface InventoryLevelDTO {
 export interface FilterableInventoryLevelProps
   extends BaseFilterable<FilterableInventoryLevelProps> {
   /**
+   * Filter inventory levels by the ID
+   */
+  id?: string | string[]
+
+  /**
    * Filter inventory levels by the ID of their associated inventory item.
    */
   inventory_item_id?: string | string[]
