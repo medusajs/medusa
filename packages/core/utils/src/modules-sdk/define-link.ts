@@ -184,7 +184,7 @@ ${serviceBObj.module}: {
     let aliasAOptions =
       serviceAObj.alias ??
       serviceAAliases.find((a) => {
-        return a.args?.entity == serviceAKeyEntity
+        return a.entity == serviceAKeyEntity
       })?.name
 
     let aliasA = aliasAOptions
@@ -212,7 +212,7 @@ ${serviceBObj.module}: {
     let aliasBOptions =
       serviceBObj.alias ??
       serviceBAliases.find((a) => {
-        return a.args?.entity == serviceBKeyInfo
+        return a.entity == serviceBKeyInfo
       })?.name
 
     let aliasB = aliasBOptions

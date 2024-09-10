@@ -196,13 +196,14 @@ export function defineJoinerConfig(
         entity: alias.entity,
         args: {
           methodSuffix:
-            alias.args.methodSuffix ?? pluralize(upperCaseFirst(alias.entity)),
+            alias.args?.methodSuffix ?? pluralize(upperCaseFirst(alias.entity)),
         },
       })),
       ...deduplicatedLoadedModels
         .filter((model) => {
           return (
-            !alias || !alias.some((alias) => alias.args?.entity === model.name)
+            !alias ||
+            !alias.some((alias) => alias.entity === upperCaseFirst(model.name))
           )
         })
         .map((entity, i) => ({
@@ -377,7 +378,7 @@ export function buildLinkConfigFromModelObjects<
           primaryKey: property,
           serviceName,
           field: lowerCaseFirst(model.name),
-          entity: model.name,
+          entity: upperCaseFirst(model.name),
         }
       }
     }
@@ -412,7 +413,7 @@ export function buildLinkConfigFromLinkableKeys<
       primaryKey: inferredReferenceProperty,
       serviceName,
       field: keyName,
-      entity: modelName,
+      entity: upperCaseFirst(modelName),
     }
 
     linkConfig[keyName] ??= {
