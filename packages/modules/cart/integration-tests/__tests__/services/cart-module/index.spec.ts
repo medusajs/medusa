@@ -34,6 +34,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           cart: {
             id: {
               linkable: "cart_id",
+              entity: "Cart",
               primaryKey: "id",
               serviceName: "cart",
               field: "cart",
@@ -42,6 +43,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           address: {
             id: {
               linkable: "address_id",
+              entity: "Address",
               primaryKey: "id",
               serviceName: "cart",
               field: "address",
@@ -50,6 +52,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           lineItem: {
             id: {
               linkable: "line_item_id",
+              entity: "LineItem",
               primaryKey: "id",
               serviceName: "cart",
               field: "lineItem",
@@ -58,6 +61,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           lineItemAdjustment: {
             id: {
               linkable: "line_item_adjustment_id",
+              entity: "LineItemAdjustment",
               primaryKey: "id",
               serviceName: "cart",
               field: "lineItemAdjustment",
@@ -66,6 +70,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           lineItemTaxLine: {
             id: {
               linkable: "line_item_tax_line_id",
+              entity: "LineItemTaxLine",
               primaryKey: "id",
               serviceName: "cart",
               field: "lineItemTaxLine",
@@ -74,6 +79,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           shippingMethod: {
             id: {
               linkable: "shipping_method_id",
+              entity: "ShippingMethod",
               primaryKey: "id",
               serviceName: "cart",
               field: "shippingMethod",
@@ -82,6 +88,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           shippingMethodAdjustment: {
             id: {
               linkable: "shipping_method_adjustment_id",
+              entity: "ShippingMethodAdjustment",
               primaryKey: "id",
               serviceName: "cart",
               field: "shippingMethodAdjustment",
@@ -90,6 +97,7 @@ moduleIntegrationTestRunner<ICartModuleService>({
           shippingMethodTaxLine: {
             id: {
               linkable: "shipping_method_tax_line_id",
+              entity: "ShippingMethodTaxLine",
               primaryKey: "id",
               serviceName: "cart",
               field: "shippingMethodTaxLine",

@@ -83,6 +83,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           workflowExecution: {
             id: {
               linkable: "workflow_execution_id",
+              entity: "WorkflowExecution",
               primaryKey: "id",
               serviceName: "workflows",
               field: "workflowExecution",

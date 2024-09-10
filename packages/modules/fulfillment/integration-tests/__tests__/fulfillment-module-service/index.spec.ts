@@ -131,6 +131,7 @@ moduleIntegrationTestRunner({
           fulfillmentAddress: {
             id: {
               linkable: "fulfillment_address_id",
+              entity: "FulfillmentAddress",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "fulfillmentAddress",
@@ -139,6 +140,7 @@ moduleIntegrationTestRunner({
           fulfillmentItem: {
             id: {
               linkable: "fulfillment_item_id",
+              entity: "FulfillmentItem",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "fulfillmentItem",
@@ -147,6 +149,7 @@ moduleIntegrationTestRunner({
           fulfillmentLabel: {
             id: {
               linkable: "fulfillment_label_id",
+              entity: "FulfillmentLabel",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "fulfillmentLabel",
@@ -155,6 +158,7 @@ moduleIntegrationTestRunner({
           fulfillmentProvider: {
             id: {
               linkable: "fulfillment_provider_id",
+              entity: "FulfillmentProvider",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "fulfillmentProvider",
@@ -163,6 +167,7 @@ moduleIntegrationTestRunner({
           fulfillmentSet: {
             id: {
               linkable: "fulfillment_set_id",
+              entity: "FulfillmentSet",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "fulfillmentSet",
@@ -171,6 +176,7 @@ moduleIntegrationTestRunner({
           fulfillment: {
             id: {
               linkable: "fulfillment_id",
+              entity: "Fulfillment",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "fulfillment",
@@ -179,6 +185,7 @@ moduleIntegrationTestRunner({
           geoZone: {
             id: {
               linkable: "geo_zone_id",
+              entity: "GeoZone",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "geoZone",
@@ -187,6 +194,7 @@ moduleIntegrationTestRunner({
           serviceZone: {
             id: {
               linkable: "service_zone_id",
+              entity: "ServiceZone",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "serviceZone",
@@ -195,6 +203,7 @@ moduleIntegrationTestRunner({
           shippingOptionRule: {
             id: {
               linkable: "shipping_option_rule_id",
+              entity: "ShippingOptionRule",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "shippingOptionRule",
@@ -203,6 +212,7 @@ moduleIntegrationTestRunner({
           shippingOptionType: {
             id: {
               linkable: "shipping_option_type_id",
+              entity: "ShippingOptionType",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "shippingOptionType",
@@ -211,6 +221,7 @@ moduleIntegrationTestRunner({
           shippingOption: {
             id: {
               linkable: "shipping_option_id",
+              entity: "ShippingOption",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "shippingOption",
@@ -219,6 +230,7 @@ moduleIntegrationTestRunner({
           shippingProfile: {
             id: {
               linkable: "shipping_profile_id",
+              entity: "ShippingProfile",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "shippingProfile",
