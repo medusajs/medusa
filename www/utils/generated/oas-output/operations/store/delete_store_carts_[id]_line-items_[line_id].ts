@@ -6,7 +6,7 @@
  * description: Remove a line item from a cart.
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/cart/manage-items#remove-line-item-from-cart
- *   description: Storefront guide: How to remove line item from cart.
+ *   description: "Storefront guide: How to remove line item from cart."
  * x-authenticated: false
  * parameters:
  *   - name: id

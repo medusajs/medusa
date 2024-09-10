@@ -28,7 +28,7 @@
     "utils": "*"
   },
   "devDependencies": {
-    "@types/node": "^20.9.4"
+    "@types/node": "^20.12.10"
   },
   "peerDependencies": {
     "typedoc": "0.25.x"

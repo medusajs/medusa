@@ -26,11 +26,8 @@ export interface AdminInventoryLevel {
   inventory_item_id: string
   location_id: string
   stocked_quantity: number
-  raw_stocked_quantity: Record<string, unknown>
   reserved_quantity: number
-  raw_reserved_quantity: Record<string, unknown>
   incoming_quantity: number
-  raw_incoming_quantity: Record<string, unknown>
   metadata: Record<string, unknown> | null
   inventory_item?: AdminInventoryItem
   available_quantity: number | null

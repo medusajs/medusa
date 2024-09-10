@@ -15,22 +15,24 @@ export const ProductVariantEdit = () => {
   const { t } = useTranslation()
   const { id, variant_id } = useParams()
 
-  const { product, isLoading, isError, error } = useProduct(id!, undefined, {
-    initialData,
-  })
+  const { product, isPending, isFetching, isError, error } = useProduct(
+    id!,
+    undefined,
+    {
+      initialData,
+    }
+  )
 
   const variant = product?.variants.find(
     (v: HttpTypes.AdminProductVariant) => v.id === variant_id
   )
 
-  if (!isLoading && !variant) {
+  if (!isPending && !isFetching && !variant) {
     throw json({
       status: 404,
       message: `Variant with ID ${variant_id} was not found.`,
     })
   }
-
-  const ready = !isLoading && !!product && !!variant
 
   if (isError) {
     throw error
@@ -41,7 +43,7 @@ export const ProductVariantEdit = () => {
       <RouteDrawer.Header>
         <Heading>{t("products.variant.edit.header")}</Heading>
       </RouteDrawer.Header>
-      {ready && (
+      {variant && (
         <ProductEditVariantForm
           product={product}
           variant={variant as unknown as HttpTypes.AdminProductVariant}
