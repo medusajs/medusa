@@ -1,8 +1,5 @@
 import { createSalesChannelsWorkflow } from "@medusajs/core-flows"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -14,9 +11,9 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminSalesChannelListParams>,
   res: MedusaResponse<HttpTypes.AdminSalesChannelListResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const queryObject = remoteQueryObjectFromString({
+  const { data: sales_channels, metadata } = await query.graph({
     entryPoint: "sales_channels",
     variables: {
       filters: req.filterableFields,
@@ -25,13 +22,11 @@ export const GET = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: sales_channels, metadata } = await remoteQuery(queryObject)
-
   res.json({
     sales_channels,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    count: metadata?.count,
+    offset: metadata?.skip,
+    limit: metadata?.take,
   })
 }
 
