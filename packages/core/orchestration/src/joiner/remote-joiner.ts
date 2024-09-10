@@ -450,7 +450,7 @@ export class RemoteJoiner {
 
     if (notFound.size > 0) {
       const entityName =
-        expand.serviceConfig.args?.entity ??
+        expand.serviceConfig.entity ??
         expand.serviceConfig.args?.methodSuffix ??
         expand.serviceConfig.serviceName
 
