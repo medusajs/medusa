@@ -1349,7 +1349,7 @@ describe("Entity builder", () => {
       const user = model.define("user", {
         id: model.number(),
         email: model.text(),
-        phones: model.json(),
+        phones: model.json().default({ number: "22222222" }),
       })
 
       expect(user.name).toEqual("user")
@@ -1417,6 +1417,7 @@ describe("Entity builder", () => {
           fieldName: "phones",
           nullable: false,
           reference: "scalar",
+          default: JSON.stringify({ number: "22222222" }),
           setter: false,
           columnType: "jsonb",
           type: "any",
