@@ -8,7 +8,11 @@ import {
   Modules,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import {
+  createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -31,6 +35,7 @@ medusaIntegrationTestRunner({
       let fulfillmentSet
       let cart
       let shippingOption
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -38,6 +43,8 @@ medusaIntegrationTestRunner({
           ModuleRegistrationName.FULFILLMENT
         )
         regionService = appContainer.resolve(ModuleRegistrationName.REGION)
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       beforeEach(async () => {
@@ -172,25 +179,30 @@ medusaIntegrationTestRunner({
         ).data.shipping_option
 
         cart = (
-          await api.post(`/store/carts`, {
-            region_id: region.id,
-            sales_channel_id: salesChannel.id,
-            currency_code: "usd",
-            email: "test@admin.com",
-            items: [
-              {
-                variant_id: product.variants[0].id,
-                quantity: 1,
-              },
-            ],
-          })
+          await api.post(
+            `/store/carts`,
+            {
+              region_id: region.id,
+              sales_channel_id: salesChannel.id,
+              currency_code: "usd",
+              email: "test@admin.com",
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            storeHeaders
+          )
         ).data.cart
       })
 
       describe("GET /admin/shipping-options?cart_id=", () => {
         it("should get all shipping options for a cart successfully", async () => {
           const resp = await api.get(
-            `/store/shipping-options?cart_id=${cart.id}`
+            `/store/shipping-options?cart_id=${cart.id}`,
+            storeHeaders
           )
 
           const shippingOptions = resp.data.shipping_options

@@ -260,6 +260,11 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
+              path: "/advanced-development/modules/service-constraints",
+              title: "Service Constraints",
+            },
+            {
+              type: "link",
               path: "/advanced-development/modules/isolation",
               title: "Module Isolation",
             },

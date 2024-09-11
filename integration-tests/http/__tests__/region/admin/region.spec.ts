@@ -3,6 +3,8 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
@@ -12,10 +14,13 @@ medusaIntegrationTestRunner({
     let region1
     let region2
     let container
+    let storeHeaders
 
     beforeEach(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+      const publishableKey = await generatePublishableKey(container)
+      storeHeaders = generateStoreHeaders({ publishableKey })
 
       region1 = (
         await api.post(
@@ -111,7 +116,8 @@ medusaIntegrationTestRunner({
         )
 
         let response = await api.get(
-          `/store/regions/${region1.id}?fields=*payment_providers`
+          `/store/regions/${region1.id}?fields=*payment_providers`,
+          storeHeaders
         )
 
         expect(response.status).toEqual(200)
@@ -125,7 +131,8 @@ medusaIntegrationTestRunner({
         ])
 
         response = await api.get(
-          `/store/regions/${region1.id}?fields=*payment_providers`
+          `/store/regions/${region1.id}?fields=*payment_providers`,
+          storeHeaders
         )
 
         expect(response.status).toEqual(200)

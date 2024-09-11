@@ -180,7 +180,7 @@ export const AddCustomerGroupsForm = ({
             orderBy={["name", "created_at", "updated_at"]}
             isLoading={isLoading}
             layout="fill"
-            search
+            search="autofocus"
             queryObject={raw}
             noRecords={{
               message: t("customers.groups.add.list.noRecordsMessage"),

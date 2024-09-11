@@ -146,7 +146,7 @@ export const AddCountriesForm = ({ region }: AddCountriesFormProps) => {
             columns={columns}
             pageSize={PAGE_SIZE}
             count={count}
-            search
+            search="autofocus"
             pagination
             layout="fill"
             orderBy={["name", "code"]}

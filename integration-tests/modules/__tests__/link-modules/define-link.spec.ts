@@ -2,8 +2,8 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 import CurrencyModule from "@medusajs/currency"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import RegionModule from "@medusajs/region"
 import ProductModule from "@medusajs/product"
+import RegionModule from "@medusajs/region"
 import { defineLink } from "@medusajs/utils"
 
 jest.setTimeout(50000)
@@ -43,6 +43,7 @@ medusaIntegrationTestRunner({
           relationships: [
             {
               serviceName: "currency",
+              entity: "Currency",
               primaryKey: "code",
               foreignKey: "currency_code",
               alias: "currency",
@@ -53,6 +54,7 @@ medusaIntegrationTestRunner({
             },
             {
               serviceName: "region",
+              entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
               alias: "region",
@@ -69,6 +71,7 @@ medusaIntegrationTestRunner({
                 region: {
                   path: "region_link.region",
                   isList: false,
+                  forwardArgumentsOnPath: ["region_link.region"],
                 },
               },
               relationship: {
@@ -85,6 +88,7 @@ medusaIntegrationTestRunner({
                 currency: {
                   path: "currency_link.currency",
                   isList: false,
+                  forwardArgumentsOnPath: ["currency_link.currency"],
                 },
               },
               relationship: {
@@ -134,6 +138,7 @@ medusaIntegrationTestRunner({
           relationships: [
             {
               serviceName: "productService",
+              entity: "ProductVariant",
               primaryKey: "id",
               foreignKey: "product_variant_id",
               alias: "product_variant",
@@ -144,6 +149,7 @@ medusaIntegrationTestRunner({
             },
             {
               serviceName: "region",
+              entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
               alias: "region",
@@ -160,6 +166,7 @@ medusaIntegrationTestRunner({
                 region: {
                   path: "region_link.region",
                   isList: false,
+                  forwardArgumentsOnPath: ["region_link.region"],
                 },
               },
               relationship: {
@@ -176,6 +183,9 @@ medusaIntegrationTestRunner({
                 product_variant: {
                   path: "product_variant_link.product_variant",
                   isList: false,
+                  forwardArgumentsOnPath: [
+                    "product_variant_link.product_variant",
+                  ],
                 },
               },
               relationship: {
@@ -228,6 +238,7 @@ medusaIntegrationTestRunner({
           relationships: [
             {
               serviceName: "currency",
+              entity: "Currency",
               primaryKey: "code",
               foreignKey: "currency_code",
               alias: "currency",
@@ -238,6 +249,7 @@ medusaIntegrationTestRunner({
             },
             {
               serviceName: "region",
+              entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
               alias: "region",
@@ -254,6 +266,7 @@ medusaIntegrationTestRunner({
                 region: {
                   path: "region_link.region",
                   isList: false,
+                  forwardArgumentsOnPath: ["region_link.region"],
                 },
               },
               relationship: {
@@ -270,6 +283,7 @@ medusaIntegrationTestRunner({
                 currency: {
                   path: "currency_link.currency",
                   isList: false,
+                  forwardArgumentsOnPath: ["currency_link.currency"],
                 },
               },
               relationship: {
@@ -318,6 +332,7 @@ medusaIntegrationTestRunner({
           relationships: [
             {
               serviceName: "currency",
+              entity: "Currency",
               primaryKey: "code",
               foreignKey: "currency_code",
               alias: "currency",
@@ -328,6 +343,7 @@ medusaIntegrationTestRunner({
             },
             {
               serviceName: "region",
+              entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
               alias: "region",
@@ -344,6 +360,7 @@ medusaIntegrationTestRunner({
                 regions: {
                   path: "region_link.region",
                   isList: true,
+                  forwardArgumentsOnPath: ["region_link.region"],
                 },
               },
               relationship: {
@@ -360,6 +377,7 @@ medusaIntegrationTestRunner({
                 currency: {
                   path: "currency_link.currency",
                   isList: false,
+                  forwardArgumentsOnPath: ["currency_link.currency"],
                 },
               },
               relationship: {

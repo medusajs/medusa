@@ -54,7 +54,7 @@ export const maybeUnsetDefaultShippingAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await customerModuleService.updateAddresses(
+    await customerModuleService.updateCustomerAddresses(
       { id: addressesToSet },
       { is_default_shipping: true }
     )

@@ -39,7 +39,7 @@ const CustomerAddressUniqueCustomerBillingAddress =
 @Entity({ tableName: "customer_address" })
 @CustomerAddressUniqueCustomerShippingAddress.MikroORMIndex()
 @CustomerAddressUniqueCustomerBillingAddress.MikroORMIndex()
-export default class Address {
+export default class CustomerAddress {
   [OptionalProps]: OptionalAddressProps
 
   @PrimaryKey({ columnType: "text" })

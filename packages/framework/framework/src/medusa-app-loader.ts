@@ -233,6 +233,10 @@ export class MedusaAppLoader {
       asValue(undefined)
     )
     this.#container.register(
+      ContainerRegistrationKeys.QUERY,
+      asValue(undefined)
+    )
+    this.#container.register(
       ContainerRegistrationKeys.REMOTE_LINK,
       asValue(undefined)
     )
@@ -252,12 +256,16 @@ export class MedusaAppLoader {
       return medusaApp
     }
 
-    container.register(
+    this.#container.register(
       ContainerRegistrationKeys.REMOTE_LINK,
       asValue(medusaApp.link)
     )
-    container.register(
+    this.#container.register(
       ContainerRegistrationKeys.REMOTE_QUERY,
+      asValue(medusaApp.query)
+    )
+    this.#container.register(
+      ContainerRegistrationKeys.QUERY,
       asValue(medusaApp.query)
     )
 

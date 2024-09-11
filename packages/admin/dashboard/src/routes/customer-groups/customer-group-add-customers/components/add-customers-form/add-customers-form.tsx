@@ -168,7 +168,7 @@ export const AddCustomersForm = ({
             ]}
             isLoading={isLoading}
             layout="fill"
-            search
+            search="autofocus"
             queryObject={raw}
             noRecords={{
               message: t("customerGroups.customers.add.list.noRecordsMessage"),

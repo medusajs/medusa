@@ -11,15 +11,14 @@ export const RegionPaymentProvider: ModuleJoinerConfig = {
   alias: [
     {
       name: ["region_payment_provider", "region_payment_providers"],
-      args: {
-        entity: "LinkRegionPaymentProvider",
-      },
+      entity: "LinkRegionPaymentProvider",
     },
   ],
   primaryKeys: ["id", "region_id", "payment_provider_id"],
   relationships: [
     {
       serviceName: Modules.REGION,
+      entity: "Region",
       primaryKey: "id",
       foreignKey: "region_id",
       alias: "region",
@@ -29,6 +28,7 @@ export const RegionPaymentProvider: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.PAYMENT,
+      entity: "PaymentProvider",
       primaryKey: "id",
       foreignKey: "payment_provider_id",
       alias: "payment_provider",

@@ -144,7 +144,7 @@ export const LocationEditSalesChannelsForm = ({
             isLoading={isLoading}
             count={count}
             filters={filters}
-            search
+            search="autofocus"
             pagination
             orderBy={["name", "created_at", "updated_at"]}
             queryObject={raw}

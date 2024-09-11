@@ -6,14 +6,14 @@ import {
   Modules,
   PromotionType,
 } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { PromotionModuleService } from "@services"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import {
   createDefaultPromotion,
   createDefaultPromotions,
   createPromotions,
 } from "../../../__fixtures__/promotion"
-import { PromotionModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -47,6 +47,7 @@ moduleIntegrationTestRunner({
           promotion: {
             id: {
               linkable: "promotion_id",
+              entity: "Promotion",
               primaryKey: "id",
               serviceName: "promotion",
               field: "promotion",
@@ -55,6 +56,7 @@ moduleIntegrationTestRunner({
           campaign: {
             id: {
               linkable: "campaign_id",
+              entity: "Campaign",
               primaryKey: "id",
               serviceName: "promotion",
               field: "campaign",
@@ -63,6 +65,7 @@ moduleIntegrationTestRunner({
           promotionRule: {
             id: {
               linkable: "promotion_rule_id",
+              entity: "PromotionRule",
               primaryKey: "id",
               serviceName: "promotion",
               field: "promotionRule",

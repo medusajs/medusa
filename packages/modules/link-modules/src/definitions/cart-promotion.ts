@@ -11,15 +11,14 @@ export const CartPromotion: ModuleJoinerConfig = {
   alias: [
     {
       name: ["cart_promotion", "cart_promotions"],
-      args: {
-        entity: "LinkCartPromotion",
-      },
+      entity: "LinkCartPromotion",
     },
   ],
   primaryKeys: ["id", "cart_id", "promotion_id"],
   relationships: [
     {
       serviceName: Modules.CART,
+      entity: "Cart",
       primaryKey: "id",
       foreignKey: "cart_id",
       alias: "cart",
@@ -29,6 +28,7 @@ export const CartPromotion: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.PROMOTION,
+      entity: "Promotion",
       primaryKey: "id",
       foreignKey: "promotion_id",
       alias: "promotions",

@@ -11,15 +11,14 @@ export const ReturnFulfillment: ModuleJoinerConfig = {
   alias: [
     {
       name: ["return_fulfillment", "return_fulfillments"],
-      args: {
-        entity: "LinkReturnFulfillment",
-      },
+      entity: "LinkReturnFulfillment",
     },
   ],
   primaryKeys: ["id", "return_id", "fulfillment_id"],
   relationships: [
     {
       serviceName: Modules.ORDER,
+      entity: "Order",
       primaryKey: "id",
       foreignKey: "return_id",
       alias: "return",
@@ -29,6 +28,7 @@ export const ReturnFulfillment: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.FULFILLMENT,
+      entity: "Fulfillment",
       primaryKey: "id",
       foreignKey: "fulfillment_id",
       alias: "fulfillments",
