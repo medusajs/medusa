@@ -1,10 +1,10 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
 import { InventoryTypes } from "@medusajs/types"
-import { useDeleteInventoryItemLevel } from "../../../../../hooks/api/inventory"
 import { usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useDeleteInventoryItemLevel } from "../../../../../hooks/api/inventory"
 
 export const LocationActions = ({
   level,
@@ -51,6 +51,8 @@ export const LocationActions = ({
               icon: <Trash />,
               label: t("actions.delete"),
               onClick: handleDelete,
+              disabled:
+                level.reserved_quantity > 0 || level.stocked_quantity > 0,
             },
           ],
         },
