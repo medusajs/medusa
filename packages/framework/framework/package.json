@@ -54,6 +54,7 @@
     "@medusajs/modules-sdk": "^1.12.11",
     "@medusajs/utils": "^1.11.9",
     "@medusajs/workflows-sdk": "^0.1.6",
+    "@opentelemetry/api": "^1.9.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.2",

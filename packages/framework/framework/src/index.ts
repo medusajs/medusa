@@ -9,6 +9,7 @@ export * from "./logger"
 export * from "./medusa-app-loader"
 export * from "./subscribers"
 export * from "./workflows"
+export * from "./telemetry"
 
 export const MEDUSA_CLI_PATH = require.resolve("@medusajs/medusa-cli")
 
