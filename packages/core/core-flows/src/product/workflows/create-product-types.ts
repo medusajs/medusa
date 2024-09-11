@@ -1,10 +1,13 @@
 import { AdditionalData, ProductTypes } from "@medusajs/types"
+import { ProductTypeWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { createProductTypesStep } from "../steps"
 
 export type CreateProductTypesWorkflowInput = {
@@ -22,6 +25,17 @@ export const createProductTypesWorkflow = createWorkflow(
     const productTypesCreated = createHook("productTypesCreated", {
       product_types: productTypes,
       additional_data: input.additional_data,
+    })
+
+    const typeIdEvents = transform({ productTypes }, ({ productTypes }) => {
+      return productTypes.map((v) => {
+        return { id: v.id }
+      })
+    })
+
+    emitEventStep({
+      eventName: ProductTypeWorkflowEvents.CREATED,
+      data: typeIdEvents,
     })
 
     return new WorkflowResponse(productTypes, {
