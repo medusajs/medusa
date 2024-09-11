@@ -27,12 +27,9 @@
       "@types": ["./src/types"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "integration-tests"],
   "exclude": [
     "dist",
-    "./src/**/__tests__",
-    "./src/**/__mocks__",
-    "./src/**/__fixtures__",
     "node_modules"
   ]
 }
