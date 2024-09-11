@@ -2971,6 +2971,7 @@ describe("Entity builder", () => {
         })
         .indexes([
           {
+            // @ts-expect-error
             on: ["email", "account", "doesnotexist", "anotherdoesnotexist"],
           },
         ])
