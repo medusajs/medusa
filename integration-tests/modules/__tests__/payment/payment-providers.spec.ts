@@ -29,14 +29,19 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.payment_providers).toEqual([
-          expect.objectContaining({
-            id: "pp_system_default_2",
-          }),
-          expect.objectContaining({
-            id: "pp_system_default",
-          }),
-        ])
+        expect(response.data.payment_providers).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "pp_system_default_2",
+              is_enabled: true,
+            }),
+            expect.objectContaining({
+              id: "pp_system_default",
+              is_enabled: true,
+            }),
+          ])
+        )
+
         expect(response.data.count).toEqual(2)
       })
     })
