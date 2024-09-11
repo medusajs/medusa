@@ -189,6 +189,7 @@ export class WorkflowOrchestratorService {
       (container as MedusaContainer) ?? this.container_
     )
 
+    console.log("EXECUTION from ENGINE", { sharedContext })
     const ret = await flow.run({
       input,
       throwOnError,
@@ -206,6 +207,8 @@ export class WorkflowOrchestratorService {
 
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
+
+      console.log("FINISHED", { result, errors, flow: ret.transaction.flow })
       await this.notify({
         eventType: "onFinish",
         workflowId,

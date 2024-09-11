@@ -7,6 +7,7 @@ import {
 import { OrchestrationUtils, isString } from "@medusajs/utils"
 import { ulid } from "ulid"
 import { StepResponse, resolveValue } from "./helpers"
+import { createStepHandler } from "./helpers/create-step-handler"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -15,7 +16,6 @@ import {
   StepFunctionResult,
   WorkflowData,
 } from "./type"
-import { createStepHandler } from "./helpers/create-step-handler"
 
 /**
  * The type of invocation function passed to a step.
@@ -64,6 +64,11 @@ export type CompensateFn<T> = (
    */
   context: StepExecutionContext
 ) => unknown | Promise<unknown>
+
+export type LocalStepConfig = { name?: string } & Omit<
+  TransactionStepsDefinition,
+  "next" | "uuid" | "action"
+>
 
 export interface ApplyStepOptions<
   TStepInputs extends {
@@ -136,6 +141,8 @@ export function applyStep<
 
     this.flow.addAction(stepName, stepConfig)
 
+    this.isAsync ||= !!(stepConfig.async || stepConfig.compensateAsync)
+
     if (!this.handlers.has(stepName)) {
       this.handlers.set(stepName, handler)
     }
@@ -143,12 +150,7 @@ export function applyStep<
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
-      config: (
-        localConfig: { name?: string } & Omit<
-          TransactionStepsDefinition,
-          "next" | "uuid" | "action"
-        >
-      ) => {
+      config: (localConfig: LocalStepConfig) => {
         const newStepName = localConfig.name ?? stepName
         const newConfig = {
           ...stepConfig,
@@ -160,6 +162,7 @@ export function applyStep<
         this.handlers.set(newStepName, handler)
 
         this.flow.replaceAction(stepConfig.uuid!, newStepName, newConfig)
+        this.isAsync ||= !!(newConfig.async || newConfig.compensateAsync)
 
         ret.__step__ = newStepName
         WorkflowManager.update(this.workflowId, this.flow, this.handlers)

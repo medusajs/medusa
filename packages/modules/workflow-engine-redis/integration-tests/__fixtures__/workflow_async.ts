@@ -17,13 +17,28 @@ const step_1_background = createStep(
   })
 )
 
-createWorkflow(
+const a = createWorkflow(
   {
-    name: "workflow_async_background",
+    name: "workflow_async_background_sub",
   },
   function (input) {
     const resp = step_1_background(input)
 
     return resp
+  }
+)
+
+createWorkflow(
+  {
+    name: "workflow_async_background",
+  },
+  function (input) {
+    //return parallelize(
+    return a
+      .runAsStep({
+        input,
+      })
+      .config({ name: "workflow_async_background_sub_1" })
+    //)
   }
 )

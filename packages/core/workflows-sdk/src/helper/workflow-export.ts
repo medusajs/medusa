@@ -9,9 +9,9 @@ import {
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  isPresent,
   MedusaContextType,
   ModuleRegistrationName,
+  isPresent,
 } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
@@ -85,12 +85,18 @@ function createContextualWorkflowRunner<
       flow.container = executionContainer
     }
 
-    const { eventGroupId } = context
+    const { eventGroupId, parentStepIdempotencyKey } = context
 
     attachOnFinishReleaseEvents(events, eventGroupId!, flow, { logOnError })
 
+    console.log("EXECUTION from workflow export", {
+      eventGroupId,
+      parentStepIdempotencyKey,
+    })
+
     const flowMetadata = {
       eventGroupId,
+      parentStepIdempotencyKey,
     }
 
     const args = [
@@ -161,6 +167,8 @@ function createContextualWorkflowRunner<
       ...outerContext,
       __type: MedusaContextType as Context["__type"],
     }
+
+    console.log(outerContext?.parentStepIdempotencyKey, "OUTER ---------")
 
     context.transactionId ??= ulid()
     context.eventGroupId ??= ulid()

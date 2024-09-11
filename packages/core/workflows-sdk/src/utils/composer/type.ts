@@ -96,6 +96,7 @@ export type CreateWorkflowComposerContext = {
   hooksCallback_: Record<string, HookHandler>
   workflowId: string
   flow: OrchestratorBuilder
+  isAsync: boolean
   handlers: WorkflowHandler
   stepBinder: <TOutput = unknown>(
     fn: StepFunctionResult
@@ -124,6 +125,11 @@ export interface StepExecutionContext {
    * The idempoency key of the step.
    */
   idempotencyKey: string
+
+  /**
+   * The idempoency key of the parent step.
+   */
+  parentStepIdempotencyKey?: string
 
   /**
    * The name of the step.

@@ -271,7 +271,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           ).toBe(true)
         })
 
-        it("should complete an async workflow that returns a StepResponse", async () => {
+        it.only("should complete an async workflow that returns a StepResponse", async () => {
           const { transaction, result } = await workflowOrcModule.run(
             "workflow_async_background",
             {
@@ -279,7 +279,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
                 myInput: "123",
               },
               transactionId: "transaction_1",
-              throwOnError: false,
+              throwOnError: true,
             }
           )
 

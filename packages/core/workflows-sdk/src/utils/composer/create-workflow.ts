@@ -6,7 +6,7 @@ import {
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { OrchestrationUtils, isString } from "@medusajs/utils"
 import { exportWorkflow } from "../../helper"
-import { createStep } from "./create-step"
+import { LocalStepConfig, createStep } from "./create-step"
 import { proxify } from "./helpers/proxy"
 import { StepResponse } from "./helpers/step-response"
 import { WorkflowResponse } from "./helpers/workflow-response"
@@ -104,6 +104,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     __type: OrchestrationUtils.SymbolMedusaWorkflowComposerContext,
     workflowId: name,
     flow: WorkflowManager.getEmptyTransactionDefinition(),
+    isAsync: false,
     handlers,
     hooks_: {
       declared: [],
@@ -173,16 +174,27 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
   mainFlow.run = mainFlow().run
   mainFlow.runAsStep = ({
     input,
+    config,
   }: {
     input: TData
+    config?: LocalStepConfig
   }): ReturnType<StepFunction<TData, TResult>> => {
     // TODO: Async sub workflow is not supported yet
     // Info: Once the export workflow can fire the execution through the engine if loaded, the async workflow can be executed,
     // the step would inherit the async configuration and subscribe to the onFinish event of the sub worklow and mark itself as success or failure
-    return createStep(
-      `${name}-as-step`,
+
+    const step = createStep(
+      {
+        name: `${name}-as-step`,
+        async: context.isAsync,
+      },
       async (stepInput: TData, stepContext) => {
         const { container, ...sharedContext } = stepContext
+        sharedContext.parentStepIdempotencyKey = stepContext.idempotencyKey
+
+        console.log("RUN AS STEP ****", name, context.isAsync, {
+          parentKey: stepContext.idempotencyKey,
+        })
 
         const transaction = await workflow.run({
           input: stepInput as any,
@@ -200,6 +212,12 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
         await workflow(container).cancel(transaction)
       }
     )(input) as ReturnType<StepFunction<TData, TResult>>
+
+    if (config) {
+      step.config(config)
+    }
+
+    return step
   }
 
   return mainFlow as ReturnWorkflow<TData, TResult, THooks>
