@@ -59,13 +59,10 @@ export const ProductCreateVariantsForm = ({
 
   const variantData = useMemo(() => {
     const ret = []
-    let skippedSoFar = 0
 
     variants.forEach((v, i) => {
       if (v.should_create) {
-        ret.push({ ...v, virtualIndex: i })
-      } else {
-        skippedSoFar++
+        ret.push({ ...v, originalIndex: i })
       }
     })
 
@@ -129,7 +126,7 @@ const useColumns = ({
         name: t("fields.title"),
         header: t("fields.title"),
         field: (context) =>
-          `variants.${context.row.original.virtualIndex}.title`,
+          `variants.${context.row.original.originalIndex}.title`,
         type: "text",
         cell: (context) => {
           return <DataGrid.TextCell context={context} />
@@ -139,7 +136,8 @@ const useColumns = ({
         id: "sku",
         name: t("fields.sku"),
         header: t("fields.sku"),
-        field: (context) => `variants.${context.row.original.virtualIndex}.sku`,
+        field: (context) =>
+          `variants.${context.row.original.originalIndex}.sku`,
         type: "text",
         cell: (context) => {
           return <DataGrid.TextCell context={context} />
@@ -150,7 +148,7 @@ const useColumns = ({
         name: t("fields.managedInventory"),
         header: t("fields.managedInventory"),
         field: (context) =>
-          `variants.${context.row.original.virtualIndex}.manage_inventory`,
+          `variants.${context.row.original.originalIndex}.manage_inventory`,
         type: "boolean",
         cell: (context) => {
           return <DataGrid.BooleanCell context={context} />
@@ -161,7 +159,7 @@ const useColumns = ({
         name: t("fields.allowBackorder"),
         header: t("fields.allowBackorder"),
         field: (context) =>
-          `variants.${context.row.original.virtualIndex}.allow_backorder`,
+          `variants.${context.row.original.originalIndex}.allow_backorder`,
         type: "boolean",
         cell: (context) => {
           return <DataGrid.BooleanCell context={context} />
@@ -173,7 +171,7 @@ const useColumns = ({
         name: t("fields.inventoryKit"),
         header: t("fields.inventoryKit"),
         field: (context) =>
-          `variants.${context.row.original.virtualIndex}.inventory_kit`,
+          `variants.${context.row.original.originalIndex}.inventory_kit`,
         type: "boolean",
         cell: (context) => {
           return (
@@ -194,9 +192,9 @@ const useColumns = ({
         pricePreferences,
         getFieldName: (context, value) => {
           if (context.column.id?.startsWith("currency_prices")) {
-            return `variants.${context.row.original.virtualIndex}.prices.${value}`
+            return `variants.${context.row.original.originalIndex}.prices.${value}`
           }
-          return `variants.${context.row.original.virtualIndex}.prices.${value}`
+          return `variants.${context.row.original.originalIndex}.prices.${value}`
         },
         t,
       }),
