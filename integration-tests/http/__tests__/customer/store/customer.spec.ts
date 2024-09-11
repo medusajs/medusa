@@ -222,7 +222,8 @@ medusaIntegrationTestRunner({
             .catch((e) => e)
 
           expect(response.data).toEqual({
-            message: "x-publishable-api-key request header is required",
+            message:
+              "Publishable API key required in the request header: x-publishable-api-key. You can manage your keys in settings in the dashboard.",
             type: "not_allowed",
           })
         })
