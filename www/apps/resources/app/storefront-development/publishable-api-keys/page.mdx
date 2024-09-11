@@ -60,14 +60,14 @@ In your storefront, pass the `x-publishable-api-key` in the header of all your r
 For example:
 
 export const highlights = [
-  ["4", "NEXT_PUBLIC_PAK", "An environment variable that holds the publishable API key's token."]
+  ["4", "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "An environment variable that holds the publishable API key's token."]
 ]
 
 ```ts
 fetch(`http://localhost:9000/store/products`, {
   credentials: "include",
   headers: {
-    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
   },
 })
 .then((res) => res.json())
@@ -77,4 +77,4 @@ fetch(`http://localhost:9000/store/products`, {
 })
 ```
 
-Where `NEXT_PUBLIC_PAK` is an environment variable that holds your publishable API key's token.
+Where `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` is an environment variable that holds your publishable API key's token.

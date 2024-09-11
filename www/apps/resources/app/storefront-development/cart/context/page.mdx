@@ -22,7 +22,7 @@ export const highlights = [
   ["32", "useRegion", "Use the `useRegion` hook defined in the Region Context guide."],
   ["37", "setItem", "Set the cart's ID in `localStorage` in case it changed."],
   ["45", "fetch", "If the customer doesn't have a cart, create a new one."],
-  ["49", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to associate the correct sales channel(s)."],
+  ["49", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to associate the correct sales channel(s)."],
   ["63", "fetch", "Retrieve the customer's cart."],
   ["76", "refreshCart", "This function unsets the cart, which triggers the `useEffect` callback to create a cart."],
   ["92", "useCart", "The hook that child components of the provider use to access the cart."]
@@ -72,7 +72,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         method: "POST",
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -89,7 +89,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       fetch(`http://localhost:9000/store/carts/${cartId}`, {
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
         },
       })
       .then((res) => res.json())

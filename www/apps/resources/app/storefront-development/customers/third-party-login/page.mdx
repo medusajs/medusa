@@ -85,7 +85,7 @@ const loginWithGoogle = async () => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${result.token}`,
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
     }
   )
@@ -139,7 +139,7 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${result.token}`,
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
         },
       }
     )
@@ -294,7 +294,7 @@ const createCustomer = async (token: string) => {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`,
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
     body: JSON.stringify({
       // TODO show form to retrieve email from customer
@@ -367,7 +367,7 @@ const validateCallback = async () => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
       body: JSON.stringify({
         // TODO show form to retrieve email from customer
@@ -410,7 +410,7 @@ const validateCallback = async () => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
       body: JSON.stringify({
         // TODO show form to retrieve email from customer
@@ -486,7 +486,7 @@ const createCustomer = async (token: string) => {
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`,
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
     body: JSON.stringify({
       // TODO show form to retrieve email from customer
@@ -527,7 +527,7 @@ const validateCallback = async () => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
       body: JSON.stringify({
         // TODO show form to retrieve email from customer
@@ -582,7 +582,7 @@ export default function GoogleCallback() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
       body: JSON.stringify({
         // TODO show form to retrieve email from customer
@@ -623,7 +623,7 @@ export default function GoogleCallback() {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
         },
         body: JSON.stringify({
           // TODO show form to retrieve email from customer

@@ -34,7 +34,7 @@ const regionId = localStorage.getItem("region_id")
 fetch(`http://localhost:9000/store/regions/${regionId}`, {
   credentials: "include",
   headers: {
-    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
   },
 })
 .then((res) => res.json())

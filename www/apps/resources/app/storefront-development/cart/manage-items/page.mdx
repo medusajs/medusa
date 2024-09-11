@@ -19,7 +19,7 @@ For example:
 export const addHighlights = [
   ["1", "variant_id", "The ID of the selected variant."],
   ["2", "cartId", "Retrieve the cart ID from the `localStorage`."],
-  ["13", "process.env.NEXT_PUBLIC_PAK", "You must pass the publishable API key of all storefront requests."], 
+  ["13", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "You must pass the publishable API key of all storefront requests."], 
   ["17", "quantity", "You can also allow customers to specify the quantity."]
 ]
 
@@ -36,7 +36,7 @@ const addToCart = (variant_id: string) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
     body: JSON.stringify({
       variant_id,
@@ -72,7 +72,7 @@ export const updateHighlights = [
   ["3", "quantity", "The new quantity of the item."],
   ["5", "cartId", "Retrieve the cart ID from the `localStorage`."],
   ["12", "itemId", "Pass the item's ID as a path parameter."],
-  ["18", "process.env.NEXT_PUBLIC_PAK", "You must pass the publishable API key of all storefront requests."], 
+  ["18", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "You must pass the publishable API key of all storefront requests."], 
 ]
 
 ```ts highlights={updateHighlights}
@@ -93,7 +93,7 @@ const updateQuantity = (
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
     body: JSON.stringify({
       quantity,
@@ -126,7 +126,7 @@ export const deleteHighlights = [
   ["1", "itemId", "The ID of the line item to remove."],
   ["2", "cartId", "Retrieve the cart ID from the `localStorage`."],
   ["9", "itemId", "Pass the item's ID as a path parameter."],
-  ["13", "process.env.NEXT_PUBLIC_PAK", "You must pass the publishable API key of all storefront requests."], 
+  ["13", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "You must pass the publishable API key of all storefront requests."], 
   ["18", "parent", "The updated cart is returned as the `parent` field."]
 ]
 
@@ -143,7 +143,7 @@ const removeItem = (itemId: string) => {
   }`, {
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
     method: "DELETE",
   })

@@ -60,7 +60,7 @@ export const CustomerProvider = ({
     fetch(`http://localhost:9000/store/customers/me`, {
       credentials: "include",
       headers: {
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
     })
     .then((res) => res.json())

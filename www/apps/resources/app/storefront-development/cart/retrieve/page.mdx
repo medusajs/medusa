@@ -23,7 +23,7 @@ export const fetchHighlights = [
   fetch(`http://localhost:9000/store/carts/${cartId}`, {
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
   })
   .then((res) => res.json())
@@ -69,7 +69,7 @@ export const highlights = [
       fetch(`http://localhost:9000/store/carts/${cartId}`, {
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
         },
       })
       .then((res) => res.json())

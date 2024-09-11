@@ -52,7 +52,7 @@ export const fetchHighlights = [
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
         },
         body: JSON.stringify({
           first_name: firstName,
@@ -125,7 +125,7 @@ export const highlights = [
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`,
-            "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+            "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
           },
           body: JSON.stringify({
             first_name: firstName,
