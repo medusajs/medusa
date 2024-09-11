@@ -12,18 +12,16 @@ export const resolveVirtualId = (id: string) => {
   return `\0${id}`
 }
 
-function getIdentifierFromResolvedId<T,>(resolvedId: string, type: string) {
+function getIdentifierFromResolvedId<T>(resolvedId: string, type: string) {
   const virtualPrefix = `\0${PREFIX}${type}/`
 
-  const identifier = resolvedId
-    .replace(virtualPrefix, "")
-    .replace(/\//g, ".")
+  const identifier = resolvedId.replace(virtualPrefix, "").replace(/\//g, ".")
 
   return identifier as T
 }
 
 function getImport<T extends string>(identifier: T, type: string) {
-  return `${type}/${identifier.replace(/\./g, "/")}` 
+  return `${type}/${identifier.replace(/\./g, "/")}`
 }
 
 export const getWidgetImport = (zone: InjectionZone) => {
@@ -49,4 +47,3 @@ export const getContainerImport = (container: string) => {
 export const getContainerId = (resolvedId: string): ContainerId => {
   return getIdentifierFromResolvedId<ContainerId>(resolvedId, "details")
 }
-

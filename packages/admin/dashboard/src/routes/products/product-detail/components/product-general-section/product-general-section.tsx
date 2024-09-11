@@ -1,11 +1,14 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
-import { HttpTypes } from "@medusajs/types"
+
+import details from "virtual:medusa/details/product/general"
 
 const productStatusColor = (status: string) => {
   switch (status) {
@@ -29,6 +32,8 @@ type ProductGeneralSectionProps = {
 export const ProductGeneralSection = ({
   product,
 }: ProductGeneralSectionProps) => {
+  console.log(details)
+
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
@@ -96,6 +101,9 @@ export const ProductGeneralSection = ({
         title={t("fields.discountable")}
         value={product.discountable ? t("fields.true") : t("fields.false")}
       />
+      {details.blocks.map((b, index) => {
+        return <b.component key={index} />
+      })}
     </Container>
   )
 }

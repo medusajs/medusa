@@ -1,5 +1,6 @@
 import { useLoaderData, useParams } from "react-router-dom"
 
+import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductAttributeSection } from "./components/product-attribute-section"
@@ -16,7 +17,6 @@ import after from "virtual:medusa/widgets/product/details/after"
 import before from "virtual:medusa/widgets/product/details/before"
 import sideAfter from "virtual:medusa/widgets/product/details/side/after"
 import sideBefore from "virtual:medusa/widgets/product/details/side/before"
-import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 
 export const ProductDetail = () => {
   const initialData = useLoaderData() as Awaited<

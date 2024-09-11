@@ -7,7 +7,7 @@ import {
   type NodePath,
   type ObjectProperty,
   type ParseResult,
-} from "./babel"
+} from "../babel"
 import {
   convertToImportPath,
   crawl,
@@ -15,7 +15,7 @@ import {
   getConfigObjectProperties,
   getParserOptions,
   isDefaultExportComponent,
-} from "./utils"
+} from "../utils"
 
 function validateRouteConfig(
   path: NodePath<ExportNamedDeclaration>,

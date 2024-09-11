@@ -3,6 +3,14 @@ import MagicString from "magic-string"
 import path from "path"
 import {
   File,
+  isCallExpression,
+  isFunctionDeclaration,
+  isIdentifier,
+  isJSXElement,
+  isJSXFragment,
+  isObjectExpression,
+  isVariableDeclaration,
+  isVariableDeclarator,
   traverse,
   type ExportDefaultDeclaration,
   type ExportNamedDeclaration,
@@ -26,6 +34,8 @@ export function getModuleType(file: string) {
     return "widget"
   } else if (normalizedPath.includes("/admin/routes/")) {
     return "route"
+  } else if (normalizedPath.includes("/admin/custom-fields")) {
+    return "custom-field"
   } else {
     return "none"
   }
@@ -109,19 +119,16 @@ export function getConfigObjectProperties(
 ) {
   const declaration = path.node.declaration
 
-  if (declaration && declaration.type === "VariableDeclaration") {
+  if (isVariableDeclaration(declaration)) {
     const configDeclaration = declaration.declarations.find(
-      (d) =>
-        d.type === "VariableDeclarator" &&
-        d.id.type === "Identifier" &&
-        d.id.name === "config"
+      (d) => isVariableDeclarator(d) && isIdentifier(d.id, { name: "config" })
     )
 
     if (
       configDeclaration &&
-      configDeclaration.init?.type === "CallExpression" &&
+      isCallExpression(configDeclaration.init) &&
       configDeclaration.init.arguments.length > 0 &&
-      configDeclaration.init.arguments[0].type === "ObjectExpression"
+      isObjectExpression(configDeclaration.init.arguments[0])
     ) {
       return configDeclaration.init.arguments[0].properties
     }
@@ -140,15 +147,10 @@ export function isDefaultExportComponent(
   let hasComponentExport = false
   const declaration = path.node.declaration
 
-  if (
-    declaration &&
-    (declaration.type === "Identifier" ||
-      declaration.type === "FunctionDeclaration")
-  ) {
-    const exportName =
-      declaration.type === "Identifier"
-        ? declaration.name
-        : declaration.id && declaration.id.name
+  if (isFunctionDeclaration(declaration) || isIdentifier(declaration)) {
+    const exportName = isIdentifier(declaration)
+      ? declaration.name
+      : declaration.id && declaration.id.name
 
     if (exportName) {
       try {
@@ -156,7 +158,7 @@ export function isDefaultExportComponent(
           VariableDeclarator({ node, scope }) {
             let isDefaultExport = false
 
-            if (node.id.type === "Identifier" && node.id.name === exportName) {
+            if (isIdentifier(node.id, { name: exportName })) {
               isDefaultExport = true
             }
 
@@ -169,8 +171,8 @@ export function isDefaultExportComponent(
               {
                 ReturnStatement(path) {
                   if (
-                    path.node.argument?.type === "JSXElement" ||
-                    path.node.argument?.type === "JSXFragment"
+                    isJSXElement(path.node.argument) ||
+                    isJSXFragment(path.node.argument)
                   ) {
                     hasComponentExport = true
                   }

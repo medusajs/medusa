@@ -25,3 +25,17 @@ declare module "virtual:medusa/routes/links" {
     links,
   }
 }
+
+declare module "virtual:medusa/forms/*" {
+  const blocks: {
+    component: () => JSX.Element
+    schema: any
+  }[]
+}
+
+declare module "virtual:medusa/details/*" {
+  const blocks: {
+    component: () => JSX.Element
+    extendQuery?: { fields: string }
+  }[]
+}

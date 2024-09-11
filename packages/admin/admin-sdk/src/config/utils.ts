@@ -1,8 +1,7 @@
-import { CustomFieldsConfig, RouteConfig, WidgetConfig } from "./types"
+import { EntrypointFormMap } from "@medusajs/admin-shared"
+import { CustomFieldConfig, RouteConfig, WidgetConfig } from "./types"
 
-function createConfigHelper<TConfig extends Record<string, unknown>>(
-  config: TConfig
-): TConfig {
+function createConfigHelper<TConfig>(config: TConfig): TConfig {
   return {
     ...config,
     /**
@@ -38,12 +37,14 @@ export function defineRouteConfig(config: RouteConfig) {
 
 /**
  * Define a custom fields configuration.
- * 
+ *
  * @param config The custom fields configuration.
  * @returns The custom fields configuration.
- * 
+ *
  * @experimental This API is experimental and may change in the future.
  */
-export function unstable_defineCustomFieldsConfig<TData = any>(config: CustomFieldsConfig<TData>) {
+export function unstable_defineCustomFieldsConfig<
+  TEntity extends keyof EntrypointFormMap
+>(config: CustomFieldConfig<TEntity>) {
   return createConfigHelper(config)
 }

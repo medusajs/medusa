@@ -22,6 +22,8 @@ import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-f
 import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
 
+import extensions from "virtual:medusa/forms/product/create/general"
+
 enum Tab {
   DETAILS = "details",
   ORGANIZE = "organize",
@@ -46,6 +48,8 @@ export const ProductCreateForm = ({
   store,
   pricePreferences,
 }: ProductCreateFormProps) => {
+  console.log(extensions)
+
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
   const [tabState, setTabState] = useState<TabState>({
     [Tab.DETAILS]: "in-progress",
@@ -74,13 +78,10 @@ export const ProductCreateForm = ({
       return {}
     }
 
-    return regions.reduce(
-      (acc, reg) => {
-        acc[reg.id] = reg.currency_code
-        return acc
-      },
-      {} as Record<string, string>
-    )
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {} as Record<string, string>)
   }, [regions])
 
   /**

@@ -2,7 +2,13 @@ import { CONTAINER_IDS } from "../details"
 import { FORM_IDS } from "../forms"
 import { ROUTE_IMPORTS } from "../routes"
 import { INJECTION_ZONES } from "../widgets"
-import { getContainerImport, getFormImport, getVirtualId, getWidgetImport, resolveVirtualId } from "./utils"
+import {
+  getContainerImport,
+  getFormImport,
+  getVirtualId,
+  getWidgetImport,
+  resolveVirtualId,
+} from "./utils"
 
 const VIRTUAL_WIDGET_MODULES = INJECTION_ZONES.map((zone) => {
   return getVirtualId(getWidgetImport(zone))
@@ -19,8 +25,6 @@ const VIRTUAL_FORM_MODULES = FORM_IDS.map((form) => {
 const VIRTUAL_CONTAINER_MODULES = CONTAINER_IDS.map((container) => {
   return getVirtualId(getContainerImport(container))
 })
-
-
 
 /**
  * All virtual modules that are used in the admin panel. Virtual modules are used
@@ -63,6 +67,8 @@ export const RESOLVED_FORM_MODULES = VIRTUAL_FORM_MODULES.map((id) => {
 /**
  * Reolved paths to all virtual container modules.
  */
-export const RESOLVED_CONTAINER_MODULES = VIRTUAL_CONTAINER_MODULES.map((id) => {
-  return resolveVirtualId(id)
-})
+export const RESOLVED_CONTAINER_MODULES = VIRTUAL_CONTAINER_MODULES.map(
+  (id) => {
+    return resolveVirtualId(id)
+  }
+)
