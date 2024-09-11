@@ -8,11 +8,13 @@ import { useSelectedParams } from "../hooks"
 type DataTableSearchProps = {
   placeholder?: string
   prefix?: string
+  autofocus?: boolean
 }
 
 export const DataTableSearch = ({
   placeholder,
   prefix,
+  autofocus,
 }: DataTableSearchProps) => {
   const { t } = useTranslation()
   const placeholderText = placeholder || t("general.search")
@@ -50,6 +52,7 @@ export const DataTableSearch = ({
       name="q"
       type="search"
       size="small"
+      autoFocus={autofocus}
       defaultValue={query?.[0] || undefined}
       onChange={debouncedOnChange}
       placeholder={placeholderText}

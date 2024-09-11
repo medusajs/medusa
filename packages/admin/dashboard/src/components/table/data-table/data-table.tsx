@@ -41,7 +41,7 @@ export const DataTable = <TData,>({
       <TableSkeleton
         layout={layout}
         rowCount={pageSize}
-        search={search}
+        search={!!search}
         filters={!!filters?.length}
         orderBy={!!orderBy?.length}
         pagination={!!pagination}

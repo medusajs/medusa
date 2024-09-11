@@ -152,7 +152,7 @@ export const AddProductsToSalesChannelForm = ({
             queryObject={raw}
             layout="fill"
             pagination
-            search
+            search="autofocus"
             noRecords={{
               message: t("salesChannels.products.add.list.noRecordsMessage"),
             }}
