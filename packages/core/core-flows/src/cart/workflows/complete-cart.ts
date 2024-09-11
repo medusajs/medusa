@@ -84,26 +84,12 @@ export const completeCartWorkflow = createWorkflow(
       }
     )
 
-    const formatedInventoryItems = transform(
-      {
-        input: {
-          sales_channel_id,
-          variants,
-          items,
-        },
-      },
-      prepareConfirmInventoryInput
-    )
-
-    const [, finalCart] = parallelize(
-      reserveInventoryStep(formatedInventoryItems),
-      useRemoteQueryStep({
-        entry_point: "cart",
-        fields: completeCartFields,
-        variables: { id: input.id },
-        list: false,
-      }).config({ name: "final-cart" })
-    )
+    const finalCart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: completeCartFields,
+      variables: { id: input.id },
+      list: false,
+    }).config({ name: "final-cart" })
 
     const cartToOrder = transform({ cart }, ({ cart }) => {
       const allItems = (cart.items ?? []).map((item) => {
@@ -162,10 +148,32 @@ export const completeCartWorkflow = createWorkflow(
     })
 
     const createdOrders = createOrdersStep([cartToOrder])
+
     const order = transform(
       { createdOrders },
       ({ createdOrders }) => createdOrders[0]
     )
+
+    const reservationItemsData = transform({ order }, ({ order }) =>
+      order.items!.map((i) => ({
+        variant_id: i.variant_id,
+        quantity: i.quantity,
+        id: i.id,
+      }))
+    )
+
+    const formatedInventoryItems = transform(
+      {
+        input: {
+          sales_channel_id,
+          variants,
+          items: reservationItemsData,
+        },
+      },
+      prepareConfirmInventoryInput
+    )
+
+    reserveInventoryStep(formatedInventoryItems)
 
     const updateCompletedAt = transform({ cart }, ({ cart }) => {
       return {
