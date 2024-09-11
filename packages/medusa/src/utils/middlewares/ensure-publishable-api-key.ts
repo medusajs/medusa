@@ -23,7 +23,7 @@ export function ensurePublishableApiKey() {
       try {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `${PUBLISHABLE_KEY_HEADER} request header is required`
+          `Publishable API key required in the request header: ${PUBLISHABLE_KEY_HEADER}. You can manage your keys in settings in the dashboard.`
         )
       } catch (e) {
         return next(e)

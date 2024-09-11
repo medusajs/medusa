@@ -5,29 +5,13 @@ import {
   SelectParams,
 } from "@medusajs/types"
 import { Client } from "../client"
-import { ClientHeaders, Config } from "../types"
+import { ClientHeaders } from "../types"
 
 export class Store {
   private client: Client
-  private config: Config
 
-  constructor(client: Client, config: Config) {
+  constructor(client: Client) {
     this.client = client
-    this.config = config
-  }
-
-  private withDefaultStoreHeaders(clientHeaders?: ClientHeaders) {
-    const defaultHeaders: ClientHeaders = {}
-    const publishableKey = this.config.publishableKey
-
-    if (publishableKey) {
-      defaultHeaders["x-publishable-api-key"] = publishableKey
-    }
-
-    return {
-      ...defaultHeaders,
-      ...clientHeaders,
-    }
   }
 
   public region = {
@@ -39,7 +23,7 @@ export class Store {
         PaginatedResponse<{ regions: HttpTypes.StoreRegion[] }>
       >(`/store/regions`, {
         query,
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
       })
     },
     retrieve: async (
@@ -51,7 +35,7 @@ export class Store {
         `/store/regions/${id}`,
         {
           query,
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
         }
       )
     },
@@ -66,7 +50,7 @@ export class Store {
         PaginatedResponse<{ collections: HttpTypes.StoreCollection[] }>
       >(`/store/collections`, {
         query,
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
       })
     },
     retrieve: async (
@@ -78,7 +62,7 @@ export class Store {
         `/store/collections/${id}`,
         {
           query,
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
         }
       )
     },
@@ -95,7 +79,7 @@ export class Store {
         }>
       >(`/store/product-categories`, {
         query,
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
       })
     },
     retrieve: async (
@@ -107,7 +91,7 @@ export class Store {
         product_category: HttpTypes.StoreProductCategory
       }>(`/store/product-categories/${id}`, {
         query,
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
       })
     },
   }
@@ -121,7 +105,7 @@ export class Store {
         `/store/products`,
         {
           query,
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
         }
       )
     },
@@ -134,7 +118,7 @@ export class Store {
         `/store/products/${id}`,
         {
           query,
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
         }
       )
     },
@@ -148,7 +132,7 @@ export class Store {
     ) => {
       return this.client.fetch<{ cart: HttpTypes.StoreCart }>(`/store/carts`, {
         method: "POST",
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
         body,
         query,
       })
@@ -163,7 +147,7 @@ export class Store {
         `/store/carts/${id}`,
         {
           method: "POST",
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
           body,
           query,
         }
@@ -177,7 +161,7 @@ export class Store {
       return this.client.fetch<{ cart: HttpTypes.StoreCart }>(
         `/store/carts/${id}`,
         {
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
           query,
         }
       )
@@ -192,7 +176,7 @@ export class Store {
         `/store/carts/${cartId}/line-items`,
         {
           method: "POST",
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
           body,
           query,
         }
@@ -209,7 +193,7 @@ export class Store {
         `/store/carts/${cartId}/line-items/${lineItemId}`,
         {
           method: "POST",
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
           body,
           query,
         }
@@ -220,13 +204,12 @@ export class Store {
       lineItemId: string,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<HttpTypes.StoreLineItemDeleteResponse>(
-        `/store/carts/${cartId}/line-items/${lineItemId}`,
-        {
-          method: "DELETE",
-          headers: this.withDefaultStoreHeaders(headers),
-        }
-      )
+      return this.client.fetch<
+        HttpTypes.StoreLineItemDeleteResponse
+      >(`/store/carts/${cartId}/line-items/${lineItemId}`, {
+        method: "DELETE",
+        headers,
+      })
     },
     addShippingMethod: async (
       cartId: string,
@@ -238,7 +221,7 @@ export class Store {
         `/store/carts/${cartId}/shipping-methods`,
         {
           method: "POST",
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
           body,
           query,
         }
@@ -262,7 +245,7 @@ export class Store {
           }
       >(`/store/carts/${cartId}/complete`, {
         method: "POST",
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
         query,
       })
     },
@@ -276,7 +259,7 @@ export class Store {
       return this.client.fetch<{
         shipping_options: HttpTypes.StoreCartShippingOption[]
       }>(`/store/shipping-options`, {
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
         query,
       })
     },
@@ -290,7 +273,7 @@ export class Store {
       return this.client.fetch<{
         payment_providers: HttpTypes.StorePaymentProvider[]
       }>(`/store/payment-providers`, {
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
         query,
       })
     },
@@ -311,7 +294,7 @@ export class Store {
             payment_collection: HttpTypes.StorePaymentCollection
           }>(`/store/payment-collections`, {
             method: "POST",
-            headers: this.withDefaultStoreHeaders(headers),
+            headers,
             body: collectionBody,
           })
         ).payment_collection.id
@@ -321,7 +304,7 @@ export class Store {
         payment_collection: HttpTypes.StorePaymentCollection
       }>(`/store/payment-collections/${paymentCollectionId}/payment-sessions`, {
         method: "POST",
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
         body,
         query,
       })
@@ -337,7 +320,7 @@ export class Store {
         PaginatedResponse<{ orders: HttpTypes.StoreOrder[] }>
       >(`/store/orders`, {
         query,
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
       })
     },
     retrieve: async (
@@ -348,7 +331,7 @@ export class Store {
       return this.client.fetch<{ order: HttpTypes.StoreOrder }>(
         `/store/orders/${id}`,
         {
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
           query,
         }
       )
@@ -365,7 +348,7 @@ export class Store {
         customer: HttpTypes.StoreCustomer
       }>(`/store/customers`, {
         method: "POST",
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
         body,
         query,
       })
@@ -379,7 +362,7 @@ export class Store {
         `/store/customers/me`,
         {
           method: "POST",
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
           body,
           query,
         }
@@ -390,7 +373,7 @@ export class Store {
         `/store/customers/me`,
         {
           query,
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
         }
       )
     },
@@ -403,7 +386,7 @@ export class Store {
         customer: HttpTypes.StoreCustomer
       }>(`/store/customers/me/addresses`, {
         method: "POST",
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
         body,
         query,
       })
@@ -418,7 +401,7 @@ export class Store {
         `/store/customers/me/addresses/${addressId}`,
         {
           method: "POST",
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
           body,
           query,
         }
@@ -432,7 +415,7 @@ export class Store {
         PaginatedResponse<{ addresses: HttpTypes.StoreCustomerAddress[] }>
       >(`/store/customers/me/addresses`, {
         query,
-        headers: this.withDefaultStoreHeaders(headers),
+        headers,
       })
     },
     retrieveAddress: async (
@@ -444,18 +427,17 @@ export class Store {
         `/store/customers/me/addresses/${addressId}`,
         {
           query,
-          headers: this.withDefaultStoreHeaders(headers),
+          headers,
         }
       )
     },
     deleteAddress: async (addressId: string, headers?: ClientHeaders) => {
-      return this.client.fetch<HttpTypes.StoreCustomerAddressDeleteResponse>(
-        `/store/customers/me/addresses/${addressId}`,
-        {
-          method: "DELETE",
-          headers: this.withDefaultStoreHeaders(headers),
-        }
-      )
+      return this.client.fetch<
+        HttpTypes.StoreCustomerAddressDeleteResponse
+      >(`/store/customers/me/addresses/${addressId}`, {
+        method: "DELETE",
+        headers,
+      })
     },
   }
 }

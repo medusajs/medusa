@@ -15,7 +15,7 @@ class Medusa {
     this.client = new Client(config)
 
     this.admin = new Admin(this.client)
-    this.store = new Store(this.client, config)
+    this.store = new Store(this.client)
     this.auth = new Auth(this.client, config)
   }
 }
