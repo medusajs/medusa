@@ -10,6 +10,8 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
@@ -24,6 +26,7 @@ medusaIntegrationTestRunner({
       let cartModuleService: ICartModuleService
       let promotionModuleService: IPromotionModuleService
       let remoteLinkService: RemoteLink
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -38,6 +41,8 @@ medusaIntegrationTestRunner({
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       describe("DELETE /store/carts/:id/promotions", () => {
@@ -147,6 +152,7 @@ medusaIntegrationTestRunner({
               data: {
                 promo_codes: [appliedPromotionToRemove.code],
               },
+              ...storeHeaders,
             }
           )
 
@@ -295,6 +301,7 @@ medusaIntegrationTestRunner({
             `/store/carts/${cart.id}/promotions`,
             {
               data: { promo_codes: [appliedPromotionToRemove.code] },
+              ...storeHeaders,
             }
           )
 

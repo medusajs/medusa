@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
       await createAdminUser(dbConnection, adminHeaders, container)
-      order = await createOrderSeeder({ api })
+      order = await createOrderSeeder({ api, container })
 
       shippingProfile = (
         await api.post(
