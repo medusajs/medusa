@@ -55,7 +55,7 @@ type AuthRequests = {
 class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
-  private MAX_LEVEL = 4
+  private MAX_LEVEL = 5
   readonly REQUEST_TYPE_NAMES = [
     "MedusaRequest",
     "RequestWithContext",

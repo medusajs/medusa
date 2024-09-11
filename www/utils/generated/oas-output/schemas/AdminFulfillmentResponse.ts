@@ -1,7 +1,7 @@
 /**
  * @schema AdminFulfillmentResponse
  * type: object
- * description: SUMMARY
+ * description: A fulfillment's details.
  * x-schemaName: AdminFulfillmentResponse
  * required:
  *   - fulfillment

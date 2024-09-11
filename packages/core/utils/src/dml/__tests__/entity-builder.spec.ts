@@ -1344,6 +1344,109 @@ describe("Entity builder", () => {
         },
       })
     })
+
+    test("define JSON property with default value", () => {
+      const user = model.define("user", {
+        id: model.number(),
+        email: model.text(),
+        phones: model.json().default({ number: "22222222" }),
+      })
+
+      expect(user.name).toEqual("user")
+      expect(user.parse().tableName).toEqual("user")
+
+      const User = toMikroORMEntity(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        email: string
+        phones: Record<string, unknown>
+        created_at: Date
+        updated_at: Date
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          fieldName: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          fieldName: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          fieldName: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        phones: {
+          getter: false,
+          name: "phones",
+          fieldName: "phones",
+          nullable: false,
+          reference: "scalar",
+          default: JSON.stringify({ number: "22222222" }),
+          setter: false,
+          columnType: "jsonb",
+          type: "any",
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          fieldName: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          fieldName: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
   })
 
   describe("Entity builder | id", () => {

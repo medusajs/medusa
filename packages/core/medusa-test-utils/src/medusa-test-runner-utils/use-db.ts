@@ -1,6 +1,4 @@
 import type { MedusaAppLoader } from "@medusajs/framework"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { asValue } from "awilix"
 
 /**
  * Initiates the database connection

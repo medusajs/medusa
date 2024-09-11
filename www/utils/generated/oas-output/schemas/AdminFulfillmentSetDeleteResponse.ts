@@ -1,7 +1,7 @@
 /**
  * @schema AdminFulfillmentSetDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The deletion details.
  * x-schemaName: AdminFulfillmentSetDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Fulfillment Set was deleted.
+ *     description: Whether the fulfillment set was deleted.
  * 
 */
 

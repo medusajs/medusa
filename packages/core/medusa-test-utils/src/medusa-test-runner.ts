@@ -16,8 +16,6 @@ import { configLoaderOverride } from "./medusa-test-runner-utils/config"
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
 import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
 
-const axios = require("axios").default
-
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -204,6 +202,8 @@ export function medusaIntegrationTestRunner({
       await migrateDatabase(appLoader)
       await syncLinks(appLoader)
     }
+
+    const axios = (await import("axios")).default.default
 
     const cancelTokenSource = axios.CancelToken.source()
 

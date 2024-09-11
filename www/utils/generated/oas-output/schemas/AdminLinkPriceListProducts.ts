@@ -1,7 +1,7 @@
 /**
  * @schema AdminLinkPriceListProducts
  * type: object
- * description: The removal details.
+ * description: The products removal details.
  * properties:
  *   remove:
  *     type: array

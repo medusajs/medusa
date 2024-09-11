@@ -152,6 +152,11 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
+              path: "/advanced-development/modules/service-constraints",
+              title: "Service Constraints",
+            },
+            {
+              type: "link",
               path: "/advanced-development/modules/isolation",
               title: "Module Isolation",
             },
@@ -172,8 +177,8 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
-              path: "/advanced-development/modules/remote-query",
-              title: "Remote Query",
+              path: "/advanced-development/modules/query",
+              title: "Query",
             },
             {
               type: "link",

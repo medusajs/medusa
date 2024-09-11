@@ -7,8 +7,10 @@ import {
 } from "@medusajs/types"
 import { Lifetime, asFunction, asValue } from "awilix"
 
-import * as providers from "../providers"
 import { PaymentProviderService } from "@services"
+import * as providers from "../providers"
+
+const PROVIDER_REGISTRATION_KEY = "payment_providers"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   const key = `pp_${klass.PROVIDER}_${pluginOptions.id}`
@@ -19,7 +21,7 @@ const registrationFn = async (klass, container, pluginOptions) => {
     }),
   })
 
-  container.registerAdd("payment_providers", asValue(key))
+  container.registerAdd(PROVIDER_REGISTRATION_KEY, asValue(key))
 }
 
 export default async ({
@@ -48,25 +50,27 @@ export default async ({
 const registerProvidersInDb = async ({
   container,
 }: LoaderOptions): Promise<void> => {
-  const providersToLoad = container.resolve<string[]>("payment_providers")
+  const providersToLoad = container.resolve<string[]>(PROVIDER_REGISTRATION_KEY)
   const paymentProviderService = container.resolve<PaymentProviderService>(
     "paymentProviderService"
   )
 
-  const providers = await paymentProviderService.list({
-    id: providersToLoad,
-  })
+  const existingProviders = await paymentProviderService.list(
+    { id: providersToLoad },
+    { take: null }
+  )
 
-  const loadedProvidersMap = new Map(providers.map((p) => [p.id, p]))
+  const upsertData: CreatePaymentProviderDTO[] = []
 
-  const providersToCreate: CreatePaymentProviderDTO[] = []
-  for (const id of providersToLoad) {
-    if (loadedProvidersMap.has(id)) {
-      continue
+  for (const { id } of existingProviders) {
+    if (!providersToLoad.includes(id)) {
+      upsertData.push({ id, is_enabled: false })
     }
-
-    providersToCreate.push({ id })
   }
 
-  await paymentProviderService.create(providersToCreate)
+  for (const id of providersToLoad) {
+    upsertData.push({ id, is_enabled: true })
+  }
+
+  await paymentProviderService.upsert(upsertData)
 }

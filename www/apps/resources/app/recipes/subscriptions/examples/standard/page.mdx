@@ -654,7 +654,7 @@ In this step, you’ll change what happens when the [Complete Cart API route](!a
 Create the file `src/api/store/carts/[id]/complete/route.ts` with the following content:
 
 export const completeCartHighlights = [
-  ["17", "remoteQueryObjectFromString", "Retrieve the cart to retrieve the subscription details from the `metadata`."],
+  ["17", "graph", "Retrieve the cart to retrieve the subscription details from the `metadata`."],
   ["31", "", "If the subscription data isn't set in the cart's `metadata`, throw an error"],
   ["38", "createSubscriptionWorkflow", "Execute the workflow created in the previous step."]
 ]
@@ -665,7 +665,7 @@ import {
   MedusaResponse,
 } from "@medusajs/medusa"
 import { 
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
   MedusaError,
 } from "@medusajs/utils"
 import createSubscriptionWorkflow from "../../../../../workflows/create-subscription"
@@ -674,9 +674,9 @@ export const POST = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const query = remoteQueryObjectFromString({
+  const { data: [cart] } = await query.graph({
     entryPoint: "cart",
     fields: [
       "metadata",
@@ -688,7 +688,7 @@ export const POST = async (
     },
   })
   
-  const { metadata } = (await remoteQuery(query))[0]
+  const { metadata } = cart
 
   if (!metadata?.subscription_interval || !metadata.subscription_period) {
     throw new MedusaError(
@@ -973,7 +973,7 @@ In this step, you’ll add two API routes for admin users:
 Create the file `src/api/admin/subscriptions/route.ts` with the following content:
 
 export const listSubscriptionsAdminHighlight = [
-  ["18", "remoteQueryObjectFromString", "Retrieve the subscriptions with their orders and customer."]
+  ["21", "graph", "Retrieve the subscriptions with their orders and customer."]
 ]
 
 ```ts title="src/api/admin/subscriptions/route.ts" highlights={listSubscriptionsAdminHighlight}
@@ -981,20 +981,23 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/medusa"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const {
     limit = 20,
     offset = 0,
   } = req.validatedQuery || {}
 
-  const query = remoteQueryObjectFromString({
+  const { 
+    data: subscriptions,
+    metadata: { count, take, skip },
+  } = await query.graph({
     entryPoint: "subscription",
     fields: [
       "*",
@@ -1011,13 +1014,8 @@ export const GET = async (
     },
   })
 
-  const { 
-    rows, 
-    metadata: { count, take, skip },
-  } = await remoteQuery(query)
-
   res.json({
-    subscriptions: rows,
+    subscriptions,
     count,
     limit: take,
     offset: skip,
@@ -1027,7 +1025,7 @@ export const GET = async (
 
 This adds a `GET` API route at `/admin/subscriptions`.
 
-In the route handler, you use the remote query to retrieve a subscription with its orders and customer. 
+In the route handler, you use Query to retrieve a subscription with its orders and customer. 
 
 The API route accepts pagination parameters to paginate the subscription list. It returns the subscriptions with pagination parameters in the response.
 
@@ -1036,7 +1034,7 @@ The API route accepts pagination parameters to paginate the subscription list. I
 Create the file `src/api/admin/subscriptions/[id]/route.ts` with the following content:
 
 export const getSubscriptionsAdminHighlight = [
-  ["13", "remoteQueryObjectFromString", "Retrieve the subscription with its orders and customer."]
+  ["13", "graph", "Retrieve the subscription with its orders and customer."]
 ]
 
 ```ts title="src/api/admin/subscriptions/[id]/route.ts" highlights={getSubscriptionsAdminHighlight}
@@ -1044,15 +1042,15 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/medusa"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const query = remoteQueryObjectFromString({
+  const { data: [subscription] } = await query.graph({
     entryPoint: "subscription",
     fields: [
       "*",
@@ -1067,17 +1065,15 @@ export const GET = async (
     },
   })
 
-  const result = await remoteQuery(query)
-
   res.json({
-    subscription: result[0],
+    subscription,
   })
 }
 ```
 
 This adds a `GET` API route at `/admin/subscriptions/[id]`, where `[id]` is the ID of the subscription to retrieve.
 
-In the route handler, you retrieve a subscription by its ID using the remote query and return it in the response.
+In the route handler, you retrieve a subscription by its ID using Query and return it in the response.
 
 In the next section, you’ll extend the Medusa admin and use these API routes to show the subscriptions.
 
@@ -2130,15 +2126,15 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/medusa"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const query = remoteQueryObjectFromString({
+  const { data: [customer] } = await query.graph({
     entryPoint: "customer",
     fields: [
       "subscriptions.*",
@@ -2150,17 +2146,15 @@ export const GET = async (
     },
   })
 
-  const result = await remoteQuery(query)
-
   res.json({
-    subscriptions: result[0].subscriptions,
+    subscriptions: customer.subscriptions,
   })
 }
 ```
 
 This adds an API route at `/store/customers/me/subscriptions`.
 
-In the route handler, you retrieve the authenticated customer’s subscriptions using the remote query and return them in the response.
+In the route handler, you retrieve the authenticated customer’s subscriptions using Query and return them in the response.
 
 ### Cancel Subscription API Route
 
