@@ -79,7 +79,7 @@ class SchemaFactory {
       schema = Object.assign(schema, {
         ...additionalData,
         // keep the description
-        description: schema.description || additionalData.description
+        description: schema.description || additionalData.description,
       })
     }
 
