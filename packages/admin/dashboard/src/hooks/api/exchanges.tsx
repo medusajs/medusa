@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
@@ -6,7 +7,6 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { FetchError } from "@medusajs/js-sdk"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
@@ -281,10 +281,15 @@ export const useRemoveExchangeInboundItem = (
       sdk.admin.exchange.removeInboundItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
+        queryKey: returnsQueryKeys.details(),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -356,6 +361,7 @@ export const useDeleteExchangeInboundShipping = (
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -424,8 +430,13 @@ export const useRemoveExchangeOutboundItem = (
       sdk.admin.exchange.removeOutboundItem(id, actionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+
+      queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

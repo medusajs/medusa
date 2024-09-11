@@ -7,11 +7,11 @@ import {
   UseQueryOptions,
 } from "@tanstack/react-query"
 
+import { FetchError } from "@medusajs/js-sdk"
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { ordersQueryKeys } from "./orders"
-import { FetchError } from "@medusajs/js-sdk"
 
 const RETURNS_QUERY_KEY = "returns" as const
 export const returnsQueryKeys = queryKeysFactory(RETURNS_QUERY_KEY)
@@ -169,9 +169,11 @@ export const useCancelReturnRequest = (
       queryClient.invalidateQueries({
         queryKey: returnsQueryKeys.details(),
       })
+
       queryClient.invalidateQueries({
         queryKey: returnsQueryKeys.lists(),
       })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -255,6 +257,10 @@ export const useRemoveReturnItem = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.details(),
       })
 
       options?.onSuccess?.(data, variables, context)
@@ -367,6 +373,10 @@ export const useDeleteReturnShipping = (
 
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(orderId),
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: returnsQueryKeys.details(),
       })
 
       options?.onSuccess?.(data, variables, context)

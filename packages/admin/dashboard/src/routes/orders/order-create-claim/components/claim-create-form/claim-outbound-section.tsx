@@ -191,20 +191,22 @@ export const ClaimOutboundSection = ({
 
   const onShippingOptionChange = async (selectedOptionId: string) => {
     const outboundShippingMethods = preview.shipping_methods.filter((s) => {
-      const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
+      const action = s.actions?.find(
+        (a) => a.action === "SHIPPING_ADD" && !a.return_id
+      )
 
-      return action && !!!action?.return?.id
+      return action && !!!action?.return_id
     })
 
     const promises = outboundShippingMethods
       .filter(Boolean)
       .map((outboundShippingMethod) => {
         const action = outboundShippingMethod.actions?.find(
-          (a) => a.action === "SHIPPING_ADD"
+          (a) => a.action === "SHIPPING_ADD" && !a.return_id
         )
 
         if (action) {
-          deleteOutboundShipping(action.id)
+          return deleteOutboundShipping(action.id)
         }
       })
 
