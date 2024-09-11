@@ -222,4 +222,29 @@ describe("manyToMany - manyToMany", () => {
       'Invalid relationship reference for "User.squads". "mappedBy" should be defined on one side or the other.'
     )
   })
+
+  it(`should fail to load the dml's if the relation is defined only on one side`, () => {
+    const team = model.define("team", {
+      id: model.id().primaryKey(),
+      name: model.text(),
+      users: model.manyToMany(() => user),
+    })
+
+    const user = model.define("user", {
+      id: model.id().primaryKey(),
+      username: model.text(),
+    })
+
+    let error!: Error
+    try {
+      ;[User, Team] = toMikroOrmEntities([user, team])
+    } catch (e) {
+      error = e
+    }
+
+    expect(error).toBeTruthy()
+    expect(error.message).toEqual(
+      'Invalid relationship reference for "Team.users". The other side of the relationship is missing.'
+    )
+  })
 })
