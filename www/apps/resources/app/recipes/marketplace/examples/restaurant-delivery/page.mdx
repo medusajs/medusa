@@ -1223,7 +1223,7 @@ Make sure to replace the first ID with the restaurant's ID, and the second ID wi
 
 ---
 
-## Step 8: Create Restaurant Product API Route
+## Step 9: Create Restaurant Product API Route
 
 In this step, you’ll create the API route that creates a product for a restaurant.
 
@@ -1375,7 +1375,7 @@ The request returns the created product in the response.
 
 ---
 
-## Step 9: Create Order Delivery Workflow
+## Step 10: Create Order Delivery Workflow
 
 In this step, you’ll create the workflow that creates a delivery. You’ll use it at a later step once a customer places their order.
 
@@ -1528,7 +1528,7 @@ In the workflow, you:
 
 ---
 
-## Step 10: Handle Delivery Workflow
+## Step 11: Handle Delivery Workflow
 
 In this step, you’ll create the workflow that handles the different stages of the delivery. This workflow needs to run in the background to update the delivery when an action occurs.
 
@@ -2064,7 +2064,7 @@ In the next steps, you’ll execute the workflow and see it in action as you add
 
 ---
 
-## Step 11: Create Order Delivery API Route
+## Step 12: Create Order Delivery API Route
 
 In this step, you’ll create the API route that executes the workflows created by the previous two steps. This API route is used when a customer places their order.
 
@@ -2240,7 +2240,7 @@ In the upcoming steps, you’ll add functionalities to update the delivery’s s
 
 ---
 
-## Step 12: Accept Delivery API Route
+## Step 13: Accept Delivery API Route
 
 In this step, you’ll create an API route that a restaurant admin uses to accept a delivery. This moves the `handleDeliveryWorkflow` execution from `notifyRestaurantStep` to the next step.
 
@@ -2692,7 +2692,7 @@ Meaning that the `handleDeliveryWorkflow`'s execution has moved to the `awaitDri
 
 ---
 
-## Step 13: Claim Delivery API Route
+## Step 14: Claim Delivery API Route
 
 In this step, you’ll add the API route that allows a driver to claim a delivery.
 
@@ -2837,7 +2837,7 @@ This indicates that the `handleDeliveryWorkflow`'s execution continued past the 
 
 ---
 
-## Step 14: Prepare API Route
+## Step 15: Prepare API Route
 
 In this step, you’ll add the API route that restaurants use to indicate they’re preparing the order.
 
@@ -2927,7 +2927,7 @@ This message indicates that the `handleDeliveryWorkflow`'s execution has moved t
 
 ---
 
-## Step 15: Ready API Route
+## Step 16: Ready API Route
 
 In this step, you’ll create the API route that restaurants use to indicate that a delivery is ready for pick up.
 
@@ -3019,7 +3019,7 @@ This message indicates that the `handleDeliveryWorkflow`'s execution has moved t
 
 ---
 
-## Step 18: Pick Up Delivery API Route
+## Step 17: Pick Up Delivery API Route
 
 In this step, you’ll add the API route that the driver uses to indicate they’ve picked up the delivery.
 
@@ -3159,7 +3159,7 @@ This message indicates that the `handleDeliveryWorkflow`'s execution has moved t
 
 ---
 
-## Step 19: Complete Delivery API Route
+## Step 18: Complete Delivery API Route
 
 In this step, you’ll create the API route that the driver uses to indicate that they completed the delivery.
 
@@ -3249,7 +3249,7 @@ As the route sets the status of the `awaitDeliveryStep` to successful in the `ha
 
 ---
 
-## Step 20: Real-Time Tracking in the Storefront
+## Step 19: Real-Time Tracking in the Storefront
 
 In this step, you’ll learn how to implement real-time tracking of a delivery in a Next.js-based storefront.
 
