@@ -858,11 +858,7 @@ const user = createUserStep(input.user)
 const authUserInput = transform({ input, user }, (data) => ({
   authIdentityId: data.input.auth_identity_id,
   actorType: data.input.user.actor_type,
-  key:
-    data.input.user.actor_type === "restaurant"
-      ? "restaurant_id"
-      : "driver_id",
-  value: user.id,
+  value: data.user.id,
 }))
 
 setAuthAppMetadataStep(authUserInput)
@@ -1034,6 +1030,199 @@ This returns the created driver user.
 
 ---
 
+## Step 8: Delete Restaurant Admin API Route
+
+In this step, you'll create a workflow that deletes the restaurant admin and its association to its auth identity, then use it in an API route.
+
+<Note title="Tip">
+
+The same logic can be applied to delete a driver.
+
+</Note>
+
+### Create deleteRestaurantAdminStep
+
+First, create the step that deletes the restaurant admin at `restaurant-marketplace/src/workflows/restaurant/steps/delete-restaurant-admin.ts`:
+
+```ts title="restaurant-marketplace/src/workflows/restaurant/steps/delete-restaurant-admin.ts"
+import {
+  createStep,
+  StepResponse
+} from "@medusajs/workflows-sdk"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+import { DeleteRestaurantAdminWorkflow } from "../workflows/delete-restaurant-admin"
+
+export const deleteRestaurantAdminStep = createStep(
+  "delete-restaurant-admin",
+  async ({ id }: DeleteRestaurantAdminWorkflow, { container }) => {
+    const restaurantModuleService = container.resolve(
+      RESTAURANT_MODULE
+    )
+
+    const admin = await restaurantModuleService.retrieveRestaurantAdmin(id)
+
+    await restaurantModuleService.deleteRestaurantAdmins(id)
+    
+    return new StepResponse(undefined, { admin })
+  },
+  async ({ admin }, { container }) => {
+    const restaurantModuleService = container.resolve(
+      RESTAURANT_MODULE
+    )
+
+    await restaurantModuleService.createRestaurantAdmins(admin)
+  }
+)
+```
+
+In this step, you resolve the Restaurant Module's service and delete the admin. In the compensation function, you create the admin again.
+
+### Create deleteRestaurantAdminWorkflow
+
+Then, create the workflow that deletes the restaurant admin at `restaurant-marketplace/src/workflows/restaurant/workflows/delete-restaurant-admin.ts`:
+
+```ts title="restaurant-marketplace/src/workflows/restaurant/workflows/delete-restaurant-admin.ts" collapsibleLines="1-13" expandButtonLabel="Show Imports"
+import { MedusaError } from "@medusajs/utils"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
+import { 
+  setAuthAppMetadataStep,
+  useRemoteQueryStep
+} from "@medusajs/core-flows"
+import { deleteRestaurantAdminStep } from "../steps/delete-restaurant-admin"
+
+export type DeleteRestaurantAdminWorkflow = {
+  id: string
+}
+
+export const deleteRestaurantAdminWorkflow = createWorkflow(
+  "delete-restaurant-admin",
+  (
+    input: WorkflowData<DeleteRestaurantAdminWorkflow>
+  ): WorkflowResponse<string> => {
+    deleteRestaurantAdminStep(input)
+
+    // TODO update auth identity
+)
+```
+
+So far, you only use the `deleteRestaurantAdminStep` in the workflow, which deletes the restaurant admin.
+
+Replace the `TODO` with the following:
+
+```ts title="restaurant-marketplace/src/workflows/restaurant/workflows/delete-restaurant-admin.ts"
+const authIdentities = useRemoteQueryStep({
+  entry_point: "auth_identity",
+  fields: ["id"],
+  variables: {
+    filters: {
+      app_metadata: {
+        restaurant_id: input.id,
+      },
+    },
+  },
+})
+
+const authIdentity = transform(
+  { authIdentities },
+  ({ authIdentities }) => {
+    const authIdentity = authIdentities[0]
+
+    if (!authIdentity) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "Auth identity not found"
+      )
+    }
+
+    return authIdentity
+  }
+)
+
+setAuthAppMetadataStep({
+  authIdentityId: authIdentity.id,
+  actorType: "restaurant",
+  value: null,
+})
+
+return new WorkflowResponse(input.id)
+```
+
+After deleting the restaurant admin, you:
+
+1. Retrieve its auth identity using Query. To do that, you filter its `app_metadata` property by checking that its `restaurant_id` property's value is the admin's ID. For drivers, you replace `restaurant_id` with `driver_id`.
+2. Check that the auth identity exists using the `transform` utility. Otherwise, throw an error.
+3. Unset the association between the auth identity and the restaurant admin using the `setAuthAppMetadataStep` imported from `@medusajs/core-flows`.
+
+### Create API Route
+
+Finally, add the API route that uses the workflow at `src/api/restaurants/[id]/admins/[admin_id]/route.ts`:
+
+```ts title="src/api/restaurants/[id]/admins/[admin_id]/route.ts"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse
+} from "@medusajs/medusa"
+import { 
+  deleteRestaurantAdminWorkflow
+} from "../../../../../workflows/restaurant/workflows/delete-restaurant-admin"
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  await deleteRestaurantAdminWorkflow(req.scope).run({
+    input: {
+      id: req.params.admin_id
+    }
+  })
+
+  res.json({ message: "success" })
+}
+```
+
+You add a `DELETE` API route at `/restaurants/[id]/admins/[admin_id]`. In the route, you execute the workflow to delete the restaurant admin.
+
+### Add Authentication Middleware
+
+This API route should only be accessible by restaurant admins.
+
+So, in the file `src/api/middlewares.ts`, add a new middleware:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      method: ["POST", "DELETE"],
+      matcher: "/restaurants/:id/**",
+      middlewares: [
+        authenticate(["restaurant", "user"], "bearer"),
+      ],
+    },
+  ],
+})
+```
+
+This allows only restaurant admins and Medusa Admin users to access routes under the `/restaurants/[id]` prefix if the request method is `POST` or `DELETE`.
+
+### Test API Route
+
+To test it out, create another restaurant admin user, then send a `DELETE` request to `/restaurants/[id]/admins/[admin_id]`, authenticated as the first admin user you created:
+
+```bash
+curl -X DELETE 'http://localhost:9000/restaurants/01J7GHGQTCAVY5C1AH1H733Q4G/admins/01J7GJKHWXF1YDMXH09EXEDCD6' \
+-H 'Authorization: Bearer {token}'
+```
+
+Make sure to replace the first ID with the restaurant's ID, and the second ID with the ID of the admin to delete.
+
+---
+
 ## Step 8: Create Restaurant Product API Route
 
 In this step, you’ll create the API route that creates a product for a restaurant.
@@ -1143,29 +1332,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 ```
 
 The creates a `POST` API route at `/restaurants/[id]/products`. It accepts the products’ details in the request body, executes the `createRestaurantProductsWorkflow` to create the products, and returns the created products in the response.
-
-### Add Authentication Middleware
-
-This API route should only be accessible by restaurant admins.
-
-So, in the file `src/api/middlewares.ts`, add a new middleware:
-
-```ts title="src/api/middlewares.ts"
-export default defineMiddlewares({
-  routes: [
-    // ...
-    {
-      method: ["POST", "DELETE"],
-      matcher: "/restaurants/:id/**",
-      middlewares: [
-        authenticate(["restaurant", "user"], "bearer"),
-      ],
-    },
-  ],
-})
-```
-
-This allows only restaurant admins and Medusa Admin users to access routes under the `/restaurants/[id]` prefix if the request method is `POST` or `DELETE`.
 
 ### Test it Out
 
