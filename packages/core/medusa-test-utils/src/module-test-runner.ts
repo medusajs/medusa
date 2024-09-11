@@ -1,11 +1,15 @@
 import {
   ContainerRegistrationKeys,
+  DmlEntity,
+  loadModels,
   ModulesSdkUtils,
+  normalizeImportPathWithSource,
   toMikroOrmEntities,
 } from "@medusajs/utils"
-import { TestDatabase, getDatabaseURL, getMikroOrmWrapper } from "./database"
-import { InitModulesOptions, initModules } from "./init-modules"
+import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
+import { initModules, InitModulesOptions } from "./init-modules"
 import { default as MockEventBusService } from "./mock-event-bus-service"
+import * as fs from "fs"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -15,6 +19,46 @@ export interface SuiteOptions<TService = unknown> {
     schema: string
     clientUrl: string
   }
+}
+
+function createMikroOrmWrapper(options: {
+  moduleModels?: (Function | DmlEntity<any, any>)[]
+  resolve?: string
+  dbConfig: any
+}): {
+  MikroOrmWrapper: TestDatabase
+  models: (Function | DmlEntity<any, any>)[]
+} {
+  let moduleModels: (Function | DmlEntity<any, any>)[] =
+    options.moduleModels ?? []
+
+  if (!options.moduleModels) {
+    const basePath = normalizeImportPathWithSource(
+      options.resolve ?? process.cwd()
+    )
+
+    const modelsPath = fs.existsSync(`${basePath}/dist/models`)
+      ? "/dist/models"
+      : fs.existsSync(`${basePath}/models`)
+      ? "/models"
+      : ""
+
+    if (modelsPath) {
+      moduleModels = loadModels(`${basePath}${modelsPath}`)
+    } else {
+      moduleModels = []
+    }
+  }
+
+  moduleModels = toMikroOrmEntities(moduleModels)
+
+  const MikroOrmWrapper = getMikroOrmWrapper({
+    mikroOrmEntities: moduleModels,
+    clientUrl: options.dbConfig.clientUrl,
+    schema: options.dbConfig.schema,
+  })
+
+  return { MikroOrmWrapper, models: moduleModels }
 }
 
 export function moduleIntegrationTestRunner<TService = any>({
@@ -43,9 +87,6 @@ export function moduleIntegrationTestRunner<TService = any>({
 
   process.env.LOG_LEVEL = "error"
 
-  moduleModels ??= Object.values(require(`${process.cwd()}/src/models`))
-  moduleModels = toMikroOrmEntities(moduleModels)
-
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   const dbName = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
 
@@ -58,11 +99,13 @@ export function moduleIntegrationTestRunner<TService = any>({
   // Use a unique connection for all the entire suite
   const connection = ModulesSdkUtils.createPgConnection(dbConfig)
 
-  const MikroOrmWrapper = getMikroOrmWrapper({
-    mikroOrmEntities: moduleModels,
-    clientUrl: dbConfig.clientUrl,
-    schema: dbConfig.schema,
+  const { MikroOrmWrapper, models } = createMikroOrmWrapper({
+    moduleModels,
+    resolve,
+    dbConfig,
   })
+
+  moduleModels = models
 
   const modulesConfig_ = {
     [moduleName]: {
@@ -117,7 +160,9 @@ export function moduleIntegrationTestRunner<TService = any>({
   } as SuiteOptions<TService>
 
   const beforeEach_ = async () => {
-    await MikroOrmWrapper.setupDatabase()
+    if (moduleModels.length) {
+      await MikroOrmWrapper.setupDatabase()
+    }
     const output = await initModules(moduleOptions_)
     shutdown = output.shutdown
     medusaApp = output.medusaApp
@@ -125,7 +170,9 @@ export function moduleIntegrationTestRunner<TService = any>({
   }
 
   const afterEach_ = async () => {
-    await MikroOrmWrapper.clearDatabase()
+    if (moduleModels.length) {
+      await MikroOrmWrapper.clearDatabase()
+    }
     await shutdown()
     moduleService = {}
     medusaApp = {}

@@ -1,0 +1,34 @@
+export const metadata = {
+  title: `${pageNumber} Service Constraints`,
+}
+
+# {metadata.title}
+
+This chapter lists constraints to keep in mind when creating a service.
+
+## Use Async Methods
+
+Medusa wraps adds wrappers around your service's methods and executes them as async methods.
+
+So, make sure your service's methods are always async to avoid unexpected errors or behavior.
+
+```ts highlights={[["8", "", "Method must be async."], ["13", "async", "Correct way of defining the method."]]}
+import { MedusaService } from "@medusajs/utils"
+import MyCustom from "./models/my-custom"
+
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  // Don't
+  getMessage(): string {
+    return "Hello, World!"
+  }
+
+  // Do
+  async getMessage(): Promise<string> {
+    return "Hello, World!"
+  }
+}
+
+export default HelloModuleService
+```

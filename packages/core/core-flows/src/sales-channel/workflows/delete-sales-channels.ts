@@ -1,4 +1,4 @@
-import { Modules, UserWorkflowEvents } from "@medusajs/utils"
+import { Modules, SalesChannelWorkflowEvents } from "@medusajs/utils"
 import {
   createWorkflow,
   transform,
@@ -32,7 +32,7 @@ export const deleteSalesChannelsWorkflow = createWorkflow(
     })
 
     emitEventStep({
-      eventName: UserWorkflowEvents.DELETED,
+      eventName: SalesChannelWorkflowEvents.DELETED,
       data: salesChannelsIdEvents,
     })
   }

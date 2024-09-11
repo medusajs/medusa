@@ -1,7 +1,7 @@
 /**
  * @schema AdminImportProductResponse
  * type: object
- * description: SUMMARY
+ * description: The import process's details.
  * x-schemaName: AdminImportProductResponse
  * required:
  *   - transaction_id
@@ -10,10 +10,10 @@
  *   transaction_id:
  *     type: string
  *     title: transaction_id
- *     description: The product's transaction id.
+ *     description: The ID of the workflow execution's transaction. This is useful to confirm the import using the `/admin/products/:transaction-id/import` API route.
  *   summary:
  *     type: object
- *     description: The product's summary.
+ *     description: The import's summary.
  *     required:
  *       - toCreate
  *       - toUpdate
@@ -21,11 +21,11 @@
  *       toCreate:
  *         type: number
  *         title: toCreate
- *         description: The summary's tocreate.
+ *         description: The number of products that will be created by this import.
  *       toUpdate:
  *         type: number
  *         title: toUpdate
- *         description: The summary's toupdate.
+ *         description: The number of products that will be updated by this import.
  * 
 */
 
