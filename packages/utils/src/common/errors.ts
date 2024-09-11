@@ -26,7 +26,6 @@ export const MedusaErrorCodes = {
  * @extends Error
  */
 export class MedusaError extends Error {
-  // Symbol is not serializable
   __isMedusaError = true
 
   public type: string
