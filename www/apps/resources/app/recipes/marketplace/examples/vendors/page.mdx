@@ -563,13 +563,13 @@ To create the API route that retrieves the vendor’s products, create the file 
 
 export const retrieveProductHighlights = [
   ["16", "retrieveVendorAdmin", "Retrive the vendor admin to retrieve its vendor's ID."],
-  ["33", "remoteQuery", "Retrieve the vendor's products using remote query."]
+  ["23", "graph", "Retrieve the vendor's products using Query."]
 ]
 
 ```ts title="src/api/vendors/products/route.ts" highlights={retrieveProductHighlights}
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { 
-  remoteQueryObjectFromString,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 import MarketplaceModuleService from "../../../modules/marketplace/service"
 import { MARKETPLACE_MODULE } from "../../../modules/marketplace"
@@ -578,7 +578,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const marketplaceModuleService: MarketplaceModuleService = 
     req.scope.resolve(MARKETPLACE_MODULE)
 
@@ -589,7 +589,7 @@ export const GET = async (
     }
   )
 
-  const query = remoteQueryObjectFromString({
+  const { data: [vendor] } = await query.graph({
     entryPoint: "vendor",
     fields: ["products.*"],
     variables: {
@@ -599,15 +599,13 @@ export const GET = async (
     },
   })
 
-  const result = await remoteQuery(query)
-
   res.json({
-    products: result[0].products,
+    products: vendor.products,
   })
 }
 ```
 
-This adds a `GET` API route at `/vendors/products` that, using the remote query, retrieves the list of products of the vendor and returns them in the response.
+This adds a `GET` API route at `/vendors/products` that, using Query, retrieves the list of products of the vendor and returns them in the response.
 
 To add the create product API route, add to the same file the following:
 
@@ -782,7 +780,7 @@ curl 'http://localhost:9000/vendors/products' \
 
 ### Further Reads
 
-- [How to use the Remote Query](!docs!/advanced-development/modules/remote-query)
+- [How to use Query](!docs!/advanced-development/modules/query)
 - [How to use the Remote Link](!docs!/advanced-development/modules/remote-link)
 
 ---
@@ -817,7 +815,7 @@ import {
   StepResponse,
 } from "@medusajs/workflows-sdk"
 import { CartDTO, CartLineItemDTO } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 type StepInput = {
   cart: CartDTO
@@ -826,12 +824,12 @@ type StepInput = {
 const groupVendorItemsStep = createStep(
   "group-vendor-items",
   async ({ cart }: StepInput, { container }) => {
-    const remoteQuery = container.resolve("remoteQuery")
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const vendorsItems: Record<string, CartLineItemDTO[]> = {}
 
     await Promise.all(cart.items?.map(async (item) => {
-      const query = remoteQueryObjectFromString({
+      const { data: [product] } = await query.graph({
         entryPoint: "product",
         fields: ["vendor.*"],
         variables: {
@@ -841,9 +839,7 @@ const groupVendorItemsStep = createStep(
         },
       })
 
-      const result = await remoteQuery(query)
-
-      const vendorId = result[0].vendor?.id
+      const vendorId = product.vendor?.id
 
       if (!vendorId) {
         return
@@ -1251,13 +1247,13 @@ Create the file `src/api/vendors/orders/route.ts` with the following content:
 
 export const getOrderHighlights = [
   ["15", "retrieveVendorAdmin", "Retrive the vendor admin to retrieve its vendor's ID."],
-  ["32", "remoteQuery", "Retrieve the orders of the vendor."],
-  ["34", "getOrdersListWorkflow", "Use Medusa's workflow to retrieve the list of orders."],
+  ["22", "graph", "Retrieve the orders of the vendor."],
+  ["32", "getOrdersListWorkflow", "Use Medusa's workflow to retrieve the list of orders."],
 ]
 
 ```ts title="src/api/vendors/orders/route.ts" highlights={getOrderHighlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { getOrdersListWorkflow } from "@medusajs/core-flows"
 import MarketplaceModuleService from "../../../modules/marketplace/service"
 import { MARKETPLACE_MODULE } from "../../../modules/marketplace"
@@ -1266,7 +1262,7 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve("remoteQuery")
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const marketplaceModuleService: MarketplaceModuleService = 
     req.scope.resolve(MARKETPLACE_MODULE)
 
@@ -1277,7 +1273,7 @@ export const GET = async (
     }
   )
 
-  const query = remoteQueryObjectFromString({
+  const { data: [vendor] } = await query.graph({
     entryPoint: "vendor",
     fields: ["orders.*"],
     variables: {
@@ -1286,8 +1282,6 @@ export const GET = async (
       },
     },
   })
-
-  const result = await remoteQuery(query)
 
   const { result: orders } = await getOrdersListWorkflow(req.scope)
     .run({
@@ -1310,7 +1304,7 @@ export const GET = async (
         ],
         variables: {
           filters: {
-            id: result[0].orders.map((order) => order.id),
+            id: vendor.orders.map((order) => order.id),
           },
         },
       },

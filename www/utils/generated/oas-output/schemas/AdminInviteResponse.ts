@@ -1,7 +1,7 @@
 /**
  * @schema AdminInviteResponse
  * type: object
- * description: SUMMARY
+ * description: The invite's details.
  * x-schemaName: AdminInviteResponse
  * required:
  *   - invite

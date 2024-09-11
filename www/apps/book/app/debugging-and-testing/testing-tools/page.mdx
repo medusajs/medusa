@@ -41,8 +41,8 @@ npm install --save-dev jest @types/jest @swc/jest
 Then, create the file `jest.config.js` with the following content:
 
 ```js title="jest.config.js"
-const { loadEnv } = require('@medusajs/utils')
-loadEnv('test', process.cwd())
+const { loadEnv } = require("@medusajs/utils")
+loadEnv("test", process.cwd())
 
 module.exports = {
   transform: {

@@ -110,6 +110,20 @@ export const AddCampaignPromotionFields = ({
                     </Select.Trigger>
 
                     <Select.Content>
+                      {!campaigns.length && (
+                        <div className="flex h-[120px] flex-col items-center justify-center gap-2 p-2">
+                          <span className="txt-small text-ui-fg-subtle font-medium">
+                            {t(
+                              "promotions.form.campaign.existing.placeholder.title"
+                            )}
+                          </span>
+                          <span className="txt-small text-ui-fg-muted">
+                            {t(
+                              "promotions.form.campaign.existing.placeholder.desc"
+                            )}
+                          </span>
+                        </div>
+                      )}
                       {campaigns.map((c) => (
                         <Select.Item key={c.id} value={c.id}>
                           {c.name?.toUpperCase()}

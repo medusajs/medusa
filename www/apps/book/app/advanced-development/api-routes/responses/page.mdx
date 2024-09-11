@@ -17,14 +17,14 @@ export const jsonHighlights = [
 ]
 
 ```ts title="src/api/store/custom/route.ts" highlights={jsonHighlights} apiTesting testApiUrl="http://localhost:9000/store/custom" testApiMethod="GET"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
   res.json({
-    message: "Hello, World!"
+    message: "Hello, World!",
   })
 }
 ```
@@ -52,14 +52,14 @@ export const statusHighlight = [
 ]
 
 ```ts title="src/api/store/custom/route.ts" highlights={statusHighlight} apiTesting testApiUrl="http://localhost:9000/store/custom" testApiMethod="GET"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 
 export const GET = async (
   req: MedusaRequest,
   res: MedusaResponse
 ) => {
   res.status(201).json({
-    message: "Hello, World!"
+    message: "Hello, World!",
   })
 }
 ```
@@ -84,7 +84,7 @@ export const streamHighlights = [
 ]
 
 ```ts highlights={streamHighlights}
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa";
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 
 export const GET = async (
   req: MedusaRequest,

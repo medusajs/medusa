@@ -78,7 +78,10 @@ export const CreateCampaignForm = () => {
 
   return (
     <RouteFocusModal.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex flex-col overflow-hidden">
+      <form
+        onSubmit={handleSubmit}
+        className="flex size-full flex-col overflow-hidden"
+      >
         <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex size-full flex-col items-center overflow-auto py-16">
           <CreateCampaignFormFields form={form} />
