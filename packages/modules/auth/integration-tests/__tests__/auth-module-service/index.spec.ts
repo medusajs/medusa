@@ -1,7 +1,7 @@
 import { IAuthModuleService } from "@medusajs/types"
 import { Module, Modules } from "@medusajs/utils"
 import { AuthModuleService } from "@services"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { resolve } from "path"
 
 let moduleOptions = {
@@ -52,6 +52,7 @@ moduleIntegrationTestRunner({
         expect(linkable.authIdentity).toEqual({
           id: {
             linkable: "auth_identity_id",
+            entity: "AuthIdentity",
             primaryKey: "id",
             serviceName: "auth",
             field: "authIdentity",
@@ -63,6 +64,7 @@ moduleIntegrationTestRunner({
         expect(linkable.providerIdentity).toEqual({
           id: {
             linkable: "provider_identity_id",
+            entity: "ProviderIdentity",
             primaryKey: "id",
             serviceName: "auth",
             field: "providerIdentity",

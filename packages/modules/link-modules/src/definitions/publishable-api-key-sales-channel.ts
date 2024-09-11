@@ -20,6 +20,7 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   relationships: [
     {
       serviceName: Modules.API_KEY,
+      entity: "ApiKey",
       primaryKey: "id",
       foreignKey: "publishable_key_id",
       alias: "api_key",
@@ -29,6 +30,7 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.SALES_CHANNEL,
+      entity: "SalesChannel",
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",

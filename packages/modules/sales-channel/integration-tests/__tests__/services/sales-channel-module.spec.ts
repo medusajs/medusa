@@ -1,7 +1,7 @@
 import { ISalesChannelModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Module, Modules } from "@medusajs/utils"
 import { SalesChannelModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -49,6 +49,7 @@ moduleIntegrationTestRunner<ISalesChannelModuleService>({
           salesChannel: {
             id: {
               linkable: "sales_channel_id",
+              entity: "SalesChannel",
               primaryKey: "id",
               serviceName: "salesChannel",
               field: "salesChannel",

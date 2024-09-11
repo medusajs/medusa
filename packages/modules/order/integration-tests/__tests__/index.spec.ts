@@ -33,6 +33,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           order: {
             id: {
               linkable: "order_id",
+              entity: "Order",
               primaryKey: "id",
               serviceName: "order",
               field: "order",
@@ -41,6 +42,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           orderAddress: {
             id: {
               linkable: "order_address_id",
+              entity: "OrderAddress",
               primaryKey: "id",
               serviceName: "order",
               field: "orderAddress",
@@ -49,6 +51,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           orderChange: {
             id: {
               linkable: "order_change_id",
+              entity: "OrderChange",
               primaryKey: "id",
               serviceName: "order",
               field: "orderChange",
@@ -57,12 +60,14 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           orderClaim: {
             id: {
               linkable: "order_claim_id",
+              entity: "OrderClaim",
               primaryKey: "id",
               serviceName: "order",
               field: "orderClaim",
             },
             claim_id: {
               linkable: "claim_id",
+              entity: "OrderClaim",
               primaryKey: "claim_id",
               serviceName: "order",
               field: "orderClaim",
@@ -71,12 +76,14 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           orderExchange: {
             id: {
               linkable: "order_exchange_id",
+              entity: "OrderExchange",
               primaryKey: "id",
               serviceName: "order",
               field: "orderExchange",
             },
             exchange_id: {
               linkable: "exchange_id",
+              entity: "OrderExchange",
               primaryKey: "exchange_id",
               serviceName: "order",
               field: "orderExchange",
@@ -85,6 +92,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           orderLineItem: {
             id: {
               linkable: "order_line_item_id",
+              entity: "OrderLineItem",
               primaryKey: "id",
               serviceName: "order",
               field: "orderLineItem",
@@ -93,6 +101,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           orderShippingMethod: {
             id: {
               linkable: "order_shipping_method_id",
+              entity: "OrderShippingMethod",
               primaryKey: "id",
               serviceName: "order",
               field: "orderShippingMethod",
@@ -101,6 +110,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           orderTransaction: {
             id: {
               linkable: "order_transaction_id",
+              entity: "OrderTransaction",
               primaryKey: "id",
               serviceName: "order",
               field: "orderTransaction",
@@ -109,6 +119,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           return: {
             id: {
               linkable: "return_id",
+              entity: "Return",
               primaryKey: "id",
               serviceName: "order",
               field: "return",
@@ -117,6 +128,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           returnReason: {
             id: {
               linkable: "return_reason_id",
+              entity: "ReturnReason",
               primaryKey: "id",
               serviceName: "order",
               field: "returnReason",

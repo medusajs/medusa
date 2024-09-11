@@ -9,6 +9,7 @@ export const OrderCustomer: ModuleJoinerConfig = {
       serviceName: Modules.ORDER,
       relationship: {
         serviceName: Modules.CUSTOMER,
+        entity: "Customer",
         primaryKey: "id",
         foreignKey: "customer_id",
         alias: "customer",
@@ -21,6 +22,7 @@ export const OrderCustomer: ModuleJoinerConfig = {
       serviceName: Modules.CUSTOMER,
       relationship: {
         serviceName: Modules.ORDER,
+        entity: "Order",
         primaryKey: "customer_id",
         foreignKey: "id",
         alias: "orders",
