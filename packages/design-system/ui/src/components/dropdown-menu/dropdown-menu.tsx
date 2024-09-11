@@ -56,7 +56,7 @@ const SubMenuTrigger = React.forwardRef<
     {...props}
   >
     {children}
-    <ChevronRightMini className="ml-auto text-ui-fg-muted" />
+    <ChevronRightMini className="text-ui-fg-muted ml-auto" />
   </Primitives.SubTrigger>
 ))
 SubMenuTrigger.displayName = "DropdownMenu.SubMenuTrigger"
@@ -73,7 +73,7 @@ const SubMenuContent = React.forwardRef<
       ref={ref}
       collisionPadding={collisionPadding}
       className={clx(
-        "bg-ui-bg-component text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[220px] overflow-hidden rounded-lg p-1",
+        "bg-ui-bg-component text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[220px] overflow-x-hidden rounded-lg p-1",
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         className
       )}
@@ -107,7 +107,7 @@ const Content = React.forwardRef<
         align={align}
         collisionPadding={collisionPadding}
         className={clx(
-          "bg-ui-bg-component text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[220px] overflow-hidden rounded-lg p-1",
+          "bg-ui-bg-component text-ui-fg-base shadow-elevation-flyout max-h-[var(--radix-popper-available-height)] min-w-[220px] overflow-x-hidden rounded-lg p-1",
           "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           className
         )}
@@ -149,7 +149,7 @@ const CheckboxItem = React.forwardRef<
   <Primitives.CheckboxItem
     ref={ref}
     className={clx(
-      "bg-ui-bg-component text-ui-fg-base relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-[31px] pr-2 txt-compact-small outline-none transition-colors",
+      "bg-ui-bg-component text-ui-fg-base txt-compact-small relative flex cursor-pointer select-none items-center rounded-md py-1.5 pl-[31px] pr-2 outline-none transition-colors",
       "focus-visible:bg-ui-bg-component-pressed",
       "active:bg-ui-bg-component-pressed",
       "data-[disabled]:text-ui-fg-disabled data-[disabled]:pointer-events-none",
@@ -222,7 +222,10 @@ const Separator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <Primitives.Separator
     ref={ref}
-    className={clx("bg-ui-border-component -mx-1 my-1 h-0.5 border-t border-t-ui-border-menu-top border-b border-b-ui-border-menu-bot", className)}
+    className={clx(
+      "bg-ui-border-component border-t-ui-border-menu-top border-b-ui-border-menu-bot -mx-1 my-1 h-0.5 border-b border-t",
+      className
+    )}
     {...props}
   />
 ))
