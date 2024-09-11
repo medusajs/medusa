@@ -17,6 +17,7 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     let order, order2
     let returnShippingOption
+    let outboundShippingOption
     let shippingProfile
     let fulfillmentSet
     let returnReason
@@ -345,6 +346,44 @@ medusaIntegrationTestRunner({
         ],
       }
 
+      const outboundShippingOptionPayload = {
+        name: "Oubound shipping",
+        service_zone_id: fulfillmentSet.service_zones[0].id,
+        shipping_profile_id: shippingProfile.id,
+        provider_id: shippingProviderId,
+        price_type: "flat",
+        type: {
+          label: "Test type",
+          description: "Test description",
+          code: "test-code",
+        },
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 20,
+          },
+        ],
+        rules: [
+          {
+            operator: RuleOperator.EQ,
+            attribute: "is_return",
+            value: "false",
+          },
+          {
+            operator: RuleOperator.EQ,
+            attribute: "enabled_in_store",
+            value: "true",
+          },
+        ],
+      }
+      outboundShippingOption = (
+        await api.post(
+          "/admin/shipping-options",
+          outboundShippingOptionPayload,
+          adminHeaders
+        )
+      ).data.shipping_option
+
       returnShippingOption = (
         await api.post(
           "/admin/shipping-options",
@@ -560,7 +599,7 @@ medusaIntegrationTestRunner({
 
           const item = order.items[0]
 
-          let result = await api.post(
+          await api.post(
             `/admin/exchanges/${exchange.id}/inbound/items`,
             {
               items: [
@@ -580,7 +619,7 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
-          result = await api.post(
+          await api.post(
             `/admin/exchanges/${exchange.id}/outbound/items`,
             {
               items: [
@@ -590,6 +629,12 @@ medusaIntegrationTestRunner({
                 },
               ],
             },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
             adminHeaders
           )
 
@@ -610,7 +655,10 @@ medusaIntegrationTestRunner({
 
           const exchangeShippingMethods = orderPreview.shipping_methods.filter(
             (item) =>
-              !!item.actions?.find((action) => action.action === "SHIPPING_ADD")
+              !!item.actions?.find(
+                (action) =>
+                  action.action === "SHIPPING_ADD" && !action.return_id
+              )
           )
 
           expect(exchangeItems).toHaveLength(1)
@@ -634,7 +682,8 @@ medusaIntegrationTestRunner({
             orderPreview.shipping_methods.filter(
               (item) =>
                 !!item.actions?.find(
-                  (action) => action.action === "SHIPPING_ADD"
+                  (action) =>
+                    action.action === "SHIPPING_ADD" && !action.return_id
                 )
             )
 
@@ -654,7 +703,10 @@ medusaIntegrationTestRunner({
 
           const exchangeShippingMethods = orderPreview.shipping_methods.filter(
             (item) =>
-              !!item.actions?.find((action) => action.action === "SHIPPING_ADD")
+              !!item.actions?.find(
+                (action) =>
+                  action.action === "SHIPPING_ADD" && !!action.return_id
+              )
           )
 
           expect(exchangeItems).toHaveLength(1)
@@ -678,7 +730,8 @@ medusaIntegrationTestRunner({
             orderPreview.shipping_methods.filter(
               (item) =>
                 !!item.actions?.find(
-                  (action) => action.action === "SHIPPING_ADD"
+                  (action) =>
+                    action.action === "SHIPPING_ADD" && !!action.return_id
                 )
             )
 
