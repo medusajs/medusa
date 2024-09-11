@@ -63,9 +63,9 @@ export const ProductTagWorkflowEvents = {
 }
 
 export const ProductOptionWorkflowEvents = {
-  UPDATED: "product-tag.updated",
-  CREATED: "product-tag.created",
-  DELETED: "product-tag.deleted",
+  UPDATED: "product-option.updated",
+  CREATED: "product-option.created",
+  DELETED: "product-option.deleted",
 }
 
 export const InviteWorkflowEvents = {
