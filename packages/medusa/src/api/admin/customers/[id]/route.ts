@@ -1,5 +1,5 @@
 import {
-  deleteCustomersWorkflow,
+  removeCustomerAccountWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
 import { AdditionalData, HttpTypes } from "@medusajs/types"
@@ -68,10 +68,11 @@ export const DELETE = async (
   res: MedusaResponse<HttpTypes.AdminCustomerDeleteResponse>
 ) => {
   const id = req.params.id
-  const deleteCustomers = deleteCustomersWorkflow(req.scope)
 
-  await deleteCustomers.run({
-    input: { ids: [id] },
+  await removeCustomerAccountWorkflow(req.scope).run({
+    input: {
+      customerId: id,
+    },
   })
 
   res.status(200).json({

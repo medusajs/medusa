@@ -4,7 +4,7 @@ import { DataTableOrderBy } from "../data-table-order-by"
 import { DataTableSearch } from "../data-table-search"
 
 export interface DataTableQueryProps {
-  search?: boolean
+  search?: boolean | "autofocus"
   orderBy?: (string | number)[]
   filters?: Filter[]
   prefix?: string
@@ -25,7 +25,12 @@ export const DataTableQuery = ({
           )}
         </div>
         <div className="flex shrink-0 items-center gap-x-2">
-          {search && <DataTableSearch prefix={prefix} />}
+          {search && (
+            <DataTableSearch
+              prefix={prefix}
+              autofocus={search === "autofocus"}
+            />
+          )}
           {orderBy && <DataTableOrderBy keys={orderBy} prefix={prefix} />}
         </div>
       </div>
