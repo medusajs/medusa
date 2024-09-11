@@ -3102,9 +3102,9 @@ In this step, you’ll learn how to implement real-time tracking of a delivery i
 
 Before adding the storefront UI, you need an API route that allows a client to stream delivery changes.
 
-So, create the file `src/api/store/deliveries/subscribe/route.ts` with the following content:
+So, create the file `src/api/deliveries/subscribe/route.ts` with the following content:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
+```ts title="src/api/deliveries/subscribe/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
 import { 
   MedusaRequest, 
   MedusaResponse,
@@ -3133,11 +3133,11 @@ export const GET = async (
 }
 ```
 
-This creates a `GET` API route at `/store/deliveries/[id]/subscribe`. Currently, you only retrieve the delivery by its ID.
+This creates a `GET` API route at `/deliveries/[id]/subscribe`. Currently, you only retrieve the delivery by its ID.
 
 Next, you’ll stream the changes in the delivery. To do that, replace the `TODO` with the following:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts"
+```ts title="src/api/deliveries/subscribe/route.ts"
 const headers = {
   "Content-Type": "text/event-stream",
   Connection: "keep-alive",
@@ -3162,7 +3162,7 @@ In the above snippet, you set the response to a stream and write an initial mess
 
 To listen to the workflow changes, replace the new `TODO` with the following:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts"
+```ts title="src/api/deliveries/subscribe/route.ts"
 const workflowEngine = req.scope.resolve(
   ModuleRegistrationName.WORKFLOW_ENGINE
 )
@@ -3184,9 +3184,9 @@ In this snippet, you resolve the Workflow Engine Module’s main service. Then, 
 
 The storefront UI will also need to retrieve the delivery. So, you’ll create an API route that retrieves the delivery’s details.
 
-Create the file `src/api/store/deliveries/[id]/route.ts` with the following content:
+Create the file `src/api/deliveries/[id]/route.ts` with the following content:
 
-```ts title="src/api/store/deliveries/[id]/route.ts"
+```ts title="src/api/deliveries/[id]/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { DELIVERY_MODULE } from "../../../../modules/delivery"
 
@@ -3269,7 +3269,7 @@ Next, to subscribe to the delivery’s changes in real-time, replace the remaini
 ```tsx title="Storefront Page"
 // subscribe to the delivery updates
 const source = new EventSource(
-  `http://localhost:9000/store/deliveries/${id}/subscribe`
+  `http://localhost:9000/deliveries/${id}/subscribe`
 )
 
 source.onmessage = (message) => {
@@ -3291,7 +3291,7 @@ return () => {
 }
 ```
 
-You use the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to receive the stream from the `/store/deliveries/[id]/subscribe` API route.
+You use the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to receive the stream from the `/deliveries/[id]/subscribe` API route.
 
 When a new message is set, the new delivery update is extracted from `message.data.response`, if `response` is available and has a `delivery_status` property.
 
