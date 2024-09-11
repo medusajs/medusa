@@ -1047,7 +1047,7 @@ First, create the step that deletes the restaurant admin at `restaurant-marketpl
 ```ts title="restaurant-marketplace/src/workflows/restaurant/steps/delete-restaurant-admin.ts"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { RESTAURANT_MODULE } from "../../../modules/restaurant"
 import { DeleteRestaurantAdminWorkflow } from "../workflows/delete-restaurant-admin"
@@ -1091,7 +1091,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { 
   setAuthAppMetadataStep,
-  useRemoteQueryStep
+  useRemoteQueryStep,
 } from "@medusajs/core-flows"
 import { deleteRestaurantAdminStep } from "../steps/delete-restaurant-admin"
 
@@ -1107,6 +1107,7 @@ export const deleteRestaurantAdminWorkflow = createWorkflow(
     deleteRestaurantAdminStep(input)
 
     // TODO update auth identity
+  }
 )
 ```
 
@@ -1165,10 +1166,10 @@ Finally, add the API route that uses the workflow at `src/api/restaurants/[id]/a
 ```ts title="src/api/restaurants/[id]/admins/[admin_id]/route.ts"
 import {
   AuthenticatedMedusaRequest,
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { 
-  deleteRestaurantAdminWorkflow
+  deleteRestaurantAdminWorkflow,
 } from "../../../../../workflows/restaurant/workflows/delete-restaurant-admin"
 
 export const DELETE = async (
@@ -1177,8 +1178,8 @@ export const DELETE = async (
 ) => {
   await deleteRestaurantAdminWorkflow(req.scope).run({
     input: {
-      id: req.params.admin_id
-    }
+      id: req.params.admin_id,
+    },
   })
 
   res.json({ message: "success" })

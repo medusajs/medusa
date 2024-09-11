@@ -307,7 +307,7 @@ For example, create the following workflow that deletes a manager and updates it
 ```ts title="src/workflows/delete-manager.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import ManagerModuleService from "../modules/manager/service"
 
@@ -357,7 +357,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { 
   setAuthAppMetadataStep,
-  useRemoteQueryStep
+  useRemoteQueryStep,
 } from "@medusajs/core-flows"
 
 // ...
