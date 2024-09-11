@@ -12,6 +12,8 @@ import {
   WorkflowResponse,
   createStep,
   createWorkflow,
+  transform,
+  when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import {
@@ -22,6 +24,8 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { removeReturnShippingMethodWorkflow } from "./remove-return-shipping-method"
+import { updateReturnWorkflow } from "./update-return"
 
 /**
  * This step validates that a return item can be removed.
@@ -115,6 +119,61 @@ export const removeItemReturnActionWorkflow = createWorkflow(
     })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
+
+    const updatedOrderChange: OrderChangeDTO = useRemoteQueryStep({
+      entry_point: "order_change",
+      fields: ["actions.action", "actions.return_id", "actions.id"],
+      variables: {
+        filters: {
+          order_id: orderReturn.order_id,
+          return_id: orderReturn.id,
+          status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+        },
+      },
+      list: false,
+    }).config({ name: "updated-order-change-query" })
+
+    const actionIdToDelete = transform(
+      { updatedOrderChange, orderReturn },
+      ({
+        updatedOrderChange: { actions = [] },
+        orderReturn: { id: returnId },
+      }) => {
+        const itemActions = actions.filter((c) => c.action === "RETURN_ITEM")
+
+        if (itemActions.length) {
+          return null
+        }
+
+        const shippingAction = actions.find(
+          (c) => c.action === "SHIPPING_ADD" && c.return_id === returnId
+        )
+
+        if (!shippingAction) {
+          return null
+        }
+
+        return shippingAction.id
+      }
+    )
+
+    when({ actionIdToDelete }, ({ actionIdToDelete }) => {
+      return !!actionIdToDelete
+    }).then(() => {
+      removeReturnShippingMethodWorkflow.runAsStep({
+        input: {
+          return_id: orderReturn.id!,
+          action_id: actionIdToDelete,
+        },
+      })
+
+      updateReturnWorkflow.runAsStep({
+        input: {
+          return_id: orderReturn.id,
+          location_id: null,
+        },
+      })
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(order.id))
   }
