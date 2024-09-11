@@ -173,8 +173,6 @@ export const completeCartWorkflow = createWorkflow(
       prepareConfirmInventoryInput
     )
 
-    reserveInventoryStep(formatedInventoryItems)
-
     const updateCompletedAt = transform({ cart }, ({ cart }) => {
       return {
         id: cart.id,
@@ -196,6 +194,7 @@ export const completeCartWorkflow = createWorkflow(
         },
       ]),
       updateCartsStep([updateCompletedAt]),
+      reserveInventoryStep(formatedInventoryItems),
       emitEventStep({
         eventName: OrderWorkflowEvents.PLACED,
         data: { id: order.id },
