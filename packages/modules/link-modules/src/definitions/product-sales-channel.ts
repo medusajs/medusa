@@ -20,6 +20,7 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
   relationships: [
     {
       serviceName: Modules.PRODUCT,
+      entity: "Product",
       primaryKey: "id",
       foreignKey: "product_id",
       alias: "product",
@@ -29,6 +30,7 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.SALES_CHANNEL,
+      entity: "SalesChannel",
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",

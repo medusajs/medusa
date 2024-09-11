@@ -31,8 +31,9 @@ export const joinerConfig = defineJoinerConfig(Modules.PRODUCT, {
   alias: [
     {
       name: ["product_variant", "product_variants", "variant", "variants"],
+      entity: "ProductVariant",
       args: {
-        entity: "ProductVariant",
+        methodSuffix: "ProductVariants",
       },
     },
   ],

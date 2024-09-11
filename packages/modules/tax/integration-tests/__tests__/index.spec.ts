@@ -30,6 +30,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           taxRate: {
             id: {
               linkable: "tax_rate_id",
+              entity: "TaxRate",
               primaryKey: "id",
               serviceName: "tax",
               field: "taxRate",
@@ -38,6 +39,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           taxRegion: {
             id: {
               linkable: "tax_region_id",
+              entity: "TaxRegion",
               primaryKey: "id",
               serviceName: "tax",
               field: "taxRegion",
@@ -46,6 +48,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           taxRateRule: {
             id: {
               linkable: "tax_rate_rule_id",
+              entity: "TaxRateRule",
               primaryKey: "id",
               serviceName: "tax",
               field: "taxRateRule",
@@ -54,6 +57,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           taxProvider: {
             id: {
               linkable: "tax_provider_id",
+              entity: "TaxProvider",
               primaryKey: "id",
               serviceName: "tax",
               field: "taxProvider",

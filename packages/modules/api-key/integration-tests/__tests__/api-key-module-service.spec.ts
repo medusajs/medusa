@@ -54,12 +54,14 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
       expect(linkable.apiKey).toEqual({
         id: {
           linkable: "api_key_id",
+          entity: "ApiKey",
           primaryKey: "id",
           serviceName: "apiKey",
           field: "apiKey",
         },
         publishable_key_id: {
           field: "apiKey",
+          entity: "ApiKey",
           linkable: "publishable_key_id",
           primaryKey: "publishable_key_id",
           serviceName: "apiKey",

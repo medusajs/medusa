@@ -19,7 +19,7 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import Address from "./address"
+import CustomerAddress from "./address"
 import CustomerGroup from "./customer-group"
 import CustomerGroupCustomer from "./customer-group-customer"
 
@@ -77,10 +77,10 @@ export default class Customer {
   })
   groups = new Collection<Rel<CustomerGroup>>(this)
 
-  @OneToMany(() => Address, (address) => address.customer, {
+  @OneToMany(() => CustomerAddress, (address) => address.customer, {
     cascade: [Cascade.REMOVE],
   })
-  addresses = new Collection<Rel<Address>>(this)
+  addresses = new Collection<Rel<CustomerAddress>>(this)
 
   @Property({
     onCreate: () => new Date(),
