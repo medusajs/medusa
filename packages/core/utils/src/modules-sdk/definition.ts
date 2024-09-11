@@ -49,6 +49,7 @@ export enum Modules {
   CURRENCY = "currency",
   FILE = "file",
   NOTIFICATION = "notification",
+  INDEX = "index",
 }
 
 export enum ModuleRegistrationName {
@@ -75,6 +76,7 @@ export enum ModuleRegistrationName {
   CURRENCY = "currencyModuleService",
   FILE = "fileModuleService",
   NOTIFICATION = "notificationModuleService",
+  INDEX = "indexService",
 }
 
 declare module "@medusajs/types" {
@@ -102,5 +104,6 @@ declare module "@medusajs/types" {
     [ModuleRegistrationName.CURRENCY]: ICurrencyModuleService
     [ModuleRegistrationName.FILE]: IFileModuleService
     [ModuleRegistrationName.NOTIFICATION]: INotificationModuleService
+    [ModuleRegistrationName.INDEX]: any // TODO: define index module interface
   }
 }
