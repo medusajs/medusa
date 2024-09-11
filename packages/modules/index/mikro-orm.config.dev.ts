@@ -1,5 +1,6 @@
 import { defineMikroOrmCliConfig, Modules } from "@medusajs/utils"
+import * as models from "@models"
 
 export default defineMikroOrmCliConfig(Modules.INDEX, {
-  entities: [], // TODO,
+  entities: Object.values(models),
 })
