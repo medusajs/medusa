@@ -636,7 +636,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/returns' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Returns
  * responses:

@@ -98,7 +98,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/refund-reasons' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Refund Reasons
  * responses:
