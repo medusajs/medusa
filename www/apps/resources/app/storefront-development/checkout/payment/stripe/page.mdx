@@ -66,10 +66,10 @@ export const highlights = [
   ["61", "confirmCardPayment", "This function shows the UI to the customer to accept the card payment."],
   ["78", "", "Once the customer enters their card details and submits the form,\nthe Promise resolves and executes this function."],
   ["85", "fetch", "Send a request to the Medusa application\nto complete the cart and place the order."],
-  ["94", `type === "cart"`, "If the `type` returned is `cart`,\nit means an error occurred and the cart wasn't completed."],
-  ["97", `type === "order"`, "If the `type` returned is `order`,\nit means the cart was completed and the order was placed successfully."],
-  ["101", "refreshCart", "Unset and reset the cart."],
-  ["111", "button", "This button triggers the `handlePayment` function when clicked."]
+  ["97", `type === "cart"`, "If the `type` returned is `cart`,\nit means an error occurred and the cart wasn't completed."],
+  ["100", `type === "order"`, "If the `type` returned is `order`,\nit means the cart was completed and the order was placed successfully."],
+  ["104", "refreshCart", "Unset and reset the cart."],
+  ["114", "button", "This button triggers the `handlePayment` function when clicked."]
 ]
 
 ```tsx highlights={highlights}
@@ -161,6 +161,9 @@ const StripeForm = ({
         `http://localhost:9000/store/carts/${cart.id}/complete`,
         {
           credentials: "include",
+          headers: {
+            "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+          },
           method: "POST",
         }
       )

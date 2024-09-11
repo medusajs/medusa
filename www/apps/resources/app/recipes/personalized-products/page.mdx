@@ -28,6 +28,7 @@ For example, if you’re asking customers to enter a message to put in a letter 
 ```bash
 curl -X POST '{backend_url}/store/carts/{id}/line-items' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
   "variant_id": "variant_123",
   "quantity": 1,

@@ -29,7 +29,7 @@ export const fetchHighlights = [
   fetch(`http://localhost:9000/store/products/${id}`, {
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
     },
   })
   .then((res) => res.json())
@@ -75,7 +75,7 @@ export const highlights = [
       fetch(`http://localhost:9000/store/products/${id}`, {
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
         },
       })
       .then((res) => res.json())
@@ -140,7 +140,7 @@ export const handleFetchHighlights = [
   fetch(`http://localhost:9000/store/products?handle=${handle}`, {
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
     },
   })
   .then((res) => res.json())
@@ -190,7 +190,7 @@ export const handleHighlights = [
       fetch(`http://localhost:9000/store/products?handle=${handle}`, {
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
         },
       })
       .then((res) => res.json())

@@ -19,6 +19,7 @@ For example:
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
     },
     body: JSON.stringify({
       first_name,
@@ -40,7 +41,7 @@ For example:
 export const highlights = [
   ["4", "useCustomer", "Use the hook defined in the Customer Context guide."],
   ["33"], ["34"], ["35"], ["36"], ["37"], ["38"], ["39"], ["40"], ["41"], ["42"],
-  ["43"], ["44"], ["45"], ["46"], ["47"], ["48"], ["49"]
+  ["43"], ["44"], ["45"], ["46"], ["47"], ["48"], ["49"], ["50"]
 ]
 
   ```tsx highlights={highlights} collapsibleLines="53-91" expandButtonLabel="Show form"
@@ -81,6 +82,7 @@ export const highlights = [
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
         },
         body: JSON.stringify({
           first_name: firstName,

@@ -99,7 +99,7 @@ export default function Product({ params: { id } }: Params) {
     fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
       credentials: "include",
       headers: {
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
       },
     })
     .then((res) => res.json())

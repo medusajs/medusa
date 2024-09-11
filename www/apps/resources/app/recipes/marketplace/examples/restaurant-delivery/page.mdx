@@ -58,6 +58,10 @@ This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eat
     link: "!docs!#get-started"
   },
   {
+    text: "Publishable API key to send store requests. You can create it in the Medusa Admin or using the Admin API routes",
+    link: "/storefront-development/publishable-api-keys"
+  },
+  {
     text: "Recommended: Use the Redis Workflow Engine Module for improved tracking and storage of workflow executions."
   }
 ]} />
@@ -1967,6 +1971,7 @@ Before using the API route, you must have a cart with at least one product from 
 ```bash
 curl -X POST 'http://localhost:9000/store/carts' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "region_id": "reg_01J66SWSSWFZPQV0GWR2W7P1SB",
     "sales_channel_id": "sc_01J66SWSRK95F2P2KTFHMYR7VC",
@@ -1997,6 +2002,7 @@ curl -X POST 'http://localhost:9000/store/carts' \
 ```bash
 curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/line-items' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "variant_id": "variant_01J66T0VC2S0NB4BNDBCZN8P9F",
     "quantity": 1
@@ -2009,6 +2015,7 @@ curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/
   
 ```bash
 curl 'http://localhost:9000/store/shipping-options?cart_id=cart_01J67JT10B3RCWKT9NFEFYA2XG' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 ```
   
   Make sure to replace the value of the `cart_id` query parameter with the cart’s ID.
@@ -2018,6 +2025,7 @@ curl 'http://localhost:9000/store/shipping-options?cart_id=cart_01J67JT10B3RCWKT
 ```bash
 curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/shipping-methods' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "option_id": "so_01J66SWSVQG7S1BSJKR7PYWH6C",
     "data": {}
@@ -2031,6 +2039,7 @@ curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/
 ```bash
 curl -X POST 'http://localhost:9000/store/payment-collections' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "cart_id": "cart_01J67MS5WPH2CE5R84BENJCGSW"
 }'
@@ -2043,6 +2052,7 @@ curl -X POST 'http://localhost:9000/store/payment-collections' \
 ```bash
 curl -X POST 'http://localhost:9000/store/payment-collections/pay_col_01J67MSK397M3BKD3RDVDMJSRE/payment-sessions' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "provider_id": "pp_system_default"
 }'
@@ -2060,6 +2070,7 @@ Then, send a `POST` request to `/store/deliveries` to create the order delivery:
 ```bash
 curl -X POST 'http://localhost:9000/store/deliveries' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data '{
     "cart_id": "cart_01J67MS5WPH2CE5R84BENJCGSW",
     "restaurant_id": "res_01J66SYN5DSRR0R6QM3A4SYRFZ"
@@ -3240,6 +3251,9 @@ To retrieve the delivery from the Medusa application, replace the first `TODO` w
 // retrieve the delivery
 fetch(`http://localhost:9000/store/deliveries/${id}`, {
   credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+  },
 })
 .then((res) => res.json())
 .then((data) => {

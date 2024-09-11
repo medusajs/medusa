@@ -8,7 +8,7 @@ In this chapter, you'll learn how to validate request body parameters in your cu
 
 ## Example Scenario
 
-Consider you're creating a `POST` API route at `/store/custom`. It accepts two paramters `a` and `b` that are required numbers, and returns their sum.
+Consider you're creating a `POST` API route at `/custom`. It accepts two paramters `a` and `b` that are required numbers, and returns their sum.
 
 The next steps explain how to add validation to this API route, as an example.
 
@@ -20,9 +20,9 @@ Medusa uses [Zod](https://zod.dev/) to validate the body parameters of an incomi
 
 To use Zod to validate your custom schemas, create a `validators.ts` file in any `src/api` subfolder. This file holds Zod schemas for each of your API routes.
 
-For example, create the file `src/api/store/custom/validators.ts` with the following content:
+For example, create the file `src/api/custom/validators.ts` with the following content:
 
-```ts title="src/api/store/custom/validators.ts"
+```ts title="src/api/custom/validators.ts"
 import { z } from "zod"
 
 export const PostStoreCustomSchema = z.object({
@@ -41,7 +41,7 @@ The `PostStoreCustomSchema` variable is a Zod schema that indicates the request 
 
 ## Step 2: Add Validation Middleware
 
-To use this schema for validating the body parameters of requests to `/store/custom`, use the `validateAndTransformBody` middleware provided by `@medusajs/medusa`. It accepts the Zod schema as a parameter.
+To use this schema for validating the body parameters of requests to `/custom`, use the `validateAndTransformBody` middleware provided by `@medusajs/medusa`. It accepts the Zod schema as a parameter.
 
 For example, create the file `src/api/middlewares.ts` with the following content:
 
@@ -50,12 +50,12 @@ import { defineMiddlewares } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
 } from "@medusajs/medusa/dist/api/utils/validate-body"
-import { PostStoreCustomSchema } from "./store/custom/validators"
+import { PostStoreCustomSchema } from "./custom/validators"
 
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/store/custom",
+      matcher: "/custom",
       method: "POST",
       middlewares: [
         validateAndTransformBody(PostStoreCustomSchema),
@@ -65,7 +65,7 @@ export default defineMiddlewares({
 })
 ```
 
-This applies the `validateAndTransformBody` middleware on `POST` requests to `/store/custom`. It uses the `PostStoreCustomSchema` as the validation schema.
+This applies the `validateAndTransformBody` middleware on `POST` requests to `/custom`. It uses the `PostStoreCustomSchema` as the validation schema.
 
 ### How the Validation Works
 
@@ -79,14 +79,14 @@ If a request's body parameters are validated successfully, the middleware sets t
 
 In your API route, consume the validated body using the `validatedBody` property of `MedusaRequest`.
 
-For example, create the file `src/api/store/custom/route.ts` with the following content:
+For example, create the file `src/api/custom/route.ts` with the following content:
 
 export const routeHighlights = [
   ["5", "PostStoreCustomSchemaType", "Infer the request body type from the schema to pass it as a type parameter to `MedusaRequest`."],
   ["14", "", "Access the body parameters using `validatedBody`."]
 ]
 
-```ts title="src/api/store/custom/route.ts" highlights={routeHighlights}
+```ts title="src/api/custom/route.ts" highlights={routeHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { z } from "zod"
 import { PostStoreCustomSchema } from "./validators"
@@ -117,7 +117,7 @@ To pass the request body's type as a type parameter to `MedusaRequest`, use Zod'
 
 ## Test it Out
 
-To test out the validation, send a `POST` request to `/store/custom`. You can try sending incorrect request body parameters.
+To test out the validation, send a `POST` request to `/custom`. You can try sending incorrect request body parameters.
 
 For example, if you omit the `a` parameter, you'll receive a `400` response code with the following response data:
 

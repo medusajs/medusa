@@ -30,6 +30,9 @@ export const fetchHighlights = [
     searchParams.toString()
   }`, {
     credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+    },
   })
   .then((res) => res.json())
   .then(({ addresses, count }) => {
@@ -44,11 +47,11 @@ export const fetchHighlights = [
 export const highlights = [
   ["20", "offset", "Calculate the number of addresses to skip based on the current page and limit."],
   ["27", "fetch", "Send a request to retrieve the addresses."],
-  ["28", "searchParams.toString()", "Pass the pagination parameters in the query."], 
-  ["33", "count", "The total number of addresses in the Medusa application."],
-  ["45", "setHasMorePages", "Set whether there are more pages based on the total count."],
-  ["59", "", "Using only two address fields for simplicity."],
-  ["65", "button", "Show a button to load more addresses if there are more pages."]
+  ["31", "searchParams.toString()", "Pass the pagination parameters in the query."], 
+  ["34", "count", "The total number of addresses in the Medusa application."],
+  ["48", "setHasMorePages", "Set whether there are more pages based on the total count."],
+  ["62", "", "Using only two address fields for simplicity."],
+  ["68", "button", "Show a button to load more addresses if there are more pages."]
 ]
 
   ```tsx highlights={highlights} collapsibleLines="50-77" expandButtonLabel="Show render"
@@ -82,6 +85,9 @@ export const highlights = [
         searchParams.toString()
       }`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        },
       })
       .then((res) => res.json())
       .then(({ addresses: addressesData, count }) => {
@@ -155,6 +161,7 @@ To add a new address for the customer, send a request to the [Add Customer Addre
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
     },
     body: JSON.stringify({
       first_name: firstName,
@@ -183,7 +190,7 @@ export const addHighlights = [
   ["5", "useCustomer", "Use the hook defined in the Customer Context guide."],
   ["28"], ["29"], ["30"], ["31"], ["32"], ["33"], ["34"], ["35"], ["36"], ["37"],
   ["38"], ["39"], ["40"], ["41"], ["42"], ["43"], ["44"], ["45"], ["46"], ["47"],
-  ["48"], ["49"]
+  ["48"], ["49"], ["50"]
 ]
 
   ```tsx highlights={addHighlights} collapsibleLines="53-124" expandButtonLabel="Show form"
@@ -219,6 +226,7 @@ export const addHighlights = [
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
         },
         body: JSON.stringify({
           first_name: firstName,
@@ -337,6 +345,7 @@ To edit an address, send a request to the [Update Customer Address API route](!a
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
       },
       body: JSON.stringify({
         first_name: firstName,
@@ -368,7 +377,7 @@ export const editHighlights = [
   ["19", "address", "Retrieve the address from the customer's `addresses` property."],
   ["60"], ["61"], ["62"], ["63"], ["64"], ["65"], ["66"], ["67"], ["68"], ["69"],
   ["70"], ["71"], ["72"], ["73"], ["74"], ["75"], ["76"], ["77"], ["78"], ["79"],
-  ["80"], ["81"]
+  ["80"], ["81"], ["82"]
 ]
 
   ```tsx highlights={editHighlights} collapsibleLines="90-161" expandButtonLabel="Show form"
@@ -440,6 +449,7 @@ export const editHighlights = [
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
           },
           body: JSON.stringify({
             first_name: firstName,
@@ -557,6 +567,9 @@ fetch(
   }`,
   {
     credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+    },
     method: "DELETE",
   }
 )

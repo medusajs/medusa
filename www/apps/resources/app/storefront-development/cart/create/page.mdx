@@ -30,7 +30,7 @@ export const fetchHighlights = [
     method: "POST",
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -81,7 +81,7 @@ export const highlights = [
         method: "POST",
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

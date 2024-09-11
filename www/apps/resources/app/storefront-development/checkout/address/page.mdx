@@ -37,6 +37,7 @@ For example:
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
     },
     body: JSON.stringify({
       shipping_address: address,
@@ -57,8 +58,8 @@ export const highlights = [
   ["4", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
   ["29", "address", "Assemble the address object to be used for both shipping and billing addresses."],
   ["41"], ["42"], ["43"], ["44"], ["45"], ["46"], ["47"], ["48"],
-  ["49"], ["50"], ["51"], ["52"], ["53"], ["54"], ["55"],
-  ["102", "", "The address's country can only be within the cart's region."]
+  ["49"], ["50"], ["51"], ["52"], ["53"], ["54"], ["55"], ["56"]
+  ["103", "", "The address's country can only be within the cart's region."]
 ]
 
   ```tsx highlights={highlights}
@@ -107,6 +108,7 @@ export const highlights = [
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
         },
         body: JSON.stringify({
           shipping_address: address,

@@ -22,6 +22,9 @@ export const fetchHighlights = [
   ```ts highlights={fetchHighlights}
   fetch(`http://localhost:9000/store/carts/${cartId}`, {
     credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+    },
   })
   .then((res) => res.json())
   .then(({ cart }) => {
@@ -37,8 +40,8 @@ export const highlights = [
   ["16", "cartId", "Retrieve the cart ID from `localStorage`."],
   ["18", "TODO", "You can create the cart and set it here as explained in the Create Cart guide."],
   ["22"], ["23"], ["24"], ["25"], ["26"], ["27"], ["28"],
-  ["31", "formatPrice", "This function was previously created to format product prices. You can re-use the same function."],
-  ["34", "currency_code", "If you reuse the `formatPrice` function, pass the currency code as a parameter."],
+  ["34", "formatPrice", "This function was previously created to format product prices. You can re-use the same function."],
+  ["37", "currency_code", "If you reuse the `formatPrice` function, pass the currency code as a parameter."],
 ]
 
   ```tsx highlights={highlights}
@@ -65,6 +68,9 @@ export const highlights = [
 
       fetch(`http://localhost:9000/store/carts/${cartId}`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        },
       })
       .then((res) => res.json())
       .then(({ cart: dataCart }) => {

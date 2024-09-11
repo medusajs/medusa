@@ -21,8 +21,8 @@ export const highlights = [
   ["32", "", "If a region is set, set its ID in the local storage again in case it changed."],
   ["39", "regionId", "Retrieve the selected region from the `localStorage`."],
   ["42", "fetch", "If no region is selected, retrieve the list of regions from the Medusa application and select the first one."],
-  ["51", "fetch", "If a region is selected, retrieve it from the Medusa application."],
-  ["71", "useRegion", "The hook that child components of the provider use to access the region."]
+  ["54", "fetch", "If a region is selected, retrieve it from the Medusa application."],
+  ["77", "useRegion", "The hook that child components of the provider use to access the region."]
 ]
 
 ```tsx highlights={highlights}
@@ -69,6 +69,9 @@ export const RegionProvider = (
       // retrieve regions and select the first one
       fetch(`http://localhost:9000/store/regions`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        },
       })
       .then((res) => res.json())
       .then(({ regions }) => {
@@ -78,6 +81,9 @@ export const RegionProvider = (
       // retrieve selected region
       fetch(`http://localhost:9000/store/regions/${regionId}`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+        },
       })
       .then((res) => res.json())
       .then(({ region: dataRegion }) => {

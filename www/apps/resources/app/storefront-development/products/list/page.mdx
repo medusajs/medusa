@@ -23,7 +23,7 @@ export const fetchHighlights = [
   fetch(`http://localhost:9000/store/products`, {
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
     },
   })
   .then((res) => res.json())
@@ -62,7 +62,7 @@ export const highlights = [
       fetch(`http://localhost:9000/store/products`, {
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
         },
       })
       .then((res) => res.json())
@@ -146,7 +146,7 @@ export default function Products() {
     fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
       credentials: "include",
       headers: {
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
       },
     })
     .then((res) => res.json())
@@ -212,7 +212,7 @@ const searchParams = new URLSearchParams({
 fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
   credentials: "include",
   headers: {
-    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
   },
 })
 .then((res) => res.json())
