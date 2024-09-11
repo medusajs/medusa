@@ -46,6 +46,8 @@ export class MedusaError extends Error {
   constructor(type: string, message: string, code?: string, ...params: any) {
     super(...params)
 
+    this.name = this.constructor.name
+
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, MedusaError)
     }
