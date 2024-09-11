@@ -1,6 +1,10 @@
 import { ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 jest.setTimeout(50000)
@@ -13,12 +17,18 @@ medusaIntegrationTestRunner({
     describe("POST /store/customers/me/addresses", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
         customerModuleService = appContainer.resolve(
           ModuleRegistrationName.CUSTOMER
         )
+      })
+
+      beforeEach(async () => {
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       it("should create a customer address", async () => {
@@ -33,7 +43,12 @@ medusaIntegrationTestRunner({
             last_name: "Doe",
             address_1: "Test street 1",
           },
-          { headers: { authorization: `Bearer ${jwt}` } }
+          {
+            headers: {
+              authorization: `Bearer ${jwt}`,
+              ...storeHeaders.headers,
+            },
+          }
         )
 
         expect(response.status).toEqual(200)
