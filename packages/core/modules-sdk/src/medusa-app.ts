@@ -103,6 +103,11 @@ export async function loadModules(
       let declaration: any = {}
       let definition: Partial<ModuleDefinition> | undefined = undefined
 
+      // Skip disabled modules
+      if (mod === false) {
+        return
+      }
+
       if (isObject(mod)) {
         const mod_ = mod as unknown as InternalModuleDeclaration
         path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]

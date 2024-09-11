@@ -7,7 +7,7 @@ import {
   Property,
   Ref,
 } from "@mikro-orm/core"
-import Catalog from "./catalog"
+import { Catalog } from "./catalog"
 
 type OptionalRelations =
   | "parent"
@@ -62,5 +62,3 @@ export class CatalogRelation {
   })
   child?: Ref<Catalog>
 }
-
-export default CatalogRelation

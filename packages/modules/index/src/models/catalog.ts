@@ -9,7 +9,7 @@ import {
   PrimaryKeyType,
   Property,
 } from "@mikro-orm/core"
-import CatalogRelation from "./catalog-relation"
+import { CatalogRelation } from "./catalog-relation"
 
 type OptionalRelations = "parents"
 
@@ -43,5 +43,3 @@ export class Catalog {
   })
   parents = new Collection<Catalog>(this)
 }
-
-export default Catalog
