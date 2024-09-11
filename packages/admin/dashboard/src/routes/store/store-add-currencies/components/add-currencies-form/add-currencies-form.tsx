@@ -199,7 +199,7 @@ export const AddCurrenciesForm = ({
             columns={columns}
             layout="fill"
             pagination
-            search
+            search="autofocus"
             prefix={PREFIX}
             orderBy={["code", "name"]}
             isLoading={isLoading}
