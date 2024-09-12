@@ -1,5 +1,6 @@
 import {
   StepResponse,
+  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
@@ -47,6 +48,6 @@ createWorkflow(
         .config({ name: "step_sub_flow_2" })
     )
 
-    return ret
+    return new WorkflowResponse(ret)
   }
 )

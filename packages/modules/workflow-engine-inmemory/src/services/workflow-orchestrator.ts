@@ -11,6 +11,7 @@ import {
   InjectSharedContext,
   MedusaContext,
   MedusaError,
+  TransactionState,
   isString,
 } from "@medusajs/utils"
 import {
@@ -97,16 +98,22 @@ export class WorkflowOrchestratorService {
     WorkflowScheduler.setStorage(inMemoryDistributedTransactionStorage)
   }
 
-  private triggerParentStep(metadata, result, errors) {
+  private async triggerParentStep(transaction, result) {
+    const metadata = transaction.flow.metadata
     const { parentStepIdempotencyKey } = metadata ?? {}
     if (parentStepIdempotencyKey) {
-      if (errors.length > 0) {
-        this.setStepFailure({
+      const hasFailed = [
+        TransactionState.REVERTED,
+        TransactionState.FAILED,
+      ].includes(transaction.flow.state)
+
+      if (hasFailed) {
+        await this.setStepFailure({
           idempotencyKey: parentStepIdempotencyKey,
           stepResponse: result,
         })
       } else {
-        this.setStepSuccess({
+        await this.setStepSuccess({
           idempotencyKey: parentStepIdempotencyKey,
           stepResponse: result,
         })
@@ -181,8 +188,6 @@ export class WorkflowOrchestratorService {
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
 
-      this.triggerParentStep(ret.transaction.flow.metadata, result, errors)
-
       this.notify({
         eventType: "onFinish",
         workflowId,
@@ -190,6 +195,8 @@ export class WorkflowOrchestratorService {
         result,
         errors,
       })
+
+      await this.triggerParentStep(ret.transaction, result)
     }
 
     return { acknowledgement, ...ret }
@@ -282,8 +289,6 @@ export class WorkflowOrchestratorService {
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
 
-      this.triggerParentStep(ret.transaction.flow.metadata, result, errors)
-
       this.notify({
         eventType: "onFinish",
         workflowId,
@@ -291,6 +296,8 @@ export class WorkflowOrchestratorService {
         result,
         errors,
       })
+
+      await this.triggerParentStep(ret.transaction, result)
     }
 
     return ret
@@ -349,8 +356,6 @@ export class WorkflowOrchestratorService {
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
 
-      this.triggerParentStep(ret.transaction.flow.metadata, result, errors)
-
       this.notify({
         eventType: "onFinish",
         workflowId,
@@ -358,6 +363,8 @@ export class WorkflowOrchestratorService {
         result,
         errors,
       })
+
+      await this.triggerParentStep(ret.transaction, result)
     }
 
     return ret

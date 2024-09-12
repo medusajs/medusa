@@ -181,7 +181,7 @@ export function applyStep<
           flagSteps.push(confRef)
         }
 
-        return confRef
+        return confRef as StepFunction<TInvokeInput, TInvokeResultOutput>
       },
       if: (
         input: any,

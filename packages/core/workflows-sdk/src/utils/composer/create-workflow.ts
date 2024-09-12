@@ -5,6 +5,7 @@ import {
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { ulid } from "ulid"
 import { exportWorkflow } from "../../helper"
 import { LocalStepConfig, createStep } from "./create-step"
 import { proxify } from "./helpers/proxy"
@@ -193,7 +194,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
           context: {
             ...sharedContext,
             parentStepIdempotencyKey: stepContext.idempotencyKey,
-            transactionId: stepContext.idempotencyKey,
+            transactionId: ulid(),
           },
         })
 
@@ -214,7 +215,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     )(input) as ReturnType<StepFunction<TData, TResult>>
 
     if (config) {
-      step.config(config)
+      return step.config(config) as ReturnType<StepFunction<TData, TResult>>
     }
 
     return step

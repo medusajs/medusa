@@ -271,34 +271,31 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           ).toBe(true)
         })
 
-        it("should complete an async workflow that returns a StepResponse", async () => {
-          const { transaction, result } = await workflowOrcModule.run(
-            "workflow_async_background",
-            {
+        it("should complete an async workflow that returns a StepResponse", (done) => {
+          const transactionId = "trx_" + Math.random()
+          void workflowOrcModule
+            .run("workflow_async_background", {
               input: {
                 myInput: "123",
               },
-              transactionId: "transaction_1",
+              transactionId,
               throwOnError: true,
-            }
-          )
+            })
+            .then(({ transaction, result }) => {
+              expect(transaction.flow.state).toEqual(
+                TransactionStepState.INVOKING
+              )
+              expect(result).toEqual(undefined)
+            })
 
-          expect(transaction.flow.state).toEqual(TransactionStepState.INVOKING)
-          expect(result).toEqual(undefined)
-
-          await setTimeout(300)
-
-          const trx = await workflowOrcModule.run("workflow_async_background", {
-            input: {
-              myInput: "123",
+          void workflowOrcModule.subscribe({
+            workflowId: "workflow_async_background",
+            transactionId,
+            subscriber: (event) => {
+              if (event.eventType === "onFinish") {
+                done()
+              }
             },
-            transactionId: "transaction_1",
-            throwOnError: true,
-          })
-
-          expect(trx.transaction.flow.state).toEqual(TransactionStepState.DONE)
-          expect(trx.result).toEqual({
-            myInput: "123",
           })
         })
 
