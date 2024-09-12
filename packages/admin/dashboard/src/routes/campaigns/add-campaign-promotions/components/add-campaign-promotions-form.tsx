@@ -142,7 +142,7 @@ export const AddCampaignPromotionsForm = ({
             queryObject={raw}
             layout="fill"
             pagination
-            search
+            search="autofocus"
             noRecords={{
               message: t("campaigns.promotions.add.list.noRecordsMessage"),
             }}

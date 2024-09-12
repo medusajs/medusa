@@ -11,15 +11,14 @@ export const LocationFulfillmentSet: ModuleJoinerConfig = {
   alias: [
     {
       name: ["location_fulfillment_set", "location_fulfillment_sets"],
-      args: {
-        entity: "LinkLocationFulfillmentSet",
-      },
+      entity: "LinkLocationFulfillmentSet",
     },
   ],
   primaryKeys: ["id", "stock_location_id", "fulfillment_set_id"],
   relationships: [
     {
       serviceName: Modules.STOCK_LOCATION,
+      entity: "StockLocation",
       primaryKey: "id",
       foreignKey: "stock_location_id",
       alias: "location",
@@ -29,6 +28,7 @@ export const LocationFulfillmentSet: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.FULFILLMENT,
+      entity: "FulfillmentSet",
       primaryKey: "id",
       foreignKey: "fulfillment_set_id",
       alias: "fulfillment_set",

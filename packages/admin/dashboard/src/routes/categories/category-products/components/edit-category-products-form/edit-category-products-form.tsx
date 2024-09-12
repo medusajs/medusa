@@ -171,7 +171,7 @@ export const EditCategoryProductsForm = ({
             isLoading={isPending}
             layout="fill"
             pagination
-            search
+            search="autofocus"
           />
         </RouteFocusModal.Body>
       </form>

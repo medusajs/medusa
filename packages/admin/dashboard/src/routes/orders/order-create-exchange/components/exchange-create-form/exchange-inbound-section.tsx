@@ -188,17 +188,17 @@ export const ExchangeInboundSection = ({
   }, [previewInboundItems])
 
   useEffect(() => {
-    const inboundShippingMethod = preview.shipping_methods.find((s) => {
-      const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-      return !!action?.return?.id
-    })
+    const inboundShippingMethod = preview.shipping_methods.find((s) =>
+      s.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
+    )
 
     if (inboundShippingMethod) {
       form.setValue(
         "inbound_option_id",
         inboundShippingMethod.shipping_option_id
       )
+    } else {
+      form.setValue("inbound_option_id", null)
     }
   }, [preview.shipping_methods])
 
@@ -246,21 +246,19 @@ export const ExchangeInboundSection = ({
   }
 
   const onShippingOptionChange = async (selectedOptionId: string) => {
-    const inboundShippingMethods = preview.shipping_methods.filter((s) => {
-      const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
-
-      return action && !!action?.return?.id
-    })
+    const inboundShippingMethods = preview.shipping_methods.filter((s) =>
+      s.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
+    )
 
     const promises = inboundShippingMethods
       .filter(Boolean)
       .map((inboundShippingMethod) => {
         const action = inboundShippingMethod.actions?.find(
-          (a) => a.action === "SHIPPING_ADD"
+          (a) => a.action === "SHIPPING_ADD" && !!a.return_id
         )
 
         if (action) {
-          deleteInboundShipping(action.id)
+          return deleteInboundShipping(action.id)
         }
       })
 

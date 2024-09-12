@@ -1,4 +1,4 @@
-import { ApiKeyType, ContainerRegistrationKeys } from "@medusajs/utils"
+import { ApiKeyType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -372,9 +372,7 @@ medusaIntegrationTestRunner({
       it("should detach sales channels from a publishable API key on delete", async () => {
         const salesChannelRes = await api.post(
           `/admin/sales-channels`,
-          {
-            name: "Test Sales Channel",
-          },
+          { name: "Test Sales Channel" },
           adminHeaders
         )
 
@@ -393,9 +391,7 @@ medusaIntegrationTestRunner({
 
         const keyWithChannelsRes = await api.post(
           `/admin/api-keys/${api_key.id}/sales-channels`,
-          {
-            add: [sales_channel.id],
-          },
+          { add: [sales_channel.id] },
           adminHeaders
         )
 
@@ -414,6 +410,21 @@ medusaIntegrationTestRunner({
             name: "Test Sales Channel",
           }),
         ])
+
+        const revoked = await api.post(
+          `/admin/api-keys/${api_key.id}/revoke`,
+          {},
+          adminHeaders
+        )
+
+        expect(revoked.status).toEqual(200)
+        expect(revoked.data.api_key).toEqual(
+          expect.objectContaining({
+            id: api_key.id,
+            revoked_by: expect.stringMatching(/^user_*/),
+          })
+        )
+        expect(revoked.data.api_key.revoked_at).toBeTruthy()
 
         await api.delete(`/admin/api-keys/${api_key.id}`, adminHeaders)
 

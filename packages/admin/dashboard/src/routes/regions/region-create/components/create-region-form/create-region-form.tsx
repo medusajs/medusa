@@ -419,7 +419,7 @@ export const CreateRegionForm = ({
                   pageSize={PAGE_SIZE}
                   orderBy={["name", "code"]}
                   pagination
-                  search
+                  search="autofocus"
                   layout="fill"
                   queryObject={raw}
                   prefix={PREFIX}

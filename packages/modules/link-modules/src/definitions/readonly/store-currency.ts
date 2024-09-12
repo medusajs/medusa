@@ -9,6 +9,7 @@ export const StoreCurrencies: ModuleJoinerConfig = {
       serviceName: Modules.STORE,
       relationship: {
         serviceName: Modules.CURRENCY,
+        entity: "Currency",
         primaryKey: "code",
         foreignKey: "supported_currencies.currency_code",
         alias: "currency",

@@ -121,11 +121,7 @@ export const useCreateOrderFulfillment = (
       sdk.admin.order.createFulfillment(orderId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
-      })
-
-      queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.preview(orderId),
+        queryKey: ordersQueryKeys.all,
       })
 
       queryClient.invalidateQueries({
@@ -148,7 +144,7 @@ export const useCancelOrderFulfillment = (
       sdk.admin.order.cancelFulfillment(orderId, fulfillmentId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
+        queryKey: ordersQueryKeys.all,
       })
 
       queryClient.invalidateQueries({
@@ -175,7 +171,7 @@ export const useCreateOrderShipment = (
       sdk.admin.order.createShipment(orderId, fulfillmentId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
+        queryKey: ordersQueryKeys.all,
       })
 
       queryClient.invalidateQueries({

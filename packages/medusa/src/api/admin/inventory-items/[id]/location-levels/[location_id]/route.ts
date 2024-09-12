@@ -9,9 +9,9 @@ import {
   deleteInventoryLevelsWorkflow,
   updateInventoryLevelsWorkflow,
 } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import { refetchInventoryItem } from "../../../helpers"
 import { AdminUpdateInventoryLocationLevelType } from "../../../validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const DELETE = async (
   req: MedusaRequest,
@@ -45,7 +45,7 @@ export const DELETE = async (
 
   await deleteInventoryLevelWorkflow.run({
     input: {
-      ids: [levelId],
+      id: [levelId],
     },
   })
 

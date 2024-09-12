@@ -24,6 +24,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
           currency: {
             code: {
               linkable: "currency_code",
+              entity: "Currency",
               primaryKey: "code",
               serviceName: "currency",
               field: "currency",

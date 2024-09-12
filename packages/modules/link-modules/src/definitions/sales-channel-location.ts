@@ -11,15 +11,14 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
   alias: [
     {
       name: ["sales_channel_location", "sales_channel_locations"],
-      args: {
-        entity: "LinkSalesChannelLocation",
-      },
+      entity: "LinkSalesChannelLocation",
     },
   ],
   primaryKeys: ["id", "sales_channel_id", "stock_location_id"],
   relationships: [
     {
       serviceName: Modules.SALES_CHANNEL,
+      entity: "SalesChannel",
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
@@ -29,6 +28,7 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.STOCK_LOCATION,
+      entity: "StockLocation",
       primaryKey: "id",
       foreignKey: "stock_location_id",
       alias: "location",

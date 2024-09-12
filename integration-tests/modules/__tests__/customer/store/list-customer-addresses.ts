@@ -1,6 +1,10 @@
 import { ICustomerModuleService } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
@@ -13,6 +17,7 @@ medusaIntegrationTestRunner({
     describe("GET /store/customers/me/addresses", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -21,12 +26,18 @@ medusaIntegrationTestRunner({
         )
       })
 
+      beforeEach(async () => {
+        appContainer = getContainer()
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
+      })
+
       it("should get all customer addresses and its count", async () => {
         const { customer, jwt } = await createAuthenticatedCustomer(
           appContainer
         )
 
-        await customerModuleService.createAddresses([
+        await customerModuleService.createCustomerAddresses([
           {
             first_name: "Test",
             last_name: "Test",
@@ -60,7 +71,7 @@ medusaIntegrationTestRunner({
         })
 
         const response = await api.get(`/store/customers/me/addresses`, {
-          headers: { authorization: `Bearer ${jwt}` },
+          headers: { authorization: `Bearer ${jwt}`, ...storeHeaders.headers },
         })
 
         expect(response.status).toEqual(200)
