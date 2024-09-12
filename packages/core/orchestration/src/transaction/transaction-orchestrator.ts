@@ -783,10 +783,6 @@ export class TransactionOrchestrator extends EventEmitter {
               })
           )
         } else {
-          console.log(flow.modelId, "BEGIN EXECUTION", {
-            metadata: flow.metadata,
-          })
-
           execution.push(
             transaction.saveCheckpoint().then(() => {
               transaction
