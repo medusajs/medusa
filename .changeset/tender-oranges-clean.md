@@ -1,5 +1,5 @@
 ---
-"@medusajs/utils": minor
+"@medusajs/utils": patch
 ---
 
-add an identifier for MedusaError
+feat(utils): adds an identifier for MedusaError
