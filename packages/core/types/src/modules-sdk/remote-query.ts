@@ -113,3 +113,49 @@ export type RemoteQueryFunction = {
     options?: RemoteJoinerOptions
   ) => Promise<any>
 }
+
+export interface Query {
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  query<const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  query<const TConfig extends RemoteQueryObjectFromStringResult<any>>(
+    queryConfig: TConfig,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param query
+   * @param options
+   */
+  query(query: RemoteJoinerQuery, options?: RemoteJoinerOptions): Promise<any>
+
+  /**
+   * Graph function uses the remoteQuery under the hood and
+   * returns a result set
+   */
+  graph: QueryGraphFunction
+
+  /**
+   * Query wrapper to provide specific GraphQL like API around remoteQuery.query
+   * @param query
+   * @param variables
+   * @param options
+   */
+  gql: (
+    query: string,
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
+  ) => Promise<any>
+}
