@@ -6,8 +6,9 @@ export const waitSubscribersExecution = (
   eventName: string,
   eventBus: IEventBusModuleService
 ) => {
-  const subscriberPromises: Promise<any>[] = []
   const eventEmitter: EventEmitter = (eventBus as any).eventEmitter_
+  const subscriberPromises: Promise<any>[] = []
+  const originalListeners = eventEmitter.listeners(eventName)
 
   // If there are no existing listeners, resolve once the event happens. Otherwise, wrap the existing subscribers in a promise and resolve once they are done.
   if (!eventEmitter.listeners(eventName).length) {
@@ -38,5 +39,10 @@ export const waitSubscribersExecution = (
     })
   }
 
-  return Promise.all(subscriberPromises)
+  return Promise.all(subscriberPromises).finally(() => {
+    eventEmitter.removeAllListeners(eventName)
+    originalListeners.forEach((listener) => {
+      eventEmitter.on(eventName, listener as (...args: any) => void)
+    })
+  })
 }
