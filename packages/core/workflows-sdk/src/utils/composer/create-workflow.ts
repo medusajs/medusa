@@ -192,24 +192,24 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
         const { container, ...sharedContext } = stepContext
         sharedContext.parentStepIdempotencyKey = stepContext.idempotencyKey
 
-        console.log("RUN AS STEP ****", name, context.isAsync, {
-          parentKey: stepContext.idempotencyKey,
-        })
-
-        const transaction = await workflow.run({
+        const { result, transaction } = await workflow.run({
           input: stepInput as any,
           container,
           context: sharedContext,
         })
 
-        return new StepResponse(transaction.result, transaction)
+        if (transaction.hasFinished()) {
+          return new StepResponse(result, transaction)
+        }
+
+        return
       },
       async (transaction, { container }) => {
         if (!transaction) {
           return
         }
 
-        await workflow(container).cancel(transaction)
+        await workflow(container).cancel({ transaction })
       }
     )(input) as ReturnType<StepFunction<TData, TResult>>
 
