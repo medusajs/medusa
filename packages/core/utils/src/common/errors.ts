@@ -29,7 +29,6 @@ export const MedusaErrorCodes = {
  * @extends Error
  */
 export class MedusaError extends Error {
-  // we do not use Symbol because it is not serializable
   __isMedusaError = true
 
   public type: string
@@ -38,10 +37,6 @@ export class MedusaError extends Error {
   public date: Date
   public static Types = MedusaErrorTypes
   public static Codes = MedusaErrorCodes
-
-  static isMedusaError(error: any): error is MedusaError {
-    return !!error.__isMedusaError
-  }
 
   /**
    * Creates a standardized error to be used across Medusa project.
@@ -61,5 +56,12 @@ export class MedusaError extends Error {
     this.code = code
     this.message = message
     this.date = new Date()
+  }
+
+  /**
+   * Checks the object for the MedusaError type.
+   */
+  static isMedusaError(error: any): error is MedusaError {
+    return !!error.__isMedusaError
   }
 }

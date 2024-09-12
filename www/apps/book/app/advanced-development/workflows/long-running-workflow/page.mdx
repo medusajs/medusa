@@ -18,7 +18,7 @@ A long-running workflow is a workflow that continues its execution in the backgr
 
 ## Configure Long-Running Workflows
 
-A workflow is considered long-running if at least one step has its `async` configuration set to `true`.
+A workflow is considered long-running if at least one step has its `async` configuration set to `true` and doesn't return a step response.
 
 For example, consider the following workflow and steps:
 
@@ -40,7 +40,7 @@ const step2 = createStep(
     async: true,
   },
   async () => {
-  return new StepResponse({})
+    console.log("Waiting to be successful...")
   }
 )
 
@@ -63,21 +63,211 @@ const myWorkflow = createWorkflow(
 export default myWorkflow
 ```
 
-The second step has in its configuration object `async` set to true. This indicates that this step is an asynchronous step.
-
-<Note title="Important">
-
-An asynchronous step must return for the execution to continue.
-
-</Note>
+The second step has in its configuration object `async` set to `true` and it doesn't return a step response. This indicates that this step is an asynchronous step.
 
 So, when you execute the `hello-world` workflow, it continues its execution in the background once it reaches the second step.
 
 ---
 
+## Change Step Status
+
+Once the workflow's execution reaches an async step, it'll wait in the background for the step to succeed or fail before it moves to the rest of the steps.
+
+To change fail or succeed a step, use the workflow engine's main service that is registered in the Medusa Container under the `ModuleRegistrationName.WORKFLOW_ENGINE` (or `workflowsModuleService`) key.
+
+### Retrieve Transaction ID
+
+Before changing the status of a workflow execution's async step, you must have the execution's transaction ID.
+
+When you execute the workflow, the object returned has a `transaction` property, which is an object that holds the details of the workflow execution's transaction. Use its `transactionId` to later change async steps' statuses:
+
+```ts
+const { transaction } = await myWorkflow(req.scope)
+  .run()
+
+// use transaction.transactionId later
+```
+
+### Change Step Status to Successful
+
+For example, the following workflow step (used in a different workflow) resolves the workflow engine's main service and sets `step-2` of the previous workflow as successful:
+
+export const successStatusHighlights = [
+  ["17", "transactionId", "Receive the workflow execution's transaction ID as an input to the step."],
+  ["20", "resolve", "Resolve the workflow engine's main service."],
+  ["24", "setStepSuccess", "Change the step's status to successful."],
+  ["28", "stepId", "The ID of the step as passed to `createStep`'s first parameter when it was created."],
+  ["29", "workflowId", "The ID of the workflow as passed to `createWorkflow`'s first parameter when it was created."],
+  ["31", "stepResponse", "The response returned by the step, since an `async` step can't return a response in its definition."]
+]
+
+```ts highlights={successStatusHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import {
+  ModuleRegistrationName,
+  TransactionHandlerType,
+} from "@medusajs/utils";
+import { 
+  StepResponse, 
+  createStep
+} from "@medusajs/workflows-sdk";
+
+type SetStepSuccessStepInput = {
+  transactionId: string
+};
+
+export const setStepSuccessStep = createStep(
+  "set-step-success-step",
+  async function (
+    { transactionId }: SetStepSuccessStepInput,
+    { container }
+  ) {
+    const workflowEngineService = container.resolve(
+      ModuleRegistrationName.WORKFLOW_ENGINE
+    );
+
+    await workflowEngineService.setStepSuccess({
+      idempotencyKey: {
+        action: TransactionHandlerType.INVOKE,
+        transactionId,
+        stepId: "step-2",
+        workflowId: "hello-world",
+      },
+      stepResponse: new StepResponse("Done!"),
+      options: {
+        container,
+      },
+    });
+  }
+);
+```
+
+You use this step in another workflow that changes the long-running workflow's status.
+
+After change the async step's status to successful, the workflow execution continues to the next step.
+
+The `setStepSuccess` method of the workflow engine's main service accepts as a parameter an object having the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "idempotencyKey",
+      type: "`object`",
+      description: "The details of the workflow execution.",
+      optional: false,
+      children: [
+        {
+          name: "action",
+          type: "`invoke` | `compensate`",
+          description: "If the step's compensation function is running, use `compensate`. Otherwise, use `invoke`.",
+          optional: false
+        },
+        {
+          name: "transactionId",
+          type: "`string`",
+          description: "The ID of the workflow execution's transaction.",
+          optional: false
+        },
+        {
+          name: "stepId",
+          type: "`string`",
+          description: "The ID of the step to change its status. This is the first parameter passed to `createStep` when creating the step.",
+          optional: false
+        },
+        {
+          name: "workflowId",
+          type: "`string`",
+          description: "The ID of the workflow. This is the first parameter passed to `createWorkflow` when creating the workflow.",
+          optional: false
+        }
+      ]
+    },
+    {
+      name: "stepResponse",
+      type: "`StepResponse`",
+      description: "Set the response of the step. This is similar to the response you return in a step's definition, but since the `async` step doesn't have a response, you set its response when changing its status.",
+      optional: false
+    },
+    {
+      name: "options",
+      type: "`Record<string, any>`",
+      description: "Options to pass to the step.",
+      optional: true,
+      children: [
+        {
+          name: "container",
+          type: "`MedusaContainer`",
+          description: "An instance of the Medusa Container",
+          optional: true
+        }
+      ]
+    }
+  ]}
+/>
+
+### Change Step Status to Failed
+
+The workflow engine's main service also has a `setStepFailure` method that changes a step's status to failed. It accepts the same parameter as `setStepSuccess`.
+
+For example:
+
+export const failureStatusHighlights = [
+  ["17", "transactionId", "Receive the workflow execution's transaction ID as an input to the step."],
+  ["20", "resolve", "Resolve the workflow engine's main service."],
+  ["24", "setStepSuccess", "Change the step's status to successful."],
+  ["28", "stepId", "The ID of the step as passed to `createStep`'s first parameter when it was created."],
+  ["29", "workflowId", "The ID of the workflow as passed to `createWorkflow`'s first parameter when it was created."],
+  ["31", "stepResponse", "The response returned by the step, since an `async` step can't return a response in its definition."]
+]
+
+```ts highlights={failureStatusHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import {
+  ModuleRegistrationName,
+  TransactionHandlerType,
+} from "@medusajs/utils";
+import { 
+  StepResponse, 
+  createStep
+} from "@medusajs/workflows-sdk";
+
+type SetStepFailureStepInput = {
+  transactionId: string
+};
+
+export const setStepFailureStep = createStep(
+  "set-step-success-step",
+  async function (
+    { transactionId }: SetStepFailureStepInput,
+    { container }
+  ) {
+    const workflowEngineService = container.resolve(
+      ModuleRegistrationName.WORKFLOW_ENGINE
+    );
+
+    await workflowEngineService.setStepFailure({
+      idempotencyKey: {
+        action: TransactionHandlerType.INVOKE,
+        transactionId,
+        stepId: "step-2",
+        workflowId: "hello-world",
+      },
+      stepResponse: new StepResponse("Failed!"),
+      options: {
+        container,
+      },
+    });
+  }
+);
+```
+
+You use this step in another workflow that changes the long-running workflow's status.
+
+After change the async step's status to failed, the workflow execution fails and the compensation functions of previous steps are executed.
+
+---
+
 ## Access Long-Running Workflow Status and Result
 
-To access the status and result of a long-running workflow, use the workflow engine registered in the Medusa Container. The workflow engine provides methods to access and subscribe to workflow executions.
+To access the status and result of a long-running workflow, use the workflow engine's main service' `subscribe` and `unsubscribe` methods.
 
 For example:
 
@@ -97,7 +287,7 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const { transaction, result } = await myWorkflow(req.scope).run()
 
-  const workflowEngineModuleService = req.scope.resolve<
+  const workflowEngineService = req.scope.resolve<
     IWorkflowEngineService
   >(
     ModuleRegistrationName.WORKFLOW_ENGINE
@@ -109,13 +299,13 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     subscriberId: "hello-world-subscriber",
   }
 
-  await workflowEngineModuleService.subscribe({
+  await workflowEngineService.subscribe({
     ...subscriptionOptions,
     subscriber: async (data) => {
       if (data.eventType === "onFinish") {
         console.log("Finished execution", data.result)
         // unsubscribe
-        await workflowEngineModuleService.unsubscribe({
+        await workflowEngineService.unsubscribe({
           ...subscriptionOptions,
           subscriberOrId: subscriptionOptions.subscriberId,
         })

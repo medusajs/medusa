@@ -1,10 +1,13 @@
 import { AdditionalData, ProductTypes } from "@medusajs/types"
+import { ProductTagWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { updateProductTagsStep } from "../steps"
 
 export type UpdateProductTagsWorkflowInput = {
@@ -24,6 +27,25 @@ export const updateProductTagsWorkflow = createWorkflow(
       product_tags: updatedProductTags,
       additional_data: input.additional_data,
     })
+
+    const tagIdEvents = transform(
+      { updatedProductTags },
+      ({ updatedProductTags }) => {
+        const arr = Array.isArray(updatedProductTags)
+          ? updatedProductTags
+          : [updatedProductTags]
+
+        return arr?.map((v) => {
+          return { id: v.id }
+        })
+      }
+    )
+
+    emitEventStep({
+      eventName: ProductTagWorkflowEvents.UPDATED,
+      data: tagIdEvents,
+    })
+
     return new WorkflowResponse(updatedProductTags, {
       hooks: [productTagsUpdated],
     })

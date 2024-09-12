@@ -2,6 +2,7 @@ import {
   removeAddItemClaimActionWorkflow,
   updateClaimAddItemWorkflow,
 } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -11,7 +12,6 @@ import {
   MedusaResponse,
 } from "../../../../../../../types/routing"
 import { AdminPostClaimsItemsActionReqSchemaType } from "../../../../validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostClaimsItemsActionReqSchemaType>,
@@ -55,7 +55,6 @@ export const DELETE = async (
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const { id, action_id } = req.params
-
   const { result: orderPreview } = await removeAddItemClaimActionWorkflow(
     req.scope
   ).run({

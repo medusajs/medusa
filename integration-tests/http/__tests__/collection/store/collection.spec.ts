@@ -1,7 +1,9 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
-  createAdminUser,
   adminHeaders,
+  createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
@@ -12,9 +14,12 @@ medusaIntegrationTestRunner({
     let baseCollection
     let baseCollection1
     let baseCollection2
+    let storeHeaders
 
     beforeEach(async () => {
       const container = getContainer()
+      const publishableKey = await generatePublishableKey(container)
+      storeHeaders = generateStoreHeaders({ publishableKey })
       await createAdminUser(dbConnection, adminHeaders, container)
 
       baseCollection = (
@@ -46,7 +51,8 @@ medusaIntegrationTestRunner({
       describe("/store/collections/:id", () => {
         it("gets collection", async () => {
           const response = await api.get(
-            `/store/collections/${baseCollection.id}`
+            `/store/collections/${baseCollection.id}`,
+            storeHeaders
           )
 
           expect(response.data.collection).toEqual(
@@ -61,7 +67,7 @@ medusaIntegrationTestRunner({
 
       describe("/store/collections", () => {
         it("lists collections", async () => {
-          const response = await api.get("/store/collections")
+          const response = await api.get("/store/collections", storeHeaders)
 
           expect(response.data).toEqual({
             collections: [

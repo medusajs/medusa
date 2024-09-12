@@ -1,4 +1,4 @@
-import { BaseFilterable } from "../../dal"
+import { BaseFilterable, OperatorMap } from "../../dal"
 
 /**
  * An API key's type.
@@ -90,4 +90,6 @@ export interface FilterableApiKeyProps
    * Filter the API keys by their type.
    */
   type?: ApiKeyType
+
+  revoked_at?: OperatorMap<Date | null>
 }

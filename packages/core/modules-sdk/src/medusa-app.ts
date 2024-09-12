@@ -358,9 +358,11 @@ async function MedusaApp_({
   )
 
   if (loaderOnly) {
-    async function query(...args: Parameters<RemoteQueryFunction>) {
+    async function query(...args: any[]) {
       throw new Error("Querying not allowed in loaderOnly mode")
     }
+    query.graph = query
+    query.gql = query
 
     return {
       onApplicationShutdown,
@@ -368,7 +370,7 @@ async function MedusaApp_({
       onApplicationStart,
       modules: allModules,
       link: undefined,
-      query: query as RemoteQueryFunction,
+      query: query as unknown as RemoteQueryFunction,
       runMigrations: async () => {
         throw new Error("Migrations not allowed in loaderOnly mode")
       },

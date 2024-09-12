@@ -86,12 +86,10 @@ export const DELETE = async (
     entryPoint: "return",
     variables: {
       id: exchange.return_id,
-      filters: {
-        ...req.filterableFields,
-      },
     },
-    fields: req.remoteQueryConfig.fields,
+    fields: defaultAdminDetailsReturnFields,
   })
+
   const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({

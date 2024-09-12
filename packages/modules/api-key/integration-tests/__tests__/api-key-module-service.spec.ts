@@ -261,6 +261,12 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
             createPublishableKeyFixture,
             createSecretKeyFixture,
           ])
+
+          await service.revoke(
+            { id: [createdApiKeys[0].id, createdApiKeys[1].id] },
+            { revoked_by: "test_user" }
+          )
+
           await service.deleteApiKeys([
             createdApiKeys[0].id,
             createdApiKeys[1].id,
@@ -268,6 +274,25 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
 
           const apiKeysInDatabase = await service.listApiKeys()
           expect(apiKeysInDatabase).toHaveLength(0)
+        })
+
+        it("should throw when trying to delete unrevoked api keys", async function () {
+          const createdApiKeys = await service.createApiKeys([
+            createPublishableKeyFixture,
+            createSecretKeyFixture,
+          ])
+
+          const error = await service
+            .deleteApiKeys([createdApiKeys[0].id, createdApiKeys[1].id])
+            .catch((e) => e)
+
+          expect(error.type).toEqual("not_allowed")
+          expect(error.message).toContain(
+            `Cannot delete api keys that are not revoked - `
+          )
+
+          const apiKeysInDatabase = await service.listApiKeys()
+          expect(apiKeysInDatabase).toHaveLength(2)
         })
       })
 

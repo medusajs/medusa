@@ -1,9 +1,12 @@
+import { ProductTypeWorkflowEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
+  transform,
 } from "@medusajs/workflows-sdk"
+import { emitEventStep } from "../../common/steps/emit-event"
 import { deleteProductTypesStep } from "../steps"
 
 export type DeleteProductTypesWorkflowInput = { ids: string[] }
@@ -18,6 +21,17 @@ export const deleteProductTypesWorkflow = createWorkflow(
     const deletedProductTypes = deleteProductTypesStep(input.ids)
     const productTypesDeleted = createHook("productTypesDeleted", {
       ids: input.ids,
+    })
+
+    const typeIdEvents = transform({ input }, ({ input }) => {
+      return input.ids?.map((id) => {
+        return { id }
+      })
+    })
+
+    emitEventStep({
+      eventName: ProductTypeWorkflowEvents.DELETED,
+      data: typeIdEvents,
     })
 
     return new WorkflowResponse(deletedProductTypes, {
