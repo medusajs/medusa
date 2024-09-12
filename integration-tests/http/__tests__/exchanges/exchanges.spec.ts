@@ -17,6 +17,7 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     let order, order2
     let returnShippingOption
+    let outboundShippingOption
     let shippingProfile
     let fulfillmentSet
     let returnReason
@@ -345,6 +346,44 @@ medusaIntegrationTestRunner({
         ],
       }
 
+      const outboundShippingOptionPayload = {
+        name: "Oubound shipping",
+        service_zone_id: fulfillmentSet.service_zones[0].id,
+        shipping_profile_id: shippingProfile.id,
+        provider_id: shippingProviderId,
+        price_type: "flat",
+        type: {
+          label: "Test type",
+          description: "Test description",
+          code: "test-code",
+        },
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 20,
+          },
+        ],
+        rules: [
+          {
+            operator: RuleOperator.EQ,
+            attribute: "is_return",
+            value: "false",
+          },
+          {
+            operator: RuleOperator.EQ,
+            attribute: "enabled_in_store",
+            value: "true",
+          },
+        ],
+      }
+      outboundShippingOption = (
+        await api.post(
+          "/admin/shipping-options",
+          outboundShippingOptionPayload,
+          adminHeaders
+        )
+      ).data.shipping_option
+
       returnShippingOption = (
         await api.post(
           "/admin/shipping-options",
@@ -540,6 +579,165 @@ medusaIntegrationTestRunner({
           )
         ).data.exchanges
         expect(result[0].canceled_at).toBeDefined()
+      })
+
+      describe("with inbound and outbound items", () => {
+        let exchange
+        let orderPreview
+
+        beforeEach(async () => {
+          exchange = (
+            await api.post(
+              "/admin/exchanges",
+              {
+                order_id: order.id,
+                description: "Test",
+              },
+              adminHeaders
+            )
+          ).data.exchange
+
+          const item = order.items[0]
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/items`,
+            {
+              items: [
+                {
+                  id: item.id,
+                  reason_id: returnReason.id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/inbound/shipping-method`,
+            { shipping_option_id: returnShippingOption.id },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/items`,
+            {
+              items: [
+                {
+                  variant_id: productExtra.variants[0].id,
+                  quantity: 2,
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/exchanges/${exchange.id}/outbound/shipping-method`,
+            { shipping_option_id: outboundShippingOption.id },
+            adminHeaders
+          )
+
+          orderPreview = (
+            await api.get(`/admin/orders/${order.id}/preview`, adminHeaders)
+          ).data.order
+        })
+
+        it("should remove outbound shipping method when outbound items are completely removed", async () => {
+          orderPreview = (
+            await api.get(`/admin/orders/${order.id}/preview`, adminHeaders)
+          ).data.order
+
+          const exchangeItems = orderPreview.items.filter(
+            (item) =>
+              !!item.actions?.find((action) => action.action === "ITEM_ADD")
+          )
+
+          const exchangeShippingMethods = orderPreview.shipping_methods.filter(
+            (item) =>
+              !!item.actions?.find(
+                (action) =>
+                  action.action === "SHIPPING_ADD" && !action.return_id
+              )
+          )
+
+          expect(exchangeItems).toHaveLength(1)
+          expect(exchangeShippingMethods).toHaveLength(1)
+
+          await api.delete(
+            `/admin/exchanges/${exchange.id}/outbound/items/${exchangeItems[0].actions[0].id}`,
+            adminHeaders
+          )
+
+          orderPreview = (
+            await api.get(`/admin/orders/${order.id}/preview`, adminHeaders)
+          ).data.order
+
+          const updatedExchangeItems = orderPreview.items.filter(
+            (item) =>
+              !!item.actions?.find((action) => action.action === "ITEM_ADD")
+          )
+
+          const updatedClaimShippingMethods =
+            orderPreview.shipping_methods.filter(
+              (item) =>
+                !!item.actions?.find(
+                  (action) =>
+                    action.action === "SHIPPING_ADD" && !action.return_id
+                )
+            )
+
+          expect(updatedExchangeItems).toHaveLength(0)
+          expect(updatedClaimShippingMethods).toHaveLength(0)
+        })
+
+        it("should remove inbound shipping method when inbound items are completely removed", async () => {
+          orderPreview = (
+            await api.get(`/admin/orders/${order.id}/preview`, adminHeaders)
+          ).data.order
+
+          const exchangeItems = orderPreview.items.filter(
+            (item) =>
+              !!item.actions?.find((action) => action.action === "RETURN_ITEM")
+          )
+
+          const exchangeShippingMethods = orderPreview.shipping_methods.filter(
+            (item) =>
+              !!item.actions?.find(
+                (action) =>
+                  action.action === "SHIPPING_ADD" && !!action.return_id
+              )
+          )
+
+          expect(exchangeItems).toHaveLength(1)
+          expect(exchangeShippingMethods).toHaveLength(1)
+
+          await api.delete(
+            `/admin/exchanges/${exchange.id}/inbound/items/${exchangeItems[0].actions[0].id}`,
+            adminHeaders
+          )
+
+          orderPreview = (
+            await api.get(`/admin/orders/${order.id}/preview`, adminHeaders)
+          ).data.order
+
+          const updatedExchangeItems = orderPreview.items.filter(
+            (item) =>
+              !!item.actions?.find((action) => action.action === "RETURN_ITEM")
+          )
+
+          const updatedClaimShippingMethods =
+            orderPreview.shipping_methods.filter(
+              (item) =>
+                !!item.actions?.find(
+                  (action) =>
+                    action.action === "SHIPPING_ADD" && !!action.return_id
+                )
+            )
+
+          expect(updatedExchangeItems).toHaveLength(0)
+          expect(updatedClaimShippingMethods).toHaveLength(0)
+        })
       })
     })
   },
