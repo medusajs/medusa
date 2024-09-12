@@ -52,9 +52,9 @@ export function instrumentHttpLayer() {
    * OpenTelemetry
    */
   RoutesLoader.instrument.route((handler) => {
-    const traceName = handler.name
-      ? snakeCase(handler.name)
-      : `anonymous route handler`
+    const traceName = `route: ${
+      handler.name ? snakeCase(handler.name) : `anonymous`
+    }`
 
     return async (req, res) => {
       if (shouldExcludeResource(req.originalUrl)) {
@@ -76,9 +76,9 @@ export function instrumentHttpLayer() {
    * OpenTelemetry
    */
   RoutesLoader.instrument.middleware((handler) => {
-    const traceName = handler.name
-      ? snakeCase(handler.name)
-      : `anonymous middleware handler`
+    const traceName = `middleware: ${
+      handler.name ? snakeCase(handler.name) : `anonymous`
+    }`
 
     return async (req, res, next) => {
       if (shouldExcludeResource(req.originalUrl)) {
