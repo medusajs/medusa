@@ -179,10 +179,6 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     input: TData
     config?: LocalStepConfig
   }): ReturnType<StepFunction<TData, TResult>> => {
-    // TODO: Async sub workflow is not supported yet
-    // Info: Once the export workflow can fire the execution through the engine if loaded, the async workflow can be executed,
-    // the step would inherit the async configuration and subscribe to the onFinish event of the sub worklow and mark itself as success or failure
-
     const step = createStep(
       {
         name: `${name}-as-step`,
@@ -191,6 +187,9 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
       async (stepInput: TData, stepContext) => {
         const { container, ...sharedContext } = stepContext
         sharedContext.parentStepIdempotencyKey = stepContext.idempotencyKey
+        sharedContext.transactionId = Buffer.from(
+          stepContext.transactionId + ":" + stepContext.idempotencyKey
+        ).toString("base64")
 
         const { result, transaction } = await workflow.run({
           input: stepInput as any,
