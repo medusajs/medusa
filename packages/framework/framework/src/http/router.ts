@@ -25,7 +25,7 @@ import {
   RouteHandler,
   RouteVerb,
 } from "./types"
-import { authenticate, errorHandler } from "./middlewares"
+import { authenticate, AuthType, errorHandler } from "./middlewares"
 import { configManager } from "../config"
 import { logger } from "../logger"
 
@@ -588,6 +588,27 @@ class ApiRoutesLoader {
   }
 
   /**
+   * Applies the route middleware on a route. Encapsulates the logic
+   * needed to pass the middleware via the trace calls
+   */
+  applyAuthMiddleware(
+    route: string,
+    actorType: string | string[],
+    authType: AuthType | AuthType[],
+    options?: { allowUnauthenticated?: boolean; allowUnregistered?: boolean }
+  ) {
+    let authenticateMiddleware = authenticate(actorType, authType, options)
+    if (ApiRoutesLoader.traceMiddleware) {
+      authenticateMiddleware = ApiRoutesLoader.traceMiddleware(
+        authenticateMiddleware,
+        { route: route }
+      )
+    }
+
+    this.#router.use(route, authenticateMiddleware)
+  }
+
+  /**
    * Apply the route specific middlewares to the router,
    * this includes the cors, authentication and
    * body parsing. These are applied first to ensure
@@ -656,39 +677,22 @@ class ApiRoutesLoader {
 
       // We only apply the auth middleware to store routes to populate the auth context. For actual authentication, users can just reapply the middleware.
       if (!config.optedOutOfAuth && config.routeType === "store") {
-        let authenticateMiddleware = authenticate(
+        this.applyAuthMiddleware(
+          descriptor.route,
           "customer",
           ["bearer", "session"],
           {
             allowUnauthenticated: true,
           }
         )
-
-        if (ApiRoutesLoader.traceMiddleware) {
-          authenticateMiddleware = ApiRoutesLoader.traceMiddleware(
-            authenticateMiddleware,
-            { route: descriptor.route }
-          )
-        }
-        this.#router.use(descriptor.route, authenticateMiddleware)
       }
 
       if (!config.optedOutOfAuth && config.routeType === "admin") {
-        let authenticateMiddleware = authenticate("user", [
+        this.applyAuthMiddleware(descriptor.route, "user", [
           "bearer",
           "session",
           "api-key",
         ])
-
-        if (ApiRoutesLoader.traceMiddleware) {
-          authenticateMiddleware = ApiRoutesLoader.traceMiddleware(
-            authenticateMiddleware,
-            { route: descriptor.route }
-          )
-        }
-
-        // We probably don't want to allow access to all endpoints using an api key, but it will do until we revamp our routing.
-        this.#router.use(descriptor.route, authenticateMiddleware)
       }
 
       for (const route of routes) {
@@ -910,7 +914,16 @@ export class RoutesLoader {
   readonly #sourceDir: string | string[]
 
   static instrument: {
+    /**
+     * Instrument middleware function calls by wrapping the original
+     * middleware handler inside a custom implementation
+     */
     middleware: (callback: (typeof ApiRoutesLoader)["traceMiddleware"]) => void
+
+    /**
+     * Instrument route handler function calls by wrapping the original
+     * middleware handler inside a custom implementation
+     */
     route: (callback: (typeof ApiRoutesLoader)["traceRoute"]) => void
   } = {
     middleware(callback) {
