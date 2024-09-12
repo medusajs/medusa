@@ -15,16 +15,15 @@ import {
   HTTP_METHODS,
   MedusaRequest,
   MedusaResponse,
+  MiddlewareFunction,
   MiddlewareRoute,
   MiddlewaresConfig,
   MiddlewareVerb,
   ParserConfigArgs,
   RouteConfig,
   RouteDescriptor,
-  RouteVerb,
   RouteHandler,
-  RouteImplementation,
-  MiddlewareFunction,
+  RouteVerb,
 } from "./types"
 import { authenticate, errorHandler } from "./middlewares"
 import { configManager } from "../config"
@@ -675,13 +674,11 @@ class ApiRoutesLoader {
       }
 
       if (!config.optedOutOfAuth && config.routeType === "admin") {
-        let authenticateMiddleware = authenticate(
-          "user",
-          ["bearer", "session", "api-key"],
-          {
-            allowUnauthenticated: true,
-          }
-        )
+        let authenticateMiddleware = authenticate("user", [
+          "bearer",
+          "session",
+          "api-key",
+        ])
 
         if (ApiRoutesLoader.traceMiddleware) {
           authenticateMiddleware = ApiRoutesLoader.traceMiddleware(
@@ -828,7 +825,7 @@ class ApiRoutesLoader {
           )
         }
 
-        this.#router[method.toLowerCase()](route.matcher, ...route.middlewares)
+        this.#router[method.toLowerCase()](route.matcher, ...middlewares)
       }
     }
   }

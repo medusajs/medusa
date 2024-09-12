@@ -31,7 +31,7 @@ export const authenticate = (
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
 ): RequestHandler => {
-  const handler = async (
+  const authenticateMiddleware = async (
     req: MedusaRequest,
     res: MedusaResponse,
     next: NextFunction
@@ -105,7 +105,7 @@ export const authenticate = (
     res.status(401).json({ message: "Unauthorized" })
   }
 
-  return handler as unknown as RequestHandler
+  return authenticateMiddleware as unknown as RequestHandler
 }
 
 const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {

@@ -6,15 +6,25 @@ import { gqlSchemaToTypes, logger } from "@medusajs/framework"
 import { GracefulShutdownServer } from "@medusajs/utils"
 import loaders from "../loaders"
 import path from "path"
+import http, { IncomingMessage } from "http"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
 
-export default async function ({ port, directory, types }) {
-  async function start() {
+async function start({ port, directory, types }) {
+  async function internalStart() {
     track("CLI_START")
 
     const app = express()
+
+    const http_ = http.createServer(async (req: any, res) => {
+      await start.traceHttp(async () => {
+        return new Promise((resolve) => {
+          res.on("finish", resolve)
+          app(req, res)
+        })
+      }, req)
+    })
 
     try {
       const { shutdown, gqlSchema } = await loaders({
@@ -33,7 +43,7 @@ export default async function ({ port, directory, types }) {
 
       const serverActivity = logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(
-        app.listen(port).on("listening", () => {
+        http_.listen(port).on("listening", () => {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
           track("CLI_START_COMPLETED")
         })
@@ -68,5 +78,11 @@ export default async function ({ port, directory, types }) {
     }
   }
 
-  await start()
+  await internalStart()
 }
+
+start.traceHttp = async (fn: () => Promise<void>, req: IncomingMessage) => {
+  return await fn()
+}
+
+export default start
