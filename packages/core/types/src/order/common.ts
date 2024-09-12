@@ -1150,6 +1150,11 @@ export interface OrderDTO {
   tax_total: BigNumberValue
 
   /**
+   * The discount subtotal of the order.
+   */
+  discount_subtotal: BigNumberValue
+
+  /**
    * The discount total of the order.
    */
   discount_total: BigNumberValue
