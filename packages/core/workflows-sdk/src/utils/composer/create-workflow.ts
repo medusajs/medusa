@@ -187,7 +187,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
       async (stepInput: TData, stepContext) => {
         const { container, ...sharedContext } = stepContext
 
-        const { result, transaction } = await workflow.run({
+        const transaction = await workflow.run({
           input: stepInput as any,
           container,
           context: {
@@ -197,7 +197,8 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
           },
         })
 
-        if (transaction.hasFinished()) {
+        const { result, transaction: flowTransaction } = transaction
+        if (flowTransaction.hasFinished()) {
           return new StepResponse(result, transaction)
         }
 
@@ -208,7 +209,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
           return
         }
 
-        await workflow(container).cancel({ transaction })
+        await workflow(container).cancel(transaction)
       }
     )(input) as ReturnType<StepFunction<TData, TResult>>
 
