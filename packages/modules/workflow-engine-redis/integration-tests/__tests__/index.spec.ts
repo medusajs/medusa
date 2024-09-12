@@ -286,7 +286,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           expect(transaction.flow.state).toEqual(TransactionStepState.INVOKING)
           expect(result).toEqual(undefined)
 
-          await setTimeout(2000)
+          await setTimeout(300)
 
           const trx = await workflowOrcModule.run("workflow_async_background", {
             input: {

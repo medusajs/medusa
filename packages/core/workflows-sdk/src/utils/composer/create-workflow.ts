@@ -186,15 +186,15 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
       },
       async (stepInput: TData, stepContext) => {
         const { container, ...sharedContext } = stepContext
-        sharedContext.parentStepIdempotencyKey = stepContext.idempotencyKey
-        sharedContext.transactionId = Buffer.from(
-          stepContext.transactionId + ":" + stepContext.idempotencyKey
-        ).toString("base64")
 
         const { result, transaction } = await workflow.run({
           input: stepInput as any,
           container,
-          context: sharedContext,
+          context: {
+            ...sharedContext,
+            parentStepIdempotencyKey: stepContext.idempotencyKey,
+            transactionId: stepContext.idempotencyKey,
+          },
         })
 
         if (transaction.hasFinished()) {

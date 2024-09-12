@@ -146,6 +146,23 @@ export class WorkflowOrchestratorService {
     await this.redisDistributedTransactionStorage_.onApplicationStart()
   }
 
+  private triggerParentStep(metadata, result, errors) {
+    const { parentStepIdempotencyKey } = metadata ?? {}
+    if (parentStepIdempotencyKey) {
+      if (errors.length > 0) {
+        this.setStepFailure({
+          idempotencyKey: parentStepIdempotencyKey,
+          stepResponse: result,
+        })
+      } else {
+        this.setStepSuccess({
+          idempotencyKey: parentStepIdempotencyKey,
+          stepResponse: result,
+        })
+      }
+    }
+  }
+
   @InjectSharedContext()
   async run<T = unknown>(
     workflowIdOrWorkflow: string | ReturnWorkflow<any, any, any>,
@@ -203,20 +220,7 @@ export class WorkflowOrchestratorService {
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
 
-      const { parentStepIdempotencyKey } = ret.transaction.flow.metadata ?? {}
-      if (parentStepIdempotencyKey) {
-        if (errors.length > 0) {
-          await this.setStepFailure({
-            idempotencyKey: parentStepIdempotencyKey,
-            stepResponse: result,
-          })
-        } else {
-          this.setStepSuccess({
-            idempotencyKey: parentStepIdempotencyKey,
-            stepResponse: result,
-          })
-        }
-      }
+      this.triggerParentStep(ret.transaction.flow.metadata, result, errors)
 
       await this.notify({
         eventType: "onFinish",
@@ -312,6 +316,9 @@ export class WorkflowOrchestratorService {
 
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
+
+      this.triggerParentStep(ret.transaction.flow.metadata, result, errors)
+
       await this.notify({
         eventType: "onFinish",
         workflowId,
@@ -376,6 +383,9 @@ export class WorkflowOrchestratorService {
 
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
+
+      this.triggerParentStep(ret.transaction.flow.metadata, result, errors)
+
       await this.notify({
         eventType: "onFinish",
         workflowId,
