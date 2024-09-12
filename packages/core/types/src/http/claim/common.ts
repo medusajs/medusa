@@ -1,8 +1,9 @@
 import { OperatorMap } from "../../dal"
-import { ClaimReason, ReturnDTO } from "../../order"
+import { ClaimReason, OrderClaimType, ReturnDTO } from "../../order"
 import { BigNumberRawValue } from "../../totals"
 import { FindParams } from "../common"
-import { BaseOrder } from "../order/common"
+import { BaseOrder, BaseOrderShippingMethod, BaseOrderTransaction } from "../order/common"
+import { BaseReturn } from "../return/common"
 
 export interface BaseClaimItem {
   id: string
@@ -17,15 +18,27 @@ export interface BaseClaimItem {
   updated_at?: Date | string
 }
 
-export interface BaseClaim
-  extends Omit<BaseOrder, "status" | "version" | "items"> {
+export interface BaseClaim {
+  id: string
+  type: OrderClaimType
   order_id: string
-  claim_items: BaseClaimItem[]
-  additional_items: BaseClaimItem[]
-  return?: ReturnDTO
   return_id?: string
-  no_notification?: boolean
+  display_id: string
+  order_version: string
   refund_amount?: number
+  created_by?: string
+  created_at: Date | string
+  updated_at: Date | string
+  canceled_at: Date | string
+  deleted_at?: Date | string
+  additional_items: BaseClaimItem[]
+  claim_items: BaseClaimItem[]
+  no_notification?: boolean
+  order?: BaseOrder
+  return?: BaseReturn
+  shipping_methods?: BaseOrderShippingMethod[]
+  transactions?: BaseOrderTransaction[]
+  metadata?: Record<string, unknown> | null
 }
 
 export interface BaseClaimListParams extends FindParams {

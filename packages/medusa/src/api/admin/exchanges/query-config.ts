@@ -1,6 +1,5 @@
 export const defaultAdminExchangeFields = [
   "id",
-  "type",
   "order_id",
   "return_id",
   "display_id",
