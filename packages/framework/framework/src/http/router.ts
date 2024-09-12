@@ -1,6 +1,13 @@
 import { parseCorsOrigins, promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
-import { type Express, json, Router, text, urlencoded } from "express"
+import {
+  type Express,
+  json,
+  RequestHandler,
+  Router,
+  text,
+  urlencoded,
+} from "express"
 import { readdir } from "fs/promises"
 import { extname, join, parse, sep } from "path"
 import {
@@ -15,6 +22,9 @@ import {
   RouteConfig,
   RouteDescriptor,
   RouteVerb,
+  RouteHandler,
+  RouteImplementation,
+  MiddlewareFunction,
 } from "./types"
 import { authenticate, errorHandler } from "./middlewares"
 import { configManager } from "../config"
@@ -211,6 +221,24 @@ class ApiRoutesLoader {
    * @private
    */
   readonly #sourceDir: string
+
+  /**
+   * Wrap the original route handler implementation for
+   * instrumentation.
+   */
+  static traceRoute?: (
+    handler: RouteHandler,
+    route: { route: string; method: string }
+  ) => RouteHandler
+
+  /**
+   * Wrap the original middleware handler implementation for
+   * instrumentation.
+   */
+  static traceMiddleware?: (
+    handler: RequestHandler | MiddlewareFunction,
+    route: { route: string; method?: string }
+  ) => RequestHandler
 
   constructor({
     app,
@@ -629,20 +657,41 @@ class ApiRoutesLoader {
 
       // We only apply the auth middleware to store routes to populate the auth context. For actual authentication, users can just reapply the middleware.
       if (!config.optedOutOfAuth && config.routeType === "store") {
-        this.#router.use(
-          descriptor.route,
-          authenticate("customer", ["bearer", "session"], {
+        let authenticateMiddleware = authenticate(
+          "customer",
+          ["bearer", "session"],
+          {
             allowUnauthenticated: true,
-          })
+          }
         )
+
+        if (ApiRoutesLoader.traceMiddleware) {
+          authenticateMiddleware = ApiRoutesLoader.traceMiddleware(
+            authenticateMiddleware,
+            { route: descriptor.route }
+          )
+        }
+        this.#router.use(descriptor.route, authenticateMiddleware)
       }
 
       if (!config.optedOutOfAuth && config.routeType === "admin") {
-        // We probably don't want to allow access to all endpoints using an api key, but it will do until we revamp our routing.
-        this.#router.use(
-          descriptor.route,
-          authenticate("user", ["bearer", "session", "api-key"])
+        let authenticateMiddleware = authenticate(
+          "user",
+          ["bearer", "session", "api-key"],
+          {
+            allowUnauthenticated: true,
+          }
         )
+
+        if (ApiRoutesLoader.traceMiddleware) {
+          authenticateMiddleware = ApiRoutesLoader.traceMiddleware(
+            authenticateMiddleware,
+            { route: descriptor.route }
+          )
+        }
+
+        // We probably don't want to allow access to all endpoints using an api key, but it will do until we revamp our routing.
+        this.#router.use(descriptor.route, authenticateMiddleware)
       }
 
       for (const route of routes) {
@@ -708,13 +757,26 @@ class ApiRoutesLoader {
           }`,
         })
 
+        let handler: RequestHandler | RouteHandler = route.handler
+
+        /**
+         * Give handler to the trace route handler for instrumentation
+         * from outside-in.
+         */
+        if (ApiRoutesLoader.traceRoute) {
+          handler = ApiRoutesLoader.traceRoute(handler, {
+            method: route.method!,
+            route: descriptor.route,
+          })
+        }
+
         /**
          * If the user hasn't opted out of error handling then
          * we wrap the handler in a try/catch block.
          */
-        const handler = shouldWrapHandler
-          ? wrapHandler(route.handler as Parameters<typeof wrapHandler>[0])
-          : route.handler
+        if (shouldWrapHandler) {
+          handler = wrapHandler(handler as Parameters<typeof wrapHandler>[0])
+        }
 
         this.#router[route.method!.toLowerCase()](descriptor.route, handler)
       }
@@ -755,6 +817,16 @@ class ApiRoutesLoader {
           activityId: this.#activityId,
           message: `Registering middleware [${method}] - ${route.matcher}`,
         })
+
+        let middlewares = route.middlewares
+        if (ApiRoutesLoader.traceMiddleware) {
+          middlewares = middlewares.map((middleware) =>
+            ApiRoutesLoader.traceMiddleware!(middleware, {
+              route: String(route.matcher),
+              method,
+            })
+          )
+        }
 
         this.#router[method.toLowerCase()](route.matcher, ...route.middlewares)
       }
@@ -839,6 +911,18 @@ export class RoutesLoader {
    * @private
    */
   readonly #sourceDir: string | string[]
+
+  static instrument: {
+    middleware: (callback: (typeof ApiRoutesLoader)["traceMiddleware"]) => void
+    route: (callback: (typeof ApiRoutesLoader)["traceRoute"]) => void
+  } = {
+    middleware(callback) {
+      ApiRoutesLoader.traceMiddleware = callback
+    },
+    route(callback) {
+      ApiRoutesLoader.traceRoute = callback
+    },
+  }
 
   constructor({
     app,
