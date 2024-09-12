@@ -5,5 +5,6 @@ export const CreateProductVariantSchema = z.object({
   sku: z.string().optional(),
   manage_inventory: z.boolean(),
   allow_backorder: z.boolean(),
+  inventory_kit: z.boolean(),
   options: z.record(z.string()),
 })

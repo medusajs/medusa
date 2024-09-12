@@ -536,7 +536,7 @@
         "header": "Edit Variant"
       },
       "create": {
-        "header": "Create Variant"
+        "header": "Variant details"
       },
       "pricesPagination": "1 - {{current}} of {{total}} prices",
       "tableItemAvailable": "{{availableCount}} available",
@@ -551,6 +551,8 @@
           "inventoryItems": "Go to inventory item",
           "inventoryKit": "Show inventory items"
         },
+        "inventoryKit": "Inventory Kit",
+        "inventoryKitHint": "Does this variant consist of several inventory items?",
         "validation": {
           "itemId": "Please select inventory item.",
           "quantity": "Quantity is required. Please input a positive number."
