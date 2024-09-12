@@ -1,6 +1,6 @@
 import { OperatorMap } from "../../dal"
 import { FindParams } from "../common"
-import { BaseOrder } from "../order/common"
+import { BaseOrder, BaseOrderShippingMethod, BaseOrderTransaction } from "../order/common"
 import { AdminReturn, AdminReturnItem } from "../return"
 
 export interface BaseExchangeItem {
@@ -14,15 +14,27 @@ export interface BaseExchangeItem {
   updated_at: string | null
 }
 
-export interface BaseExchange
-  extends Omit<BaseOrder, "status" | "version" | "items"> {
+export interface BaseExchange {
+  id: string
   order_id: string
-  return_items: AdminReturnItem[]
+  return_id?: string
+  display_id?: string
+  order_version?: string
+  created_by?: string
+  created_at: Date | string
+  updated_at: Date | string
+  canceled_at: Date | string
+  deleted_at: Date | string
   additional_items: BaseExchangeItem[]
+  return_items: AdminReturnItem[]
   no_notification?: boolean
   difference_due?: number
   return?: AdminReturn
-  return_id?: string
+  order?: BaseOrder
+  allow_backorder?: boolean
+  shipping_methods?: BaseOrderShippingMethod[]
+  transactions?: BaseOrderTransaction[]
+  metadata?: Record<string, unknown>
 }
 
 export interface BaseExchangeListParams extends FindParams {
