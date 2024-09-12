@@ -94,7 +94,7 @@ export function instrumentHttpLayer() {
 
       await HTTPTracer.trace(traceName, async (span) => {
         return new Promise<void>((resolve, reject) => {
-          handler(req, res, (error?: any) => {
+          const _next = (error?: any) => {
             if (error) {
               span.setStatus({
                 code: SpanStatusCode.ERROR,
@@ -106,7 +106,9 @@ export function instrumentHttpLayer() {
               span.end()
               resolve()
             }
-          })
+          }
+
+          handler(req, res, _next)
         })
       })
         .catch(next)
