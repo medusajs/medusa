@@ -1,29 +1,44 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
-  title: `${pageNumber} Brand Example: Schedule Syncing Data from Third-Party System`,
+  title: `${pageNumber} Schedule Syncing Brands from Third-Party System`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll learn how to use workflows and scheduled jobs to schedule syncing data from a third-party system. You'll use the Brand Module as an example.
+<Note title="Example Chapter">
+
+This chapter covers how to use workflows and scheduled jobs to sync brands from the third-party system as the last step of the ["Integrate Systems" chapter](../page.mdx).
+
+</Note>
 
 ## 1. Implement Syncing Workflow
 
-Start by defining the workflow that syncs the data from the third-party system.
+<Prerequisites
+  items={[
+    {
+      text: "Brand Module",
+      link: "/customization/custom-features/module"
+    },
+  ]}
+/>
+
+Start by defining the workflow that syncs the brand from the third-party system.
 
 The workflow has the following steps:
 
 1. Retrieve brands from the third-party system.
-2. Create new brands.
-3. Update existing brands.
+2. Create new brands in Medusa.
+3. Update existing brands in Medusa.
 
 ### Retrieve Brands Step
 
 To create the step that retrieves the brands from the third-party service, create the file `src/workflows/sync-brands-from-system/steps/retrieve-brands-from-system.ts` with the following content:
 
-```ts title="src/workflows/sync-brands-from-system/steps/retrieve-brands-from-system.ts"
+```ts title="src/workflows/sync-brands-from-system/steps/retrieve-brands-from-system.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import BrandModuleService from "../../../modules/brand/service"
 import { BRAND_MODULE } from "../../../modules/brand"
@@ -42,18 +57,23 @@ export const retrieveBrandsFromSystemStep = createStep(
 )
 ```
 
-This step resolved the Brand Module's main service from the container, and uses its client service to retrieve the brands from the third-party system.
+In this step, you resolve the Brand Module's main service from the container, and use its client service to retrieve the brands from the third-party system.
 
 The step returns the retrieved brands.
 
 ### Create Brands Step
 
-Next, create the step that creates new brands in the file `src/workflows/sync-brands-from-system/steps/create-brands.ts`:
+Next, create the step that creates new brands in Medusa in the file `src/workflows/sync-brands-from-system/steps/create-brands.ts`:
 
-```ts title="src/workflows/sync-brands-from-system/steps/create-brands.ts"
+export const createBrandsHighlights = [
+  ["19", "createBrands", "Create the brands in Medusa"],
+  ["28", "deleteBrands", "Delete the brands from Medusa"]
+]
+
+```ts title="src/workflows/sync-brands-from-system/steps/create-brands.ts" highlights={createBrandsHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import BrandModuleService from "../../../modules/brand/service"
 import { BRAND_MODULE } from "../../../modules/brand"
@@ -83,18 +103,26 @@ export const createBrandsStep = createStep(
 )
 ```
 
-This step receives the brands to create as input. It resolves the Brand Module's main service and uses its `createBrands` method to create the brands.
+This step receives the brands to create as input.
 
-The created brands are returned. Their IDs are passed to the compensation function, which deletes the brands if an error occurs.
+In the step, you resolve the Brand Module's main service and uses its `createBrands` method to create the brands.
+
+You return the created brands and pass their IDs to the compensation function, which deletes the brands if an error occurs.
 
 ### Update Brands Step
 
-To create the step that updates existing brands, create the file `src/workflows/sync-brands-from-system/steps/update-brands.ts` with the following content:
+To create the step that updates existing brands in Medusa, create the file `src/workflows/sync-brands-from-system/steps/update-brands.ts` with the following content:
 
-```ts title="src/workflows/sync-brands-from-system/steps/update-brands.ts"
+export const updateBrandsHighlights = [
+  ["19", "prevUpdatedBrands", "Retrieve the data of the brands before the update."],
+  ["23", "updateBrands", "Update the brands in Medusa."],
+  ["32", "updateBrands", "Revert the update by reverting the brands' to before the update."]
+]
+
+```ts title="src/workflows/sync-brands-from-system/steps/update-brands.ts" highlights={updateBrandsHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import BrandModuleService from "../../../modules/brand/service"
 import { BRAND_MODULE } from "../../../modules/brand"
@@ -111,7 +139,7 @@ export const updateBrandsStep = createStep(
     )
 
     const prevUpdatedBrands = await brandModuleService.listBrands({
-      id: brands.map((brand) => brand.id)
+      id: brands.map((brand) => brand.id),
     })
 
     const updatedBrands = await brandModuleService.updateBrands(brands)
@@ -128,9 +156,11 @@ export const updateBrandsStep = createStep(
 )
 ```
 
-This step receives the brands to update as input. It retrieves the brands first to pass them later to the compensation function, then updates and returns the brands.
+This step receives the brands to update as input.
 
-In the compensation function, the brands are updated again but to their data before the brands were updated.
+In the step, you retrieve the brands first to pass them later to the compensation function, then update and return the brands.
+
+In the compensation function, you update the brands are again but to their data before the update made by the step.
 
 ### Create Workflow
 
@@ -140,7 +170,7 @@ Finally, create the workflow in the file `src/workflows/sync-brands-from-system/
 import {
   createWorkflow,
   WorkflowResponse,
-  transform
+  transform,
 } from "@medusajs/workflows-sdk"
 import { retrieveBrandsFromSystemStep } from "./steps/retrieve-brands-from-system"
 import { createBrandsStep } from "./steps/create-brands"
@@ -156,16 +186,22 @@ export const syncBrandsFromSystemWorkflow = createWorkflow(
 )
 ```
 
-For now, the workflow only retrieves the brands using the `retrieveBrandsFromSystemStep`.
+For now, you only add the `retrieveBrandsFromSystemStep` to the workflow that retrieves the brands from the third-party system.
 
-Next, you need to identify which brands must be created or updated. Using the `transform` utility function imported from `@medusajs/workflows-sdk`, you can loop over the brands to separate them into brands to be created or updated.
+### Identify Brands to Create or Update in Workflow
 
-Replace the `TODO` with the following:
+Next, you need to identify which brands must be created or updated.
+
+Since workflows are constructed internally and are only evaluated during execution, you can't access any data's value to perform data manipulation or checks.
+
+Instead, use the `transform` utility function imported from `@medusajs/workflows-sdk`, which gives you access to the real-time values of the data to perfrom actions on them.
+
+So, replace the `TODO` with the following:
 
 ```ts title="src/workflows/sync-brands-from-system/index.ts"
 const { toCreate, toUpdate } = transform(
   {
-    brands
+    brands,
   },
   (data) => {
     const toCreate: Record<string, string>[] = []
@@ -175,7 +211,7 @@ const { toCreate, toUpdate } = transform(
       if (brand.external_id) {
         toUpdate.push({
           ...brand,
-          id: brand.external_id
+          id: brand.external_id,
         })
       } else {
         toCreate.push(brand)
@@ -186,22 +222,39 @@ const { toCreate, toUpdate } = transform(
   }
 )
 
+// TODO create and update the brands
+```
+
+`transform` accepts two parameters:
+
+1. The data to be passed to the function in the second parameter.
+2. A function to execute only when the workflow is executed. Its return value can be consumed by the rest of the workflow.
+
+In the function, you sort the brands as to be created or to be updated based on whether they have an `external_id` property.
+
+<Note title="Tip">
+
+This approach assumes that the third-party system stores the ID of the brand in Medusa in `external_id`.
+
+</Note>
+
+### Create and Update the Brands
+
+Finally, replace the new `TODO` with the following:
+
+```ts title="src/workflows/sync-brands-from-system/index.ts"
 const created = createBrandsStep({ brands: toCreate })
 const updated = updateBrandsStep({ brands: toUpdate })
 
 return new WorkflowResponse({
   created,
-  updated
+  updated,
 })
 ```
 
-`transform` accepts two parameters: the first is the data to be passed to the function in the second parameter. The function in the second parameter is only executed when the workflow is executed, and its value is returned to be consumed by the rest of the workflow.
+You pass the brands to be created to the `createBrandsStep`, and the brands to be updated to the `updateBrandsStep`.
 
-In the second function parameter of `transform`, you loop over the brands retrieved from the third-party system. If a brand has an `external_id`, referring to the brand's ID in Medusa, you consider it as a brand to be updated. Otherwise, you consider it as a brand to be created.
-
-Then, you pass the brands to be created to the `createBrandsStep`, and the brands to be updated to the `updateBrandsStep`.
-
-Finally, you return the created and updated brands.
+Then, you return the created and updated brands.
 
 ---
 
@@ -210,8 +263,8 @@ Finally, you return the created and updated brands.
 To schedule a task that syncs brands from the third-party system, create a scheduled job at `src/jobs/sync-brands-from-system.ts`:
 
 ```ts title="src/jobs/sync-brands-from-system.ts"
-import { MedusaContainer } from "@medusajs/types";
-import { syncBrandsFromSystemWorkflow } from "../workflows/sync-brands-from-system";
+import { MedusaContainer } from "@medusajs/types"
+import { syncBrandsFromSystemWorkflow } from "../workflows/sync-brands-from-system"
 
 export default async function (container: MedusaContainer) {
   const logger = container.resolve("logger")
@@ -230,10 +283,21 @@ export const config = {
 }
 ```
 
-This defines a scheduled job that runs every minute (for testing purposes). The scheduled job executes the `syncBrandsFromSystemWorkflow` and prints how many brands were created and updated.
+This defines a scheduled job that runs every minute (for testing purposes).
+
+The scheduled job executes the `syncBrandsFromSystemWorkflow` and prints how many brands were created and updated.
 
 ---
 
 ## Test it Out
 
 To test it out, start the Medusa application. In a minute, the scheduled job will run and you'll see a logged message indicating how many brands were created or updated.
+
+---
+
+## Summary
+
+In the previous chapters, you:
+
+- Created a service that acts as a client integrating a third-party system.
+- Implemented two-way sync of brands between the third-party system and Medusa using a subscriber and a scheduled job.

@@ -1,65 +1,44 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
-  title: `${pageNumber} Create Admin UI Route`,
+  title: `${pageNumber} Create Brands List UI Route in Admin`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll learn how to create a UI route (or a page) in the Medusa Admin.
+<Note title="Example Chapter">
 
-## What is a UI Route?
-
-A UI route is a React Component that adds a new page to your admin dashboard. The UI Route can be shown in the sidebar or added as a nested page.
-
-For example, you may add a new page to manage product reviews.
-
----
-
-## How to Create a UI Route?
-
-A UI route is created in a file named `page.tsx` under the `src/admin/routes` directory. The file’s default export must be the UI route’s React component.
-
-For example, create the file `src/admin/routes/custom/page.tsx` with the following content:
-
-```tsx title="src/admin/routes/custom/page.tsx"
-import { Container } from "@medusajs/ui"
-
-const CustomPage = () => {
-  return <Container>This is my custom route</Container>
-}
-
-export default CustomPage
-```
-
-The new page’s path is the file’s path relative to `src/admin/routes`. So, the above UI route is a new page added at the path `localhost:9000/app/custom`. 
-
-<Note title="Important" type="warning">
-
-The UI route component must be created as an arrow function.
+This chapter covers how to create a UI route (or page) that shows your brands as a step of the ["Customize Admin" chapter](../page.mdx).
 
 </Note>
 
-### Test the UI Route
+## What is a UI Route?
 
-To test the UI route, start the Medusa application:
+A UI route is a React Component that adds a new page to your admin dashboard.
 
-```bash npm2yarn
-npm run dev
-```
-
-Then, after logging into the admin dashboard, open the page `localhost:9000/app/custom` to see your custom page.
+The UI Route can be shown in the sidebar or added as a nested page.
 
 ---
 
-## Example: Add a Brands UI Route
+## Prerequisite: Add Retrieve Brand API Route
 
-Continuing with the brands example, you'll add in this section a new UI route that lists the brands.
+<Prerequisites
+  items={[
+    {
+      text: "Brand Module",
+      link: "/customization/custom-features/module"
+    },
+  ]}
+/>
 
-Consider you have the following API route created at `src/api/admin/brands/route.ts` to retrieve the list of brands:
+Before adding the UI route, you need an API route that retrieves all brands.
 
-```ts title="src/api/admin/brands/route.ts" collapsibleLine="1-7" expandMoreButton="Show Imports"
+Create the file `src/api/admin/brands/route.ts` with the following content:
+
+```ts title="src/api/admin/brands/route.ts" collapsibleLines="1-7" expandMoreButton="Show Imports"
 import {
   MedusaRequest,
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { BRAND_MODULE } from "../../../modules/brand"
 import BrandModuleService from "../../../modules/brand/service"
@@ -77,25 +56,46 @@ export const GET = async (
 
   const [brands, count] = await brandModuleService.listAndCountBrands({}, {
     skip: offset as number,
-    take: limit as number
+    take: limit as number,
   })
 
   res.json({
     brands,
     count,
     limit,
-    offset
+    offset,
   })
 }
 ```
 
-This API route optionally accepts a `limit` and `offset` parameters for pagination purposes, and returns the brands along with pagination fields.
+This adds a `GET` API route at `/admin/brands`.
+
+In the API route, you resolve the Brand Module's main service and use its `listAndCountBrands` method to retrieve the list of brands with their total count.
+
+This method accepts as a first parameter filters to apply on the retrieved data, and as a second parameter configurations for pagination. 
+
+<Note>
+
+Learn more about the `listAndCount` method and its parameters in [this reference](!resources!service-factory-reference/methods/listAndCount).
+
+</Note>
+
+---
+
+## Add a UI Route to Show Brands
+
+A UI route is created in a file named `page.tsx` under subdirectories of the `src/admin/routes` directory. The file’s default export must be the UI route’s React component.
 
 To create a UI route that shows the list of brands, create the file `src/admin/routes/brands/page.tsx` with the following content:
 
-```tsx title="src/admin/routes/brands/page.tsx"
+export const uiRouteHighlights = [
+  ["7", "brands", "State variable to store the brands."],
+  ["12", "fetch", "Retrieve the brands from the custom API route."]
+]
+
+```tsx title="src/admin/routes/brands/page.tsx" highlights={uiRouteHighlights}
 import { Table, Container, Heading } from "@medusajs/ui"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { TagSolid } from "@medusajs/icons"
 
@@ -103,7 +103,16 @@ const BrandsPage = () => {
   const [brands, setBrands] = useState<
     Record<string, string>[]
   >([])
-  // TODO add pagination fields
+  
+  useEffect(() => {
+    fetch(`/admin/brands`, {
+      credentials: "include",
+    })
+    .then((res) => res.json())
+    .then(({ brands: brandsData }) => {
+      setBrands(brandsData)
+    })
+  }, [])
 
 
   return (
@@ -125,92 +134,53 @@ const BrandsPage = () => {
           ))}
         </Table.Body>
       </Table>
-      {/* TODO add pagination component */}
     </Container>
   )
 }
 
 export default BrandsPage
 
-// TODO export route config
+// TODO export configuration
 ```
 
-The UI route currently just renders a table of brands.
+This adds a new page in the admin at `http://localhost:9000/app/brands`.
 
-Replace the first `TODO` with the following:
+In the UI route's component, you retrieve the brands from the `/admin/brands` API route. You show the brands in a table.
 
-```tsx title="src/admin/routes/brands/page.tsx"
-const [count, setCount] = useState(0)
-const pageLimit = 15
-const pagesCount = useMemo(() => {
-  return Math.ceil(count / pageLimit)
-}, [count, pageLimit])
-const canNextPage = useMemo(() => {
-  return currentPage < pagesCount - 1
-}, [currentPage, pagesCount])
-const canPreviousPage = useMemo(() => {
-  return currentPage > 0
-}, [currentPage])
+### Add UI Route to the Sidebar
 
-const nextPage = () => {
-  if (canNextPage) {
-    setCurrentPage((prev) => prev + 1)
-  }
-}
+To add the UI route to the sidebar, replace the `TODO` at the end of the file with the following:
 
-const previousPage = () => {
-  if (canPreviousPage) {
-    setCurrentPage((prev) => prev - 1)
-  }
-}
-
-useEffect(() => {
-  const searchQuery = new URLSearchParams({
-    limit: `${pageLimit}`,
-    offset: `${currentPage * pageLimit}`
-  })
-
-  fetch(`/admin/brands?${searchQuery.toString()}`, {
-    credentials: "include"
-  })
-  .then((res) => res.json())
-  .then(({ brands: brandsData, count: c }) => {
-    setBrands(brandsData)
-    setCount(c)
-  })
-}, [currentPage])
-```
-
-This defines new variables and functions for pagination purposes. It then sends a request to the `/admin/brands` API route whenever the current page changes.
-
-Next, to show the pagination controls, replace the `TODO` in the return statement with the following:
-
-```tsx title="src/admin/routes/brands/page.tsx"
-<Table.Pagination
-  count={count}
-  pageSize={pageLimit}
-  pageIndex={currentPage}
-  pageCount={pagesCount}
-  canPreviousPage={canPreviousPage}
-  canNextPage={canNextPage}
-  previousPage={previousPage}
-  nextPage={nextPage}
-/>
-```
-
-This shows the pagination component, passing it the necessary pagination fields.
-
-Finally, replace the last `TODO` with the following export:
-
-```tsx title="src/admin/routes/brands/page.tsx"
+```ts title="src/admin/routes/brands/page.tsx"
 export const config = defineRouteConfig({
   label: "Brands",
   icon: TagSolid,
 })
 ```
 
-When a UI route's file exports configurations created using the `defineRouteConfig` function imported from `@medusajs/admin-sdk`, it's added to the Medusa Admin sidebar.
+You export a `config` variable defined using the `defineRouteConfig` utility.
 
-This adds a new entry in the sidebar with the label `Brands` and a `TagSolid` icon imported from `@medusajs/ui`.
+This indicates that a new item should be added to the sidebar with the title `Brands` and an icon from the [Medusa Icons package](!ui!/icons/overview).
 
-If you open the Medusa Admin now, you'll find a new sidebar item. Click on it, and you can view the list of brands in your store.
+---
+
+## Test it Out
+
+To test it out, start the Medusa application and login into the Medusa Admin.
+
+You'll find a new "Brands" sidebar item. If you click on it, a new page opens showing the list of brands in your store.
+
+---
+
+## Summary
+
+By following the examples of the previous chapters, you:
+
+- Created a widget that showed the brand of a product in the Medusa Admin.
+- Created a UI route that showed the list of brands in the Medusa Admin.
+
+---
+
+## Next Steps
+
+In the next chapters, you'll learn how to integrate third-party systems into your Medusa application to sync brands.

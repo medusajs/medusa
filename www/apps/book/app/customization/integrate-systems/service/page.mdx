@@ -1,16 +1,36 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
-  title: `${pageNumber} Brand Example: Integration using Service`,
+  title: `${pageNumber} Integrate Third-Party Brand System in a Service`,
 }
 
 # {metadata.title}
 
-In this chapter, you'll find an example of how to create a service in the Brand Module that integrates a third-party system.
+<Note title="Example Chapter">
+
+This chapter covers how to integrate a dummy third-party system in a service as a step of the ["Integrate Systems" chapter](../page.mdx).
+
+</Note>
 
 ## 1. Create Service
 
+<Prerequisites
+  items={[
+    {
+      text: "Brand Module",
+      link: "/customization/custom-features/module"
+    }
+  ]}
+/>
+
 Start by creating the file `src/modules/brand/services/client.ts` with the following content:
 
-```ts title="src/modules/brand/services/client.ts"
+export const serviceHighlights = [
+  ["3", "BrandClientOptions", "Define the options that the Brand Module receives necessary for the integration."],
+  ["7", "InjectedDependencies", "Define the dependencies injected into the service."],
+]
+
+```ts title="src/modules/brand/services/client.ts" highlights={serviceHighlights}
 import { Logger } from "@medusajs/types"
 
 export type BrandClientOptions = {
@@ -25,7 +45,7 @@ export class BrandClient {
   private options_: BrandClientOptions
   private logger_: Logger
 
-  constructor ({ logger }: InjectedDependencies) {
+  constructor({ logger }: InjectedDependencies) {
     this.logger_ = logger
   }
 
@@ -35,13 +55,30 @@ export class BrandClient {
 }
 ```
 
-This creates a `BrandClient` service that, for now, resolves the `logger` from the container using dependency injection. The `logger` is used to log messages in the Medusa application's logs.
+This creates a `BrandClient` service that, for now, resolves the `logger` from the container using dependency injection.
 
-You also define an `options_` property in your service to store the module's options, which are useful for connecting to a third-party system.
+<Note title="Tip">
+
+The `logger` is used to log messages in the Medusa application's logs.
+
+</Note>
+
+You also define an `options_` property in your service to store the module's options, which you'll learn later how to pass to the module.
+
+These options are useful configuring the connection to the third-party system.
+
+### Integration Methods
 
 Next, add the following methods to simulate sending requests to the third-party system:
 
-```ts title="src/modules/brand/services/client.ts"
+export const methodsHighlights = [
+  ["6", "sendRequest", "Since the third-party system isn't real, this method only logs a message."],
+  ["15", "createBrand", "A method that creates a brand in the third-party system."],
+  ["19", "deleteBrand", "A method that deletes a brand in the third-party system."],
+  ["23", "retrieveBrands", "A method that retrieves a brand from a third-party system."]
+]
+
+```ts title="src/modules/brand/services/client.ts" highlights={methodsHighlights}
 export class BrandClient {
   // ...
 
@@ -86,13 +123,13 @@ You also add three methods that use the `sendRequest` method:
 
 If the service integrating the third-party system is the module's main service, you only need to export it in the module definition.
 
-However, since this service is an internal service in the Brand Module, you must export it in an `src/modules/brand/services/index.ts` file:
+However, since this service is an internal service in the Brand Module, you must export it in a `src/modules/brand/services/index.ts` file:
 
 ```ts title="src/modules/brand/services/index.ts"
 export * from "./client"
 ```
 
-This registers the service in the Module's container, allowing you to access it in the module's main service.
+This registers the service in the module's container, allowing you to access it in the module's main service.
 
 ---
 
@@ -102,7 +139,7 @@ In the main service at `src/modules/brand/service.ts`, add the following imports
 
 ```ts title="src/modules/brand/service.ts"
 // other imports...
-import { BrandClient, BrandClientOptions } from "./services";
+import { BrandClient, BrandClientOptions } from "./services"
 
 type InjectedDependencies = {
   brandClient: BrandClient
@@ -113,11 +150,14 @@ Then, add the following in the `BrandModuleService` class:
 
 ```ts title="src/modules/brand/service.ts"
 class BrandModuleService extends MedusaService({
-  Brand
+  Brand,
 }) {
   public client: BrandClient
 
-  constructor({ brandClient }: InjectedDependencies, moduleOptions: BrandClientOptions) {
+  constructor(
+    { brandClient }: InjectedDependencies, 
+    moduleOptions: BrandClientOptions
+  ) {
     super(...arguments)
 
     this.client = brandClient
@@ -132,12 +172,34 @@ Then, you use the `setOptions` method of the client to set its options to the mo
 
 <Note title="Tip">
 
-If the service integrating the third-party system was a main service, you'd use the options passed as a second parameter to its constructor instead.
+If the service integrating the third-party system was a main service, you'd use the options passed as a second parameter to its constructor directly to create a client.
 
 </Note>
 
 ---
 
-## Next Steps: Implement Two-Way Sync
+## 4. Pass Options to the Module
 
-In the next chapters, you'll learn how to implement two way syncs using the `BrandClient` service by handling events and scheduling tasks.
+To pass options in the module, change its configurations in `medusa-config.js`:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  modules: {
+    brandModuleService: {
+      resolve: "./modules/brand",
+      options: {
+        apiKey: process.env.BRAND_API_KEY || "temp",
+      },
+    },
+  },
+})
+```
+
+A module's configuration accepts an `options` property, which can hold any options to pass to the module's main service.
+
+---
+
+## Next Steps: Sync Brand From Medusa to Third-Party System
+
+In the next chapter, you'll learn how to sync brands created in Medusa to the third-party system using a workflow and a scheduled job.

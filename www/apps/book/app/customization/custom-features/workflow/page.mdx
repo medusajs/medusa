@@ -1,21 +1,44 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
-  title: `${pageNumber} Brand Example: 2. Create Workflow`,
+  title: `${pageNumber} Define Workflow to Create a Brand`,
 }
 
 # {metadata.title}
 
-The second step of creating the brand example is to define the workflow that's used to create a brand.
+<Note title="Example Chapter">
 
-Workflows are useful to implement roll-back mechanisms to avoid data inconsistency when an error occurs.
+This chapter covers how to define a workflow that creates a brand as part of the ["Build Custom Features" chapter](../page.mdx).
 
-## Create Workflow
+</Note>
+
+## Workflows vs Services: Why use Workflows?
+
+When manipulating data, use workflows instead of invoking a service's methods directly in your API route or other customizations.
+
+Workflows eliminate data inconsistency in your application with its compensation mechanism that undoes changes if an error occurs.
+
+This is even more useful when you create workflows with many steps, or integrate third-party systems.
+
+---
+
+## Create createBrandWorkflow
+
+<Prerequisites
+  items={[
+    {
+      text: "Brand Module",
+      link: "/customization/custom-features/module"
+    }
+  ]}
+/>
 
 Create the file `src/workflows/create-brand/index.ts` with the following content:
 
 ```ts
 import {
   createWorkflow,
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 
 export type CreateBrandInput = {
@@ -34,14 +57,14 @@ For now, this workflow only defines its input. You'll create its step and use it
 
 ---
 
-## Create Step
+## Create createBrandStep
 
 Create the file `src/workflows/create-brand/steps/create-brand.ts` with the following content:
 
-```ts title="src/workflows/create-brand/steps/create-brand.ts"
+```ts title="src/workflows/create-brand/steps/create-brand.ts" collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { CreateBrandInput } from ".."
 import { BRAND_MODULE } from "../../../modules/brand"
@@ -61,13 +84,15 @@ export const createBrandStep = createStep(
 )
 ```
 
-This defines a `createBrandStep`. In the step, you resolve the Brand Module's main service and use its generated `createBrands` method, which accepts one or more brands to create.
+This defines a `createBrandStep`. In the step, you resolve the Brand Module's main service and use its generated `createBrands` method, which accepts one or more objects of brands to create.
 
 The step returns the created brand in the first parameter of the `StepResponse`'s constructor.
 
 ### Add Compensation Function to Step
 
-The second parameter passed to the `StepResponse`'s constructor is passed to a compensation function. A compensation function rolls back changes made by the step.
+The second parameter of the `StepResponse`'s constructor is passed to the compensation function.
+
+A compensation function rolls back changes made by the step if an error occurs in the workflow.
 
 To add the compensation function, pass a third parameter to `createStep`:
 
@@ -84,7 +109,13 @@ export const createBrandStep = createStep(
 )
 ```
 
-The compensation function resolves the Brand Module's main service and uses its generated `deleteBrands` method to delete the brand created by the step. The `deleteBrands` method accepts an ID or an array of IDs of brands to delete.
+You resolve the Brand Module's main service and use its generated `deleteBrands` method to delete the brand created by the step.
+
+<Note title="Tip">
+
+The `deleteBrands` method accepts an ID or an array of IDs of brands to delete.
+
+</Note>
 
 So, when an error occurs during the workflow, the brand that was created by the step is deleted to maintain data consistency.
 
@@ -110,6 +141,6 @@ You use the `createBrandStep` to create the brand and return it in the workflow'
 
 ---
 
-## Next Steps
+## Next Step: Create Brand API Route
 
-In the next step, you'll create an API route that exposes the workflow's functionality to admin users.
+In the next step, you'll create an API route that allows admin users to create a brand using this workflow.

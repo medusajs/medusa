@@ -1,23 +1,31 @@
 export const metadata = {
-  title: `${pageNumber} Brand Example: 1. Implement Module`,
+  title: `${pageNumber} Implement Brand Module`,
 }
 
 # {metadata.title}
 
-The first step of creating the brand example is to implement the module that stores and manages the brands.
+<Note title="Example Chapter">
 
-Start by creating the directory `src/modules/brand`.
+This chapter covers how to create a Brand Module as part of the ["Build Custom Features" chapter](../page.mdx).
 
-## Create Data Model
+</Note>
 
-To create a data model that represents a new `brands` table in the database, create the file `src/modules/brand/models/brand.ts` with the following content:
+## 1. Create Module Directory
+
+Start by creating the directory `src/modules/brand` that will hold the Brand Module's files.
+
+---
+
+## 2. Create Data Model
+
+To create a data model that represents a new `brand` table in the database, create the file `src/modules/brand/models/brand.ts` with the following content:
 
 ```ts title="src/modules/brand/models/brand.ts"
 import { model } from "@medusajs/utils"
 
 export const Brand = model.define("brand", {
   id: model.id().primaryKey(),
-  name: model.text()
+  name: model.text(),
 })
 ```
 
@@ -25,19 +33,24 @@ This creates a `Brand` data model which has an `id` primary key property, and a 
 
 ---
 
-## Create Module's Service
+## 3. Create Module's Service
 
 Next, you'll create the module's main service that manages the `Brand` data model.
 
 Create the file `src/modules/brand/service.ts` with the following content:
 
-```ts title="src/modules/brand/service.ts"
+export const serviceHighlights = [
+  ["4", "MedusaService", "A service factory that generates data-management methods."]
+]
+
+```ts title="src/modules/brand/service.ts" highlights={serviceHighlights}
 import { MedusaService } from "@medusajs/utils"
-import { Brand } from "./models/brand";
+import { Brand } from "./models/brand"
 
 class BrandModuleService extends MedusaService({
-  Brand
+  Brand,
 }) {
+
 }
 
 export default BrandModuleService
@@ -45,13 +58,19 @@ export default BrandModuleService
 
 The `BrandModuleService` extends a `MedusaService` function imported from `@medusajs/utils` which is a service factory.
 
-The `MedusaService` function receives the module's data models as a parameter, and generates methods to manage those data models, such as `createBrands` and `updateBrands`.
+The `MedusaService` function receives an object of the module's data models as a parameter, and generates methods to manage those data models, such as `createBrands` and `updateBrands`.
 
-Those methods are now available at the `BrandModuleService` and you'll use them in upcoming steps.
+Those methods are now available at the `BrandModuleService` class and you'll use them in upcoming steps.
+
+<Note title="Tip">
+
+Find a reference of the generated methods in [this guide](!resources!/service-factory-reference).
+
+</Note>
 
 ---
 
-## Create Module's Definition
+## 4. Create Module's Definition
 
 To export the module's definition, create the file `src/modules/brand/index.ts` with the following content:
 
@@ -62,13 +81,13 @@ import BrandModuleService from "./service"
 export const BRAND_MODULE = "brandModuleService"
 
 export default Module(BRAND_MODULE, {
-  service: BrandModuleService
+  service: BrandModuleService,
 })
 ```
 
 ---
 
-## Register Module in Config
+## 5. Register Module in Config
 
 Finally, add the module to Medusa's configurations in `medusa-config.js`:
 
@@ -77,15 +96,15 @@ module.exports = defineConfig({
   // ...
   modules: {
     brandModuleService: {
-      resolve: "./modules/brand"
-    }
-  }
+      resolve: "./modules/brand",
+    },
+  },
 })
 ```
 
 ---
 
-## Generate and Run Migrations
+## 6. Generate and Run Migrations
 
 To reflect the data model in the database, generate migrations for the `brandModuleService` module and migrate the changes to the database:
 
@@ -96,6 +115,6 @@ npx medusa db:migrate
 
 ---
 
-## Next Steps
+## Next Step: Create Brand Workflow
 
 In the next step, you'll create a workflow whose steps use the Brand Module's main service to create a brand.

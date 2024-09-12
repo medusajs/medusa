@@ -96,25 +96,18 @@ export const sidebar = numberSidebarItems(
           children: [
             {
               type: "link",
-              title: "Brands Example",
-              path: "/customization/custom-features/example",
-              children: [
-                {
-                  type: "link",
-                  title: "Brand Module",
-                  path: "/customization/custom-features/example/module",
-                },
-                {
-                  type: "link",
-                  title: "Create Brand Workflow",
-                  path: "/customization/custom-features/example/workflow",
-                },
-                {
-                  type: "link",
-                  title: "Create Brand API Route",
-                  path: "/customization/custom-features/example/api-route",
-                },
-              ],
+              title: "Brand Module",
+              path: "/customization/custom-features/module",
+            },
+            {
+              type: "link",
+              title: "Create Brand Workflow",
+              path: "/customization/custom-features/workflow",
+            },
+            {
+              type: "link",
+              title: "Create Brand API Route",
+              path: "/customization/custom-features/api-route",
             },
           ],
         },
@@ -130,18 +123,18 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
-              title: "Manage Linked Records",
-              path: "/customization/extend-models/manage-links",
+              title: "Create Links Between Records",
+              path: "/customization/extend-models/create-links",
+            },
+            {
+              type: "link",
+              title: "Extend Route",
+              path: "/customization/extend-models/extend-create-product",
             },
             {
               type: "link",
               title: "Query Linked Records",
               path: "/customization/extend-models/query-linked-records",
-            },
-            {
-              type: "link",
-              title: "Extend Routes",
-              path: "/customization/extend-models/additional-data",
             },
           ],
         },
@@ -157,7 +150,7 @@ export const sidebar = numberSidebarItems(
             },
             {
               type: "link",
-              title: "Add Pages",
+              title: "Add UI Route",
               path: "/customization/customize-admin/route",
             },
           ],

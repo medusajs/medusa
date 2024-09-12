@@ -4,38 +4,37 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn about Medusa's approach to extending data models.
+In this chapter, you'll learn about Medusa's alternative approach to extending data models.
 
-## Extend Models Use Case
+## Extend Models Alternative: Module Links
 
-In many use cases, you may need to extend existing data models for your custom development.
+Since modules are isolated from one another, it's not possible to directly extend a module's data models.
 
-For example, after you added brands in your Medusa application in the previous chapters, you want to associate products with those brands.
-
-However, the `product` and `brand` data models are created in different modules. So, how do you extend the `product` model to associate it with a brand?
-
----
-
-## Modules Isolation
-
-A module is unaware of any resources other than its own, such as services or data models. This means it can't access these resources if they're implemented in another module.
-
-For example, your custom module can't resolve the Product Module's main service or have direct relationships from its data model to the Product Module's data models.
+Instead, you define a link between the modules' data models.
 
 ### Why are Modules Isolated?
 
-Through module isolation, you can:
+Some of the module isolation's benefits include:
 
 - Integrate your module into any Medusa application without side-effects to your setup.
-- Replace existing modules with your custom implementation, if it's drastically different.
+- Replace existing modules with your custom implementation, if your use case is drastically different.
 - Use modules in other environments, such as Edge functions and Next.js apps.
+
+### How does Medusa Manage Module Links?
+
+When you define a link, the Medusa application creates a table in the database for it.
+
+Then, when you create a link between two records, the Medusa application stores the IDs of the linked records in that table.
+
+Medusa also provides the necessary tools to manage and query the linked records, which you'll learn about in the next chapters.
 
 ---
 
-## Introducing Module Links
+## Next Chapters: Link Brands to Products Example
 
-Medusa still provides the necessary tools and concepts that are similar to extending a data model while maintaining module isolation.
+The next chapters continue the brands example. It shows you how to:
 
-The main concept that replaces extending modules is creating a module link. A module link forms an association between two data models of different modules.
-
-The next chapters explain how to define links between data models of different modules, how to retrieved the data of linked records, and more.
+- Link a brand, which you defined in a [previous example](../custom-features/module/page.mdx), to a product.
+- Manage linked records between the brands and products.
+- Extend Medusa's Create Product API route to link a product to a brand.
+- Query linked brands and products.
