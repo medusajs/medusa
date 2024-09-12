@@ -1,18 +1,20 @@
-import { RemoteQuery } from "./remote-query"
 import {
   GraphResultSet,
   RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFunction,
   RemoteQueryFunctionReturnPagination,
+  RemoteQueryInput,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import {
-  isObject,
   MedusaError,
+  isObject,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { RemoteQuery } from "./remote-query"
+import { toRemoteQuery } from "./to-remote-query"
 
 /**
  * API wrapper around the remoteQuery
@@ -26,14 +28,16 @@ export class Query {
 
   #unwrapQueryConfig(
     config:
-      | RemoteQueryObjectConfig<any>
       | RemoteQueryObjectFromStringResult<any>
+      | RemoteQueryObjectConfig<any>
       | RemoteJoinerQuery
   ): object {
     let normalizedQuery: any = config
 
     if ("__value" in config) {
       normalizedQuery = config.__value
+    } else if ("entity" in normalizedQuery) {
+      normalizedQuery = toRemoteQuery(normalizedQuery)
     } else if (
       "entryPoint" in normalizedQuery ||
       "service" in normalizedQuery
@@ -63,6 +67,7 @@ export class Query {
 
   async query(
     queryOptions:
+      | RemoteQueryInput<any>
       | RemoteQueryObjectConfig<any>
       | RemoteQueryObjectFromStringResult<any>
       | RemoteJoinerQuery,
@@ -94,10 +99,10 @@ export class Query {
    * returns a result set
    */
   async graph<const TEntry extends string>(
-    queryOptions: RemoteQueryObjectConfig<TEntry>,
+    queryOptions: RemoteQueryInput<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<GraphResultSet<TEntry>> {
-    const normalizedQuery = remoteQueryObjectFromString(queryOptions).__value
+    const normalizedQuery = toRemoteQuery(queryOptions)
     const response = await this.#remoteQuery.query(
       normalizedQuery,
       undefined,
@@ -119,8 +124,8 @@ export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
     return query.query.apply(query, args)
   }
 
-  backwardCompatibleQuery.graph = query.graph
-  backwardCompatibleQuery.gql = query.gql
+  backwardCompatibleQuery.graph = query.graph.bind(query)
+  backwardCompatibleQuery.gql = query.gql.bind(query)
 
   return backwardCompatibleQuery
 }

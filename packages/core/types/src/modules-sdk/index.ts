@@ -4,11 +4,18 @@ import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
 import { Logger } from "../logger"
 import {
+  RemoteQueryGraph,
+  RemoteQueryInput,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
 } from "./remote-query-object-from-string"
 
-export { RemoteQueryObjectConfig, RemoteQueryObjectFromStringResult }
+export {
+  RemoteQueryGraph,
+  RemoteQueryInput,
+  RemoteQueryObjectConfig,
+  RemoteQueryObjectFromStringResult,
+}
 
 export type Constructor<T> = new (...args: any[]) => T | (new () => T)
 
