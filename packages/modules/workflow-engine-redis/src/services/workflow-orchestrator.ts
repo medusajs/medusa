@@ -151,7 +151,7 @@ export class WorkflowOrchestratorService {
     await this.redisDistributedTransactionStorage_.onApplicationStart()
   }
 
-  private async triggerParentStep(transaction, result) {
+  public async triggerParentStep(transaction, result) {
     const metadata = transaction.flow.metadata
     const { parentStepIdempotencyKey } = metadata ?? {}
     if (parentStepIdempotencyKey) {
@@ -208,7 +208,7 @@ export class WorkflowOrchestratorService {
       transactionId: context.transactionId,
     })
 
-    const exportedWorkflow: any = MedusaWorkflow.getWorkflow(workflowId)
+    const exportedWorkflow = MedusaWorkflow.getWorkflow(workflowId)
     if (!exportedWorkflow) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
@@ -222,10 +222,21 @@ export class WorkflowOrchestratorService {
       events,
     })
 
-    // TODO: temporary
+    const hasFinished = ret.transaction.hasFinished()
+    const metadata = ret.transaction.getFlow().metadata
+    const { parentStepIdempotencyKey } = metadata ?? {}
+    const hasFailed = [
+      TransactionState.REVERTED,
+      TransactionState.FAILED,
+    ].includes(ret.transaction.getFlow().state)
+
+    // TODO: temporary - Create an Aknowledgement type
     const acknowledgement = {
       transactionId: context.transactionId,
       workflowId: workflowId,
+      parentStepIdempotencyKey,
+      hasFinished,
+      hasFailed,
     }
 
     if (ret.transaction.hasFinished()) {
@@ -325,6 +336,7 @@ export class WorkflowOrchestratorService {
     })
 
     if (ret.transaction.hasFinished()) {
+      console.log("transaction has finished")
       const { result, errors } = ret
 
       await this.notify({

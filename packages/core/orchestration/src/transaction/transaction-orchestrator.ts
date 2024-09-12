@@ -829,6 +829,11 @@ export class TransactionOrchestrator extends EventEmitter {
                     step,
                     step.definition.retryInterval ?? 0
                   )
+                  console.log("SCHEDULED", {
+                    workflow: transaction.modelId,
+                    transaction: transaction.transactionId,
+                    state: step.getStates(),
+                  })
                 })
                 .catch(async (error) => {
                   if (
@@ -868,6 +873,11 @@ export class TransactionOrchestrator extends EventEmitter {
         `TransactionModel "${transaction.modelId}" cannot be orchestrated by "${this.id}" model.`
       )
     }
+
+    console.log(transaction.getState(), {
+      workflow: transaction.modelId,
+      transaction: transaction.transactionId,
+    })
 
     if (transaction.hasFinished()) {
       return
