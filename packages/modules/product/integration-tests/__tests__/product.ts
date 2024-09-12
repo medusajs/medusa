@@ -65,6 +65,7 @@ moduleIntegrationTestRunner<Service>({
         product: {
           id: {
             linkable: "product_id",
+            entity: "Product",
             primaryKey: "id",
             serviceName: "productService",
             field: "product",
@@ -73,12 +74,14 @@ moduleIntegrationTestRunner<Service>({
         productVariant: {
           id: {
             linkable: "product_variant_id",
+            entity: "ProductVariant",
             primaryKey: "id",
             serviceName: "productService",
             field: "productVariant",
           },
           variant_id: {
             field: "productVariant",
+            entity: "ProductVariant",
             linkable: "variant_id",
             primaryKey: "variant_id",
             serviceName: "productService",
@@ -87,6 +90,7 @@ moduleIntegrationTestRunner<Service>({
         productOption: {
           id: {
             linkable: "product_option_id",
+            entity: "ProductOption",
             primaryKey: "id",
             serviceName: "productService",
             field: "productOption",
@@ -95,6 +99,7 @@ moduleIntegrationTestRunner<Service>({
         productType: {
           id: {
             linkable: "product_type_id",
+            entity: "ProductType",
             primaryKey: "id",
             serviceName: "productService",
             field: "productType",
@@ -103,6 +108,7 @@ moduleIntegrationTestRunner<Service>({
         productImage: {
           id: {
             linkable: "product_image_id",
+            entity: "ProductImage",
             primaryKey: "id",
             serviceName: "productService",
             field: "productImage",
@@ -111,6 +117,7 @@ moduleIntegrationTestRunner<Service>({
         productTag: {
           id: {
             linkable: "product_tag_id",
+            entity: "ProductTag",
             primaryKey: "id",
             serviceName: "productService",
             field: "productTag",
@@ -119,6 +126,7 @@ moduleIntegrationTestRunner<Service>({
         productCollection: {
           id: {
             linkable: "product_collection_id",
+            entity: "ProductCollection",
             primaryKey: "id",
             serviceName: "productService",
             field: "productCollection",
@@ -127,6 +135,7 @@ moduleIntegrationTestRunner<Service>({
         productCategory: {
           id: {
             linkable: "product_category_id",
+            entity: "ProductCategory",
             primaryKey: "id",
             serviceName: "productService",
             field: "productCategory",

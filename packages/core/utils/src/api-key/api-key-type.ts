@@ -13,3 +13,5 @@ export enum ApiKeyType {
    */
   SECRET = "secret",
 }
+
+export const PUBLISHABLE_KEY_HEADER = "x-publishable-api-key"

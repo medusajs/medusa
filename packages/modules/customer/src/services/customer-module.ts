@@ -21,8 +21,8 @@ import {
 } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/core"
 import {
-  Address,
   Customer,
+  CustomerAddress,
   CustomerGroup,
   CustomerGroupCustomer,
 } from "@models"
@@ -31,23 +31,28 @@ import { joinerConfig } from "../joiner-config"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   customerService: ModulesSdkTypes.IMedusaInternalService<any>
-  addressService: ModulesSdkTypes.IMedusaInternalService<any>
+  customerAddressService: ModulesSdkTypes.IMedusaInternalService<any>
   customerGroupService: ModulesSdkTypes.IMedusaInternalService<any>
   customerGroupCustomerService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class CustomerModuleService
   extends MedusaService<{
-    Address: { dto: CustomerAddressDTO }
+    CustomerAddress: { dto: CustomerAddressDTO }
     Customer: { dto: CustomerDTO }
     CustomerGroup: { dto: CustomerGroupDTO }
     CustomerGroupCustomer: { dto: CustomerGroupCustomerDTO }
-  }>({ Address, Customer, CustomerGroup, CustomerGroupCustomer })
+  }>({
+    CustomerAddress,
+    Customer,
+    CustomerGroup,
+    CustomerGroupCustomer,
+  })
   implements ICustomerModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected customerService_: ModulesSdkTypes.IMedusaInternalService<Customer>
-  protected addressService_: ModulesSdkTypes.IMedusaInternalService<Address>
+  protected customerAddressService_: ModulesSdkTypes.IMedusaInternalService<CustomerAddress>
   protected customerGroupService_: ModulesSdkTypes.IMedusaInternalService<CustomerGroup>
   protected customerGroupCustomerService_: ModulesSdkTypes.IMedusaInternalService<CustomerGroupCustomer>
 
@@ -55,7 +60,7 @@ export default class CustomerModuleService
     {
       baseRepository,
       customerService,
-      addressService,
+      customerAddressService,
       customerGroupService,
       customerGroupCustomerService,
     }: InjectedDependencies,
@@ -66,7 +71,7 @@ export default class CustomerModuleService
 
     this.baseRepository_ = baseRepository
     this.customerService_ = customerService
-    this.addressService_ = addressService
+    this.customerAddressService_ = customerAddressService
     this.customerGroupService_ = customerGroupService
     this.customerGroupCustomerService_ = customerGroupCustomerService
   }
@@ -128,7 +133,10 @@ export default class CustomerModuleService
       })
       .flat()
 
-    await this.createAddresses(addressDataWithCustomerIds, sharedContext)
+    await this.createCustomerAddresses(
+      addressDataWithCustomerIds,
+      sharedContext
+    )
 
     return customers as unknown as CustomerTypes.CustomerDTO[]
   }
@@ -321,17 +329,17 @@ export default class CustomerModuleService
   }
 
   // @ts-expect-error
-  async createAddresses(
+  async createCustomerAddresses(
     addresses: CustomerTypes.CreateCustomerAddressDTO[],
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO[]>
-  async createAddresses(
+  async createCustomerAddresses(
     address: CustomerTypes.CreateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO>
 
   @InjectManager("baseRepository_")
-  async createAddresses(
+  async createCustomerAddresses(
     data:
       | CustomerTypes.CreateCustomerAddressDTO
       | CustomerTypes.CreateCustomerAddressDTO[],
@@ -339,7 +347,7 @@ export default class CustomerModuleService
   ): Promise<
     CustomerTypes.CustomerAddressDTO | CustomerTypes.CustomerAddressDTO[]
   > {
-    const addresses = await this.createAddresses_(data, sharedContext)
+    const addresses = await this.createCustomerAddresses_(data, sharedContext)
 
     const serialized = await this.baseRepository_.serialize<
       CustomerTypes.CustomerAddressDTO[]
@@ -353,37 +361,37 @@ export default class CustomerModuleService
   }
 
   @InjectTransactionManager("baseRepository_")
-  private async createAddresses_(
+  private async createCustomerAddresses_(
     data:
       | CustomerTypes.CreateCustomerAddressDTO
       | CustomerTypes.CreateCustomerAddressDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    return await this.addressService_.create(
+    return await this.customerAddressService_.create(
       Array.isArray(data) ? data : [data],
       sharedContext
     )
   }
 
   // @ts-expect-error
-  async updateAddresses(
+  async updateCustomerAddresses(
     addressId: string,
     data: CustomerTypes.UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO>
-  async updateAddresses(
+  async updateCustomerAddresses(
     addressIds: string[],
     data: CustomerTypes.UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO[]>
-  async updateAddresses(
+  async updateCustomerAddresses(
     selector: CustomerTypes.FilterableCustomerAddressProps,
     data: CustomerTypes.UpdateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO[]>
 
   @InjectTransactionManager("baseRepository_")
-  async updateAddresses(
+  async updateCustomerAddresses(
     addressIdOrSelector:
       | string
       | string[]
@@ -416,7 +424,7 @@ export default class CustomerModuleService
       }
     }
 
-    const addresses = await this.addressService_.update(
+    const addresses = await this.customerAddressService_.update(
       updateData,
       sharedContext
     )

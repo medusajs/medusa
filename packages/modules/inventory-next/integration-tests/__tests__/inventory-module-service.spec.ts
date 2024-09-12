@@ -28,6 +28,7 @@ moduleIntegrationTestRunner<IInventoryService>({
           inventoryItem: {
             id: {
               field: "inventoryItem",
+              entity: "InventoryItem",
               linkable: "inventory_item_id",
               primaryKey: "id",
               serviceName: "inventoryService",
@@ -36,6 +37,7 @@ moduleIntegrationTestRunner<IInventoryService>({
           inventoryLevel: {
             id: {
               field: "inventoryLevel",
+              entity: "InventoryLevel",
               linkable: "inventory_level_id",
               primaryKey: "id",
               serviceName: "inventoryService",
@@ -44,6 +46,7 @@ moduleIntegrationTestRunner<IInventoryService>({
           reservationItem: {
             id: {
               field: "reservationItem",
+              entity: "ReservationItem",
               linkable: "reservation_item_id",
               primaryKey: "id",
               serviceName: "inventoryService",

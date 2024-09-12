@@ -11,15 +11,14 @@ export const OrderFulfillment: ModuleJoinerConfig = {
   alias: [
     {
       name: ["order_fulfillment", "order_fulfillments"],
-      args: {
-        entity: "LinkOrderFulfillment",
-      },
+      entity: "LinkOrderFulfillment",
     },
   ],
   primaryKeys: ["id", "order_id", "fulfillment_id"],
   relationships: [
     {
       serviceName: Modules.ORDER,
+      entity: "Order",
       primaryKey: "id",
       foreignKey: "order_id",
       alias: "order",
@@ -29,11 +28,11 @@ export const OrderFulfillment: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.FULFILLMENT,
+      entity: "Fulfillment",
       primaryKey: "id",
       foreignKey: "fulfillment_id",
       alias: "fulfillments",
       args: {
-        // TODO: We are not suppose to know the module implementation here, wait for later to think about inferring it
         methodSuffix: "Fulfillments",
       },
     },

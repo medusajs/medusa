@@ -491,7 +491,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerAddressDTO[]>} The list of created addresses.
    *
    * @example
-   * const addresses = await customerModuleService.createAddresses([
+   * const addresses = await customerModuleService.createCustomerAddresses([
    *   {
    *     customer_id: "cus_123",
    *     address_name: "Home",
@@ -501,7 +501,7 @@ export interface ICustomerModuleService extends IModuleService {
    *   },
    * ])
    */
-  createAddresses(
+  createCustomerAddresses(
     addresses: CreateCustomerAddressDTO[],
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
@@ -514,7 +514,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerAddressDTO>} The created address.
    *
    * @example
-   * const address = await customerModuleService.createAddresses({
+   * const address = await customerModuleService.createCustomerAddresses({
    *   customer_id: "cus_123",
    *   address_name: "Home",
    *   address_1: "432 Stierlin Rd",
@@ -522,7 +522,7 @@ export interface ICustomerModuleService extends IModuleService {
    *   country_code: "us",
    * })
    */
-  createAddresses(
+  createCustomerAddresses(
     address: CreateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO>
@@ -536,7 +536,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerAddressDTO>} The updated address.
    *
    * @example
-   * const address = await customerModuleService.updateAddresses(
+   * const address = await customerModuleService.updateCustomerAddresses(
    *   "cuaddr_123",
    *   {
    *     first_name: "John",
@@ -544,7 +544,7 @@ export interface ICustomerModuleService extends IModuleService {
    *   }
    * )
    */
-  updateAddresses(
+  updateCustomerAddresses(
     addressId: string,
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
@@ -559,7 +559,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerAddressDTO[]>} The updated addresses.
    *
    * @example
-   * const addresses = await customerModuleService.updateAddresses(
+   * const addresses = await customerModuleService.updateCustomerAddresses(
    *   ["cuaddr_123", "cuaddr_321"],
    *   {
    *     first_name: "John",
@@ -567,7 +567,7 @@ export interface ICustomerModuleService extends IModuleService {
    *   }
    * )
    */
-  updateAddresses(
+  updateCustomerAddresses(
     addressIds: string[],
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
@@ -582,14 +582,14 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerAddressDTO[]>} The updated addresses.
    *
    * @example
-   * const addresses = await customerModuleService.updateAddresses(
+   * const addresses = await customerModuleService.updateCustomerAddresses(
    *   { first_name: "John" },
    *   {
    *     last_name: "Smith",
    *   }
    * )
    */
-  updateAddresses(
+  updateCustomerAddresses(
     selector: FilterableCustomerAddressProps,
     data: UpdateCustomerAddressDTO,
     sharedContext?: Context
@@ -603,9 +603,12 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the address is deleted successfully.
    *
    * @example
-   * await customerModuleService.deleteAddresses("cuaddr_123")
+   * await customerModuleService.deleteCustomerAddresses("cuaddr_123")
    */
-  deleteAddresses(addressId: string, sharedContext?: Context): Promise<void>
+  deleteCustomerAddresses(
+    addressId: string,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method deletes addresses by their IDs.
@@ -615,12 +618,15 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the addresses are deleted successfully.
    *
    * @example
-   * await customerModuleService.deleteAddresses([
+   * await customerModuleService.deleteCustomerAddresses([
    *   "cuaddr_123",
    *   "cuaddr_321",
    * ])
    */
-  deleteAddresses(addressIds: string[], sharedContext?: Context): Promise<void>
+  deleteCustomerAddresses(
+    addressIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method deletes addresses matching the specified filters.
@@ -630,12 +636,12 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the addresses are deleted successfully.
    *
    * @example
-   * await customerModuleService.deleteAddresses({
+   * await customerModuleService.deleteCustomerAddresses({
    *   first_name: "John",
    *   last_name: "Smith",
    * })
    */
-  deleteAddresses(
+  deleteCustomerAddresses(
     selector: FilterableCustomerAddressProps,
     sharedContext?: Context
   ): Promise<void>
@@ -653,7 +659,7 @@ export interface ICustomerModuleService extends IModuleService {
    * To retrieve a list of addresses using their IDs:
    *
    * ```ts
-   * const addresses = await customerModuleService.listAddresses({
+   * const addresses = await customerModuleService.listCustomerAddresses({
    *   id: ["cuaddr_123", "cuaddr_321"],
    * })
    * ```
@@ -661,7 +667,7 @@ export interface ICustomerModuleService extends IModuleService {
    * To specify relations that should be retrieved within the addresses:
    *
    * ```ts
-   * const addresses = await customerModuleService.listAddresses(
+   * const addresses = await customerModuleService.listCustomerAddresses(
    *   {
    *     id: ["cuaddr_123", "cuaddr_321"],
    *   },
@@ -674,7 +680,7 @@ export interface ICustomerModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const addresses = await customerModuleService.listAddresses(
+   * const addresses = await customerModuleService.listCustomerAddresses(
    *   {
    *     id: ["cuaddr_123", "cuaddr_321"],
    *   },
@@ -686,7 +692,7 @@ export interface ICustomerModuleService extends IModuleService {
    * )
    * ```
    */
-  listAddresses(
+  listCustomerAddresses(
     filters?: FilterableCustomerAddressProps,
     config?: FindConfig<CustomerAddressDTO>,
     sharedContext?: Context
@@ -706,7 +712,7 @@ export interface ICustomerModuleService extends IModuleService {
    *
    * ```ts
    * const [addresses, count] =
-   *   await customerModuleService.listAndCountAddresses({
+   *   await customerModuleService.listAndCountCustomerAddresses({
    *     id: ["cuaddr_123", "cuaddr_321"],
    *   })
    * ```
@@ -715,7 +721,7 @@ export interface ICustomerModuleService extends IModuleService {
    *
    * ```ts
    * const [addresses, count] =
-   *   await customerModuleService.listAndCountAddresses(
+   *   await customerModuleService.listAndCountCustomerAddresses(
    *     {
    *       id: ["cuaddr_123", "cuaddr_321"],
    *     },
@@ -729,7 +735,7 @@ export interface ICustomerModuleService extends IModuleService {
    *
    * ```ts
    * const [addresses, count] =
-   *   await customerModuleService.listAndCountAddresses(
+   *   await customerModuleService.listAndCountCustomerAddresses(
    *     {
    *       id: ["cuaddr_123", "cuaddr_321"],
    *     },
@@ -741,7 +747,7 @@ export interface ICustomerModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCountAddresses(
+  listAndCountCustomerAddresses(
     filters?: FilterableCustomerAddressProps,
     config?: FindConfig<CustomerAddressDTO>,
     sharedContext?: Context

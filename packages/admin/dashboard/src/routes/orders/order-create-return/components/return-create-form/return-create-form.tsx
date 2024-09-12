@@ -1,6 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PencilSquare } from "@medusajs/icons"
-import { AdminOrder, InventoryLevelDTO, ReturnDTO } from "@medusajs/types"
+import {
+  AdminOrder,
+  AdminOrderPreview,
+  AdminReturn,
+  InventoryLevelDTO,
+} from "@medusajs/types"
 import {
   Alert,
   Button,
@@ -47,8 +52,8 @@ import { ReturnCreateSchema, ReturnCreateSchemaType } from "./schema"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
-  activeReturn: ReturnDTO // TODO: AdminReturn
-  preview: AdminOrder // TODO
+  activeReturn: AdminReturn
+  preview: AdminOrderPreview
 }
 
 let selectedItems: string[] = []
@@ -62,7 +67,7 @@ export const ReturnCreateForm = ({
   const { handleSuccess } = useRouteModal()
 
   const itemsMap = useMemo(
-    () => new Map(order.items.map((i) => [i.id, i])),
+    () => new Map((order.items || []).map((i) => [i.id, i])),
     [order.items]
   )
 
@@ -171,7 +176,7 @@ export const ReturnCreateForm = ({
             ?.reason_id,
         })),
         option_id: method ? method.shipping_option_id : "",
-        location_id: "",
+        location_id: activeReturn?.location_id,
         send_notification: false,
       })
     },
@@ -189,7 +194,7 @@ export const ReturnCreateForm = ({
   })
 
   useEffect(() => {
-    const existingItemsMap = {}
+    const existingItemsMap: Record<string, boolean> = {}
 
     previewItems.forEach((i) => {
       const ind = items.findIndex((field) => field.item_id === i.id)
@@ -229,12 +234,14 @@ export const ReturnCreateForm = ({
   }, [previewItems])
 
   useEffect(() => {
-    const method = preview.shipping_methods.find(
+    const method = preview.shipping_methods?.find(
       (s) => !!s.actions?.find((a) => a.action === "SHIPPING_ADD")
     )
 
     if (method) {
-      form.setValue("option_id", method.shipping_option_id)
+      form.setValue("option_id", method.shipping_option_id!)
+    } else {
+      form.setValue("option_id", "")
     }
   }, [preview.shipping_methods])
 
@@ -299,6 +306,10 @@ export const ReturnCreateForm = ({
       document.getElementById("js-shipping-input").focus()
     }
   }, [isShippingPriceEdit])
+
+  useEffect(() => {
+    form.setValue("location_id", activeReturn?.location_id || "")
+  }, [activeReturn])
 
   const showLevelsWarning = useMemo(() => {
     if (!locationId) {
