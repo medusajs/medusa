@@ -1,6 +1,6 @@
 import { EventBusTypes } from "@medusajs/types"
 import { Catalog, CatalogRelation } from "@models"
-import { EventBusService } from "../__fixtures__"
+import { EventBusServiceMock } from "../__fixtures__"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
@@ -10,32 +10,36 @@ import {
   container,
   logger,
   MedusaAppLoader,
-  pgConnectionLoader,
 } from "@medusajs/framework"
 import * as path from "path"
 import { asValue } from "awilix"
-import { MedusaAppOutput } from "@medusajs/modules-sdk"
+import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
 import { EntityManager } from "@mikro-orm/postgresql"
+import { dbTestUtilFactory } from "medusa-test-utils"
+import { initDb } from "medusa-test-utils/dist/medusa-test-runner-utils/use-db"
+import { dbName } from "../__fixtures__/medusa-config"
 
-const eventBus = new EventBusService()
+const eventBusMock = new EventBusServiceMock()
 const remoteQueryMock = jest.fn()
+const dbUtils = dbTestUtilFactory()
 
 jest.setTimeout(300000)
 
 const productId = "prod_1"
 const variantId = "var_1"
 const priceSetId = "price_set_1"
-const moneyAmountId = "money_amount_1"
+const priceId = "money_amount_1"
 const linkId = "link_id_1"
 
 const sendEvents = async (eventDataToEmit) => {
   let a = 0
   remoteQueryMock.mockImplementation((query) => {
+    query = query.__value
     if (query.product) {
       return {
         id: a++ > 0 ? "aaaa" : productId,
       }
-    } else if (query.variant) {
+    } else if (query.product_variant) {
       return {
         id: variantId,
         sku: "aaa test aaa",
@@ -47,9 +51,9 @@ const sendEvents = async (eventDataToEmit) => {
       return {
         id: priceSetId,
       }
-    } else if (query.money_amount) {
+    } else if (query.price) {
       return {
-        id: moneyAmountId,
+        id: priceId,
         amount: 100,
         price_set: [
           {
@@ -73,614 +77,672 @@ const sendEvents = async (eventDataToEmit) => {
     return {}
   })
 
-  await eventBus.emit(eventDataToEmit)
+  await eventBusMock.emit(eventDataToEmit)
+}
+
+let isFirstTime = true
+let medusaAppLoader!: MedusaAppLoader
+
+const beforeAll_ = async () => {
+  try {
+    configLoader(path.join(__dirname, "./../__fixtures__"), "medusa-config.js")
+
+    console.log(`Creating database ${dbName}`)
+    await dbUtils.create(dbName)
+    dbUtils.pgConnection_ = await initDb()
+
+    container.register({
+      [ContainerRegistrationKeys.LOGGER]: asValue(logger),
+      [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
+      [ContainerRegistrationKeys.PG_CONNECTION]: asValue(dbUtils.pgConnection_),
+    })
+
+    medusaAppLoader = new MedusaAppLoader(container as any)
+
+    // Migrations
+    await medusaAppLoader.runModulesMigrations()
+    const linkPlanner = await medusaAppLoader.getLinksExecutionPlanner()
+    const plan = await linkPlanner.createPlan()
+    await linkPlanner.executePlan(plan)
+
+    // Clear partially loaded instances
+    MedusaModule.clearInstances()
+
+    // Bootstrap modules
+    const globalApp = await medusaAppLoader.load()
+
+    const index = container.resolve("indexService")
+
+    // Mock event bus  the index module
+    ;(index as any).eventBusModuleService_ = eventBusMock
+
+    await globalApp.onApplicationStart()
+
+    jest
+      .spyOn((index as any).storageProvider_, "remoteQuery_")
+      .mockImplementation(remoteQueryMock)
+
+    return globalApp
+  } catch (error) {
+    console.error("Error initializing", error?.message)
+    throw error
+  }
 }
 
 const beforeEach_ = async (eventDataToEmit) => {
-  configLoader(path.join(__dirname, "./../__fixtures__"), "medusa-config.js")
-  pgConnectionLoader()
+  jest.clearAllMocks()
 
-  container.register({
-    [ContainerRegistrationKeys.LOGGER]: asValue(logger),
-    [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
-  })
+  if (isFirstTime) {
+    isFirstTime = false
+    await sendEvents(eventDataToEmit)
+    return
+  }
 
-  const globalApp = await new MedusaAppLoader(container as any).load()
+  try {
+    await medusaAppLoader.runModulesLoader()
 
-  await sendEvents(eventDataToEmit)
+    await sendEvents(eventDataToEmit)
+  } catch (error) {
+    console.error("Error runner modules loaders", error?.message)
+    throw error
+  }
+}
 
-  return globalApp
+const afterEach_ = async () => {
+  try {
+    await dbUtils.teardown({ schema: "public" })
+  } catch (error) {
+    console.error("Error tearing down database:", error?.message)
+    throw error
+  }
 }
 
 describe("IndexModuleService", function () {
-  describe("SearchEngineModuleService", function () {
-    describe.only("on created or attached events", function () {
-      let medusaApp: MedusaAppOutput
-      let manager
+  let medusaApp: MedusaAppOutput
+  let onApplicationPrepareShutdown!: () => Promise<void>
+  let onApplicationShutdown!: () => Promise<void>
 
-      const eventDataToEmit: EventBusTypes.Event[] = [
+  beforeAll(async () => {
+    medusaApp = await beforeAll_()
+    onApplicationPrepareShutdown = medusaApp.onApplicationPrepareShutdown
+    onApplicationShutdown = medusaApp.onApplicationShutdown
+  })
+
+  afterAll(async () => {
+    await onApplicationPrepareShutdown()
+    await onApplicationShutdown()
+    await dbUtils.shutdown(dbName)
+  })
+
+  describe("on created or attached events", function () {
+    let manager
+
+    const eventDataToEmit: EventBusTypes.Event[] = [
+      {
+        name: "product.created",
+        data: {
+          id: productId,
+        },
+      },
+      {
+        name: "product.created",
+        data: {
+          id: "PRODUCTASDASDAS",
+        },
+      },
+      {
+        name: "variant.created",
+        data: {
+          id: variantId,
+          product: {
+            id: productId,
+          },
+        },
+      },
+      {
+        name: "PriceSet.created",
+        data: {
+          id: priceSetId,
+        },
+      },
+      {
+        name: "price.created",
+        data: {
+          id: priceId,
+          price_set: {
+            id: priceSetId,
+          },
+        },
+      },
+      {
+        name: "LinkProductVariantPriceSet.attached",
+        data: {
+          id: linkId,
+          variant_id: variantId,
+          price_set_id: priceSetId,
+        },
+      },
+    ]
+
+    beforeEach(async () => {
+      await beforeEach_(eventDataToEmit)
+
+      manager = (
+        medusaApp.sharedContainer!.resolve(ModuleRegistrationName.INDEX) as any
+      ).container_.manager as EntityManager
+    })
+
+    afterEach(afterEach_)
+
+    it("should create the corresponding catalog entries and catalog relation entries", async function () {
+      expect(remoteQueryMock).toHaveBeenCalledTimes(6)
+
+      /**
+       * Validate all catalog entries and catalog relation entries
+       */
+
+      const catalogEntries: Catalog[] = await manager.find(Catalog, {})
+
+      const productCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "Product"
+      })
+
+      expect(productCatalogEntries).toHaveLength(2)
+
+      const variantCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "ProductVariant"
+      })
+
+      expect(variantCatalogEntries).toHaveLength(1)
+
+      const priceSetCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "PriceSet"
+      })
+
+      expect(priceSetCatalogEntries).toHaveLength(1)
+
+      const priceCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "Price"
+      })
+
+      expect(priceCatalogEntries).toHaveLength(1)
+
+      const linkCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "LinkProductVariantPriceSet"
+      })
+
+      expect(linkCatalogEntries).toHaveLength(1)
+
+      const catalogRelationEntries: CatalogRelation[] = await manager.find(
+        CatalogRelation,
+        {}
+      )
+
+      expect(catalogRelationEntries).toHaveLength(4)
+
+      const productVariantCatalogRelationEntries =
+        catalogRelationEntries.filter((entry) => {
+          return (
+            entry.parent_id === productId &&
+            entry.parent_name === "Product" &&
+            entry.child_id === variantId &&
+            entry.child_name === "ProductVariant"
+          )
+        })
+
+      expect(productVariantCatalogRelationEntries).toHaveLength(1)
+
+      const variantLinkCatalogRelationEntries = catalogRelationEntries.filter(
+        (entry) => {
+          return (
+            entry.parent_id === variantId &&
+            entry.parent_name === "ProductVariant" &&
+            entry.child_id === linkId &&
+            entry.child_name === "LinkProductVariantPriceSet"
+          )
+        }
+      )
+
+      expect(variantLinkCatalogRelationEntries).toHaveLength(1)
+
+      const linkPriceSetCatalogRelationEntries = catalogRelationEntries.filter(
+        (entry) => {
+          return (
+            entry.parent_id === linkId &&
+            entry.parent_name === "LinkProductVariantPriceSet" &&
+            entry.child_id === priceSetId &&
+            entry.child_name === "PriceSet"
+          )
+        }
+      )
+
+      expect(linkPriceSetCatalogRelationEntries).toHaveLength(1)
+
+      const priceSetPriceCatalogRelationEntries = catalogRelationEntries.filter(
+        (entry) => {
+          return (
+            entry.parent_id === priceSetId &&
+            entry.parent_name === "PriceSet" &&
+            entry.child_id === priceId &&
+            entry.child_name === "Price"
+          )
+        }
+      )
+
+      expect(priceSetPriceCatalogRelationEntries).toHaveLength(1)
+    })
+  })
+
+  describe("on unordered created or attached events", function () {
+    let manager
+
+    const eventDataToEmit: EventBusTypes.Event[] = [
+      {
+        name: "variant.created",
+        data: {
+          id: variantId,
+          product: {
+            id: productId,
+          },
+        },
+      },
+      {
+        name: "product.created",
+        data: {
+          id: productId,
+        },
+      },
+      {
+        name: "product.created",
+        data: {
+          id: "PRODUCTASDASDAS",
+        },
+      },
+      {
+        name: "PriceSet.created",
+        data: {
+          id: priceSetId,
+        },
+      },
+      {
+        name: "price.created",
+        data: {
+          id: priceId,
+          price_set: {
+            id: priceSetId,
+          },
+        },
+      },
+      {
+        name: "LinkProductVariantPriceSet.attached",
+        data: {
+          id: linkId,
+          variant_id: variantId,
+          price_set_id: priceSetId,
+        },
+      },
+    ]
+
+    beforeEach(async () => {
+      await beforeEach_(eventDataToEmit)
+
+      manager = (
+        medusaApp.sharedContainer!.resolve(ModuleRegistrationName.INDEX) as any
+      ).container_.manager as EntityManager
+    })
+
+    afterEach(afterEach_)
+
+    it("should create the corresponding catalog entries and catalog relation entries", async function () {
+      expect(remoteQueryMock).toHaveBeenCalledTimes(6)
+
+      /**
+       * Validate all catalog entries and catalog relation entries
+       */
+
+      const catalogEntries: Catalog[] = await manager.find(Catalog, {})
+
+      const productCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "Product"
+      })
+
+      expect(productCatalogEntries).toHaveLength(2)
+      expect(productCatalogEntries[0].id).toEqual(productId)
+
+      const variantCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "ProductVariant"
+      })
+
+      expect(variantCatalogEntries).toHaveLength(1)
+      expect(variantCatalogEntries[0].id).toEqual(variantId)
+
+      const priceSetCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "PriceSet"
+      })
+
+      expect(priceSetCatalogEntries).toHaveLength(1)
+      expect(priceSetCatalogEntries[0].id).toEqual(priceSetId)
+
+      const priceCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "Price"
+      })
+
+      expect(priceCatalogEntries).toHaveLength(1)
+      expect(priceCatalogEntries[0].id).toEqual(priceId)
+
+      const linkCatalogEntries = catalogEntries.filter((entry) => {
+        return entry.name === "LinkProductVariantPriceSet"
+      })
+
+      expect(linkCatalogEntries).toHaveLength(1)
+      expect(linkCatalogEntries[0].id).toEqual(linkId)
+
+      const catalogRelationEntries: CatalogRelation[] = await manager.find(
+        CatalogRelation,
+        {}
+      )
+
+      expect(catalogRelationEntries).toHaveLength(4)
+
+      const productVariantCatalogRelationEntries =
+        catalogRelationEntries.filter((entry) => {
+          return (
+            entry.parent_id === productId &&
+            entry.parent_name === "Product" &&
+            entry.child_id === variantId &&
+            entry.child_name === "ProductVariant"
+          )
+        })
+
+      expect(productVariantCatalogRelationEntries).toHaveLength(1)
+
+      const variantLinkCatalogRelationEntries = catalogRelationEntries.filter(
+        (entry) => {
+          return (
+            entry.parent_id === variantId &&
+            entry.parent_name === "ProductVariant" &&
+            entry.child_id === linkId &&
+            entry.child_name === "LinkProductVariantPriceSet"
+          )
+        }
+      )
+
+      expect(variantLinkCatalogRelationEntries).toHaveLength(1)
+
+      const linkPriceSetCatalogRelationEntries = catalogRelationEntries.filter(
+        (entry) => {
+          return (
+            entry.parent_id === linkId &&
+            entry.parent_name === "LinkProductVariantPriceSet" &&
+            entry.child_id === priceSetId &&
+            entry.child_name === "PriceSet"
+          )
+        }
+      )
+
+      expect(linkPriceSetCatalogRelationEntries).toHaveLength(1)
+
+      const priceSetPriceCatalogRelationEntries = catalogRelationEntries.filter(
+        (entry) => {
+          return (
+            entry.parent_id === priceSetId &&
+            entry.parent_name === "PriceSet" &&
+            entry.child_id === priceId &&
+            entry.child_name === "Price"
+          )
+        }
+      )
+
+      expect(priceSetPriceCatalogRelationEntries).toHaveLength(1)
+    })
+  })
+
+  describe("on updated events", function () {
+    let manager
+
+    const updateData = async (manager) => {
+      const catalogRepository = manager.getRepository(Catalog)
+      await catalogRepository.upsertMany([
         {
-          name: "product.created",
+          id: productId,
+          name: "Product",
           data: {
             id: productId,
           },
         },
         {
-          name: "product.created",
-          data: {
-            id: "PRODUCTASDASDAS",
-          },
-        },
-        {
-          name: "variant.created",
+          id: variantId,
+          name: "ProductVariant",
           data: {
             id: variantId,
+            sku: "aaa test aaa",
             product: {
               id: productId,
             },
           },
         },
-        {
-          name: "PriceSet.created",
-          data: {
-            id: priceSetId,
-          },
+      ])
+    }
+
+    const eventDataToEmit: EventBusTypes.Event[] = [
+      {
+        name: "product.updated",
+        data: {
+          id: productId,
         },
-        {
-          name: "price.created",
-          data: {
-            id: moneyAmountId,
-            price_set: {
-              id: priceSetId,
-            },
-          },
-        },
-        {
-          name: "LinkProductVariantPriceSet.attached",
-          data: {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-          },
-        },
-      ]
-
-      beforeEach(async () => {
-        medusaApp = await beforeEach_(eventDataToEmit)
-
-        manager = (
-          medusaApp.sharedContainer!.resolve(
-            ModuleRegistrationName.INDEX
-          ) as any
-        ).container_.manager as EntityManager
-      })
-
-      afterEach(async () => {
-        await medusaApp.onApplicationShutdown()
-      })
-
-      it.only("should create the corresponding catalog entries and catalog relation entries", async function () {
-        expect(remoteQueryMock).toHaveBeenCalledTimes(6)
-
-        /**
-         * Validate all catalog entries and catalog relation entries
-         */
-
-        const catalogEntries: Catalog[] = await manager.find(Catalog, {})
-
-        const productCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "Product"
-        })
-
-        expect(productCatalogEntries).toHaveLength(2)
-
-        const variantCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "ProductVariant"
-        })
-
-        expect(variantCatalogEntries).toHaveLength(1)
-
-        const priceSetCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "PriceSet"
-        })
-
-        expect(priceSetCatalogEntries).toHaveLength(1)
-
-        const moneyAmountCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "MoneyAmount"
-        })
-
-        expect(moneyAmountCatalogEntries).toHaveLength(1)
-
-        const linkCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "LinkProductVariantPriceSet"
-        })
-
-        expect(linkCatalogEntries).toHaveLength(1)
-
-        const catalogRelationEntries: CatalogRelation[] = await manager.find(
-          CatalogRelation,
-          {}
-        )
-
-        expect(catalogRelationEntries).toHaveLength(4)
-
-        const productVariantCatalogRelationEntries =
-          catalogRelationEntries.filter((entry) => {
-            return (
-              entry.parent_id === productId &&
-              entry.parent_name === "Product" &&
-              entry.child_id === variantId &&
-              entry.child_name === "ProductVariant"
-            )
-          })
-
-        expect(productVariantCatalogRelationEntries).toHaveLength(1)
-
-        const variantLinkCatalogRelationEntries = catalogRelationEntries.filter(
-          (entry) => {
-            return (
-              entry.parent_id === variantId &&
-              entry.parent_name === "ProductVariant" &&
-              entry.child_id === linkId &&
-              entry.child_name === "LinkProductVariantPriceSet"
-            )
-          }
-        )
-
-        expect(variantLinkCatalogRelationEntries).toHaveLength(1)
-
-        const linkPriceSetCatalogRelationEntries =
-          catalogRelationEntries.filter((entry) => {
-            return (
-              entry.parent_id === linkId &&
-              entry.parent_name === "LinkProductVariantPriceSet" &&
-              entry.child_id === priceSetId &&
-              entry.child_name === "PriceSet"
-            )
-          })
-
-        expect(linkPriceSetCatalogRelationEntries).toHaveLength(1)
-
-        const priceSetMoneyAmountCatalogRelationEntries =
-          catalogRelationEntries.filter((entry) => {
-            return (
-              entry.parent_id === priceSetId &&
-              entry.parent_name === "PriceSet" &&
-              entry.child_id === moneyAmountId &&
-              entry.child_name === "MoneyAmount"
-            )
-          })
-
-        expect(priceSetMoneyAmountCatalogRelationEntries).toHaveLength(1)
-      })
-    })
-
-    describe("on unordered created or attached events", function () {
-      let manager
-      let medusaApp: MedusaAppOutput
-
-      const eventDataToEmit: EventBusTypes.Event[] = [
-        {
-          name: "variant.created",
-          data: {
-            id: variantId,
-            product: {
-              id: productId,
-            },
-          },
-        },
-        {
-          name: "product.created",
-          data: {
+      },
+      {
+        name: "variant.updated",
+        data: {
+          id: variantId,
+          product: {
             id: productId,
           },
         },
-        {
-          name: "product.created",
-          data: {
-            id: "PRODUCTASDASDAS",
-          },
-        },
-        {
-          name: "PriceSet.created",
-          data: {
-            id: priceSetId,
-          },
-        },
-        {
-          name: "price.created",
-          data: {
-            id: moneyAmountId,
-            price_set: {
-              id: priceSetId,
-            },
-          },
-        },
-        {
-          name: "LinkProductVariantPriceSet.attached",
-          data: {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-          },
-        },
-      ]
+      },
+    ]
 
-      beforeEach(async () => {
-        medusaApp = await beforeEach_(eventDataToEmit)
+    beforeEach(async () => {
+      await beforeEach_(eventDataToEmit)
 
-        manager = (
-          medusaApp.sharedContainer!.resolve(
-            ModuleRegistrationName.INDEX
-          ) as any
-        ).container_.manager as EntityManager
-      })
+      manager = (
+        medusaApp.sharedContainer!.resolve(ModuleRegistrationName.INDEX) as any
+      ).container_.manager as EntityManager
 
-      afterEach(async () => {
-        await medusaApp.onApplicationShutdown()
-      })
+      await updateData(manager)
 
-      it("should create the corresponding catalog entries and catalog relation entries", async function () {
-        expect(remoteQueryMock).toHaveBeenCalledTimes(6)
-
-        /**
-         * Validate all catalog entries and catalog relation entries
-         */
-
-        const catalogEntries: Catalog[] = await manager.find(Catalog, {})
-
-        const productCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "Product"
-        })
-
-        expect(productCatalogEntries).toHaveLength(2)
-        expect(productCatalogEntries[0].id).toEqual(productId)
-
-        const variantCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "ProductVariant"
-        })
-
-        expect(variantCatalogEntries).toHaveLength(1)
-        expect(variantCatalogEntries[0].id).toEqual(variantId)
-
-        const priceSetCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "PriceSet"
-        })
-
-        expect(priceSetCatalogEntries).toHaveLength(1)
-        expect(priceSetCatalogEntries[0].id).toEqual(priceSetId)
-
-        const moneyAmountCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "MoneyAmount"
-        })
-
-        expect(moneyAmountCatalogEntries).toHaveLength(1)
-        expect(moneyAmountCatalogEntries[0].id).toEqual(moneyAmountId)
-
-        const linkCatalogEntries = catalogEntries.filter((entry) => {
-          return entry.name === "LinkProductVariantPriceSet"
-        })
-
-        expect(linkCatalogEntries).toHaveLength(1)
-        expect(linkCatalogEntries[0].id).toEqual(linkId)
-
-        const catalogRelationEntries: CatalogRelation[] = await manager.find(
-          CatalogRelation,
-          {}
-        )
-
-        expect(catalogRelationEntries).toHaveLength(4)
-
-        const productVariantCatalogRelationEntries =
-          catalogRelationEntries.filter((entry) => {
-            return (
-              entry.parent_id === productId &&
-              entry.parent_name === "Product" &&
-              entry.child_id === variantId &&
-              entry.child_name === "ProductVariant"
-            )
-          })
-
-        expect(productVariantCatalogRelationEntries).toHaveLength(1)
-
-        const variantLinkCatalogRelationEntries = catalogRelationEntries.filter(
-          (entry) => {
-            return (
-              entry.parent_id === variantId &&
-              entry.parent_name === "ProductVariant" &&
-              entry.child_id === linkId &&
-              entry.child_name === "LinkProductVariantPriceSet"
-            )
-          }
-        )
-
-        expect(variantLinkCatalogRelationEntries).toHaveLength(1)
-
-        const linkPriceSetCatalogRelationEntries =
-          catalogRelationEntries.filter((entry) => {
-            return (
-              entry.parent_id === linkId &&
-              entry.parent_name === "LinkProductVariantPriceSet" &&
-              entry.child_id === priceSetId &&
-              entry.child_name === "PriceSet"
-            )
-          })
-
-        expect(linkPriceSetCatalogRelationEntries).toHaveLength(1)
-
-        const priceSetMoneyAmountCatalogRelationEntries =
-          catalogRelationEntries.filter((entry) => {
-            return (
-              entry.parent_id === priceSetId &&
-              entry.parent_name === "PriceSet" &&
-              entry.child_id === moneyAmountId &&
-              entry.child_name === "MoneyAmount"
-            )
-          })
-
-        expect(priceSetMoneyAmountCatalogRelationEntries).toHaveLength(1)
-      })
-    })
-
-    describe("on updated events", function () {
-      let manager
-      let medusaApp: MedusaAppOutput
-
-      const updateData = async (manager) => {
-        const catalogRepository = manager.getRepository(Catalog)
-        await catalogRepository.upsertMany([
-          {
+      remoteQueryMock.mockImplementation((query) => {
+        query = query.__value
+        if (query.product) {
+          return {
             id: productId,
-            name: "Product",
-            data: {
-              id: productId,
-            },
-          },
-          {
+            title: "updated Title",
+          }
+        } else if (query.product_variant) {
+          return {
             id: variantId,
-            name: "ProductVariant",
-            data: {
-              id: variantId,
-              sku: "aaa test aaa",
-              product: {
+            sku: "updated sku",
+            product: [
+              {
                 id: productId,
               },
-            },
-          },
-        ])
-      }
-
-      const eventDataToEmit: EventBusTypes.Event[] = [
-        {
-          name: "product.updated",
-          data: {
-            id: productId,
-          },
-        },
-        {
-          name: "variant.updated",
-          data: {
-            id: variantId,
-            product: {
-              id: productId,
-            },
-          },
-        },
-      ]
-
-      beforeEach(async () => {
-        medusaApp = await beforeEach_(eventDataToEmit)
-
-        manager = (
-          medusaApp.sharedContainer!.resolve(
-            ModuleRegistrationName.INDEX
-          ) as any
-        ).container_.manager as EntityManager
-
-        await updateData(manager)
-
-        remoteQueryMock.mockImplementation((query) => {
-          if (query.product) {
-            return {
-              id: productId,
-              title: "updated Title",
-            }
-          } else if (query.variant) {
-            return {
-              id: variantId,
-              sku: "updated sku",
-              product: [
-                {
-                  id: productId,
-                },
-              ],
-            }
+            ],
           }
+        }
 
-          return {}
-        })
-        await eventBus.emit(eventDataToEmit)
+        return {}
       })
-
-      afterEach(async () => {
-        await medusaApp.onApplicationShutdown()
-      })
-
-      it("should update the corresponding catalog entries", async () => {
-        expect(remoteQueryMock).toHaveBeenCalledTimes(4)
-
-        const updatedCatalogEntries = await manager.find(Catalog, {})
-
-        expect(updatedCatalogEntries).toHaveLength(2)
-
-        const productEntry = updatedCatalogEntries.find((entry) => {
-          return entry.name === "Product" && entry.id === productId
-        })
-
-        expect(productEntry?.data?.title).toEqual("updated Title")
-
-        const variantEntry = updatedCatalogEntries.find((entry) => {
-          return entry.name === "ProductVariant" && entry.id === variantId
-        })
-
-        expect(variantEntry?.data?.sku).toEqual("updated sku")
-      })
+      await eventBusMock.emit(eventDataToEmit)
     })
 
-    describe("on deleted events", function () {
-      let manager
-      let medusaApp: MedusaAppOutput
+    afterEach(afterEach_)
 
-      const eventDataToEmit: EventBusTypes.Event[] = [
-        {
-          name: "product.created",
-          data: {
+    it("should update the corresponding catalog entries", async () => {
+      expect(remoteQueryMock).toHaveBeenCalledTimes(4)
+
+      const updatedCatalogEntries = await manager.find(Catalog, {})
+
+      expect(updatedCatalogEntries).toHaveLength(2)
+
+      const productEntry = updatedCatalogEntries.find((entry) => {
+        return entry.name === "Product" && entry.id === productId
+      })
+
+      expect(productEntry?.data?.title).toEqual("updated Title")
+
+      const variantEntry = updatedCatalogEntries.find((entry) => {
+        return entry.name === "ProductVariant" && entry.id === variantId
+      })
+
+      expect(variantEntry?.data?.sku).toEqual("updated sku")
+    })
+  })
+
+  describe("on deleted events", function () {
+    let manager
+
+    const eventDataToEmit: EventBusTypes.Event[] = [
+      {
+        name: "product.created",
+        data: {
+          id: productId,
+        },
+      },
+      {
+        name: "variant.created",
+        data: {
+          id: variantId,
+          product: {
             id: productId,
           },
         },
-        {
-          name: "variant.created",
-          data: {
-            id: variantId,
-            product: {
-              id: productId,
-            },
-          },
+      },
+      {
+        name: "PriceSet.created",
+        data: {
+          id: priceSetId,
         },
-        {
-          name: "PriceSet.created",
-          data: {
+      },
+      {
+        name: "price.created",
+        data: {
+          id: priceId,
+          price_set: {
             id: priceSetId,
           },
         },
-        {
-          name: "price.created",
-          data: {
-            id: moneyAmountId,
-            price_set: {
-              id: priceSetId,
-            },
-          },
+      },
+      {
+        name: "LinkProductVariantPriceSet.attached",
+        data: {
+          id: linkId,
+          variant_id: variantId,
+          price_set_id: priceSetId,
         },
-        {
-          name: "LinkProductVariantPriceSet.attached",
-          data: {
-            id: linkId,
-            variant_id: variantId,
-            price_set_id: priceSetId,
-          },
-        },
-      ]
+      },
+    ]
 
-      const deleteEventDataToEmit: EventBusTypes.Event[] = [
-        {
-          name: "product.deleted",
-          data: {
+    const deleteEventDataToEmit: EventBusTypes.Event[] = [
+      {
+        name: "product.deleted",
+        data: {
+          id: productId,
+        },
+      },
+      {
+        name: "variant.deleted",
+        data: {
+          id: variantId,
+        },
+      },
+    ]
+
+    beforeEach(async () => {
+      await beforeEach_(eventDataToEmit)
+
+      manager = (
+        medusaApp.sharedContainer!.resolve(ModuleRegistrationName.INDEX) as any
+      ).container_.manager as EntityManager
+
+      remoteQueryMock.mockImplementation((query) => {
+        query = query.__value
+        if (query.product) {
+          return {
             id: productId,
-          },
-        },
-        {
-          name: "variant.deleted",
-          data: {
+          }
+        } else if (query.product_variant) {
+          return {
             id: variantId,
-          },
-        },
-      ]
-
-      beforeEach(async () => {
-        medusaApp = await beforeEach_(eventDataToEmit)
-
-        manager = (
-          medusaApp.sharedContainer!.resolve(
-            ModuleRegistrationName.INDEX
-          ) as any
-        ).container_.manager as EntityManager
-
-        remoteQueryMock.mockImplementation((query) => {
-          if (query.product) {
-            return {
-              id: productId,
-            }
-          } else if (query.variant) {
-            return {
-              id: variantId,
-              product: [
-                {
-                  id: productId,
-                },
-              ],
-            }
+            product: [
+              {
+                id: productId,
+              },
+            ],
           }
+        }
 
-          return {}
-        })
-
-        await eventBus.emit(deleteEventDataToEmit)
+        return {}
       })
 
-      afterEach(async () => {
-        await medusaApp.onApplicationShutdown()
-      })
+      await eventBusMock.emit(deleteEventDataToEmit)
+    })
 
-      it("should consume all deleted events and delete the catalog entries", async () => {
-        expect(remoteQueryMock).toHaveBeenCalledTimes(7)
+    afterEach(afterEach_)
 
-        const catalogEntries = await manager.find(Catalog, {})
-        const catalogRelationEntries = await manager.find(CatalogRelation, {})
+    it("should consume all deleted events and delete the catalog entries", async () => {
+      expect(remoteQueryMock).toHaveBeenCalledTimes(7)
 
-        expect(catalogEntries).toHaveLength(3)
-        expect(catalogRelationEntries).toHaveLength(2)
+      const catalogEntries = await manager.find(Catalog, {})
+      const catalogRelationEntries = await manager.find(CatalogRelation, {})
 
-        const linkCatalogEntry = catalogEntries.find((entry) => {
+      expect(catalogEntries).toHaveLength(3)
+      expect(catalogRelationEntries).toHaveLength(2)
+
+      const linkCatalogEntry = catalogEntries.find((entry) => {
+        return (
+          entry.name === "LinkProductVariantPriceSet" && entry.id === linkId
+        )
+      })!
+
+      const priceSetCatalogEntry = catalogEntries.find((entry) => {
+        return entry.name === "PriceSet" && entry.id === priceSetId
+      })!
+
+      const priceCatalogEntry = catalogEntries.find((entry) => {
+        return entry.name === "Price" && entry.id === priceId
+      })!
+
+      const linkPriceSetCatalogRelationEntry = catalogRelationEntries.find(
+        (entry) => {
           return (
-            entry.name === "LinkProductVariantPriceSet" && entry.id === linkId
+            entry.parent_id === linkId &&
+            entry.parent_name === "LinkProductVariantPriceSet" &&
+            entry.child_id === priceSetId &&
+            entry.child_name === "PriceSet"
           )
-        })!
+        }
+      )!
 
-        const priceSetCatalogEntry = catalogEntries.find((entry) => {
-          return entry.name === "PriceSet" && entry.id === priceSetId
-        })!
+      expect(linkPriceSetCatalogRelationEntry.parent).toEqual(linkCatalogEntry)
+      expect(linkPriceSetCatalogRelationEntry.child).toEqual(
+        priceSetCatalogEntry
+      )
 
-        const moneyAmountCatalogEntry = catalogEntries.find((entry) => {
-          return entry.name === "MoneyAmount" && entry.id === moneyAmountId
-        })!
+      const priceSetPriceCatalogRelationEntry = catalogRelationEntries.find(
+        (entry) => {
+          return (
+            entry.parent_id === priceSetId &&
+            entry.parent_name === "PriceSet" &&
+            entry.child_id === priceId &&
+            entry.child_name === "Price"
+          )
+        }
+      )!
 
-        const linkPriceSetCatalogRelationEntry = catalogRelationEntries.find(
-          (entry) => {
-            return (
-              entry.parent_id === linkId &&
-              entry.parent_name === "LinkProductVariantPriceSet" &&
-              entry.child_id === priceSetId &&
-              entry.child_name === "PriceSet"
-            )
-          }
-        )!
-
-        expect(linkPriceSetCatalogRelationEntry.parent).toEqual(
-          linkCatalogEntry
-        )
-        expect(linkPriceSetCatalogRelationEntry.child).toEqual(
-          priceSetCatalogEntry
-        )
-
-        const priceSetMoneyAmountCatalogRelationEntry =
-          catalogRelationEntries.find((entry) => {
-            return (
-              entry.parent_id === priceSetId &&
-              entry.parent_name === "PriceSet" &&
-              entry.child_id === moneyAmountId &&
-              entry.child_name === "MoneyAmount"
-            )
-          })!
-
-        expect(priceSetMoneyAmountCatalogRelationEntry.parent).toEqual(
-          priceSetCatalogEntry
-        )
-        expect(priceSetMoneyAmountCatalogRelationEntry.child).toEqual(
-          moneyAmountCatalogEntry
-        )
-      })
+      expect(priceSetPriceCatalogRelationEntry.parent).toEqual(
+        priceSetCatalogEntry
+      )
+      expect(priceSetPriceCatalogRelationEntry.child).toEqual(priceCatalogEntry)
     })
   })
 })

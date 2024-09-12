@@ -19,10 +19,10 @@ export const schema = `
     id: String
     product_id: String
     sku: String
-    money_amounts: [MoneyAmount]
+    prices: [Price]
   }
   
-  type MoneyAmount @Listeners(values: ["price.created", "price.updated", "price.deleted"]) {
+  type Price @Listeners(values: ["price.created", "price.updated", "price.deleted"]) {
     amount: Int
   }
 `

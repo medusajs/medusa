@@ -26,7 +26,7 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
-const dbTestUtilFactory = (): any => ({
+export const dbTestUtilFactory = (): any => ({
   pgConnection_: null,
 
   create: async function (dbName: string) {

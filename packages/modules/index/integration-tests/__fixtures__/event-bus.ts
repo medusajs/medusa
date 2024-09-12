@@ -5,7 +5,7 @@ import {
   Subscriber,
 } from "@medusajs/types"
 
-export class EventBusService implements IEventBusModuleService {
+export class EventBusServiceMock implements IEventBusModuleService {
   protected readonly subscribers_: Map<string | symbol, Set<Subscriber>> =
     new Map()
 

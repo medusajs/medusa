@@ -32,7 +32,19 @@ function makeSchemaExecutable(inputSchema: string) {
   return makeExecutableSchema({ typeDefs: cleanedSchema })
 }
 
-function retrieveAliasForEntity(entityName, serviceName, aliases) {
+function extractNameFromAlias(
+  alias: JoinerServiceConfigAlias | JoinerServiceConfigAlias[]
+) {
+  const alias_ = Array.isArray(alias) ? alias[0] : alias
+  const names = Array.isArray(alias_?.name) ? alias_?.name : [alias_?.name]
+  return names[0]
+}
+
+function retrieveAliasForEntity(
+  entityName: string,
+  serviceName: string,
+  aliases
+) {
   aliases = Array.isArray(aliases) ? aliases : [aliases]
 
   aliases = aliases.filter(Boolean)
@@ -43,13 +55,14 @@ function retrieveAliasForEntity(entityName, serviceName, aliases) {
       const names = Array.isArray(alias?.name) ? alias?.name : [alias?.name]
       return names?.map((name) => ({
         name,
+        entity: alias?.entity,
         args: alias?.args,
       }))
     })
     .flat() as JoinerServiceConfigAlias[]
 
   let alias = aliases.find((alias) => {
-    const curEntity = alias!.args?.entity || alias?.name
+    const curEntity = alias?.entity || alias?.name
     return curEntity && curEntity.toLowerCase() === entityName.toLowerCase()
   })
   alias = alias?.name
@@ -169,7 +182,7 @@ function retrieveLinkModuleAndAlias({
         )
       }
 
-      if (!linkModuleJoinerConfig.alias?.[0]?.args?.entity) {
+      if (!linkModuleJoinerConfig.alias?.[0]?.entity) {
         throw new Error(
           `CatalogModule error, unable to retrieve the link module entity name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the link module alias has an entity property in the args.`
         )
@@ -184,8 +197,8 @@ function retrieveLinkModuleAndAlias({
          */
 
         linkModulesMetadata.push({
-          entityName: linkModuleJoinerConfig.alias[0].args.entity,
-          alias: linkModuleJoinerConfig.alias[0].name,
+          entityName: linkModuleJoinerConfig.alias[0].entity,
+          alias: extractNameFromAlias(linkModuleJoinerConfig.alias),
           linkModuleConfig: linkModuleJoinerConfig,
           intermediateEntityNames: [],
         })
@@ -249,8 +262,8 @@ function retrieveLinkModuleAndAlias({
          */
 
         linkModulesMetadata.push({
-          entityName: linkModuleJoinerConfig.alias[0].args.entity,
-          alias: linkModuleJoinerConfig.alias[0].name,
+          entityName: linkModuleJoinerConfig.alias[0].entity,
+          alias: extractNameFromAlias(linkModuleJoinerConfig.alias),
           linkModuleConfig: linkModuleJoinerConfig,
           intermediateEntityNames: intermediateEntities,
         })
@@ -354,9 +367,7 @@ function processEntity(
       alias: [
         {
           name: "entity-alias",
-          args: {
-            entity: entityName,
-          },
+          entity: entityName,
         },
       ],
     })

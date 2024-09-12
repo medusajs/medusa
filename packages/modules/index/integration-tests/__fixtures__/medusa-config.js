@@ -1,7 +1,13 @@
 const { defineConfig, Modules } = require("@medusajs/utils")
 const { schema } = require("./schema")
 
-const config = defineConfig({})
+export const dbName = "medusa-index-integration-2024"
+
+const config = defineConfig({
+  projectConfig: {
+    databaseUrl: `postgresql://localhost:5432/${dbName}`,
+  },
+})
 
 Object.keys(config.modules).forEach((key) => {
   if ([Modules.EVENT_BUS].includes(key)) {
@@ -13,6 +19,7 @@ Object.keys(config.modules).forEach((key) => {
 
 config.modules[Modules.INDEX] = {
   resolve: "@medusajs/index",
+  dependencies: ["eventBus"],
   options: {
     schema,
   },
