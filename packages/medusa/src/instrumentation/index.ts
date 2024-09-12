@@ -1,6 +1,7 @@
 import { snakeCase } from "lodash"
 import { NodeSDK } from "@opentelemetry/sdk-node"
 import { Resource } from "@opentelemetry/resources"
+import { SpanStatusCode } from "@opentelemetry/api"
 import { RoutesLoader, Tracer } from "@medusajs/framework"
 import {
   type SpanExporter,
@@ -26,7 +27,7 @@ function shouldExcludeResource(resource: string) {
 export function instrumentHttpLayer() {
   const HTTPTracer = new Tracer("@medusajs/http", "2.0.0")
 
-  start.traceRequestHandler = async (requestHandler, req) => {
+  start.traceRequestHandler = async (requestHandler, req, res) => {
     if (shouldExcludeResource(req.url!)) {
       return await requestHandler()
     }
@@ -34,14 +35,15 @@ export function instrumentHttpLayer() {
     const traceName = `${req.method} ${req.url}`
     await HTTPTracer.trace(traceName, async (span) => {
       span.setAttributes({
-        url: req.url,
-        method: req.method,
+        "http.url": req.url,
+        "http.method": req.method,
         ...req.headers,
       })
 
       try {
         await requestHandler()
       } finally {
+        span.setAttributes({ "http.statusCode": res.statusCode })
         span.end()
       }
     })
@@ -64,6 +66,11 @@ export function instrumentHttpLayer() {
       await HTTPTracer.trace(traceName, async (span) => {
         try {
           await handler(req, res)
+        } catch (error) {
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: error.message || "Failed",
+          })
         } finally {
           span.end()
         }
@@ -82,16 +89,28 @@ export function instrumentHttpLayer() {
 
     return async (req, res, next) => {
       if (shouldExcludeResource(req.originalUrl)) {
-        return await handler(req, res, next)
+        return handler(req, res, next)
       }
 
       await HTTPTracer.trace(traceName, async (span) => {
-        try {
-          await handler(req, res, next)
-        } finally {
-          span.end()
-        }
+        return new Promise<void>((resolve, reject) => {
+          handler(req, res, (error?: any) => {
+            if (error) {
+              span.setStatus({
+                code: SpanStatusCode.ERROR,
+                message: error.message || "Failed",
+              })
+              span.end()
+              reject(error)
+            } else {
+              span.end()
+              resolve()
+            }
+          })
+        })
       })
+        .catch(next)
+        .then(next)
     }
   })
 }

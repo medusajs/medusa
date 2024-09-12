@@ -1,12 +1,13 @@
+import path from "path"
 import express from "express"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
-import { gqlSchemaToTypes, logger } from "@medusajs/framework"
 import { GracefulShutdownServer } from "@medusajs/utils"
+import http, { IncomingMessage, ServerResponse } from "http"
+import { gqlSchemaToTypes, logger } from "@medusajs/framework"
+
 import loaders from "../loaders"
-import path from "path"
-import http, { IncomingMessage } from "http"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -17,13 +18,17 @@ async function start({ port, directory, types }) {
 
     const app = express()
 
-    const http_ = http.createServer(async (req: any, res) => {
-      await start.traceRequestHandler(async () => {
-        return new Promise((resolve) => {
-          res.on("finish", resolve)
-          app(req, res)
-        })
-      }, req)
+    const http_ = http.createServer(async (req, res) => {
+      await start.traceRequestHandler(
+        async () => {
+          return new Promise((resolve) => {
+            res.on("finish", resolve)
+            app(req, res)
+          })
+        },
+        req,
+        res
+      )
     })
 
     try {
@@ -87,7 +92,8 @@ async function start({ port, directory, types }) {
  */
 start.traceRequestHandler = async (
   requestHandler: () => Promise<void>,
-  _: IncomingMessage
+  _: IncomingMessage,
+  __: ServerResponse
 ) => {
   return await requestHandler()
 }
