@@ -590,12 +590,10 @@ export const GET = async (
   )
 
   const { data: [vendor] } = await query.graph({
-    entryPoint: "vendor",
+    entity: "vendor",
     fields: ["products.*"],
-    variables: {
-      filters: {
-        id: [vendorAdmin.vendor.id],
-      },
+    filters: {
+      id: [vendorAdmin.vendor.id],
     },
   })
 
@@ -830,12 +828,10 @@ const groupVendorItemsStep = createStep(
 
     await Promise.all(cart.items?.map(async (item) => {
       const { data: [product] } = await query.graph({
-        entryPoint: "product",
+        entity: "product",
         fields: ["vendor.*"],
-        variables: {
-          filters: {
-            id: [item.product_id],
-          },
+        filters: {
+          id: [item.product_id],
         },
       })
 
@@ -1274,12 +1270,10 @@ export const GET = async (
   )
 
   const { data: [vendor] } = await query.graph({
-    entryPoint: "vendor",
+    entity: "vendor",
     fields: ["orders.*"],
-    variables: {
-      filters: {
-        id: [vendorAdmin.vendor.id],
-      },
+    filters: {
+      id: [vendorAdmin.vendor.id],
     },
   })
 

@@ -29,7 +29,7 @@ For example, create the route `src/api/store/query/route.ts` with the following 
 export const exampleHighlights = [
   ["13", "", "Resolve Query from the Medusa container."],
   ["15", "graph", "Run a query to retrieve data."],
-  ["16", "entryPoint", "The name of the data model you're querying."],
+  ["16", "entity", "The name of the data model you're querying."],
   ["17", "fields", "An array of the data model’s properties to retrieve in the result."],
 ]
 
@@ -49,7 +49,7 @@ export const GET = async (
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: myCustoms } = await query.graph({
-    entryPoint: "my_custom",
+    entity: "my_custom",
     fields: ["id", "name"],
   })
 
@@ -61,7 +61,7 @@ In the above example, you resolve Query from the Medusa container using the `Con
 
 Then, you run a query using its `graph` method. This method accepts as a parameter an object with the following required properties:
 
-- `entryPoint`: The data model's name, as specified in the first parameter of the `model.define` method used for the data model's definition.
+- `entity`: The data model's name, as specified in the first parameter of the `model.define` method used for the data model's definition.
 - `fields`: An array of the data model’s properties to retrieve in the result.
 
 The method returns an object that has a `data` property, which holds an array of the retrieved data. For example:
@@ -79,6 +79,14 @@ The method returns an object that has a `data` property, which holds an array of
 
 ---
 
+## Querying the Graph
+
+When you use the `query.graph` method, you're running a query through an internal graph that the Medusa application creates.
+
+This graph collects data models of all modules in your application, including commerce and custom modules, and identifies relations and links between them.
+
+---
+
 ## Retrieve Linked Records
 
 Retrieve the records of a linked data model by passing in `fields` the data model's name suffixed with `.*`.
@@ -87,7 +95,7 @@ For example:
 
 ```ts highlights={[["6"]]}
 const { data: myCustoms } = await query.graph({
-  entryPoint: "my_custom",
+  entity: "my_custom",
   fields: [
     "id", 
     "name",
@@ -110,7 +118,7 @@ For example:
 
 ```ts highlights={[["6"]]}
 const { data: myCustoms } = await query.graph({
-  entryPoint: "my_custom",
+  entity: "my_custom",
   fields: [
     "id", 
     "name",
@@ -125,18 +133,20 @@ const { data: myCustoms } = await query.graph({
 
 ```ts highlights={[["6"], ["7"], ["8"], ["9"]]}
 const { data: myCustoms } = await query.graph({
-  entryPoint: "my_custom",
+  entity: "my_custom",
   fields: ["id", "name"],
-  variables: {
-    filters: {
-      id: [
-        "mc_01HWSVWR4D2XVPQ06DQ8X9K7AX",
-        "mc_01HWSVWK3KYHKQEE6QGS2JC3FX",
-      ],
-    },
+  filters: {
+    id: [
+      "mc_01HWSVWR4D2XVPQ06DQ8X9K7AX",
+      "mc_01HWSVWK3KYHKQEE6QGS2JC3FX",
+    ],
   },
 })
 ```
+
+The `query.graph` function accepts a `filters` property. You can use this property to filter retrieved records.
+
+In the example above, you filter the `my_custom` records by multiple IDs.
 
 <Note>
 
@@ -144,35 +154,15 @@ Filters don't apply on fields of linked data models from other modules.
 
 </Note>
 
-The `query.graph` function accepts a `variables` property. You can use this property to filter retrieved records.
-
-<TypeList
-  types={[
-    {
-      name: "variables",
-      type: "`object`",
-      description: "Variables to pass to the query.",
-      children: [
-        {
-          name: "filters",
-          type: "`object`",
-          description: "The filters to apply on any of the data model's properties."
-        }
-      ]
-    },
-  ]}
-  sectionTitle="Apply Filters"
-/>
-
 ---
 
 ## Sort Records
 
 ```ts highlights={[["5"], ["6"], ["7"]]}
 const { data: myCustoms } = await query.graph({
-  entryPoint: "my_custom",
+  entity: "my_custom",
   fields: ["id", "name"],
-  variables: {
+  pagination: {
     order: {
       name: "DESC",
     },
@@ -186,7 +176,9 @@ Sorting doesn't work on fields of linked data models from other modules.
 
 </Note>
 
-To sort returned records, pass an `order` property to `variables`.
+The `graph` method's object parameter accepts a `pagination` property to configure the pagination of retrieved records.
+
+To sort returned records, pass an `order` property to `pagination`.
 
 The `order` property is an object whose keys are property names, and values are either:
 
@@ -202,16 +194,16 @@ const {
   data: myCustoms,
   metadata: { count, take, skip },
 } = await query.graph({
-  entryPoint: "my_custom",
+  entity: "my_custom",
   fields: ["id", "name"],
-  variables: {
+  pagination: {
     skip: 0,
     take: 10,
   },
 })
 ```
 
-To paginate the returned records, pass the following properties to `variables`:
+To paginate the returned records, pass the following properties to `pagination`:
 
 - `skip`: (required to apply pagination) The number of records to skip before fetching the results.
 - `take`: The number of records to fetch.

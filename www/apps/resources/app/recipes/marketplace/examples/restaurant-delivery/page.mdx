@@ -637,7 +637,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: restaurants } = await query.graph({
-    entryPoint: "restaurants",
+    entity: "restaurants",
     fields: [
       "id",
       "handle",
@@ -652,11 +652,13 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "products.variants.*",
       "products.variants.calculated_price.*",
     ],
-    variables: {
-      filters: queryFilters,
-      "products.variants.calculated_price": {
-        context: {
-          currency_code,
+    filters: queryFilters,
+    context: {
+      products: {
+        variants: {
+          calculated_price: new QueryContext({
+            currency_code,
+          })
         },
       },
     },
@@ -1523,11 +1525,9 @@ export const notifyRestaurantStep = createStep(
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const { data: [delivery] } = await query.graph({
-      entryPoint: "deliveries",
-      variables: {
-        filters: {
-          id: deliveryId,
-        },
+      entity: "deliveries",
+      filters: {
+        id: deliveryId,
       },
       fields: ["id", "restaurant.id"],
     })
@@ -1606,12 +1606,7 @@ export const createOrderStep = createStep(
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const { data: [delivery] } = await query.graph({
-      entryPoint: "deliveries",
-      variables: {
-        filters: {
-          id: deliveryId,
-        },
-      },
+      entity: "deliveries",
       fields: [
         "id", 
         "cart.*",
@@ -1620,6 +1615,9 @@ export const createOrderStep = createStep(
         "cart.items.*",
         "cart.shipping_methods.*",
       ],
+      filters: {
+        id: deliveryId,
+      },
     })
 
     // TODO create order
@@ -2435,14 +2433,12 @@ export const isDeliveryRestaurant = async (
   )
 
   const { data: [delivery] } = await query.graph({
-    entryPoint: "delivery",
+    entity: "delivery",
     fields: [
       "restaurant.*",
     ],
-    variables: {
-      filters: {
-        id: req.params.id,
-      },
+    filters: {
+      id: req.params.id,
     },
   })
 
