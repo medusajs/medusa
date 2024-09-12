@@ -1,11 +1,20 @@
-import { RoutesLoader, Tracer } from "@medusajs/framework"
-import start from "../commands/start"
 import { snakeCase } from "lodash"
+import { NodeSDK } from "@opentelemetry/sdk-node"
+import { Resource } from "@opentelemetry/resources"
+import { RoutesLoader, Tracer } from "@medusajs/framework"
+import {
+  type SpanExporter,
+  SimpleSpanProcessor,
+} from "@opentelemetry/sdk-trace-node"
+import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
+import type { Instrumentation } from "@opentelemetry/instrumentation"
 
-const excludedResources = [".vite", "virtual:"]
+import start from "../commands/start"
+
+const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
 function shouldExcludeResource(resource: string) {
-  return excludedResources.some((excludedResource) =>
+  return EXCLUDED_RESOURCES.some((excludedResource) =>
     resource.includes(excludedResource)
   )
 }
@@ -15,11 +24,11 @@ function shouldExcludeResource(resource: string) {
  * OpenTelemetry
  */
 export function instrumentHttpLayer() {
-  const HTTPTracer = new Tracer("medusajs/http", "2.0.0")
+  const HTTPTracer = new Tracer("@medusajs/http", "2.0.0")
 
-  start.traceHttp = async (fn: () => Promise<void>, req: any) => {
-    if (shouldExcludeResource(req.url)) {
-      return await fn()
+  start.traceRequestHandler = async (requestHandler, req) => {
+    if (shouldExcludeResource(req.url!)) {
+      return await requestHandler()
     }
 
     const traceName = `${req.method} ${req.url}`
@@ -31,7 +40,7 @@ export function instrumentHttpLayer() {
       })
 
       try {
-        await fn()
+        await requestHandler()
       } finally {
         span.end()
       }
@@ -53,12 +62,6 @@ export function instrumentHttpLayer() {
       }
 
       await HTTPTracer.trace(traceName, async (span) => {
-        span.setAttributes({
-          url: req.originalUrl,
-          method: req.method,
-          ...req.headers,
-        })
-
         try {
           await handler(req, res)
         } finally {
@@ -83,12 +86,6 @@ export function instrumentHttpLayer() {
       }
 
       await HTTPTracer.trace(traceName, async (span) => {
-        span.setAttributes({
-          url: req.originalUrl,
-          method: req.method,
-          ...req.headers,
-        })
-
         try {
           await handler(req, res, next)
         } finally {
@@ -97,4 +94,37 @@ export function instrumentHttpLayer() {
       })
     }
   })
+}
+
+/**
+ * A helper function to configure the OpenTelemetry SDK with some defaults.
+ * For better/more control, please configure the SDK manually.
+ *
+ * You will have to install the following packages within your app for
+ * telemetry to work
+ *
+ * - @opentelemetry/sdk-node
+ * - @opentelemetry/resources
+ * - @opentelemetry/sdk-trace-node
+ * - @opentelemetry/instrumentation-pg
+ * - @opentelemetry/instrumentation
+ */
+export function registerOtel(options: {
+  serviceName: string
+  exporter: SpanExporter
+  instrumentations?: Instrumentation[]
+}) {
+  const sdk = new NodeSDK({
+    serviceName: options.serviceName,
+    resource: new Resource({
+      "service.name": options.serviceName,
+    }),
+    spanProcessor: new SimpleSpanProcessor(options.exporter),
+    instrumentations: [
+      new PgInstrumentation(),
+      ...(options.instrumentations || []),
+    ],
+  })
+  sdk.start()
+  return sdk
 }

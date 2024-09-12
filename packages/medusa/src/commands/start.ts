@@ -18,7 +18,7 @@ async function start({ port, directory, types }) {
     const app = express()
 
     const http_ = http.createServer(async (req: any, res) => {
-      await start.traceHttp(async () => {
+      await start.traceRequestHandler(async () => {
         return new Promise((resolve) => {
           res.on("finish", resolve)
           app(req, res)
@@ -81,8 +81,15 @@ async function start({ port, directory, types }) {
   await internalStart()
 }
 
-start.traceHttp = async (fn: () => Promise<void>, req: IncomingMessage) => {
-  return await fn()
+/**
+ * Wrap request handler inside custom implementation to enabled
+ * instrumentation.
+ */
+start.traceRequestHandler = async (
+  requestHandler: () => Promise<void>,
+  _: IncomingMessage
+) => {
+  return await requestHandler()
 }
 
 export default start
