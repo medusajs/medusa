@@ -74,6 +74,7 @@ function createContextualWorkflowRunner<
   ) => {
     if (!executionContainer) {
       const container_ = flow.container as MedusaContainer
+
       if (!container_ || !isPresent(container_?.registrations)) {
         executionContainer = MedusaModule.getLoadedModules().map(
           (mod) => Object.values(mod)[0]
@@ -88,11 +89,6 @@ function createContextualWorkflowRunner<
     const { eventGroupId, parentStepIdempotencyKey } = context
 
     attachOnFinishReleaseEvents(events, eventGroupId!, flow, { logOnError })
-
-    console.log("EXECUTION from workflow export", {
-      eventGroupId,
-      parentStepIdempotencyKey,
-    })
 
     const flowMetadata = {
       eventGroupId,
@@ -167,8 +163,6 @@ function createContextualWorkflowRunner<
       ...outerContext,
       __type: MedusaContextType as Context["__type"],
     }
-
-    console.log(outerContext?.parentStepIdempotencyKey, "OUTER ---------")
 
     context.transactionId ??= ulid()
     context.eventGroupId ??= ulid()

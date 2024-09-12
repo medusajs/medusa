@@ -783,6 +783,10 @@ export class TransactionOrchestrator extends EventEmitter {
               })
           )
         } else {
+          console.log(flow.modelId, "BEGIN EXECUTION", {
+            metadata: flow.metadata,
+          })
+
           execution.push(
             transaction.saveCheckpoint().then(() => {
               transaction
@@ -795,11 +799,6 @@ export class TransactionOrchestrator extends EventEmitter {
                   this
                 )
                 .then(async (response: any) => {
-                  console.log("ASYNC RESPONSE", response, {
-                    metadata: flow.metadata,
-                    isBackground: !!step.definition.backgroundExecution,
-                  })
-
                   if (!step.definition.backgroundExecution) {
                     const eventName = DistributedTransactionEvent.STEP_AWAITING
                     transaction.emit(eventName, { step, transaction })

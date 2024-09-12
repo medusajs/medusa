@@ -185,12 +185,7 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(
-      (container as MedusaContainer) ?? this.container_
-    )
-
-    console.log("EXECUTION from ENGINE", { sharedContext })
-    const ret = await flow.run({
+    const ret = await exportedWorkflow.run({
       input,
       throwOnError,
       logOnError,
@@ -208,7 +203,21 @@ export class WorkflowOrchestratorService {
     if (ret.transaction.hasFinished()) {
       const { result, errors } = ret
 
-      console.log("FINISHED", { result, errors, flow: ret.transaction.flow })
+      const { parentStepIdempotencyKey } = ret.transaction.flow.metadata ?? {}
+      if (parentStepIdempotencyKey) {
+        if (errors.length > 0) {
+          await this.setStepFailure({
+            idempotencyKey: parentStepIdempotencyKey,
+            stepResponse: result,
+          })
+        } else {
+          this.setStepSuccess({
+            idempotencyKey: parentStepIdempotencyKey,
+            stepResponse: result,
+          })
+        }
+      }
+
       await this.notify({
         eventType: "onFinish",
         workflowId,
@@ -285,17 +294,13 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(
-      (container as MedusaContainer) ?? this.container_
-    )
-
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,
       transactionId,
       workflowId,
     })
 
-    const ret = await flow.registerStepSuccess({
+    const ret = await exportedWorkflow.registerStepSuccess({
       idempotencyKey: idempotencyKey_,
       context,
       resultFrom,
