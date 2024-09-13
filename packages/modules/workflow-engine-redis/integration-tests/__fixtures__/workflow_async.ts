@@ -1,9 +1,7 @@
 import {
   StepResponse,
-  WorkflowResponse,
   createStep,
   createWorkflow,
-  parallelize,
 } from "@medusajs/workflows-sdk"
 import { setTimeout } from "timers/promises"
 
@@ -35,6 +33,12 @@ createWorkflow(
     name: "workflow_async_background",
   },
   function (input) {
+    return nestedWorkflow
+      .runAsStep({
+        input,
+      })
+      .config({ name: "step_sub_flow_1" })
+    /*
     const [ret] = parallelize(
       nestedWorkflow
         .runAsStep({
@@ -46,8 +50,10 @@ createWorkflow(
           input,
         })
         .config({ name: "step_sub_flow_2" })
+        
     )
+    */
 
-    return new WorkflowResponse(ret)
+    // return new WorkflowResponse(ret)
   }
 )

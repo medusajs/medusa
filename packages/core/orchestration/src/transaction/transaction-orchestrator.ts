@@ -825,15 +825,11 @@ export class TransactionOrchestrator extends EventEmitter {
                     )
                   }
 
+                  // check nested flow
                   await transaction.scheduleRetry(
                     step,
                     step.definition.retryInterval ?? 0
                   )
-                  console.log("SCHEDULED", {
-                    workflow: transaction.modelId,
-                    transaction: transaction.transactionId,
-                    state: step.getStates(),
-                  })
                 })
                 .catch(async (error) => {
                   if (
