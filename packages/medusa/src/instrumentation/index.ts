@@ -77,6 +77,7 @@ export function instrumentHttpLayer() {
             code: SpanStatusCode.ERROR,
             message: error.message || "Failed",
           })
+          throw error
         } finally {
           span.end()
         }
