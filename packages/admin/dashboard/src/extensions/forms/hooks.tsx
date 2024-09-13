@@ -2,10 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { FieldValues, useForm, UseFormProps } from "react-hook-form"
 import { z, ZodObject } from "zod"
 
-type FormConfigExtension = {
-  defaultValue: ((data: any) => any) | any
-  validation: any
-}
+import { FormConfigImport, FormConfigObject } from "./types"
 
 interface UseExtendableFormProps<
   TSchema extends ZodObject<any>,
@@ -13,15 +10,13 @@ interface UseExtendableFormProps<
   TData = any
 > extends Omit<UseFormProps<z.infer<TSchema>, TContext>, "resolver"> {
   schema: TSchema
-  extensions?: Record<string, FormConfigExtension>[]
+  extensions?: FormConfigImport
   data?: TData
 }
 
-function createAdditionalDataSchema(
-  extensions: Record<string, FormConfigExtension>[]
-) {
-  return extensions.reduce((acc, extension) => {
-    Object.entries(extension).forEach(([key, { validation }]) => {
+function createAdditionalDataSchema(configs: FormConfigObject[]) {
+  return configs.reduce((acc, config) => {
+    Object.entries(config).forEach(([key, { validation }]) => {
       acc[key] = validation
     })
     return acc
@@ -40,19 +35,18 @@ function createExtendedSchema<TSchema extends ZodObject<any>>(
 
 function createExtendedDefaultValues<TData>(
   baseDefaultValues: any,
-  extensions: Record<string, FormConfigExtension>[],
+  configs: FormConfigObject[],
   data?: TData
 ) {
-  return {
-    ...baseDefaultValues,
-    additional_data: extensions.reduce((acc, extension) => {
-      Object.entries(extension).forEach(([key, { defaultValue }]) => {
-        acc[key] =
-          typeof defaultValue === "function" ? defaultValue(data) : defaultValue
-      })
-      return acc
-    }, {} as Record<string, any>),
-  }
+  const additional_data = configs.reduce((acc, config) => {
+    Object.entries(config).forEach(([key, { defaultValue }]) => {
+      acc[key] =
+        typeof defaultValue === "function" ? defaultValue(data) : defaultValue
+    })
+    return acc
+  }, {} as Record<string, any>)
+
+  return Object.assign(baseDefaultValues, { additional_data })
 }
 
 export const useExtendableForm = <
@@ -62,21 +56,23 @@ export const useExtendableForm = <
 >({
   defaultValues: baseDefaultValues,
   schema: baseSchema,
-  extensions = [],
+  extensions,
   data,
   ...props
 }: UseExtendableFormProps<TSchema, TContext>) => {
-  const additionalDataSchema = createAdditionalDataSchema(extensions)
+  const configs = extensions?.configs || []
+
+  const additionalDataSchema = createAdditionalDataSchema(configs)
   const schema = createExtendedSchema(baseSchema, additionalDataSchema)
   const defaultValues = createExtendedDefaultValues(
     baseDefaultValues,
-    extensions,
+    configs,
     data
   )
 
-  return useForm<z.infer<typeof schema>, TContext, TTransformedValues>({
-    resolver: zodResolver(schema),
-    defaultValues,
+  return useForm<z.infer<TSchema>, TContext, TTransformedValues>({
     ...props,
+    defaultValues,
+    resolver: zodResolver(schema),
   })
 }

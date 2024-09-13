@@ -46,12 +46,6 @@ export function isValidCustomFieldFormConfigPath(id: any): id is string {
 }
 
 export function isValidCustomFieldFormFieldPath(id: any): id is string {
-  console.log(
-    "Checking if",
-    id,
-    "is a valid custom field form field path",
-    CUSTOM_FIELD_FORM_FIELD_PATHS
-  )
   return CUSTOM_FIELD_FORM_FIELD_PATHS.includes(id)
 }
 

@@ -35,20 +35,17 @@ function validateCustomFieldFormFieldConfig(
   const { model, valid: isModelValid } = getModel(path, configPath?.model)
 
   if (!isModelValid) {
-    console.log("Invalid model", model)
     return { valid: hasOneValidForm, paths: null, validIndexes: [] }
   }
 
   const properties = getFormArray(path)
 
   if (!properties || properties.elements.length === 0) {
-    console.log("No properties found", properties)
     return { valid: hasOneValidForm, paths: null, validIndexes: [] }
   }
 
   properties.elements.forEach((element, index) => {
     if (!isObjectExpression(element)) {
-      console.log("Not an object expression", element)
       return
     }
 
@@ -65,12 +62,10 @@ function validateCustomFieldFormFieldConfig(
     ) as ObjectProperty | undefined
 
     if (!zoneProperty || !fieldsProperty) {
-      console.log("Missing zone or fields property", element)
       return
     }
 
     if (!isStringLiteral(zoneProperty.value)) {
-      console.log("Invalid zone property", zoneProperty)
       return
     }
 
@@ -80,7 +75,6 @@ function validateCustomFieldFormFieldConfig(
       !isValidCustomFieldFormZone(zone) ||
       (configPath && zone !== configPath.zone)
     ) {
-      console.log("Invalid zone", zone)
       return
     }
 
@@ -93,7 +87,6 @@ function validateCustomFieldFormFieldConfig(
         tabProperty.value.value !== configPath.tab ||
         !isValidCustomFieldFormTab(tabProperty.value.value)
       ) {
-        console.log("Invalid tab property", tabProperty)
         return
       }
       tab = tabProperty.value.value
@@ -107,7 +100,6 @@ function validateCustomFieldFormFieldConfig(
           !isStringLiteral(tabProperty.value) ||
           !isValidCustomFieldFormTab(tabProperty.value.value)
         ) {
-          console.log("Invalid tab property", tabProperty)
           return
         }
         tab = tabProperty.value.value
@@ -117,7 +109,6 @@ function validateCustomFieldFormFieldConfig(
     const fullPath = `${model}.${zone}${tab ? `.${tab}` : ""}.$field`
 
     if (!isValidCustomFieldFormFieldPath(fullPath)) {
-      console.log("Invalid full path", fullPath)
       return
     }
 

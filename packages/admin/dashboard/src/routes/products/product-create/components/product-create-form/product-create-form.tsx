@@ -21,7 +21,7 @@ import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
 
 import extensions from "virtual:medusa/custom-fields/product/create/$config"
-import { useExtendableForm } from "../../../../../lib/extensions/config-helpers"
+import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 
 enum Tab {
   DETAILS = "details",
@@ -57,8 +57,6 @@ export const ProductCreateForm = ({
 
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-
-  console.log(extensions)
 
   const form = useExtendableForm({
     defaultValues: {

@@ -5,7 +5,7 @@ import { Fragment, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
-import { settingsRouteRegex } from "../../../lib/extensions/route-helpers"
+import { settingsRouteRegex } from "../../../extensions/routes/utils"
 import { Divider } from "../../common/divider"
 import { NavItem, NavItemProps } from "../nav-item"
 import { Shell } from "../shell"

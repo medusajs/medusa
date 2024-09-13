@@ -1,18 +1,18 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input, Select, Text, Textarea } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { transformNullableFormData } from "../../../../../lib/form-helpers"
+
+import extensions from "virtual:medusa/custom-fields/product/edit/$config"
+import fields from "virtual:medusa/custom-fields/product/edit/$field"
+import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
 
 type EditProductFormProps = {
   product: HttpTypes.AdminProduct
@@ -32,7 +32,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<zod.infer<typeof EditProductSchema>>({
+  const form = useExtendableForm({
     defaultValues: {
       status: product.status,
       title: product.title,
@@ -42,12 +42,14 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
       description: product.description || "",
       discountable: product.discountable,
     },
-    resolver: zodResolver(EditProductSchema),
+    schema: EditProductSchema,
+    extensions: extensions,
   })
 
   const { mutateAsync, isPending } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
+    console.log("data", data)
     const { title, discountable, handle, status, ...optional } = data
 
     const nullableData = transformNullableFormData(optional)
@@ -208,6 +210,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
               label={t("fields.discountable")}
               description={t("products.discountableHint")}
             />
+            <FormExtensionZone extensions={fields} form={form} />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>
