@@ -41,3 +41,8 @@ export type AdminCreateShipmentType = z.infer<typeof AdminCreateShipment>
 export const AdminCreateShipment = z.object({
   labels: z.array(AdminCreateFulfillmentLabel),
 })
+
+export type AdminMarkFulfillmentDeliveredType = z.infer<
+  typeof AdminMarkFulfillmentDelivered
+>
+export const AdminMarkFulfillmentDelivered = z.object({})

@@ -1469,6 +1469,22 @@ export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
 }
 
 /**
+ * The details to register a shipment of an order, return, exchange,
+ * or claim.
+ */
+export interface RegisterOrderDeliveryDTO extends BaseOrderBundledActionsDTO {
+  /**
+   * The items of the shipment.
+   */
+  items?: BaseOrderBundledItemActionsDTO[]
+
+  /**
+   * Whether the customer should receive notifications about the shipment.
+   */
+  no_notification?: boolean
+}
+
+/**
  * The return to be created.
  */
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {

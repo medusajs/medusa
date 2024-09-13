@@ -161,7 +161,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("RMA Flows", () => {
-      it.only("should verify order summary at each level", async () => {
+      it("should verify order summary at each level", async () => {
         /* Case:
             Purchased:
               items: {

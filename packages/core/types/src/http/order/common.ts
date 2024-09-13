@@ -165,6 +165,7 @@ export interface BaseOrderItemDetail {
   item: BaseOrderLineItem
   quantity: number
   fulfilled_quantity: number
+  delivered_quantity: number
   shipped_quantity: number
   return_requested_quantity: number
   return_received_quantity: number
