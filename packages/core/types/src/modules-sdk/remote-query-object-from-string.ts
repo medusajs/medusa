@@ -1,5 +1,6 @@
 import { ObjectToRemoteQueryFields } from "./object-to-remote-query-fields"
 import { RemoteQueryEntryPoints } from "./remote-query-entry-points"
+import { RemoteQueryFilters } from "./to-remote-query"
 
 export type RemoteQueryObjectConfig<TEntry extends string> = {
   // service: string This property is still supported under the hood but part of the type due to types missmatch towards fields
@@ -31,7 +32,7 @@ export type RemoteQueryInput<TEntry extends string> = {
     : ObjectToRemoteQueryFields<
         RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
       >[]
-  filter?: any
+  filter?: RemoteQueryFilters<TEntry>
   context?: any
 }
 
