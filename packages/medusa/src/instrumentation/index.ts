@@ -2,7 +2,7 @@ import { snakeCase } from "lodash"
 import { NodeSDK } from "@opentelemetry/sdk-node"
 import { Resource } from "@opentelemetry/resources"
 import { SpanStatusCode } from "@opentelemetry/api"
-import { RoutesLoader, Tracer } from "@medusajs/framework"
+import { RoutesLoader, Tracer, Query } from "@medusajs/framework"
 import {
   type SpanExporter,
   SimpleSpanProcessor,
@@ -21,7 +21,7 @@ function shouldExcludeResource(resource: string) {
 }
 
 /**
- * Instrumenting the first touch point of the Http layer to report traces to
+ * Instrumenting the first touch point of the HTTP layer to report traces to
  * OpenTelemetry
  */
 export function instrumentHttpLayer() {
@@ -115,6 +115,46 @@ export function instrumentHttpLayer() {
         .then(next)
     }
   })
+}
+
+/**
+ * Instrumenting the queries made using the remote query
+ */
+export function instrumentRemoteQuery() {
+  const QueryTracer = new Tracer("@medusajs/query", "2.0.0")
+
+  Query.traceGraphQuery = async function (queryFn, queryOptions) {
+    return await QueryTracer.trace(
+      `query.graph: ${queryOptions.entryPoint}`,
+      async (span) => {
+        span.setAttributes({
+          "query.fields": queryOptions.fields,
+        })
+        return await queryFn().finally(() => span.end())
+      }
+    )
+  }
+
+  Query.traceRemoteQuery = async function (queryFn, queryOptions) {
+    const traceIdentifier =
+      "entryPoint" in queryOptions
+        ? queryOptions.entryPoint
+        : "service" in queryOptions
+        ? queryOptions.service
+        : "__value" in queryOptions
+        ? Object.keys(queryOptions.__value)[0]
+        : "unknown source"
+
+    return await QueryTracer.trace(
+      `remoteQuery: ${traceIdentifier}`,
+      async (span) => {
+        span.setAttributes({
+          "query.fields": "fields" in queryOptions ? queryOptions.fields : [],
+        })
+        return await queryFn().finally(() => span.end())
+      }
+    )
+  }
 }
 
 /**
