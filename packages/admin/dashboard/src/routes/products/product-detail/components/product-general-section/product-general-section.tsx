@@ -8,7 +8,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
 
-import details from "virtual:medusa/details/product/general"
+import details from "virtual:medusa/custom-fields/product/general/$display"
 
 const productStatusColor = (status: string) => {
   switch (status) {
@@ -101,7 +101,7 @@ export const ProductGeneralSection = ({
         title={t("fields.discountable")}
         value={product.discountable ? t("fields.true") : t("fields.false")}
       />
-      {details.blocks.map((b, index) => {
+      {details.containers.map((b, index) => {
         return <b.component key={index} />
       })}
     </Container>

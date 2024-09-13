@@ -1,31 +1,42 @@
 import {
-  CustomerContainerConfig,
-  CustomerEntrypoint,
-  CustomerFormConfig,
-} from "./customer"
-import {
-  ProductContainerConfig,
-  ProductCreateTabs,
-  ProductEntrypoint,
-  ProductFormConfig,
+  CUSTOM_FIELD_CONTAINER_ZONES,
+  CUSTOM_FIELD_FORM_TABS,
+  CUSTOM_FIELD_FORM_ZONES,
+  CUSTOM_FIELD_MODELS,
+} from "./constants"
+import type { CustomerDisplayZone, CustomerFormZone } from "./customer"
+import type {
+  ProductDisplayZone,
+  ProductFormTab,
+  ProductFormZone,
 } from "./product"
 
-const entrypoint = [ProductEntrypoint, CustomerEntrypoint] as const
-export type Entrypoint = (typeof entrypoint)[number]
+export type CustomFieldModel = (typeof CUSTOM_FIELD_MODELS)[number]
 
-export interface EntrypointFormMap {
-  product: ProductFormConfig
-  customer: CustomerFormConfig
+export type CustomFieldFormZone = (typeof CUSTOM_FIELD_FORM_ZONES)[number]
+
+export type CustomFieldFormTab = (typeof CUSTOM_FIELD_FORM_TABS)[number]
+
+export type CustomFieldContainerZone =
+  (typeof CUSTOM_FIELD_CONTAINER_ZONES)[number]
+
+export type CustomFieldZone = CustomFieldFormZone | CustomFieldContainerZone
+
+export type CustomFieldImportType = "display" | "field" | "link" | "config"
+
+export interface CustomFieldModelFormMap {
+  product: ProductFormZone
+  customer: CustomerFormZone
 }
 
-export interface EntrypointContainerMap {
-  product: ProductContainerConfig
-  customer: CustomerContainerConfig
+export interface CustomFieldModelContainerMap {
+  product: ProductDisplayZone
+  customer: CustomerDisplayZone
 }
 
-export type EntrypointFormTabsMap = {
+export type CustomFieldModelFormTabsMap = {
   product: {
-    create: (typeof ProductCreateTabs)[number]
+    create: ProductFormTab
     edit: never
     organize: never
     attributes: never
@@ -36,4 +47,5 @@ export type EntrypointFormTabsMap = {
   }
 }
 
-export type FormKeys<T extends Entrypoint> = EntrypointFormMap[T]
+export type CustomFieldFormKeys<T extends CustomFieldModel> =
+  CustomFieldModelFormMap[T]

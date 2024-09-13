@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router-dom"
-import { ErrorBoundary } from "../components/utilities/error-boundary"
+import { ErrorBoundary } from "../../components/utilities/error-boundary"
 
 /**
  * Used to test if a route is a settings route.

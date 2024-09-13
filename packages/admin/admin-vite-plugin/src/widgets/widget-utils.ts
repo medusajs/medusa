@@ -84,7 +84,8 @@ export async function validateWidget(
   file: string,
   zone?: InjectionZone
 ): Promise<
-  { valid: true; zone: InjectionZone } | { valid: false; zone: null }
+  | { valid: true; zone: InjectionZone | InjectionZone[] }
+  | { valid: false; zone: null }
 > {
   let _zoneValue: string | string[] | null = null
 

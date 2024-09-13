@@ -1,5 +1,8 @@
-import { CustomerContainerIds, CustomerFormIds } from "./constants"
+import {
+  CUSTOMER_CUSTOM_FIELD_DISPLAY_ZONES,
+  CUSTOMER_CUSTOM_FIELD_FORM_ZONES,
+} from "./constants"
 
-export type CustomerFormConfig = (typeof CustomerFormIds)[number]
-
-export type CustomerContainerConfig = (typeof CustomerContainerIds)[number]
+export type CustomerFormZone = (typeof CUSTOMER_CUSTOM_FIELD_FORM_ZONES)[number]
+export type CustomerDisplayZone =
+  (typeof CUSTOMER_CUSTOM_FIELD_DISPLAY_ZONES)[number]

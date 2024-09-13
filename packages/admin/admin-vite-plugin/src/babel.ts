@@ -15,7 +15,10 @@ import {
   isStringLiteral,
   isVariableDeclaration,
   isVariableDeclarator,
+  ObjectMethod,
   ObjectProperty,
+  SpreadElement,
+  StringLiteral,
 } from "@babel/types"
 
 /**
@@ -51,7 +54,10 @@ export type {
   ExportNamedDeclaration,
   File,
   NodePath,
+  ObjectMethod,
   ObjectProperty,
   ParseResult,
   ParserOptions,
+  SpreadElement,
+  StringLiteral,
 }

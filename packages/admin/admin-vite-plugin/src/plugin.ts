@@ -1,16 +1,14 @@
 import {
-  ContainerId,
-  FormId,
-  InjectionZone,
-  RESOLVED_CONTAINER_MODULES,
-  RESOLVED_FORM_MODULES,
+  type CustomFieldImportType,
+  type InjectionZone,
+  RESOLVED_CUSTOM_FIELD_DISPLAY_MODULES,
+  RESOLVED_CUSTOM_FIELD_FORM_CONFIG_MODULES,
+  RESOLVED_CUSTOM_FIELD_FORM_FIELD_MODULES,
+  RESOLVED_CUSTOM_FIELD_LINK_MODULES,
   RESOLVED_ROUTE_MODULES,
   RESOLVED_WIDGET_MODULES,
   VIRTUAL_MODULES,
-  getContainerId,
-  getContainerImport,
-  getFormId,
-  getFormImport,
+  getCustomFieldPath,
   getVirtualId,
   getWidgetImport,
   getWidgetZone,
@@ -18,28 +16,46 @@ import {
 } from "@medusajs/admin-shared"
 import type * as Vite from "vite"
 import {
-  generateCustomFieldContainerEntrypoint,
-  generateCustomFieldFormEntrypoint,
-  getCustomFieldContainerPath,
-  getCustomFieldFormPath,
-  validateCustomFieldContainer,
-  validateCustomFieldForm,
+  generateCustomFieldDisplayEntrypoint,
+  generateCustomFieldFormConfigEntrypoint,
+  getCustomFieldGraphPath,
+  validateCustomFieldDisplay,
+  validateCustomFieldFormConfig,
 } from "./custom-fields"
+import {
+  generateCustomFieldFormFieldEntrypoint,
+  validateCustomFieldFormField,
+} from "./custom-fields/fields"
+import {
+  generateCustomFieldLinkEntrypoint,
+  validateCustomFieldLink,
+} from "./custom-fields/links"
 import { generateRouteEntrypoint, validateRoute } from "./routes"
 import { ExtensionGraph, LoadModuleOptions, MedusaVitePlugin } from "./types"
-import { getModuleType } from "./utils"
+import {
+  getCustomFieldConfigParams,
+  getCustomFieldDisplayParams,
+  getCustomFieldFieldParams,
+  getCustomFieldLinkParams,
+  getModuleType,
+} from "./utils"
 import { generateWidgetEntrypoint, validateWidget } from "./widgets"
 
 const EVENT_ADD = "add"
 const EVENT_CHANGE = "change"
 
+function isCustomFieldModule(type: any): type is CustomFieldImportType {
+  return ["link", "config", "field", "display"].includes(type)
+}
+
 function getExtensionGraphPath(
   path: string,
-  type: "form" | "container" | "widget" | "route"
+  type: "link" | "config" | "field" | "display" | "widget" | "route"
 ) {
-  if (["form", "container"].includes(type)) {
-    return `${path}/${type}`
+  if (isCustomFieldModule(type)) {
+    return getCustomFieldGraphPath(path, type)
   }
+
   return path
 }
 
@@ -56,13 +72,20 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
         return await generateWidgetEntrypoint(_sources, options.get)
       case "route":
         return await generateRouteEntrypoint(_sources, options.get)
-      case "form":
-        return await generateCustomFieldFormEntrypoint(_sources, options.get)
-      case "container":
-        return await generateCustomFieldContainerEntrypoint(
+      case "config":
+        return await generateCustomFieldFormConfigEntrypoint(
           _sources,
           options.get
         )
+      case "field":
+        return await generateCustomFieldFormFieldEntrypoint(
+          _sources,
+          options.get
+        )
+      case "display":
+        return await generateCustomFieldDisplayEntrypoint(_sources, options.get)
+      case "link":
+        return await generateCustomFieldLinkEntrypoint(_sources, options.get)
       default:
         return null
     }
@@ -105,18 +128,10 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     )
   }
 
-  function getCustomFieldFormImports(formId: FormId[]): Set<string> {
+  function getCustomFieldImports(paths: string[]): Set<string> {
     return new Set(
-      formId.map((form) => resolveVirtualId(getVirtualId(getFormImport(form))))
-    )
-  }
-
-  function getCustomFieldContainerImports(
-    containerIds: ContainerId[]
-  ): Set<string> {
-    return new Set(
-      containerIds.map((container) =>
-        resolveVirtualId(getVirtualId(getContainerImport(container)))
+      paths.map((form) =>
+        resolveVirtualId(getVirtualId(getCustomFieldPath(form)))
       )
     )
   }
@@ -134,11 +149,11 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     await reloadModules(imports)
   }
 
-  async function genericHandler(
+  async function genericHandler<TResult extends { valid: boolean }>(
     file: string,
     event: typeof EVENT_ADD | typeof EVENT_CHANGE,
-    validator: (file: string) => Promise<any>,
-    getImports: (result: any) => Set<string>,
+    validator: (file: string) => Promise<TResult>,
+    getImports: (result: TResult) => Set<string>,
     getGraphPath: (file: string) => string
   ) {
     const result = await validator(file)
@@ -187,7 +202,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
       validateWidget,
       (result) =>
         getWidgetZoneImports(
-          Array.isArray(result.zone) ? result.zone : [result.zone]
+          Array.isArray(result.zone!) ? result.zone! : [result.zone!]
         ),
       (file) => file
     )
@@ -210,26 +225,31 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     path: string,
     event: typeof EVENT_ADD | typeof EVENT_CHANGE
   ) {
-    const formPath = getCustomFieldFormPath(path)
-    const containerPath = getCustomFieldContainerPath(path)
+    const customFieldTypes = [
+      { type: "config", validator: validateCustomFieldFormConfig },
+      { type: "field", validator: validateCustomFieldFormField },
+      { type: "display", validator: validateCustomFieldDisplay },
+      { type: "link", validator: validateCustomFieldLink },
+    ] as const
 
-    await genericHandler(
-      path,
-      event,
-      validateCustomFieldForm,
-      (result) =>
-        getCustomFieldFormImports(
-          Array.isArray(result.form) ? result.form : [result.form]
-        ),
-      () => formPath
-    )
+    const handleCustomFieldType = async (
+      type: (typeof customFieldTypes)[number]["type"],
+      validator: (typeof customFieldTypes)[number]["validator"]
+    ) => {
+      const graphPath = getCustomFieldGraphPath(path, type)
+      await genericHandler(
+        path,
+        event,
+        validator,
+        (result) => getCustomFieldImports(result.paths!),
+        () => graphPath
+      )
+    }
 
-    await genericHandler(
-      path,
-      event,
-      validateCustomFieldContainer,
-      (result) => getCustomFieldContainerImports([result.container]),
-      () => containerPath
+    await Promise.all(
+      customFieldTypes.map(async ({ type, validator }) =>
+        handleCustomFieldType(type, validator)
+      )
     )
   }
 
@@ -304,13 +324,52 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
           get: id.includes("link") ? "link" : "page",
         })
       }
-      if (RESOLVED_FORM_MODULES.includes(id)) {
-        return loadVirtualModule(id, { type: "form", get: getFormId(id) })
-      }
-      if (RESOLVED_CONTAINER_MODULES.includes(id)) {
+      if (RESOLVED_CUSTOM_FIELD_FORM_CONFIG_MODULES.includes(id)) {
+        const params = getCustomFieldConfigParams(id)
+
+        if (!params) {
+          return
+        }
+
         return loadVirtualModule(id, {
-          type: "container",
-          get: getContainerId(id),
+          type: "config",
+          get: params,
+        })
+      }
+      if (RESOLVED_CUSTOM_FIELD_FORM_FIELD_MODULES.includes(id)) {
+        const params = getCustomFieldFieldParams(id)
+
+        if (!params) {
+          return
+        }
+
+        return loadVirtualModule(id, {
+          type: "field",
+          get: params,
+        })
+      }
+      if (RESOLVED_CUSTOM_FIELD_DISPLAY_MODULES.includes(id)) {
+        const params = getCustomFieldDisplayParams(id)
+
+        if (!params) {
+          return
+        }
+
+        return loadVirtualModule(id, {
+          type: "display",
+          get: params,
+        })
+      }
+      if (RESOLVED_CUSTOM_FIELD_LINK_MODULES.includes(id)) {
+        const params = getCustomFieldLinkParams(id)
+
+        if (!params) {
+          return
+        }
+
+        return loadVirtualModule(id, {
+          type: "link",
+          get: params,
         })
       }
     },

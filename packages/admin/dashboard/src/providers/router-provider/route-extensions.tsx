@@ -1,6 +1,6 @@
 import routes from "virtual:medusa/routes/pages"
 
-import { createRouteMap, settingsRouteRegex } from "../../lib/extension-helpers"
+import { createRouteMap, settingsRouteRegex } from "../../lib/extensions/route-helpers"
 
 const pages = routes.pages
   .filter((ext) => !settingsRouteRegex.test(ext.path))

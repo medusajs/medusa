@@ -1,12 +1,12 @@
 import type {
-  Entrypoint,
-  EntrypointContainerMap,
-  EntrypointFormTabsMap,
-  FormKeys,
+  CustomFieldFormKeys,
+  CustomFieldModel,
+  CustomFieldModelContainerMap,
+  CustomFieldModelFormTabsMap,
   InjectionZone,
 } from "@medusajs/admin-shared"
 import type { ComponentType } from "react"
-import { z, infer as ZodInfer, ZodObject, ZodSchema } from "zod"
+import { infer as ZodInfer, ZodType } from "zod"
 
 export interface WidgetConfig {
   /**
@@ -26,28 +26,51 @@ export interface RouteConfig {
   icon?: ComponentType
 }
 
-interface FormField {
-  rules: ZodObject<any, any, any, any>
-}
-
-const a: FormField = {
-  rules: z.object({
-    name: z.string(),
-  }),
+export type CustomFormField<TData, TValidation extends ZodType = ZodType> = {
+  /**
+   * The rules that the field should be validated against.
+   *
+   * @example
+   * ```ts
+   * rules: z.string().email() // The field must be a valid email
+   * ```
+   */
+  validation: TValidation
+  /**
+   * The default value of the field.
+   */
+  defaultValue: ((data: TData) => ZodInfer<TValidation>) | ZodInfer<TValidation>
+  /**
+   * The label of the field. If not provided, the label will be inferred from the field name.
+   */
+  label?: string
+  /**
+   * The description of the field.
+   */
+  description?: string
+  /**
+   * The placeholder of the field.
+   */
+  placeholder?: string
+  /**
+   * Custom component to render the field. If not provided, the field will be rendered using the
+   * default component for the field type, which is determined by the field's validation schema.
+   */
+  component?: ComponentType
 }
 
 // Define the main configuration type
-export interface CustomFieldConfig<TEntity extends Entrypoint> {
+export interface CustomFieldConfig<TModel extends CustomFieldModel> {
   /**
-   * The name of the entrypoint that the custom fields belong to.
+   * The name of the model that the custom models are linked to.
    * This should be the name of one of the built-in models, such as `product` or `customer`.
    *
    * @example
    * ```ts
-   * entryPoint: "product"
+   * model: "product"
    * ```
    */
-  entryPoint: TEntity
+  model: TModel
   /**
    * The name of the custom model(s) that the custom fields belong to.
    * This is used to ensure that the custom fields are fetched when
@@ -56,7 +79,7 @@ export interface CustomFieldConfig<TEntity extends Entrypoint> {
    * @example
    * ```ts
    * export default unstable_defineCustomFieldsConfig({
-   *   entryPoint: "product",
+   *   model: "product",
    *   link: "brand"
    *   // ...
    * })
@@ -64,7 +87,7 @@ export interface CustomFieldConfig<TEntity extends Entrypoint> {
    * or
    * ```ts
    * export default unstable_defineCustomFieldsConfig({
-   *   entryPoint: "product",
+   *   model: "product",
    *   link: ["brand", "seller"]
    *   // ...
    * })
@@ -73,18 +96,19 @@ export interface CustomFieldConfig<TEntity extends Entrypoint> {
   link: string | string[]
   forms: Array<
     {
-      [K in FormKeys<TEntity> & keyof EntrypointFormTabsMap[TEntity]]: {
+      [K in CustomFieldFormKeys<TModel> &
+        keyof CustomFieldModelFormTabsMap[TModel]]: {
         /**
          * The form to extend.
          *
          * @example
          * ```ts
          * export default unstable_defineCustomFieldsConfig({
-         *   entryPoint: "product",
+         *   model: "product",
          *   link: "brand",
          *   forms: [
          *     {
-         *       form: "create",
+         *       zone: "create",
          *       // ...
          *     }
          *   ],
@@ -92,79 +116,12 @@ export interface CustomFieldConfig<TEntity extends Entrypoint> {
          * })
          * ```
          */
-        form: K
-        /**
-         * The schema to validate the form values.
-         *
-         * @example
-         * ```ts
-         * export default unstable_defineCustomFieldsConfig({
-         *   entryPoint: "product",
-         *   link: ["brand", "seller"],
-         *   forms: [
-         *     {
-         *       form: "edit",
-         *       schema: z.object({
-         *         brand_id: z.string(),
-         *         seller_id: z.string(),
-         *       }),
-         *       // ...
-         *     }
-         *   ],
-         *   // ...
-         * })
-         * ```
-         */
-        schema: ZodSchema
-        /**
-         * The default values to use when the form is rendered.
-         *
-         * @example
-         * ```ts
-         * export default unstable_defineCustomFieldsConfig({
-         *   entryPoint: "product",
-         *   link: ["brand", "seller"],
-         *   forms: [
-         *     {
-         *       form: "create",
-         *       defaultValues: {
-         *         brand_id: "",
-         *         seller_id: "",
-         *       }
-         *       // ...
-         *     }
-         *   ],
-         *   // ...
-         * })
-         * ```
-         * or
-         * ```ts
-         * export default unstable_defineCustomFieldsConfig({
-         *   entryPoint: "product",
-         *   link: ["brand", "seller"],
-         *   forms: [
-         *     {
-         *       form: "edit",
-         *       defaultValues: (data) => {
-         *         brand_id: data.brand.id,
-         *         seller_id: data.seller.id,
-         *       }
-         *       // ...
-         *     }
-         *   ],
-         *   // ...
-         * })
-         * ```
-         */
-        defaultValues: ZodInfer<ZodSchema>
-        /**
-         * The component that should be rendered to display the custom fields.
-         */
-        component: ComponentType
-      } & (EntrypointFormTabsMap[TEntity][K] extends never
+        zone: K
+        fields: Record<string, CustomFormField<ZodType>>
+      } & (CustomFieldModelFormTabsMap[TModel][K] extends never
         ? {}
-        : { tab: EntrypointFormTabsMap[TEntity][K] })
-    }[FormKeys<TEntity> & keyof EntrypointFormTabsMap[TEntity]]
+        : { tab: CustomFieldModelFormTabsMap[TModel][K] })
+    }[CustomFieldFormKeys<TModel> & keyof CustomFieldModelFormTabsMap[TModel]]
   >
   /**
    * Optionally define how to display the custom fields, in an existing container on the entity details page.
@@ -174,7 +131,7 @@ export interface CustomFieldConfig<TEntity extends Entrypoint> {
     /**
      * The identifier of the container that the custom fields should be injected into.
      */
-    container: EntrypointContainerMap[TEntity]
+    zone: CustomFieldModelContainerMap[TModel]
     /**
      * The component that should be rendered to display the custom fields.
      * This component will receive the entity data as a prop.

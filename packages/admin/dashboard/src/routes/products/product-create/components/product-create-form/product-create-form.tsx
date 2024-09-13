@@ -22,7 +22,7 @@ import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-f
 import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
 
-import extensions from "virtual:medusa/forms/product/create/general"
+import extensions from "virtual:medusa/custom-fields/product/create/$config"
 
 enum Tab {
   DETAILS = "details",

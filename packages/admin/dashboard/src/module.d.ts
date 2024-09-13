@@ -26,16 +26,38 @@ declare module "virtual:medusa/routes/links" {
   }
 }
 
-declare module "virtual:medusa/forms/*" {
-  const blocks: {
-    component: () => JSX.Element
-    schema: any
+declare module "virtual:medusa/custom-fields/*/$field" {
+  import type { ComponentType } from "react"
+
+  const sections: Record<
+    string,
+    {
+      component: ComponentType<any>
+      label?: string
+      description?: string
+      type: any
+    }
+  >[]
+}
+
+declare module "virtual:medusa/custom-fields/*/$config" {
+  const configs: Record<
+    string,
+    {
+      defaultValue: ((data: any) => any) | any
+      validation: any
+    }
+  >[]
+}
+
+declare module "virtual:medusa/custom-fields/*/$display" {
+  import type { ComponentType } from "react"
+
+  const containers: {
+    component: ComponentType<any>
   }[]
 }
 
-declare module "virtual:medusa/details/*" {
-  const blocks: {
-    component: () => JSX.Element
-    extendQuery?: { fields: string }
-  }[]
+declare module "virtual:medusa/custom-fields/*/$link" {
+  const links: string[]
 }

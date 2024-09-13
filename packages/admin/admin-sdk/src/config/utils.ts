@@ -1,5 +1,11 @@
-import { EntrypointFormMap } from "@medusajs/admin-shared"
-import { CustomFieldConfig, RouteConfig, WidgetConfig } from "./types"
+import type { CustomFieldModelFormMap } from "@medusajs/admin-shared"
+import { z, ZodType } from "zod"
+import {
+  CustomFieldConfig,
+  CustomFormField,
+  RouteConfig,
+  WidgetConfig,
+} from "./types"
 
 function createConfigHelper<TConfig>(config: TConfig): TConfig {
   return {
@@ -43,8 +49,68 @@ export function defineRouteConfig(config: RouteConfig) {
  *
  * @experimental This API is experimental and may change in the future.
  */
-export function unstable_defineCustomFieldsConfig<
-  TEntity extends keyof EntrypointFormMap
->(config: CustomFieldConfig<TEntity>) {
+export function defineCustomFieldsConfig<
+  TModel extends keyof CustomFieldModelFormMap
+>(config: CustomFieldConfig<TModel>) {
   return createConfigHelper(config)
+}
+
+/**
+ * Creates a type-safe form builder.
+ *
+ * @returns The form helper.
+ *
+ * @example
+ * ```ts
+ * import { unstable_createFormHelper, unstable_defineCustomFieldsConfig } from "@medusajs/admin-sdk"
+ * import type { HttpTypes } from "@medusajs/types"
+ * import type { Brand } from "../../types/brand"
+ *
+ * type ExtendedProduct = HttpTypes.Product & {
+ *   brand: Brand | null
+ * }
+ *
+ * const form = unstable_createFormHelper<ExtendedProduct>()
+ *
+ * export default unstable_defineCustomFieldsConfig({
+ *   entryPoint: "product",
+ *   link: "brand",
+ *   forms: [{
+ *     form: "create",
+ *     fields: {
+ *       brand_id: form.define({
+ *         rules: form.string().nullish(),
+ *         defaultValue: "",
+ *       }),
+ *     }
+ *   }]
+ * })
+ * ```
+ *
+ * @experimental This API is experimental and may change in the future.
+ */
+export function createFormHelper<TData>() {
+  return {
+    /**
+     * Define a custom form field.
+     *
+     * @param field The field to define.
+     * @returns The field.
+     */
+    define: <T extends ZodType>(
+      field: CustomFormField<TData, T>
+    ): CustomFormField<TData, T> => {
+      return field
+    },
+    string: z.string,
+    number: z.number,
+    boolean: z.boolean,
+    date: z.date,
+    array: z.array,
+    object: z.object,
+    null: z.null,
+    nullable: z.nullable,
+    undefined: z.undefined,
+    coerce: z.coerce,
+  }
 }

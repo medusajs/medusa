@@ -1,9 +1,5 @@
-import details from "virtual:medusa/details/product/general"
+import links from "virtual:medusa/custom-fields/product/$link"
 
-const extendedFields = details.blocks
-  .map((block) => {
-    return block.extendQuery?.fields
-  })
-  .join(",")
+console.log(links)
 
-export const PRODUCT_DETAIL_FIELDS = ["*categories", extendedFields].join(",")
+export const PRODUCT_DETAIL_FIELDS = ["*categories"].join(",")

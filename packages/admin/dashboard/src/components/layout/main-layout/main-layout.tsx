@@ -19,7 +19,7 @@ import * as Collapsible from "@radix-ui/react-collapsible"
 import { useTranslation } from "react-i18next"
 
 import { useStore } from "../../../hooks/api/store"
-import { settingsRouteRegex } from "../../../lib/extension-helpers"
+import { settingsRouteRegex } from "../../../lib/extensions/route-helpers"
 import { Divider } from "../../common/divider"
 import { Skeleton } from "../../common/skeleton"
 import { NavItem, NavItemProps } from "../../layout/nav-item"

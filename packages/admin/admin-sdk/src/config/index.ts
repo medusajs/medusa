@@ -1,2 +1,2 @@
-export * from "./types"
+export { CustomFieldConfig, RouteConfig, WidgetConfig } from "./types"
 export * from "./utils"

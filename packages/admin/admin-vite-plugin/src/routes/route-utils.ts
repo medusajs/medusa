@@ -63,7 +63,7 @@ export async function validateRoute(file: string, resolveMenuItem = false) {
   try {
     ast = parse(content, parserOptions)
   } catch (_e) {
-    return false
+    return { valid: false }
   }
 
   let hasDefaultExport = false
@@ -79,10 +79,10 @@ export async function validateRoute(file: string, resolveMenuItem = false) {
       },
     })
   } catch (_e) {
-    return false
+    return { valid: false }
   }
 
-  return hasNamedExport && hasDefaultExport
+  return { valid: hasNamedExport && hasDefaultExport }
 }
 
 function createRoutePath(file: string) {
@@ -109,7 +109,7 @@ export async function generateRouteEntrypoint(
   const validatedRoutes = (
     await Promise.all(
       files.map(async (route) => {
-        const valid = await validateRoute(route, type === "link")
+        const { valid } = await validateRoute(route, type === "link")
         return valid ? route : null
       })
     )
