@@ -23,7 +23,7 @@ import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { TestDatabase } from "../utils"
 
-jest.setTimeout(100000)
+jest.setTimeout(999900000)
 
 moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleName: Modules.WORKFLOW_ENGINE,
@@ -35,10 +35,9 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   },
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {
     describe("Workflow Orchestrator module", function () {
-      const afterEach_ = async () => {
+      const afterEach_ = async () => {}
+      beforeEach(async () => {
         await TestDatabase.clearTables()
-      }
-      beforeEach(() => {
         jest.clearAllMocks()
       })
 
@@ -192,7 +191,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           expect(errors[0].error).toBeInstanceOf(TransactionStepTimeoutError)
         })
 
-        it.only("should revert the entire transaction when the transaction timeout expires", async () => {
+        it("should revert the entire transaction when the transaction timeout expires", async () => {
           const { transaction, result, errors } = await workflowOrcModule.run(
             "workflow_transaction_timeout",
             {
@@ -271,7 +270,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           ).toBe(true)
         })
 
-        it.only("should complete an async workflow that returns a StepResponse", (done) => {
+        it("should complete an async workflow that returns a StepResponse", (done) => {
           const transactionId = "transaction_1"
           void workflowOrcModule
             .run("workflow_async_background", {

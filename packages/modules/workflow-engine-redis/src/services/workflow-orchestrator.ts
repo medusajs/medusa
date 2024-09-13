@@ -151,7 +151,7 @@ export class WorkflowOrchestratorService {
     await this.redisDistributedTransactionStorage_.onApplicationStart()
   }
 
-  public async triggerParentStep(transaction, result) {
+  private async triggerParentStep(transaction, result) {
     const metadata = transaction.flow.metadata
     const { parentStepIdempotencyKey } = metadata ?? {}
     if (parentStepIdempotencyKey) {
@@ -336,7 +336,6 @@ export class WorkflowOrchestratorService {
     })
 
     if (ret.transaction.hasFinished()) {
-      console.log("transaction has finished")
       const { result, errors } = ret
 
       await this.notify({

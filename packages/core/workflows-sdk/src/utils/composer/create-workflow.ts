@@ -184,6 +184,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
       {
         name: `${name}-as-step`,
         async: context.isAsync,
+        nested: context.isAsync, // if async we flag this is a nested transaction
       },
       async (stepInput: TData, stepContext) => {
         const { container, ...sharedContext } = stepContext
