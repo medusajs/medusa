@@ -449,9 +449,6 @@ export interface FixtureEntryPoints {
   shipping_option_price_sets: LinkShippingOptionPriceSet
 }
 
-declare module "@medusajs/types/src/modules-sdk/remote-query-entry-points" {
-  export interface RemoteQueryEntryPoints extends FixtureEntryPoints {}
-}
 declare module "@medusajs/types" {
   export interface RemoteQueryEntryPoints extends FixtureEntryPoints {}
 }
