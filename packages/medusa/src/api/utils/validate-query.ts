@@ -65,7 +65,11 @@ export function validateAndTransformQuery<TEntity extends BaseEntity>(
   res: MedusaResponse,
   next: NextFunction
 ) => Promise<void> {
-  return async (req: MedusaRequest, _: MedusaResponse, next: NextFunction) => {
+  return async function validateQuery(
+    req: MedusaRequest,
+    _: MedusaResponse,
+    next: NextFunction
+  ) {
     try {
       const allowed = (req.allowed ?? queryConfig.allowed ?? []) as string[]
       delete req.allowed

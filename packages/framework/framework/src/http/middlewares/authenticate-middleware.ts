@@ -20,7 +20,10 @@ const API_KEY_AUTH = "api-key"
 // This is the only hard-coded actor type, as API keys have special handling for now. We could also generalize API keys to carry the actor type with them.
 const ADMIN_ACTOR_TYPE = "user"
 
-type AuthType = typeof SESSION_AUTH | typeof BEARER_AUTH | typeof API_KEY_AUTH
+export type AuthType =
+  | typeof SESSION_AUTH
+  | typeof BEARER_AUTH
+  | typeof API_KEY_AUTH
 
 type MedusaSession = {
   auth_context: AuthContext
@@ -31,7 +34,7 @@ export const authenticate = (
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
 ): RequestHandler => {
-  const handler = async (
+  const authenticateMiddleware = async (
     req: MedusaRequest,
     res: MedusaResponse,
     next: NextFunction
@@ -105,7 +108,7 @@ export const authenticate = (
     res.status(401).json({ message: "Unauthorized" })
   }
 
-  return handler as unknown as RequestHandler
+  return authenticateMiddleware as unknown as RequestHandler
 }
 
 const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
