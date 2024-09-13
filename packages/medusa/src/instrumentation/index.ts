@@ -43,6 +43,12 @@ export function instrumentHttpLayer() {
       try {
         await requestHandler()
       } finally {
+        if (res.statusCode >= 500) {
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: `Failed with ${res.statusMessage}`,
+          })
+        }
         span.setAttributes({ "http.statusCode": res.statusCode })
         span.end()
       }
