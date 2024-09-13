@@ -1,4 +1,4 @@
-import { RemoteQueryFilters } from "@medusajs/types/src"
+import { RemoteQueryFilters } from "@medusajs/types"
 
 const __type = "QueryFilter"
 

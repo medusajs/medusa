@@ -1,10 +1,10 @@
 import {
   RemoteQueryEntryPoints,
+  RemoteQueryFilters,
   RemoteQueryGraph,
   RemoteQueryObjectConfig,
 } from "@medusajs/types"
-import { isObject, QueryContext, QueryFilter } from "@medusajs/utils"
-import { RemoteQueryFilters } from "@medusajs/types/src"
+import { QueryContext, QueryFilter, isObject } from "@medusajs/utils"
 
 const FIELDS = "__fields"
 const ARGUMENTS = "__args"
