@@ -36,7 +36,7 @@ export type AsyncRouteHandler = (
   res: MedusaResponse
 ) => Promise<void>
 
-type RouteHandler = SyncRouteHandler | AsyncRouteHandler
+export type RouteHandler = SyncRouteHandler | AsyncRouteHandler
 
 export type RouteImplementation = {
   method?: RouteVerb
