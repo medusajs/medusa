@@ -1,13 +1,14 @@
 import { QueryContext, QueryFilter } from "@medusajs/utils"
-import { toRemoteQuery } from "../../../remote-query/to-remote-query"
+import { toRemoteQuery } from "../to-remote-query"
+import "../__fixtures__/remote-query-type"
 
 describe("toRemoteQuery", () => {
   it("should transform a query with top level filtering", () => {
     const format = toRemoteQuery({
       entity: "product",
-      fields: ["id", "name", "description"],
-      filter: QueryFilter({
-        name: {
+      fields: ["id", "handle", "description"],
+      filters: QueryFilter<"product">({
+        handle: {
           $ilike: "abc%",
         },
       }),
@@ -15,10 +16,10 @@ describe("toRemoteQuery", () => {
 
     expect(format).toEqual({
       product: {
-        __fields: ["id", "name", "description"],
+        __fields: ["id", "handle", "description"],
         __args: {
           filters: {
-            name: {
+            handle: {
               $ilike: "abc%",
             },
           },
@@ -27,18 +28,18 @@ describe("toRemoteQuery", () => {
     })
   })
 
-  it("should transform a query with filter and context into remote query input", () => {
+  it("should transform a query with filters and context into remote query input [1]", () => {
     const format = toRemoteQuery({
       entity: "product",
       fields: [
-        "name",
+        "id",
         "description",
-        "variants.sku",
+        "variants.title",
         "variants.calculated_price",
         "variants.options.*",
       ],
-      filter: {
-        variants: QueryFilter({
+      filters: {
+        variants: QueryFilter<"variants">({
           sku: {
             $ilike: "abc%",
           },
@@ -56,7 +57,7 @@ describe("toRemoteQuery", () => {
 
     expect(format).toEqual({
       product: {
-        __fields: ["name", "description"],
+        __fields: ["id", "description"],
         variants: {
           __args: {
             filters: {
@@ -73,7 +74,7 @@ describe("toRemoteQuery", () => {
               },
             },
           },
-          __fields: ["sku", "calculated_price"],
+          __fields: ["title", "calculated_price"],
           options: {
             __fields: ["*"],
           },
@@ -82,7 +83,7 @@ describe("toRemoteQuery", () => {
     })
   })
 
-  it("should transform a query with filter and context into remote query input", () => {
+  it("should transform a query with filters and context into remote query input [2]", () => {
     const langContext = QueryContext({
       context: {
         lang: "pt-br",
@@ -101,7 +102,7 @@ describe("toRemoteQuery", () => {
         "variants.*",
         "variants.variant_translation.*",
       ],
-      filter: QueryFilter({
+      filters: QueryFilter<"product">({
         id: "prod_01J742X0QPFW3R2ZFRTRC34FS8",
       }),
       context: {

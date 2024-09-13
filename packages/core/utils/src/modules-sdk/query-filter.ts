@@ -1,11 +1,18 @@
+import { RemoteQueryFilters } from "@medusajs/types/src"
+
 const __type = "QueryFilter"
-export function QueryFilter(query: Record<string, unknown>) {
+
+export function QueryFilterFn<TEntry extends string>(
+  query: RemoteQueryFilters<TEntry>
+): RemoteQueryFilters<TEntry> & { __type: "QueryFilter" } {
   return {
     ...query,
     __type,
   }
 }
 
-QueryFilter.isQueryFilter = (obj: any) => {
+QueryFilterFn.isQueryFilter = (obj: any) => {
   return obj.__type === __type
 }
+
+export const QueryFilter = QueryFilterFn

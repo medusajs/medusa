@@ -1,15 +1,24 @@
-import { RemoteQueryGraph, RemoteQueryObjectConfig } from "@medusajs/types"
-import { QueryContext, QueryFilter, isObject } from "@medusajs/utils"
+import {
+  RemoteQueryEntryPoints,
+  RemoteQueryGraph,
+  RemoteQueryObjectConfig,
+} from "@medusajs/types"
+import { isObject, QueryContext, QueryFilter } from "@medusajs/utils"
+import { RemoteQueryFilters } from "@medusajs/types/src"
+
+const FIELDS = "__fields"
+const ARGUMENTS = "__args"
 
 /**
- * Convert a string fields array to a remote query object
- * @param config - The configuration object
+ * convert a specific API configuration to a remote query object
+ *
+ * @param config
  *
  * @example
  * const remoteQueryObject = toRemoteQuery({
  *   entity: "product",
  *   fields,
- *   filter: { variants: QueryFilter({ sku: "abc" }) },
+ *   filters: { variants: QueryFilter({ sku: "abc" }) },
  *   context: {
  *     variants: { calculated_price: QueryContext({ region_id: "reg_123" }) }
  *   }
@@ -18,19 +27,13 @@ import { QueryContext, QueryFilter, isObject } from "@medusajs/utils"
  * console.log(remoteQueryObject);
  */
 
-const FIELDS = "__fields"
-const ARGUMENTS = "__args"
-
-export function toRemoteQuery<
-  const TEntity extends string,
-  const TConfig extends RemoteQueryObjectConfig<TEntity>
->(config: {
-  entity: TEntity
-  fields: string[]
-  filter?: Record<string, any>
+export function toRemoteQuery<const TEntity extends string>(config: {
+  entity: TEntity | keyof RemoteQueryEntryPoints
+  fields: RemoteQueryObjectConfig<TEntity>["fields"]
+  filters?: RemoteQueryFilters<TEntity>
   context?: Record<string, any>
-}): RemoteQueryGraph<TConfig> {
-  const { entity, fields = [], filter = {}, context = {} } = config
+}): RemoteQueryGraph<TEntity> {
+  const { entity, fields = [], filters = {}, context = {} } = config
 
   const joinerQuery: Record<string, any> = {
     [entity]: {
@@ -52,18 +55,18 @@ export function toRemoteQuery<
       }
 
       if (QueryContext.isQueryContext(src) || QueryFilter.isQueryFilter(src)) {
-        const filter = { ...src } as any
-        delete filter.__type
+        const normalizedFilters = { ...src } as any
+        delete normalizedFilters.__type
 
         const prop = QueryFilter.isQueryFilter(src) ? "filters" : "context"
 
         if (topLevel) {
           target[ARGUMENTS] ??= {}
-          target[ARGUMENTS][prop] = filter
+          target[ARGUMENTS][prop] = normalizedFilters
         } else {
           target[key] ??= {}
           target[key][ARGUMENTS] ??= {}
-          target[key][ARGUMENTS][prop] = filter
+          target[key][ARGUMENTS][prop] = normalizedFilters
         }
       } else {
         if (!topLevel) {
@@ -76,8 +79,8 @@ export function toRemoteQuery<
     }
   }
 
-  // Process filter and context recursively
-  processNestedObjects(joinerQuery[entity], filter)
+  // Process filters and context recursively
+  processNestedObjects(joinerQuery[entity], filters)
   processNestedObjects(joinerQuery[entity], context)
 
   for (const field of fields) {
@@ -101,5 +104,5 @@ export function toRemoteQuery<
     deepConfigRef[FIELDS].push(fieldProperty)
   }
 
-  return joinerQuery as RemoteQueryGraph<TConfig>
+  return joinerQuery as RemoteQueryGraph<TEntity>
 }

@@ -35,6 +35,6 @@ export type RemoteQueryInput<TEntry extends string> = {
   context?: any
 }
 
-export type RemoteQueryGraph<TConfig extends RemoteQueryObjectConfig<any>> = {
-  __TConfig: TConfig
+export type RemoteQueryGraph<TEntry extends string> = {
+  __TConfig: RemoteQueryObjectConfig<TEntry>
 }

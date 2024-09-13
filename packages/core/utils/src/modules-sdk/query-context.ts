@@ -1,11 +1,19 @@
+type QueryContextType = {
+  (query: Record<string, unknown>): Record<string, unknown>
+  isQueryContext: (obj: any) => boolean
+}
+
 const __type = "QueryContext"
-export function QueryContext(query: Record<string, unknown>) {
+
+function QueryContextFn(query: Record<string, unknown>) {
   return {
     ...query,
     __type,
   }
 }
 
-QueryContext.isQueryContext = (obj: any) => {
+QueryContextFn.isQueryContext = (obj: any) => {
   return obj.__type === __type
 }
+
+export const QueryContext: QueryContextType = QueryContextFn
