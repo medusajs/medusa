@@ -1,8 +1,7 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
-import { useForm, useWatch } from "react-hook-form"
+import { useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import {
   RouteFocusModal,
@@ -15,7 +14,6 @@ import {
   PRODUCT_CREATE_FORM_DEFAULTS,
   ProductCreateSchema,
 } from "../../constants"
-import { ProductCreateSchemaType } from "../../types"
 import { normalizeProductFormValues } from "../../utils"
 import { ProductCreateDetailsForm } from "../product-create-details-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
@@ -23,6 +21,7 @@ import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
 
 import extensions from "virtual:medusa/custom-fields/product/create/$config"
+import { useExtendableForm } from "../../../../../lib/extensions/config-helpers"
 
 enum Tab {
   DETAILS = "details",
@@ -48,8 +47,6 @@ export const ProductCreateForm = ({
   store,
   pricePreferences,
 }: ProductCreateFormProps) => {
-  console.log(extensions)
-
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
   const [tabState, setTabState] = useState<TabState>({
     [Tab.DETAILS]: "in-progress",
@@ -61,14 +58,17 @@ export const ProductCreateForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const form = useForm<ProductCreateSchemaType>({
+  console.log(extensions)
+
+  const form = useExtendableForm({
     defaultValues: {
       ...PRODUCT_CREATE_FORM_DEFAULTS,
       sales_channels: defaultChannel
         ? [{ id: defaultChannel.id, name: defaultChannel.name }]
         : [],
     },
-    resolver: zodResolver(ProductCreateSchema),
+    schema: ProductCreateSchema,
+    extensions: extensions.configs,
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
@@ -157,7 +157,7 @@ export const ProductCreateForm = ({
         toast.error(error.message)
       } else {
         toast.error(t("general.error"), {
-          description: error.message,
+          description: error.stack,
         })
       }
     }

@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { ProductCreateSchemaType } from "./types"
 import { castNumber } from "../../../lib/cast-number"
+import { ProductCreateSchemaType } from "./types"
 
 export const normalizeProductFormValues = (
   values: ProductCreateSchemaType & {
@@ -8,6 +8,8 @@ export const normalizeProductFormValues = (
     regionsCurrencyMap: Record<string, string>
   }
 ) => {
+  console.log(values)
+
   const thumbnail = values.media?.find((media) => media.isThumbnail)?.url
   const images = values.media
     ?.filter((media) => !media.isThumbnail)
