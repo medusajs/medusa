@@ -26,14 +26,8 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean }
   Int: { input: number; output: number }
   Float: { input: number; output: number }
-  DateTime: {
-    input: { output: "Date | string" }
-    output: { output: "Date | string" }
-  }
-  JSON: {
-    input: { output: "Record<any, unknown>" }
-    output: { output: "Record<any, unknown>" }
-  }
+  DateTime: { input: Date | string; output: Date | string }
+  JSON: { input: Record<string, unknown>; output: Record<string, unknown> }
 }
 
 export type SimpleProduct = {
@@ -56,6 +50,7 @@ export type Product = {
   variants?: Array<ProductVariant>
   sales_channels_link?: Array<LinkProductSalesChannel>
   sales_channels?: Array<SalesChannel>
+  metadata?: Maybe<Scalars["JSON"]["output"]>
 }
 
 export type ProductVariant = {
