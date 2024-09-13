@@ -12,9 +12,32 @@ import loaders from "../loaders"
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
 
+/**
+ * Imports the "instrumentation.js" file from the root of the
+ * directory and invokes the register function. The existence
+ * of this file is optional, hence we ignore "ENOENT"
+ * errors.
+ */
+async function registerInstrumentation(directory: string) {
+  try {
+    const instrumentation = await import(
+      path.join(directory, "instrumentation.js")
+    )
+    if (typeof instrumentation.register === "function") {
+      logger.info("OTEL registered")
+      instrumentation.register()
+    }
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      throw error
+    }
+  }
+}
+
 async function start({ port, directory, types }) {
   async function internalStart() {
     track("CLI_START")
+    await registerInstrumentation(directory)
 
     const app = express()
 
