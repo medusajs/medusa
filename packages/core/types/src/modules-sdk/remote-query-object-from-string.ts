@@ -32,6 +32,10 @@ export type RemoteQueryInput<TEntry extends string> = {
     : ObjectToRemoteQueryFields<
         RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
       >[]
+  pagination?: {
+    skip: number
+    take?: number
+  }
   filters?: RemoteQueryFilters<TEntry>
   context?: any
 }
