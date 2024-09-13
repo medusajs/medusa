@@ -16,6 +16,7 @@ import {
 import { useTranslation } from "react-i18next"
 
 import { AdminOrderLineItem } from "@medusajs/types"
+import { useOrderChanges } from "../../../../../hooks/api"
 import { useCancelClaim, useClaims } from "../../../../../hooks/api/claims"
 import {
   useCancelExchange,
@@ -25,7 +26,6 @@ import { useCancelReturn, useReturns } from "../../../../../hooks/api/returns"
 import { useDate } from "../../../../../hooks/use-date"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../order-payment-section"
-import { useOrderChanges } from "../../../../../hooks/api"
 import ActivityItems from "./activity-items"
 
 type OrderTimelineProps = {
@@ -222,6 +222,16 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
         children: <FulfillmentCreatedBody fulfillment={fulfillment} />,
       })
 
+      if (fulfillment.delivered_at) {
+        items.push({
+          title: t("orders.activity.events.fulfillment.delivered"),
+          timestamp: fulfillment.delivered_at,
+          children: (
+            <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
+          ),
+        })
+      }
+
       if (fulfillment.shipped_at) {
         items.push({
           title: t("orders.activity.events.fulfillment.shipped"),
@@ -340,10 +350,10 @@ const useActivityItems = (order: AdminOrder): Activity[] => {
           edit.status === "requested"
             ? edit.requested_at
             : edit.status === "declined"
-            ? edit.declined_at
-            : edit.status === "canceled"
-            ? edit.canceled_at
-            : edit.created_at,
+              ? edit.declined_at
+              : edit.status === "canceled"
+                ? edit.canceled_at
+                : edit.created_at,
         children: isConfirmed ? (
           <OrderEditBody edit={edit} itemsMap={itemsMap} />
         ) : null,
