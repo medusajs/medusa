@@ -7,7 +7,7 @@ import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { OrchestrationUtils, isString } from "@medusajs/utils"
 import { ulid } from "ulid"
 import { exportWorkflow } from "../../helper"
-import { LocalStepConfig, createStep } from "./create-step"
+import { createStep } from "./create-step"
 import { proxify } from "./helpers/proxy"
 import { StepResponse } from "./helpers/step-response"
 import { WorkflowResponse } from "./helpers/workflow-response"
@@ -175,10 +175,8 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
   mainFlow.run = mainFlow().run
   mainFlow.runAsStep = ({
     input,
-    config,
   }: {
     input: TData
-    config?: LocalStepConfig
   }): ReturnType<StepFunction<TData, TResult>> => {
     const step = createStep(
       {
@@ -200,7 +198,8 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
         })
 
         const { result, transaction: flowTransaction } = transaction
-        if (flowTransaction.hasFinished()) {
+
+        if (!context.isAsync || flowTransaction.hasFinished()) {
           return new StepResponse(result, transaction)
         }
 
@@ -214,10 +213,6 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
         await workflow(container).cancel(transaction)
       }
     )(input) as ReturnType<StepFunction<TData, TResult>>
-
-    if (config) {
-      return step.config(config) as ReturnType<StepFunction<TData, TResult>>
-    }
 
     return step
   }
