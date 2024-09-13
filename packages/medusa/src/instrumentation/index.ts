@@ -123,19 +123,26 @@ export function instrumentHttpLayer() {
 export function instrumentRemoteQuery() {
   const QueryTracer = new Tracer("@medusajs/query", "2.0.0")
 
-  Query.traceGraphQuery = async function (queryFn, queryOptions) {
+  Query.instrument.graphQuery(async function (queryFn, queryOptions) {
     return await QueryTracer.trace(
       `query.graph: ${queryOptions.entryPoint}`,
       async (span) => {
         span.setAttributes({
           "query.fields": queryOptions.fields,
         })
-        return await queryFn().finally(() => span.end())
+        return await queryFn()
+          .catch((error) => {
+            span.setStatus({
+              code: SpanStatusCode.ERROR,
+              message: error.message,
+            })
+          })
+          .finally(() => span.end())
       }
     )
-  }
+  })
 
-  Query.traceRemoteQuery = async function (queryFn, queryOptions) {
+  Query.instrument.remoteQuery(async function (queryFn, queryOptions) {
     const traceIdentifier =
       "entryPoint" in queryOptions
         ? queryOptions.entryPoint
@@ -151,10 +158,42 @@ export function instrumentRemoteQuery() {
         span.setAttributes({
           "query.fields": "fields" in queryOptions ? queryOptions.fields : [],
         })
-        return await queryFn().finally(() => span.end())
+        return await queryFn()
+          .catch((error) => {
+            span.setStatus({
+              code: SpanStatusCode.ERROR,
+              message: error.message,
+            })
+          })
+          .finally(() => span.end())
       }
     )
-  }
+  })
+
+  Query.instrument.remoteDataFetch(async function (
+    fetchFn,
+    serviceName,
+    method,
+    options
+  ) {
+    return await QueryTracer.trace(
+      `${snakeCase(serviceName)}.${snakeCase(method)}`,
+      async (span) => {
+        span.setAttributes({
+          "fetch.select": options.select,
+          "fetch.relations": options.relations,
+        })
+        return await fetchFn()
+          .catch((error) => {
+            span.setStatus({
+              code: SpanStatusCode.ERROR,
+              message: error.message,
+            })
+          })
+          .finally(() => span.end())
+      }
+    )
+  })
 }
 
 /**

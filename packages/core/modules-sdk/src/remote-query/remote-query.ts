@@ -22,6 +22,13 @@ export class RemoteQuery {
   private modulesMap: Map<string, LoadedModule> = new Map()
   private customRemoteFetchData?: RemoteFetchDataCallback
 
+  static traceFetchRemoteData?: (
+    fetcher: () => Promise<any>,
+    serviceName: string,
+    method: string,
+    options: { select?: string[]; relations: string[] }
+  ) => Promise<any>
+
   constructor({
     modulesLoaded,
     customRemoteFetchData,
@@ -227,7 +234,17 @@ export class RemoteQuery {
       options.take = null
     }
 
-    const result = await service[methodName](filters, options)
+    let result: any
+    if (RemoteQuery.traceFetchRemoteData) {
+      result = await RemoteQuery.traceFetchRemoteData(
+        async () => service[methodName](filters, options),
+        serviceConfig.serviceName,
+        methodName,
+        options
+      )
+    } else {
+      result = await service[methodName](filters, options)
+    }
 
     if (hasPagination) {
       const [data, count] = result

@@ -40,6 +40,18 @@ export class Query {
       | RemoteJoinerQuery
   ) => Promise<any>
 
+  static instrument = {
+    graphQuery(tracer: (typeof Query)["traceGraphQuery"]) {
+      Query.traceGraphQuery = tracer
+    },
+    remoteQuery(tracer: (typeof Query)["traceRemoteQuery"]) {
+      Query.traceRemoteQuery = tracer
+    },
+    remoteDataFetch(tracer: (typeof RemoteQuery)["traceFetchRemoteData"]) {
+      RemoteQuery.traceFetchRemoteData = tracer
+    },
+  }
+
   constructor(remoteQuery: RemoteQuery) {
     this.#remoteQuery = remoteQuery
   }
