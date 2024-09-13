@@ -32,7 +32,7 @@ export type RemoteQueryInput<TEntry extends string> = {
     : ObjectToRemoteQueryFields<
         RemoteQueryEntryPoints[TEntry & keyof RemoteQueryEntryPoints]
       >[]
-  filter?: RemoteQueryFilters<TEntry>
+  filters?: RemoteQueryFilters<TEntry>
   context?: any
 }
 

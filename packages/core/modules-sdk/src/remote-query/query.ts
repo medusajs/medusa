@@ -141,7 +141,7 @@ export class Query {
     queryOptions: RemoteQueryInput<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<GraphResultSet<TEntry>> {
-    const normalizedQuery = toRemoteQuery(queryOptions)
+    const normalizedQuery = toRemoteQuery<TEntry>(queryOptions)
     let response:
       | any[]
       | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
