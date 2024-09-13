@@ -57,10 +57,17 @@ export const ProductCreateVariantsForm = ({
     pricePreferences,
   })
 
-  const variantData = useMemo(
-    () => variants.filter((v) => v.should_create),
-    [variants]
-  )
+  const variantData = useMemo(() => {
+    const ret = []
+
+    variants.forEach((v, i) => {
+      if (v.should_create) {
+        ret.push({ ...v, originalIndex: i })
+      }
+    })
+
+    return ret
+  }, [variants])
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
@@ -118,7 +125,8 @@ const useColumns = ({
         id: "title",
         name: t("fields.title"),
         header: t("fields.title"),
-        field: (context) => `variants.${context.row.index}.title`,
+        field: (context) =>
+          `variants.${context.row.original.originalIndex}.title`,
         type: "text",
         cell: (context) => {
           return <DataGrid.TextCell context={context} />
@@ -128,7 +136,8 @@ const useColumns = ({
         id: "sku",
         name: t("fields.sku"),
         header: t("fields.sku"),
-        field: (context) => `variants.${context.row.index}.sku`,
+        field: (context) =>
+          `variants.${context.row.original.originalIndex}.sku`,
         type: "text",
         cell: (context) => {
           return <DataGrid.TextCell context={context} />
@@ -138,7 +147,8 @@ const useColumns = ({
         id: "manage_inventory",
         name: t("fields.managedInventory"),
         header: t("fields.managedInventory"),
-        field: (context) => `variants.${context.row.index}.manage_inventory`,
+        field: (context) =>
+          `variants.${context.row.original.originalIndex}.manage_inventory`,
         type: "boolean",
         cell: (context) => {
           return <DataGrid.BooleanCell context={context} />
@@ -148,7 +158,8 @@ const useColumns = ({
         id: "allow_backorder",
         name: t("fields.allowBackorder"),
         header: t("fields.allowBackorder"),
-        field: (context) => `variants.${context.row.index}.allow_backorder`,
+        field: (context) =>
+          `variants.${context.row.original.originalIndex}.allow_backorder`,
         type: "boolean",
         cell: (context) => {
           return <DataGrid.BooleanCell context={context} />
@@ -159,7 +170,8 @@ const useColumns = ({
         id: "inventory_kit",
         name: t("fields.inventoryKit"),
         header: t("fields.inventoryKit"),
-        field: (context) => `variants.${context.row.index}.inventory_kit`,
+        field: (context) =>
+          `variants.${context.row.original.originalIndex}.inventory_kit`,
         type: "boolean",
         cell: (context) => {
           return (
@@ -180,9 +192,9 @@ const useColumns = ({
         pricePreferences,
         getFieldName: (context, value) => {
           if (context.column.id?.startsWith("currency_prices")) {
-            return `variants.${context.row.index}.prices.${value}`
+            return `variants.${context.row.original.originalIndex}.prices.${value}`
           }
-          return `variants.${context.row.index}.prices.${value}`
+          return `variants.${context.row.original.originalIndex}.prices.${value}`
         },
         t,
       }),

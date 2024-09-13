@@ -2971,6 +2971,7 @@ describe("Entity builder", () => {
         })
         .indexes([
           {
+            // @ts-expect-error
             on: ["email", "account", "doesnotexist", "anotherdoesnotexist"],
           },
         ])
@@ -4714,7 +4715,9 @@ describe("Entity builder", () => {
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
-        teams: model.manyToMany(() => team),
+        teams: model.manyToMany(() => team, {
+          mappedBy: "users",
+        }),
       })
 
       const User = toMikroORMEntity(user)
@@ -4775,6 +4778,7 @@ describe("Entity builder", () => {
           name: "teams",
           entity: "Team",
           pivotTable: "team_users",
+          mappedBy: "users",
         },
         created_at: {
           reference: "scalar",
@@ -5686,7 +5690,9 @@ describe("Entity builder", () => {
       const user = model.define("platform.user", {
         id: model.number(),
         username: model.text(),
-        teams: model.manyToMany(() => team),
+        teams: model.manyToMany(() => team, {
+          mappedBy: "users",
+        }),
       })
 
       const User = toMikroORMEntity(user)
@@ -5748,6 +5754,7 @@ describe("Entity builder", () => {
           name: "teams",
           entity: "Team",
           pivotTable: "platform.team_users",
+          mappedBy: "users",
         },
         created_at: {
           reference: "scalar",
@@ -5867,7 +5874,10 @@ describe("Entity builder", () => {
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
-        teams: model.manyToMany(() => team, { pivotTable: "users_teams" }),
+        teams: model.manyToMany(() => team, {
+          pivotTable: "users_teams",
+          mappedBy: "users",
+        }),
       })
 
       const User = toMikroORMEntity(user)
@@ -5928,6 +5938,7 @@ describe("Entity builder", () => {
           name: "teams",
           entity: "Team",
           pivotTable: "users_teams",
+          mappedBy: "users",
         },
         created_at: {
           reference: "scalar",
@@ -6052,7 +6063,10 @@ describe("Entity builder", () => {
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
-        teams: model.manyToMany(() => team, { pivotEntity: () => squad }),
+        teams: model.manyToMany(() => team, {
+          pivotEntity: () => squad,
+          mappedBy: "users",
+        }),
       })
 
       const [User, Team, Squad] = toMikroOrmEntities([user, team, squad])
@@ -6203,6 +6217,7 @@ describe("Entity builder", () => {
           name: "teams",
           entity: "Team",
           pivotEntity: "TeamUsers",
+          mappedBy: "users",
         },
         created_at: {
           reference: "scalar",

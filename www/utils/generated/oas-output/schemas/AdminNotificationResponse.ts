@@ -1,7 +1,7 @@
 /**
  * @schema AdminNotificationResponse
  * type: object
- * description: SUMMARY
+ * description: The notification's details.
  * x-schemaName: AdminNotificationResponse
  * required:
  *   - notification

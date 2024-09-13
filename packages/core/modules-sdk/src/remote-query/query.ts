@@ -20,6 +20,38 @@ import {
 export class Query {
   #remoteQuery: RemoteQuery
 
+  /**
+   * Method to wrap execution of the graph query for instrumentation
+   */
+  static traceGraphQuery?: (
+    queryFn: () => Promise<any>,
+    queryOptions: RemoteQueryObjectConfig<any>
+  ) => Promise<any>
+
+  /**
+   * Method to wrap execution of the remoteQuery overload function
+   * for instrumentation
+   */
+  static traceRemoteQuery?: (
+    queryFn: () => Promise<any>,
+    queryOptions:
+      | RemoteQueryObjectConfig<any>
+      | RemoteQueryObjectFromStringResult<any>
+      | RemoteJoinerQuery
+  ) => Promise<any>
+
+  static instrument = {
+    graphQuery(tracer: (typeof Query)["traceGraphQuery"]) {
+      Query.traceGraphQuery = tracer
+    },
+    remoteQuery(tracer: (typeof Query)["traceRemoteQuery"]) {
+      Query.traceRemoteQuery = tracer
+    },
+    remoteDataFetch(tracer: (typeof RemoteQuery)["traceFetchRemoteData"]) {
+      RemoteQuery.traceFetchRemoteData = tracer
+    },
+  }
+
   constructor(remoteQuery: RemoteQuery) {
     this.#remoteQuery = remoteQuery
   }
@@ -76,6 +108,13 @@ export class Query {
     }
 
     const config = this.#unwrapQueryConfig(queryOptions)
+    if (Query.traceRemoteQuery) {
+      return await Query.traceRemoteQuery(
+        async () => this.#remoteQuery.query(config, undefined, options),
+        queryOptions
+      )
+    }
+
     return await this.#remoteQuery.query(config, undefined, options)
   }
 
@@ -98,11 +137,27 @@ export class Query {
     options?: RemoteJoinerOptions
   ): Promise<GraphResultSet<TEntry>> {
     const normalizedQuery = remoteQueryObjectFromString(queryOptions).__value
-    const response = await this.#remoteQuery.query(
-      normalizedQuery,
-      undefined,
-      options
-    )
+    let response:
+      | any[]
+      | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
+
+    /**
+     * When traceGraphQuery method is defined, we will wrap the implementation
+     * inside a callback and provide the method to the traceGraphQuery
+     */
+    if (Query.traceGraphQuery) {
+      response = await Query.traceGraphQuery(
+        async () =>
+          this.#remoteQuery.query(normalizedQuery, undefined, options),
+        queryOptions
+      )
+    } else {
+      response = await this.#remoteQuery.query(
+        normalizedQuery,
+        undefined,
+        options
+      )
+    }
 
     return this.#unwrapRemoteQueryResponse(response)
   }
