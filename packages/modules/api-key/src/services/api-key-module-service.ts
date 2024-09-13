@@ -1,5 +1,3 @@
-import crypto from "crypto"
-import util from "util"
 import {
   ApiKeyTypes,
   Context,
@@ -8,8 +6,21 @@ import {
   FindConfig,
   IApiKeyModuleService,
   InternalModuleDeclaration,
+  ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
+import {
+  ApiKeyType,
+  InjectManager,
+  InjectTransactionManager,
+  isObject,
+  isPresent,
+  isString,
+  MedusaContext,
+  MedusaError,
+  MedusaService,
+  promiseAll,
+} from "@medusajs/utils"
 import { ApiKey } from "@models"
 import {
   CreateApiKeyDTO,
@@ -17,17 +28,9 @@ import {
   TokenDTO,
   UpdateApiKeyInput,
 } from "@types"
-import {
-  ApiKeyType,
-  InjectManager,
-  InjectTransactionManager,
-  isObject,
-  isString,
-  MedusaContext,
-  MedusaError,
-  MedusaService,
-  promiseAll,
-} from "@medusajs/utils"
+import crypto from "crypto"
+import util from "util"
+import { joinerConfig } from "../joiner-config"
 
 const scrypt = util.promisify(crypto.scrypt)
 
@@ -53,6 +56,44 @@ export class ApiKeyModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.apiKeyService_ = apiKeyService
+  }
+
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
+  }
+
+  @InjectTransactionManager()
+  // @ts-expect-error
+  async deleteApiKeys(
+    ids: string | string[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const apiKeyIds = Array.isArray(ids) ? ids : [ids]
+
+    const unrevokedApiKeys = (
+      await this.apiKeyService_.list(
+        {
+          id: ids,
+          $or: [
+            { revoked_at: { $eq: null } },
+            { revoked_at: { $gt: new Date() } },
+          ],
+        },
+        { take: null, select: ["id"] },
+        sharedContext
+      )
+    ).map((apiKey) => apiKey.id)
+
+    if (isPresent(unrevokedApiKeys)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        `Cannot delete api keys that are not revoked - ${unrevokedApiKeys.join(
+          ", "
+        )}`
+      )
+    }
+
+    return await super.deleteApiKeys(apiKeyIds, sharedContext)
   }
 
   //@ts-expect-error

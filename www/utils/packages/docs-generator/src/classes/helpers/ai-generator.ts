@@ -2,7 +2,6 @@ import { createReadStream, existsSync } from "fs"
 import OpenAI from "openai"
 import path from "path"
 import ts from "typescript"
-import { ReadableStreamDefaultReadResult } from "stream/web"
 import { DOCBLOCK_NEW_LINE } from "../../constants.js"
 import { AssistantStreamEvent } from "openai/resources/beta/index.mjs"
 import { pascalToCamel } from "utils"
@@ -221,7 +220,7 @@ class AiGenerator {
 
     const readableStream = run.toReadableStream().getReader()
 
-    let chunk: ReadableStreamDefaultReadResult<Uint8Array> | undefined
+    let chunk: { done?: boolean; value?: Uint8Array } | undefined
     let decodedChunk: AssistantStreamEvent | undefined
     let resultMessage: OpenAI.Beta.Threads.Messages.Message | undefined
     const textDecoder = new TextDecoder()

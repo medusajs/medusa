@@ -14,23 +14,22 @@ import {
   ModuleExports,
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
-  RemoteJoinerOptions,
-  RemoteJoinerQuery,
   RemoteQueryFunction,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  isObject,
+  isString,
   MedusaError,
   ModuleRegistrationName,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  isObject,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
+import { GraphQLSchema } from "graphql/type"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
@@ -38,7 +37,7 @@ import {
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { RemoteQuery } from "./remote-query"
+import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
 
@@ -50,6 +49,7 @@ declare module "@medusajs/types" {
     [ContainerRegistrationKeys.CONFIG_MODULE]: ConfigModule
     [ContainerRegistrationKeys.PG_CONNECTION]: Knex<any>
     [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
+    [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
     [ContainerRegistrationKeys.LOGGER]: Logger
   }
 }
@@ -227,6 +227,7 @@ export type MedusaAppOutput = {
   link: RemoteLink | undefined
   query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
+  gqlSchema?: GraphQLSchema
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
   revertMigrations: RevertMigrationFn
@@ -352,15 +353,19 @@ async function MedusaApp_({
   )
 
   if (loaderOnly) {
+    async function query(...args: any[]) {
+      throw new Error("Querying not allowed in loaderOnly mode")
+    }
+    query.graph = query
+    query.gql = query
+
     return {
       onApplicationShutdown,
       onApplicationPrepareShutdown,
       onApplicationStart,
       modules: allModules,
       link: undefined,
-      query: async () => {
-        throw new Error("Querying not allowed in loaderOnly mode")
-      },
+      query: query as unknown as RemoteQueryFunction,
       runMigrations: async () => {
         throw new Error("Migrations not allowed in loaderOnly mode")
       },
@@ -412,14 +417,6 @@ async function MedusaApp_({
     servicesConfig,
     customRemoteFetchData: remoteFetchData,
   })
-
-  const query = async (
-    query: string | RemoteJoinerQuery | object,
-    variables?: Record<string, unknown>,
-    options?: RemoteJoinerOptions
-  ) => {
-    return await remoteQuery.query(query, variables, options)
-  }
 
   const applyMigration = async ({
     modulesNames,
@@ -522,8 +519,9 @@ async function MedusaApp_({
     onApplicationStart,
     modules: allModules,
     link: remoteLink,
-    query,
+    query: createQuery(remoteQuery),
     entitiesMap: schema.getTypeMap(),
+    gqlSchema: schema,
     notFound,
     runMigrations,
     revertMigrations,

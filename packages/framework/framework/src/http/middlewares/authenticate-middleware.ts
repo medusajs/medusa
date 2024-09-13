@@ -20,7 +20,10 @@ const API_KEY_AUTH = "api-key"
 // This is the only hard-coded actor type, as API keys have special handling for now. We could also generalize API keys to carry the actor type with them.
 const ADMIN_ACTOR_TYPE = "user"
 
-type AuthType = typeof SESSION_AUTH | typeof BEARER_AUTH | typeof API_KEY_AUTH
+export type AuthType =
+  | typeof SESSION_AUTH
+  | typeof BEARER_AUTH
+  | typeof API_KEY_AUTH
 
 type MedusaSession = {
   auth_context: AuthContext
@@ -31,7 +34,7 @@ export const authenticate = (
   authType: AuthType | AuthType[],
   options: { allowUnauthenticated?: boolean; allowUnregistered?: boolean } = {}
 ): RequestHandler => {
-  const handler = async (
+  const authenticateMiddleware = async (
     req: MedusaRequest,
     res: MedusaResponse,
     next: NextFunction
@@ -91,7 +94,7 @@ export const authenticate = (
     if (
       authContext?.auth_identity_id &&
       options.allowUnregistered &&
-      actorTypes.includes(authContext?.actor_type)
+      isActorTypePermitted(actorTypes, authContext.actor_type)
     ) {
       req_.auth_context = authContext
       return next()
@@ -105,7 +108,7 @@ export const authenticate = (
     res.status(401).json({ message: "Unauthorized" })
   }
 
-  return handler as unknown as RequestHandler
+  return authenticateMiddleware as unknown as RequestHandler
 }
 
 const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
@@ -162,8 +165,7 @@ const getAuthContextFromSession = (
 
   if (
     session.auth_context &&
-    (actorTypes.includes("*") ||
-      actorTypes.includes(session.auth_context.actor_type))
+    isActorTypePermitted(actorTypes, session.auth_context?.actor_type)
   ) {
     return session.auth_context
   }
@@ -197,10 +199,7 @@ const getAuthContextFromJwtToken = (
       // verify token and set authUser
       try {
         const verified = verify(token, jwtSecret) as JwtPayload
-        if (
-          actorTypes.includes("*") ||
-          actorTypes.includes(verified.actor_type)
-        ) {
+        if (isActorTypePermitted(actorTypes, verified.actor_type)) {
           return verified as AuthContext
         }
       } catch (err) {
@@ -210,4 +209,11 @@ const getAuthContextFromJwtToken = (
   }
 
   return null
+}
+
+const isActorTypePermitted = (
+  actorTypes: string | string[],
+  currentActorType: string
+) => {
+  return actorTypes.includes("*") || actorTypes.includes(currentActorType)
 }

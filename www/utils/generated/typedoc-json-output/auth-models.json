@@ -1,5 +1,5 @@
 {
-	"id": 566,
+	"id": 571,
 	"name": "auth-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 567,
+			"id": 572,
 			"name": "AuthIdentity",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 568,
+					"id": 573,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 569,
+							"id": 574,
 							"name": "new AuthIdentity",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 567,
+								"target": 572,
 								"name": "AuthIdentity",
 								"package": "@medusajs/auth",
 								"qualifiedName": "default"
@@ -48,7 +48,7 @@
 					]
 				},
 				{
-					"id": 570,
+					"id": 575,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -59,7 +59,7 @@
 					}
 				},
 				{
-					"id": 571,
+					"id": 576,
 					"name": "provider_identities",
 					"variant": "declaration",
 					"kind": 1024,
@@ -73,7 +73,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 577,
+								"target": 582,
 								"name": "ProviderIdentity",
 								"package": "@medusajs/auth",
 								"qualifiedName": "default"
@@ -89,7 +89,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 572,
+					"id": 577,
 					"name": "app_metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -124,7 +124,7 @@
 					}
 				},
 				{
-					"id": 573,
+					"id": 578,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -140,7 +140,7 @@
 					}
 				},
 				{
-					"id": 574,
+					"id": 579,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -156,14 +156,14 @@
 					}
 				},
 				{
-					"id": 575,
+					"id": 580,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 576,
+							"id": 581,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -180,50 +180,50 @@
 				{
 					"title": "Constructors",
 					"children": [
-						568
+						573
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						570,
-						571,
-						572,
-						573,
-						574
+						575,
+						576,
+						577,
+						578,
+						579
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						575
+						580
 					]
 				}
 			]
 		},
 		{
-			"id": 577,
+			"id": 582,
 			"name": "ProviderIdentity",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 578,
+					"id": 583,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 579,
+							"id": 584,
 							"name": "new ProviderIdentity",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 577,
+								"target": 582,
 								"name": "ProviderIdentity",
 								"package": "@medusajs/auth",
 								"qualifiedName": "default"
@@ -232,7 +232,7 @@
 					]
 				},
 				{
-					"id": 580,
+					"id": 585,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -243,7 +243,7 @@
 					}
 				},
 				{
-					"id": 581,
+					"id": 586,
 					"name": "entity_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -254,7 +254,7 @@
 					}
 				},
 				{
-					"id": 582,
+					"id": 587,
 					"name": "provider",
 					"variant": "declaration",
 					"kind": 1024,
@@ -265,7 +265,7 @@
 					}
 				},
 				{
-					"id": 583,
+					"id": 588,
 					"name": "auth_identity_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -276,21 +276,21 @@
 					}
 				},
 				{
-					"id": 584,
+					"id": 589,
 					"name": "auth_identity",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 567,
+						"target": 572,
 						"name": "AuthIdentity",
 						"package": "@medusajs/auth",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 585,
+					"id": 590,
 					"name": "user_metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -325,7 +325,7 @@
 					}
 				},
 				{
-					"id": 586,
+					"id": 591,
 					"name": "provider_metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -361,7 +361,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 587,
+					"id": 592,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -377,7 +377,7 @@
 					}
 				},
 				{
-					"id": 588,
+					"id": 593,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -393,14 +393,14 @@
 					}
 				},
 				{
-					"id": 589,
+					"id": 594,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 590,
+							"id": 595,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -417,27 +417,27 @@
 				{
 					"title": "Constructors",
 					"children": [
-						578
+						583
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						580,
-						581,
-						582,
-						583,
-						584,
 						585,
 						586,
 						587,
-						588
+						588,
+						589,
+						590,
+						591,
+						592,
+						593
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						589
+						594
 					]
 				}
 			]
@@ -447,94 +447,94 @@
 		{
 			"title": "Classes",
 			"children": [
-				567,
-				577
+				572,
+				582
 			]
 		}
 	],
 	"packageName": "@medusajs/auth",
 	"symbolIdMap": {
-		"566": {
+		"571": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"567": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "default"
-		},
-		"570": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "default.id"
-		},
-		"571": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "default.provider_identities"
-		},
 		"572": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "default.app_metadata"
-		},
-		"573": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "default.created_at"
-		},
-		"574": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default"
 		},
 		"575": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.id"
 		},
 		"576": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.provider_identities"
 		},
 		"577": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "default.app_metadata"
+		},
+		"578": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"579": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "default.updated_at"
 		},
 		"580": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"581": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.entity_id"
+			"sourceFileName": "../../../../packages/modules/auth/src/models/auth-identity.ts",
+			"qualifiedName": "default.onCreate"
 		},
 		"582": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.provider"
-		},
-		"583": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.auth_identity_id"
-		},
-		"584": {
-			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.auth_identity"
+			"qualifiedName": "default"
 		},
 		"585": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.user_metadata"
+			"qualifiedName": "default.id"
 		},
 		"586": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.provider_metadata"
+			"qualifiedName": "default.entity_id"
 		},
 		"587": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.created_at"
+			"qualifiedName": "default.provider"
 		},
 		"588": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.updated_at"
+			"qualifiedName": "default.auth_identity_id"
 		},
 		"589": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
-			"qualifiedName": "default.onCreate"
+			"qualifiedName": "default.auth_identity"
 		},
 		"590": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "default.user_metadata"
+		},
+		"591": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "default.provider_metadata"
+		},
+		"592": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"593": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"594": {
+			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"595": {
 			"sourceFileName": "../../../../packages/modules/auth/src/models/provider-identity.ts",
 			"qualifiedName": "default.onCreate"
 		}
@@ -544,7 +544,7 @@
 			"1": "../../../../packages/modules/auth/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 566
+			"1": 571
 		}
 	}
 }

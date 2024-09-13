@@ -1,9 +1,12 @@
 /**
  * @oas [post] /store/customers
  * operationId: PostCustomers
- * summary: Create Customer
- * description: Create a customer.
- * x-authenticated: false
+ * summary: Register Customer
+ * description: Register a customer. Use the `/auth/customer/emailpass/register` API route first to retrieve the registration token and pass it in the header of the request.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/register
+ *   description: "Storefront guide: How to register a customer."
+ * x-authenticated: true
  * parameters:
  *   - name: expand
  *     in: query
@@ -23,30 +26,6 @@
  *       title: fields
  *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
  *         fields. without prefix it will replace the entire default fields.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
  * requestBody:
  *   content:
  *     application/json:
@@ -57,6 +36,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/store/customers' \
+ *       -H 'Authorization: Bearer {token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "email": "Monserrate.Leannon88@yahoo.com",

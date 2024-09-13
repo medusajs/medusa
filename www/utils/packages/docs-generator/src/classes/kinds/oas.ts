@@ -55,7 +55,7 @@ type AuthRequests = {
 class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
-  private MAX_LEVEL = 4
+  private MAX_LEVEL = 5
   readonly REQUEST_TYPE_NAMES = [
     "MedusaRequest",
     "RequestWithContext",
@@ -69,7 +69,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       requiresAuthentication: true,
     },
     {
-      startsWith: "store/customers/me",
+      startsWith: "store/customers",
       requiresAuthentication: true,
     },
   ]
@@ -779,7 +779,9 @@ class OasKindGenerator extends FunctionKindGenerator {
       oasPath.startsWith("admin")
     const isStoreAuthenticated = hasAuthenticationOverride
       ? oasPath.startsWith("store")
-      : !isAuthenticationDisabled && oasPath.startsWith("store")
+      : !isAuthenticationDisabled &&
+        hasAuthenticationOverride &&
+        oasPath.startsWith("store")
     const isAuthenticated =
       isAdminAuthenticated || isStoreAuthenticated || hasAuthenticationOverride
 

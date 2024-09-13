@@ -16,7 +16,7 @@ export const createCustomerAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    const addresses = await service.createAddresses(data)
+    const addresses = await service.createCustomerAddresses(data)
 
     return new StepResponse(
       addresses,
@@ -32,6 +32,6 @@ export const createCustomerAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.deleteAddresses(ids)
+    await service.deleteCustomerAddresses(ids)
   }
 )

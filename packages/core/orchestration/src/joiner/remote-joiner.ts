@@ -92,7 +92,18 @@ export class RemoteJoiner {
   }
 
   private static getNestedItems(items: any[], property: string): any[] {
-    return items.flatMap((item) => item?.[property])
+    const result: unknown[] = []
+    for (const item of items) {
+      const allValues = item?.[property] ?? []
+      const values = Array.isArray(allValues) ? allValues : [allValues]
+      for (const value of values) {
+        if (isDefined(value)) {
+          result.push(value)
+        }
+      }
+    }
+
+    return result
   }
 
   private static createRelatedDataMap(
@@ -195,6 +206,7 @@ export class RemoteJoiner {
           for (const name of alias.name) {
             service_.alias.push({
               name,
+              entity: alias.entity,
               args: alias.args,
             })
           }
@@ -223,16 +235,13 @@ export class RemoteJoiner {
 
           service_.relationships?.set(alias.name as string, {
             alias: alias.name as string,
+            entity: alias.entity,
             foreignKey: alias.name + "_id",
             primaryKey: "id",
             serviceName: service_.serviceName!,
             args,
           })
-          this.cacheServiceConfig(
-            serviceConfigs,
-            undefined,
-            alias.name as string
-          )
+          this.cacheServiceConfig(serviceConfigs, undefined, alias)
         }
 
         this.cacheServiceConfig(serviceConfigs, service_.serviceName)
@@ -302,21 +311,23 @@ export class RemoteJoiner {
   private cacheServiceConfig(
     serviceConfigs,
     serviceName?: string,
-    serviceAlias?: string
+    serviceAlias?: JoinerServiceConfigAlias
   ): void {
     if (serviceAlias) {
-      const name = `alias_${serviceAlias}`
+      const name = `alias_${serviceAlias.name}`
       if (!this.serviceConfigCache.has(name)) {
         let aliasConfig: JoinerServiceConfigAlias | undefined
         const config = serviceConfigs.find((conf) => {
           const aliases = conf.alias as JoinerServiceConfigAlias[]
-          const hasArgs = aliases?.find((alias) => alias.name === serviceAlias)
+          const hasArgs = aliases?.find(
+            (alias) => alias.name === serviceAlias.name
+          )
           aliasConfig = hasArgs
           return hasArgs
         })
 
         if (config) {
-          const serviceConfig = { ...config }
+          const serviceConfig = { ...config, entity: serviceAlias.entity }
           if (aliasConfig) {
             serviceConfig.args = { ...config?.args, ...aliasConfig?.args }
           }
@@ -377,7 +388,11 @@ export class RemoteJoiner {
     const isObj = isDefined(response.path)
     let resData = isObj ? response.data[response.path!] : response.data
 
-    resData = Array.isArray(resData) ? resData : [resData]
+    resData = isDefined(resData)
+      ? Array.isArray(resData)
+        ? resData
+        : [resData]
+      : []
 
     this.checkIfKeysExist(
       uniqueIds,
@@ -435,7 +450,7 @@ export class RemoteJoiner {
 
     if (notFound.size > 0) {
       const entityName =
-        expand.serviceConfig.args?.entity ??
+        expand.serviceConfig.entity ??
         expand.serviceConfig.args?.methodSuffix ??
         expand.serviceConfig.serviceName
 

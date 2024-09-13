@@ -7,12 +7,12 @@ import {
   NotificationEvents,
   NotificationStatus,
 } from "@medusajs/utils"
+import { NotificationModuleService } from "@services"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
 import { resolve } from "path"
-import { NotificationModuleService } from "@services"
 
 let moduleOptions = {
   providers: [
@@ -58,6 +58,7 @@ moduleIntegrationTestRunner<INotificationModuleService>({
           notification: {
             id: {
               linkable: "notification_id",
+              entity: "Notification",
               primaryKey: "id",
               serviceName: "notification",
               field: "notification",

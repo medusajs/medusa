@@ -14,7 +14,11 @@ export function validateAndTransformBody(
   res: MedusaResponse,
   next: NextFunction
 ) => Promise<void> {
-  return async (req: MedusaRequest, _: MedusaResponse, next: NextFunction) => {
+  return async function validateBody(
+    req: MedusaRequest,
+    _: MedusaResponse,
+    next: NextFunction
+  ) {
     try {
       let schema: z.ZodObject<any, any> | z.ZodEffects<any, any>
       if (typeof zodSchema === "function") {

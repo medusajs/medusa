@@ -21,8 +21,6 @@
   "include": ["src"],
   "exclude": [
     "dist",
-    "./src/**/__tests__",
-    "./src/**/__mocks__",
     "node_modules"
   ]
 }

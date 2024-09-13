@@ -11,15 +11,14 @@ export const CartPaymentCollection: ModuleJoinerConfig = {
   alias: [
     {
       name: ["cart_payment_collection", "cart_payment_collections"],
-      args: {
-        entity: "LinkCartPaymentCollection",
-      },
+      entity: "LinkCartPaymentCollection",
     },
   ],
   primaryKeys: ["id", "cart_id", "payment_collection_id"],
   relationships: [
     {
       serviceName: Modules.CART,
+      entity: "Cart",
       primaryKey: "id",
       foreignKey: "cart_id",
       alias: "cart",
@@ -29,6 +28,7 @@ export const CartPaymentCollection: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.PAYMENT,
+      entity: "PaymentCollection",
       primaryKey: "id",
       foreignKey: "payment_collection_id",
       alias: "payment_collection",

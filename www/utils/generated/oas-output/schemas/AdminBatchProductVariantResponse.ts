@@ -1,7 +1,7 @@
 /**
  * @schema AdminBatchProductVariantResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the product variants created, updated, or deleted.
  * x-schemaName: AdminBatchProductVariantResponse
  * required:
  *   - created
@@ -10,17 +10,17 @@
  * properties:
  *   created:
  *     type: array
- *     description: The product's created.
+ *     description: The created product variants.
  *     items:
  *       $ref: "#/components/schemas/AdminProductVariant"
  *   updated:
  *     type: array
- *     description: The product's updated.
+ *     description: The updated product variants.
  *     items:
  *       $ref: "#/components/schemas/AdminProductVariant"
  *   deleted:
  *     type: object
- *     description: SUMMARY
+ *     description: The details of the deleted product variants.
  *     required:
  *       - ids
  *       - object
@@ -28,19 +28,20 @@
  *     properties:
  *       ids:
  *         type: array
- *         description: The deleted's ids.
+ *         description: The IDs of the deleted product variants.
  *         items:
  *           type: string
  *           title: ids
- *           description: The id's ids.
+ *           description: The ID of a deleted variant.
  *       object:
  *         type: string
  *         title: object
- *         description: SUMMARY
+ *         description: The name of the deleted objects.
+ *         default: variant
  *       deleted:
  *         type: boolean
  *         title: deleted
- *         description: SUMMARY
+ *         description: Whether the product variants were deleted.
  * 
 */
 

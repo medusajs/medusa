@@ -245,16 +245,7 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/auth/auth-providers",
                 "title": "Auth Providers",
-                "children": [
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/commerce-modules/auth/auth-providers/emailpass",
-                    "title": "Emailpass Auth Provider Module",
-                    "children": []
-                  }
-                ]
+                "children": []
               },
               {
                 "loaded": true,
@@ -286,6 +277,38 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/commerce-modules/auth/create-actor-type",
                 "title": "Create an Actor Type",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "sub-category",
+            "title": "Providers",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/emailpass",
+                "title": "Emailpass Provider",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/google",
+                "title": "Google Provider",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/auth-providers/github",
+                "title": "GitHub Provider",
                 "children": []
               }
             ]
@@ -412,16 +435,24 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/auth/updateAuthIdentites",
-                        "title": "updateAuthIdentites",
+                        "path": "/references/auth/updateAuthIdentities",
+                        "title": "updateAuthIdentities",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/auth/updateProviderIdentites",
-                        "title": "updateProviderIdentites",
+                        "path": "/references/auth/updateProvider",
+                        "title": "updateProvider",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/auth/updateProviderIdentities",
+                        "title": "updateProviderIdentities",
                         "children": []
                       },
                       {
@@ -5114,6 +5145,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/product/createProductOptionValues",
+                        "title": "createProductOptionValues",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/product/createProductOptions",
                         "title": "createProductOptions",
                         "children": []
@@ -5164,6 +5203,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/product/deleteProductCollections",
                         "title": "deleteProductCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/product/deleteProductOptionValues",
+                        "title": "deleteProductOptionValues",
                         "children": []
                       },
                       {
@@ -5226,6 +5273,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/product/listAndCountProductOptionValues",
+                        "title": "listAndCountProductOptionValues",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/product/listAndCountProductOptions",
                         "title": "listAndCountProductOptions",
                         "children": []
@@ -5282,6 +5337,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/product/listProductOptionValues",
+                        "title": "listProductOptionValues",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/product/listProductOptions",
                         "title": "listProductOptions",
                         "children": []
@@ -5332,6 +5395,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/product/restoreProductCollections",
                         "title": "restoreProductCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/product/restoreProductOptionValues",
+                        "title": "restoreProductOptionValues",
                         "children": []
                       },
                       {
@@ -5450,6 +5521,14 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
+                        "path": "/references/product/softDeleteProductOptionValues",
+                        "title": "softDeleteProductOptionValues",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
                         "path": "/references/product/softDeleteProductOptions",
                         "title": "softDeleteProductOptions",
                         "children": []
@@ -5500,6 +5579,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/product/updateProductCollections",
                         "title": "updateProductCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/product/updateProductOptionValues",
+                        "title": "updateProductOptionValues",
                         "children": []
                       },
                       {
@@ -5975,6 +6062,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/promotion/retrievePromotion",
                         "title": "retrievePromotion",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/promotion/revertUsage",
+                        "title": "revertUsage",
                         "children": []
                       },
                       {
@@ -8105,6 +8200,14 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "path": "/storefront-development/products/inventory",
+            "title": "Retrieve Variant Inventory",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "path": "/storefront-development/products/categories",
             "title": "Categories",
             "children": [
@@ -8326,6 +8429,14 @@ export const generatedSidebar = [
             "type": "link",
             "path": "/storefront-development/customers/login",
             "title": "Login Customer",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/customers/third-party-login",
+            "title": "Third-Party (Social) Login",
             "children": []
           },
           {
@@ -8619,6 +8730,14 @@ export const generatedSidebar = [
         "type": "link",
         "path": "/medusa-container-resources",
         "title": "Medusa Container Resources",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/events-reference",
+        "title": "Events List",
         "children": []
       },
       {
@@ -9206,6 +9325,21 @@ export const generatedSidebar = [
             "type": "category",
             "title": "Auth",
             "children": [
+              {
+                "type": "sub-category",
+                "title": "Workflows",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/generateResetPasswordTokenWorkflow",
+                    "title": "generateResetPasswordTokenWorkflow",
+                    "children": []
+                  }
+                ],
+                "loaded": true
+              },
               {
                 "type": "sub-category",
                 "title": "Steps",

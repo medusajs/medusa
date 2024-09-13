@@ -13,6 +13,8 @@ export interface DefineLinkExport {
 type InputSource = {
   serviceName: string
   field: string
+  entity?: string
+  alias?: string
   linkable: string
   primaryKey: string
 }
@@ -44,7 +46,9 @@ type DefineLinkInputSource = InputSource | InputOptions | CombinedSource
 
 type ModuleLinkableKeyConfig = {
   module: string
+  entity?: string
   key: string
+  field: string
   isList?: boolean
   deleteCascade?: boolean
   primaryKey: string
@@ -74,11 +78,13 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
 
     serviceConfig = {
       key: source.linkable,
-      alias: camelToSnakeCase(source.field),
+      alias: source.alias ?? camelToSnakeCase(source.field),
+      field: source.field,
       primaryKey: source.primaryKey,
       isList: false,
       deleteCascade: false,
       module: source.serviceName,
+      entity: source.entity,
     }
   } else if (isInputOptions(input)) {
     const source = isToJSON(input.linkable)
@@ -87,11 +93,13 @@ function prepareServiceConfig(input: DefineLinkInputSource) {
 
     serviceConfig = {
       key: source.linkable,
-      alias: camelToSnakeCase(source.field),
+      alias: source.alias ?? camelToSnakeCase(source.field),
+      field: source.field,
       primaryKey: source.primaryKey,
       isList: input.isList ?? false,
       deleteCascade: input.deleteCascade ?? false,
       module: source.serviceName,
+      entity: source.entity,
     }
   } else {
     throw new Error(
@@ -176,7 +184,7 @@ ${serviceBObj.module}: {
     let aliasAOptions =
       serviceAObj.alias ??
       serviceAAliases.find((a) => {
-        return a.args?.entity == serviceAKeyEntity
+        return a.entity == serviceAKeyEntity
       })?.name
 
     let aliasA = aliasAOptions
@@ -190,10 +198,11 @@ ${serviceBObj.module}: {
       )
     }
 
+    const serviceAObjEntryPoint = camelToSnakeCase(serviceAObj.field)
     const serviceAMethodSuffix = serviceAAliases.find((serviceAlias) => {
       return Array.isArray(serviceAlias.name)
-        ? serviceAlias.name.includes(aliasA)
-        : serviceAlias.name === aliasA
+        ? serviceAlias.name.includes(serviceAObjEntryPoint)
+        : serviceAlias.name === serviceAObjEntryPoint
     })?.args?.methodSuffix
 
     let serviceBAliases = serviceBInfo.alias ?? []
@@ -204,7 +213,7 @@ ${serviceBObj.module}: {
     let aliasBOptions =
       serviceBObj.alias ??
       serviceBAliases.find((a) => {
-        return a.args?.entity == serviceBKeyInfo
+        return a.entity == serviceBKeyInfo
       })?.name
 
     let aliasB = aliasBOptions
@@ -218,10 +227,11 @@ ${serviceBObj.module}: {
       )
     }
 
+    const serviceBObjEntryPoint = camelToSnakeCase(serviceBObj.field)
     const serviceBMethodSuffix = serviceBAliases.find((serviceAlias) => {
       return Array.isArray(serviceAlias.name)
-        ? serviceAlias.name.includes(aliasB)
-        : serviceAlias.name === aliasB
+        ? serviceAlias.name.includes(serviceBObjEntryPoint)
+        : serviceAlias.name === serviceBObjEntryPoint
     })?.args?.methodSuffix
 
     const moduleAPrimaryKeys = serviceAInfo.primaryKeys ?? []
@@ -290,6 +300,7 @@ ${serviceBObj.module}: {
       relationships: [
         {
           serviceName: serviceAObj.module,
+          entity: serviceAObj.entity,
           primaryKey: serviceAPrimaryKey,
           foreignKey: serviceAObj.key,
           alias: aliasA,
@@ -300,6 +311,7 @@ ${serviceBObj.module}: {
         },
         {
           serviceName: serviceBObj.module,
+          entity: serviceBObj.entity,
           primaryKey: serviceBPrimaryKey!,
           foreignKey: serviceBObj.key,
           alias: aliasB,
@@ -316,6 +328,7 @@ ${serviceBObj.module}: {
             [serviceBObj.isList ? pluralize(aliasB) : aliasB]: {
               path: aliasB + "_link." + aliasB,
               isList: serviceBObj.isList,
+              forwardArgumentsOnPath: [aliasB + "_link." + aliasB],
             },
           },
           relationship: {
@@ -332,6 +345,7 @@ ${serviceBObj.module}: {
             [serviceAObj.isList ? pluralize(aliasA) : aliasA]: {
               path: aliasA + "_link." + aliasA,
               isList: serviceAObj.isList,
+              forwardArgumentsOnPath: [aliasA + "_link." + aliasA],
             },
           },
           relationship: {

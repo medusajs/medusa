@@ -1,7 +1,7 @@
 /**
  * @schema AdminInventoryItemResponse
  * type: object
- * description: SUMMARY
+ * description: The inventory item's details.
  * x-schemaName: AdminInventoryItemResponse
  * required:
  *   - inventory_item

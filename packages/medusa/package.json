@@ -22,6 +22,11 @@
   "license": "MIT",
   "devDependencies": {
     "@medusajs/types": "^1.11.16",
+    "@opentelemetry/instrumentation": "^0.53.0",
+    "@opentelemetry/instrumentation-pg": "^0.44.0",
+    "@opentelemetry/resources": "^1.26.0",
+    "@opentelemetry/sdk-node": "^0.53.0",
+    "@opentelemetry/sdk-trace-node": "^1.26.0",
     "@swc/jest": "^0.2.36",
     "@types/express": "^4.17.17",
     "@types/ioredis": "^4.28.10",

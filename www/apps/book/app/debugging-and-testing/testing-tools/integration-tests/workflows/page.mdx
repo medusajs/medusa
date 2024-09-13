@@ -1,3 +1,5 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Example: Write Integration Tests for Workflows`,
 }
@@ -5,6 +7,15 @@ export const metadata = {
 # {metadata.title}
 
 In this chapter, you'll learn how to write integration tests for workflows using the [medusaIntegrationTestRunner utility function](../page.mdx).
+
+<Prerequisites
+  items={[
+    {
+      text: "Testing Tools Setup",
+      link: "/debugging-and-testing/testing-tools"
+    }
+  ]}
+/>
 
 ## Write Integration Test for Workflow
 
@@ -15,7 +26,7 @@ import {
   createWorkflow,
   createStep,
   StepResponse,
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 
 const step1 = createStep("step-1", () => {
@@ -48,7 +59,7 @@ medusaIntegrationTestRunner({
         expect(result).toEqual("Hello, World!")
       })
     })
-  }
+  },
 })
 ```
 

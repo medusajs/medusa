@@ -4,7 +4,6 @@
  * summary: Delete Session
  * description: Delete Session
  * x-authenticated: false
- * parameters: []
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

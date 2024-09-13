@@ -188,22 +188,34 @@ export const ExchangeOutboundSection = ({
     setIsOpen("outbound-items", false)
   }
 
-  const onShippingOptionChange = async (selectedOptionId: string) => {
-    const outboundShippingMethods = preview.shipping_methods.filter((s) => {
-      const action = s.actions?.find((a) => a.action === "SHIPPING_ADD")
+  useEffect(() => {
+    const outboundShipping = preview.shipping_methods.find(
+      (s) =>
+        !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
+    )
 
-      return !action?.return_id
-    })
+    if (outboundShipping) {
+      form.setValue("outbound_option_id", outboundShipping.shipping_option_id)
+    } else {
+      form.setValue("outbound_option_id", null)
+    }
+  }, [preview.shipping_methods])
+
+  const onShippingOptionChange = async (selectedOptionId: string) => {
+    const outboundShippingMethods = preview.shipping_methods.filter(
+      (s) =>
+        !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
+    )
 
     const promises = outboundShippingMethods
       .filter(Boolean)
       .map((outboundShippingMethod) => {
         const action = outboundShippingMethod.actions?.find(
-          (a) => a.action === "SHIPPING_ADD"
+          (a) => a.action === "SHIPPING_ADD" && !a.return_id
         )
 
         if (action) {
-          deleteOutboundShipping(action.id)
+          return deleteOutboundShipping(action.id)
         }
       })
 

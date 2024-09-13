@@ -69,20 +69,6 @@
  *             type: string
  *             title: id
  *             description: A region's ID.
- *   - name: code
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: code
- *           description: Filter by a currency code.
- *         - type: array
- *           description: Filter by currency codes.
- *           items:
- *             type: string
- *             title: code
- *             description: A currency code.
  *   - name: name
  *     in: query
  *     required: false
@@ -472,6 +458,20 @@
  *       items:
  *         type: object
  *       title: $or
+ *   - name: currency_code
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: currency_code
+ *           description: The region's currency code.
+ *         - type: array
+ *           description: The region's currency code.
+ *           items:
+ *             type: string
+ *             title: currency_code
+ *             description: The currency code's details.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

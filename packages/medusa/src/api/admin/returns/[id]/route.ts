@@ -29,7 +29,7 @@ export const GET = async (
     fields: req.remoteQueryConfig.fields,
   })
 
-  const [orderReturn] = await remoteQuery(queryObject, undefined, {
+  const [orderReturn] = await remoteQuery(queryObject, {
     throwIfKeyNotFound: true,
   })
 

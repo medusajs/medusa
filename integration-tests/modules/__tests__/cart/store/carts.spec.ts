@@ -25,7 +25,11 @@ import {
   RuleOperator,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import {
+  createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
 import { seedStorefrontDefaults } from "../../../../helpers/seed-storefront-defaults"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { setupTaxStructure } from "../../fixtures"
@@ -58,6 +62,7 @@ medusaIntegrationTestRunner({
 
       let region
       let store
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -84,6 +89,8 @@ medusaIntegrationTestRunner({
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
 
         const { store: defaultStore } = await seedStorefrontDefaults(
           appContainer,
@@ -158,22 +165,26 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const created = await api.post(`/store/carts`, {
-            email: "tony@stark.com",
-            currency_code: "usd",
-            region_id: region.id,
-            sales_channel_id: salesChannel.id,
-            items: [
-              {
-                variant_id: product.variants[0].id,
-                quantity: 1,
-              },
-              {
-                variant_id: product.variants[1].id,
-                quantity: 2,
-              },
-            ],
-          })
+          const created = await api.post(
+            `/store/carts`,
+            {
+              email: "tony@stark.com",
+              currency_code: "usd",
+              region_id: region.id,
+              sales_channel_id: salesChannel.id,
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+                {
+                  variant_id: product.variants[1].id,
+                  quantity: 2,
+                },
+              ],
+            },
+            storeHeaders
+          )
 
           expect(created.status).toEqual(200)
           expect(created.data.cart).toEqual(
@@ -230,25 +241,29 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const created = await api.post(`/store/carts`, {
-            currency_code: "usd",
-            email: "tony@stark-industries.com",
-            shipping_address: {
-              address_1: "test address 1",
-              address_2: "test address 2",
-              city: "NY",
-              country_code: "US",
-              province: "NY",
-              postal_code: "94016",
-            },
-            sales_channel_id: salesChannel.id,
-            items: [
-              {
-                quantity: 1,
-                variant_id: product.variants[0].id,
+          const created = await api.post(
+            `/store/carts`,
+            {
+              currency_code: "usd",
+              email: "tony@stark-industries.com",
+              shipping_address: {
+                address_1: "test address 1",
+                address_2: "test address 2",
+                city: "NY",
+                country_code: "US",
+                province: "NY",
+                postal_code: "94016",
               },
-            ],
-          })
+              sales_channel_id: salesChannel.id,
+              items: [
+                {
+                  quantity: 1,
+                  variant_id: product.variants[0].id,
+                },
+              ],
+            },
+            storeHeaders
+          )
 
           expect(created.status).toEqual(200)
           expect(created.data.cart).toEqual(
@@ -283,10 +298,14 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const response = await api.post(`/store/carts`, {
-            email: "tony@stark.com",
-            currency_code: "usd",
-          })
+          const response = await api.post(
+            `/store/carts`,
+            {
+              email: "tony@stark.com",
+              currency_code: "usd",
+            },
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.cart).toEqual(
@@ -310,10 +329,14 @@ medusaIntegrationTestRunner({
             default_sales_channel_id: sc.id,
           })
 
-          const response = await api.post(`/store/carts`, {
-            email: "tony@stark.com",
-            currency_code: "usd",
-          })
+          const response = await api.post(
+            `/store/carts`,
+            {
+              email: "tony@stark.com",
+              currency_code: "usd",
+            },
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.cart).toEqual(
@@ -332,10 +355,14 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const response = await api.post(`/store/carts`, {
-            email: "tony@stark.com",
-            region_id: region.id,
-          })
+          const response = await api.post(
+            `/store/carts`,
+            {
+              email: "tony@stark.com",
+              region_id: region.id,
+            },
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.cart).toEqual(
@@ -359,7 +386,10 @@ medusaIntegrationTestRunner({
             `/store/carts`,
             {},
             {
-              headers: { authorization: `Bearer ${jwt}` },
+              headers: {
+                authorization: `Bearer ${jwt}`,
+                ...storeHeaders.headers,
+              },
             }
           )
 
@@ -531,9 +561,7 @@ medusaIntegrationTestRunner({
 
         it("should respond 400 bad request on unknown props", async () => {
           await expect(
-            api.post(`/store/carts`, {
-              foo: "bar",
-            })
+            api.post(`/store/carts`, { foo: "bar" }, storeHeaders)
           ).rejects.toThrow()
         })
       })
@@ -624,9 +652,11 @@ medusaIntegrationTestRunner({
           ])
 
           // Should remove earlier adjustments from other promocodes
-          let updated = await api.post(`/store/carts/${cart.id}`, {
-            promo_codes: [createdPromotion.code],
-          })
+          let updated = await api.post(
+            `/store/carts/${cart.id}`,
+            { promo_codes: [createdPromotion.code] },
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
@@ -654,9 +684,11 @@ medusaIntegrationTestRunner({
             })
           )
           // Should remove all adjustments from other promo codes
-          updated = await api.post(`/store/carts/${cart.id}`, {
-            promo_codes: [],
-          })
+          updated = await api.post(
+            `/store/carts/${cart.id}`,
+            { promo_codes: [] },
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
@@ -711,9 +743,11 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          let updated = await api.post(`/store/carts/${cart.id}`, {
-            email: "another@tax.com",
-          })
+          let updated = await api.post(
+            `/store/carts/${cart.id}`,
+            { email: "another@tax.com" },
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
@@ -733,9 +767,11 @@ medusaIntegrationTestRunner({
             region_id: region.id,
           })
 
-          updated = await api.post(`/store/carts/${cart.id}`, {
-            email: "another@tax.com",
-          })
+          updated = await api.post(
+            `/store/carts/${cart.id}`,
+            { email: "another@tax.com" },
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
@@ -860,11 +896,15 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          let updated = await api.post(`/store/carts/${cart.id}`, {
-            region_id: region.id,
-            email: "tony@stark.com",
-            sales_channel_id: salesChannel.id,
-          })
+          let updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              region_id: region.id,
+              email: "tony@stark.com",
+              sales_channel_id: salesChannel.id,
+            },
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
@@ -930,10 +970,14 @@ medusaIntegrationTestRunner({
             })
           )
 
-          updated = await api.post(`/store/carts/${cart.id}`, {
-            email: null,
-            sales_channel_id: null,
-          })
+          updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              email: null,
+              sales_channel_id: null,
+            },
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
@@ -1063,9 +1107,11 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          let updated = await api.post(`/store/carts/${cart.id}`, {
-            email: "jon@stark.com",
-          })
+          let updated = await api.post(
+            `/store/carts/${cart.id}`,
+            { email: "jon@stark.com" },
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
@@ -1080,10 +1126,14 @@ medusaIntegrationTestRunner({
             })
           )
 
-          updated = await api.post(`/store/carts/${cart.id}`, {
-            email: null,
-            sales_channel_id: null,
-          })
+          updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              email: null,
+              sales_channel_id: null,
+            },
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
           expect(updated.data.cart).toEqual(
@@ -1107,12 +1157,16 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const created = await api.post(`/store/carts`, {
-            email: "tony@stark.com",
-            currency_code: "usd",
-            region_id: region.id,
-            sales_channel_id: salesChannel.id,
-          })
+          const created = await api.post(
+            `/store/carts`,
+            {
+              email: "tony@stark.com",
+              currency_code: "usd",
+              region_id: region.id,
+              sales_channel_id: salesChannel.id,
+            },
+            storeHeaders
+          )
 
           expect(created.status).toEqual(200)
           expect(created.data.cart).toEqual(
@@ -1132,7 +1186,8 @@ medusaIntegrationTestRunner({
             `/store/carts/${created.data.cart.id}`,
             {
               email: "tony@stark-industries.com",
-            }
+            },
+            storeHeaders
           )
 
           expect(updated.status).toEqual(200)
@@ -1170,7 +1225,10 @@ medusaIntegrationTestRunner({
             sales_channel_id: salesChannel.id,
           })
 
-          const response = await api.get(`/store/carts/${cart.id}`)
+          const response = await api.get(
+            `/store/carts/${cart.id}`,
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.cart).toEqual(
@@ -1373,10 +1431,14 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          let response = await api.post(`/store/carts/${cart.id}/line-items`, {
-            variant_id: productWithSpecialTax.variants[0].id,
-            quantity: 1,
-          })
+          let response = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            {
+              variant_id: productWithSpecialTax.variants[0].id,
+              quantity: 1,
+            },
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.cart).toEqual(
@@ -1422,10 +1484,14 @@ medusaIntegrationTestRunner({
             })
           )
 
-          response = await api.post(`/store/carts/${cart.id}/line-items`, {
-            variant_id: productWithDefaultTax.variants[0].id,
-            quantity: 1,
-          })
+          response = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            {
+              variant_id: productWithDefaultTax.variants[0].id,
+              quantity: 1,
+            },
+            storeHeaders
+          )
 
           expect(response.data.cart).toEqual(
             expect.objectContaining({
@@ -1458,31 +1524,39 @@ medusaIntegrationTestRunner({
           ).data.product
 
           const cart = (
-            await api.post(`/store/carts`, {
-              email: "tony@stark.com",
-              currency_code: region.currency_code,
-              region_id: region.id,
-              items: [
-                {
-                  variant_id: product.variants[0].id,
-                  quantity: 1,
-                  metadata: {
-                    Size: "S",
-                    Color: "Black",
+            await api.post(
+              `/store/carts`,
+              {
+                email: "tony@stark.com",
+                currency_code: region.currency_code,
+                region_id: region.id,
+                items: [
+                  {
+                    variant_id: product.variants[0].id,
+                    quantity: 1,
+                    metadata: {
+                      Size: "S",
+                      Color: "Black",
+                    },
                   },
-                },
-              ],
-            })
+                ],
+              },
+              storeHeaders
+            )
           ).data.cart
 
-          let response = await api.post(`/store/carts/${cart.id}/line-items`, {
-            variant_id: product.variants[0].id,
-            quantity: 1,
-            metadata: {
-              Size: "S",
-              Color: "Black",
+          let response = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+              metadata: {
+                Size: "S",
+                Color: "Black",
+              },
             },
-          })
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.cart).toEqual(
@@ -1498,15 +1572,19 @@ medusaIntegrationTestRunner({
             })
           )
 
-          response = await api.post(`/store/carts/${cart.id}/line-items`, {
-            variant_id: product.variants[0].id,
-            quantity: 1,
-            metadata: {
-              Size: "S",
-              Color: "White",
-              Special: "attribute",
+          response = await api.post(
+            `/store/carts/${cart.id}/line-items`,
+            {
+              variant_id: product.variants[0].id,
+              quantity: 1,
+              metadata: {
+                Size: "S",
+                Color: "White",
+                Special: "attribute",
+              },
             },
-          })
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.cart).toEqual(
@@ -1541,9 +1619,11 @@ medusaIntegrationTestRunner({
             region_id: region.id,
           })
 
-          const response = await api.post(`/store/payment-collections`, {
-            cart_id: cart.id,
-          })
+          const response = await api.post(
+            `/store/payment-collections`,
+            { cart_id: cart.id },
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.payment_collection).toEqual(
@@ -1566,14 +1646,22 @@ medusaIntegrationTestRunner({
           })
 
           const firstCollection = (
-            await api.post(`/store/payment-collections`, {
-              cart_id: cart.id,
-            })
+            await api.post(
+              `/store/payment-collections`,
+              {
+                cart_id: cart.id,
+              },
+              storeHeaders
+            )
           ).data.payment_collection
 
-          const response = await api.post(`/store/payment-collections`, {
-            cart_id: cart.id,
-          })
+          const response = await api.post(
+            `/store/payment-collections`,
+            {
+              cart_id: cart.id,
+            },
+            storeHeaders
+          )
 
           expect(response.status).toEqual(200)
           expect(response.data.payment_collection.id).toEqual(
@@ -1598,15 +1686,23 @@ medusaIntegrationTestRunner({
           })
 
           const firstCollection = (
-            await api.post(`/store/payment-collections`, {
-              cart_id: firstCart.id,
-            })
+            await api.post(
+              `/store/payment-collections`,
+              {
+                cart_id: firstCart.id,
+              },
+              storeHeaders
+            )
           ).data.payment_collection
 
           const secondCollection = (
-            await api.post(`/store/payment-collections`, {
-              cart_id: secondCart.id,
-            })
+            await api.post(
+              `/store/payment-collections`,
+              {
+                cart_id: secondCart.id,
+              },
+              storeHeaders
+            )
           ).data.payment_collection
 
           expect(firstCollection.id).toBeTruthy()
@@ -1646,7 +1742,11 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          let updated = await api.post(`/store/carts/${cart.id}/taxes`, {})
+          let updated = await api.post(
+            `/store/carts/${cart.id}/taxes`,
+            {},
+            storeHeaders
+          )
 
           expect(updated.status).toEqual(200)
 
@@ -1696,7 +1796,7 @@ medusaIntegrationTestRunner({
           })
 
           let error = await api
-            .post(`/store/carts/${cart.id}/taxes`, {})
+            .post(`/store/carts/${cart.id}/taxes`, {}, storeHeaders)
             .catch((e) => e)
 
           expect(error.response.status).toEqual(400)
@@ -1780,7 +1880,8 @@ medusaIntegrationTestRunner({
 
           let response = await api.post(
             `/store/carts/${cart.id}/shipping-methods`,
-            { option_id: shippingOption.id }
+            { option_id: shippingOption.id },
+            storeHeaders
           )
 
           expect(response.status).toEqual(200)
@@ -1812,6 +1913,7 @@ medusaIntegrationTestRunner({
         let paymentSession
         let stockLocation
         let inventoryItem
+        let promotion
 
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
@@ -1925,6 +2027,43 @@ medusaIntegrationTestRunner({
             },
           ])
 
+          promotion = (
+            await api.post(
+              `/admin/promotions`,
+              {
+                code: "TEST",
+                type: PromotionType.STANDARD,
+                is_automatic: true,
+                campaign: {
+                  campaign_identifier: "test",
+                  name: "test",
+                  budget: {
+                    type: "spend",
+                    limit: 1000,
+                    currency_code: region.currency_code,
+                  },
+                },
+                application_method: {
+                  target_type: "items",
+                  type: "fixed",
+                  allocation: "each",
+                  currency_code: region.currency_code,
+                  value: 10,
+                  max_quantity: 1,
+                  target_rules: [
+                    {
+                      attribute: "product_id",
+                      operator: "eq",
+                      values: [product.id],
+                    },
+                  ],
+                },
+                rules: [],
+              },
+              adminHeaders
+            )
+          ).data.promotion
+
           await api.post(
             `/admin/stock-locations/${stockLocation.id}/fulfillment-providers`,
             { add: ["manual_test-provider"] },
@@ -1978,36 +2117,46 @@ medusaIntegrationTestRunner({
 
         it("should create an order and create item reservations", async () => {
           const cart = (
-            await api.post(`/store/carts`, {
-              currency_code: "usd",
-              email: "tony@stark-industries.com",
-              shipping_address: {
-                address_1: "test address 1",
-                address_2: "test address 2",
-                city: "ny",
-                country_code: "us",
-                province: "ny",
-                postal_code: "94016",
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                email: "tony@stark-industries.com",
+                shipping_address: {
+                  address_1: "test address 1",
+                  address_2: "test address 2",
+                  city: "ny",
+                  country_code: "us",
+                  province: "ny",
+                  postal_code: "94016",
+                },
+                sales_channel_id: salesChannel.id,
+                items: [{ quantity: 1, variant_id: product.variants[0].id }],
               },
-              sales_channel_id: salesChannel.id,
-              items: [{ quantity: 1, variant_id: product.variants[0].id }],
-            })
+              storeHeaders
+            )
           ).data.cart
 
           const paymentCollection = (
-            await api.post(`/store/payment-collections`, {
-              cart_id: cart.id,
-            })
+            await api.post(
+              `/store/payment-collections`,
+              {
+                cart_id: cart.id,
+              },
+              storeHeaders
+            )
           ).data.payment_collection
 
           await api.post(
             `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
-            { provider_id: "pp_system_default" }
+            { provider_id: "pp_system_default" },
+            storeHeaders
           )
 
           const response = await api.post(
             `/store/carts/${cart.id}/complete`,
-            {}
+            {},
+            storeHeaders
           )
 
           expect(response.status).toEqual(200)
@@ -2015,16 +2164,17 @@ medusaIntegrationTestRunner({
             type: "order",
             order: expect.objectContaining({
               id: expect.any(String),
-              total: 106,
+              total: 95.4,
               subtotal: 100,
-              tax_total: 6,
-              discount_total: 0,
-              discount_tax_total: 0,
+              tax_total: 5.4,
+              discount_total: 10.6,
+              discount_subtotal: 10,
+              discount_tax_total: 0.6,
               original_total: 106,
               original_tax_total: 6,
-              item_total: 106,
+              item_total: 95.4,
               item_subtotal: 100,
-              item_tax_total: 6,
+              item_tax_total: 5.4,
               original_item_total: 106,
               original_item_subtotal: 100,
               original_item_tax_total: 6,
@@ -2040,17 +2190,28 @@ medusaIntegrationTestRunner({
                   product_id: product.id,
                   unit_price: 100,
                   quantity: 1,
-                  tax_total: 6,
+                  tax_total: 5.4,
+                  total: 95.4,
                   subtotal: 100,
-                  total: 106,
                   original_total: 106,
-                  discount_total: 0,
+                  discount_total: 10.6,
+                  discount_subtotal: 10,
+                  discount_tax_total: 0.6,
+                  original_tax_total: 6,
                   tax_lines: [
                     expect.objectContaining({
                       rate: 6,
                     }),
                   ],
-                  adjustments: [],
+                  adjustments: [
+                    expect.objectContaining({
+                      amount: 10,
+                      promotion_id: promotion.id,
+                      code: promotion.code,
+                      subtotal: 10,
+                      total: 10.6,
+                    }),
+                  ],
                 }),
               ],
               shipping_address: expect.objectContaining({
@@ -2061,6 +2222,12 @@ medusaIntegrationTestRunner({
               }),
             }),
           })
+
+          promotion = (
+            await api.get(`/admin/promotions/${promotion.id}`, adminHeaders)
+          ).data.promotion
+
+          expect(promotion.campaign.budget.used).toEqual(10)
 
           const reservation = await api.get(`/admin/reservations`, adminHeaders)
           const reservationItem = reservation.data.reservations[0]
@@ -2086,7 +2253,7 @@ medusaIntegrationTestRunner({
               payment_collections: [
                 expect.objectContaining({
                   currency_code: "usd",
-                  amount: 106,
+                  amount: 95.4,
                   status: "authorized",
                 }),
               ],
@@ -2096,16 +2263,20 @@ medusaIntegrationTestRunner({
 
         it("should throw an error when payment collection isn't created", async () => {
           const cart = (
-            await api.post(`/store/carts`, {
-              currency_code: "usd",
-              email: "tony@stark-industries.com",
-              sales_channel_id: salesChannel.id,
-              items: [{ quantity: 1, variant_id: product.variants[0].id }],
-            })
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                email: "tony@stark-industries.com",
+                sales_channel_id: salesChannel.id,
+                items: [{ quantity: 1, variant_id: product.variants[0].id }],
+              },
+              storeHeaders
+            )
           ).data.cart
 
           const error = await api
-            .post(`/store/carts/${cart.id}/complete`, {})
+            .post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
             .catch((e) => e)
 
           expect(error.response.status).toEqual(400)
@@ -2117,20 +2288,28 @@ medusaIntegrationTestRunner({
 
         it("should throw an error when payment collection isn't created", async () => {
           const cart = (
-            await api.post(`/store/carts`, {
-              currency_code: "usd",
-              email: "tony@stark-industries.com",
-              sales_channel_id: salesChannel.id,
-              items: [{ quantity: 1, variant_id: product.variants[0].id }],
-            })
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                email: "tony@stark-industries.com",
+                sales_channel_id: salesChannel.id,
+                items: [{ quantity: 1, variant_id: product.variants[0].id }],
+              },
+              storeHeaders
+            )
           ).data.cart
 
-          await api.post(`/store/payment-collections`, {
-            cart_id: cart.id,
-          })
+          await api.post(
+            `/store/payment-collections`,
+            {
+              cart_id: cart.id,
+            },
+            storeHeaders
+          )
 
           const error = await api
-            .post(`/store/carts/${cart.id}/complete`, {})
+            .post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
             .catch((e) => e)
 
           expect(error.response.status).toEqual(400)
@@ -2142,51 +2321,69 @@ medusaIntegrationTestRunner({
 
         it("should fail to update cart when it is completed", async () => {
           const cart = (
-            await api.post(`/store/carts`, {
-              currency_code: "usd",
-              email: "tony@stark-industries.com",
-              shipping_address: {
-                address_1: "test address 1",
-                address_2: "test address 2",
-                city: "ny",
-                country_code: "us",
-                province: "ny",
-                postal_code: "94016",
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                email: "tony@stark-industries.com",
+                shipping_address: {
+                  address_1: "test address 1",
+                  address_2: "test address 2",
+                  city: "ny",
+                  country_code: "us",
+                  province: "ny",
+                  postal_code: "94016",
+                },
+                sales_channel_id: salesChannel.id,
+                items: [{ quantity: 1, variant_id: product.variants[0].id }],
               },
-              sales_channel_id: salesChannel.id,
-              items: [{ quantity: 1, variant_id: product.variants[0].id }],
-            })
+              storeHeaders
+            )
           ).data.cart
 
           const paymentCollection = (
-            await api.post(`/store/payment-collections`, {
-              cart_id: cart.id,
-            })
+            await api.post(
+              `/store/payment-collections`,
+              {
+                cart_id: cart.id,
+              },
+              storeHeaders
+            )
           ).data.payment_collection
 
           await api.post(
             `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
-            { provider_id: "pp_system_default" }
+            { provider_id: "pp_system_default" },
+            storeHeaders
           )
 
-          await api.post(`/store/carts/${cart.id}/complete`, {})
+          await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
 
-          const cartRefetch = (await api.get(`/store/carts/${cart.id}`)).data
-            .cart
+          const cartRefetch = (
+            await api.get(`/store/carts/${cart.id}`, storeHeaders)
+          ).data.cart
 
           expect(cartRefetch.completed_at).toBeTruthy()
 
           await expect(
-            api.post(`/store/carts/${cart.id}/shipping-methods`, {
-              option_id: shippingOption.id,
-            })
+            api.post(
+              `/store/carts/${cart.id}/shipping-methods`,
+              {
+                option_id: shippingOption.id,
+              },
+              storeHeaders
+            )
           ).rejects.toThrow()
 
           const error = await api
-            .post(`/store/carts/${cart.id}/line-items`, {
-              variant_id: product.variants[0].id,
-              quantity: 1,
-            })
+            .post(
+              `/store/carts/${cart.id}/line-items`,
+              {
+                variant_id: product.variants[0].id,
+                quantity: 1,
+              },
+              storeHeaders
+            )
             .catch((e) => e)
 
           expect(error.response.status).toEqual(400)
@@ -2213,36 +2410,46 @@ medusaIntegrationTestRunner({
           )
 
           const cart = (
-            await api.post(`/store/carts`, {
-              currency_code: "usd",
-              email: "tony@stark-industries.com",
-              shipping_address: {
-                address_1: "test address 1",
-                address_2: "test address 2",
-                city: "ny",
-                country_code: "us",
-                province: "ny",
-                postal_code: "94016",
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                email: "tony@stark-industries.com",
+                shipping_address: {
+                  address_1: "test address 1",
+                  address_2: "test address 2",
+                  city: "ny",
+                  country_code: "us",
+                  province: "ny",
+                  postal_code: "94016",
+                },
+                sales_channel_id: salesChannel.id,
+                items: [{ quantity: 1, variant_id: product.variants[0].id }],
               },
-              sales_channel_id: salesChannel.id,
-              items: [{ quantity: 1, variant_id: product.variants[0].id }],
-            })
+              storeHeaders
+            )
           ).data.cart
 
           const paymentCollection = (
-            await api.post(`/store/payment-collections`, {
-              cart_id: cart.id,
-            })
+            await api.post(
+              `/store/payment-collections`,
+              {
+                cart_id: cart.id,
+              },
+              storeHeaders
+            )
           ).data.payment_collection
 
           await api.post(
             `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
-            { provider_id: "pp_system_default" }
+            { provider_id: "pp_system_default" },
+            storeHeaders
           )
 
           const response = await api.post(
             `/store/carts/${cart.id}/complete`,
-            {}
+            {},
+            storeHeaders
           )
 
           expect(response.status).toEqual(200)

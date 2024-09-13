@@ -1,12 +1,12 @@
 import { IApiKeyModuleService } from "@medusajs/types"
 import { ApiKeyType, Module, Modules } from "@medusajs/utils"
+import { ApiKeyModuleService } from "@services"
 import crypto from "crypto"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPublishableKeyFixture,
   createSecretKeyFixture,
 } from "../__fixtures__"
-import { ApiKeyModuleService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -47,14 +47,24 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
 
       expect(Object.keys(linkable)).toEqual(["apiKey"])
 
-      linkable.apiKey.toJSON = undefined
+      Object.keys(linkable).forEach((key) => {
+        delete linkable[key].toJSON
+      })
 
       expect(linkable.apiKey).toEqual({
         id: {
           linkable: "api_key_id",
+          entity: "ApiKey",
           primaryKey: "id",
           serviceName: "apiKey",
           field: "apiKey",
+        },
+        publishable_key_id: {
+          field: "apiKey",
+          entity: "ApiKey",
+          linkable: "publishable_key_id",
+          primaryKey: "publishable_key_id",
+          serviceName: "apiKey",
         },
       })
     })
@@ -251,6 +261,12 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
             createPublishableKeyFixture,
             createSecretKeyFixture,
           ])
+
+          await service.revoke(
+            { id: [createdApiKeys[0].id, createdApiKeys[1].id] },
+            { revoked_by: "test_user" }
+          )
+
           await service.deleteApiKeys([
             createdApiKeys[0].id,
             createdApiKeys[1].id,
@@ -258,6 +274,25 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
 
           const apiKeysInDatabase = await service.listApiKeys()
           expect(apiKeysInDatabase).toHaveLength(0)
+        })
+
+        it("should throw when trying to delete unrevoked api keys", async function () {
+          const createdApiKeys = await service.createApiKeys([
+            createPublishableKeyFixture,
+            createSecretKeyFixture,
+          ])
+
+          const error = await service
+            .deleteApiKeys([createdApiKeys[0].id, createdApiKeys[1].id])
+            .catch((e) => e)
+
+          expect(error.type).toEqual("not_allowed")
+          expect(error.message).toContain(
+            `Cannot delete api keys that are not revoked - `
+          )
+
+          const apiKeysInDatabase = await service.listApiKeys()
+          expect(apiKeysInDatabase).toHaveLength(2)
         })
       })
 

@@ -11,15 +11,14 @@ export const ShippingOptionPriceSet: ModuleJoinerConfig = {
   alias: [
     {
       name: ["shipping_option_price_set", "shipping_option_price_sets"],
-      args: {
-        entity: "LinkShippingOptionPriceSet",
-      },
+      entity: "LinkShippingOptionPriceSet",
     },
   ],
   primaryKeys: ["id", "shipping_option_id", "price_set_id"],
   relationships: [
     {
       serviceName: Modules.FULFILLMENT,
+      entity: "ShippingOption",
       primaryKey: "id",
       foreignKey: "shipping_option_id",
       alias: "shipping_option",
@@ -29,6 +28,7 @@ export const ShippingOptionPriceSet: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.PRICING,
+      entity: "PriceSet",
       primaryKey: "id",
       foreignKey: "price_set_id",
       alias: "price_set",

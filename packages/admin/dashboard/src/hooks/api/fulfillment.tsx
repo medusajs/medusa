@@ -19,7 +19,7 @@ export const useCreateFulfillment = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: fulfillmentsQueryKeys.lists() })
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
+        queryKey: ordersQueryKeys.all,
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -36,7 +36,7 @@ export const useCancelFulfillment = (
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: fulfillmentsQueryKeys.lists() })
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
+        queryKey: ordersQueryKeys.all,
       })
       options?.onSuccess?.(data, variables, context)
     },
@@ -57,7 +57,7 @@ export const useCreateFulfillmentShipment = (
       sdk.admin.fulfillment.createShipment(fulfillmentId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
-        queryKey: ordersQueryKeys.details(),
+        queryKey: ordersQueryKeys.all,
       })
       options?.onSuccess?.(data, variables, context)
     },

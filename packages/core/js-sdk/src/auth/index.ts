@@ -49,16 +49,7 @@ export class Auth {
       return { location }
     }
 
-    // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
-    if (this.config?.auth?.type === "session") {
-      await this.client.fetch("/auth/session", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      })
-    } else {
-      this.client.setToken(token as string)
-    }
-
+    await this.setToken_(token as string)
     return token as string
   }
 
@@ -76,16 +67,21 @@ export class Auth {
       }
     )
 
-    // By default we just set the token in memory, if configured to use sessions we convert it into session storage instead.
-    if (this.config?.auth?.type === "session") {
-      await this.client.fetch("/auth/session", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      })
-    } else {
-      this.client.setToken(token)
-    }
+    await this.setToken_(token)
+    return token
+  }
 
+  refresh = async () => {
+    const { token } = await this.client.fetch<{ token: string }>(
+      "/auth/token/refresh",
+      {
+        method: "POST",
+      }
+    )
+
+    // Putting the token in session after refreshing is only useful when the new token has updated info (eg. actor_id).
+    // Ideally we don't use the full JWT in session as key, but just store a pseudorandom key that keeps the rest of the auth context as value.
+    await this.setToken_(token)
     return token
   }
 
@@ -97,5 +93,17 @@ export class Auth {
     }
 
     this.client.clearToken()
+  }
+
+  private setToken_ = async (token: string) => {
+    // By default we just set the token in the configured storage, if configured to use sessions we convert it into session storage instead.
+    if (this.config?.auth?.type === "session") {
+      await this.client.fetch("/auth/session", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+    } else {
+      this.client.setToken(token)
+    }
   }
 }

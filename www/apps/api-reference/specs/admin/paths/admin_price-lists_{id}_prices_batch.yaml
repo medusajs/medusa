@@ -1,7 +1,8 @@
 post:
   operationId: PostPriceListsIdPricesBatch
-  summary: Add Prices to Price List
-  description: Add a list of prices to a price list.
+  summary: Manage Prices in Price List
+  x-sidebar-summary: Manage Prices
+  description: Manage the prices of a price list to create, update, or delete them.
   x-authenticated: true
   parameters:
     - name: id
@@ -19,90 +20,100 @@ post:
       application/json:
         schema:
           type: object
-          description: SUMMARY
+          description: The prices to create, update, or delete.
           properties:
             create:
               type: array
-              description: The price list's create.
+              description: The prices to create.
               items:
                 type: object
-                description: The create's details.
+                description: A price's details.
                 required:
                   - currency_code
                   - amount
                   - variant_id
-                  - min_quantity
-                  - max_quantity
                 properties:
                   currency_code:
                     type: string
                     title: currency_code
-                    description: The create's currency code.
+                    description: The price's currency code.
                   amount:
                     type: number
                     title: amount
-                    description: The create's amount.
+                    description: The price's amount.
                   variant_id:
                     type: string
                     title: variant_id
-                    description: The create's variant id.
+                    description: The ID of the variant this price is for.
                   min_quantity:
                     type: number
                     title: min_quantity
-                    description: The create's min quantity.
+                    description: >-
+                      The minimum quantity that must be available of the
+                      associated variant in the cart for this price to apply.
                   max_quantity:
                     type: number
                     title: max_quantity
-                    description: The create's max quantity.
+                    description: >-
+                      The maximum quantity that must be available of the
+                      associated variant in the cart for this price list to
+                      apply.
                   rules:
                     type: object
-                    description: The create's rules.
+                    description: Key-value pair rules to apply on the price.
+                    example:
+                      region_id: 123
             update:
               type: array
-              description: The price list's update.
+              description: The prices to update.
               items:
                 type: object
-                description: The update's details.
+                description: The properties to update in a price.
                 required:
                   - id
                   - variant_id
-                  - min_quantity
-                  - max_quantity
                 properties:
                   id:
                     type: string
                     title: id
-                    description: The update's ID.
+                    description: The price's ID.
                   currency_code:
                     type: string
                     title: currency_code
-                    description: The update's currency code.
+                    description: The price's currency code.
                   amount:
                     type: number
                     title: amount
-                    description: The update's amount.
+                    description: The price's amount.
                   variant_id:
                     type: string
                     title: variant_id
-                    description: The update's variant id.
+                    description: The ID of the variant this price is for.
                   min_quantity:
                     type: number
                     title: min_quantity
-                    description: The update's min quantity.
+                    description: >-
+                      The minimum quantity that must be available of the
+                      associated variant in the cart for this price to apply.
                   max_quantity:
                     type: number
                     title: max_quantity
-                    description: The update's max quantity.
+                    description: >-
+                      The maximum quantity that must be available of the
+                      associated variant in the cart for this price list to
+                      apply.
                   rules:
                     type: object
-                    description: The update's rules.
+                    description: Key-value pair rules to apply on the price.
+                    example:
+                      region_id: 123
             delete:
               type: array
-              description: The price list's delete.
+              description: The prices to delete.
               items:
                 type: string
                 title: delete
-                description: The delete's details.
+                description: A price's ID.
   x-codeSamples:
     - lang: Shell
       label: cURL

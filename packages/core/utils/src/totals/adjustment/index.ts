@@ -12,31 +12,44 @@ export function calculateAdjustmentTotal({
   includesTax?: boolean
   taxRate?: BigNumberInput
 }) {
-  let total = MathBN.convert(0)
+  // the sum of all adjustment amounts excluding tax
+  let adjustmentsSubtotal = MathBN.convert(0)
+  // the sum of all adjustment amounts including tax
+  let adjustmentsTotal = MathBN.convert(0)
+  // the sum of all taxes on subtotals
+  let adjustmentsTaxTotal = MathBN.convert(0)
+
   for (const adj of adjustments) {
     if (!isDefined(adj.amount)) {
       continue
     }
 
-    total = MathBN.add(total, adj.amount)
+    const adjustmentAmount = MathBN.convert(adj.amount)
+    adjustmentsSubtotal = MathBN.add(adjustmentsSubtotal, adjustmentAmount)
 
     if (isDefined(taxRate)) {
-      const rate = MathBN.div(taxRate, 100)
-      let taxAmount = MathBN.mult(adj.amount, rate)
+      const adjustmentSubtotal = includesTax
+        ? MathBN.div(adjustmentAmount, MathBN.add(1, taxRate))
+        : adjustmentAmount
 
-      if (includesTax) {
-        taxAmount = MathBN.div(taxAmount, MathBN.add(1, rate))
+      const adjustmentTaxTotal = MathBN.mult(adjustmentSubtotal, taxRate)
+      const adjustmentTotal = MathBN.add(adjustmentSubtotal, adjustmentTaxTotal)
 
-        adj["subtotal"] = new BigNumber(MathBN.sub(adj.amount, taxAmount))
-        adj["total"] = new BigNumber(adj.amount)
-      } else {
-        total = MathBN.add(adj.amount, taxAmount)
+      adj["subtotal"] = new BigNumber(adjustmentSubtotal)
+      adj["total"] = new BigNumber(adjustmentTotal)
 
-        adj["subtotal"] = new BigNumber(adj.amount)
-        adj["total"] = new BigNumber(total)
-      }
+      adjustmentsTotal = MathBN.add(adjustmentsTotal, adjustmentTotal)
+      adjustmentsTaxTotal = MathBN.add(adjustmentsTaxTotal, adjustmentTaxTotal)
+    } else {
+      adj["subtotal"] = new BigNumber(adjustmentAmount)
+      adj["adjustmentAmount"] = new BigNumber(adjustmentAmount)
+      adjustmentsTotal = MathBN.add(adjustmentsTotal, adjustmentAmount)
     }
   }
 
-  return total
+  return {
+    adjustmentsTotal,
+    adjustmentsSubtotal,
+    adjustmentsTaxTotal,
+  }
 }

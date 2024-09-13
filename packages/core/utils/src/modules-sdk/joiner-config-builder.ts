@@ -51,7 +51,7 @@ export function defineJoinerConfig(
     alias?: JoinerServiceConfigAlias[]
     schema?: string
     models?: DmlEntity<any, any>[] | { name: string }[]
-    linkableKeys?: Record<string, string>
+    linkableKeys?: ModuleJoinerConfig["linkableKeys"]
     primaryKeys?: string[]
   } = {}
 ): Omit<
@@ -151,18 +151,19 @@ export function defineJoinerConfig(
     schema = toGraphQLSchema([...modelDefinitions.values()])
   }
 
-  if (!linkableKeys) {
-    const linkableKeysFromDml = buildLinkableKeysFromDmlObjects([
-      ...modelDefinitions.values(),
-    ])
-    const linkableKeysFromMikroOrm = buildLinkableKeysFromMikroOrmObjects([
-      ...mikroOrmObjects.values(),
-    ])
-    linkableKeys = {
-      ...linkableKeysFromDml,
-      ...linkableKeysFromMikroOrm,
-    }
+  const linkableKeysFromDml = buildLinkableKeysFromDmlObjects([
+    ...modelDefinitions.values(),
+  ])
+  const linkableKeysFromMikroOrm = buildLinkableKeysFromMikroOrmObjects([
+    ...mikroOrmObjects.values(),
+  ])
+
+  const mergedLinkableKeys = {
+    ...linkableKeysFromDml,
+    ...linkableKeysFromMikroOrm,
+    ...linkableKeys,
   }
+  linkableKeys = mergedLinkableKeys
 
   if (!primaryKeys && modelDefinitions.size) {
     const linkConfig = buildLinkConfigFromModelObjects(
@@ -175,6 +176,7 @@ export function defineJoinerConfig(
         return (Object.values(entityLinkConfig as any) as any[])
           .filter((linkableConfig) => isObject(linkableConfig))
           .map((linkableConfig) => {
+            // @ts-ignore
             return linkableConfig.primaryKey
           })
       })
@@ -191,17 +193,17 @@ export function defineJoinerConfig(
     alias: [
       ...[...(alias ?? ([] as any))].map((alias) => ({
         name: alias.name,
+        entity: alias.entity,
         args: {
-          entity: alias.args.entity,
           methodSuffix:
-            alias.args.methodSuffix ??
-            pluralize(upperCaseFirst(alias.args.entity)),
+            alias.args?.methodSuffix ?? pluralize(upperCaseFirst(alias.entity)),
         },
       })),
       ...deduplicatedLoadedModels
         .filter((model) => {
           return (
-            !alias || !alias.some((alias) => alias.args?.entity === model.name)
+            !alias ||
+            !alias.some((alias) => alias.entity === upperCaseFirst(model.name))
           )
         })
         .map((entity, i) => ({
@@ -209,8 +211,8 @@ export function defineJoinerConfig(
             `${camelToSnakeCase(entity.name).toLowerCase()}`,
             `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
           ],
+          entity: upperCaseFirst(entity.name),
           args: {
-            entity: upperCaseFirst(entity.name),
             methodSuffix: pluralize(upperCaseFirst(entity.name)),
           },
         })),
@@ -370,11 +372,13 @@ export function buildLinkConfigFromModelObjects<
         const linkableKeyName =
           parsedProperty.dataType.options?.linkable ??
           `${camelToSnakeCase(model.name).toLowerCase()}_${property}`
+
         modelLinkConfig[property] = {
           linkable: linkableKeyName,
           primaryKey: property,
           serviceName,
           field: lowerCaseFirst(model.name),
+          entity: upperCaseFirst(model.name),
         }
       }
     }
@@ -397,21 +401,25 @@ export function buildLinkConfigFromLinkableKeys<
 
   for (const [linkable, modelName] of Object.entries(linkableKeys)) {
     const kebabCasedModelName = camelToSnakeCase(toCamelCase(modelName))
+
     const inferredReferenceProperty = linkable.replace(
       `${kebabCasedModelName}_`,
       ""
     )
 
+    const keyName = lowerCaseFirst(modelName)
     const config = {
       linkable: linkable,
       primaryKey: inferredReferenceProperty,
       serviceName,
-      field: lowerCaseFirst(modelName),
+      field: keyName,
+      entity: upperCaseFirst(modelName),
     }
-    linkConfig[lowerCaseFirst(modelName)] = {
-      [inferredReferenceProperty]: config,
+
+    linkConfig[keyName] ??= {
       toJSON: () => config,
     }
+    linkConfig[keyName][inferredReferenceProperty] = config
   }
 
   return linkConfig as Record<string, any>
@@ -432,6 +440,5 @@ export function buildModelsNameToLinkableKeysMap(
       valueFrom: key.split("_").pop()!,
     })
   })
-
   return entityLinkableKeysMap
 }

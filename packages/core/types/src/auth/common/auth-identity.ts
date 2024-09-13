@@ -84,6 +84,11 @@ export type ProviderIdentityDTO = {
   entity_id: string
 
   /**
+   * The ID of the auth identity linked to the provider identity.
+   */
+  auth_identity_id?: string
+
+  /**
    * The auth identity linked to the provider identity.
    */
   auth_identity?: AuthIdentityDTO
@@ -204,6 +209,11 @@ export interface FilterableProviderIdentityProps
    * Filter the provider identities by the ID of the provider identity they are linked to.
    */
   entity_id?: string
+
+  /**
+   * Filter the provider identities by the ID of the auth identity they are linked to.
+   */
+  auth_identity_id?: string
 
   /**
    * The provider handle to filter the provider identity by.

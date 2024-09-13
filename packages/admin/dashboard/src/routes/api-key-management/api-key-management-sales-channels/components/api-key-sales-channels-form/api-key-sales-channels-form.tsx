@@ -142,7 +142,7 @@ export const ApiKeySalesChannelsForm = ({
             count={count}
             pageSize={PAGE_SIZE}
             pagination
-            search
+            search="autofocus"
             isLoading={isLoading}
             queryObject={raw}
             orderBy={["name", "created_at", "updated_at"]}

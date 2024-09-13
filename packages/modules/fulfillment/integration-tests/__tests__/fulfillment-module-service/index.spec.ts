@@ -3,9 +3,9 @@ import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
 import { Module, Modules } from "@medusajs/utils"
 import { FulfillmentModuleService, FulfillmentProviderService } from "@services"
 import {
+  SuiteOptions,
   initModules,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
@@ -109,10 +109,18 @@ moduleIntegrationTestRunner({
         }).linkable
 
         expect(Object.keys(linkable)).toEqual([
-          "fulfillment",
+          "fulfillmentAddress",
+          "fulfillmentItem",
+          "fulfillmentLabel",
+          "fulfillmentProvider",
           "fulfillmentSet",
-          "shippingOption",
+          "fulfillment",
+          "geoZone",
+          "serviceZone",
           "shippingOptionRule",
+          "shippingOptionType",
+          "shippingOption",
+          "shippingProfile",
         ])
 
         Object.keys(linkable).forEach((key) => {
@@ -120,36 +128,112 @@ moduleIntegrationTestRunner({
         })
 
         expect(linkable).toEqual({
-          fulfillment: {
+          fulfillmentAddress: {
             id: {
-              linkable: "fulfillment_id",
+              linkable: "fulfillment_address_id",
+              entity: "FulfillmentAddress",
               primaryKey: "id",
               serviceName: "fulfillment",
-              field: "fulfillment",
+              field: "fulfillmentAddress",
+            },
+          },
+          fulfillmentItem: {
+            id: {
+              linkable: "fulfillment_item_id",
+              entity: "FulfillmentItem",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "fulfillmentItem",
+            },
+          },
+          fulfillmentLabel: {
+            id: {
+              linkable: "fulfillment_label_id",
+              entity: "FulfillmentLabel",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "fulfillmentLabel",
+            },
+          },
+          fulfillmentProvider: {
+            id: {
+              linkable: "fulfillment_provider_id",
+              entity: "FulfillmentProvider",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "fulfillmentProvider",
             },
           },
           fulfillmentSet: {
             id: {
               linkable: "fulfillment_set_id",
+              entity: "FulfillmentSet",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "fulfillmentSet",
             },
           },
-          shippingOption: {
+          fulfillment: {
             id: {
-              linkable: "shipping_option_id",
+              linkable: "fulfillment_id",
+              entity: "Fulfillment",
               primaryKey: "id",
               serviceName: "fulfillment",
-              field: "shippingOption",
+              field: "fulfillment",
+            },
+          },
+          geoZone: {
+            id: {
+              linkable: "geo_zone_id",
+              entity: "GeoZone",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "geoZone",
+            },
+          },
+          serviceZone: {
+            id: {
+              linkable: "service_zone_id",
+              entity: "ServiceZone",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "serviceZone",
             },
           },
           shippingOptionRule: {
             id: {
               linkable: "shipping_option_rule_id",
+              entity: "ShippingOptionRule",
               primaryKey: "id",
               serviceName: "fulfillment",
               field: "shippingOptionRule",
+            },
+          },
+          shippingOptionType: {
+            id: {
+              linkable: "shipping_option_type_id",
+              entity: "ShippingOptionType",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "shippingOptionType",
+            },
+          },
+          shippingOption: {
+            id: {
+              linkable: "shipping_option_id",
+              entity: "ShippingOption",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "shippingOption",
+            },
+          },
+          shippingProfile: {
+            id: {
+              linkable: "shipping_profile_id",
+              entity: "ShippingProfile",
+              primaryKey: "id",
+              serviceName: "fulfillment",
+              field: "shippingProfile",
             },
           },
         })

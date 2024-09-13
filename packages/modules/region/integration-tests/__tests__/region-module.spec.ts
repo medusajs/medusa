@@ -1,7 +1,7 @@
 import { IRegionModuleService } from "@medusajs/types"
 import { Module, Modules } from "@medusajs/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { RegionModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -24,6 +24,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
           region: {
             id: {
               linkable: "region_id",
+              entity: "Region",
               primaryKey: "id",
               serviceName: "region",
               field: "region",
@@ -32,6 +33,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
           country: {
             iso_2: {
               linkable: "country_iso_2",
+              entity: "Country",
               primaryKey: "iso_2",
               serviceName: "region",
               field: "country",

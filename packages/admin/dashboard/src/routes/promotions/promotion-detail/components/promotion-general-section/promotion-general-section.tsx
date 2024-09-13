@@ -1,5 +1,5 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { PromotionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   Badge,
   Container,
@@ -14,13 +14,37 @@ import { useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeletePromotion } from "../../../../../hooks/api/promotions"
+import { formatCurrency } from "../../../../../lib/format-currency"
+import { formatPercentage } from "../../../../../lib/percentage-helpers"
 import {
   getPromotionStatus,
   PromotionStatus,
 } from "../../../../../lib/promotions"
 
 type PromotionGeneralSectionProps = {
-  promotion: PromotionDTO
+  promotion: HttpTypes.AdminPromotion
+}
+
+function getDisplayValue(promotion: HttpTypes.AdminPromotion) {
+  const value = promotion.application_method?.value
+
+  if (!value) {
+    return null
+  }
+
+  if (promotion.application_method?.type === "fixed") {
+    const currency = promotion.application_method?.currency_code
+
+    if (!currency) {
+      return null
+    }
+
+    return formatCurrency(value, currency)
+  } else if (promotion.application_method?.type === "percentage") {
+    return formatPercentage(value)
+  }
+
+  return null
 }
 
 export const PromotionGeneralSection = ({
@@ -63,6 +87,8 @@ export const PromotionGeneralSection = ({
     "grey" | "orange" | "green" | "red",
     string
   ]
+
+  const displayValue = getDisplayValue(promotion)
 
   return (
     <Container className="divide-y p-0">
@@ -113,18 +139,15 @@ export const PromotionGeneralSection = ({
           {t("fields.code")}
         </Text>
 
-        <div className="flex items-center gap-1">
-          <Text
-            size="small"
-            weight="plus"
-            leading="compact"
-            className="text-pretty"
+        <Copy content={promotion.code!} asChild>
+          <Badge
+            size="2xsmall"
+            rounded="full"
+            className="cursor-pointer text-pretty"
           >
             {promotion.code}
-          </Text>
-
-          <Copy content={promotion.code!} variant="mini" />
-        </div>
+          </Badge>
+        </Copy>
       </div>
 
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
@@ -142,17 +165,16 @@ export const PromotionGeneralSection = ({
           {t("promotions.fields.value")}
         </Text>
 
-        <Text size="small" leading="compact" className="text-pretty">
-          <Text className="inline pr-3" size="small" leading="compact">
-            {promotion.application_method?.value}
+        <div className="flex items-center gap-x-2">
+          <Text className="inline" size="small" leading="compact">
+            {displayValue || "-"}
           </Text>
-
           {promotion?.application_method?.type === "fixed" && (
-            <Badge size="xsmall">
-              {promotion?.application_method?.currency_code}
+            <Badge size="2xsmall" rounded="full">
+              {promotion?.application_method?.currency_code?.toUpperCase()}
             </Badge>
           )}
-        </Text>
+        </div>
       </div>
 
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">

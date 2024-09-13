@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminCampaign, AdminPromotion } from "@medusajs/types"
-import { Button, RadioGroup, Select, Text } from "@medusajs/ui"
+import { Button, RadioGroup, Select, Text, toast } from "@medusajs/ui"
 import { useEffect } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
@@ -44,7 +44,7 @@ export const AddCampaignPromotionFields = ({
   const selectedCampaign = campaigns.find((c) => c.id === watchCampaignId)
 
   return (
-    <div className="flex h-full flex-col gap-y-8">
+    <div className="flex flex-col gap-y-8">
       <Form.Field
         control={form.control}
         name="campaign_choice"
@@ -55,7 +55,7 @@ export const AddCampaignPromotionFields = ({
 
               <Form.Control>
                 <RadioGroup
-                  className="flex gap-y-3"
+                  className="grid grid-cols-1 gap-3"
                   {...field}
                   value={field.value}
                   onValueChange={field.onChange}
@@ -110,6 +110,20 @@ export const AddCampaignPromotionFields = ({
                     </Select.Trigger>
 
                     <Select.Content>
+                      {!campaigns.length && (
+                        <div className="flex h-[120px] flex-col items-center justify-center gap-2 p-2">
+                          <span className="txt-small text-ui-fg-subtle font-medium">
+                            {t(
+                              "promotions.form.campaign.existing.placeholder.title"
+                            )}
+                          </span>
+                          <span className="txt-small text-ui-fg-muted">
+                            {t(
+                              "promotions.form.campaign.existing.placeholder.desc"
+                            )}
+                          </span>
+                        </div>
+                      )}
                       {campaigns.map((c) => (
                         <Select.Item key={c.id} value={c.id}>
                           {c.name?.toUpperCase()}
@@ -154,6 +168,8 @@ export const AddCampaignPromotionForm = ({
   const { handleSuccess } = useRouteModal()
   const { campaign } = promotion
 
+  const originalId = campaign?.id
+
   const form = useForm<zod.infer<typeof EditPromotionSchema>>({
     defaultValues: {
       campaign_id: campaign?.id,
@@ -162,11 +178,21 @@ export const AddCampaignPromotionForm = ({
     resolver: zodResolver(EditPromotionSchema),
   })
 
+  const { setValue } = form
+
   const { mutateAsync, isPending } = useUpdatePromotion(promotion.id)
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       { campaign_id: data.campaign_id },
-      { onSuccess: () => handleSuccess() }
+      {
+        onSuccess: () => {
+          toast.success(t("promotions.campaign.edit.successToast"))
+          handleSuccess()
+        },
+        onError: (e) => {
+          toast.error(e.message)
+        },
+      }
     )
   })
 
@@ -177,18 +203,21 @@ export const AddCampaignPromotionForm = ({
 
   useEffect(() => {
     if (watchCampaignChoice === "none") {
-      form.setValue("campaign_id", null)
+      setValue("campaign_id", null)
     }
 
     if (watchCampaignChoice === "existing") {
-      form.setValue("campaign_id", campaign?.id)
+      setValue("campaign_id", originalId)
     }
-  }, [watchCampaignChoice])
+  }, [watchCampaignChoice, setValue, originalId])
 
   return (
     <RouteDrawer.Form form={form}>
-      <form onSubmit={handleSubmit} className="flex h-full flex-col">
-        <RouteDrawer.Body>
+      <form
+        onSubmit={handleSubmit}
+        className="flex size-full flex-col overflow-hidden"
+      >
+        <RouteDrawer.Body className="size-full overflow-auto">
           <AddCampaignPromotionFields
             form={form}
             campaigns={campaigns}

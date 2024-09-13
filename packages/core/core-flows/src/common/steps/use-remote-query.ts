@@ -2,7 +2,7 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 /**
  * The remote query's details.
@@ -164,7 +164,7 @@ export const useRemoteQueryStep = createStep(
         : undefined,
     }
 
-    const entities = await query(queryObject, undefined, config)
+    const entities = await query(queryObjectConfig, config)
     const result = list ? entities : entities[0]
 
     return new StepResponse(result)

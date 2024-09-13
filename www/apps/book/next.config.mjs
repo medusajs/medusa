@@ -127,6 +127,15 @@ const nextConfig = {
       ],
     }
   },
+  async redirects() {
+    return [
+      {
+        source: "/advanced-development/modules/remote-query",
+        destination: "/advanced-development/modules/query",
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default withMDX(nextConfig)

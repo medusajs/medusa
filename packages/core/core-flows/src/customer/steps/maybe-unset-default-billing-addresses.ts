@@ -55,7 +55,7 @@ export const maybeUnsetDefaultBillingAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await customerModuleService.updateAddresses(
+    await customerModuleService.updateCustomerAddresses(
       { id: addressesToSet },
       { is_default_billing: true }
     )

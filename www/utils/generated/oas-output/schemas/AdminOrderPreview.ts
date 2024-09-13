@@ -1,14 +1,14 @@
 /**
  * @schema AdminOrderPreview
  * type: object
- * description: The return's order preview.
+ * description: A preview of an order if a change, such as exchange, return, edit, or claim is applied on it.
  * x-schemaName: AdminOrderPreview
  * required:
  *   - return_requested_total
  *   - order_change
  *   - currency_code
- *   - id
  *   - version
+ *   - id
  *   - region_id
  *   - customer_id
  *   - sales_channel_id
@@ -46,16 +46,16 @@
  *   return_requested_total:
  *     type: number
  *     title: return_requested_total
- *     description: The order preview's return requested total.
+ *     description: The total of the requested return.
  *   order_change:
  *     $ref: "#/components/schemas/BaseOrderChange"
  *   items:
  *     type: array
- *     description: The order preview's items.
+ *     description: The order's items.
  *     items:
  *       allOf:
  *         - type: object
- *           description: The item's items.
+ *           description: An order's item.
  *           x-schemaName: BaseOrderLineItem
  *           required:
  *             - id
@@ -112,74 +112,74 @@
  *             thumbnail:
  *               type: string
  *               title: thumbnail
- *               description: The item's thumbnail.
+ *               description: The URL of the item's thumbnail.
  *             variant:
  *               $ref: "#/components/schemas/BaseProductVariant"
  *             variant_id:
  *               type: string
  *               title: variant_id
- *               description: The item's variant id.
+ *               description: The ID of the associated variant.
  *             product:
  *               $ref: "#/components/schemas/BaseProduct"
  *             product_id:
  *               type: string
  *               title: product_id
- *               description: The item's product id.
+ *               description: The ID of the associated product.
  *             product_title:
  *               type: string
  *               title: product_title
- *               description: The item's product title.
+ *               description: The title of the item's product.
  *             product_description:
  *               type: string
  *               title: product_description
- *               description: The item's product description.
+ *               description: The description of the item's product.
  *             product_subtitle:
  *               type: string
  *               title: product_subtitle
- *               description: The item's product subtitle.
+ *               description: The subtitle of the item's product.
  *             product_type:
  *               type: string
  *               title: product_type
- *               description: The item's product type.
+ *               description: The ID of type of the item's product.
  *             product_collection:
  *               type: string
  *               title: product_collection
- *               description: The item's product collection.
+ *               description: The ID of collection of the item's product.
  *             product_handle:
  *               type: string
  *               title: product_handle
- *               description: The item's product handle.
+ *               description: The handle of the item's product.
  *             variant_sku:
  *               type: string
  *               title: variant_sku
- *               description: The item's variant sku.
+ *               description: The SKU of the item's variant.
  *             variant_barcode:
  *               type: string
  *               title: variant_barcode
- *               description: The item's variant barcode.
+ *               description: The barcode of the item's variant.
  *             variant_title:
  *               type: string
  *               title: variant_title
- *               description: The item's variant title.
+ *               description: The title of the item's variant.
  *             variant_option_values:
  *               type: object
- *               description: The item's variant option values.
+ *               description: The option values of the item's variant as key-value pairs. The key is the title of an option, and the value is the option's value.
  *             requires_shipping:
  *               type: boolean
  *               title: requires_shipping
- *               description: The item's requires shipping.
+ *               description: Whether the item requires shipping.
  *             is_discountable:
  *               type: boolean
  *               title: is_discountable
- *               description: The item's is discountable.
+ *               description: Whether the item is discountable.
  *             is_tax_inclusive:
  *               type: boolean
  *               title: is_tax_inclusive
- *               description: The item's is tax inclusive.
+ *               description: Whether the item's price includes taxes.
  *             compare_at_unit_price:
  *               type: number
- *               title: compare_at_unit_price
- *               description: The item's compare at unit price.
+ *               title: The original price of the item before a promotion or sale.
+ *               description: The 
  *             unit_price:
  *               type: number
  *               title: unit_price
@@ -204,84 +204,84 @@
  *               type: string
  *               format: date-time
  *               title: created_at
- *               description: The item's created at.
+ *               description: The date the item was created.
  *             updated_at:
  *               type: string
  *               format: date-time
  *               title: updated_at
- *               description: The item's updated at.
+ *               description: The date the item was updated.
  *             metadata:
  *               type: object
- *               description: The item's metadata.
+ *               description: The item's metadata, can hold custom key-value pairs.
  *             original_total:
  *               type: number
  *               title: original_total
- *               description: The item's original total.
+ *               description: The item's total including taxes, excluding promotions.
  *             original_subtotal:
  *               type: number
  *               title: original_subtotal
- *               description: The item's original subtotal.
+ *               description: The item's total excluding taxes, including promotions.
  *             original_tax_total:
  *               type: number
  *               title: original_tax_total
- *               description: The item's original tax total.
+ *               description: The tax total of the item excluding promotions.
  *             item_total:
  *               type: number
  *               title: item_total
- *               description: The item's item total.
+ *               description: The item's total for a single unit including taxes and promotions.
  *             item_subtotal:
  *               type: number
  *               title: item_subtotal
- *               description: The item's item subtotal.
+ *               description: The item's total for a single unit excluding taxes, including promotions.
  *             item_tax_total:
  *               type: number
  *               title: item_tax_total
- *               description: The item's item tax total.
+ *               description: The tax total for a single unit of the item including promotions.
  *             total:
  *               type: number
  *               title: total
- *               description: The item's total.
+ *               description: The item's total including taxes and promotions.
  *             subtotal:
  *               type: number
  *               title: subtotal
- *               description: The item's subtotal.
+ *               description: The item's total excluding taxes, including promotions.
  *             tax_total:
  *               type: number
  *               title: tax_total
- *               description: The item's tax total.
+ *               description: The tax total of the item including promotions.
  *             discount_total:
  *               type: number
  *               title: discount_total
- *               description: The item's discount total.
+ *               description: The total of the item's discount / promotion.
  *             discount_tax_total:
  *               type: number
  *               title: discount_tax_total
- *               description: The item's discount tax total.
+ *               description: The tax total of the item's discount / promotion
  *             refundable_total:
  *               type: number
  *               title: refundable_total
- *               description: The item's refundable total.
+ *               description: The total refundable amount of the item's total.
  *             refundable_total_per_unit:
  *               type: number
  *               title: refundable_total_per_unit
- *               description: The item's refundable total per unit.
+ *               description: The total refundable amount of the item's total for a single unit.
  *         - type: object
- *           description: The item's items.
+ *           description: An order's item.
  *           properties:
  *             actions:
  *               type: array
- *               description: The item's actions.
+ *               description: The actions applied on an item.
  *               items:
  *                 type: object
- *                 description: The action's actions.
+ *                 description: The action's details.
  *                 x-schemaName: BaseOrderChangeAction
  *   shipping_methods:
  *     type: array
- *     description: The order preview's shipping methods.
+ *     description: The order's shipping methods.
  *     items:
  *       allOf:
  *         - type: object
- *           description: The shipping method's shipping methods.
+ *           description: The shipping method's details.
  *           x-schemaName: BaseOrderShippingMethod
  *           required:
  *             - id
@@ -310,7 +310,7 @@
  *             order_id:
  *               type: string
  *               title: order_id
- *               description: The shipping method's order id.
+ *               description: The ID of the order this shipping method belongs to.
  *             name:
  *               type: string
  *               title: name
@@ -326,17 +326,19 @@
  *             is_tax_inclusive:
  *               type: boolean
  *               title: is_tax_inclusive
- *               description: The shipping method's is tax inclusive.
+ *               description: Whether the shipping method's amount is tax inclusive.
  *             shipping_option_id:
  *               type: string
  *               title: shipping_option_id
- *               description: The shipping method's shipping option id.
+ *               description: The ID of the shipping option this method was created from.
  *             data:
  *               type: object
- *               description: The shipping method's data.
+ *               description: The data relevant for the fulfillment provider to process this shipment.
+ *               externalDocs:
+ *                 url: https://docs.medusajs.com/v2/resources/commerce-modules/order/concepts#data-property
  *             metadata:
  *               type: object
- *               description: The shipping method's metadata.
+ *               description: The shipping method's metadata, can hold custom key-value pairs.
  *             tax_lines:
  *               type: array
  *               description: The shipping method's tax lines.
@@ -351,163 +353,131 @@
  *               oneOf:
  *                 - type: string
  *                   title: original_total
- *                   description: The shipping method's original total.
+ *                   description: The shipping method's total including taxes, excluding promotions.
  *                 - type: number
  *                   title: original_total
- *                   description: The shipping method's original total.
- *                 - type: string
- *                   title: original_total
- *                   description: The shipping method's original total.
- *                 - $ref: "#/components/schemas/IBigNumber"
+ *                   description: The shipping method's total including taxes, excluding promotions.
  *             original_subtotal:
  *               oneOf:
  *                 - type: string
  *                   title: original_subtotal
- *                   description: The shipping method's original subtotal.
+ *                   description: The shipping method's total excluding taxes, including promotions.
  *                 - type: number
  *                   title: original_subtotal
- *                   description: The shipping method's original subtotal.
- *                 - type: string
- *                   title: original_subtotal
- *                   description: The shipping method's original subtotal.
- *                 - $ref: "#/components/schemas/IBigNumber"
+ *                   description: The shipping method's total excluding taxes, including promotions.
  *             original_tax_total:
  *               oneOf:
  *                 - type: string
  *                   title: original_tax_total
- *                   description: The shipping method's original tax total.
+ *                   description: The tax total of the shipping method excluding promotions.
  *                 - type: number
  *                   title: original_tax_total
- *                   description: The shipping method's original tax total.
- *                 - type: string
- *                   title: original_tax_total
- *                   description: The shipping method's original tax total.
- *                 - $ref: "#/components/schemas/IBigNumber"
+ *                   description: The tax total of the shipping method excluding promotions.
  *             total:
  *               oneOf:
  *                 - type: string
  *                   title: total
- *                   description: The shipping method's total.
+ *                   description: The shipping method's total including taxes and promotions.
  *                 - type: number
  *                   title: total
- *                   description: The shipping method's total.
- *                 - type: string
- *                   title: total
- *                   description: The shipping method's total.
- *                 - $ref: "#/components/schemas/IBigNumber"
+ *                   description: The shipping method's total including taxes and promotions.
  *             subtotal:
  *               oneOf:
  *                 - type: string
  *                   title: subtotal
- *                   description: The shipping method's subtotal.
+ *                   description: The shipping method's total excluding taxes, including promotions.
  *                 - type: number
  *                   title: subtotal
- *                   description: The shipping method's subtotal.
- *                 - type: string
- *                   title: subtotal
- *                   description: The shipping method's subtotal.
- *                 - $ref: "#/components/schemas/IBigNumber"
+ *                   description: The shipping method's total excluding taxes, including promotions.
  *             tax_total:
  *               oneOf:
  *                 - type: string
  *                   title: tax_total
- *                   description: The shipping method's tax total.
+ *                   description: The tax total of the shipping method including promotions.
  *                 - type: number
  *                   title: tax_total
- *                   description: The shipping method's tax total.
- *                 - type: string
- *                   title: tax_total
- *                   description: The shipping method's tax total.
- *                 - $ref: "#/components/schemas/IBigNumber"
+ *                   description: The tax total of the shipping method including promotions.
  *             discount_total:
  *               oneOf:
  *                 - type: string
  *                   title: discount_total
- *                   description: The shipping method's discount total.
+ *                   description: The total of the shipping method's promotion.
  *                 - type: number
  *                   title: discount_total
- *                   description: The shipping method's discount total.
- *                 - type: string
- *                   title: discount_total
- *                   description: The shipping method's discount total.
- *                 - $ref: "#/components/schemas/IBigNumber"
+ *                   description: The total of the shipping method's promotion.
  *             discount_tax_total:
  *               oneOf:
  *                 - type: string
  *                   title: discount_tax_total
- *                   description: The shipping method's discount tax total.
+ *                   description: The tax total of the shipping method's promotion.
  *                 - type: number
  *                   title: discount_tax_total
  *                   description: The shipping method's discount tax total.
- *                 - type: string
- *                   title: discount_tax_total
- *                   description: The shipping method's discount tax total.
- *                 - $ref: "#/components/schemas/IBigNumber"
  *             created_at:
  *               type: string
  *               format: date-time
  *               title: created_at
- *               description: The shipping method's created at.
+ *               description: The date the shipping method was created.
  *             updated_at:
  *               type: string
  *               format: date-time
  *               title: updated_at
- *               description: The shipping method's updated at.
+ *               description: The date the shipping method was updated.
  *         - type: object
- *           description: The shipping method's shipping methods.
+ *           description: The shipping method's details.
  *           properties:
  *             actions:
  *               type: array
- *               description: The shipping method's actions.
+ *               description: The actions applied on the shipping method.
  *               items:
  *                 type: object
- *                 description: The action's actions.
+ *                 description: The action's details.
  *                 x-schemaName: BaseOrderChangeAction
  *   currency_code:
  *     type: string
  *     title: currency_code
- *     description: The order preview's currency code.
- *   id:
- *     type: string
- *     title: id
- *     description: The order preview's ID.
+ *     description: The order's currency code.
  *   version:
  *     type: number
  *     title: version
- *     description: The order preview's version.
+ *     description: The order's version when this preview is applied.
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The order's ID.
  *   region_id:
  *     type: string
  *     title: region_id
- *     description: The order preview's region id.
+ *     description: The ID of the order's associated region.
  *   customer_id:
  *     type: string
  *     title: customer_id
- *     description: The order preview's customer id.
+ *     description: The ID of the customer that placed the order.
  *   sales_channel_id:
  *     type: string
  *     title: sales_channel_id
- *     description: The order preview's sales channel id.
+ *     description: The ID of the sales channel that the order was placed in.
  *   email:
  *     type: string
  *     title: email
- *     description: The order preview's email.
+ *     description: The email of the customer that placed the order.
  *     format: email
  *   display_id:
  *     type: number
  *     title: display_id
- *     description: The order preview's display id.
+ *     description: The order's display ID.
  *   shipping_address:
  *     $ref: "#/components/schemas/AdminOrderAddress"
  *   billing_address:
  *     $ref: "#/components/schemas/AdminOrderAddress"
  *   payment_collections:
  *     type: array
- *     description: The order preview's payment collections.
+ *     description: The order's payment collections.
  *     items:
  *       $ref: "#/components/schemas/AdminPaymentCollection"
  *   payment_status:
  *     type: string
- *     description: The order preview's payment status.
+ *     description: The order's payment status.
  *     enum:
  *       - canceled
  *       - not_paid
@@ -521,12 +491,12 @@
  *       - requires_action
  *   fulfillments:
  *     type: array
- *     description: The order preview's fulfillments.
+ *     description: The order's fulfillments.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderFulfillment"
  *   fulfillment_status:
  *     type: string
- *     description: The order preview's fulfillment status.
+ *     description: The order's fulfillment status.
  *     enum:
  *       - canceled
  *       - not_fulfilled
@@ -538,112 +508,112 @@
  *       - delivered
  *   transactions:
  *     type: array
- *     description: The order preview's transactions.
+ *     description: The order's transactions.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderTransaction"
  *   summary:
  *     $ref: "#/components/schemas/BaseOrderSummary"
  *   metadata:
  *     type: object
- *     description: The order preview's metadata.
+ *     description: The order's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The order preview's created at.
+ *     description: The date the order was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The order preview's updated at.
+ *     description: The date the order was updated.
  *   original_item_total:
  *     type: number
  *     title: original_item_total
- *     description: The order preview's original item total.
+ *     description: The total of the order's items including taxes, excluding promotions.
  *   original_item_subtotal:
  *     type: number
  *     title: original_item_subtotal
- *     description: The order preview's original item subtotal.
+ *     description: The total of the order's items excluding taxes, including promotions.
  *   original_item_tax_total:
  *     type: number
  *     title: original_item_tax_total
- *     description: The order preview's original item tax total.
+ *     description: The tax total of the order's items excluding promotions.
  *   item_total:
  *     type: number
  *     title: item_total
- *     description: The order preview's item total.
+ *     description: The total of the order's items including taxes and promotions.
  *   item_subtotal:
  *     type: number
  *     title: item_subtotal
- *     description: The order preview's item subtotal.
+ *     description: The total of the order's items excluding taxes, including promotions.
  *   item_tax_total:
  *     type: number
  *     title: item_tax_total
- *     description: The order preview's item tax total.
+ *     description: The tax total of the order's items including promotions.
  *   original_total:
  *     type: number
  *     title: original_total
- *     description: The order preview's original total.
+ *     description: The order's total excluding promotions, including taxes.
  *   original_subtotal:
  *     type: number
  *     title: original_subtotal
- *     description: The order preview's original subtotal.
+ *     description: The order's total excluding taxes, including promotions.
  *   original_tax_total:
  *     type: number
  *     title: original_tax_total
- *     description: The order preview's original tax total.
+ *     description: The order's tax total, excluding promotions.
  *   total:
  *     type: number
  *     title: total
- *     description: The order preview's total.
+ *     description: The order's total including taxes and promotions.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The order preview's subtotal.
+ *     description: The order's total excluding taxes, including promotions.
  *   tax_total:
  *     type: number
  *     title: tax_total
- *     description: The order preview's tax total.
+ *     description: The order's tax total including promotions.
  *   discount_total:
  *     type: number
  *     title: discount_total
- *     description: The order preview's discount total.
+ *     description: The order's discount or promotions total.
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The order preview's discount tax total.
+ *     description: The tax total of order's discount or promotion.
  *   gift_card_total:
  *     type: number
  *     title: gift_card_total
- *     description: The order preview's gift card total.
+ *     description: The order's gift card total.
  *   gift_card_tax_total:
  *     type: number
  *     title: gift_card_tax_total
- *     description: The order preview's gift card tax total.
+ *     description: The tax total of the order's gift card.
  *   shipping_total:
  *     type: number
  *     title: shipping_total
- *     description: The order preview's shipping total.
+ *     description: The order's shipping total including taxes and promotions.
  *   shipping_subtotal:
  *     type: number
  *     title: shipping_subtotal
- *     description: The order preview's shipping subtotal.
+ *     description: The order's shipping total excluding taxes, including promotions.
  *   shipping_tax_total:
  *     type: number
  *     title: shipping_tax_total
- *     description: The order preview's shipping tax total.
+ *     description: The tax total of the order's shipping.
  *   original_shipping_total:
  *     type: number
  *     title: original_shipping_total
- *     description: The order preview's original shipping total.
+ *     description: The order's shipping total including taxes, excluding promotions.
  *   original_shipping_subtotal:
  *     type: number
  *     title: original_shipping_subtotal
- *     description: The order preview's original shipping subtotal.
+ *     description: The order's shipping total excluding taxes, including promotions.
  *   original_shipping_tax_total:
  *     type: number
  *     title: original_shipping_tax_total
- *     description: The order preview's original shipping tax total.
+ *     description: The tax total of the order's shipping excluding promotions.
  *   customer:
  *     $ref: "#/components/schemas/AdminCustomer"
  *   sales_channel:

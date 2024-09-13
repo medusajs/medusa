@@ -4,8 +4,8 @@ import { PaymentModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPaymentCollections,
-  createPayments,
   createPaymentSessions,
+  createPayments,
 } from "../../../__fixtures__"
 
 jest.setTimeout(30000)
@@ -23,6 +23,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
           "payment",
           "paymentCollection",
           "paymentProvider",
+          "paymentSession",
           "refundReason",
         ])
 
@@ -34,6 +35,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
           payment: {
             id: {
               linkable: "payment_id",
+              entity: "Payment",
               primaryKey: "id",
               serviceName: "payment",
               field: "payment",
@@ -42,6 +44,7 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
           paymentCollection: {
             id: {
               linkable: "payment_collection_id",
+              entity: "PaymentCollection",
               primaryKey: "id",
               serviceName: "payment",
               field: "paymentCollection",
@@ -50,14 +53,25 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
           paymentProvider: {
             id: {
               linkable: "payment_provider_id",
+              entity: "PaymentProvider",
               primaryKey: "id",
               serviceName: "payment",
               field: "paymentProvider",
             },
           },
+          paymentSession: {
+            id: {
+              field: "paymentSession",
+              entity: "PaymentSession",
+              linkable: "payment_session_id",
+              primaryKey: "id",
+              serviceName: "payment",
+            },
+          },
           refundReason: {
             id: {
               linkable: "refund_reason_id",
+              entity: "RefundReason",
               primaryKey: "id",
               serviceName: "payment",
               field: "refundReason",
