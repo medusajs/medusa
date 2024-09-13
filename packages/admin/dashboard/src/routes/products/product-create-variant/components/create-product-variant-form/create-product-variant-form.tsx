@@ -87,12 +87,6 @@ export const CreateProductVariantForm = ({
     }
   }, [isInventoryKitEnabled])
 
-  console.log(
-    inventoryTabEnabled,
-    isManageInventoryEnabled,
-    isInventoryKitEnabled
-  )
-
   const handleChangeTab = (update: Tab) => {
     if (tab === update) {
       return
