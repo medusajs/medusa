@@ -172,7 +172,7 @@ export class Query {
  * API wrapper around the remoteQuery with backward compatibility support
  * @param remoteQuery
  */
-export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
+export function createQuery(remoteQuery: RemoteQuery) {
   const query = new Query(remoteQuery)
 
   function backwardCompatibleQuery(...args: any[]) {
@@ -182,5 +182,5 @@ export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
   backwardCompatibleQuery.graph = query.graph.bind(query)
   backwardCompatibleQuery.gql = query.gql.bind(query)
 
-  return backwardCompatibleQuery
+  return backwardCompatibleQuery as Omit<RemoteQueryFunction, symbol>
 }
