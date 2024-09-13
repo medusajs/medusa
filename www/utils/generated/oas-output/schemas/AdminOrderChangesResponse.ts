@@ -1,14 +1,14 @@
 /**
  * @schema AdminOrderChangesResponse
  * type: object
- * description: SUMMARY
+ * description: The details of an order's changes.
  * x-schemaName: AdminOrderChangesResponse
  * required:
  *   - order_changes
  * properties:
  *   order_changes:
  *     type: array
- *     description: The order's order changes.
+ *     description: An order's changes.
  *     items:
  *       $ref: "#/components/schemas/BaseOrderChange"
  * 
