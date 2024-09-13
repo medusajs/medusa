@@ -31,6 +31,10 @@ export function toRemoteQuery<const TEntity extends string>(config: {
   entity: TEntity | keyof RemoteQueryEntryPoints
   fields: RemoteQueryObjectConfig<TEntity>["fields"]
   filters?: RemoteQueryFilters<TEntity>
+  pagination?: {
+    skip?: number
+    take?: number
+  }
   context?: Record<string, any>
 }): RemoteQueryGraph<TEntity> {
   const { entity, fields = [], filters = {}, context = {} } = config
@@ -102,6 +106,14 @@ export function toRemoteQuery<const TEntity extends string>(config: {
 
     deepConfigRef[FIELDS] ??= []
     deepConfigRef[FIELDS].push(fieldProperty)
+  }
+
+  if (config.pagination) {
+    joinerQuery[entity][ARGUMENTS] ??= {}
+    joinerQuery[entity][ARGUMENTS] = {
+      ...joinerQuery[entity][ARGUMENTS],
+      ...config.pagination,
+    }
   }
 
   return joinerQuery as RemoteQueryGraph<TEntity>

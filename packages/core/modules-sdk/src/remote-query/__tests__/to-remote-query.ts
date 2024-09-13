@@ -1,6 +1,6 @@
 import { QueryContext, QueryFilter } from "@medusajs/utils"
-import { toRemoteQuery } from "../to-remote-query"
 import "../__fixtures__/remote-query-type"
+import { toRemoteQuery } from "../to-remote-query"
 
 describe("toRemoteQuery", () => {
   it("should transform a query with top level filtering", () => {
@@ -18,6 +18,58 @@ describe("toRemoteQuery", () => {
       product: {
         __fields: ["id", "handle", "description"],
         __args: {
+          filters: {
+            handle: {
+              $ilike: "abc%",
+            },
+          },
+        },
+      },
+    })
+  })
+
+  it("should transform a query with pagination", () => {
+    const format = toRemoteQuery({
+      entity: "product",
+      fields: ["id", "handle", "description"],
+      pagination: {
+        skip: 5,
+        take: 10,
+      },
+    })
+
+    expect(format).toEqual({
+      product: {
+        __fields: ["id", "handle", "description"],
+        __args: {
+          skip: 5,
+          take: 10,
+        },
+      },
+    })
+  })
+
+  it("should transform a query with top level filtering and pagination", () => {
+    const format = toRemoteQuery({
+      entity: "product",
+      fields: ["id", "handle", "description"],
+      pagination: {
+        skip: 5,
+        take: 10,
+      },
+      filters: QueryFilter<"product">({
+        handle: {
+          $ilike: "abc%",
+        },
+      }),
+    })
+
+    expect(format).toEqual({
+      product: {
+        __fields: ["id", "handle", "description"],
+        __args: {
+          skip: 5,
+          take: 10,
           filters: {
             handle: {
               $ilike: "abc%",
