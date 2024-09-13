@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { z } from "zod"
 
 import { HttpTypes } from "@medusajs/types"
@@ -16,6 +16,7 @@ import { CreateProductVariantSchema } from "./constants"
 import DetailsTab from "./details-tab"
 import PricingTab from "./pricing-tab"
 import InventoryKitTab from "./inventory-kit-tab"
+import { optionalInt } from "../../../../../lib/validation.ts"
 
 enum Tab {
   DETAIL = "detail",
@@ -59,6 +60,38 @@ export const CreateProductVariantForm = ({
   })
 
   const { mutateAsync, isPending } = useCreateProductVariant(product.id)
+
+  const isManageInventoryEnabled = useWatch({
+    control: form.control,
+    name: "manage_inventory",
+  })
+
+  const isInventoryKitEnabled = useWatch({
+    control: form.control,
+    name: "inventory_kit",
+  })
+
+  const inventoryField = useFieldArray({
+    control: form.control,
+    name: `inventory`,
+  })
+
+  const inventoryTabEnabled = isManageInventoryEnabled && isInventoryKitEnabled
+
+  useEffect(() => {
+    if (isInventoryKitEnabled && inventoryField.fields.length === 0) {
+      inventoryField.append({
+        inventory_item_id: "",
+        required_quantity: undefined,
+      })
+    }
+  }, [isInventoryKitEnabled])
+
+  console.log(
+    inventoryTabEnabled,
+    isManageInventoryEnabled,
+    isInventoryKitEnabled
+  )
 
   const handleChangeTab = (update: Tab) => {
     if (tab === update) {
@@ -184,12 +217,14 @@ export const CreateProductVariantForm = ({
                   >
                     {t("priceLists.create.tabs.prices")}
                   </ProgressTabs.Trigger>
-                  <ProgressTabs.Trigger
-                    status={tabState.inventory}
-                    value={Tab.INVENTORY}
-                  >
-                    {t("products.create.tabs.inventory")}
-                  </ProgressTabs.Trigger>
+                  {inventoryTabEnabled && (
+                    <ProgressTabs.Trigger
+                      status={tabState.inventory}
+                      value={Tab.INVENTORY}
+                    >
+                      {t("products.create.tabs.inventory")}
+                    </ProgressTabs.Trigger>
+                  )}
                 </ProgressTabs.List>
               </div>
             </div>
@@ -207,12 +242,14 @@ export const CreateProductVariantForm = ({
             >
               <PricingTab form={form} />
             </ProgressTabs.Content>
-            <ProgressTabs.Content
-              className="size-full overflow-hidden"
-              value={Tab.INVENTORY}
-            >
-              <InventoryKitTab form={form} />
-            </ProgressTabs.Content>
+            {inventoryTabEnabled && (
+              <ProgressTabs.Content
+                className="size-full overflow-hidden"
+                value={Tab.INVENTORY}
+              >
+                <InventoryKitTab form={form} />
+              </ProgressTabs.Content>
+            )}
           </RouteFocusModal.Body>
           <RouteFocusModal.Footer>
             <div className="flex items-center justify-end gap-x-2">

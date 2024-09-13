@@ -15,7 +15,7 @@ import { HttpTypes } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 
 type PricingTabProps = {
-  form: UseFormReturn<typeof CreateProductVariantSchema>
+  form: UseFormReturn<z.infer<typeof CreateProductVariantSchema>>
 }
 
 function PricingTab({ form }: PricingTabProps) {

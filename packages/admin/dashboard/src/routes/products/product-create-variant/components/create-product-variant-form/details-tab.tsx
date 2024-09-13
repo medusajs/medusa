@@ -133,6 +133,7 @@ function DetailsTab({ form, product }: DetailsTabProps) {
                         checked={value}
                         onCheckedChange={(checked) => onChange(!!checked)}
                         {...field}
+                        disabled={!manageInventoryEnabled}
                       />
                     </Form.Control>
                     <div className="flex flex-col">
@@ -152,7 +153,6 @@ function DetailsTab({ form, product }: DetailsTabProps) {
           <Form.Field
             control={form.control}
             name="inventory_kit"
-            disabled={!manageInventoryEnabled}
             render={({ field: { value, onChange, ...field } }) => {
               return (
                 <Form.Item>
@@ -162,6 +162,7 @@ function DetailsTab({ form, product }: DetailsTabProps) {
                         checked={value}
                         onCheckedChange={(checked) => onChange(!!checked)}
                         {...field}
+                        disabled={!manageInventoryEnabled}
                       />
                     </Form.Control>
                     <div className="flex flex-col">
