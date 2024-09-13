@@ -108,7 +108,7 @@ For example:
 
 export const manyToManyHighlights = [
   ["5", "manyToMany", "An order is associated with many products."],
-  ["10", "manyToMany", "A product is associated with many orders."]
+  ["12", "manyToMany", "A product is associated with many orders."]
 ]
 
 ```ts highlights={manyToManyHighlights}
@@ -116,14 +116,20 @@ import { model } from "@medusajs/utils"
 
 const Order = model.define("order", {
   id: model.id().primaryKey(),
-  products: model.manyToMany(() => Product),
+  products: model.manyToMany(() => Product, {
+    mappedBy: "orders"
+  }),
 })
 
 const Product = model.define("product", {
   id: model.id().primaryKey(),
-  orders: model.manyToMany(() => Order),
+  orders: model.manyToMany(() => Order, {
+    mappedBy: "orders"
+  }),
 })
 ```
+
+At least one side of the many-to-many relationship should have the `mappedBy` property set in the second object parameter of the `manyToMany` object. Its value is the name of the relationship property in the other data model.
 
 In this example, an order is associated with many products, and a product is associated with many orders.
 

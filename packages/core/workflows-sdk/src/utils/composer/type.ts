@@ -10,6 +10,7 @@ import {
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { ExportedWorkflow } from "../../helper"
 import { Hook } from "./create-hook"
+import { CompensateFn, InvokeFn } from "./create-step"
 
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
@@ -32,8 +33,9 @@ export type HookHandler = (...args: any[]) => void | Promise<void>
 type ConvertHooksToFunctions<THooks extends any[]> = {
   [K in keyof THooks]: THooks[K] extends Hook<infer Name, infer Input>
     ? {
-        [Fn in Name]: (
-          callback: (input: Input, context: StepExecutionContext) => any
+        [Fn in Name]: <TOutput, TCompensateInput>(
+          invoke: InvokeFn<Input, TOutput, TCompensateInput>,
+          compensate?: CompensateFn<TCompensateInput>
         ) => void
       }
     : never
