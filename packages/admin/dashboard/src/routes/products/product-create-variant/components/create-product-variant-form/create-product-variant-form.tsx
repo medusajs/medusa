@@ -2,10 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
 import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { z } from "zod"
 
-import { HttpTypes } from "@medusajs/types"
+import { AdminCreateProductVariantPrice, HttpTypes } from "@medusajs/types"
 import {
   RouteDrawer,
   RouteFocusModal,
@@ -16,7 +16,8 @@ import { CreateProductVariantSchema } from "./constants"
 import DetailsTab from "./details-tab"
 import PricingTab from "./pricing-tab"
 import InventoryKitTab from "./inventory-kit-tab"
-import { optionalInt } from "../../../../../lib/validation.ts"
+import { castNumber } from "../../../../../lib/cast-number.ts"
+import { useRegions } from "../../../../../hooks/api"
 
 enum Tab {
   DETAIL = "detail",
@@ -60,6 +61,19 @@ export const CreateProductVariantForm = ({
   })
 
   const { mutateAsync, isPending } = useCreateProductVariant(product.id)
+
+  const { regions } = useRegions({ limit: 9999 })
+
+  const regionsCurrencyMap = useMemo(() => {
+    if (!regions?.length) {
+      return {}
+    }
+
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {} as Record<string, string>)
+  }, [regions])
 
   const isManageInventoryEnabled = useWatch({
     control: form.control,
@@ -166,15 +180,35 @@ export const CreateProductVariantForm = ({
   }
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const { allow_backorder, manage_inventory, sku, ...rest } = data
+    const { allow_backorder, manage_inventory, sku, title } = data
 
     await mutateAsync(
       {
+        title,
         sku,
         allow_backorder,
         manage_inventory,
-        prices: [],
-        ...rest,
+        prices: data.prices
+          .entries(([currencyOrRegion, value]) => {
+            const ret: AdminCreateProductVariantPrice = {}
+            const amount = castNumber(value)
+
+            if (isNaN(amount) || value === "") {
+              return undefined
+            }
+
+            if (currencyOrRegion.startsWith("reg_")) {
+              ret.rules = { region_id: currencyOrRegion }
+              ret.currency_code = regionsCurrencyMap[currencyOrRegion]
+            } else {
+              ret.currency_code = currencyOrRegion
+            }
+
+            ret.amount = amount
+
+            return ret
+          })
+          .filter(Boolean),
       },
       {
         onSuccess: () => {

@@ -1,5 +1,7 @@
 import React, { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
+import { HttpTypes } from "@medusajs/types"
+import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { CreateProductVariantSchema } from "./constants"
@@ -11,8 +13,6 @@ import {
   createDataGridPriceColumns,
   DataGrid,
 } from "../../../../../components/data-grid"
-import { HttpTypes } from "@medusajs/types"
-import { useTranslation } from "react-i18next"
 
 type PricingTabProps = {
   form: UseFormReturn<z.infer<typeof CreateProductVariantSchema>>
@@ -38,7 +38,7 @@ function PricingTab({ form }: PricingTabProps) {
   return (
     <DataGrid
       columns={columns}
-      data={[variant]} // TODO: memo
+      data={[variant]}
       state={form}
       onEditingChange={(editing) => setCloseOnEscape(!editing)}
     />
