@@ -1,20 +1,20 @@
-import { asValue } from "awilix"
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
 } from "@medusajs/utils"
+import { asValue } from "awilix"
 import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
+import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
+import { configLoaderOverride } from "./medusa-test-runner-utils/config"
 import {
   initDb,
   migrateDatabase,
   syncLinks,
 } from "./medusa-test-runner-utils/use-db"
-import { configLoaderOverride } from "./medusa-test-runner-utils/config"
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
-import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -30,7 +30,10 @@ export const dbTestUtilFactory = (): any => ({
   pgConnection_: null,
 
   create: async function (dbName: string) {
-    await createDatabase({ databaseName: dbName }, pgGodCredentials)
+    await createDatabase(
+      { databaseName: dbName, errorIfExist: false },
+      pgGodCredentials
+    )
   },
 
   teardown: async function ({ schema }: { schema?: string } = {}) {

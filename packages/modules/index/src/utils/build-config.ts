@@ -9,12 +9,12 @@ import {
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
 } from "@medusajs/types"
-import { Kind, ObjectTypeDefinitionNode } from "graphql/index"
 import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
   schemaObjectRepresentationPropertiesToOmit,
 } from "@types"
+import { Kind, ObjectTypeDefinitionNode } from "graphql/index"
 
 export const CustomDirectives = {
   Listeners: {
@@ -40,34 +40,22 @@ function extractNameFromAlias(
   return names[0]
 }
 
-function retrieveAliasForEntity(
-  entityName: string,
-  serviceName: string,
-  aliases
-) {
-  aliases = Array.isArray(aliases) ? aliases : [aliases]
+function retrieveAliasForEntity(entityName: string, aliases) {
+  aliases = aliases ? (Array.isArray(aliases) ? aliases : [aliases]) : []
 
-  aliases = aliases.filter(Boolean)
+  for (const alias of aliases) {
+    const names = Array.isArray(alias.name) ? alias.name : [alias.name]
 
-  aliases = aliases
-    .filter(Boolean)
-    .map((alias) => {
-      const names = Array.isArray(alias?.name) ? alias?.name : [alias?.name]
-      return names?.map((name) => ({
-        name,
-        entity: alias?.entity,
-        args: alias?.args,
-      }))
-    })
-    .flat() as JoinerServiceConfigAlias[]
+    if (alias.entity === entityName) {
+      return names[0]
+    }
 
-  let alias = aliases.find((alias) => {
-    const curEntity = alias?.entity || alias?.name
-    return curEntity && curEntity.toLowerCase() === entityName.toLowerCase()
-  })
-  alias = alias?.name
-
-  return alias
+    for (const name of names) {
+      if (name.toLowerCase() === entityName.toLowerCase()) {
+        return name
+      }
+    }
+  }
 }
 
 function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
@@ -96,11 +84,7 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
     }
 
     if (relatedModule && moduleAliases) {
-      alias = retrieveAliasForEntity(
-        entityName,
-        moduleJoinerConfig.serviceName,
-        moduleJoinerConfig.alias
-      )
+      alias = retrieveAliasForEntity(entityName, moduleJoinerConfig.alias)
     }
 
     if (relatedModule) {
@@ -114,7 +98,7 @@ function retrieveModuleAndAlias(entityName, moduleJoinerConfigs) {
 
   if (!alias) {
     throw new Error(
-      `CatalogModule error, the module ${relatedModule?.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
+      `Index Module error, the module ${relatedModule?.serviceName} has a schema but does not have any alias for the entity ${entityName}. Please add an alias to the module configuration and the entity it correspond to in the args under the entity property.`
     )
   }
 
@@ -178,13 +162,13 @@ function retrieveLinkModuleAndAlias({
 
       if (!linkName) {
         throw new Error(
-          `CatalogModule error, unable to retrieve the link module name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the extend relationship service name is set correctly`
+          `Index Module error, unable to retrieve the link module name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the extend relationship service name is set correctly`
         )
       }
 
       if (!linkModuleJoinerConfig.alias?.[0]?.entity) {
         throw new Error(
-          `CatalogModule error, unable to retrieve the link module entity name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the link module alias has an entity property in the args.`
+          `Index Module error, unable to retrieve the link module entity name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the link module alias has an entity property in the args.`
         )
       }
 
@@ -208,7 +192,7 @@ function retrieveLinkModuleAndAlias({
 
         if (!foreignModuleConfig.schema) {
           throw new Error(
-            `CatalogModule error, unable to retrieve the intermediate entity name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the foreign module ${foreignModuleConfig.serviceName} has a schema.`
+            `Index Module error, unable to retrieve the intermediate entity name for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName}. Please be sure that the foreign module ${foreignModuleConfig.serviceName} has a schema.`
           )
         }
 
@@ -251,7 +235,7 @@ function retrieveLinkModuleAndAlias({
 
         if (foundCount !== 1) {
           throw new Error(
-            `CatalogModule error, unable to retrieve the intermediate entities for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName} between ${foreignEntity} and ${intermediateEntityName}. Multiple paths or no path found. Please check your schema in ${foreignModuleConfig.serviceName}`
+            `Index Module error, unable to retrieve the intermediate entities for the services ${primaryModuleConfig.serviceName} - ${foreignModuleConfig.serviceName} between ${foreignEntity} and ${intermediateEntityName}. Multiple paths or no path found. Please check your schema in ${foreignModuleConfig.serviceName}`
           )
         }
 
@@ -274,7 +258,7 @@ function retrieveLinkModuleAndAlias({
   if (!linkModulesMetadata.length) {
     // TODO: change to use the logger
     console.warn(
-      `CatalogModule warning, unable to retrieve the link module that correspond to the entities ${primaryEntity} - ${foreignEntity}.`
+      `Index Module warning, unable to retrieve the link module that correspond to the entities ${primaryEntity} - ${foreignEntity}.`
     )
   }
 
@@ -372,7 +356,7 @@ function processEntity(
       ],
     })
     throw new Error(
-      `CatalogModule error, unable to retrieve the module that corresponds to the entity ${entityName}.\nPlease add the entity to the module schema or add an alias to the joiner config like the example below:\n${example}`
+      `Index Module error, unable to retrieve the module that corresponds to the entity ${entityName}.\nPlease add the entity to the module schema or add an alias to the joiner config like the example below:\n${example}`
     )
   }
 
