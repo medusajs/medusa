@@ -332,8 +332,8 @@ export class QueryBuilder {
         const knex = this.knex
         subQuery
           .select(`${alias}.id`, `${alias}.data`)
-          .from("catalog AS " + alias)
-          .join(`catalog_relation AS ${alias}_ref`, function () {
+          .from("index_data AS " + alias)
+          .join(`index_relation AS ${alias}_ref`, function () {
             this.on(
               `${alias}_ref.pivot`,
               "=",
@@ -488,7 +488,7 @@ export class QueryBuilder {
 
     queryBuilder.select(selectParts)
 
-    queryBuilder.from(`catalog AS ${rootEntity}0`)
+    queryBuilder.from(`index_data AS ${rootEntity}0`)
 
     joinParts.forEach((joinPart) => {
       queryBuilder.joinRaw(joinPart)

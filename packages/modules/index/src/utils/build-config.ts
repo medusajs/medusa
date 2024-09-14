@@ -696,7 +696,7 @@ function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
 /**
  * This util build an internal representation object from the provided schema.
  * It will resolve all modules, fields, link module representation to build
- * the appropriate representation for the catalog module.
+ * the appropriate representation for the index module.
  *
  * This representation will be used to re construct the expected output object from a search
  * but can also be used for anything since the relation tree is available through ref.

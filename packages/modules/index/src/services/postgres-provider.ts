@@ -5,15 +5,15 @@ import {
   Subscriber,
 } from "@medusajs/types"
 import {
+  MikroOrmBaseRepository as BaseRepository,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   MedusaContext,
-  MikroOrmBaseRepository as BaseRepository,
+  isDefined,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
-import { Catalog, CatalogRelation } from "@models"
+import { IndexData, IndexRelation } from "@models"
 import {
   EntityNameModuleConfigMap,
   IndexModuleOptions,
@@ -22,7 +22,7 @@ import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
 } from "@types"
-import { createPartitions, QueryBuilder } from "../utils"
+import { QueryBuilder, createPartitions } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -87,7 +87,7 @@ export class PostgresProvider {
         ),
       ].map(
         (field) =>
-          "ALTER TABLE catalog ADD IF NOT EXISTS " +
+          "ALTER TABLE index_data ADD IF NOT EXISTS " +
           field +
           " text GENERATED ALWAYS AS (NEW.data->>'" +
           field +
@@ -328,7 +328,7 @@ export class PostgresProvider {
   }
 
   /**
-   * Create the catalog entry and the catalog relation entry when this event is emitted.
+   * Create the index entry and the index relation entry when this event is emitted.
    * @param entity
    * @param data
    * @param schemaEntityObjectRepresentation
@@ -353,8 +353,8 @@ export class PostgresProvider {
     const { transactionManager: em } = sharedContext as {
       transactionManager: SqlEntityManager
     }
-    const catalogRepository = em.getRepository(Catalog)
-    const catalogRelationRepository = em.getRepository(CatalogRelation)
+    const indexRepository = em.getRepository(IndexData)
+    const indexRelationRepository = em.getRepository(IndexRelation)
 
     const {
       data: data_,
@@ -363,8 +363,8 @@ export class PostgresProvider {
     } = PostgresProvider.parseData(data, schemaEntityObjectRepresentation)
 
     /**
-     * Loop through the data and create catalog entries for each entity as well as the
-     * catalog relation entries if the entity has parents
+     * Loop through the data and create index entries for each entity as well as the
+     * index relation entries if the entity has parents
      */
 
     for (const entityData of data_) {
@@ -377,14 +377,14 @@ export class PostgresProvider {
         return acc
       }, {}) as TData
 
-      await catalogRepository.upsert({
+      await indexRepository.upsert({
         id: cleanedEntityData.id,
         name: entity,
         data: cleanedEntityData,
       })
 
       /**
-       * Retrieve the parents to attach it to the catalog entry.
+       * Retrieve the parents to attach it to the index entry.
        */
 
       for (const [parentEntity, parentProperties] of Object.entries(
@@ -402,27 +402,27 @@ export class PostgresProvider {
           : [parentData]
 
         for (const parentData_ of parentDataCollection) {
-          await catalogRepository.upsert({
+          await indexRepository.upsert({
             id: (parentData_ as any).id,
             name: parentEntity,
             data: parentData_,
           })
 
-          const parentCatalogRelationEntry = catalogRelationRepository.create({
+          const parentIndexRelationEntry = indexRelationRepository.create({
             parent_id: (parentData_ as any).id,
             parent_name: parentEntity,
             child_id: cleanedEntityData.id,
             child_name: entity,
             pivot: `${parentEntity}-${entity}`,
           })
-          catalogRelationRepository.persist(parentCatalogRelationEntry)
+          indexRelationRepository.persist(parentIndexRelationEntry)
         }
       }
     }
   }
 
   /**
-   * Update the catalog entry when this event is emitted.
+   * Update the index entry when this event is emitted.
    * @param entity
    * @param data
    * @param schemaEntityObjectRepresentation
@@ -447,14 +447,14 @@ export class PostgresProvider {
     const { transactionManager: em } = sharedContext as {
       transactionManager: SqlEntityManager
     }
-    const catalogRepository = em.getRepository(Catalog)
+    const indexRepository = em.getRepository(IndexData)
 
     const { data: data_, entityProperties } = PostgresProvider.parseData(
       data,
       schemaEntityObjectRepresentation
     )
 
-    await catalogRepository.upsertMany(
+    await indexRepository.upsertMany(
       data_.map((entityData) => {
         return {
           id: entityData.id,
@@ -469,7 +469,7 @@ export class PostgresProvider {
   }
 
   /**
-   * Delete the catalog entry when this event is emitted.
+   * Delete the index entry when this event is emitted.
    * @param entity
    * @param data
    * @param schemaEntityObjectRepresentation
@@ -494,8 +494,8 @@ export class PostgresProvider {
     const { transactionManager: em } = sharedContext as {
       transactionManager: SqlEntityManager
     }
-    const catalogRepository = em.getRepository(Catalog)
-    const catalogRelationRepository = em.getRepository(CatalogRelation)
+    const indexRepository = em.getRepository(IndexData)
+    const indexRelationRepository = em.getRepository(IndexRelation)
 
     const { data: data_ } = PostgresProvider.parseData(
       data,
@@ -504,12 +504,12 @@ export class PostgresProvider {
 
     const ids = data_.map((entityData) => entityData.id)
 
-    await catalogRepository.nativeDelete({
+    await indexRepository.nativeDelete({
       id: { $in: ids },
       name: entity,
     })
 
-    await catalogRelationRepository.nativeDelete({
+    await indexRelationRepository.nativeDelete({
       $or: [
         {
           parent_id: { $in: ids },
@@ -548,8 +548,8 @@ export class PostgresProvider {
     const { transactionManager: em } = sharedContext as {
       transactionManager: SqlEntityManager
     }
-    const catalogRepository = em.getRepository(Catalog)
-    const catalogRelationRepository = em.getRepository(CatalogRelation)
+    const indexRepository = em.getRepository(IndexData)
+    const indexRelationRepository = em.getRepository(IndexRelation)
 
     const { data: data_, entityProperties } = PostgresProvider.parseData(
       data,
@@ -610,17 +610,17 @@ export class PostgresProvider {
         return acc
       }, {}) as TData
 
-      await catalogRepository.upsert({
+      await indexRepository.upsert({
         id: cleanedEntityData.id,
         name: entity,
         data: cleanedEntityData,
       })
 
       /**
-       * Create the catalog relation entries for the parent entity and the child entity
+       * Create the index relation entries for the parent entity and the child entity
        */
 
-      const parentCatalogRelationEntry = catalogRelationRepository.create({
+      const parentIndexRelationEntry = indexRelationRepository.create({
         parent_id: entityData[parentPropertyId] as string,
         parent_name: parentEntityName,
         child_id: cleanedEntityData.id,
@@ -628,7 +628,7 @@ export class PostgresProvider {
         pivot: `${parentEntityName}-${entity}`,
       })
 
-      const childCatalogRelationEntry = catalogRelationRepository.create({
+      const childIndexRelationEntry = indexRelationRepository.create({
         parent_id: cleanedEntityData.id,
         parent_name: entity,
         child_id: entityData[childPropertyId] as string,
@@ -636,9 +636,9 @@ export class PostgresProvider {
         pivot: `${entity}-${childEntityName}`,
       })
 
-      catalogRelationRepository.persist([
-        parentCatalogRelationEntry,
-        childCatalogRelationEntry,
+      indexRelationRepository.persist([
+        parentIndexRelationEntry,
+        childIndexRelationEntry,
       ])
     }
   }
@@ -669,8 +669,8 @@ export class PostgresProvider {
     const { transactionManager: em } = sharedContext as {
       transactionManager: SqlEntityManager
     }
-    const catalogRepository = em.getRepository(Catalog)
-    const catalogRelationRepository = em.getRepository(CatalogRelation)
+    const indexRepository = em.getRepository(IndexData)
+    const indexRelationRepository = em.getRepository(IndexRelation)
 
     const { data: data_ } = PostgresProvider.parseData(
       data,
@@ -679,12 +679,12 @@ export class PostgresProvider {
 
     const ids = data_.map((entityData) => entityData.id)
 
-    await catalogRepository.nativeDelete({
+    await indexRepository.nativeDelete({
       id: { $in: ids },
       name: entity,
     })
 
-    await catalogRelationRepository.nativeDelete({
+    await indexRelationRepository.nativeDelete({
       $or: [
         {
           parent_id: { $in: ids },

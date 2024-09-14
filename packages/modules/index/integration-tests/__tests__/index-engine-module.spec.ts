@@ -1,22 +1,22 @@
+import {
+  MedusaAppLoader,
+  configLoader,
+  container,
+  logger,
+} from "@medusajs/framework"
+import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
 import { EventBusTypes } from "@medusajs/types"
-import { Catalog, CatalogRelation } from "@models"
-import { EventBusServiceMock } from "../__fixtures__"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
 } from "@medusajs/utils"
-import {
-  configLoader,
-  container,
-  logger,
-  MedusaAppLoader,
-} from "@medusajs/framework"
-import * as path from "path"
-import { asValue } from "awilix"
-import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
 import { EntityManager } from "@mikro-orm/postgresql"
+import { IndexData, IndexRelation } from "@models"
+import { asValue } from "awilix"
 import { dbTestUtilFactory } from "medusa-test-utils"
 import { initDb } from "medusa-test-utils/dist/medusa-test-runner-utils/use-db"
+import * as path from "path"
+import { EventBusServiceMock } from "../__fixtures__"
 import { dbName } from "../__fixtures__/medusa-config"
 
 const eventBusMock = new EventBusServiceMock()
@@ -234,65 +234,66 @@ describe("IndexModuleService", function () {
 
     afterEach(afterEach_)
 
-    it("should create the corresponding catalog entries and catalog relation entries", async function () {
+    it("should create the corresponding index entries and index relation entries", async function () {
       expect(remoteQueryMock).toHaveBeenCalledTimes(6)
 
       /**
-       * Validate all catalog entries and catalog relation entries
+       * Validate all index entries and index relation entries
        */
 
-      const catalogEntries: Catalog[] = await manager.find(Catalog, {})
+      const indexEntries: IndexData[] = await manager.find(IndexData, {})
 
-      const productCatalogEntries = catalogEntries.filter((entry) => {
+      const productIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "Product"
       })
 
-      expect(productCatalogEntries).toHaveLength(2)
+      expect(productIndexEntries).toHaveLength(2)
 
-      const variantCatalogEntries = catalogEntries.filter((entry) => {
+      const variantIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "ProductVariant"
       })
 
-      expect(variantCatalogEntries).toHaveLength(1)
+      expect(variantIndexEntries).toHaveLength(1)
 
-      const priceSetCatalogEntries = catalogEntries.filter((entry) => {
+      const priceSetIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "PriceSet"
       })
 
-      expect(priceSetCatalogEntries).toHaveLength(1)
+      expect(priceSetIndexEntries).toHaveLength(1)
 
-      const priceCatalogEntries = catalogEntries.filter((entry) => {
+      const priceIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "Price"
       })
 
-      expect(priceCatalogEntries).toHaveLength(1)
+      expect(priceIndexEntries).toHaveLength(1)
 
-      const linkCatalogEntries = catalogEntries.filter((entry) => {
+      const linkIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "LinkProductVariantPriceSet"
       })
 
-      expect(linkCatalogEntries).toHaveLength(1)
+      expect(linkIndexEntries).toHaveLength(1)
 
-      const catalogRelationEntries: CatalogRelation[] = await manager.find(
-        CatalogRelation,
+      const indexRelationEntries: IndexRelation[] = await manager.find(
+        IndexRelation,
         {}
       )
 
-      expect(catalogRelationEntries).toHaveLength(4)
+      expect(indexRelationEntries).toHaveLength(4)
 
-      const productVariantCatalogRelationEntries =
-        catalogRelationEntries.filter((entry) => {
+      const productVariantIndexRelationEntries = indexRelationEntries.filter(
+        (entry) => {
           return (
             entry.parent_id === productId &&
             entry.parent_name === "Product" &&
             entry.child_id === variantId &&
             entry.child_name === "ProductVariant"
           )
-        })
+        }
+      )
 
-      expect(productVariantCatalogRelationEntries).toHaveLength(1)
+      expect(productVariantIndexRelationEntries).toHaveLength(1)
 
-      const variantLinkCatalogRelationEntries = catalogRelationEntries.filter(
+      const variantLinkIndexRelationEntries = indexRelationEntries.filter(
         (entry) => {
           return (
             entry.parent_id === variantId &&
@@ -303,9 +304,9 @@ describe("IndexModuleService", function () {
         }
       )
 
-      expect(variantLinkCatalogRelationEntries).toHaveLength(1)
+      expect(variantLinkIndexRelationEntries).toHaveLength(1)
 
-      const linkPriceSetCatalogRelationEntries = catalogRelationEntries.filter(
+      const linkPriceSetIndexRelationEntries = indexRelationEntries.filter(
         (entry) => {
           return (
             entry.parent_id === linkId &&
@@ -316,9 +317,9 @@ describe("IndexModuleService", function () {
         }
       )
 
-      expect(linkPriceSetCatalogRelationEntries).toHaveLength(1)
+      expect(linkPriceSetIndexRelationEntries).toHaveLength(1)
 
-      const priceSetPriceCatalogRelationEntries = catalogRelationEntries.filter(
+      const priceSetPriceIndexRelationEntries = indexRelationEntries.filter(
         (entry) => {
           return (
             entry.parent_id === priceSetId &&
@@ -329,7 +330,7 @@ describe("IndexModuleService", function () {
         }
       )
 
-      expect(priceSetPriceCatalogRelationEntries).toHaveLength(1)
+      expect(priceSetPriceIndexRelationEntries).toHaveLength(1)
     })
   })
 
@@ -393,70 +394,71 @@ describe("IndexModuleService", function () {
 
     afterEach(afterEach_)
 
-    it("should create the corresponding catalog entries and catalog relation entries", async function () {
+    it("should create the corresponding index entries and index relation entries", async function () {
       expect(remoteQueryMock).toHaveBeenCalledTimes(6)
 
       /**
-       * Validate all catalog entries and catalog relation entries
+       * Validate all index entries and index relation entries
        */
 
-      const catalogEntries: Catalog[] = await manager.find(Catalog, {})
+      const indexEntries: IndexData[] = await manager.find(IndexData, {})
 
-      const productCatalogEntries = catalogEntries.filter((entry) => {
+      const productIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "Product"
       })
 
-      expect(productCatalogEntries).toHaveLength(2)
-      expect(productCatalogEntries[0].id).toEqual(productId)
+      expect(productIndexEntries).toHaveLength(2)
+      expect(productIndexEntries[0].id).toEqual(productId)
 
-      const variantCatalogEntries = catalogEntries.filter((entry) => {
+      const variantIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "ProductVariant"
       })
 
-      expect(variantCatalogEntries).toHaveLength(1)
-      expect(variantCatalogEntries[0].id).toEqual(variantId)
+      expect(variantIndexEntries).toHaveLength(1)
+      expect(variantIndexEntries[0].id).toEqual(variantId)
 
-      const priceSetCatalogEntries = catalogEntries.filter((entry) => {
+      const priceSetIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "PriceSet"
       })
 
-      expect(priceSetCatalogEntries).toHaveLength(1)
-      expect(priceSetCatalogEntries[0].id).toEqual(priceSetId)
+      expect(priceSetIndexEntries).toHaveLength(1)
+      expect(priceSetIndexEntries[0].id).toEqual(priceSetId)
 
-      const priceCatalogEntries = catalogEntries.filter((entry) => {
+      const priceIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "Price"
       })
 
-      expect(priceCatalogEntries).toHaveLength(1)
-      expect(priceCatalogEntries[0].id).toEqual(priceId)
+      expect(priceIndexEntries).toHaveLength(1)
+      expect(priceIndexEntries[0].id).toEqual(priceId)
 
-      const linkCatalogEntries = catalogEntries.filter((entry) => {
+      const linkIndexEntries = indexEntries.filter((entry) => {
         return entry.name === "LinkProductVariantPriceSet"
       })
 
-      expect(linkCatalogEntries).toHaveLength(1)
-      expect(linkCatalogEntries[0].id).toEqual(linkId)
+      expect(linkIndexEntries).toHaveLength(1)
+      expect(linkIndexEntries[0].id).toEqual(linkId)
 
-      const catalogRelationEntries: CatalogRelation[] = await manager.find(
-        CatalogRelation,
+      const indexRelationEntries: IndexRelation[] = await manager.find(
+        IndexRelation,
         {}
       )
 
-      expect(catalogRelationEntries).toHaveLength(4)
+      expect(indexRelationEntries).toHaveLength(4)
 
-      const productVariantCatalogRelationEntries =
-        catalogRelationEntries.filter((entry) => {
+      const productVariantIndexRelationEntries = indexRelationEntries.filter(
+        (entry) => {
           return (
             entry.parent_id === productId &&
             entry.parent_name === "Product" &&
             entry.child_id === variantId &&
             entry.child_name === "ProductVariant"
           )
-        })
+        }
+      )
 
-      expect(productVariantCatalogRelationEntries).toHaveLength(1)
+      expect(productVariantIndexRelationEntries).toHaveLength(1)
 
-      const variantLinkCatalogRelationEntries = catalogRelationEntries.filter(
+      const variantLinkIndexRelationEntries = indexRelationEntries.filter(
         (entry) => {
           return (
             entry.parent_id === variantId &&
@@ -467,9 +469,9 @@ describe("IndexModuleService", function () {
         }
       )
 
-      expect(variantLinkCatalogRelationEntries).toHaveLength(1)
+      expect(variantLinkIndexRelationEntries).toHaveLength(1)
 
-      const linkPriceSetCatalogRelationEntries = catalogRelationEntries.filter(
+      const linkPriceSetIndexRelationEntries = indexRelationEntries.filter(
         (entry) => {
           return (
             entry.parent_id === linkId &&
@@ -480,9 +482,9 @@ describe("IndexModuleService", function () {
         }
       )
 
-      expect(linkPriceSetCatalogRelationEntries).toHaveLength(1)
+      expect(linkPriceSetIndexRelationEntries).toHaveLength(1)
 
-      const priceSetPriceCatalogRelationEntries = catalogRelationEntries.filter(
+      const priceSetPriceIndexRelationEntries = indexRelationEntries.filter(
         (entry) => {
           return (
             entry.parent_id === priceSetId &&
@@ -493,7 +495,7 @@ describe("IndexModuleService", function () {
         }
       )
 
-      expect(priceSetPriceCatalogRelationEntries).toHaveLength(1)
+      expect(priceSetPriceIndexRelationEntries).toHaveLength(1)
     })
   })
 
@@ -501,8 +503,8 @@ describe("IndexModuleService", function () {
     let manager
 
     const updateData = async (manager) => {
-      const catalogRepository = manager.getRepository(Catalog)
-      await catalogRepository.upsertMany([
+      const indexRepository = manager.getRepository(IndexData)
+      await indexRepository.upsertMany([
         {
           id: productId,
           name: "Product",
@@ -577,20 +579,20 @@ describe("IndexModuleService", function () {
 
     afterEach(afterEach_)
 
-    it("should update the corresponding catalog entries", async () => {
+    it("should update the corresponding index entries", async () => {
       expect(remoteQueryMock).toHaveBeenCalledTimes(4)
 
-      const updatedCatalogEntries = await manager.find(Catalog, {})
+      const updatedIndexEntries = await manager.find(IndexData, {})
 
-      expect(updatedCatalogEntries).toHaveLength(2)
+      expect(updatedIndexEntries).toHaveLength(2)
 
-      const productEntry = updatedCatalogEntries.find((entry) => {
+      const productEntry = updatedIndexEntries.find((entry) => {
         return entry.name === "Product" && entry.id === productId
       })
 
       expect(productEntry?.data?.title).toEqual("updated Title")
 
-      const variantEntry = updatedCatalogEntries.find((entry) => {
+      const variantEntry = updatedIndexEntries.find((entry) => {
         return entry.name === "ProductVariant" && entry.id === variantId
       })
 
@@ -689,30 +691,30 @@ describe("IndexModuleService", function () {
 
     afterEach(afterEach_)
 
-    it("should consume all deleted events and delete the catalog entries", async () => {
+    it("should consume all deleted events and delete the index entries", async () => {
       expect(remoteQueryMock).toHaveBeenCalledTimes(7)
 
-      const catalogEntries = await manager.find(Catalog, {})
-      const catalogRelationEntries = await manager.find(CatalogRelation, {})
+      const indexEntries = await manager.find(IndexData, {})
+      const indexRelationEntries = await manager.find(IndexRelation, {})
 
-      expect(catalogEntries).toHaveLength(3)
-      expect(catalogRelationEntries).toHaveLength(2)
+      expect(indexEntries).toHaveLength(3)
+      expect(indexRelationEntries).toHaveLength(2)
 
-      const linkCatalogEntry = catalogEntries.find((entry) => {
+      const linkIndexEntry = indexEntries.find((entry) => {
         return (
           entry.name === "LinkProductVariantPriceSet" && entry.id === linkId
         )
       })!
 
-      const priceSetCatalogEntry = catalogEntries.find((entry) => {
+      const priceSetIndexEntry = indexEntries.find((entry) => {
         return entry.name === "PriceSet" && entry.id === priceSetId
       })!
 
-      const priceCatalogEntry = catalogEntries.find((entry) => {
+      const priceIndexEntry = indexEntries.find((entry) => {
         return entry.name === "Price" && entry.id === priceId
       })!
 
-      const linkPriceSetCatalogRelationEntry = catalogRelationEntries.find(
+      const linkPriceSetIndexRelationEntry = indexRelationEntries.find(
         (entry) => {
           return (
             entry.parent_id === linkId &&
@@ -723,12 +725,10 @@ describe("IndexModuleService", function () {
         }
       )!
 
-      expect(linkPriceSetCatalogRelationEntry.parent).toEqual(linkCatalogEntry)
-      expect(linkPriceSetCatalogRelationEntry.child).toEqual(
-        priceSetCatalogEntry
-      )
+      expect(linkPriceSetIndexRelationEntry.parent).toEqual(linkIndexEntry)
+      expect(linkPriceSetIndexRelationEntry.child).toEqual(priceSetIndexEntry)
 
-      const priceSetPriceCatalogRelationEntry = catalogRelationEntries.find(
+      const priceSetPriceIndexRelationEntry = indexRelationEntries.find(
         (entry) => {
           return (
             entry.parent_id === priceSetId &&
@@ -739,10 +739,8 @@ describe("IndexModuleService", function () {
         }
       )!
 
-      expect(priceSetPriceCatalogRelationEntry.parent).toEqual(
-        priceSetCatalogEntry
-      )
-      expect(priceSetPriceCatalogRelationEntry.child).toEqual(priceCatalogEntry)
+      expect(priceSetPriceIndexRelationEntry.parent).toEqual(priceSetIndexEntry)
+      expect(priceSetPriceIndexRelationEntry.child).toEqual(priceIndexEntry)
     })
   })
 })

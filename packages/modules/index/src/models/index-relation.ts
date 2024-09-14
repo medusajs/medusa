@@ -7,7 +7,7 @@ import {
   Property,
   Ref,
 } from "@mikro-orm/core"
-import { Catalog } from "./catalog"
+import { IndexData } from "./index-data"
 
 type OptionalRelations =
   | "parent"
@@ -18,13 +18,13 @@ type OptionalRelations =
   | "child_name"
 
 @Entity({
-  tableName: "catalog_relation",
+  tableName: "index_relation",
 })
 @Index({
-  name: "IDX_catalog_relation_child_id",
+  name: "IDX_index_relation_child_id",
   properties: ["child_id"],
 })
-export class CatalogRelation {
+export class IndexRelation {
   [OptionalProps]: OptionalRelations
 
   @PrimaryKey({ columnType: "integer", autoincrement: true })
@@ -49,16 +49,16 @@ export class CatalogRelation {
   child_name?: string
 
   @ManyToOne({
-    entity: () => Catalog,
+    entity: () => IndexData,
     onDelete: "cascade",
     persist: false,
   })
-  parent?: Ref<Catalog>
+  parent?: Ref<IndexData>
 
   @ManyToOne({
-    entity: () => Catalog,
+    entity: () => IndexData,
     onDelete: "cascade",
     persist: false,
   })
-  child?: Ref<Catalog>
+  child?: Ref<IndexData>
 }

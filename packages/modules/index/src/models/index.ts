@@ -1,2 +1,2 @@
-export * from "./catalog"
-export * from "./catalog-relation"
+export * from "./index-data"
+export * from "./index-relation"

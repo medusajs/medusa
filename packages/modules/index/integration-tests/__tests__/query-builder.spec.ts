@@ -1,23 +1,23 @@
-import { Catalog, CatalogRelation } from "@models"
-import { IndexTypes } from "@medusajs/types"
-import { dbTestUtilFactory } from "medusa-test-utils"
-import { initDb } from "medusa-test-utils/dist/medusa-test-runner-utils/use-db"
-import { dbName } from "../__fixtures__/medusa-config"
 import {
+  MedusaAppLoader,
   configLoader,
   container,
   logger,
-  MedusaAppLoader,
 } from "@medusajs/framework"
-import path from "path"
+import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
+import { IndexTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
 } from "@medusajs/utils"
-import { asValue } from "awilix"
-import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
-import { EventBusServiceMock } from "../__fixtures__"
 import { EntityManager } from "@mikro-orm/postgresql"
+import { IndexData, IndexRelation } from "@models"
+import { asValue } from "awilix"
+import { dbTestUtilFactory } from "medusa-test-utils"
+import { initDb } from "medusa-test-utils/dist/medusa-test-runner-utils/use-db"
+import path from "path"
+import { EventBusServiceMock } from "../__fixtures__"
+import { dbName } from "../__fixtures__/medusa-config"
 
 const eventBusMock = new EventBusServiceMock()
 const remoteQueryMock = jest.fn()
@@ -127,7 +127,7 @@ describe("SearchEngineModuleService query", function () {
         .container_.manager as EntityManager
     ).fork()
 
-    const catalogRepository = manager.getRepository(Catalog)
+    const indexRepository = manager.getRepository(IndexData)
 
     await manager.persistAndFlush(
       [
@@ -216,10 +216,10 @@ describe("SearchEngineModuleService query", function () {
             amount: 10,
           },
         },
-      ].map((data) => catalogRepository.create(data))
+      ].map((data) => indexRepository.create(data))
     )
 
-    const catalogRelationRepository = manager.getRepository(CatalogRelation)
+    const indexRelationRepository = manager.getRepository(IndexRelation)
 
     await manager.persistAndFlush(
       [
@@ -279,7 +279,7 @@ describe("SearchEngineModuleService query", function () {
           child_name: "Price",
           pivot: "PriceSet-Price",
         },
-      ].map((data) => catalogRelationRepository.create(data))
+      ].map((data) => indexRelationRepository.create(data))
     )
   })
 
