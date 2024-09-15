@@ -30,6 +30,11 @@ export interface AdminCreateProductVariantPrice {
   rules?: { region_id: string } | null
 }
 
+export interface AdminCreateProductVariantInventoryKit {
+  inventory_item_id: string
+  required_quantity: string
+}
+
 export interface AdminCreateProductVariant {
   title: string
   sku?: string
@@ -49,6 +54,7 @@ export interface AdminCreateProductVariant {
   material?: string
   metadata?: Record<string, unknown>
   prices: AdminCreateProductVariantPrice[]
+  inventory_items?: AdminCreateProductVariantInventoryKit[]
   options?: Record<string, string>
 }
 

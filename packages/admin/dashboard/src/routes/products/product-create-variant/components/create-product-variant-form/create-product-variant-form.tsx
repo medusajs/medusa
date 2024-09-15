@@ -209,6 +209,18 @@ export const CreateProductVariantForm = ({
             return ret
           })
           .filter(Boolean),
+        inventory_kit: data
+          .inventory!.map((i) => {
+            if (!i.required_quantity || !i.inventory_item_id) {
+              return false
+            }
+
+            return {
+              ...i,
+              required_quantity: castNumber(i.required_quantity),
+            }
+          })
+          .filter(Boolean),
       },
       {
         onSuccess: () => {
