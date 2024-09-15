@@ -12,12 +12,18 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { useCreateProductVariant } from "../../../../../hooks/api/products"
-import { CreateProductVariantSchema } from "./constants"
+import {
+  CreateProductVariantSchema,
+  CreateVariantDetailsFields,
+  CreateVariantDetailsSchema,
+  CreateVariantPriceFields,
+} from "./constants"
 import DetailsTab from "./details-tab"
 import PricingTab from "./pricing-tab"
 import InventoryKitTab from "./inventory-kit-tab"
-import { castNumber } from "../../../../../lib/cast-number.ts"
+import { castNumber } from "../../../../../lib/cast-number"
 import { useRegions } from "../../../../../hooks/api"
+import { partialFormValidation } from "../../../../../lib/validation"
 
 enum Tab {
   DETAIL = "detail",
@@ -132,8 +138,11 @@ export const CreateProductVariantForm = ({
     for (const tab of tabs) {
       if (tab === Tab.DETAIL) {
         if (
-          // !partialFormValidation(PricingDetailsFields, PricingDetailsSchema)
-          false // TODO
+          !partialFormValidation<z.infer<typeof CreateProductVariantSchema>>(
+            form,
+            CreateVariantDetailsFields,
+            CreateProductVariantSchema
+          )
         ) {
           setTabState((prev) => ({
             ...prev,
@@ -149,8 +158,11 @@ export const CreateProductVariantForm = ({
         }))
       } else if (tab === Tab.PRICE) {
         if (
-          // !partialFormValidation(PricingProductsFields, PricingProductsSchema)
-          false // TODO
+          !partialFormValidation<z.infer<typeof CreateProductVariantSchema>>(
+            form,
+            CreateVariantPriceFields,
+            CreateProductVariantSchema
+          )
         ) {
           setTabState((prev) => ({
             ...prev,
@@ -194,7 +206,7 @@ export const CreateProductVariantForm = ({
         sku,
         allow_backorder,
         manage_inventory,
-        prices: data.prices
+        prices: (data.prices || {})
           .entries(([currencyOrRegion, value]) => {
             const ret: AdminCreateProductVariantPrice = {}
             const amount = castNumber(value)
