@@ -25,8 +25,6 @@ enum Tab {
   INVENTORY = "inventory",
 }
 
-const tabOrder = [Tab.DETAIL, Tab.PRICE, Tab.INVENTORY] as const
-
 type TabState = Record<Tab, ProgressStatus>
 
 const initialTabState: TabState = {
@@ -91,6 +89,14 @@ export const CreateProductVariantForm = ({
   })
 
   const inventoryTabEnabled = isManageInventoryEnabled && isInventoryKitEnabled
+
+  const tabOrder = useMemo(() => {
+    if (inventoryTabEnabled) {
+      return [Tab.DETAIL, Tab.PRICE, Tab.INVENTORY] as const
+    }
+
+    return [Tab.DETAIL, Tab.PRICE] as const
+  }, [inventoryTabEnabled])
 
   useEffect(() => {
     if (isInventoryKitEnabled && inventoryField.fields.length === 0) {
@@ -302,6 +308,7 @@ export const CreateProductVariantForm = ({
                 tab={tab}
                 next={handleNextTab}
                 isLoading={isPending}
+                inventoryTabEnabled={inventoryTabEnabled}
               />
             </div>
           </RouteFocusModal.Footer>
@@ -315,12 +322,21 @@ type PrimaryButtonProps = {
   tab: Tab
   next: (tab: Tab) => void
   isLoading?: boolean
+  inventoryTabEnabled: boolean
 }
 
-const PrimaryButton = ({ tab, next, isLoading }: PrimaryButtonProps) => {
+const PrimaryButton = ({
+  tab,
+  next,
+  isLoading,
+  inventoryTabEnabled,
+}: PrimaryButtonProps) => {
   const { t } = useTranslation()
 
-  if (tab === Tab.INVENTORY) {
+  if (
+    (inventoryTabEnabled && tab === Tab.INVENTORY) ||
+    (!inventoryTabEnabled && tab === Tab.PRICE)
+  ) {
     return (
       <Button
         key="submit-button"
