@@ -53,7 +53,7 @@ medusaIntegrationTestRunner({
               deleteCascade: false,
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -83,7 +83,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               fieldAlias: {
                 currency: {
                   path: "currency_link.currency",
@@ -148,7 +148,7 @@ medusaIntegrationTestRunner({
               deleteCascade: false,
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -178,7 +178,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               fieldAlias: {
                 product_variant: {
                   path: "product_variant_link.product_variant",
@@ -248,7 +248,7 @@ medusaIntegrationTestRunner({
               deleteCascade: true,
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -278,7 +278,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               fieldAlias: {
                 currency: {
                   path: "currency_link.currency",
@@ -342,7 +342,7 @@ medusaIntegrationTestRunner({
               deleteCascade: false,
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -372,7 +372,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               fieldAlias: {
                 currency: {
                   path: "currency_link.currency",
