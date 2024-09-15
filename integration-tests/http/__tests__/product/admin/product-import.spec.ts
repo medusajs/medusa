@@ -781,6 +781,7 @@ medusaIntegrationTestRunner({
               created_at: expect.any(String),
               updated_at: expect.any(String),
             }),
+
             expect.objectContaining({
               id: expect.any(String),
               title: "Test product",
