@@ -127,7 +127,7 @@ medusaIntegrationTestRunner({
             }
           )
         ).rejects.toThrow(
-          `regionRegionPaymentPaymentProviderLink region_id not found: ${regionNoLink.id}`
+          `RegionRegionPaymentPaymentProviderLink region_id not found: ${regionNoLink.id}`
         )
 
         // Only validate the relations with Payment. It doesn't fail because the link didn't return any data
