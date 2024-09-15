@@ -1,4 +1,5 @@
 import { CreateCustomerDTO, MedusaContainer } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 import jwt from "jsonwebtoken"
 

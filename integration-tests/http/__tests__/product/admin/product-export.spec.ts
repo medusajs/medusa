@@ -1,4 +1,5 @@
 import { IEventBusModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import fs from "fs/promises"
 import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
 import path from "path"

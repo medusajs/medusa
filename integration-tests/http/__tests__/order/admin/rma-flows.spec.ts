@@ -1,4 +1,4 @@
-import { ClaimType, RuleOperator } from "@medusajs/utils"
+import { ClaimType, Modules, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,

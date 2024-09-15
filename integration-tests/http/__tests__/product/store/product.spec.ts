@@ -1,5 +1,5 @@
 import { IStoreModuleService } from "@medusajs/types"
-import { ApiKeyType, ProductStatus } from "@medusajs/utils"
+import { ApiKeyType, Modules, ProductStatus } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,

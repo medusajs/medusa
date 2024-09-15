@@ -13,7 +13,7 @@ import {
   OrderChangeDTO,
   OrderDTO,
 } from "@medusajs/types"
-import { ChangeActionType } from "@medusajs/utils"
+import { ChangeActionType, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createOrderFixture, prepareDataFixtures } from "./__fixtures__"
 

@@ -1,4 +1,5 @@
 import { IEventBusModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import FormData from "form-data"
 import fs from "fs/promises"
 import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"

@@ -8,6 +8,7 @@ import {
   deleteOrderChangeWorkflowId,
 } from "@medusajs/core-flows"
 import { IOrderModuleService, OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createOrderFixture, prepareDataFixtures } from "./__fixtures__"
 

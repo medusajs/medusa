@@ -1,6 +1,6 @@
 import { IAuthModuleService } from "@medusajs/types"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {

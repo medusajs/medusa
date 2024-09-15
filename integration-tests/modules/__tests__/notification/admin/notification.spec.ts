@@ -4,7 +4,7 @@ import {
   INotificationModuleService,
   Logger,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)

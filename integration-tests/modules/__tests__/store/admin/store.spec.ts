@@ -1,4 +1,5 @@
 import { IStoreModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 

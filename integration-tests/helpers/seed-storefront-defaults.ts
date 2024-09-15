@@ -4,6 +4,7 @@ import {
   IStoreModuleService,
   MedusaContainer,
 } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 export const seedStorefrontDefaults = async (
   container: MedusaContainer,

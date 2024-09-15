@@ -1,4 +1,5 @@
 import { IFulfillmentModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
