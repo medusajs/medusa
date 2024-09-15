@@ -124,13 +124,13 @@ medusaIntegrationTestRunner({
         expect(link.serviceName).toEqual(linkDefinition.serviceName)
         expect(link.entryPoint).toEqual(linkDefinition.alias[0].name[0])
         expect(linkDefinition).toEqual({
-          serviceName: "productProductVariantRegionRegionLink",
+          serviceName: "ProductProductVariantRegionRegionLink",
           isLink: true,
           alias: [
             {
               name: ["product_variant_region"],
               args: {
-                entity: "LinkProductServiceProductVariantRegionRegion",
+                entity: "LinkProductProductVariantRegionRegion",
               },
             },
           ],
@@ -170,7 +170,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "productProductVariantRegionRegionLink",
+                serviceName: "ProductProductVariantRegionRegionLink",
                 primaryKey: "product_variant_id",
                 foreignKey: "id",
                 alias: "region_link",
@@ -189,7 +189,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "productProductVariantRegionRegionLink",
+                serviceName: "ProductProductVariantRegionRegionLink",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "product_variant_link",
