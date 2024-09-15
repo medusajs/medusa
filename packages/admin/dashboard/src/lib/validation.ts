@@ -61,7 +61,7 @@ export function partialFormValidation<TForm extends FieldValues>(
   form.clearErrors(fields as any)
 
   const values = fields.reduce((acc, key) => {
-    acc[key] = form.getValues(key any)
+    acc[key] = form.getValues(key as any)
     return acc
   }, {} as Record<string, unknown>)
 
