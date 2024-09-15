@@ -1,5 +1,5 @@
 import { IEventBusModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { CommonEvents, Modules } from "@medusajs/utils"
 import FormData from "form-data"
 import fs from "fs/promises"
 import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -10,7 +10,7 @@ import {
 } from "../../../../helpers/create-admin-user"
 import { getProductFixture } from "../../../../helpers/fixtures"
 
-jest.setTimeout(50000)
+jest.setTimeout(5000)
 
 const getUploadReq = (file: { name: string; content: string }) => {
   const form = new FormData()
@@ -127,7 +127,7 @@ medusaIntegrationTestRunner({
       ].forEach((testcase) => {
         it(`should import a previously exported products CSV file ${testcase.name}`, async () => {
           const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-            "notification.notification.created",
+            `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
             eventBus
           )
 
@@ -383,7 +383,7 @@ medusaIntegrationTestRunner({
 
       it("should import product with categories", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-          "notification.notification.created",
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
           eventBus
         )
 
@@ -452,7 +452,7 @@ medusaIntegrationTestRunner({
 
       it("should ignore non-existent fields being present in the CSV that don't start with Product or Variant", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-          "notification.notification.created",
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
           eventBus
         )
 
@@ -502,7 +502,7 @@ medusaIntegrationTestRunner({
 
       it("should fail on non-existent product fields being present in the CSV", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-          "notification.notification.created",
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
           eventBus
         )
 
@@ -552,7 +552,7 @@ medusaIntegrationTestRunner({
 
       it("supports importing the v1 template", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-          "notification.notification.created",
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
           eventBus
         )
 
