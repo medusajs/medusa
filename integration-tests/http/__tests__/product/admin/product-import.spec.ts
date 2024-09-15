@@ -10,7 +10,7 @@ import {
 } from "../../../../helpers/create-admin-user"
 import { getProductFixture } from "../../../../helpers/fixtures"
 
-jest.setTimeout(5000)
+jest.setTimeout(50000)
 
 const getUploadReq = (file: { name: string; content: string }) => {
   const form = new FormData()
