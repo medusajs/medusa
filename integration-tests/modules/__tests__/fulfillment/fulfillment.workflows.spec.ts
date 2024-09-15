@@ -7,7 +7,6 @@ import {
   updateFulfillmentWorkflowId,
 } from "@medusajs/core-flows"
 import { IFulfillmentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   generateCreateFulfillmentData,
@@ -27,7 +26,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        service = appContainer.resolve(ModuleRegistrationName.FULFILLMENT)
+        service = appContainer.resolve(Modules.FULFILLMENT)
       })
 
       describe("createFulfillmentWorkflow", () => {

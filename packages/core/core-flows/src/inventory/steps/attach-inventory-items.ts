@@ -1,7 +1,6 @@
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { InventoryItemDTO } from "@medusajs/types"
 
 export const attachInventoryItemToVariantsStepId =
   "attach-inventory-items-to-variants-step"
@@ -22,10 +21,10 @@ export const attachInventoryItemToVariants = createStep(
     const linkDefinitions = input
       .filter(({ tag }) => !!tag)
       .map(({ inventoryItemId, tag }) => ({
-        productService: {
+        Product: {
           variant_id: tag!,
         },
-        inventoryService: {
+        Inventory: {
           inventory_item_id: inventoryItemId,
         },
       }))

@@ -3,7 +3,7 @@ import {
   IWorkflowEngineService,
   WorkflowOrchestratorRunDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -15,7 +15,7 @@ export const POST = async (
   res: MedusaResponse<HttpTypes.AdminWorkflowRunResponse>
 ) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
-    ModuleRegistrationName.WORKFLOW_ENGINE
+    Modules.WORKFLOW_ENGINE
   )
 
   const { workflow_id } = req.params

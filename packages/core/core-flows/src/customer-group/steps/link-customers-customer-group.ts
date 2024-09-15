@@ -1,5 +1,5 @@
 import { ICustomerModuleService, LinkWorkflowInput } from "@medusajs/types"
-import { ModuleRegistrationName, promiseAll } from "@medusajs/utils"
+import { Modules, promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const linkCustomersToCustomerGroupStepId =
@@ -10,9 +10,7 @@ export const linkCustomersToCustomerGroupStepId =
 export const linkCustomersToCustomerGroupStep = createStep(
   linkCustomersToCustomerGroupStepId,
   async (data: LinkWorkflowInput, { container }) => {
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     const toAdd = (data.add ?? []).map((customerId) => {
       return {
@@ -43,9 +41,7 @@ export const linkCustomersToCustomerGroupStep = createStep(
     if (!prevData) {
       return
     }
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     if (prevData.toAdd.length) {
       await service.removeCustomerFromGroup(prevData.toAdd)

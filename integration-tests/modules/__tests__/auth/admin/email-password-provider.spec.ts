@@ -1,5 +1,4 @@
 import { IAuthModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import Scrypt from "scrypt-kdf"
 import {
@@ -32,7 +31,7 @@ medusaIntegrationTestRunner({
           await Scrypt.kdf(password, { logN: 15, r: 8, p: 1 })
         ).toString("base64")
         const authService: IAuthModuleService = appContainer.resolve(
-          ModuleRegistrationName.AUTH
+          Modules.AUTH
         )
 
         await authService.createAuthIdentities({
@@ -67,7 +66,7 @@ medusaIntegrationTestRunner({
           await Scrypt.kdf(password, { logN: 15, r: 8, p: 1 })
         ).toString("base64")
         const authService: IAuthModuleService = appContainer.resolve(
-          ModuleRegistrationName.AUTH
+          Modules.AUTH
         )
 
         await authService.createAuthIdentities({

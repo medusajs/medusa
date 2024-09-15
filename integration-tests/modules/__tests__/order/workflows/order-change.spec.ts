@@ -8,7 +8,6 @@ import {
   deleteOrderChangeWorkflowId,
 } from "@medusajs/core-flows"
 import { IOrderModuleService, OrderChangeDTO, OrderDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createOrderFixture, prepareDataFixtures } from "./__fixtures__"
 
@@ -100,7 +99,7 @@ medusaIntegrationTestRunner({
           })
 
           orderChange = result
-          service = container.resolve(ModuleRegistrationName.ORDER)
+          service = container.resolve(Modules.ORDER)
         })
 
         it("should successfully cancel an order change", async () => {
@@ -179,7 +178,7 @@ medusaIntegrationTestRunner({
           })
 
           orderChange = result
-          service = container.resolve(ModuleRegistrationName.ORDER)
+          service = container.resolve(Modules.ORDER)
         })
 
         it("should successfully delete an order change", async () => {
@@ -256,7 +255,7 @@ medusaIntegrationTestRunner({
           })
 
           orderChange = result
-          service = container.resolve(ModuleRegistrationName.ORDER)
+          service = container.resolve(Modules.ORDER)
         })
 
         it("should successfully decline an order change", async () => {

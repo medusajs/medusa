@@ -17,7 +17,6 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
-  ModuleRegistrationName,
   Modules,
   ProductStatus,
   PromotionRuleOperator,
@@ -66,22 +65,20 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModule = appContainer.resolve(ModuleRegistrationName.CART)
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
-        scModule = appContainer.resolve(ModuleRegistrationName.SALES_CHANNEL)
-        customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
-        productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-        pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-        apiKeyModule = appContainer.resolve(ModuleRegistrationName.API_KEY)
+        cartModule = appContainer.resolve(Modules.CART)
+        regionModule = appContainer.resolve(Modules.REGION)
+        scModule = appContainer.resolve(Modules.SALES_CHANNEL)
+        customerModule = appContainer.resolve(Modules.CUSTOMER)
+        productModule = appContainer.resolve(Modules.PRODUCT)
+        pricingModule = appContainer.resolve(Modules.PRICING)
+        apiKeyModule = appContainer.resolve(Modules.API_KEY)
         remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
-        promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
-        taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
-        regionService = appContainer.resolve(ModuleRegistrationName.REGION)
-        paymentService = appContainer.resolve(ModuleRegistrationName.PAYMENT)
-        storeService = appContainer.resolve(ModuleRegistrationName.STORE)
-        fulfillmentModule = appContainer.resolve(
-          ModuleRegistrationName.FULFILLMENT
-        )
+        promotionModule = appContainer.resolve(Modules.PROMOTION)
+        taxModule = appContainer.resolve(Modules.TAX)
+        regionService = appContainer.resolve(Modules.REGION)
+        paymentService = appContainer.resolve(Modules.PAYMENT)
+        storeService = appContainer.resolve(Modules.STORE)
+        fulfillmentModule = appContainer.resolve(Modules.FULFILLMENT)
         remoteLinkService = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_LINK
         )
@@ -148,18 +145,18 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              productService: {
+              Product: {
                 variant_id: product.variants[0].id,
               },
-              pricingService: {
+              Pricing: {
                 price_set_id: priceSet.id,
               },
             },
             {
-              productService: {
+              Product: {
                 variant_id: product.variants[1].id,
               },
-              pricingService: {
+              Pricing: {
                 price_set_id: priceSetTwo.id,
               },
             },
@@ -236,8 +233,8 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              productService: { variant_id: product.variants[0].id },
-              pricingService: { price_set_id: priceSet.id },
+              Product: { variant_id: product.variants[0].id },
+              Pricing: { price_set_id: priceSet.id },
             },
           ])
 
@@ -1414,16 +1411,16 @@ medusaIntegrationTestRunner({
 
           await remoteLink.create([
             {
-              productService: {
+              Product: {
                 variant_id: productWithSpecialTax.variants[0].id,
               },
-              pricingService: { price_set_id: priceSet.id },
+              Pricing: { price_set_id: priceSet.id },
             },
             {
-              productService: {
+              Product: {
                 variant_id: productWithDefaultTax.variants[0].id,
               },
-              pricingService: { price_set_id: priceSetDefaultTax.id },
+              Pricing: { price_set_id: priceSetDefaultTax.id },
             },
             {
               [Modules.CART]: { cart_id: cart.id },

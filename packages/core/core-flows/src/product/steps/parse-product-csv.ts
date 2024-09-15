@@ -3,7 +3,7 @@ import {
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
-import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
+import { MedusaError, Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { normalizeForImport } from "../helpers/normalize-for-import"
 import { normalizeV1Products } from "../helpers/normalize-v1-import"
@@ -17,13 +17,13 @@ export const parseProductCsvStep = createStep(
   parseProductCsvStepId,
   async (fileContent: string, { container }) => {
     const regionService = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
+      Modules.REGION
     )
     const productService = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
+      Modules.PRODUCT
     )
     const salesChannelService = container.resolve<ISalesChannelModuleService>(
-      ModuleRegistrationName.SALES_CHANNEL
+      Modules.SALES_CHANNEL
     )
 
     const csvProducts = convertCsvToJson(fileContent)

@@ -1,13 +1,12 @@
 import { IEventBusModuleService } from "@medusajs/types"
+import fs from "fs/promises"
 import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
+import path from "path"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 import { getProductFixture } from "../../../../helpers/fixtures"
-import fs from "fs/promises"
-import path from "path"
-import { ModuleRegistrationName } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -56,7 +55,7 @@ medusaIntegrationTestRunner({
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
-      eventBus = getContainer().resolve(ModuleRegistrationName.EVENT_BUS)
+      eventBus = getContainer().resolve(Modules.EVENT_BUS)
     })
 
     beforeEach(async () => {

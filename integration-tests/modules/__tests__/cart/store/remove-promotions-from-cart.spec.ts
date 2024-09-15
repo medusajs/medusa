@@ -2,7 +2,6 @@ import { RemoteLink } from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   PromotionType,
 } from "@medusajs/utils"
@@ -30,13 +29,11 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
+        cartModuleService = appContainer.resolve(Modules.CART)
         remoteLinkService = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_LINK
         )
-        promotionModuleService = appContainer.resolve(
-          ModuleRegistrationName.PROMOTION
-        )
+        promotionModuleService = appContainer.resolve(Modules.PROMOTION)
       })
 
       beforeEach(async () => {

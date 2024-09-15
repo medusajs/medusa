@@ -4,8 +4,8 @@ import {
   createOrderFulfillmentWorkflow,
 } from "@medusajs/core-flows"
 import {
-  InventoryItemDTO,
   IOrderModuleService,
+  InventoryItemDTO,
   OrderWorkflow,
   ProductDTO,
   RegionDTO,
@@ -14,7 +14,6 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -52,7 +51,7 @@ medusaIntegrationTestRunner({
         product = fixtures.product
         inventoryItem = fixtures.inventoryItem
 
-        orderService = container.resolve(ModuleRegistrationName.ORDER)
+        orderService = container.resolve(Modules.ORDER)
       })
 
       it("should cancel an order", async () => {

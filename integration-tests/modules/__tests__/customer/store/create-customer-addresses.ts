@@ -1,5 +1,4 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   generatePublishableKey,
@@ -21,9 +20,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {

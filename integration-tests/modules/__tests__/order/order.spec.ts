@@ -1,5 +1,4 @@
 import { IOrderModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -18,7 +17,7 @@ medusaIntegrationTestRunner({
 
     beforeAll(async () => {
       appContainer = getContainer()
-      orderModule = appContainer.resolve(ModuleRegistrationName.ORDER)
+      orderModule = appContainer.resolve(Modules.ORDER)
     })
 
     beforeEach(async () => {

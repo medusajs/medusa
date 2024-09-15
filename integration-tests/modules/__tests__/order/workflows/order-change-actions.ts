@@ -13,7 +13,7 @@ import {
   OrderChangeDTO,
   OrderDTO,
 } from "@medusajs/types"
-import { ChangeActionType, ModuleRegistrationName } from "@medusajs/utils"
+import { ChangeActionType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createOrderFixture, prepareDataFixtures } from "./__fixtures__"
 
@@ -48,7 +48,7 @@ medusaIntegrationTestRunner({
         })
 
         orderChange = result
-        service = container.resolve(ModuleRegistrationName.ORDER)
+        service = container.resolve(Modules.ORDER)
       })
 
       describe("createOrderChangeActionsWorkflow", () => {

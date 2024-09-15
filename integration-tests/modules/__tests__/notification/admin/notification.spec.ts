@@ -4,11 +4,8 @@ import {
   INotificationModuleService,
   Logger,
 } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-} from "@medusajs/utils"
-import { medusaIntegrationTestRunner, TestEventUtils } from "medusa-test-utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -19,7 +16,7 @@ medusaIntegrationTestRunner({
       let logger: Logger
 
       beforeAll(async () => {
-        service = getContainer().resolve(ModuleRegistrationName.NOTIFICATION)
+        service = getContainer().resolve(Modules.NOTIFICATION)
         logger = getContainer().resolve(ContainerRegistrationKeys.LOGGER)
       })
 
@@ -166,7 +163,7 @@ medusaIntegrationTestRunner({
       describe("Configurable notification subscriber", () => {
         let eventBus: IEventBusModuleService
         beforeAll(async () => {
-          eventBus = getContainer().resolve(ModuleRegistrationName.EVENT_BUS)
+          eventBus = getContainer().resolve(Modules.EVENT_BUS)
         })
 
         it("should successfully sent a notification when an order is created (based on configuration)", async () => {

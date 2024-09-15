@@ -137,7 +137,7 @@ medusaIntegrationTestRunner({
           primaryKeys: ["id", "product_variant_id", "region_id"],
           relationships: [
             {
-              serviceName: "productService",
+              serviceName: "Product",
               entity: "ProductVariant",
               primaryKey: "id",
               foreignKey: "product_variant_id",
@@ -161,7 +161,7 @@ medusaIntegrationTestRunner({
           ],
           extends: [
             {
-              serviceName: "productService",
+              serviceName: "Product",
               fieldAlias: {
                 region: {
                   path: "region_link.region",

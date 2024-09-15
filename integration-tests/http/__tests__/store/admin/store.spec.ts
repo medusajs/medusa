@@ -1,10 +1,9 @@
+import { IStoreModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
-import { ModuleRegistrationName } from "@medusajs/utils"
-import { IStoreModuleService } from "@medusajs/types"
 
 jest.setTimeout(90000)
 
@@ -17,7 +16,7 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         container = getContainer()
         const storeModule: IStoreModuleService = container.resolve(
-          ModuleRegistrationName.STORE
+          Modules.STORE
         )
         await createAdminUser(dbConnection, adminHeaders, container)
 

@@ -1,9 +1,5 @@
 import { IStoreModuleService } from "@medusajs/types"
-import {
-  ApiKeyType,
-  ModuleRegistrationName,
-  ProductStatus,
-} from "@medusajs/utils"
+import { ApiKeyType, ProductStatus } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -91,7 +87,7 @@ medusaIntegrationTestRunner({
       await createAdminUser(dbConnection, adminHeaders, appContainer)
 
       const storeModule: IStoreModuleService = appContainer.resolve(
-        ModuleRegistrationName.STORE
+        Modules.STORE
       )
       // A default store is created when the app is started, so we want to delete that one and create one specifically for our tests.
       const defaultId = (await api.get("/admin/stores", adminHeaders)).data
@@ -540,7 +536,7 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        const service = appContainer.resolve(ModuleRegistrationName.STORE)
+        const service = appContainer.resolve(Modules.STORE)
         const [store] = await service.listStores()
 
         if (store) {
@@ -1158,7 +1154,7 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        const service = appContainer.resolve(ModuleRegistrationName.STORE)
+        const service = appContainer.resolve(Modules.STORE)
         const [store] = await service.listStores()
 
         if (store) {

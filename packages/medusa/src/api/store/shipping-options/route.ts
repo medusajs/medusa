@@ -1,6 +1,6 @@
 import { listShippingOptionsForCartWorkflow } from "@medusajs/core-flows"
 import { HttpTypes, ICartModuleService } from "@medusajs/types"
-import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
+import { MedusaError, Modules } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 export const GET = async (
@@ -15,9 +15,7 @@ export const GET = async (
     )
   }
 
-  const cartService = req.scope.resolve<ICartModuleService>(
-    ModuleRegistrationName.CART
-  )
+  const cartService = req.scope.resolve<ICartModuleService>(Modules.CART)
 
   const cart = await cartService.retrieveCart(cart_id, {
     select: [

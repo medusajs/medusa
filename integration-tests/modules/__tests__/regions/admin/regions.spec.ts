@@ -1,5 +1,4 @@
 import { IRegionModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -19,7 +18,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        service = appContainer.resolve(ModuleRegistrationName.REGION)
+        service = appContainer.resolve(Modules.REGION)
       })
 
       beforeEach(async () => {

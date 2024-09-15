@@ -1,6 +1,5 @@
 import { CreateCustomerDTO, MedusaContainer } from "@medusajs/types"
 
-import { ModuleRegistrationName } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 
 export const createAuthenticatedCustomer = async (
@@ -8,10 +7,8 @@ export const createAuthenticatedCustomer = async (
   customerData: Partial<CreateCustomerDTO> = {}
 ) => {
   const { http } = appContainer.resolve("configModule").projectConfig
-  const authService = appContainer.resolve(ModuleRegistrationName.AUTH)
-  const customerModuleService = appContainer.resolve(
-    ModuleRegistrationName.CUSTOMER
-  )
+  const authService = appContainer.resolve(Modules.AUTH)
+  const customerModuleService = appContainer.resolve(Modules.CUSTOMER)
 
   const customer = await customerModuleService.createCustomers({
     first_name: "John",

@@ -13,7 +13,6 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   RuleOperator,
   remoteQueryObjectFromString,
@@ -33,7 +32,7 @@ medusaIntegrationTestRunner({
 
     beforeAll(() => {
       container = getContainer()
-      service = container.resolve(ModuleRegistrationName.FULFILLMENT)
+      service = container.resolve(Modules.FULFILLMENT)
     })
 
     describe("Fulfillment workflows", () => {
@@ -63,9 +62,7 @@ medusaIntegrationTestRunner({
           ],
         })
 
-        const stockLocationModule = container.resolve(
-          ModuleRegistrationName.STOCK_LOCATION
-        )
+        const stockLocationModule = container.resolve(Modules.STOCK_LOCATION)
 
         const location = await stockLocationModule.createStockLocations({
           name: "Europe",
@@ -97,7 +94,7 @@ medusaIntegrationTestRunner({
 
       it("should update shipping options", async () => {
         const regionService = container.resolve(
-          ModuleRegistrationName.REGION
+          Modules.REGION
         ) as IRegionModuleService
 
         const [region] = await regionService.createRegions([
@@ -262,7 +259,7 @@ medusaIntegrationTestRunner({
 
       it("should revert the shipping options", async () => {
         const regionService = container.resolve(
-          ModuleRegistrationName.REGION
+          Modules.REGION
         ) as IRegionModuleService
 
         const [region] = await regionService.createRegions([

@@ -1,5 +1,4 @@
 import { IAuthModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -118,9 +117,7 @@ medusaIntegrationTestRunner({
           deleted: true,
         })
 
-        const authModule: IAuthModuleService = container.resolve(
-          ModuleRegistrationName.AUTH
-        )
+        const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
 
         const updatedAuthIdentity = await authModule.retrieveAuthIdentity(
           authIdentity.id
@@ -159,7 +156,7 @@ medusaIntegrationTestRunner({
       })
 
       it("throws if you attempt to delete another user", async () => {
-        const userModule = container.resolve(ModuleRegistrationName.USER)
+        const userModule = container.resolve(Modules.USER)
 
         const userTwo = await userModule.createUsers({
           email: "test@test.com",

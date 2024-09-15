@@ -1,5 +1,4 @@
 import { ITaxModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 
 import {
   createTaxRateRulesStepId,
@@ -24,7 +23,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        service = appContainer.resolve(ModuleRegistrationName.TAX)
+        service = appContainer.resolve(Modules.TAX)
       })
 
       beforeEach(async () => {

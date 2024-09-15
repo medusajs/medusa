@@ -1,5 +1,5 @@
 import { HttpTypes, IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const groupProductsForBatchStepId = "group-products-for-batch"
@@ -12,9 +12,7 @@ export const groupProductsForBatchStep = createStep(
     data: (HttpTypes.AdminCreateProduct & { id?: string })[],
     { container }
   ) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     const existingProducts = await service.listProducts(
       {

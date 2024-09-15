@@ -6,7 +6,6 @@ import {
 import { IOrderModuleService, OrderDTO, ReturnDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -65,7 +64,7 @@ medusaIntegrationTestRunner({
           fields: ["order_id", "id", "status", "order_change_id"],
         })
 
-        service = container.resolve(ModuleRegistrationName.ORDER)
+        service = container.resolve(Modules.ORDER)
         ;[returnOrder] = await remoteQuery(remoteQueryObject)
       })
 

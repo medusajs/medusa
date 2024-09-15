@@ -49,10 +49,7 @@ async function loadModule(
     throw new Error(`Module definition is missing property "key"`)
   }
 
-  modDefinition.registrationName ??= modDefinition.key
-
-  const registrationName = modDefinition.registrationName
-
+  const keyName = modDefinition.key
   const { scope, resources } = resolution.moduleDeclaration ?? ({} as any)
 
   const canSkip =
@@ -72,7 +69,7 @@ async function loadModule(
       message = `The module ${resolution.definition.label} is missing its resources config`
     }
 
-    container.register(registrationName, asValue(undefined))
+    container.register(keyName, asValue(undefined))
 
     return {
       error: new Error(message),
@@ -80,7 +77,7 @@ async function loadModule(
   }
 
   if (resolution.resolutionPath === false) {
-    container.register(registrationName, asValue(undefined))
+    container.register(keyName, asValue(undefined))
 
     return
   }

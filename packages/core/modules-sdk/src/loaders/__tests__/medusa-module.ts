@@ -9,7 +9,6 @@ const mockRegisterMedusaModule = jest.fn().mockImplementation(() => {
     moduleKey: {
       definition: {
         key: "moduleKey",
-        registrationName: "moduleKey",
       },
       moduleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
