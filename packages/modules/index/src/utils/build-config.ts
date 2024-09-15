@@ -9,6 +9,7 @@ import {
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
 } from "@medusajs/types"
+import { CommonEvents } from "@medusajs/utils"
 import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
@@ -490,9 +491,8 @@ function processEntity(
         ]
         linkObjectRepresentationRef.alias = linkModuleMetadata.alias
         linkObjectRepresentationRef.listeners = [
-          // TODO: align event entity name
-          `${linkModuleMetadata.entityName}.attached`,
-          `${linkModuleMetadata.entityName}.detached`,
+          `${linkModuleMetadata.entityName}.${CommonEvents.ATTACHED}`,
+          `${linkModuleMetadata.entityName}.${CommonEvents.DETACHED}`,
         ]
         linkObjectRepresentationRef.moduleConfig =
           linkModuleMetadata.linkModuleConfig
@@ -559,8 +559,8 @@ function processEntity(
           intermediateEntityObjectRepresentationRef.alias =
             intermediateEntityAlias
           intermediateEntityObjectRepresentationRef.listeners = [
-            intermediateEntityName + ".created",
-            intermediateEntityName + ".updated",
+            intermediateEntityName + "." + CommonEvents.CREATED,
+            intermediateEntityName + "." + CommonEvents.UPDATED,
           ]
           intermediateEntityObjectRepresentationRef.moduleConfig =
             intermediateEntityModule
