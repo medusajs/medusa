@@ -16,14 +16,14 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const storeModuleService: IStoreModuleService = request.scope.resolve(
-    ModuleRegistrationName.STORE
+    Modules.STORE
   )
 
   const store = await storeModuleService.createStores({
@@ -82,14 +82,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const storeModuleService: IStoreModuleService = request.scope.resolve(
-    ModuleRegistrationName.STORE
+    Modules.STORE
   )
 
   res.json({
@@ -130,14 +130,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const storeModuleService: IStoreModuleService = request.scope.resolve(
-    ModuleRegistrationName.STORE
+    Modules.STORE
   )
 
   const store = await storeModuleService.retrieveStore("store_123")
@@ -178,14 +178,14 @@ export async function GET(request: Request, { params }: ContextType) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const storeModuleService: IStoreModuleService = request.scope.resolve(
-    ModuleRegistrationName.STORE
+    Modules.STORE
   )
 
   const store = await storeModuleService.updateStores("store_123", {
@@ -230,14 +230,14 @@ export async function POST(request: Request, { params }: ContextType) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const storeModuleService: IStoreModuleService = request.scope.resolve(
-    ModuleRegistrationName.STORE
+    Modules.STORE
   )
 
   await storeModuleService.deleteStores("store_123")

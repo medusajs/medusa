@@ -1673,7 +1673,7 @@ export const notifyRestaurantStepHighlights = [
 
 ```ts title="src/workflows/delivery/steps/notify-restaurant.ts" highlights={notifyRestaurantStepHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import {
-  ModuleRegistrationName,
+  Modules,
   ContainerRegistrationKeys,
 } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
@@ -1699,7 +1699,7 @@ export const notifyRestaurantStep = createStep(
       fields: ["id", "restaurant.id"],
     })
 
-    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
+    const eventBus = container.resolve(Modules.EVENT_BUS)
 
     await eventBus.emit({
       name: "notify.restaurant",
@@ -1760,7 +1760,6 @@ export const createOrderStepHighlights1 = [
 ```ts title="src/workflows/delivery/steps/create-order.ts" highlights={createOrderStepHighlights1} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import { CreateOrderShippingMethodDTO } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
   Modules,
   ContainerRegistrationKeys,
 } from "@medusajs/utils"
@@ -1810,7 +1809,7 @@ export const createOrderStepHighlights2 = [
 ```ts title="src/workflows/delivery/steps/create-order.ts" highlights={createOrderStepHighlights2}
 const { cart } = delivery
 
-const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
+const orderModuleService = container.resolve(Modules.ORDER)
 
 const order = await orderModuleService.createOrders({
   currency_code: cart.currency_code,
@@ -1847,7 +1846,7 @@ You create the order using the Order Module’s main service. Then, you create a
 Then, replace the `TODO` in the compensation function with the following:
 
 ```ts title="src/workflows/delivery/steps/create-order.ts"
-const orderService = container.resolve(ModuleRegistrationName.ORDER)
+const orderService = container.resolve(Modules.ORDER)
 
 await orderService.softDeleteOrders([orderId])
 ```
@@ -1903,14 +1902,14 @@ export const createFulfillmentStepHighlights = [
 
 ```ts title="src/workflows/delivery/steps/create-fulfillment.ts" highlights={createFulfillmentStepHighlights}
 import { OrderDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createFulfillmentStep = createStep(
   "create-fulfillment-step",
   async function (order: OrderDTO, { container }) {
     const fulfillmentModuleService = container.resolve(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const items = order.items?.map((lineItem) => ({
@@ -1934,7 +1933,7 @@ export const createFulfillmentStep = createStep(
   },
   function (id: string, { container }) {
     const fulfillmentModuleService = container.resolve(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     return fulfillmentModuleService.cancelFulfillment(id)
@@ -2345,7 +2344,7 @@ export const setStepSuccessStepHighlights = [
 
 ```ts title="src/workflows/delivery/steps/set-step-success.ts" highlights={setStepSuccessStepHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
-  ModuleRegistrationName,
+  Modules,
   TransactionHandlerType,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -2364,7 +2363,7 @@ export const setStepSuccessStep = createStep(
     { container }
   ) {
     const engineService = container.resolve(
-      ModuleRegistrationName.WORKFLOW_ENGINE
+      Modules.WORKFLOW_ENGINE
     )
 
     await engineService.setStepSuccess({
@@ -2396,7 +2395,7 @@ export const setStepFailedStepHighlights = [
 
 ```ts title="src/workflows/delivery/steps/set-step-failed.ts" highlights={setStepFailedStepHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
-  ModuleRegistrationName,
+  Modules,
   TransactionHandlerType,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -2415,7 +2414,7 @@ export const setStepFailedStep = createStep(
     { container }
   ) {
     const engineService = container.resolve(
-      ModuleRegistrationName.WORKFLOW_ENGINE
+      Modules.WORKFLOW_ENGINE
     )
 
     await engineService.setStepFailure({
@@ -3266,7 +3265,7 @@ import {
   MedusaResponse,
 } from "@medusajs/medusa"
 import {
-  ModuleRegistrationName,
+  Modules,
 } from "@medusajs/utils"
 import { 
   handleDeliveryWorkflowId,
@@ -3320,7 +3319,7 @@ To listen to the workflow changes, replace the new `TODO` with the following:
 
 ```ts title="src/api/store/deliveries/subscribe/route.ts"
 const workflowEngine = req.scope.resolve(
-  ModuleRegistrationName.WORKFLOW_ENGINE
+  Modules.WORKFLOW_ENGINE
 )
 
 const workflowSubHandler = (data: any) => {

@@ -10,7 +10,7 @@ The Sales Channel Module is the `@medusajs/sales-channel` NPM package that provi
 
 ## How to Use Sales Channel Module's Service
 
-You can use the Sales Channel Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.SALES_CHANNEL` imported from `@medusajs/utils`.
+You can use the Sales Channel Module's main service by resolving from the Medusa container the resource `Modules.SALES_CHANNEL` imported from `@medusajs/utils`.
 
 For example:
 
@@ -20,14 +20,14 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const salesChannelModuleService: ISalesChannelModuleService =
-    request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    request.scope.resolve(Modules.SALES_CHANNEL)
 
   res.json({
     sales_channels: await salesChannelModuleService.listSalesChannels(),
@@ -41,11 +41,11 @@ export async function GET(
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
   const salesChannelModuleService: ISalesChannelModuleService =
-    container.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    container.resolve(Modules.SALES_CHANNEL)
 
   const salesChannels = await salesChannelModuleService.listSalesChannels()
 }
@@ -57,11 +57,11 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 const step1 = createStep("step-1", async (_, { container }) => {
   const salesChannelModuleService: ISalesChannelModuleService =
-    container.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    container.resolve(Modules.SALES_CHANNEL)
 
   const salesChannels = await salesChannelModuleService.listSalesChannels()
 })

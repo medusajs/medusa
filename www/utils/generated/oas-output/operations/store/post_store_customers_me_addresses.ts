@@ -98,7 +98,8 @@
  *     source: |-
  *       curl -X POST '{backend_url}/store/customers/me/addresses' \
  *       -H 'Authorization: Bearer {access_token}' \
- *       -H 'Content-Type: application/json' \
+ *       -H 'Content-Type: application/json' \ \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  *       --data-raw '{
  *         "metadata": {},
  *         "first_name": "{value}",
