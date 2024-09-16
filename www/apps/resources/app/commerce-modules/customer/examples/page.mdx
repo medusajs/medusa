@@ -16,11 +16,11 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
-    ModuleRegistrationName.CUSTOMER
+    Modules.CUSTOMER
   )
 
   const customer = await customerModuleService.createCustomers({
@@ -71,11 +71,11 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
-    ModuleRegistrationName.CUSTOMER
+    Modules.CUSTOMER
   )
 
   const customerGroup = await customerModuleService.createCustomerGroups({
@@ -122,11 +122,11 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
-    ModuleRegistrationName.CUSTOMER
+    Modules.CUSTOMER
   )
 
   await customerModuleService.addCustomerToGroup({
@@ -171,11 +171,11 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
-    ModuleRegistrationName.CUSTOMER
+    Modules.CUSTOMER
   )
 
   await customerModuleService.removeCustomerFromGroup({

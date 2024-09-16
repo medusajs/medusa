@@ -1494,7 +1494,6 @@ import {
 } from "@medusajs/types"
 import { 
   Modules,
-  ModuleRegistrationName,
 } from "@medusajs/utils"
 import { createOrdersWorkflow } from "@medusajs/core-flows"
 import { LinkDefinition } from "@medusajs/modules-sdk"
@@ -1624,7 +1623,7 @@ Finally, replace the `TODO` in the compensation function to cancel the order in 
 
 ```ts title="src/workflows/create-subscription-order/steps/create-subscription-order.ts"
 const orderModuleService: IOrderModuleService = container.resolve(
-  ModuleRegistrationName.ORDER
+  Modules.ORDER
 )
 
 await orderModuleService.cancel(order.id)
