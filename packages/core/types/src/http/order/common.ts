@@ -105,7 +105,7 @@ export interface BaseOrderShippingMethod {
   original_subtotal: BigNumberValue
   original_tax_total: BigNumberValue
   total: BigNumberValue
-  detail: BaseOrderShippingDetail
+  detail?: BaseOrderShippingDetail
   subtotal: BigNumberValue
   tax_total: BigNumberValue
   discount_total: BigNumberValue
