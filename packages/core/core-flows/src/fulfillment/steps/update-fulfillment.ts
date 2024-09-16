@@ -13,6 +13,7 @@ export const updateFulfillmentStep = createStep(
     { container }
   ) => {
     const { id, ...data } = input
+
     const service = container.resolve<IFulfillmentModuleService>(
       Modules.FULFILLMENT
     )

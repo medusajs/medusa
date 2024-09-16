@@ -1,0 +1,28 @@
+import { markOrderFulfillmentAsDeliveredWorkflow } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../../types/routing"
+import { refetchEntity } from "../../../../../../utils/refetch-entity"
+import { AdminMarkOrderFulfillmentDeliveredType } from "../../../../validators"
+
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminMarkOrderFulfillmentDeliveredType>,
+  res: MedusaResponse<HttpTypes.AdminOrderResponse>
+) => {
+  const { id: orderId, fulfillment_id: fulfillmentId } = req.params
+
+  await markOrderFulfillmentAsDeliveredWorkflow(req.scope).run({
+    input: { orderId, fulfillmentId },
+  })
+
+  const order = await refetchEntity(
+    "order",
+    orderId,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ order })
+}
