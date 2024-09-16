@@ -100,45 +100,31 @@ export class ClientService {
 
 Your internal service can't access the module's options.
 
-If you need the options in your internal service:
+To retrieve the module's options, use the `configModule` registered in the module's container, which is the configurations in `medusa-config.js`.
 
-1. Add an `options` property in the service and a method to set it:
+For example:
 
 ```ts
+import { ConfigModule } from "@medusajs/types"
+import { HELLO_MODULE } from ".."
+
+export type InjectedDependencies = {
+  configModule: ConfigModule
+}
+
 export class ClientService {
   protected options: Record<string, any>
 
-  async setOptions(value: Record<string, any>) {
-    this.options = value
+  constructor({ configModule }: InjectedDependencies) {
+    const moduleDef = configModule.modules[HELLO_MODULE]
+
+    if (typeof moduleDef !== "boolean") {
+      this.options = moduleDef.options
+    }
   }
 }
 ```
 
-2. In the main service's constructor, use the `setOptions` method on the internal service when adding it as a property of the main service:
+The `configModule` has a `modules` property that includes all registered modules. Retrieve the module's configuration using its registration key.
 
-```ts
-// other imports...
-import { ClientService } from "./services"
-
-type InjectedDependencies = {
-  clientService: ClientService
-}
-
-class HelloModuleService extends MedusaService({
-  MyCustom,
-}){
-  protected clientService_: ClientService
-
-  constructor(
-    { clientService }: InjectedDependencies,
-    options: Record<string, any>
-  ) {
-    super(...arguments)
-    this.clientService_ = clientService
-
-    this.clientService_.setOptions(options)
-  }
-}
-```
-
-The options will only be set on the instance of the internal service in the module. So, when you use the internal service in other method's of the main module, the options will be set on it.
+If its value is not a `boolean`, set the service's options to the module configuration's `options` property.
