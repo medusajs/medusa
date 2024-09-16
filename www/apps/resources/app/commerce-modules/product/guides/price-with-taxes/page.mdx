@@ -53,12 +53,12 @@ const { data: products } = await query.graph({
     id: "prod_123",
   },
   context: {
-    variants: new QueryContext({
-      calculated_price: {
+    variants: {
+      calculated_price: QueryContext({
         region_id: "region_123",
         currency_code: "usd",
-      },
-    }),
+      }),
+    }
   },
 })
 ```

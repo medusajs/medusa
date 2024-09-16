@@ -78,7 +78,7 @@ const { data: products } = await query.graph({
   },
   context: {
     variants: {
-      calculated_price: new QueryContext({
+      calculated_price: QueryContext({
         region_id: "reg_01J3MRPDNXXXDSCC76Y6YCZARS",
         currency_code: "eur",
       }),
@@ -89,6 +89,6 @@ const { data: products } = await query.graph({
 
 For the context of the product variant's calculated price, you pass an object to `context` with the property `variants`, whose value is another object with the property `calculated_price`.
 
-`calculated_price`'s value is created using the `QueryContext` utility, passing it a [calculation context object](../../../pricing/price-calculation/page.mdx#calculation-context).
+`calculated_price`'s value is created using the `QueryContext` utility function, passing it a [calculation context object](../../../pricing/price-calculation/page.mdx#calculation-context).
 
 Each variant in the retrieved products has a `calculated_price` object. Learn more about its properties in [this Pricing Module guide](../../../pricing/price-calculation/page.mdx#returned-price-object).
