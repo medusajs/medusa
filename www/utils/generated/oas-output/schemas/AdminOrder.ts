@@ -72,19 +72,19 @@
  *   region_id:
  *     type: string
  *     title: region_id
- *     description: The order's region id.
+ *     description: The ID of the region associated with the order.
  *   customer_id:
  *     type: string
  *     title: customer_id
- *     description: The order's customer id.
+ *     description: The ID of the customer that placed the order.
  *   sales_channel_id:
  *     type: string
  *     title: sales_channel_id
- *     description: The order's sales channel id.
+ *     description: The ID of the sales channel the order is placed in.
  *   email:
  *     type: string
  *     title: email
- *     description: The order's email.
+ *     description: The email of the customer that placed the order.
  *     format: email
  *   currency_code:
  *     type: string
@@ -93,7 +93,7 @@
  *   display_id:
  *     type: number
  *     title: display_id
- *     description: The order's display id.
+ *     description: The order's display ID.
  *   items:
  *     type: array
  *     description: The order's items.
@@ -139,73 +139,73 @@
  *     $ref: "#/components/schemas/BaseOrderSummary"
  *   metadata:
  *     type: object
- *     description: The order's metadata.
+ *     description: The order's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The order's created at.
+ *     description: The date the order was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The order's updated at.
+ *     description: The date the order was updated.
  *   original_item_total:
  *     type: number
  *     title: original_item_total
- *     description: The order's original item total.
+ *     description: The total of the order's items including taxes, excluding promotions.
  *   original_item_subtotal:
  *     type: number
  *     title: original_item_subtotal
- *     description: The order's original item subtotal.
+ *     description: The total of the order's items excluding taxes, including promotions.
  *   original_item_tax_total:
  *     type: number
  *     title: original_item_tax_total
- *     description: The order's original item tax total.
+ *     description: The tax total of the order's items excluding promotions.
  *   item_total:
  *     type: number
  *     title: item_total
- *     description: The order's item total.
+ *     description: The total of the order's items including taxes and promotions.
  *   item_subtotal:
  *     type: number
  *     title: item_subtotal
- *     description: The order's item subtotal.
+ *     description: The total of the order's items excluding taxes, including promotions.
  *   item_tax_total:
  *     type: number
  *     title: item_tax_total
- *     description: The order's item tax total.
+ *     description: The tax total of the order's items including promotions.
  *   original_total:
  *     type: number
  *     title: original_total
- *     description: The order's original total.
+ *     description: The order's total excluding promotions, including taxes.
  *   original_subtotal:
  *     type: number
  *     title: original_subtotal
- *     description: The order's original subtotal.
+ *     description: The order's total excluding taxes, including promotions.
  *   original_tax_total:
  *     type: number
  *     title: original_tax_total
- *     description: The order's original tax total.
+ *     description: The order's tax total, excluding promotions.
  *   total:
  *     type: number
  *     title: total
- *     description: The order's total.
+ *     description: The order's total including taxes and promotions.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The order's subtotal.
+ *     description: The order's total excluding taxes, including promotions.
  *   tax_total:
  *     type: number
  *     title: tax_total
- *     description: The order's tax total.
+ *     description: The order's tax total including promotions.
  *   discount_total:
  *     type: number
  *     title: discount_total
- *     description: The order's discount total.
+ *     description: The order's discount or promotions total.
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The order's discount tax total.
+ *     description: The tax total of order's discount or promotion.
  *   gift_card_total:
  *     type: number
  *     title: gift_card_total
@@ -213,31 +213,31 @@
  *   gift_card_tax_total:
  *     type: number
  *     title: gift_card_tax_total
- *     description: The order's gift card tax total.
+ *     description: The tax total of the order's gift card.
  *   shipping_total:
  *     type: number
  *     title: shipping_total
- *     description: The order's shipping total.
+ *     description: The order's shipping total including taxes and promotions.
  *   shipping_subtotal:
  *     type: number
  *     title: shipping_subtotal
- *     description: The order's shipping subtotal.
+ *     description: The order's shipping total excluding taxes, including promotions.
  *   shipping_tax_total:
  *     type: number
  *     title: shipping_tax_total
- *     description: The order's shipping tax total.
+ *     description: The tax total of the order's shipping.
  *   original_shipping_total:
  *     type: number
  *     title: original_shipping_total
- *     description: The order's original shipping total.
+ *     description: The order's shipping total including taxes, excluding promotions.
  *   original_shipping_subtotal:
  *     type: number
  *     title: original_shipping_subtotal
- *     description: The order's original shipping subtotal.
+ *     description: The order's shipping total excluding taxes, including promotions.
  *   original_shipping_tax_total:
  *     type: number
  *     title: original_shipping_tax_total
- *     description: The order's original shipping tax total.
+ *     description: The tax total of the order's shipping excluding promotions.
  * 
 */
 

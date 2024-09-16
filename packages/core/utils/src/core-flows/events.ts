@@ -50,6 +50,24 @@ export const ProductWorkflowEvents = {
   DELETED: "product.deleted",
 }
 
+export const ProductTypeWorkflowEvents = {
+  UPDATED: "product-type.updated",
+  CREATED: "product-type.created",
+  DELETED: "product-type.deleted",
+}
+
+export const ProductTagWorkflowEvents = {
+  UPDATED: "product-tag.updated",
+  CREATED: "product-tag.created",
+  DELETED: "product-tag.deleted",
+}
+
+export const ProductOptionWorkflowEvents = {
+  UPDATED: "product-option.updated",
+  CREATED: "product-option.created",
+  DELETED: "product-option.deleted",
+}
+
 export const InviteWorkflowEvents = {
   ACCEPTED: "invite.accepted",
   CREATED: "invite.created",

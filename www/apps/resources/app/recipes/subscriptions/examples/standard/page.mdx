@@ -461,7 +461,7 @@ export const createSubscriptionsHighlights = [
 ```ts title="src/workflows/create-subscription/steps/create-subscription.ts" highlights={createSubscriptionsHighlights} collapsibleLines="1-7" expandMoreLabel="Show Imports"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { Modules } from "@medusajs/utils"
-import { LinkDefinition } from "@medusajs/modules-sdk"
+import { LinkDefinition } from "@medusajs/types"
 import { SubscriptionInterval } from "../../../modules/subscription/types"
 import SubscriptionModuleService from "../../../modules/subscription/service"
 import { SUBSCRIPTION_MODULE } from "../../../modules/subscription"
@@ -677,14 +677,12 @@ export const POST = async (
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: [cart] } = await query.graph({
-    entryPoint: "cart",
+    entity: "cart",
     fields: [
       "metadata",
     ],
-    variables: {
-      filters: {
-        id: [req.params.id],
-      },
+    filters: {
+      id: [req.params.id],
     },
   })
   
@@ -998,14 +996,14 @@ export const GET = async (
     data: subscriptions,
     metadata: { count, take, skip },
   } = await query.graph({
-    entryPoint: "subscription",
+    entity: "subscription",
     fields: [
       "*",
       "orders.*",
       "customer.*",
       ...(req.validatedQuery?.fields.split(",") || []),
     ],
-    variables: {
+    pagination: {
       skip: offset,
       take: limit,
       order: {
@@ -1051,17 +1049,15 @@ export const GET = async (
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: [subscription] } = await query.graph({
-    entryPoint: "subscription",
+    entity: "subscription",
     fields: [
       "*",
       "orders.*",
       "customer.*",
       ...(req.validatedQuery?.fields.split(",") || []),
     ],
-    variables: {
-      filters: {
-        id: [req.params.id],
-      },
+    filters: {
+      id: [req.params.id],
     },
   })
 
@@ -1491,13 +1487,12 @@ import {
   CartWorkflowDTO,
   PaymentCollectionDTO,
   IOrderModuleService,
+  LinkDefinition,
 } from "@medusajs/types"
 import { 
   Modules,
-  ModuleRegistrationName,
 } from "@medusajs/utils"
 import { createOrdersWorkflow } from "@medusajs/core-flows"
-import { LinkDefinition } from "@medusajs/modules-sdk"
 import { SubscriptionData } from "../../../modules/subscription/types"
 import { SUBSCRIPTION_MODULE } from "../../../modules/subscription"
 
@@ -1624,7 +1619,7 @@ Finally, replace the `TODO` in the compensation function to cancel the order in 
 
 ```ts title="src/workflows/create-subscription-order/steps/create-subscription-order.ts"
 const orderModuleService: IOrderModuleService = container.resolve(
-  ModuleRegistrationName.ORDER
+  Modules.ORDER
 )
 
 await orderModuleService.cancel(order.id)
@@ -2135,14 +2130,12 @@ export const GET = async (
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: [customer] } = await query.graph({
-    entryPoint: "customer",
+    entity: "customer",
     fields: [
       "subscriptions.*",
     ],
-    variables: {
-      filters: {
-        id: [req.auth_context.actor_id],
-      },
+    filters: {
+      id: [req.auth_context.actor_id],
     },
   })
 

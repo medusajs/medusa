@@ -1,5 +1,5 @@
 import { IOrderModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export type CancelOrdersStepInput = {
@@ -14,9 +14,7 @@ export const cancelOrdersStepId = "cancel-orders"
 export const cancelOrdersStep = createStep(
   cancelOrdersStepId,
   async (data: CancelOrdersStepInput, { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const orders = await service.listOrders(
       {
@@ -46,9 +44,7 @@ export const cancelOrdersStep = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await service.updateOrders(canceled)
   }

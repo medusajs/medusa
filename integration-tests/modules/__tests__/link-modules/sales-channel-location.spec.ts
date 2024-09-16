@@ -2,11 +2,7 @@ import {
   ISalesChannelModuleService,
   IStockLocationService,
 } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  Modules,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { Modules, remoteQueryObjectFromString } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -24,10 +20,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        scService = appContainer.resolve(ModuleRegistrationName.SALES_CHANNEL)
-        locationService = appContainer.resolve(
-          ModuleRegistrationName.STOCK_LOCATION
-        )
+        scService = appContainer.resolve(Modules.SALES_CHANNEL)
+        locationService = appContainer.resolve(Modules.STOCK_LOCATION)
         remoteQuery = appContainer.resolve("remoteQuery")
         remoteLink = appContainer.resolve("remoteLink")
       })

@@ -1,5 +1,5 @@
 import { ICartModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteLineItemsStepId = "delete-line-items"
@@ -9,9 +9,7 @@ export const deleteLineItemsStepId = "delete-line-items"
 export const deleteLineItemsStep = createStep(
   deleteLineItemsStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const service = container.resolve<ICartModuleService>(Modules.CART)
 
     await service.softDeleteLineItems(ids)
 
@@ -21,9 +19,7 @@ export const deleteLineItemsStep = createStep(
     if (!ids?.length) {
       return
     }
-    const service = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const service = container.resolve<ICartModuleService>(Modules.CART)
 
     await service.restoreLineItems(ids)
   }

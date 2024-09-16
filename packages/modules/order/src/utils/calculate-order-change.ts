@@ -148,6 +148,7 @@ export class OrderChangeProcessing {
     isReplay = false
   ): BigNumberInput | void {
     const definedType = OrderChangeProcessing.typeDefinition[action.action]
+
     if (!isPresent(definedType)) {
       throw new Error(`Action type ${action.action} is not defined`)
     }

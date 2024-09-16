@@ -22,7 +22,6 @@ describe("load internal - load resources", () => {
         ),
         definition: {
           key: "module-with-dml-mixed-without-joiner-config",
-          registrationName: "service",
           label: "Module with DML mixed without joiner config",
           defaultPackage: false,
           defaultModuleDeclaration: {
@@ -103,7 +102,6 @@ describe("load internal - load resources", () => {
         ),
         definition: {
           key: "module-with-dml-without-joiner-config",
-          registrationName: "service",
           label: "Module with DML without joiner config",
           defaultPackage: false,
           defaultModuleDeclaration: {
@@ -184,7 +182,6 @@ describe("load internal - load resources", () => {
         ),
         definition: {
           key: "module-without-joiner-config",
-          registrationName: "service",
           label: "Module without joiner config",
           defaultPackage: false,
           defaultModuleDeclaration: {
@@ -264,7 +261,6 @@ describe("load internal - load resources", () => {
         ),
         definition: {
           key: "module-without-joiner-config",
-          registrationName: "service",
           label: "Module without joiner config",
           defaultPackage: false,
           defaultModuleDeclaration: {

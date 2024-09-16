@@ -10,7 +10,7 @@ describe("Query", () => {
     it("should infer return type of a known entry", async () => {
       const graph = (() => {}) as unknown as QueryGraphFunction
       const result = await graph({
-        entryPoint: "product",
+        entity: "product",
         fields: ["handle", "id"],
       })
 
@@ -23,7 +23,7 @@ describe("Query", () => {
     it("should infer as any for an known entry", async () => {
       const graph = (() => {}) as unknown as QueryGraphFunction
       const result = await graph({
-        entryPoint: "foo",
+        entity: "foo",
         fields: ["handle", "id"],
       })
 

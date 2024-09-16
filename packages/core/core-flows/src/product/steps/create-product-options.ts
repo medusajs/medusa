@@ -1,5 +1,5 @@
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createProductOptionsStepId = "create-product-options"
@@ -9,9 +9,7 @@ export const createProductOptionsStepId = "create-product-options"
 export const createProductOptionsStep = createStep(
   createProductOptionsStepId,
   async (data: ProductTypes.CreateProductOptionDTO[], { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     const created = await service.createProductOptions(data)
     return new StepResponse(
@@ -24,9 +22,7 @@ export const createProductOptionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     await service.deleteProductOptions(createdIds)
   }

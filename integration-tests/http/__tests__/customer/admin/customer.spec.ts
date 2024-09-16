@@ -1,10 +1,12 @@
 import { IAuthModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
@@ -17,9 +19,13 @@ medusaIntegrationTestRunner({
     let customer4
     let customer5
     let container
+    let storeHeaders
+
     beforeEach(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
+      const publishableKey = await generatePublishableKey(container)
+      storeHeaders = generateStoreHeaders({ publishableKey })
 
       customer1 = (
         await api.post(
@@ -415,6 +421,7 @@ medusaIntegrationTestRunner({
             {
               headers: {
                 Authorization: `Bearer ${registeredCustomerToken}`,
+                ...storeHeaders.headers,
               },
             }
           )
@@ -436,9 +443,7 @@ medusaIntegrationTestRunner({
 
         const { auth_identity_id } = jwt.decode(registeredCustomerToken)
 
-        const authModule: IAuthModuleService = container.resolve(
-          ModuleRegistrationName.AUTH
-        )
+        const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
 
         const authIdentity = await authModule.retrieveAuthIdentity(
           auth_identity_id

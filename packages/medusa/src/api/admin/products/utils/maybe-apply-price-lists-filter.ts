@@ -7,7 +7,11 @@ import { NextFunction } from "express"
 import { MedusaRequest } from "../../../../types/routing"
 
 export function maybeApplyPriceListsFilter() {
-  return async (req: MedusaRequest, _, next: NextFunction) => {
+  return async function applyPriceListsFilter(
+    req: MedusaRequest,
+    _,
+    next: NextFunction
+  ) {
     const filterableFields: HttpTypes.AdminProductListParams =
       req.filterableFields
 

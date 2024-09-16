@@ -1,5 +1,5 @@
 import { IPricingModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const removePriceListPricesStepId = "remove-price-list-prices"
@@ -14,7 +14,7 @@ export const removePriceListPricesStep = createStep(
     }
 
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     const prices = await pricingModule.listPrices(
@@ -34,7 +34,7 @@ export const removePriceListPricesStep = createStep(
     }
 
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     await pricingModule.restorePrices(ids)

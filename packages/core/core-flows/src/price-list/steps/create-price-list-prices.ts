@@ -5,7 +5,7 @@ import {
   CreatePriceListPricesWorkflowStepDTO,
   IPricingModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createPriceListPricesStepId = "create-price-list-prices"
@@ -18,7 +18,7 @@ export const createPriceListPricesStep = createStep(
     const { data, variant_price_map: variantPriceSetMap } = stepInput
     const priceListPricesToCreate: AddPriceListPricesDTO[] = []
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     for (const createPriceListPricesData of data) {
@@ -57,7 +57,7 @@ export const createPriceListPricesStep = createStep(
     }
 
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     if (createdIds.length) {

@@ -2,7 +2,7 @@ import { IEventBusModuleService, Logger, ProductTypes } from "@medusajs/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
-  eventBusModuleService?: IEventBusModuleService
+  EventBus?: IEventBusModuleService
 }
 
 // TODO: remove and cleanup bellow code

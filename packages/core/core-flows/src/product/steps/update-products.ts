@@ -1,7 +1,7 @@
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import {
   MedusaError,
-  ModuleRegistrationName,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -22,9 +22,7 @@ export const updateProductsStepId = "update-products"
 export const updateProductsStep = createStep(
   updateProductsStepId,
   async (data: UpdateProductsStepInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     if ("products" in data) {
       if (data.products.some((p) => !p.id)) {
@@ -63,9 +61,7 @@ export const updateProductsStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     await service.upsertProducts(
       prevData.map((r) => ({

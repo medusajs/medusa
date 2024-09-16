@@ -78,7 +78,7 @@ Here’s an example of creating a custom API Route at `/store/pos/search-barcode
     MedusaResponse, 
   } from "@medusajs/medusa"
   import { MedusaError } from "@medusajs/utils"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
   import { IProductModuleService } from "@medusajs/types"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -88,7 +88,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   }
   // get product service
   const productModuleService: IProductModuleService = req.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   // retrieve product variants by barcode

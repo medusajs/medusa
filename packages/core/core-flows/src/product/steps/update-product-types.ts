@@ -1,8 +1,5 @@
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type UpdateProductTypesStepInput = {
@@ -17,9 +14,7 @@ export const updateProductTypesStepId = "update-product-types"
 export const updateProductTypesStep = createStep(
   updateProductTypesStepId,
   async (data: UpdateProductTypesStepInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -41,9 +36,7 @@ export const updateProductTypesStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     await service.upsertProductTypes(prevData)
   }

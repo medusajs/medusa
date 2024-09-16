@@ -1,6 +1,13 @@
-import { adminHeaders } from "../../../helpers/create-admin-user"
+import {
+  adminHeaders,
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../helpers/create-admin-user"
 
-export async function createOrderSeeder({ api }) {
+export async function createOrderSeeder({ api, container }) {
+  const publishableKey = await generatePublishableKey(container)
+  const storeHeaders = generateStoreHeaders({ publishableKey })
+
   const region = (
     await api.post(
       "/admin/regions",
@@ -145,38 +152,61 @@ export async function createOrderSeeder({ api }) {
   ).data.shipping_option
 
   const cart = (
-    await api.post(`/store/carts`, {
-      currency_code: "usd",
-      email: "tony@stark-industries.com",
-      region_id: region.id,
-      shipping_address: {
-        address_1: "test address 1",
-        address_2: "test address 2",
-        city: "ny",
-        country_code: "us",
-        province: "ny",
-        postal_code: "94016",
+    await api.post(
+      `/store/carts`,
+      {
+        currency_code: "usd",
+        email: "tony@stark-industries.com",
+        region_id: region.id,
+        shipping_address: {
+          address_1: "test address 1",
+          address_2: "test address 2",
+          city: "ny",
+          country_code: "us",
+          province: "ny",
+          postal_code: "94016",
+        },
+        sales_channel_id: salesChannel.id,
+        items: [{ quantity: 1, variant_id: product.variants[0].id }],
       },
-      sales_channel_id: salesChannel.id,
-      items: [{ quantity: 1, variant_id: product.variants[0].id }],
-    })
+      storeHeaders
+    )
   ).data.cart
 
   const paymentCollection = (
-    await api.post(`/store/payment-collections`, {
-      cart_id: cart.id,
-    })
+    await api.post(
+      `/store/payment-collections`,
+      {
+        cart_id: cart.id,
+      },
+      storeHeaders
+    )
   ).data.payment_collection
 
   await api.post(
     `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
-    { provider_id: "pp_system_default" }
+    { provider_id: "pp_system_default" },
+    storeHeaders
   )
 
-  let order = (await api.post(`/store/carts/${cart.id}/complete`, {})).data
-    .order
+  let order = (
+    await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
+  ).data.order
 
   order = (await api.get(`/admin/orders/${order.id}`, adminHeaders)).data.order
 
-  return order
+  return {
+    order,
+    region,
+    salesChannel,
+    stockLocation,
+    inventoryItem,
+    shippingProfile,
+    product,
+    fulfillmentSets,
+    fulfillmentSet,
+    shippingOption,
+    cart,
+    paymentCollection,
+  }
 }

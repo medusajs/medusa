@@ -1,14 +1,13 @@
 import { IAuthModuleService } from "@medusajs/types"
 
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
@@ -20,6 +19,7 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("POST /store/customers", () => {
       let appContainer
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
@@ -27,12 +27,14 @@ medusaIntegrationTestRunner({
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       // TODO: Reenable once the customer authentication is fixed, and use the HTTP endpoints instead.
       it.skip("should create a customer", async () => {
         const authService: IAuthModuleService = appContainer.resolve(
-          ModuleRegistrationName.AUTH
+          Modules.AUTH
         )
         const { http } = appContainer.resolve(
           ContainerRegistrationKeys.CONFIG_MODULE
@@ -55,7 +57,12 @@ medusaIntegrationTestRunner({
             last_name: "Doe",
             email: "john@me.com",
           },
-          { headers: { authorization: `Bearer ${token}` } }
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+              ...storeHeaders.headers,
+            },
+          }
         )
 
         expect(response.status).toEqual(200)

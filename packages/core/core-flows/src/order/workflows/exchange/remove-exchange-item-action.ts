@@ -12,6 +12,8 @@ import {
   WorkflowResponse,
   createStep,
   createWorkflow,
+  transform,
+  when,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import {
@@ -22,6 +24,7 @@ import {
   throwIfIsCancelled,
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
+import { removeExchangeShippingMethodWorkflow } from "./remove-exchange-shipping-method"
 
 /**
  * This step validates that a new item can be removed from an exchange.
@@ -103,6 +106,62 @@ export const removeItemExchangeActionWorkflow = createWorkflow(
     })
 
     deleteOrderChangeActionsStep({ ids: [input.action_id] })
+
+    const updatedOrderChange: OrderChangeDTO = useRemoteQueryStep({
+      entry_point: "order_change",
+      fields: [
+        "actions.action",
+        "actions.id",
+        "actions.exchange_id",
+        "actions.return_id",
+      ],
+      variables: {
+        filters: {
+          order_id: orderExchange.order_id,
+          exchange_id: orderExchange.id,
+          status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+        },
+      },
+      list: false,
+    }).config({ name: "updated-order-change-query" })
+
+    const actionIdToDelete = transform(
+      { updatedOrderChange, orderExchange },
+      ({
+        updatedOrderChange: { actions = [] },
+        orderExchange: { id: orderExchangeId },
+      }) => {
+        const itemActions = actions.filter((c) => c.action === "ITEM_ADD")
+
+        if (itemActions.length) {
+          return null
+        }
+
+        const shippingAction = actions.find(
+          (c) =>
+            c.action === "SHIPPING_ADD" &&
+            c.exchange_id === orderExchangeId &&
+            !c.return_id
+        )
+
+        if (!shippingAction) {
+          return null
+        }
+
+        return shippingAction.id
+      }
+    )
+
+    when({ actionIdToDelete }, ({ actionIdToDelete }) => {
+      return !!actionIdToDelete
+    }).then(() => {
+      removeExchangeShippingMethodWorkflow.runAsStep({
+        input: {
+          exchange_id: orderExchange.id!,
+          action_id: actionIdToDelete,
+        },
+      })
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(order.id))
   }

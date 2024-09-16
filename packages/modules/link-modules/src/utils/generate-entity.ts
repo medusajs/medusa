@@ -1,12 +1,12 @@
 import { JoinerRelationship, ModuleJoinerConfig } from "@medusajs/types"
 import {
   SoftDeletableFilterKey,
+  composeTableName,
   mikroOrmSoftDeletableFilterOptions,
   simpleHash,
 } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
-import { composeTableName } from "./compose-link-name"
 
 function getClass(...properties) {
   return class LinkModel {

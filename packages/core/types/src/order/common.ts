@@ -11,6 +11,7 @@ import { ClaimReason } from "./mutations"
 export type ChangeActionType =
   | "CANCEL_RETURN_ITEM"
   | "FULFILL_ITEM"
+  | "DELIVER_ITEM"
   | "CANCEL_ITEM_FULFILLMENT"
   | "ITEM_ADD"
   | "ITEM_REMOVE"
@@ -900,6 +901,16 @@ export interface OrderItemDTO {
   raw_fulfilled_quantity: BigNumberRawValue
 
   /**
+   * The delivered quantity of the order line item.
+   */
+  delivered_quantity: number
+
+  /**
+   * The raw delivered quantity of the order line item.
+   */
+  raw_delivered_quantity: BigNumberRawValue
+
+  /**
    * The shipped quantity of the order line item.
    */
   shipped_quantity: number
@@ -1148,6 +1159,11 @@ export interface OrderDTO {
    * The tax total of the order.
    */
   tax_total: BigNumberValue
+
+  /**
+   * The discount subtotal of the order.
+   */
+  discount_subtotal: BigNumberValue
 
   /**
    * The discount total of the order.

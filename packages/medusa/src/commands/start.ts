@@ -1,20 +1,58 @@
+import path from "path"
 import express from "express"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
-import { gqlSchemaToTypes, logger } from "@medusajs/framework"
 import { GracefulShutdownServer } from "@medusajs/utils"
+import http, { IncomingMessage, ServerResponse } from "http"
+import { gqlSchemaToTypes, logger } from "@medusajs/framework"
+
 import loaders from "../loaders"
-import path from "path"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
 
-export default async function ({ port, directory, types }) {
-  async function start() {
+/**
+ * Imports the "instrumentation.js" file from the root of the
+ * directory and invokes the register function. The existence
+ * of this file is optional, hence we ignore "ENOENT"
+ * errors.
+ */
+async function registerInstrumentation(directory: string) {
+  try {
+    const instrumentation = await import(
+      path.join(directory, "instrumentation.js")
+    )
+    if (typeof instrumentation.register === "function") {
+      logger.info("OTEL registered")
+      instrumentation.register()
+    }
+  } catch (error) {
+    if (!["ENOENT", "MODULE_NOT_FOUND"].includes(error.code)) {
+      throw error
+    }
+  }
+}
+
+async function start({ port, directory, types }) {
+  async function internalStart() {
     track("CLI_START")
+    await registerInstrumentation(directory)
 
     const app = express()
+
+    const http_ = http.createServer(async (req, res) => {
+      await start.traceRequestHandler(
+        async () => {
+          return new Promise((resolve) => {
+            res.on("finish", resolve)
+            app(req, res)
+          })
+        },
+        req,
+        res
+      )
+    })
 
     try {
       const { shutdown, gqlSchema } = await loaders({
@@ -33,7 +71,7 @@ export default async function ({ port, directory, types }) {
 
       const serverActivity = logger.activity(`Creating server`)
       const server = GracefulShutdownServer.create(
-        app.listen(port).on("listening", () => {
+        http_.listen(port).on("listening", () => {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
           track("CLI_START_COMPLETED")
         })
@@ -68,5 +106,19 @@ export default async function ({ port, directory, types }) {
     }
   }
 
-  await start()
+  await internalStart()
 }
+
+/**
+ * Wrap request handler inside custom implementation to enabled
+ * instrumentation.
+ */
+start.traceRequestHandler = async (
+  requestHandler: () => Promise<void>,
+  _: IncomingMessage,
+  __: ServerResponse
+) => {
+  return await requestHandler()
+}
+
+export default start

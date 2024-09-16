@@ -8,24 +8,19 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
 const providerId = "manual_test-provider"
 export async function prepareDataFixtures({ container }) {
-  const fulfillmentService = container.resolve(
-    ModuleRegistrationName.FULFILLMENT
-  )
-  const salesChannelService = container.resolve(
-    ModuleRegistrationName.SALES_CHANNEL
-  )
+  const fulfillmentService = container.resolve(Modules.FULFILLMENT)
+  const salesChannelService = container.resolve(Modules.SALES_CHANNEL)
   const stockLocationModule: IStockLocationService = container.resolve(
-    ModuleRegistrationName.STOCK_LOCATION
+    Modules.STOCK_LOCATION
   )
-  const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
-  const inventoryModule = container.resolve(ModuleRegistrationName.INVENTORY)
+  const productModule = container.resolve(Modules.PRODUCT)
+  const inventoryModule = container.resolve(Modules.INVENTORY)
 
   const shippingProfile = await fulfillmentService.createShippingProfiles({
     name: "test",
@@ -49,7 +44,7 @@ export async function prepareDataFixtures({ container }) {
   })
 
   const regionService = container.resolve(
-    ModuleRegistrationName.REGION
+    Modules.REGION
   ) as IRegionModuleService
 
   const [region] = await regionService.createRegions([
@@ -211,9 +206,7 @@ export async function createOrderFixture({
   location,
   inventoryItem,
 }) {
-  const orderService: IOrderModuleService = container.resolve(
-    ModuleRegistrationName.ORDER
-  )
+  const orderService: IOrderModuleService = container.resolve(Modules.ORDER)
 
   let order = await orderService.createOrders({
     region_id: "test_region_id",
@@ -287,7 +280,7 @@ export async function createOrderFixture({
     customer_id: "joe",
   })
 
-  const inventoryModule = container.resolve(ModuleRegistrationName.INVENTORY)
+  const inventoryModule = container.resolve(Modules.INVENTORY)
   await inventoryModule.createReservationItems([
     {
       line_item_id: order.items![0].id,

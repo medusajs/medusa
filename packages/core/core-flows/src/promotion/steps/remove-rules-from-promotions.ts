@@ -4,7 +4,7 @@ import {
   PromotionRuleDTO,
   RemovePromotionRulesWorkflowDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName, RuleType } from "@medusajs/utils"
+import { Modules, RuleType } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const removeRulesFromPromotionsStepId = "remove-rules-from-promotions"
@@ -17,7 +17,7 @@ export const removeRulesFromPromotionsStep = createStep(
     const { data, rule_type: ruleType } = input
 
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     const promotion = await promotionModule.retrievePromotion(data.id, {
@@ -73,7 +73,7 @@ export const removeRulesFromPromotionsStep = createStep(
     } = data
 
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     promotionRulesToCreate.length &&

@@ -16,14 +16,14 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ITaxModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const taxModuleService: ITaxModuleService = req.scope.resolve(
-    ModuleRegistrationName.TAX
+    Modules.TAX
   )
 
   const taxRegion = await taxModuleService.createTaxRegions({
@@ -78,14 +78,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ITaxModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const taxModuleService: ITaxModuleService = req.scope.resolve(
-    ModuleRegistrationName.TAX
+    Modules.TAX
   )
 
   res.json({
@@ -124,14 +124,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ITaxModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const taxModuleService: ITaxModuleService = req.scope.resolve(
-    ModuleRegistrationName.TAX
+    Modules.TAX
   )
 
   const taxRate = await taxModuleService.createTaxRates({
@@ -202,14 +202,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ITaxModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const taxModuleService: ITaxModuleService = req.scope.resolve(
-    ModuleRegistrationName.TAX
+    Modules.TAX
   )
 
   res.json({
@@ -248,14 +248,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ITaxModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const taxModuleService: ITaxModuleService = req.scope.resolve(
-    ModuleRegistrationName.TAX
+    Modules.TAX
   )
 
   const taxLines = await taxModuleService.getTaxLines(

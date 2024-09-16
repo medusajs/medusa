@@ -1,5 +1,11 @@
-import { IAuthModuleService, IUserModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import {
+  ApiKeyDTO,
+  IApiKeyModuleService,
+  IAuthModuleService,
+  IUserModuleService,
+  MedusaContainer,
+} from "@medusajs/types"
+import { ApiKeyType, Modules, PUBLISHABLE_KEY_HEADER } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import Scrypt from "scrypt-kdf"
 import { getContainer } from "../environment-helpers/use-container"
@@ -15,12 +21,8 @@ export const createAdminUser = async (
 ) => {
   const appContainer = container ?? getContainer()!
 
-  const userModule: IUserModuleService = appContainer.resolve(
-    ModuleRegistrationName.USER
-  )
-  const authModule: IAuthModuleService = appContainer.resolve(
-    ModuleRegistrationName.AUTH
-  )
+  const userModule: IUserModuleService = appContainer.resolve(Modules.USER)
+  const authModule: IAuthModuleService = appContainer.resolve(Modules.AUTH)
   const user = await userModule.createUsers({
     first_name: "Admin",
     last_name: "User",
@@ -60,4 +62,29 @@ export const createAdminUser = async (
   adminHeaders.headers["authorization"] = `Bearer ${token}`
 
   return { user, authIdentity }
+}
+
+export const generatePublishableKey = async (container?: MedusaContainer) => {
+  const appContainer = container ?? getContainer()!
+  const apiKeyModule = appContainer.resolve<IApiKeyModuleService>(
+    Modules.API_KEY
+  )
+
+  return await apiKeyModule.createApiKeys({
+    title: "test publishable key",
+    type: ApiKeyType.PUBLISHABLE,
+    created_by: "test",
+  })
+}
+
+export const generateStoreHeaders = ({
+  publishableKey,
+}: {
+  publishableKey: ApiKeyDTO
+}) => {
+  return {
+    headers: {
+      [PUBLISHABLE_KEY_HEADER]: publishableKey.token,
+    },
+  }
 }
