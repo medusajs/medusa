@@ -16,14 +16,14 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   const cart = await cartModuleService.createCarts({
@@ -90,14 +90,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   const cart = await cartModuleService.retrieveCart("cart_123")
@@ -138,14 +138,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   const lineItem = await cartModuleService.addLineItems({
@@ -198,14 +198,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   const shippingMethod = await cartModuleService.addShippingMethods({
@@ -256,14 +256,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   const itemAdjustment = await cartModuleService.addLineItemAdjustments({
@@ -314,14 +314,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   const shippingMethodAdjustment =
@@ -374,14 +374,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   await cartModuleService.deleteLineItems(["cali_123"])
@@ -418,14 +418,14 @@ export async function DELETE(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   await cartModuleService.deleteShippingMethods(["casm_123"])
@@ -440,14 +440,14 @@ export async function DELETE(
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   await cartModuleService.deleteShippingMethods(["casm_123"])
