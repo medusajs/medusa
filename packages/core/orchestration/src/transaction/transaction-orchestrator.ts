@@ -779,8 +779,20 @@ export class TransactionOrchestrator extends EventEmitter {
           hasSyncSteps = true
 
           const stepHandler = async () => {
-            return await transaction
-              .handler(...handlerArgs)
+            return await transaction.handler(...handlerArgs)
+          }
+
+          let promise: Promise<unknown>
+          if (TransactionOrchestrator.tranceStep) {
+            promise = TransactionOrchestrator.tranceStep(stepHandler, traceData)
+          } else {
+            promise = stepHandler()
+          }
+
+          promise
+
+          execution.push(
+            promise
               .then(async (response: any) => {
                 if (this.hasExpired({ transaction, step }, Date.now())) {
                   await this.checkStepTimeout(transaction, step)
@@ -820,77 +832,73 @@ export class TransactionOrchestrator extends EventEmitter {
 
                 await setStepFailure(error)
               })
-          }
-
-          if (TransactionOrchestrator.tranceStep) {
-            execution.push(
-              TransactionOrchestrator.tranceStep(stepHandler, traceData)
-            )
-          } else {
-            execution.push(stepHandler())
-          }
+          )
         } else {
           const stepHandler = async () => {
-            return await transaction
-              .handler(...handlerArgs)
-              .then(async (response: any) => {
-                if (!step.definition.backgroundExecution) {
-                  const eventName = DistributedTransactionEvent.STEP_AWAITING
-                  transaction.emit(eventName, { step, transaction })
-
-                  return
-                }
-
-                if (this.hasExpired({ transaction, step }, Date.now())) {
-                  await this.checkStepTimeout(transaction, step)
-                  await this.checkTransactionTimeout(
-                    transaction,
-                    nextSteps.next.includes(step) ? nextSteps.next : [step]
-                  )
-                }
-
-                let setResponse = true
-                const output = response?.__type ? response.output : response
-                if (SkipStepResponse.isSkipStepResponse(output)) {
-                  await TransactionOrchestrator.skipStep(transaction, step)
-                  setResponse = false
-                }
-
-                if (setResponse) {
-                  await TransactionOrchestrator.setStepSuccess(
-                    transaction,
-                    step,
-                    response
-                  )
-                }
-
-                await transaction.scheduleRetry(
-                  step,
-                  step.definition.retryInterval ?? 0
-                )
-              })
-              .catch(async (error) => {
-                if (
-                  PermanentStepFailureError.isPermanentStepFailureError(error)
-                ) {
-                  await setStepFailure(error, { endRetry: true })
-                  return
-                }
-
-                await setStepFailure(error)
-              })
+            return await transaction.handler(...handlerArgs)
           }
+
+          let promise: Promise<unknown>
+
+          if (TransactionOrchestrator.tranceStep) {
+            promise = TransactionOrchestrator.tranceStep(stepHandler, traceData)
+          } else {
+            promise = stepHandler()
+          }
+
+          promise
 
           execution.push(
             transaction.saveCheckpoint().then(() => {
-              if (TransactionOrchestrator.tranceStep) {
-                return TransactionOrchestrator.tranceStep(
-                  stepHandler,
-                  traceData
-                )
-              }
+              // TODO discussion why do we not await here, adding an await I wouldnt expect the test to fail but it does, maybe we should split the test to also test after everything is executed?
+              // cc test from engine redis
+              promise
+                .then(async (response: any) => {
+                  if (!step.definition.backgroundExecution) {
+                    const eventName = DistributedTransactionEvent.STEP_AWAITING
+                    transaction.emit(eventName, { step, transaction })
 
-              return stepHandler()
+                    return
+                  }
+
+                  if (this.hasExpired({ transaction, step }, Date.now())) {
+                    await this.checkStepTimeout(transaction, step)
+                    await this.checkTransactionTimeout(
+                      transaction,
+                      nextSteps.next.includes(step) ? nextSteps.next : [step]
+                    )
+                  }
+
+                  let setResponse = true
+                  const output = response?.__type ? response.output : response
+                  if (SkipStepResponse.isSkipStepResponse(output)) {
+                    await TransactionOrchestrator.skipStep(transaction, step)
+                    setResponse = false
+                  }
+
+                  if (setResponse) {
+                    await TransactionOrchestrator.setStepSuccess(
+                      transaction,
+                      step,
+                      response
+                    )
+                  }
+
+                  await transaction.scheduleRetry(
+                    step,
+                    step.definition.retryInterval ?? 0
+                  )
+                })
+                .catch(async (error) => {
+                  if (
+                    PermanentStepFailureError.isPermanentStepFailureError(error)
+                  ) {
+                    await setStepFailure(error, { endRetry: true })
+                    return
+                  }
+
+                  await setStepFailure(error)
+                })
             })
           )
         }
@@ -948,7 +956,7 @@ export class TransactionOrchestrator extends EventEmitter {
         this.emit(DistributedTransactionEvent.RESUME, { transaction })
       }
 
-      await this.executeNext(transaction)
+      return await this.executeNext(transaction)
     }
 
     if (
