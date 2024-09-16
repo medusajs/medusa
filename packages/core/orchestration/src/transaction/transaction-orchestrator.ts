@@ -52,7 +52,10 @@ export class TransactionOrchestrator extends EventEmitter {
     return this.workflowOptions[modelId]
   }
 
-  static tranceTransaction?: (
+  /**
+   * Trace workflow transaction for instrumentation
+   */
+  static traceTransaction?: (
     transactionResume: (...args: any[]) => Promise<void>,
     metadata: {
       model_id: string
@@ -61,7 +64,10 @@ export class TransactionOrchestrator extends EventEmitter {
     }
   ) => Promise<any>
 
-  static tranceStep?: (
+  /**
+   * Trace workflow steps for instrumentation
+   */
+  static traceStep?: (
     handler: (...args: any[]) => Promise<any>,
     metadata: {
       action: string
@@ -822,9 +828,9 @@ export class TransactionOrchestrator extends EventEmitter {
               })
           }
 
-          if (TransactionOrchestrator.tranceStep) {
+          if (TransactionOrchestrator.traceStep) {
             execution.push(
-              TransactionOrchestrator.tranceStep(stepHandler, traceData)
+              TransactionOrchestrator.traceStep(stepHandler, traceData)
             )
           } else {
             execution.push(stepHandler())
@@ -882,15 +888,13 @@ export class TransactionOrchestrator extends EventEmitter {
           }
 
           execution.push(
-            transaction.saveCheckpoint().then(() => {
-              if (TransactionOrchestrator.tranceStep) {
-                return TransactionOrchestrator.tranceStep(
-                  stepHandler,
-                  traceData
-                )
+            transaction.saveCheckpoint().then(async () => {
+              if (TransactionOrchestrator.traceStep) {
+                TransactionOrchestrator.traceStep(stepHandler, traceData)
+                return
               }
 
-              return stepHandler()
+              await stepHandler()
             })
           )
         }
@@ -952,10 +956,10 @@ export class TransactionOrchestrator extends EventEmitter {
     }
 
     if (
-      TransactionOrchestrator.tranceTransaction &&
+      TransactionOrchestrator.traceTransaction &&
       !transaction.getFlow().hasAsyncSteps
     ) {
-      await TransactionOrchestrator.tranceTransaction(executeNext, {
+      await TransactionOrchestrator.traceTransaction(executeNext, {
         model_id: transaction.modelId,
         transaction_id: transaction.transactionId,
         flow_metadata: transaction.getFlow().metadata,
