@@ -860,6 +860,10 @@ export const filesMap = [
     "pathname": "/storefront-development/products/variants"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/publishable-api-keys/page.mdx",
+    "pathname": "/storefront-development/publishable-api-keys"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/regions/context/page.mdx",
     "pathname": "/storefront-development/regions/context"
   },

@@ -58,6 +58,10 @@ This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eat
     link: "!docs!#get-started"
   },
   {
+    text: "Publishable API key to send store requests. You can create it in the Medusa Admin or using the Admin API routes",
+    link: "/storefront-development/publishable-api-keys"
+  },
+  {
     text: "Recommended: Use the Redis Workflow Engine Module for improved tracking and storage of workflow executions."
   }
 ]} />
@@ -2134,6 +2138,7 @@ Before using the API route, you must have a cart with at least one product from 
 ```bash
 curl -X POST 'http://localhost:9000/store/carts' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "region_id": "reg_01J66SWSSWFZPQV0GWR2W7P1SB",
     "sales_channel_id": "sc_01J66SWSRK95F2P2KTFHMYR7VC",
@@ -2164,6 +2169,7 @@ curl -X POST 'http://localhost:9000/store/carts' \
 ```bash
 curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/line-items' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "variant_id": "variant_01J66T0VC2S0NB4BNDBCZN8P9F",
     "quantity": 1
@@ -2176,6 +2182,7 @@ curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/
   
 ```bash
 curl 'http://localhost:9000/store/shipping-options?cart_id=cart_01J67JT10B3RCWKT9NFEFYA2XG' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 ```
   
   Make sure to replace the value of the `cart_id` query parameter with the cart’s ID.
@@ -2185,6 +2192,7 @@ curl 'http://localhost:9000/store/shipping-options?cart_id=cart_01J67JT10B3RCWKT
 ```bash
 curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/shipping-methods' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "option_id": "so_01J66SWSVQG7S1BSJKR7PYWH6C",
     "data": {}
@@ -2198,6 +2206,7 @@ curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/
 ```bash
 curl -X POST 'http://localhost:9000/store/payment-collections' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "cart_id": "cart_01J67MS5WPH2CE5R84BENJCGSW"
 }'
@@ -2210,6 +2219,7 @@ curl -X POST 'http://localhost:9000/store/payment-collections' \
 ```bash
 curl -X POST 'http://localhost:9000/store/payment-collections/pay_col_01J67MSK397M3BKD3RDVDMJSRE/payment-sessions' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "provider_id": "pp_system_default"
 }'
@@ -2227,6 +2237,7 @@ Then, send a `POST` request to `/store/deliveries` to create the order delivery:
 ```bash
 curl -X POST 'http://localhost:9000/store/deliveries' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data '{
     "cart_id": "cart_01J67MS5WPH2CE5R84BENJCGSW",
     "restaurant_id": "res_01J66SYN5DSRR0R6QM3A4SYRFZ"
@@ -3256,9 +3267,9 @@ In this step, you’ll learn how to implement real-time tracking of a delivery i
 
 Before adding the storefront UI, you need an API route that allows a client to stream delivery changes.
 
-So, create the file `src/api/store/deliveries/subscribe/route.ts` with the following content:
+So, create the file `src/api/deliveries/subscribe/route.ts` with the following content:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
+```ts title="src/api/deliveries/subscribe/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
 import { 
   MedusaRequest, 
   MedusaResponse,
@@ -3287,11 +3298,11 @@ export const GET = async (
 }
 ```
 
-This creates a `GET` API route at `/store/deliveries/[id]/subscribe`. Currently, you only retrieve the delivery by its ID.
+This creates a `GET` API route at `/deliveries/[id]/subscribe`. Currently, you only retrieve the delivery by its ID.
 
 Next, you’ll stream the changes in the delivery. To do that, replace the `TODO` with the following:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts"
+```ts title="src/api/deliveries/subscribe/route.ts"
 const headers = {
   "Content-Type": "text/event-stream",
   Connection: "keep-alive",
@@ -3316,7 +3327,7 @@ In the above snippet, you set the response to a stream and write an initial mess
 
 To listen to the workflow changes, replace the new `TODO` with the following:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts"
+```ts title="src/api/deliveries/subscribe/route.ts"
 const workflowEngine = req.scope.resolve(
   Modules.WORKFLOW_ENGINE
 )
@@ -3338,9 +3349,9 @@ In this snippet, you resolve the Workflow Engine Module’s main service. Then, 
 
 The storefront UI will also need to retrieve the delivery. So, you’ll create an API route that retrieves the delivery’s details.
 
-Create the file `src/api/store/deliveries/[id]/route.ts` with the following content:
+Create the file `src/api/deliveries/[id]/route.ts` with the following content:
 
-```ts title="src/api/store/deliveries/[id]/route.ts"
+```ts title="src/api/deliveries/[id]/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { DELIVERY_MODULE } from "../../../../modules/delivery"
 
@@ -3405,6 +3416,9 @@ To retrieve the delivery from the Medusa application, replace the first `TODO` w
 // retrieve the delivery
 fetch(`http://localhost:9000/store/deliveries/${id}`, {
   credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+  },
 })
 .then((res) => res.json())
 .then((data) => {
@@ -3420,7 +3434,7 @@ Next, to subscribe to the delivery’s changes in real-time, replace the remaini
 ```tsx title="Storefront Page"
 // subscribe to the delivery updates
 const source = new EventSource(
-  `http://localhost:9000/store/deliveries/${id}/subscribe`
+  `http://localhost:9000/deliveries/${id}/subscribe`
 )
 
 source.onmessage = (message) => {
@@ -3442,7 +3456,7 @@ return () => {
 }
 ```
 
-You use the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to receive the stream from the `/store/deliveries/[id]/subscribe` API route.
+You use the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to receive the stream from the `/deliveries/[id]/subscribe` API route.
 
 When a new message is set, the new delivery update is extracted from `message.data.response`, if `response` is available and has a `delivery_status` property.
 

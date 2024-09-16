@@ -2268,6 +2268,9 @@ export const getDigitalProductPreview = cache(async function ({
   const { previews } = await fetch(
     `${process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL}/store/digital-products/${id}/preview`, {
     credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    },
   }).then((res) => res.json())
 
   // for simplicity, return only the first preview url
@@ -2378,6 +2381,7 @@ export const getCustomerDigitalProducts = async () => {
     credentials: "include",
     headers: {
       ...getAuthHeaders(),
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
   }).then((res) => res.json())
 
@@ -2536,6 +2540,7 @@ export const getDigitalMediaDownloadLink = async (mediaId: string) => {
     method: "POST",
     headers: {
       ...getAuthHeaders(),
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
   }).then((res) => res.json())
 

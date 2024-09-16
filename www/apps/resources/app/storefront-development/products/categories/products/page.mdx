@@ -13,7 +13,7 @@ To retrieve a category's products in the storefront, send a request to the [List
 
 export const fetchHighlights = [
   ["3", "", "Pass the category ID as a query parameter."],
-  ["9", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to retrieve products of associated sales channel(s)."], 
+  ["9", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to retrieve products of associated sales channel(s)."], 
 ]
 
   ```ts highlights={fetchHighlights}
@@ -25,7 +25,7 @@ export const fetchHighlights = [
   fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
   })
   .then((res) => res.json())
@@ -42,7 +42,7 @@ export const highlights = [
   ["13", "params: { categoryId }", "This is based on Next.js which passes the path parameters as a prop."],
   ["33", "", "Pass the category ID as a query parameter."],
   ["36"], ["37"], ["38"], 
-  ["39", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to retrieve products of associated sales channel(s)."], 
+  ["39", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to retrieve products of associated sales channel(s)."], 
   ["40"], ["41"], ["42"], ["43"], ["44"], ["45"], ["46"], ["47"], ["48"], ["49"], ["50"], ["51"], ["52"], ["53"], ["54"],
   ["55"], ["56"]
 ]
@@ -86,7 +86,7 @@ export const highlights = [
       fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
         },
       })
       .then((res) => res.json())
