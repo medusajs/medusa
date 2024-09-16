@@ -17,9 +17,9 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "core-flows",
     plugin: ["typedoc-plugin-workflows"],
     enableWorkflowsPlugins: true,
-    enableNamespaceGenerator: true,
+    enablePathNamespaceGenerator: true,
     // @ts-expect-error there's a typing issue in typedoc
-    generateNamespaces: getCoreFlowNamespaces(),
+    generatePathNamespaces: getCoreFlowNamespaces(),
   }),
   "auth-provider": getOptions({
     entryPointPath: "packages/core/utils/src/auth/abstract-auth-provider.ts",
@@ -35,6 +35,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     ],
     tsConfigName: "utils.json",
     name: "dml",
+    generateCustomNamespaces: true,
   }),
   file: getOptions({
     entryPointPath: "packages/core/utils/src/file/abstract-file-provider.ts",

@@ -37,7 +37,7 @@ The following options are useful for linting:
 
 ### Generate Namespace Plugin
 
-If the `generateNamespaces` option is enabled, Namespaces are created from reflections having the `@customNamespace` tag. It also attaches categories (using the `@category` tag) of the same reflection to its generated parent namespace.
+If the `generatePathNamespaces` option is enabled, Namespaces are created from reflections having the `@customNamespace` tag. It also attaches categories (using the `@category` tag) of the same reflection to its generated parent namespace.
 
 It also accepts the following options:
 
