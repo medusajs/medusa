@@ -12,7 +12,7 @@ interface ConfirmInventoryPreparationInput {
   }[]
   items: {
     id?: string
-    variant_id?: string
+    variant_id?: string | null
     quantity: BigNumberInput
   }[]
   variants: {

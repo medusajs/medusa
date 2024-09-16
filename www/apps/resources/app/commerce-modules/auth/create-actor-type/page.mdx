@@ -295,3 +295,124 @@ curl 'http://localhost:9000/manager/me' \
 ```
 
 Whenever you want to log in as a manager, use the `/auth/manager/emailpass` API route, as explained in step 3.
+
+---
+
+## Delete User of Actor Type
+
+When you delete a user of the actor type, you must update its auth identity to remove the association to the user.
+
+For example, create the following workflow that deletes a manager and updates its auth identity, create the file `src/workflows/delete-manager.ts` with the following content:
+
+```ts title="src/workflows/delete-manager.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+import ManagerModuleService from "../modules/manager/service"
+
+export type DeleteManagerWorkflow = {
+  id: string
+}
+
+const deleteManagerStep = createStep(
+  "delete-manager-step",
+  async (
+    { id }: DeleteManagerWorkflow, 
+    { container }) => {
+      const managerModuleService: ManagerModuleService = 
+        container.resolve("managerModuleService")
+
+      const manager = await managerModuleService.retrieve(id)
+
+      await managerModuleService.deleteManagers(id)
+
+      return new StepResponse(undefined, { manager })
+    },
+    async ({ manager }, { container }) => {
+      const managerModuleService: ManagerModuleService = 
+        container.resolve("managerModuleService")
+
+      await managerModuleService.createManagers(manager)
+    }
+  )
+```
+
+You add a step that deletes the manager using the `deleteManagers` method of the module's main service. In the compensation function, you create the manager again.
+
+Next, in the same file, add the workflow that deletes a manager:
+
+export const deleteHighlights = [
+  ["30", "manager_id", "If your actor type has a different name, such as vendor, change it to be `{actor_type}_id`."]
+]
+
+```ts title="src/workflows/delete-manager.ts" collapsibleLines="1-15" expandButtonLabel="Show Imports" highlights={deleteHighlights}
+// other imports
+import { MedusaError } from "@medusajs/utils"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
+import { 
+  setAuthAppMetadataStep,
+  useRemoteQueryStep,
+} from "@medusajs/core-flows"
+
+// ...
+
+export const deleteManagerWorkflow = createWorkflow(
+  "delete-manager",
+  (
+    input: WorkflowData<DeleteManagerWorkflow>
+  ): WorkflowResponse<string> => {
+    deleteManagerStep(input)
+
+    const authIdentities = useRemoteQueryStep({
+      entry_point: "auth_identity",
+      fields: ["id"],
+      variables: {
+        filters: {
+          app_metadata: {
+            // the ID is of the format `{actor_type}_id`.
+            manager_id: input.id,
+          },
+        },
+      },
+    })
+
+    const authIdentity = transform(
+      { authIdentities },
+      ({ authIdentities }) => {
+        const authIdentity = authIdentities[0]
+
+        if (!authIdentity) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            "Auth identity not found"
+          )
+        }
+
+        return authIdentity
+      }
+    )
+
+    setAuthAppMetadataStep({
+      authIdentityId: authIdentity.id,
+      actorType: "manager",
+      value: null,
+    })
+
+    return new WorkflowResponse(input.id)
+  }
+)
+```
+
+In the workflow, you:
+
+1. Use the `deleteManagerStep` defined earlier to delete the manager.
+2. Retrieve the auth identity of the manager using Query. To do that, you filter the `app_metadata` property of an auth identity, which holds the user's ID under `{actor_type_name}_id`. So, in this case, it's `manager_id`.
+3. Check that the auth identity exist, then, update the auth identity to remove the ID of the manager from it.
+
+You can use this workflow when deleting a manager, such as in an API route.
