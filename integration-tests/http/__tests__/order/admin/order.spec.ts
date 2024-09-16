@@ -11,24 +11,17 @@ jest.setTimeout(30000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
-    let order, location
+    let order, seeder
 
     beforeEach(async () => {
       const container = getContainer()
 
       await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
       await createAdminUser(dbConnection, adminHeaders, container)
-      order = await createOrderSeeder({ api, container })
+      seeder = await createOrderSeeder({ api, container })
+      order = seeder.order
       order = (await api.get(`/admin/orders/${order.id}`, adminHeaders)).data
         .order
-
-      location = (
-        await api.post(
-          `/admin/stock-locations`,
-          { name: "Test location" },
-          adminHeaders
-        )
-      ).data.stock_location
     })
 
     describe("POST /orders/:id/fulfillments/:id/mark-as-delivered", () => {
@@ -40,7 +33,7 @@ medusaIntegrationTestRunner({
         await api.post(
           `/admin/orders/${order.id}/fulfillments`,
           {
-            location_id: location.id,
+            location_id: seeder.stockLocation.id,
             items: [
               {
                 id: fulfillableItem.id,

@@ -1043,7 +1043,7 @@ export default class InventoryModuleService
     locationId: string,
     @MedusaContext() context: Context = {}
   ): Promise<InventoryTypes.InventoryLevelDTO> {
-    const inventoryLevel = await this.listInventoryLevels(
+    const [inventoryLevel] = await this.listInventoryLevels(
       { inventory_item_id: inventoryItemId, location_id: locationId },
       { take: null },
       context
@@ -1056,7 +1056,7 @@ export default class InventoryModuleService
       )
     }
 
-    return inventoryLevel[0]
+    return inventoryLevel
   }
 
   /**
