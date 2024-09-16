@@ -2,7 +2,7 @@ import { beginClaimOrderWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
+  Modules,
   promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -49,7 +49,7 @@ export const POST = async (
   }
 
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
+  const orderModuleService = req.scope.resolve(Modules.ORDER)
 
   const workflow = beginClaimOrderWorkflow(req.scope)
   const { result } = await workflow.run({

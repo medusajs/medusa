@@ -4,12 +4,7 @@ import {
   ICartModuleService,
   UpdateLineItemWithSelectorDTO,
 } from "@medusajs/types"
-import {
-  MathBN,
-  ModuleRegistrationName,
-  deepEqualObj,
-  isPresent,
-} from "@medusajs/utils"
+import { MathBN, Modules, deepEqualObj, isPresent } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface GetLineItemActionsStepInput {
@@ -19,15 +14,13 @@ export interface GetLineItemActionsStepInput {
 
 export const getLineItemActionsStepId = "get-line-item-actions-step"
 /**
- * This step returns lists of cart line items to create or update based on the 
+ * This step returns lists of cart line items to create or update based on the
  * provided input.
  */
 export const getLineItemActionsStep = createStep(
   getLineItemActionsStepId,
   async (data: GetLineItemActionsStepInput, { container }) => {
-    const cartModule = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const cartModule = container.resolve<ICartModuleService>(Modules.CART)
 
     const existingVariantItems = await cartModule.listLineItems({
       cart_id: data.id,

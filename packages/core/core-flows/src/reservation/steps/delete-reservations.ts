@@ -1,7 +1,7 @@
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 import { IInventoryService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export const deleteReservationsStepId = "delete-reservations"
 /**
@@ -10,9 +10,7 @@ export const deleteReservationsStepId = "delete-reservations"
 export const deleteReservationsStep = createStep(
   deleteReservationsStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<IInventoryService>(
-      ModuleRegistrationName.INVENTORY
-    )
+    const service = container.resolve<IInventoryService>(Modules.INVENTORY)
 
     await service.softDeleteReservationItems(ids)
 
@@ -23,9 +21,7 @@ export const deleteReservationsStep = createStep(
       return
     }
 
-    const service = container.resolve<IInventoryService>(
-      ModuleRegistrationName.INVENTORY
-    )
+    const service = container.resolve<IInventoryService>(Modules.INVENTORY)
 
     await service.restoreReservationItems(prevIds)
   }

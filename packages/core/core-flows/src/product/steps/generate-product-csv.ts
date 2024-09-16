@@ -3,7 +3,7 @@ import {
   IFileModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import { normalizeForExport } from "../helpers/normalize-for-export"
 import { convertJsonToCsv } from "../utlils"
@@ -66,7 +66,7 @@ export const generateProductCsvStep = createStep(
   generateProductCsvStepId,
   async (products: HttpTypes.AdminProduct[], { container }) => {
     const regionService = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
+      Modules.REGION
     )
 
     const regions = await regionService.listRegions(
@@ -79,9 +79,7 @@ export const generateProductCsvStep = createStep(
       sortHeader: csvSortFunction,
     })
 
-    const fileModule: IFileModuleService = container.resolve(
-      ModuleRegistrationName.FILE
-    )
+    const fileModule: IFileModuleService = container.resolve(Modules.FILE)
 
     const filename = `${Date.now()}-product-exports.csv`
     const file = await fileModule.createFiles({
@@ -97,9 +95,7 @@ export const generateProductCsvStep = createStep(
       return
     }
 
-    const fileModule: IFileModuleService = container.resolve(
-      ModuleRegistrationName.FILE
-    )
+    const fileModule: IFileModuleService = container.resolve(Modules.FILE)
     await fileModule.deleteFiles(fileId)
   }
 )

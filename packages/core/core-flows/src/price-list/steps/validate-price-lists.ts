@@ -3,11 +3,7 @@ import {
   PriceListDTO,
   UpdatePriceListDTO,
 } from "@medusajs/types"
-import {
-  MedusaError,
-  ModuleRegistrationName,
-  arrayDifference,
-} from "@medusajs/utils"
+import { MedusaError, Modules, arrayDifference } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const validatePriceListsStepId = "validate-price-lists"
@@ -18,7 +14,7 @@ export const validatePriceListsStep = createStep(
   validatePriceListsStepId,
   async (data: Pick<UpdatePriceListDTO, "id">[], { container }) => {
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     const priceListIds = data.map((d) => d.id)

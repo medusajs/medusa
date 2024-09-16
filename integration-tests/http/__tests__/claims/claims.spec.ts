@@ -2,7 +2,6 @@ import {
   ClaimReason,
   ClaimType,
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   RuleOperator,
 } from "@medusajs/utils"
@@ -122,7 +121,7 @@ medusaIntegrationTestRunner({
         )
       ).data.return_reason
 
-      const orderModule = container.resolve(ModuleRegistrationName.ORDER)
+      const orderModule = container.resolve(Modules.ORDER)
 
       order = await orderModule.createOrders({
         region_id: region.id,
@@ -401,7 +400,7 @@ medusaIntegrationTestRunner({
 
       item = order.items[0]
 
-      await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
+      await setupTaxStructure(container.resolve(Modules.TAX))
     })
 
     describe("Claims lifecycle", () => {

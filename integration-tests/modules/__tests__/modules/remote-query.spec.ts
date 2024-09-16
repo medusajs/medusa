@@ -1,9 +1,5 @@
 import { IRegionModuleService } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-  Modules,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../..//helpers/create-admin-user"
 import { adminHeaders } from "../../../helpers/create-admin-user"
@@ -23,7 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
+        regionModule = appContainer.resolve(Modules.REGION)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
@@ -131,7 +127,7 @@ medusaIntegrationTestRunner({
             }
           )
         ).rejects.toThrow(
-          `regionRegionPaymentPaymentProviderLink region_id not found: ${regionNoLink.id}`
+          `RegionRegionPaymentPaymentProviderLink region_id not found: ${regionNoLink.id}`
         )
 
         // Only validate the relations with Payment. It doesn't fail because the link didn't return any data
@@ -174,7 +170,7 @@ medusaIntegrationTestRunner({
             }
           )
         ).rejects.toThrow(
-          "payment id not found: pp_system_default_non_existent"
+          "Payment id not found: pp_system_default_non_existent"
         )
 
         // everything is fine

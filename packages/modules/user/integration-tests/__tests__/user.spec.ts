@@ -25,7 +25,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
     jwt_secret: "test",
   },
   injectedDependencies: {
-    eventBusModuleService: new MockEventBusService(),
+    [Modules.EVENT_BUS]: new MockEventBusService(),
   },
   testSuite: ({ service }) => {
     it(`should export the appropriate linkable configuration`, () => {
@@ -45,7 +45,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
             linkable: "user_id",
             entity: "User",
             primaryKey: "id",
-            serviceName: "user",
+            serviceName: "User",
             field: "user",
           },
         },
@@ -54,7 +54,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
             linkable: "invite_id",
             entity: "Invite",
             primaryKey: "id",
-            serviceName: "user",
+            serviceName: "User",
             field: "invite",
           },
         },

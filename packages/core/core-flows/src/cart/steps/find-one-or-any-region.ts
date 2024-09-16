@@ -1,5 +1,5 @@
 import { IRegionModuleService, IStoreModuleService } from "@medusajs/types"
-import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
+import { MedusaError, Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const findOneOrAnyRegionStepId = "find-one-or-any-region"
@@ -9,13 +9,9 @@ export const findOneOrAnyRegionStepId = "find-one-or-any-region"
 export const findOneOrAnyRegionStep = createStep(
   findOneOrAnyRegionStepId,
   async (data: { regionId?: string }, { container }) => {
-    const service = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
-    )
+    const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
-    const storeModule = container.resolve<IStoreModuleService>(
-      ModuleRegistrationName.STORE
-    )
+    const storeModule = container.resolve<IStoreModuleService>(Modules.STORE)
 
     if (data.regionId) {
       try {

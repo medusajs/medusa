@@ -1,5 +1,5 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteCustomerAddressesStepId = "delete-customer-addresses"
@@ -9,9 +9,7 @@ export const deleteCustomerAddressesStepId = "delete-customer-addresses"
 export const deleteCustomerAddressesStep = createStep(
   deleteCustomerAddressesStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     const existing = await service.listCustomerAddresses({
       id: ids,
@@ -25,9 +23,7 @@ export const deleteCustomerAddressesStep = createStep(
       return
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     await service.createCustomerAddresses(prevAddresses)
   }

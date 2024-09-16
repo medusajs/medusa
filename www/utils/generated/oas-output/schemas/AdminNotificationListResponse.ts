@@ -1,7 +1,7 @@
 /**
  * @schema AdminNotificationListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of notifications.
  * x-schemaName: AdminNotificationListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The notification's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The notification's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The notification's count.
+ *     description: The total count of items.
  *   notifications:
  *     type: array
- *     description: The notification's notifications.
+ *     description: The list of notifications.
  *     items:
  *       $ref: "#/components/schemas/AdminNotification"
  * 

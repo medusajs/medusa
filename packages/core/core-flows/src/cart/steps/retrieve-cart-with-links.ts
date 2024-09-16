@@ -1,5 +1,5 @@
 import { CartWorkflowDTO } from "@medusajs/types"
-import { ContainerRegistrationKeys, isObject, Modules } from "@medusajs/utils"
+import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export interface RetrieveCartWithLinksStepInput {
@@ -25,7 +25,7 @@ export const retrieveCartWithLinksStep = createStep(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
     const query = {
-      entryPoint: Modules.CART,
+      entryPoint: "cart",
       fields,
       variables: {
         cart: {

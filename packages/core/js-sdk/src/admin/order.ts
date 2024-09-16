@@ -112,6 +112,24 @@ export class Order {
     )
   }
 
+  async markAsDelivered(
+    id: string,
+    fulfillmentId: string,
+    body: HttpTypes.AdminMarkOrderFulfillmentAsDelivered,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
+      `/admin/orders/${id}/fulfillments/${fulfillmentId}/mark-as-delivered`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
   async listChanges(
     id: string,
     queryParams?: FindParams & HttpTypes.AdminOrderChangesFilters,
