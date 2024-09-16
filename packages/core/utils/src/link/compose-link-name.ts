@@ -5,5 +5,7 @@ export const composeLinkName = (...args) => {
 }
 
 export const composeTableName = (...args) => {
-  return args.map((name) => name.replace(/(_id|Service)$/gi, "")).join("_")
+  return args
+    .map((name) => name.replace(/(_id|Service|Module|ModuleService)$/gi, ""))
+    .join("_")
 }
