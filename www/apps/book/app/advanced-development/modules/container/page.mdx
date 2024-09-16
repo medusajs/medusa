@@ -8,11 +8,9 @@ In this chapter, you'll learn about the module's container and how to resolve re
 
 ## Module's Container
 
-Each module has a local container only used by the resources of that module.
+Since modules are isolated, each module has a local container only used by the resources of that module.
 
-So, resources in the module, such as services or loaders, can only resolve other resources registered in the module's container, such as:
-
-- `logger`: A utility to log message in the Medusa application's logs.
+So, resources in the module, such as services or loaders, can only resolve other resources registered in the module's container.
 
 ---
 
