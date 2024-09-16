@@ -22,7 +22,7 @@ function shouldExcludeResource(resource: string) {
 }
 
 /**
- * Instrumen the first touch point of the HTTP layer to report traces to
+ * Instrument the first touch point of the HTTP layer to report traces to
  * OpenTelemetry
  */
 export function instrumentHttpLayer() {
