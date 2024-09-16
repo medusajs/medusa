@@ -26,13 +26,14 @@ export function generateEntity(
 ) {
   const fieldNames = primary.foreignKey.split(",").concat(foreign.foreignKey)
 
-  const defaultTableName = composeTableName(
-    primary.serviceName,
-    primary.foreignKey,
-    foreign.serviceName,
-    foreign.foreignKey
-  )
-  const tableName = joinerConfig.databaseConfig?.tableName ?? defaultTableName
+  const tableName =
+    joinerConfig.databaseConfig?.tableName ??
+    composeTableName(
+      primary.serviceName,
+      primary.foreignKey,
+      foreign.serviceName,
+      foreign.foreignKey
+    )
 
   const hashTableName = simpleHash(tableName)
 
@@ -62,7 +63,7 @@ export function generateEntity(
     class: getClass(
       ...fieldNames.concat("created_at", "updated_at", "deleted_at")
     ) as any,
-    tableName: compressName(defaultTableName),
+    tableName: compressName(tableName),
     properties: {
       id: {
         type: "string",
