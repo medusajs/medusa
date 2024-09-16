@@ -128,7 +128,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
       .map(({ table_name }) => table_name.toLowerCase())
       .filter((tableName) =>
         this.#linksEntities.some(
-          ({ entity }) => entity.meta.collection.toLowerCase() === tableName
+          ({ entity }) => entity.meta.collection === tableName
         )
       )
 
@@ -138,7 +138,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
 
     const orderedDescriptors = existingTables.map((tableName) => {
       return this.#linksEntities.find(
-        ({ entity }) => entity.meta.collection.toLowerCase() === tableName
+        ({ entity }) => entity.meta.collection === tableName
       )!.linkDescriptor
     })
 
