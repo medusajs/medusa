@@ -31,18 +31,14 @@ export type Scalars = {
 }
 
 export type SimpleProduct = {
-  __typename?: "SimpleProduct"
   id: Scalars["ID"]["output"]
   handle: string
   title?: Scalars["String"]["output"]
-  variants?: Maybe<Array<Maybe<Pick<ProductVariant, "id" | "__typename">>>>
+  variants?: Maybe<Array<Maybe<Pick<ProductVariant, "id">>>>
   sales_channels_link?: Array<
-    Pick<
-      LinkProductSalesChannel,
-      "product_id" | "sales_channel_id" | "__typename"
-    >
+    Pick<LinkProductSalesChannel, "product_id" | "sales_channel_id">
   >
-  sales_channels?: Array<Pick<SalesChannel, "id" | "name" | "__typename">>
+  sales_channels?: Array<Pick<SalesChannel, "id" | "name">>
 }
 
 export type Product = {
@@ -54,6 +50,7 @@ export type Product = {
   variants?: Array<ProductVariant>
   sales_channels_link?: Array<LinkProductSalesChannel>
   sales_channels?: Array<SalesChannel>
+  metadata?: Maybe<Scalars["JSON"]["output"]>
 }
 
 export type ProductVariant = {
@@ -61,6 +58,7 @@ export type ProductVariant = {
   id: Scalars["ID"]["output"]
   handle: Scalars["String"]["output"]
   title: Scalars["String"]["output"]
+  sku: Scalars["String"]["output"]
   product?: Maybe<Product>
 }
 
@@ -451,6 +449,6 @@ export interface FixtureEntryPoints {
   shipping_option_price_sets: LinkShippingOptionPriceSet
 }
 
-declare module "../remote-query-entry-points" {
+declare module "@medusajs/types" {
   export interface RemoteQueryEntryPoints extends FixtureEntryPoints {}
 }
