@@ -45,6 +45,11 @@ export const getOrderFulfillmentStatus = (
       "orange",
     ],
     shipped: [t("orders.fulfillment.status.shipped"), "green"],
+    delivered: [t("orders.fulfillment.status.delivered"), "green"],
+    partially_delivered: [
+      t("orders.fulfillment.status.partiallyDelivered"),
+      "orange",
+    ],
     partially_returned: [
       t("orders.fulfillment.status.partiallyReturned"),
       "orange",

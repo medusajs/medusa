@@ -19,6 +19,7 @@ export interface GetItemTotalInput {
   adjustments?: Pick<AdjustmentLineDTO, "amount">[]
   detail?: {
     fulfilled_quantity: BigNumber
+    delivered_quantity: BigNumber
     shipped_quantity: BigNumber
     return_requested_quantity: BigNumber
     return_received_quantity: BigNumber

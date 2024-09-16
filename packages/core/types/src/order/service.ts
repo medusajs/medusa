@@ -67,6 +67,7 @@ import {
   CreateOrderTransactionDTO,
   DeclineOrderChangeDTO,
   ReceiveOrderReturnDTO,
+  RegisterOrderDeliveryDTO,
   RegisterOrderFulfillmentDTO,
   RegisterOrderShipmentDTO,
   UpdateOrderAddressDTO,
@@ -4588,6 +4589,29 @@ export interface IOrderModuleService extends IModuleService {
    */
   registerShipment(
     data: RegisterOrderShipmentDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method registers a delivery for an order's fulfillment
+   *
+   * @param {RegisterOrderDeliveryDTO} data - The ordes's delivery data.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the delivery is registered successfully.
+   *
+   * @example
+   * await orderModuleService.registerDelivery({
+   *   order_id: "123",
+   *   items: [
+   *     {
+   *       id: "321",
+   *       quantity: 1
+   *     }
+   *   ]
+   * })
+   */
+  registerDelivery(
+    data: RegisterOrderDeliveryDTO,
     sharedContext?: Context
   ): Promise<void>
 
