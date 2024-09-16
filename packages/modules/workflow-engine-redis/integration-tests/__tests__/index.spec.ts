@@ -91,8 +91,6 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
       })
 
       describe("Testing basic workflow", function () {
-        afterEach(afterEach_)
-
         it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
           await workflowOrcModule.run("workflow_1", {
             input: {
