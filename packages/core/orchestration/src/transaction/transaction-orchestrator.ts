@@ -65,6 +65,7 @@ export class TransactionOrchestrator extends EventEmitter {
     handler: (...args: any[]) => Promise<any>,
     metadata: {
       action: string
+      type: "invoke" | "compensate"
       step_id: string
       step_uuid: string
       attempts: number

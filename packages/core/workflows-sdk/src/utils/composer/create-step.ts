@@ -4,9 +4,9 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { StepResponse, resolveValue } from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -131,14 +131,6 @@ export function applyStep<
 
     wrapAsyncHandler(stepConfig, handler)
 
-    handler.invoke = applyStep.traceInvoke(handler.invoke, stepName)
-    if (handler.compensate) {
-      handler.compensate = applyStep.traceCompensate(
-        handler.compensate,
-        stepName
-      )
-    }
-
     stepConfig.uuid = ulid()
     stepConfig.noCompensation = !compensateFn
 
@@ -213,20 +205,6 @@ export function applyStep<
 
     return refRet
   }
-}
-
-applyStep.traceInvoke = function (
-  invokeFn: WorkflowStepHandler,
-  _: string
-): WorkflowStepHandler {
-  return (args) => invokeFn(args)
-}
-
-applyStep.traceCompensate = function (
-  compensateFn: WorkflowStepHandler,
-  _: string
-): WorkflowStepHandler {
-  return (args) => compensateFn(args)
 }
 
 /**

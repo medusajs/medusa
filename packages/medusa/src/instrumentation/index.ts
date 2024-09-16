@@ -232,9 +232,10 @@ export function instrumentWorkflows() {
 
   TransactionOrchestrator.tranceStep = async (stepHandler, metadata) => {
     return await WorkflowsTracer.trace(
-      `step:${snakeCase(metadata.action)}`,
+      `step:${snakeCase(metadata.action)}:${metadata.type}`,
       async function (span) {
         span.setAttributes({
+          "workflow.step.type": metadata.type,
           "workflow.step.id": metadata.step_id,
           "workflow.step.uuid": metadata.step_uuid,
           "workflow.step.attempts": metadata.attempts,
