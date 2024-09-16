@@ -23,7 +23,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/workflows-executions/{workflow_id}/subscribe' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Workflows Executions
  * responses:

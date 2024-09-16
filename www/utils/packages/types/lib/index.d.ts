@@ -251,14 +251,27 @@ export declare module "typedoc" {
      */
     enableWorkflowsPlugins: boolean
     /**
-     * Whether to enable the namespace generator plugin.
+     * Whether to enable the namespace generator plugin for paths.
      * @defaultValue false
      */
-    enableNamespaceGenerator: boolean
+    enablePathNamespaceGenerator: boolean
     /**
-     * The namespaces to generate.
+     * The namespaces to generate for paths.
      */
-    generateNamespaces: NamespaceGenerateDetails[]
+    generatePathNamespaces: NamespaceGenerateDetails[]
+    /**
+     * Whether to enable the namespace generator plugin for `@customNamespaces` usage.
+     * @defaultValue false
+     */
+    generateCustomNamespaces: boolean
+    /**
+     * Optionally specify a parent namespace to place all generated custom namespaces in.
+     */
+    customParentNamespace: string
+    /**
+     * Optionally specify a name prefix for all custom namespaces.
+     */
+    customNamespaceNamePrefix: string
   }
 }
 
