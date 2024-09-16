@@ -1,5 +1,5 @@
 import { CreateCartDTO, ICartModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createCartsStepId = "create-carts"
@@ -9,9 +9,7 @@ export const createCartsStepId = "create-carts"
 export const createCartsStep = createStep(
   createCartsStepId,
   async (data: CreateCartDTO[], { container }) => {
-    const service = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const service = container.resolve<ICartModuleService>(Modules.CART)
 
     const createdCarts = await service.createCarts(data)
 
@@ -25,9 +23,7 @@ export const createCartsStep = createStep(
       return
     }
 
-    const service = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const service = container.resolve<ICartModuleService>(Modules.CART)
 
     await service.deleteCarts(createdCartsIds)
   }

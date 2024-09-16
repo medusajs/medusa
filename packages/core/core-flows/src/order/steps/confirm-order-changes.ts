@@ -1,5 +1,5 @@
 import { OrderChangeDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export type ConfirmOrderChangesInput = {
@@ -14,7 +14,7 @@ export type ConfirmOrderChangesInput = {
 export const confirmOrderChanges = createStep(
   "confirm-order-changes",
   async (input: ConfirmOrderChangesInput, { container }) => {
-    const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
+    const orderModuleService = container.resolve(Modules.ORDER)
     await orderModuleService.confirmOrderChange(
       input.changes.map((action) => ({
         id: action.id,
@@ -29,7 +29,7 @@ export const confirmOrderChanges = createStep(
       return
     }
 
-    const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
+    const orderModuleService = container.resolve(Modules.ORDER)
     await orderModuleService.revertLastVersion(orderId)
   }
 )

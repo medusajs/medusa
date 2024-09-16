@@ -1,9 +1,5 @@
 import { INotificationModuleService } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-  promiseAll,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules, promiseAll } from "@medusajs/utils"
 import { get } from "lodash"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 
@@ -49,7 +45,7 @@ export default async function configurableNotifications({
 }: SubscriberArgs<any>) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   const notificationService: INotificationModuleService = container.resolve(
-    ModuleRegistrationName.NOTIFICATION
+    Modules.NOTIFICATION
   )
 
   const handlers = configAsMap[event.name] ?? []

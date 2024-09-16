@@ -3,10 +3,7 @@ import {
   ISalesChannelModuleService,
   UpdateSalesChannelDTO,
 } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type UpdateSalesChannelsStepInput = {
@@ -22,7 +19,7 @@ export const updateSalesChannelsStep = createStep(
   updateSalesChannelsStepId,
   async (data: UpdateSalesChannelsStepInput, { container }) => {
     const service = container.resolve<ISalesChannelModuleService>(
-      ModuleRegistrationName.SALES_CHANNEL
+      Modules.SALES_CHANNEL
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
@@ -47,7 +44,7 @@ export const updateSalesChannelsStep = createStep(
     }
 
     const service = container.resolve<ISalesChannelModuleService>(
-      ModuleRegistrationName.SALES_CHANNEL
+      Modules.SALES_CHANNEL
     )
 
     await service.upsertSalesChannels(

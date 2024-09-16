@@ -1,5 +1,5 @@
 import { CustomerDTO, ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName, validateEmail } from "@medusajs/utils"
+import { Modules, validateEmail } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface FindOrCreateCustomerStepInput {
@@ -19,7 +19,7 @@ interface StepCompensateInput {
 
 export const findOrCreateCustomerStepId = "find-or-create-customer"
 /**
- * This step either finds a customer matching the specified ID, or finds / create a customer 
+ * This step either finds a customer matching the specified ID, or finds / create a customer
  * matching the specified email. If both ID and email are provided, ID takes precedence.
  */
 export const findOrCreateCustomerStep = createStep(
@@ -38,9 +38,7 @@ export const findOrCreateCustomerStep = createStep(
       )
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     const customerData: FindOrCreateCustomerOutputStepOutput = {
       customer: null,
@@ -87,9 +85,7 @@ export const findOrCreateCustomerStep = createStep(
       return
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     await service.deleteCustomers(customer.id)
   }

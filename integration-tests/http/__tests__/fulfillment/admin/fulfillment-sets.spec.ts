@@ -1,5 +1,5 @@
 import { IFulfillmentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
 
       // TODO: Add support for creating fulfillment sets through HTTP
       const fulfillmentModule: IFulfillmentModuleService =
-        getContainer().resolve(ModuleRegistrationName.FULFILLMENT)
+        getContainer().resolve(Modules.FULFILLMENT)
 
       fulfillmentSet1 = await fulfillmentModule.createFulfillmentSets({
         name: "Test fulfillment set",

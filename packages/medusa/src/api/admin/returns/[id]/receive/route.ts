@@ -2,9 +2,10 @@ import {
   beginReceiveReturnWorkflow,
   cancelReturnReceiveWorkflow,
 } from "@medusajs/core-flows"
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
+  Modules,
   promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -13,14 +14,13 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { AdminPostReceiveReturnsReqSchemaType } from "../../validators"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReceiveReturnsReqSchemaType>,
   res: MedusaResponse<HttpTypes.AdminOrderReturnResponse>
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
+  const orderModuleService = req.scope.resolve(Modules.ORDER)
 
   const { id } = req.params
 

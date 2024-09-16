@@ -25,82 +25,58 @@ import type {
 } from "@medusajs/types"
 
 export enum Modules {
-  AUTH = "auth",
-  CACHE = "cacheService",
-  CART = "cart",
-  CUSTOMER = "customer",
-  EVENT_BUS = "eventBus",
-  INVENTORY = "inventoryService",
-  LINK = "linkModules",
-  PAYMENT = "payment",
-  PRICING = "pricingService",
-  PRODUCT = "productService",
-  PROMOTION = "promotion",
-  SALES_CHANNEL = "salesChannel",
-  TAX = "tax",
-  FULFILLMENT = "fulfillment",
-  STOCK_LOCATION = "stockLocationService",
-  USER = "user",
-  WORKFLOW_ENGINE = "workflows",
-  REGION = "region",
-  ORDER = "order",
-  API_KEY = "apiKey",
-  STORE = "store",
-  CURRENCY = "currency",
-  FILE = "file",
-  NOTIFICATION = "notification",
+  AUTH = "Auth",
+  CACHE = "Cache",
+  CART = "Cart",
+  CUSTOMER = "Customer",
+  EVENT_BUS = "EventBus",
+  INVENTORY = "Inventory",
+  LINK = "LinkModules",
+  PAYMENT = "Payment",
+  PRICING = "Pricing",
+  PRODUCT = "Product",
+  PROMOTION = "Promotion",
+  SALES_CHANNEL = "SalesChannel",
+  TAX = "Tax",
+  FULFILLMENT = "Fulfillment",
+  STOCK_LOCATION = "StockLocation",
+  USER = "User",
+  WORKFLOW_ENGINE = "Workflows",
+  REGION = "Region",
+  ORDER = "Order",
+  API_KEY = "ApiKey",
+  STORE = "Store",
+  CURRENCY = "Currency",
+  FILE = "File",
+  NOTIFICATION = "Notification",
 }
 
-export enum ModuleRegistrationName {
-  AUTH = "authModuleService",
-  CACHE = "cacheService",
-  CART = "cartModuleService",
-  CUSTOMER = "customerModuleService",
-  EVENT_BUS = "eventBusModuleService",
-  INVENTORY = "inventoryService",
-  PAYMENT = "paymentModuleService",
-  PRICING = "pricingModuleService",
-  PRODUCT = "productModuleService",
-  PROMOTION = "promotionModuleService",
-  SALES_CHANNEL = "salesChannelModuleService",
-  FULFILLMENT = "fulfillmentModuleService",
-  STOCK_LOCATION = "stockLocationService",
-  TAX = "taxModuleService",
-  USER = "userModuleService",
-  WORKFLOW_ENGINE = "workflowsModuleService",
-  REGION = "regionModuleService",
-  ORDER = "orderModuleService",
-  API_KEY = "apiKeyModuleService",
-  STORE = "storeModuleService",
-  CURRENCY = "currencyModuleService",
-  FILE = "fileModuleService",
-  NOTIFICATION = "notificationModuleService",
-}
+export const ModuleRegistrationName = Modules
 
 declare module "@medusajs/types" {
   export interface ModuleImplementations {
-    [ModuleRegistrationName.AUTH]: IAuthModuleService
-    [ModuleRegistrationName.CACHE]: ICacheService
-    [ModuleRegistrationName.CART]: ICartModuleService
-    [ModuleRegistrationName.CUSTOMER]: ICustomerModuleService
-    [ModuleRegistrationName.EVENT_BUS]: IEventBusModuleService
-    [ModuleRegistrationName.INVENTORY]: IInventoryService
-    [ModuleRegistrationName.PAYMENT]: IPaymentModuleService
-    [ModuleRegistrationName.PRICING]: IPricingModuleService
-    [ModuleRegistrationName.PRODUCT]: IProductModuleService
-    [ModuleRegistrationName.PROMOTION]: IPromotionModuleService
-    [ModuleRegistrationName.SALES_CHANNEL]: ISalesChannelModuleService
-    [ModuleRegistrationName.TAX]: ITaxModuleService
-    [ModuleRegistrationName.FULFILLMENT]: IFulfillmentModuleService
-    [ModuleRegistrationName.STOCK_LOCATION]: IStockLocationService
-    [ModuleRegistrationName.USER]: IUserModuleService
-    [ModuleRegistrationName.WORKFLOW_ENGINE]: IWorkflowEngineService
-    [ModuleRegistrationName.REGION]: IRegionModuleService
-    [ModuleRegistrationName.ORDER]: IOrderModuleService
-    [ModuleRegistrationName.API_KEY]: IApiKeyModuleService
-    [ModuleRegistrationName.STORE]: IStoreModuleService
-    [ModuleRegistrationName.CURRENCY]: ICurrencyModuleService
-    [ModuleRegistrationName.FILE]: IFileModuleService
-    [ModuleRegistrationName.NOTIFICATION]: INotificationModuleService
+    [Modules.AUTH]: IAuthModuleService
+    [Modules.CACHE]: ICacheService
+    [Modules.CART]: ICartModuleService
+    [Modules.CUSTOMER]: ICustomerModuleService
+    [Modules.EVENT_BUS]: IEventBusModuleService
+    [Modules.INVENTORY]: IInventoryService
+    [Modules.PAYMENT]: IPaymentModuleService
+    [Modules.PRICING]: IPricingModuleService
+    [Modules.PRODUCT]: IProductModuleService
+    [Modules.PROMOTION]: IPromotionModuleService
+    [Modules.SALES_CHANNEL]: ISalesChannelModuleService
+    [Modules.TAX]: ITaxModuleService
+    [Modules.FULFILLMENT]: IFulfillmentModuleService
+    [Modules.STOCK_LOCATION]: IStockLocationService
+    [Modules.USER]: IUserModuleService
+    [Modules.WORKFLOW_ENGINE]: IWorkflowEngineService
+    [Modules.REGION]: IRegionModuleService
+    [Modules.ORDER]: IOrderModuleService
+    [Modules.API_KEY]: IApiKeyModuleService
+    [Modules.STORE]: IStoreModuleService
+    [Modules.CURRENCY]: ICurrencyModuleService
+    [Modules.FILE]: IFileModuleService
+    [Modules.NOTIFICATION]: INotificationModuleService
   }
 }
