@@ -7,6 +7,7 @@ import {
 } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
+import { compressName } from "./compress-name"
 
 function getClass(...properties) {
   return class LinkModel {
@@ -25,14 +26,15 @@ export function generateEntity(
 ) {
   const fieldNames = primary.foreignKey.split(",").concat(foreign.foreignKey)
 
-  const tableName =
-    joinerConfig.databaseConfig?.tableName ??
-    composeTableName(
-      primary.serviceName,
-      primary.foreignKey,
-      foreign.serviceName,
-      foreign.foreignKey
-    )
+  const defaultTableName = composeTableName(
+    primary.serviceName,
+    primary.foreignKey,
+    foreign.serviceName,
+    foreign.foreignKey
+  )
+  const tableName = joinerConfig.databaseConfig?.tableName ?? defaultTableName
+
+  const hashTableName = simpleHash(tableName)
 
   const fields = fieldNames.reduce((acc, curr) => {
     acc[curr] = {
@@ -56,13 +58,11 @@ export function generateEntity(
     }
   }
 
-  const hashTableName = simpleHash(tableName)
-
   return new EntitySchema({
     class: getClass(
       ...fieldNames.concat("created_at", "updated_at", "deleted_at")
     ) as any,
-    tableName,
+    tableName: compressName(defaultTableName),
     properties: {
       id: {
         type: "string",

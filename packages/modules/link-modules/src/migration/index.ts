@@ -6,15 +6,15 @@ import {
   PlannerActionLinkDescriptor,
 } from "@medusajs/types"
 
-import { generateEntity } from "../utils"
-import { EntitySchema, MikroORM } from "@mikro-orm/core"
-import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import {
-  arrayDifference,
   DALUtils,
   ModulesSdkUtils,
+  arrayDifference,
   promiseAll,
 } from "@medusajs/utils"
+import { EntitySchema, MikroORM } from "@mikro-orm/core"
+import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
+import { generateEntity } from "../utils"
 
 /**
  * The migrations execution planner creates a plan of SQL queries
@@ -125,10 +125,10 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     `
         )
     )
-      .map(({ table_name }) => table_name)
+      .map(({ table_name }) => table_name.toLowerCase())
       .filter((tableName) =>
         this.#linksEntities.some(
-          ({ entity }) => entity.meta.collection === tableName
+          ({ entity }) => entity.meta.collection.toLowerCase() === tableName
         )
       )
 
@@ -138,13 +138,14 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
 
     const orderedDescriptors = existingTables.map((tableName) => {
       return this.#linksEntities.find(
-        ({ entity }) => entity.meta.collection === tableName
+        ({ entity }) => entity.meta.collection.toLowerCase() === tableName
       )!.linkDescriptor
     })
 
     const positionalArgs = new Array(existingTables.length)
       .fill("(?, ?)")
       .join(", ")
+
     await orm.em
       .getDriver()
       .getConnection()
@@ -223,7 +224,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     `)
 
     return results.map((tuple) => ({
-      table_name: tuple.table_name,
+      table_name: tuple.table_name.toLowerCase(),
       link_descriptor: tuple.link_descriptor,
     }))
   }
@@ -236,7 +237,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     entity: EntitySchema,
     trackedLinksTables: string[]
   ): Promise<LinkMigrationsPlannerAction> {
-    const tableName = entity.meta.collection
+    const tableName = entity.meta.collection.toLowerCase()
     const orm = await this.createORM([entity])
 
     try {
