@@ -11,12 +11,13 @@ import {
 import { useRemoteQueryStep } from "../../common"
 import { updateFulfillmentWorkflow } from "./update-fulfillment"
 
-export const validateFulfillmentDerivabilityStepId = "validate-shipment"
+export const validateFulfillmentDeliverabilityStepId =
+  "validate-fulfillment-deliverability"
 /**
  * This step validates that if a fulfillment can be marked delivered
  */
-export const validateFulfillmentDerivabilityStep = createStep(
-  validateFulfillmentDerivabilityStepId,
+export const validateFulfillmentDeliverabilityStep = createStep(
+  validateFulfillmentDeliverabilityStepId,
   async (fulfillment: FulfillmentDTO) => {
     if (fulfillment.canceled_at) {
       throw new MedusaError(
@@ -52,7 +53,7 @@ export const markFulfillmentAsDeliveredWorkflow = createWorkflow(
       list: false,
     })
 
-    validateFulfillmentDerivabilityStep(fulfillment)
+    validateFulfillmentDeliverabilityStep(fulfillment)
 
     const updateInput = transform({ id }, ({ id }) => ({
       id,

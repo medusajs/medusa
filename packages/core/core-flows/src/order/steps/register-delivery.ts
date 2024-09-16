@@ -1,4 +1,4 @@
-import { IOrderModuleService, RegisterOrderShipmentDTO } from "@medusajs/types"
+import { IOrderModuleService, RegisterOrderDeliveryDTO } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
@@ -8,7 +8,7 @@ export const registerOrderDeliveryStepId = "register-order-delivery"
  */
 export const registerOrderDeliveryStep = createStep(
   registerOrderDeliveryStepId,
-  async (data: RegisterOrderShipmentDTO, { container }) => {
+  async (data: RegisterOrderDeliveryDTO, { container }) => {
     const service = container.resolve<IOrderModuleService>(
       ModuleRegistrationName.ORDER
     )
