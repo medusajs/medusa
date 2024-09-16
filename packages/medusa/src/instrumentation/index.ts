@@ -2,16 +2,16 @@ import { snakeCase } from "lodash"
 import { NodeSDK } from "@opentelemetry/sdk-node"
 import { Resource } from "@opentelemetry/resources"
 import { SpanStatusCode } from "@opentelemetry/api"
-import { RoutesLoader, Tracer, Query } from "@medusajs/framework"
+import { Query, RoutesLoader, Tracer } from "@medusajs/framework"
 import {
-  type SpanExporter,
   SimpleSpanProcessor,
+  type SpanExporter,
 } from "@opentelemetry/sdk-trace-node"
 import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
 import type { Instrumentation } from "@opentelemetry/instrumentation"
 
 import start from "../commands/start"
-import { applyStep, exportWorkflow } from "@medusajs/workflows-sdk"
+import { TransactionOrchestrator } from "@medusajs/orchestration"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -210,7 +210,43 @@ export function instrumentRemoteQuery() {
 export function instrumentWorkflows() {
   const WorkflowsTracer = new Tracer("@medusajs/workflows-sdk", "2.0.0")
 
-  exportWorkflow.traceRun = (workflowRunner, workflowId) => {
+  TransactionOrchestrator.tranceTransaction = async (
+    transactionResumeFn,
+    metadata
+  ) => {
+    return await WorkflowsTracer.trace(
+      `workflow:${snakeCase(metadata.model_id)}`,
+      async function (span) {
+        span.setAttribute("workflow.transaction_id", metadata.transaction_id)
+
+        if (metadata.flow_metadata) {
+          Object.entries(metadata.flow_metadata).forEach(([key, value]) => {
+            span.setAttribute(`workflow.flow_metadata.${key}`, value as string)
+          })
+        }
+
+        return await transactionResumeFn().finally(() => span.end())
+      }
+    )
+  }
+
+  TransactionOrchestrator.tranceStep = async (stepHandler, metadata) => {
+    return await WorkflowsTracer.trace(
+      `step:${snakeCase(metadata.action)}`,
+      async function (span) {
+        span.setAttributes({
+          "workflow.step.id": metadata.step_id,
+          "workflow.step.uuid": metadata.step_uuid,
+          "workflow.step.attempts": metadata.attempts,
+          "workflow.step.failures": metadata.failures,
+        })
+
+        return await stepHandler().finally(() => span.end())
+      }
+    )
+  }
+
+  /* exportWorkflow.traceRun = (workflowRunner, workflowId) => {
     return async function (args) {
       return await WorkflowsTracer.trace(
         `workflow:${snakeCase(workflowId)}`,
@@ -277,7 +313,7 @@ export function instrumentWorkflows() {
         }
       )
     }
-  }
+  }*/
 }
 
 /**
