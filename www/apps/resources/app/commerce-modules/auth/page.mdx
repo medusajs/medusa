@@ -10,7 +10,7 @@ The Auth Module is the `@medusajs/auth` NPM package that provides authentication
 
 ## How to Use Auth Module's Service
 
-You can use the Auth Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.AUTH` imported from `@medusajs/utils`.
+You can use the Auth Module's main service by resolving from the Medusa container the resource `Modules.AUTH` imported from `@medusajs/utils`.
 
 For example:
 
@@ -20,14 +20,14 @@ For example:
 ```ts title="src/api/store/custom/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { IAuthModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const authModuleService: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
 
   res.json({
@@ -42,11 +42,11 @@ export async function GET(
 ```ts title="src/subscribers/custom-handler.ts"
 import { SubscriberArgs } from "@medusajs/medusa"
 import { IAuthModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
   const authModuleService: IAuthModuleService = container.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
 
   const authIdentitys = await authModuleService.listAuthIdentities()
@@ -59,11 +59,11 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
 ```ts title="src/workflows/hello-world/step1.ts"
 import { createStep } from "@medusajs/workflows-sdk"
 import { IAuthModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 const step1 = createStep("step-1", async (_, { container }) => {
   const authModuleService: IAuthModuleService = container.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
   const authIdentitys = await authModuleService.listAuthIdentities()
 })

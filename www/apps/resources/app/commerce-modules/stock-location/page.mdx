@@ -10,7 +10,7 @@ The Stock Location Module is the `@medusajs/stock-location-next` NPM package tha
 
 ## How to Use Stock Location Module's Service
 
-You can use the Stock Location Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.STOCK_LOCATION` imported from `@medusajs/utils`.
+You can use the Stock Location Module's main service by resolving from the Medusa container the resource `Modules.STOCK_LOCATION` imported from `@medusajs/utils`.
 
 For example:
 
@@ -20,14 +20,14 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const stockLocationModuleService: IStockLocationService =
-    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+    request.scope.resolve(Modules.STOCK_LOCATION)
 
   res.json({
     stock_locations: await stockLocationModuleService.listStockLocations({}),
@@ -41,11 +41,11 @@ export async function GET(
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
   const stockLocationModuleService: IStockLocationService = container.resolve(
-    ModuleRegistrationName.STOCK_LOCATION
+    Modules.STOCK_LOCATION
   )
 
   const stockLocations = await stockLocationModuleService.listStockLocations({})
@@ -58,11 +58,11 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 const step1 = createStep("step-1", async (_, { container }) => {
   const stockLocationModuleService: IStockLocationService = container.resolve(
-    ModuleRegistrationName.STOCK_LOCATION
+    Modules.STOCK_LOCATION
   )
 
   const stockLocations = await stockLocationModuleService.listStockLocations({})

@@ -85,4 +85,9 @@ export type Context<TManager = unknown> = {
    * A string indicating the idempotencyKey of the current workflow execution.
    */
   idempotencyKey?: string
+
+  /**
+   * A string indicating the idempotencyKey of the parent workflow execution.
+   */
+  parentStepIdempotencyKey?: string
 }

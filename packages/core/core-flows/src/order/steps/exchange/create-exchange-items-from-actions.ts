@@ -3,7 +3,7 @@ import {
   IOrderModuleService,
   OrderChangeActionDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type CreateOrderExchangeItemsFromActionsInput = {
@@ -18,7 +18,7 @@ export const createOrderExchangeItemsFromActionsStep = createStep(
   "create-exchange-items-from-change-actions",
   async (input: CreateOrderExchangeItemsFromActionsInput, { container }) => {
     const orderModuleService = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
+      Modules.ORDER
     )
 
     const exchangeItems = input.changes.map((item) => {
@@ -45,7 +45,7 @@ export const createOrderExchangeItemsFromActionsStep = createStep(
     }
 
     const orderModuleService = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
+      Modules.ORDER
     )
 
     await orderModuleService.deleteOrderExchangeItems(ids)

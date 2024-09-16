@@ -54,7 +54,7 @@ moduleIntegrationTestRunner({
             linkable: "auth_identity_id",
             entity: "AuthIdentity",
             primaryKey: "id",
-            serviceName: "auth",
+            serviceName: "Auth",
             field: "authIdentity",
           },
         })
@@ -66,7 +66,7 @@ moduleIntegrationTestRunner({
             linkable: "provider_identity_id",
             entity: "ProviderIdentity",
             primaryKey: "id",
-            serviceName: "auth",
+            serviceName: "Auth",
             field: "providerIdentity",
           },
         })

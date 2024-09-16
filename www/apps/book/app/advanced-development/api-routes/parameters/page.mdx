@@ -10,13 +10,13 @@ In this chapter, you’ll learn about path, query, and request body parameters.
 
 To create an API route that accepts a path parameter, create a directory within the route file's path whose name is of the format `[param]`.
 
-For example, to create an API Route at the path `/hello-world/:id`, where `:id` is a path parameter, create the file `src/api/store/hello-world/[id]/route.ts` with the following content:
+For example, to create an API Route at the path `/hello-world/:id`, where `:id` is a path parameter, create the file `src/api/hello-world/[id]/route.ts` with the following content:
 
 export const singlePathHighlights = [
   ["11", "req.params.id", "Access the path parameter `id`"]
 ]
 
-```ts title="src/api/store/hello-world/[id]/route.ts" highlights={singlePathHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world/{id}" testApiMethod="GET" testPathParams={{ "id": "" }}
+```ts title="src/api/hello-world/[id]/route.ts" highlights={singlePathHighlights}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -38,14 +38,14 @@ The `MedusaRequest` object has a `params` property. `params` holds the path para
 
 To create an API route that accepts multiple path parameters, create within the file's path multiple directories whose names are of the format `[param]`.
 
-For example, to create an API route at `/store/hello-world/:id/name/:name`, create the file `src/api/store/hello-world/[id]/name/[name]/route.ts` with the following content:
+For example, to create an API route at `/hello-world/:id/name/:name`, create the file `src/api/hello-world/[id]/name/[name]/route.ts` with the following content:
 
 export const multiplePathHighlights = [
   ["12", "req.params.id", "Access the path parameter `id`"],
   ["13", "req.params.name", "Access the path parameter `name`"]
 ]
 
-```ts title="src/api/store/hello-world/[id]/name/[name]/route.ts" highlights={multiplePathHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world/{id}/name/{name}" testApiMethod="GET" testPathParams={{ "id": "", "name": "" }}
+```ts title="src/api/hello-world/[id]/name/[name]/route.ts" highlights={multiplePathHighlights}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -77,7 +77,7 @@ export const queryHighlights = [
   ["11", "req.query.name", "Access the query parameter `name`"],
 ]
 
-```ts title="src/api/store/hello-world/route.ts" highlights={queryHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="GET" testQueryParams={{ "name": "" }}
+```ts title="src/api/hello-world/route.ts" highlights={queryHighlights}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -108,7 +108,7 @@ export const bodyHighlights = [
   ["15", "req.body.name", "Access the request body parameter `name`"],
 ]
 
-```ts title="src/api/store/hello-world/route.ts" highlights={bodyHighlights}
+```ts title="src/api/hello-world/route.ts" highlights={bodyHighlights}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -138,8 +138,8 @@ The `MedusaRequest` type accepts a type argument that indicates the type of the 
 
 To test it out, send the following request to your Medusa application:
 
-```bash apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="POST" testBodyParams={{ "name": "" }}
-curl -X POST 'http://localhost:9000/store/hello-world' \
+```bash
+curl -X POST 'http://localhost:9000/hello-world' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "name": "John"

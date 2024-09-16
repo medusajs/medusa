@@ -20,9 +20,9 @@ An API Route is created in a TypeScript or JavaScript file under the `src/api` d
 
 Each file exports API Route handler functions for at least one HTTP method (`GET`, `POST`, `DELETE`, etc…).
 
-For example, to create a `GET` API Route at `/store/hello-world`, create the file `src/api/store/hello-world/route.ts` with the following content:
+For example, to create a `GET` API Route at `/hello-world`, create the file `src/api/hello-world/route.ts` with the following content:
 
-```ts title="src/api/store/hello-world/route.ts"
+```ts title="src/api/hello-world/route.ts"
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -46,10 +46,10 @@ To test the API route above, start the Medusa application:
 npm run dev
 ```
 
-Then, send a `GET` request to the `/store/hello-world` API Route:
+Then, send a `GET` request to the `/hello-world` API Route:
 
-```bash apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="GET"
-curl http://localhost:9000/store/hello-world
+```bash
+curl http://localhost:9000/hello-world
 ```
 
 ---

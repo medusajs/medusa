@@ -1,5 +1,5 @@
 import { IPromotionModuleService, UsageComputedActions } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const registerUsageStepId = "register-usage"
@@ -14,7 +14,7 @@ export const registerUsageStep = createStep(
     }
 
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     await promotionModule.registerUsage(data)
@@ -27,7 +27,7 @@ export const registerUsageStep = createStep(
     }
 
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     await promotionModule.revertUsage(revertData)

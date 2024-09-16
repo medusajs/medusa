@@ -13,12 +13,13 @@ import {
   CommonEvents,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
-  mapObjectTo,
   MapToConfig,
   MedusaContext,
   MedusaError,
+  Modules,
   ModulesSdkUtils,
+  isDefined,
+  mapObjectTo,
 } from "@medusajs/utils"
 import { LinkService } from "@services"
 import { shouldForceTransaction } from "../utils"
@@ -26,12 +27,12 @@ import { shouldForceTransaction } from "../utils"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   linkService: LinkService<any>
-  eventBusModuleService?: IEventBusModuleService
   primaryKey: string | string[]
   foreignKey: string
   extraFields: string[]
   entityName: string
   serviceName: string
+  [Modules.EVENT_BUS]?: IEventBusModuleService
 }
 
 export default class LinkModuleService<TLink> implements ILinkModule {
@@ -48,12 +49,12 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     {
       baseRepository,
       linkService,
-      eventBusModuleService,
       primaryKey,
       foreignKey,
       extraFields,
       entityName,
       serviceName,
+      [Modules.EVENT_BUS]: eventBusModuleService,
     }: InjectedDependencies,
     readonly moduleDeclaration: InternalModuleDeclaration
   ) {

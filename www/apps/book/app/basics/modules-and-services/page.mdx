@@ -97,9 +97,9 @@ Resolving a module's service is essential to use its methods that perform action
 
 </Note>
 
-For example, create the API route `src/api/store/custom/route.ts` with the following content:
+For example, create the API route `src/api/custom/route.ts` with the following content:
 
-```ts title="src/api/store/custom/route.ts"
+```ts title="src/api/custom/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import HelloModuleService from "../../../modules/hello/service"
 import { HELLO_MODULE } from "../../../modules/hello"
@@ -124,10 +124,10 @@ Then, start the Medusa application:
 npm run dev
 ```
 
-Finally, send a `GET` request to `/store/custom`:
+Finally, send a `GET` request to `/custom`:
 
-```bash apiTesting testApiUrl="http://localhost:9000/store/custom" testApiMethod="GET"
-curl http://localhost:9000/store/custom
+```bash
+curl http://localhost:9000/custom
 ```
 
 You’ll receive the following response:

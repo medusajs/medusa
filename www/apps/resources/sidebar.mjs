@@ -1800,6 +1800,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         title: "Tips",
       },
       {
+        type: "link",
+        path: "/storefront-development/publishable-api-keys",
+        title: "Publishable API Key",
+      },
+      {
         type: "separator",
       },
       {

@@ -35,7 +35,9 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl '{backend_url}/store/collections/{id}'
+ *     source: |-
+ *       curl '{backend_url}/store/collections/{id}' \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  * tags:
  *   - Collections
  * responses:

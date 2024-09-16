@@ -1,6 +1,6 @@
 import { IPricingModuleService } from "@medusajs/types"
-import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { MedusaError, Modules } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface GetVariantPriceSetsStepInput {
   variantIds: string[]
@@ -19,7 +19,7 @@ export const getVariantPriceSetsStep = createStep(
     }
 
     const pricingModuleService = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     const remoteQuery = container.resolve("remoteQuery")

@@ -20,14 +20,14 @@ You'll need the following resources for the taxes calculation:
 ```ts
 // other imports...
 import {
-  ModuleRegistrationName,
+  Modules,
   ContainerRegistrationKeys,
 } from "@medusajs/utils"
 
 // In an API route, workflow step, etc...
 const query = container.resolve(ContainerRegistrationKeys.QUERY)
 const taxModuleService = container.resolve(
-  ModuleRegistrationName.TAX
+  Modules.TAX
 )
 ```
 
@@ -38,23 +38,27 @@ const taxModuleService = container.resolve(
 After resolving the resources, use Query to retrieve the products with the variants' prices for a context:
 
 ```ts
+import { QueryContext } from "@medusajs/utils"
+
+// ...
+
 const { data: products } = await query.graph({
-  entryPoint: "product",
+  entity: "product",
   fields: [
     "*",
     "variants.*",
     "variants.calculated_price.*",
   ],
-  variables: {
-    filters: {
-      id: "prod_123",
-    },
-    "variants.calculated_price": {
-      context: {
+  filters: {
+    id: "prod_123",
+  },
+  context: {
+    variants: {
+      calculated_price: QueryContext({
         region_id: "region_123",
         currency_code: "usd",
-      },
-    },
+      }),
+    }
   },
 })
 ```

@@ -2,7 +2,7 @@ import {
   CreateSalesChannelDTO,
   ISalesChannelModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface CreateSalesChannelsStepInput {
@@ -17,7 +17,7 @@ export const createSalesChannelsStep = createStep(
   createSalesChannelsStepId,
   async (input: CreateSalesChannelsStepInput, { container }) => {
     const salesChannelService = container.resolve<ISalesChannelModuleService>(
-      ModuleRegistrationName.SALES_CHANNEL
+      Modules.SALES_CHANNEL
     )
 
     const salesChannels = await salesChannelService.createSalesChannels(
@@ -35,7 +35,7 @@ export const createSalesChannelsStep = createStep(
     }
 
     const service = container.resolve<ISalesChannelModuleService>(
-      ModuleRegistrationName.SALES_CHANNEL
+      Modules.SALES_CHANNEL
     )
 
     await service.deleteSalesChannels(createdIds)

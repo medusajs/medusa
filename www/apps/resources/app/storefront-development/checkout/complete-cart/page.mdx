@@ -17,6 +17,9 @@ fetch(
   `http://localhost:9000/store/carts/${cartId}/complete`,
   {
     credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    },
     method: "POST",
   }
 )
@@ -53,10 +56,10 @@ export const highlights = [
   ["10", "handlePayment", "This function sends the request\nto the Medusa application to complete the cart."],
   ["21", "TODO", "If you're integrating a third-party payment provider,\nyou perform the custom logic before completing the cart."],
   ["24", "fetch", "Send a request to the Medusa application\nto complete the cart and place the order."],
-  ["33", `type === "cart"`, "If the `type` returned is `cart`,\nit means an error occurred and the cart wasn't completed."],
-  ["36", `type === "order"`, "If the `type` returned is `order`,\nit means the cart was completed and the order was placed successfully."],
-  ["40", "refreshCart", "Unset and reset the cart."],
-  ["47", "button", "This button triggers the `handlePayment` function when clicked."]
+  ["36", `type === "cart"`, "If the `type` returned is `cart`,\nit means an error occurred and the cart wasn't completed."],
+  ["39", `type === "order"`, "If the `type` returned is `order`,\nit means the cart was completed and the order was placed successfully."],
+  ["43", "refreshCart", "Unset and reset the cart."],
+  ["50", "button", "This button triggers the `handlePayment` function when clicked."]
 ]
 
 ```tsx highlights={highlights}
@@ -87,6 +90,9 @@ export default function SystemDefaultPayment() {
       `http://localhost:9000/store/carts/${cart.id}/complete`,
       {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
         method: "POST",
       }
     )

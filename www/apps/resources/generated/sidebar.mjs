@@ -8082,6 +8082,14 @@ export const generatedSidebar = [
         "children": []
       },
       {
+        "loaded": true,
+        "isPathHref": true,
+        "type": "link",
+        "path": "/storefront-development/publishable-api-keys",
+        "title": "Publishable API Key",
+        "children": []
+      },
+      {
         "type": "separator"
       },
       {

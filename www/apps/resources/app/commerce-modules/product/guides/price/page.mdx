@@ -26,18 +26,16 @@ For example:
 
 ```ts highlights={[["6"]]}
 const { data: products } = await query.graph({
-  entryPoint: "product",
+  entity: "product",
   fields: [
     "*",
     "variants.*",
     "variants.prices.*",
   ],
-  variables: {
-    filters: {
-      id: [
-        "prod_123",
-      ],
-    },
+  filters: {
+    id: [
+      "prod_123",
+    ],
   },
 })
 ```
@@ -59,32 +57,38 @@ Learn more about prices calculation in [this Pricing Module documentation](../..
 To retrieve calculated prices of variants based on a context, retrieve the products using Query and:
 
 - Pass `variants.calculated_price.*` in the `fields` property.
-- Pass in the `variables` property a `variants.calculated_price` property whose value is the [calculation context object](../../../pricing/price-calculation/page.mdx#calculation-context).
+- Pass a `context` property in the object parameter. Its value is an object of objects to sets the context for the retrieved fields.
 
 For example:
 
 ```ts highlights={[["6"], ["12"], ["13"], ["14"], ["15"], ["16"], ["17"]]}
+import { QueryContext } from "@medusajs/utils"
+
+// ...
+
 const { data: products } = await query.graph({
-  entryPoint: "product",
+  entity: "product",
   fields: [
     "*",
     "variants.*",
     "variants.calculated_price.*",
   ],
-  variables: {
-    filters: {
-      id: "prod_123",
-    },
-    "variants.calculated_price": {
-      context: {
+  filters: {
+    id: "prod_123",
+  },
+  context: {
+    variants: {
+      calculated_price: QueryContext({
         region_id: "reg_01J3MRPDNXXXDSCC76Y6YCZARS",
         currency_code: "eur",
-      },
+      }),
     },
   },
 })
 ```
 
-The `variants.calculated_price` property of `variables` is an object that has a `context` property. `context`'s value is an object whose keys are price rules, such as `region_id`, and value is the rule's value in this context, such as the customer's region's ID.
+For the context of the product variant's calculated price, you pass an object to `context` with the property `variants`, whose value is another object with the property `calculated_price`.
+
+`calculated_price`'s value is created using the `QueryContext` utility function, passing it a [calculation context object](../../../pricing/price-calculation/page.mdx#calculation-context).
 
 Each variant in the retrieved products has a `calculated_price` object. Learn more about its properties in [this Pricing Module guide](../../../pricing/price-calculation/page.mdx#returned-price-object).

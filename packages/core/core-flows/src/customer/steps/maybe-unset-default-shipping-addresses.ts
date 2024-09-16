@@ -4,7 +4,7 @@ import {
   ICustomerModuleService,
   UpdateCustomerAddressDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName, isDefined } from "@medusajs/utils"
+import { Modules, isDefined } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
 import { unsetForCreate, unsetForUpdate } from "./utils"
 
@@ -25,7 +25,7 @@ export const maybeUnsetDefaultShippingAddressesStep = createStep(
   maybeUnsetDefaultShippingAddressesStepId,
   async (data: MaybeUnsetDefaultShippingAddressesStepInput, { container }) => {
     const customerModuleService = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
+      Modules.CUSTOMER
     )
     if (isDefined(data.create)) {
       return unsetForCreate(
@@ -51,7 +51,7 @@ export const maybeUnsetDefaultShippingAddressesStep = createStep(
     }
 
     const customerModuleService = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
+      Modules.CUSTOMER
     )
 
     await customerModuleService.updateCustomerAddresses(

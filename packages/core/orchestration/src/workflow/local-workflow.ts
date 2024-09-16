@@ -1,12 +1,12 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
-  createMedusaContainer,
-  isDefined,
-  isString,
   MedusaContext,
   MedusaContextType,
   MedusaError,
   MedusaModuleType,
+  createMedusaContainer,
+  isDefined,
+  isString,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -85,8 +85,8 @@ export class LocalWorkflow {
       container = createMedusaContainer()
 
       for (const mod of modulesLoaded || []) {
-        const registrationName = mod.__definition.registrationName
-        container.register(registrationName, asValue(mod))
+        const keyName = mod.__definition.key
+        container.register(keyName, asValue(mod))
       }
     }
 
@@ -101,8 +101,8 @@ export class LocalWorkflow {
     // eslint-disable-next-line
     const this_ = this
     const originalResolver = container.resolve
-    container.resolve = function (registrationName, opts) {
-      const resolved = originalResolver(registrationName, opts)
+    container.resolve = function (keyName, opts) {
+      const resolved = originalResolver(keyName, opts)
       if (resolved?.constructor?.__type !== MedusaModuleType) {
         return resolved
       }
