@@ -3,10 +3,7 @@ import {
   IRegionModuleService,
   UpdateRegionDTO,
 } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type UpdateRegionsStepInput = {
@@ -21,9 +18,7 @@ export const updateRegionsStepId = "update-region"
 export const updateRegionsStep = createStep(
   updateRegionsStepId,
   async (data: UpdateRegionsStepInput, { container }) => {
-    const service = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
-    )
+    const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -47,9 +42,7 @@ export const updateRegionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
-    )
+    const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
     await service.upsertRegions(
       prevData.map((r) => ({

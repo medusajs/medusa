@@ -3,7 +3,7 @@ import {
   UpdateOrderChangeActionDTO,
 } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
+  Modules,
   deduplicate,
   getSelectsAndRelationsFromObjectArray,
 } from "@medusajs/utils"
@@ -16,9 +16,7 @@ export const updateOrderChangeActionsStepId = "update-order-change-actions"
 export const updateOrderChangeActionsStep = createStep(
   updateOrderChangeActionsStepId,
   async (data: UpdateOrderChangeActionDTO[], { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
       objectFields: ["metadata", "details"],
@@ -46,9 +44,7 @@ export const updateOrderChangeActionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await service.updateOrderChangeActions(dataBeforeUpdate)
   }

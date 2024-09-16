@@ -38,9 +38,9 @@ export class ApiKey {
 
   async revoke(id: string, headers?: ClientHeaders) {
     return await this.client.fetch<HttpTypes.AdminApiKeyResponse>(
-      `/admin/api-keys/${id}`,
+      `/admin/api-keys/${id}/revoke`,
       {
-        method: "DELETE",
+        method: "POST",
         headers,
       }
     )

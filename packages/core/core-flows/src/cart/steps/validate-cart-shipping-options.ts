@@ -1,9 +1,5 @@
 import { CartDTO, IFulfillmentModuleService } from "@medusajs/types"
-import {
-  MedusaError,
-  ModuleRegistrationName,
-  arrayDifference,
-} from "@medusajs/utils"
+import { MedusaError, Modules, arrayDifference } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface ValidateCartShippingOptionsStepInput {
@@ -30,7 +26,7 @@ export const validateCartShippingOptionsStep = createStep(
     }
 
     const fulfillmentModule = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const validShippingOptions =

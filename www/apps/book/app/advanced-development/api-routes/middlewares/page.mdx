@@ -37,7 +37,7 @@ import type {
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/store*",
+      matcher: "/custom*",
       middlewares: [
         (
           req: MedusaRequest, 
@@ -59,7 +59,7 @@ The `defineMiddlewares` function accepts a middleware configurations object that
 - `matcher`: a string or regular expression indicating the API route path to apply the middleware on. The regular expression must be compatible with [path-to-regexp](https://github.com/pillarjs/path-to-regexp).
 - `middlewares`: An array of middleware functions.
 
-In the example above, you define a middleware that logs the message `Received a request!` whenever a request is sent to an API route path starting with `/store`.
+In the example above, you define a middleware that logs the message `Received a request!` whenever a request is sent to an API route path starting with `/custom`.
 
 ---
 
@@ -73,7 +73,7 @@ To test the middleware:
 npm run dev
 ```
 
-2. Send a request to any API route starting with `/store`.
+2. Send a request to any API route starting with `/custom`.
 3. See the following message in the terminal:
 
 ```bash
@@ -128,7 +128,7 @@ import type {
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/store/custom/:id",
+      matcher: "/custom/:id",
       middlewares: [
         // ...
       ],
@@ -137,7 +137,7 @@ export default defineMiddlewares({
 })
 ```
 
-This applies a middleware to the routes defined in the file `src/api/store/custom/[id]/route.ts`.
+This applies a middleware to the routes defined in the file `src/api/custom/[id]/route.ts`.
 
 ---
 
@@ -160,7 +160,7 @@ import type {
 export default defineMiddlewares({
   routes: [
     {
-      matcher: "/store*",
+      matcher: "/custom*",
       method: ["POST", "PUT"],
       middlewares: [
         // ...
@@ -172,7 +172,7 @@ export default defineMiddlewares({
 
 `method`'s value is one or more HTTP methods to apply the middleware to.
 
-This example applies the middleware only when a `POST` or `PUT` request is sent to an API route path starting with `/store`.
+This example applies the middleware only when a `POST` or `PUT` request is sent to an API route path starting with `/custom`.
 
 ---
 

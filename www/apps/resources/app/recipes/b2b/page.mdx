@@ -609,7 +609,7 @@ export const checkCustomerHighlights = [
     AuthenticatedMedusaRequest, 
     MedusaResponse,
   } from "@medusajs/medusa"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
   import { ICustomerModuleService } from "@medusajs/types"
   import B2bModuleService from "../../../../modules/b2b/service"
   
@@ -618,7 +618,7 @@ export const checkCustomerHighlights = [
     res: MedusaResponse
   ) {
     const customerModuleService: ICustomerModuleService = req
-      .scope.resolve(ModuleRegistrationName.CUSTOMER)
+      .scope.resolve(Modules.CUSTOMER)
     const b2bModuleService: B2bModuleService = req.scope.resolve(
       "b2bModuleService"
     )

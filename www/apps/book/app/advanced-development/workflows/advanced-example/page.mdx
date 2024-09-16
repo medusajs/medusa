@@ -49,14 +49,14 @@ export const updateProductHighlights = [
 ```ts title="src/workflows/update-product-erp/steps/update-product.ts" highlights={updateProductHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { UpdateProductAndErpWorkflowInput } from ".."
 
 const updateProduct = createStep(
   "update-product",
   async (input: UpdateProductAndErpWorkflowInput, context) => {
     const productModuleService: IProductModuleService =
-      context.container.resolve(ModuleRegistrationName.PRODUCT)
+      context.container.resolve(Modules.PRODUCT)
 
     const { id } = input
     const previousProductData =
@@ -72,7 +72,7 @@ const updateProduct = createStep(
   // compensation function
   async ({ previousProductData }, context) => {
     const productModuleService: IProductModuleService =
-      context.container.resolve(ModuleRegistrationName.PRODUCT)
+      context.container.resolve(Modules.PRODUCT)
 
     const { id, type, options, variants, ...previousData } = previousProductData
 
@@ -239,9 +239,9 @@ In the workflow construction function, you first run the `updateProduct` step, t
 
 You can now use and execute your workflow in your Medusa application.
 
-To execute the workflow in an API route, create the file `src/api/store/products/[id]/erp/route.ts` with the following content:
+To execute the workflow in an API route, create the file `src/api/products/[id]/erp/route.ts` with the following content:
 
-```ts title="src/api/store/products/[id]/erp/route.ts"
+```ts title="src/api/products/[id]/erp/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import updateProductAndErpWorkflow, {
   UpdateProductAndErpWorkflowInput,

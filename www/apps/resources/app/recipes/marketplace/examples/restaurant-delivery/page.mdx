@@ -58,6 +58,10 @@ This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eat
     link: "!docs!#get-started"
   },
   {
+    text: "Publishable API key to send store requests. You can create it in the Medusa Admin or using the Admin API routes",
+    link: "/storefront-development/publishable-api-keys"
+  },
+  {
     text: "Recommended: Use the Redis Workflow Engine Module for improved tracking and storage of workflow executions."
   }
 ]} />
@@ -627,7 +631,10 @@ In the file `src/api/restaurants/route.ts` add the following API route:
 ```ts title="src/api/restaurants/route.ts"
 // other imports...
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { 
+  ContainerRegistrationKeys, 
+  QueryContext
+} from "@medusajs/utils"
 
 // ...
 
@@ -637,7 +644,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: restaurants } = await query.graph({
-    entryPoint: "restaurants",
+    entity: "restaurants",
     fields: [
       "id",
       "handle",
@@ -652,11 +659,13 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
       "products.variants.*",
       "products.variants.calculated_price.*",
     ],
-    variables: {
-      filters: queryFilters,
-      "products.variants.calculated_price": {
-        context: {
-          currency_code,
+    filters: queryFilters,
+    context: {
+      products: {
+        variants: {
+          calculated_price: QueryContext({
+            currency_code,
+          })
         },
       },
     },
@@ -858,11 +867,7 @@ const user = createUserStep(input.user)
 const authUserInput = transform({ input, user }, (data) => ({
   authIdentityId: data.input.auth_identity_id,
   actorType: data.input.user.actor_type,
-  key:
-    data.input.user.actor_type === "restaurant"
-      ? "restaurant_id"
-      : "driver_id",
-  value: user.id,
+  value: data.user.id,
 }))
 
 setAuthAppMetadataStep(authUserInput)
@@ -1034,7 +1039,201 @@ This returns the created driver user.
 
 ---
 
-## Step 8: Create Restaurant Product API Route
+## Step 8: Delete Restaurant Admin API Route
+
+In this step, you'll create a workflow that deletes the restaurant admin and its association to its auth identity, then use it in an API route.
+
+<Note title="Tip">
+
+The same logic can be applied to delete a driver.
+
+</Note>
+
+### Create deleteRestaurantAdminStep
+
+First, create the step that deletes the restaurant admin at `restaurant-marketplace/src/workflows/restaurant/steps/delete-restaurant-admin.ts`:
+
+```ts title="restaurant-marketplace/src/workflows/restaurant/steps/delete-restaurant-admin.ts"
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+import { RESTAURANT_MODULE } from "../../../modules/restaurant"
+import { DeleteRestaurantAdminWorkflow } from "../workflows/delete-restaurant-admin"
+
+export const deleteRestaurantAdminStep = createStep(
+  "delete-restaurant-admin",
+  async ({ id }: DeleteRestaurantAdminWorkflow, { container }) => {
+    const restaurantModuleService = container.resolve(
+      RESTAURANT_MODULE
+    )
+
+    const admin = await restaurantModuleService.retrieveRestaurantAdmin(id)
+
+    await restaurantModuleService.deleteRestaurantAdmins(id)
+    
+    return new StepResponse(undefined, { admin })
+  },
+  async ({ admin }, { container }) => {
+    const restaurantModuleService = container.resolve(
+      RESTAURANT_MODULE
+    )
+
+    await restaurantModuleService.createRestaurantAdmins(admin)
+  }
+)
+```
+
+In this step, you resolve the Restaurant Module's service and delete the admin. In the compensation function, you create the admin again.
+
+### Create deleteRestaurantAdminWorkflow
+
+Then, create the workflow that deletes the restaurant admin at `restaurant-marketplace/src/workflows/restaurant/workflows/delete-restaurant-admin.ts`:
+
+```ts title="restaurant-marketplace/src/workflows/restaurant/workflows/delete-restaurant-admin.ts" collapsibleLines="1-13" expandButtonLabel="Show Imports"
+import { MedusaError } from "@medusajs/utils"
+import {
+  WorkflowData,
+  WorkflowResponse,
+  createWorkflow,
+  transform,
+} from "@medusajs/workflows-sdk"
+import { 
+  setAuthAppMetadataStep,
+  useRemoteQueryStep,
+} from "@medusajs/core-flows"
+import { deleteRestaurantAdminStep } from "../steps/delete-restaurant-admin"
+
+export type DeleteRestaurantAdminWorkflow = {
+  id: string
+}
+
+export const deleteRestaurantAdminWorkflow = createWorkflow(
+  "delete-restaurant-admin",
+  (
+    input: WorkflowData<DeleteRestaurantAdminWorkflow>
+  ): WorkflowResponse<string> => {
+    deleteRestaurantAdminStep(input)
+
+    // TODO update auth identity
+  }
+)
+```
+
+So far, you only use the `deleteRestaurantAdminStep` in the workflow, which deletes the restaurant admin.
+
+Replace the `TODO` with the following:
+
+```ts title="restaurant-marketplace/src/workflows/restaurant/workflows/delete-restaurant-admin.ts"
+const authIdentities = useRemoteQueryStep({
+  entry_point: "auth_identity",
+  fields: ["id"],
+  variables: {
+    filters: {
+      app_metadata: {
+        restaurant_id: input.id,
+      },
+    },
+  },
+})
+
+const authIdentity = transform(
+  { authIdentities },
+  ({ authIdentities }) => {
+    const authIdentity = authIdentities[0]
+
+    if (!authIdentity) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "Auth identity not found"
+      )
+    }
+
+    return authIdentity
+  }
+)
+
+setAuthAppMetadataStep({
+  authIdentityId: authIdentity.id,
+  actorType: "restaurant",
+  value: null,
+})
+
+return new WorkflowResponse(input.id)
+```
+
+After deleting the restaurant admin, you:
+
+1. Retrieve its auth identity using Query. To do that, you filter its `app_metadata` property by checking that its `restaurant_id` property's value is the admin's ID. For drivers, you replace `restaurant_id` with `driver_id`.
+2. Check that the auth identity exists using the `transform` utility. Otherwise, throw an error.
+3. Unset the association between the auth identity and the restaurant admin using the `setAuthAppMetadataStep` imported from `@medusajs/core-flows`.
+
+### Create API Route
+
+Finally, add the API route that uses the workflow at `src/api/restaurants/[id]/admins/[admin_id]/route.ts`:
+
+```ts title="src/api/restaurants/[id]/admins/[admin_id]/route.ts"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { 
+  deleteRestaurantAdminWorkflow,
+} from "../../../../../workflows/restaurant/workflows/delete-restaurant-admin"
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  await deleteRestaurantAdminWorkflow(req.scope).run({
+    input: {
+      id: req.params.admin_id,
+    },
+  })
+
+  res.json({ message: "success" })
+}
+```
+
+You add a `DELETE` API route at `/restaurants/[id]/admins/[admin_id]`. In the route, you execute the workflow to delete the restaurant admin.
+
+### Add Authentication Middleware
+
+This API route should only be accessible by restaurant admins.
+
+So, in the file `src/api/middlewares.ts`, add a new middleware:
+
+```ts title="src/api/middlewares.ts"
+export default defineMiddlewares({
+  routes: [
+    // ...
+    {
+      method: ["POST", "DELETE"],
+      matcher: "/restaurants/:id/**",
+      middlewares: [
+        authenticate(["restaurant", "user"], "bearer"),
+      ],
+    },
+  ],
+})
+```
+
+This allows only restaurant admins and Medusa Admin users to access routes under the `/restaurants/[id]` prefix if the request method is `POST` or `DELETE`.
+
+### Test API Route
+
+To test it out, create another restaurant admin user, then send a `DELETE` request to `/restaurants/[id]/admins/[admin_id]`, authenticated as the first admin user you created:
+
+```bash
+curl -X DELETE 'http://localhost:9000/restaurants/01J7GHGQTCAVY5C1AH1H733Q4G/admins/01J7GJKHWXF1YDMXH09EXEDCD6' \
+-H 'Authorization: Bearer {token}'
+```
+
+Make sure to replace the first ID with the restaurant's ID, and the second ID with the ID of the admin to delete.
+
+---
+
+## Step 9: Create Restaurant Product API Route
 
 In this step, you’ll create the API route that creates a product for a restaurant.
 
@@ -1144,29 +1343,6 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
 
 The creates a `POST` API route at `/restaurants/[id]/products`. It accepts the products’ details in the request body, executes the `createRestaurantProductsWorkflow` to create the products, and returns the created products in the response.
 
-### Add Authentication Middleware
-
-This API route should only be accessible by restaurant admins.
-
-So, in the file `src/api/middlewares.ts`, add a new middleware:
-
-```ts title="src/api/middlewares.ts"
-export default defineMiddlewares({
-  routes: [
-    // ...
-    {
-      method: ["POST", "DELETE"],
-      matcher: "/restaurants/:id/**",
-      middlewares: [
-        authenticate(["restaurant", "user"], "bearer"),
-      ],
-    },
-  ],
-})
-```
-
-This allows only restaurant admins and Medusa Admin users to access routes under the `/restaurants/[id]` prefix if the request method is `POST` or `DELETE`.
-
 ### Test it Out
 
 To create a product using the above API route, send a `POST` request to `/restaurants/[id]/products`, replacing `[id]` with the restaurant’s ID:
@@ -1209,7 +1385,7 @@ The request returns the created product in the response.
 
 ---
 
-## Step 9: Create Order Delivery Workflow
+## Step 10: Create Order Delivery Workflow
 
 In this step, you’ll create the workflow that creates a delivery. You’ll use it at a later step once a customer places their order.
 
@@ -1362,7 +1538,7 @@ In the workflow, you:
 
 ---
 
-## Step 10: Handle Delivery Workflow
+## Step 11: Handle Delivery Workflow
 
 In this step, you’ll create the workflow that handles the different stages of the delivery. This workflow needs to run in the background to update the delivery when an action occurs.
 
@@ -1506,7 +1682,7 @@ export const notifyRestaurantStepHighlights = [
 
 ```ts title="src/workflows/delivery/steps/notify-restaurant.ts" highlights={notifyRestaurantStepHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import {
-  ModuleRegistrationName,
+  Modules,
   ContainerRegistrationKeys,
 } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
@@ -1523,16 +1699,14 @@ export const notifyRestaurantStep = createStep(
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const { data: [delivery] } = await query.graph({
-      entryPoint: "deliveries",
-      variables: {
-        filters: {
-          id: deliveryId,
-        },
+      entity: "deliveries",
+      filters: {
+        id: deliveryId,
       },
       fields: ["id", "restaurant.id"],
     })
 
-    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
+    const eventBus = container.resolve(Modules.EVENT_BUS)
 
     await eventBus.emit({
       name: "notify.restaurant",
@@ -1593,7 +1767,6 @@ export const createOrderStepHighlights1 = [
 ```ts title="src/workflows/delivery/steps/create-order.ts" highlights={createOrderStepHighlights1} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import { CreateOrderShippingMethodDTO } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
   Modules,
   ContainerRegistrationKeys,
 } from "@medusajs/utils"
@@ -1606,12 +1779,7 @@ export const createOrderStep = createStep(
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const { data: [delivery] } = await query.graph({
-      entryPoint: "deliveries",
-      variables: {
-        filters: {
-          id: deliveryId,
-        },
-      },
+      entity: "deliveries",
       fields: [
         "id", 
         "cart.*",
@@ -1620,6 +1788,9 @@ export const createOrderStep = createStep(
         "cart.items.*",
         "cart.shipping_methods.*",
       ],
+      filters: {
+        id: deliveryId,
+      },
     })
 
     // TODO create order
@@ -1643,7 +1814,7 @@ export const createOrderStepHighlights2 = [
 ```ts title="src/workflows/delivery/steps/create-order.ts" highlights={createOrderStepHighlights2}
 const { cart } = delivery
 
-const orderModuleService = container.resolve(ModuleRegistrationName.ORDER)
+const orderModuleService = container.resolve(Modules.ORDER)
 
 const order = await orderModuleService.createOrders({
   currency_code: cart.currency_code,
@@ -1680,7 +1851,7 @@ You create the order using the Order Module’s main service. Then, you create a
 Then, replace the `TODO` in the compensation function with the following:
 
 ```ts title="src/workflows/delivery/steps/create-order.ts"
-const orderService = container.resolve(ModuleRegistrationName.ORDER)
+const orderService = container.resolve(Modules.ORDER)
 
 await orderService.softDeleteOrders([orderId])
 ```
@@ -1736,14 +1907,14 @@ export const createFulfillmentStepHighlights = [
 
 ```ts title="src/workflows/delivery/steps/create-fulfillment.ts" highlights={createFulfillmentStepHighlights}
 import { OrderDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createFulfillmentStep = createStep(
   "create-fulfillment-step",
   async function (order: OrderDTO, { container }) {
     const fulfillmentModuleService = container.resolve(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const items = order.items?.map((lineItem) => ({
@@ -1767,7 +1938,7 @@ export const createFulfillmentStep = createStep(
   },
   function (id: string, { container }) {
     const fulfillmentModuleService = container.resolve(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     return fulfillmentModuleService.cancelFulfillment(id)
@@ -1898,7 +2069,7 @@ In the next steps, you’ll execute the workflow and see it in action as you add
 
 ---
 
-## Step 11: Create Order Delivery API Route
+## Step 12: Create Order Delivery API Route
 
 In this step, you’ll create the API route that executes the workflows created by the previous two steps. This API route is used when a customer places their order.
 
@@ -1967,6 +2138,7 @@ Before using the API route, you must have a cart with at least one product from 
 ```bash
 curl -X POST 'http://localhost:9000/store/carts' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "region_id": "reg_01J66SWSSWFZPQV0GWR2W7P1SB",
     "sales_channel_id": "sc_01J66SWSRK95F2P2KTFHMYR7VC",
@@ -1997,6 +2169,7 @@ curl -X POST 'http://localhost:9000/store/carts' \
 ```bash
 curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/line-items' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "variant_id": "variant_01J66T0VC2S0NB4BNDBCZN8P9F",
     "quantity": 1
@@ -2009,6 +2182,7 @@ curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/
   
 ```bash
 curl 'http://localhost:9000/store/shipping-options?cart_id=cart_01J67JT10B3RCWKT9NFEFYA2XG' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 ```
   
   Make sure to replace the value of the `cart_id` query parameter with the cart’s ID.
@@ -2018,6 +2192,7 @@ curl 'http://localhost:9000/store/shipping-options?cart_id=cart_01J67JT10B3RCWKT
 ```bash
 curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/shipping-methods' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "option_id": "so_01J66SWSVQG7S1BSJKR7PYWH6C",
     "data": {}
@@ -2031,6 +2206,7 @@ curl -X POST 'http://localhost:9000/store/carts/cart_01J67MS5WPH2CE5R84BENJCGSW/
 ```bash
 curl -X POST 'http://localhost:9000/store/payment-collections' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "cart_id": "cart_01J67MS5WPH2CE5R84BENJCGSW"
 }'
@@ -2043,6 +2219,7 @@ curl -X POST 'http://localhost:9000/store/payment-collections' \
 ```bash
 curl -X POST 'http://localhost:9000/store/payment-collections/pay_col_01J67MSK397M3BKD3RDVDMJSRE/payment-sessions' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data-raw '{
     "provider_id": "pp_system_default"
 }'
@@ -2060,6 +2237,7 @@ Then, send a `POST` request to `/store/deliveries` to create the order delivery:
 ```bash
 curl -X POST 'http://localhost:9000/store/deliveries' \
 -H 'Content-Type: application/json' \
+-H 'x-publishable-api-key: {your_publishable_api_key}' \
 --data '{
     "cart_id": "cart_01J67MS5WPH2CE5R84BENJCGSW",
     "restaurant_id": "res_01J66SYN5DSRR0R6QM3A4SYRFZ"
@@ -2074,7 +2252,7 @@ In the upcoming steps, you’ll add functionalities to update the delivery’s s
 
 ---
 
-## Step 12: Accept Delivery API Route
+## Step 13: Accept Delivery API Route
 
 In this step, you’ll create an API route that a restaurant admin uses to accept a delivery. This moves the `handleDeliveryWorkflow` execution from `notifyRestaurantStep` to the next step.
 
@@ -2178,7 +2356,7 @@ export const setStepSuccessStepHighlights = [
 
 ```ts title="src/workflows/delivery/steps/set-step-success.ts" highlights={setStepSuccessStepHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
-  ModuleRegistrationName,
+  Modules,
   TransactionHandlerType,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -2197,7 +2375,7 @@ export const setStepSuccessStep = createStep(
     { container }
   ) {
     const engineService = container.resolve(
-      ModuleRegistrationName.WORKFLOW_ENGINE
+      Modules.WORKFLOW_ENGINE
     )
 
     await engineService.setStepSuccess({
@@ -2229,7 +2407,7 @@ export const setStepFailedStepHighlights = [
 
 ```ts title="src/workflows/delivery/steps/set-step-failed.ts" highlights={setStepFailedStepHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
-  ModuleRegistrationName,
+  Modules,
   TransactionHandlerType,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -2248,7 +2426,7 @@ export const setStepFailedStep = createStep(
     { container }
   ) {
     const engineService = container.resolve(
-      ModuleRegistrationName.WORKFLOW_ENGINE
+      Modules.WORKFLOW_ENGINE
     )
 
     await engineService.setStepFailure({
@@ -2435,14 +2613,12 @@ export const isDeliveryRestaurant = async (
   )
 
   const { data: [delivery] } = await query.graph({
-    entryPoint: "delivery",
+    entity: "delivery",
     fields: [
       "restaurant.*",
     ],
-    variables: {
-      filters: {
-        id: req.params.id,
-      },
+    filters: {
+      id: req.params.id,
     },
   })
 
@@ -2526,7 +2702,7 @@ Meaning that the `handleDeliveryWorkflow`'s execution has moved to the `awaitDri
 
 ---
 
-## Step 13: Claim Delivery API Route
+## Step 14: Claim Delivery API Route
 
 In this step, you’ll add the API route that allows a driver to claim a delivery.
 
@@ -2671,7 +2847,7 @@ This indicates that the `handleDeliveryWorkflow`'s execution continued past the 
 
 ---
 
-## Step 14: Prepare API Route
+## Step 15: Prepare API Route
 
 In this step, you’ll add the API route that restaurants use to indicate they’re preparing the order.
 
@@ -2761,7 +2937,7 @@ This message indicates that the `handleDeliveryWorkflow`'s execution has moved t
 
 ---
 
-## Step 15: Ready API Route
+## Step 16: Ready API Route
 
 In this step, you’ll create the API route that restaurants use to indicate that a delivery is ready for pick up.
 
@@ -2853,7 +3029,7 @@ This message indicates that the `handleDeliveryWorkflow`'s execution has moved t
 
 ---
 
-## Step 18: Pick Up Delivery API Route
+## Step 17: Pick Up Delivery API Route
 
 In this step, you’ll add the API route that the driver uses to indicate they’ve picked up the delivery.
 
@@ -2993,7 +3169,7 @@ This message indicates that the `handleDeliveryWorkflow`'s execution has moved t
 
 ---
 
-## Step 19: Complete Delivery API Route
+## Step 18: Complete Delivery API Route
 
 In this step, you’ll create the API route that the driver uses to indicate that they completed the delivery.
 
@@ -3083,7 +3259,7 @@ As the route sets the status of the `awaitDeliveryStep` to successful in the `ha
 
 ---
 
-## Step 20: Real-Time Tracking in the Storefront
+## Step 19: Real-Time Tracking in the Storefront
 
 In this step, you’ll learn how to implement real-time tracking of a delivery in a Next.js-based storefront.
 
@@ -3091,15 +3267,15 @@ In this step, you’ll learn how to implement real-time tracking of a delivery i
 
 Before adding the storefront UI, you need an API route that allows a client to stream delivery changes.
 
-So, create the file `src/api/store/deliveries/subscribe/route.ts` with the following content:
+So, create the file `src/api/deliveries/subscribe/route.ts` with the following content:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
+```ts title="src/api/deliveries/subscribe/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
 import { 
   MedusaRequest, 
   MedusaResponse,
 } from "@medusajs/medusa"
 import {
-  ModuleRegistrationName,
+  Modules,
 } from "@medusajs/utils"
 import { 
   handleDeliveryWorkflowId,
@@ -3122,11 +3298,11 @@ export const GET = async (
 }
 ```
 
-This creates a `GET` API route at `/store/deliveries/[id]/subscribe`. Currently, you only retrieve the delivery by its ID.
+This creates a `GET` API route at `/deliveries/[id]/subscribe`. Currently, you only retrieve the delivery by its ID.
 
 Next, you’ll stream the changes in the delivery. To do that, replace the `TODO` with the following:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts"
+```ts title="src/api/deliveries/subscribe/route.ts"
 const headers = {
   "Content-Type": "text/event-stream",
   Connection: "keep-alive",
@@ -3151,9 +3327,9 @@ In the above snippet, you set the response to a stream and write an initial mess
 
 To listen to the workflow changes, replace the new `TODO` with the following:
 
-```ts title="src/api/store/deliveries/subscribe/route.ts"
+```ts title="src/api/deliveries/subscribe/route.ts"
 const workflowEngine = req.scope.resolve(
-  ModuleRegistrationName.WORKFLOW_ENGINE
+  Modules.WORKFLOW_ENGINE
 )
 
 const workflowSubHandler = (data: any) => {
@@ -3173,9 +3349,9 @@ In this snippet, you resolve the Workflow Engine Module’s main service. Then, 
 
 The storefront UI will also need to retrieve the delivery. So, you’ll create an API route that retrieves the delivery’s details.
 
-Create the file `src/api/store/deliveries/[id]/route.ts` with the following content:
+Create the file `src/api/deliveries/[id]/route.ts` with the following content:
 
-```ts title="src/api/store/deliveries/[id]/route.ts"
+```ts title="src/api/deliveries/[id]/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { DELIVERY_MODULE } from "../../../../modules/delivery"
 
@@ -3240,6 +3416,9 @@ To retrieve the delivery from the Medusa application, replace the first `TODO` w
 // retrieve the delivery
 fetch(`http://localhost:9000/store/deliveries/${id}`, {
   credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK,
+  },
 })
 .then((res) => res.json())
 .then((data) => {
@@ -3255,7 +3434,7 @@ Next, to subscribe to the delivery’s changes in real-time, replace the remaini
 ```tsx title="Storefront Page"
 // subscribe to the delivery updates
 const source = new EventSource(
-  `http://localhost:9000/store/deliveries/${id}/subscribe`
+  `http://localhost:9000/deliveries/${id}/subscribe`
 )
 
 source.onmessage = (message) => {
@@ -3277,7 +3456,7 @@ return () => {
 }
 ```
 
-You use the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to receive the stream from the `/store/deliveries/[id]/subscribe` API route.
+You use the [EventSource API](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) to receive the stream from the `/deliveries/[id]/subscribe` API route.
 
 When a new message is set, the new delivery update is extracted from `message.data.response`, if `response` is available and has a `delivery_status` property.
 

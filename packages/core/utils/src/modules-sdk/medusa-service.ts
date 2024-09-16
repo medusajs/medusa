@@ -11,17 +11,17 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
+  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
-  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
 import { DmlEntity } from "../dml"
 import { InjectManager, MedusaContext } from "./decorators"
-import { ModuleRegistrationName } from "./definition"
+import { Modules } from "./definition"
 import { buildModelsNameToLinkableKeysMap } from "./joiner-config-builder"
 import {
   BaseMethods,
@@ -385,11 +385,11 @@ export function MedusaService<
       this.baseRepository_ = container.baseRepository
 
       const hasEventBusModuleService = Object.keys(this.__container__).find(
-        (key) => key === ModuleRegistrationName.EVENT_BUS
+        (key) => key === Modules.EVENT_BUS
       )
 
       this.eventBusModuleService_ = hasEventBusModuleService
-        ? this.__container__.eventBusModuleService
+        ? this.__container__[Modules.EVENT_BUS]
         : undefined
 
       this[MedusaServiceModelNameToLinkableKeysMapSymbol] =

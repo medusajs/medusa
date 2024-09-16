@@ -12,7 +12,7 @@ export function maybeApplyLinkFilter({
   filterableField,
   filterByField = "id",
 }) {
-  return async (req: MedusaRequest, _, next: NextFunction) => {
+  return async function linkFilter(req: MedusaRequest, _, next: NextFunction) {
     const filterableFields = req.filterableFields
 
     if (!filterableFields?.[filterableField]) {
@@ -76,27 +76,26 @@ export function maybeApplyLinkFilter({
   }
 */
 function transformFilterableFields(filterableFields: Record<string, unknown>) {
-  const result = {};
+  const result = {}
   for (const key of Object.keys(filterableFields)) {
-    const value = filterableFields[key];
-    const keys = key.split(".");
-    let current = result;
+    const value = filterableFields[key]
+    const keys = key.split(".")
+    let current = result
 
     // Iterate over the keys, creating nested objects as needed
     for (let i = 0; i < keys.length; i++) {
-      const part = keys[i];
-      current[part] ??= {};
+      const part = keys[i]
+      current[part] ??= {}
 
       if (i === keys.length - 1) {
         // If its the last key, assign the value
-        current[part] = value;
-        break;
+        current[part] = value
+        break
       }
 
-      current = current[part];
+      current = current[part]
     }
   }
 
-  return result;
+  return result
 }
-

@@ -1,9 +1,9 @@
+import { Modules } from "@medusajs/utils"
+import { asValue } from "awilix"
 import { join } from "path"
+import { container } from "../../container"
 import { eventBusServiceMock } from "../__mocks__"
 import { SubscriberLoader } from "../subscriber-loader"
-import { container } from "../../container"
-import { ModuleRegistrationName } from "@medusajs/utils"
-import { asValue } from "awilix"
 
 describe("SubscriberLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "subscribers")
@@ -17,10 +17,7 @@ describe("SubscriberLoader", () => {
   let registeredPaths: string[] = []
 
   beforeAll(async () => {
-    container.register(
-      ModuleRegistrationName.EVENT_BUS,
-      asValue(eventBusServiceMock)
-    )
+    container.register(Modules.EVENT_BUS, asValue(eventBusServiceMock))
 
     const paths = await new SubscriberLoader(rootDir, pluginOptions).load()
 

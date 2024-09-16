@@ -1,5 +1,5 @@
 import { IFulfillmentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteShippingProfilesStepId = "delete-shipping-profile"
@@ -10,7 +10,7 @@ export const deleteShippingProfilesStep = createStep(
   deleteShippingProfilesStepId,
   async (ids: string[], { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.softDeleteShippingProfiles(ids)
@@ -23,7 +23,7 @@ export const deleteShippingProfilesStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.restoreShippingProfiles(prevIds)

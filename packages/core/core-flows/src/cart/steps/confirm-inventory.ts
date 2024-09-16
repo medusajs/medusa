@@ -1,10 +1,5 @@
 import { IInventoryService } from "@medusajs/types"
-import {
-  MathBN,
-  MedusaError,
-  ModuleRegistrationName,
-  promiseAll,
-} from "@medusajs/utils"
+import { MathBN, MedusaError, Modules, promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface ConfirmVariantInventoryStepInput {
@@ -25,7 +20,7 @@ export const confirmInventoryStep = createStep(
   confirmInventoryStepId,
   async (data: ConfirmVariantInventoryStepInput, { container }) => {
     const inventoryService = container.resolve<IInventoryService>(
-      ModuleRegistrationName.INVENTORY
+      Modules.INVENTORY
     )
 
     // TODO: Should be bulk

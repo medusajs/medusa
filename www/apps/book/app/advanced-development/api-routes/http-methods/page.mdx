@@ -12,9 +12,9 @@ An API route is created for every HTTP method you export a handler function for 
 
 Allowed HTTP methods are: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`, `OPTIONS`, and `HEAD`.
 
-For example, create the file `src/api/store/hello-world/route.ts` with the following content:
+For example, create the file `src/api/hello-world/route.ts` with the following content:
 
-```ts title="src/api/store/hello-world/route.ts"
+```ts title="src/api/hello-world/route.ts"
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -41,5 +41,5 @@ export const POST = async (
 
 This adds two API Routes:
 
-- A `GET` route at `http://localhost:9000/store/hello-world`.
-- A `POST` route at `http://localhost:9000/store/hello-world`.
+- A `GET` route at `http://localhost:9000/hello-world`.
+- A `POST` route at `http://localhost:9000/hello-world`.

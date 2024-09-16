@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
         expect(link.serviceName).toEqual(linkDefinition.serviceName)
         expect(link.entryPoint).toEqual(linkDefinition.alias[0].name[0])
         expect(linkDefinition).toEqual({
-          serviceName: "currencyCurrencyRegionRegionLink",
+          serviceName: "CurrencyCurrencyRegionRegionLink",
           isLink: true,
           alias: [
             {
@@ -42,7 +42,7 @@ medusaIntegrationTestRunner({
           primaryKeys: ["id", "currency_code", "region_id"],
           relationships: [
             {
-              serviceName: "currency",
+              serviceName: "Currency",
               entity: "Currency",
               primaryKey: "code",
               foreignKey: "currency_code",
@@ -53,7 +53,7 @@ medusaIntegrationTestRunner({
               deleteCascade: false,
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -66,7 +66,7 @@ medusaIntegrationTestRunner({
           ],
           extends: [
             {
-              serviceName: "currency",
+              serviceName: "Currency",
               fieldAlias: {
                 region: {
                   path: "region_link.region",
@@ -75,7 +75,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "currencyCurrencyRegionRegionLink",
+                serviceName: "CurrencyCurrencyRegionRegionLink",
                 primaryKey: "currency_code",
                 foreignKey: "code",
                 alias: "region_link",
@@ -83,7 +83,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               fieldAlias: {
                 currency: {
                   path: "currency_link.currency",
@@ -92,7 +92,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "currencyCurrencyRegionRegionLink",
+                serviceName: "CurrencyCurrencyRegionRegionLink",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "currency_link",
@@ -124,20 +124,20 @@ medusaIntegrationTestRunner({
         expect(link.serviceName).toEqual(linkDefinition.serviceName)
         expect(link.entryPoint).toEqual(linkDefinition.alias[0].name[0])
         expect(linkDefinition).toEqual({
-          serviceName: "productProductVariantRegionRegionLink",
+          serviceName: "ProductProductVariantRegionRegionLink",
           isLink: true,
           alias: [
             {
               name: ["product_variant_region"],
               args: {
-                entity: "LinkProductServiceProductVariantRegionRegion",
+                entity: "LinkProductProductVariantRegionRegion",
               },
             },
           ],
           primaryKeys: ["id", "product_variant_id", "region_id"],
           relationships: [
             {
-              serviceName: "productService",
+              serviceName: "Product",
               entity: "ProductVariant",
               primaryKey: "id",
               foreignKey: "product_variant_id",
@@ -148,7 +148,7 @@ medusaIntegrationTestRunner({
               deleteCascade: false,
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -161,7 +161,7 @@ medusaIntegrationTestRunner({
           ],
           extends: [
             {
-              serviceName: "productService",
+              serviceName: "Product",
               fieldAlias: {
                 region: {
                   path: "region_link.region",
@@ -170,7 +170,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "productProductVariantRegionRegionLink",
+                serviceName: "ProductProductVariantRegionRegionLink",
                 primaryKey: "product_variant_id",
                 foreignKey: "id",
                 alias: "region_link",
@@ -178,7 +178,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               fieldAlias: {
                 product_variant: {
                   path: "product_variant_link.product_variant",
@@ -189,7 +189,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "productProductVariantRegionRegionLink",
+                serviceName: "ProductProductVariantRegionRegionLink",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "product_variant_link",
@@ -224,7 +224,7 @@ medusaIntegrationTestRunner({
         expect(link.serviceName).toEqual(linkDefinition.serviceName)
         expect(link.entryPoint).toEqual(linkDefinition.alias[0].name[0])
         expect(linkDefinition).toEqual({
-          serviceName: "currencyCurrencyRegionRegionLink",
+          serviceName: "CurrencyCurrencyRegionRegionLink",
           isLink: true,
           alias: [
             {
@@ -237,7 +237,7 @@ medusaIntegrationTestRunner({
           primaryKeys: ["id", "currency_code", "region_id"],
           relationships: [
             {
-              serviceName: "currency",
+              serviceName: "Currency",
               entity: "Currency",
               primaryKey: "code",
               foreignKey: "currency_code",
@@ -248,7 +248,7 @@ medusaIntegrationTestRunner({
               deleteCascade: true,
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -261,7 +261,7 @@ medusaIntegrationTestRunner({
           ],
           extends: [
             {
-              serviceName: "currency",
+              serviceName: "Currency",
               fieldAlias: {
                 region: {
                   path: "region_link.region",
@@ -270,7 +270,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "currencyCurrencyRegionRegionLink",
+                serviceName: "CurrencyCurrencyRegionRegionLink",
                 primaryKey: "currency_code",
                 foreignKey: "code",
                 alias: "region_link",
@@ -278,7 +278,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               fieldAlias: {
                 currency: {
                   path: "currency_link.currency",
@@ -287,7 +287,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "currencyCurrencyRegionRegionLink",
+                serviceName: "CurrencyCurrencyRegionRegionLink",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "currency_link",
@@ -316,9 +316,9 @@ medusaIntegrationTestRunner({
           })
           .filter(Boolean)[0]
 
-        expect(link.serviceName).toEqual("currencyCurrencyRegionRegionLink")
+        expect(link.serviceName).toEqual("CurrencyCurrencyRegionRegionLink")
         expect(linkDefinition).toEqual({
-          serviceName: "currencyCurrencyRegionRegionLink",
+          serviceName: "CurrencyCurrencyRegionRegionLink",
           isLink: true,
           alias: [
             {
@@ -331,7 +331,7 @@ medusaIntegrationTestRunner({
           primaryKeys: ["id", "currency_code", "region_id"],
           relationships: [
             {
-              serviceName: "currency",
+              serviceName: "Currency",
               entity: "Currency",
               primaryKey: "code",
               foreignKey: "currency_code",
@@ -342,7 +342,7 @@ medusaIntegrationTestRunner({
               deleteCascade: false,
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               entity: "Region",
               primaryKey: "id",
               foreignKey: "region_id",
@@ -355,7 +355,7 @@ medusaIntegrationTestRunner({
           ],
           extends: [
             {
-              serviceName: "currency",
+              serviceName: "Currency",
               fieldAlias: {
                 regions: {
                   path: "region_link.region",
@@ -364,7 +364,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "currencyCurrencyRegionRegionLink",
+                serviceName: "CurrencyCurrencyRegionRegionLink",
                 primaryKey: "currency_code",
                 foreignKey: "code",
                 alias: "region_link",
@@ -372,7 +372,7 @@ medusaIntegrationTestRunner({
               },
             },
             {
-              serviceName: "region",
+              serviceName: "Region",
               fieldAlias: {
                 currency: {
                   path: "currency_link.currency",
@@ -381,7 +381,7 @@ medusaIntegrationTestRunner({
                 },
               },
               relationship: {
-                serviceName: "currencyCurrencyRegionRegionLink",
+                serviceName: "CurrencyCurrencyRegionRegionLink",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "currency_link",

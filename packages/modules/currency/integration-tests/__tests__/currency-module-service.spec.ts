@@ -1,7 +1,7 @@
 import { ICurrencyModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Module, Modules } from "@medusajs/utils"
 import { CurrencyModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -26,7 +26,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
               linkable: "currency_code",
               entity: "Currency",
               primaryKey: "code",
-              serviceName: "currency",
+              serviceName: "Currency",
               field: "currency",
             },
           },

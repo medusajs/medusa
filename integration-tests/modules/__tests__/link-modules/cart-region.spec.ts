@@ -1,5 +1,5 @@
 import { ICartModuleService, IRegionModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -17,8 +17,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
+        cartModuleService = appContainer.resolve(Modules.CART)
+        regionModule = appContainer.resolve(Modules.REGION)
         remoteQuery = appContainer.resolve("remoteQuery")
       })
 

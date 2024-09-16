@@ -5,6 +5,7 @@ import {
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { ulid } from "ulid"
 import { exportWorkflow } from "../../helper"
 import { createStep } from "./create-step"
 import { proxify } from "./helpers/proxy"
@@ -104,6 +105,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     __type: OrchestrationUtils.SymbolMedusaWorkflowComposerContext,
     workflowId: name,
     flow: WorkflowManager.getEmptyTransactionDefinition(),
+    isAsync: false,
     handlers,
     hooks_: {
       declared: [],
@@ -176,21 +178,32 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
   }: {
     input: TData
   }): ReturnType<StepFunction<TData, TResult>> => {
-    // TODO: Async sub workflow is not supported yet
-    // Info: Once the export workflow can fire the execution through the engine if loaded, the async workflow can be executed,
-    // the step would inherit the async configuration and subscribe to the onFinish event of the sub worklow and mark itself as success or failure
-    return createStep(
-      `${name}-as-step`,
+    const step = createStep(
+      {
+        name: `${name}-as-step`,
+        async: context.isAsync,
+        nested: context.isAsync, // if async we flag this is a nested transaction
+      },
       async (stepInput: TData, stepContext) => {
         const { container, ...sharedContext } = stepContext
 
         const transaction = await workflow.run({
           input: stepInput as any,
           container,
-          context: sharedContext,
+          context: {
+            ...sharedContext,
+            parentStepIdempotencyKey: stepContext.idempotencyKey,
+            transactionId: ulid(),
+          },
         })
 
-        return new StepResponse(transaction.result, transaction)
+        const { result, transaction: flowTransaction } = transaction
+
+        if (!context.isAsync || flowTransaction.hasFinished()) {
+          return new StepResponse(result, transaction)
+        }
+
+        return
       },
       async (transaction, { container }) => {
         if (!transaction) {
@@ -200,6 +213,8 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
         await workflow(container).cancel(transaction)
       }
     )(input) as ReturnType<StepFunction<TData, TResult>>
+
+    return step
   }
 
   return mainFlow as ReturnWorkflow<TData, TResult, THooks>
