@@ -1,4 +1,5 @@
 curl -X POST '{backend_url}/store/customers' \
+-H 'Authorization: Bearer {token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "email": "Monserrate.Leannon88@yahoo.com",
