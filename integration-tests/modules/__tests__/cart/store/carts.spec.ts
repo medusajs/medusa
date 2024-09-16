@@ -2238,7 +2238,7 @@ medusaIntegrationTestRunner({
               location_id: stockLocation.id,
               inventory_item_id: inventoryItem.id,
               quantity: cart.items[0].quantity,
-              line_item_id: cart.items[0].id,
+              line_item_id: response.data.order.items[0].id,
             })
           )
 
