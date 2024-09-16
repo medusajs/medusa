@@ -60,7 +60,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/collections/{id}/products' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Collections
  * responses:
