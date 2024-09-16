@@ -143,8 +143,9 @@ export interface ConfirmVariantInventoryWorkflowInputDTO {
     }[]
   }[]
   items: {
-    variant_id?: string
+    variant_id?: string | null
     quantity: BigNumberInput
+    id?: string
   }[]
   itemsToUpdate?: {
     data: {

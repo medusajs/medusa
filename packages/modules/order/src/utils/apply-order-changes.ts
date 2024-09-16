@@ -58,6 +58,7 @@ export function applyChangesToOrder(
         version,
         quantity: orderItem.quantity,
         fulfilled_quantity: orderItem.fulfilled_quantity ?? 0,
+        delivered_quantity: orderItem.delivered_quantity ?? 0,
         shipped_quantity: orderItem.shipped_quantity ?? 0,
         return_requested_quantity: orderItem.return_requested_quantity ?? 0,
         return_received_quantity: orderItem.return_received_quantity ?? 0,

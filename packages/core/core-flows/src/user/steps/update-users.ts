@@ -1,5 +1,5 @@
 import { IUserModuleService, UpdateUserDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateUsersStepId = "update-users-step"
@@ -10,7 +10,7 @@ export const updateUsersStep = createStep(
   updateUsersStepId,
   async (input: UpdateUserDTO[], { container }) => {
     const service: IUserModuleService = container.resolve(
-      ModuleRegistrationName.USER
+      Modules.USER
     )
 
     if (!input.length) {
@@ -29,7 +29,7 @@ export const updateUsersStep = createStep(
       return
     }
 
-    const service = container.resolve(ModuleRegistrationName.USER)
+    const service = container.resolve(Modules.USER)
 
     await service.updateUsers(
       originalUsers.map((u) => ({

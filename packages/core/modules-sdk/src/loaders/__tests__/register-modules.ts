@@ -9,7 +9,6 @@ jest.mock("resolve-cwd", () => jest.fn(() => RESOLVED_PACKAGE))
 describe("module definitions loader", () => {
   const defaultDefinition: ModuleDefinition = {
     key: "testService",
-    registrationName: "testService",
     defaultPackage: "@medusajs/test-service",
     label: "TestService",
     isRequired: false,
@@ -63,7 +62,6 @@ describe("module definitions loader", () => {
         definition: expect.objectContaining({
           key: "customModulesABC",
           label: "Custom: customModulesABC",
-          registrationName: "customModulesABC",
         }),
         moduleDeclaration: {
           resources: "shared",

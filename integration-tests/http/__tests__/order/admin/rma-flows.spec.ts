@@ -1,8 +1,4 @@
-import {
-  ClaimType,
-  ModuleRegistrationName,
-  RuleOperator,
-} from "@medusajs/utils"
+import { ClaimType, Modules, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -26,9 +22,10 @@ medusaIntegrationTestRunner({
     beforeEach(async () => {
       const container = getContainer()
 
-      await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
+      await setupTaxStructure(container.resolve(Modules.TAX))
       await createAdminUser(dbConnection, adminHeaders, container)
-      order = await createOrderSeeder({ api, container })
+      const seeders = await createOrderSeeder({ api, container })
+      order = seeders.order
 
       shippingProfile = (
         await api.post(
@@ -161,7 +158,7 @@ medusaIntegrationTestRunner({
     })
 
     describe("RMA Flows", () => {
-      it.only("should verify order summary at each level", async () => {
+      it("should verify order summary at each level", async () => {
         /* Case:
             Purchased:
               items: {

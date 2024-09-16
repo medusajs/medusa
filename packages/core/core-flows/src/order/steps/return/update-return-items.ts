@@ -1,7 +1,4 @@
-import {
-  ModuleRegistrationName,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface UpdateReturnItemBySelector {
@@ -16,7 +13,7 @@ export const updateReturnItemsStepId = "update-return-items"
 export const updateReturnItemsStep = createStep(
   updateReturnItemsStepId,
   async (data: UpdateReturnItemBySelector[], { container }) => {
-    const service = container.resolve(ModuleRegistrationName.ORDER) as any
+    const service = container.resolve(Modules.ORDER) as any
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
       objectFields: ["metadata"],
@@ -35,7 +32,7 @@ export const updateReturnItemsStep = createStep(
       return
     }
 
-    const service = container.resolve(ModuleRegistrationName.ORDER) as any
+    const service = container.resolve(Modules.ORDER) as any
 
     await service.updateReturnItems(dataBeforeUpdate)
   }

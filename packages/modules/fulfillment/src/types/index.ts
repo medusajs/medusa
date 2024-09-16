@@ -7,7 +7,7 @@ import {
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger
-  eventBusModuleService?: IEventBusModuleService
+  EventBus?: IEventBusModuleService
 }
 
 export const FulfillmentIdentifiersRegistrationName =

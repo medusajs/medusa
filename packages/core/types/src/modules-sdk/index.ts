@@ -39,7 +39,6 @@ export type LoggerOptions = boolean | "all" | LogLevel[]
 
 export type CustomModuleDefinition = {
   key?: string
-  registrationName?: string
   label?: string
   isQueryable?: boolean // If the module is queryable via Remote Joiner
   dependencies?: string[]
@@ -93,7 +92,6 @@ export type ModuleResolution = {
 
 export type ModuleDefinition = {
   key: string
-  registrationName: string
   defaultPackage: string | false
   label: string
   isRequired?: boolean
@@ -108,7 +106,6 @@ export type ModuleDefinition = {
 
 export type LinkModuleDefinition = {
   key: string
-  registrationName: string
   label: string
   dependencies?: string[]
   defaultModuleDeclaration: InternalModuleDeclaration

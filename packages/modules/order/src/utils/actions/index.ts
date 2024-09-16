@@ -1,5 +1,6 @@
 export * from "./cancel-item-fulfillment"
 export * from "./cancel-return"
+export * from "./deliver-item"
 export * from "./fulfill-item"
 export * from "./item-add"
 export * from "./item-remove"

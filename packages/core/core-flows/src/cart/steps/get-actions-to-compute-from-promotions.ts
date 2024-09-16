@@ -1,5 +1,5 @@
 import { CartDTO, IPromotionModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface GetActionsToComputeFromPromotionsStepInput {
@@ -18,7 +18,7 @@ export const getActionsToComputeFromPromotionsStep = createStep(
   async (data: GetActionsToComputeFromPromotionsStepInput, { container }) => {
     const { cart, promotionCodesToApply = [] } = data
     const promotionService = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     const actionsToCompute = await promotionService.computeActions(

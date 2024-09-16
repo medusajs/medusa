@@ -382,9 +382,8 @@ class MedusaModule {
       moduleResolutions
     ) as ModuleResolution[]) {
       const keyName = resolution.definition.key
-      const registrationName = resolution.definition.registrationName
 
-      services[keyName] = container.resolve(registrationName)
+      services[keyName] = container.resolve(keyName)
       services[keyName].__definition = resolution.definition
 
       if (resolution.definition.isQueryable) {
@@ -466,7 +465,6 @@ class MedusaModule {
 
     const moduleDefinition: ModuleDefinition = {
       key: definition.key,
-      registrationName: definition.key,
       dependencies: definition.dependencies,
       defaultPackage: "",
       label: definition.label,
@@ -518,9 +516,8 @@ class MedusaModule {
       moduleResolutions
     ) as ModuleResolution[]) {
       const keyName = resolution.definition.key
-      const registrationName = resolution.definition.registrationName
 
-      services[keyName] = container.resolve(registrationName)
+      services[keyName] = container.resolve(keyName)
       services[keyName].__definition = resolution.definition
 
       if (resolution.definition.isQueryable) {

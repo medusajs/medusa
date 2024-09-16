@@ -11,7 +11,7 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
-  ModuleRegistrationName,
+  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
@@ -52,7 +52,7 @@ export const POST = async (
   res: MedusaResponse<AdminFulfillmentSetResponse>
 ) => {
   const fulfillmentModuleService = req.scope.resolve<IFulfillmentModuleService>(
-    ModuleRegistrationName.FULFILLMENT
+    Modules.FULFILLMENT
   )
 
   // ensure fulfillment set exists and that the service zone is part of it
@@ -99,7 +99,7 @@ export const DELETE = async (
   const { id, zone_id } = req.params
 
   const fulfillmentModuleService = req.scope.resolve<IFulfillmentModuleService>(
-    ModuleRegistrationName.FULFILLMENT
+    Modules.FULFILLMENT
   )
 
   // ensure fulfillment set exists and that the service zone is part of it

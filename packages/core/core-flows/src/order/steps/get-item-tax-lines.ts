@@ -9,7 +9,7 @@ import {
   TaxableShippingDTO,
   TaxCalculationContext,
 } from "@medusajs/types"
-import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
+import { MedusaError, Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export interface GetOrderItemTaxLinesStepInput {
@@ -116,9 +116,7 @@ export const getOrderItemTaxLinesStep = createStep(
       is_return: isReturn = false,
       shipping_address: shippingAddress,
     } = data
-    const taxService = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
+    const taxService = container.resolve<ITaxModuleService>(Modules.TAX)
 
     const taxContext = normalizeTaxModuleContext(
       order,

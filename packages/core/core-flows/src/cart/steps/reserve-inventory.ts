@@ -1,5 +1,5 @@
 import { IInventoryService } from "@medusajs/types"
-import { MathBN, ModuleRegistrationName } from "@medusajs/utils"
+import { MathBN, Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface ReserveVariantInventoryStepInput {
@@ -22,7 +22,7 @@ export const reserveInventoryStep = createStep(
   reserveInventoryStepId,
   async (data: ReserveVariantInventoryStepInput, { container }) => {
     const inventoryService = container.resolve<IInventoryService>(
-      ModuleRegistrationName.INVENTORY
+      Modules.INVENTORY
     )
 
     const items = data.items.map((item) => ({
@@ -45,7 +45,7 @@ export const reserveInventoryStep = createStep(
     }
 
     const inventoryService = container.resolve<IInventoryService>(
-      ModuleRegistrationName.INVENTORY
+      Modules.INVENTORY
     )
 
     await inventoryService.deleteReservationItems(data.reservations)

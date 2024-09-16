@@ -3,12 +3,12 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 
-import { IWorkflowEngineService } from "@medusajs/types"
-import { ModuleRegistrationName, TransactionHandlerType } from "@medusajs/utils"
 import {
   importProductsWorkflowId,
   waitConfirmationProductImportStepId,
 } from "@medusajs/core-flows"
+import { IWorkflowEngineService } from "@medusajs/types"
+import { Modules, TransactionHandlerType } from "@medusajs/utils"
 import { StepResponse } from "@medusajs/workflows-sdk"
 
 export const POST = async (
@@ -16,7 +16,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
-    ModuleRegistrationName.WORKFLOW_ENGINE
+    Modules.WORKFLOW_ENGINE
   )
   const transactionId = req.params.transaction_id
 

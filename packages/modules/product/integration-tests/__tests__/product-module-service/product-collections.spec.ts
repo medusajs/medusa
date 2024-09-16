@@ -12,7 +12,7 @@ jest.setTimeout(30000)
 moduleIntegrationTestRunner<IProductModuleService>({
   moduleName: Modules.PRODUCT,
   injectedDependencies: {
-    eventBusModuleService: new MockEventBusService(),
+    [Modules.EVENT_BUS]: new MockEventBusService(),
   },
   testSuite: ({ MikroOrmWrapper, service }) => {
     describe("ProductModuleService product collections", () => {

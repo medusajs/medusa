@@ -195,5 +195,18 @@ export async function createOrderSeeder({ api, container }) {
 
   order = (await api.get(`/admin/orders/${order.id}`, adminHeaders)).data.order
 
-  return order
+  return {
+    order,
+    region,
+    salesChannel,
+    stockLocation,
+    inventoryItem,
+    shippingProfile,
+    product,
+    fulfillmentSets,
+    fulfillmentSet,
+    shippingOption,
+    cart,
+    paymentCollection,
+  }
 }
