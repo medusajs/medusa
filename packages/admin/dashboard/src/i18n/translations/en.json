@@ -2571,6 +2571,8 @@
     "totalExclTax": "Total excl. tax",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
+    "outboundShipping": "Outbound Shipping",
+    "returnShipping": "Return Shipping",
     "tax": "Tax",
     "created": "Created",
     "key": "Key",
