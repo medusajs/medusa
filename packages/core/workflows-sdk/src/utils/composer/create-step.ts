@@ -131,6 +131,14 @@ export function applyStep<
 
     wrapAsyncHandler(stepConfig, handler)
 
+    handler.invoke = applyStep.traceInvoke(handler.invoke, stepName)
+    if (handler.compensate) {
+      handler.compensate = applyStep.traceCompensate(
+        handler.compensate,
+        stepName
+      )
+    }
+
     stepConfig.uuid = ulid()
     stepConfig.noCompensation = !compensateFn
 
@@ -205,6 +213,20 @@ export function applyStep<
 
     return refRet
   }
+}
+
+applyStep.traceInvoke = function (
+  invokeFn: WorkflowStepHandler,
+  _: string
+): WorkflowStepHandler {
+  return (args) => invokeFn(args)
+}
+
+applyStep.traceCompensate = function (
+  compensateFn: WorkflowStepHandler,
+  _: string
+): WorkflowStepHandler {
+  return (args) => compensateFn(args)
 }
 
 /**

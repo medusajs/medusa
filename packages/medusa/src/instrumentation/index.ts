@@ -11,6 +11,7 @@ import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
 import type { Instrumentation } from "@opentelemetry/instrumentation"
 
 import start from "../commands/start"
+import { applyStep } from "@medusajs/workflows-sdk"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -21,7 +22,7 @@ function shouldExcludeResource(resource: string) {
 }
 
 /**
- * Instrumenting the first touch point of the HTTP layer to report traces to
+ * Instrumen the first touch point of the HTTP layer to report traces to
  * OpenTelemetry
  */
 export function instrumentHttpLayer() {
@@ -125,7 +126,7 @@ export function instrumentHttpLayer() {
 }
 
 /**
- * Instrumenting the queries made using the remote query
+ * Instrument the queries made using the remote query
  */
 export function instrumentRemoteQuery() {
   const QueryTracer = new Tracer("@medusajs/query", "2.0.0")
@@ -201,6 +202,57 @@ export function instrumentRemoteQuery() {
       }
     )
   })
+}
+
+/**
+ * Instrument the workflows and steps execution
+ */
+export function instrumentWorkflows() {
+  const WorkflowsTracer = new Tracer("@medusajs/workflows-sdk", "2.0.0")
+
+  applyStep.traceInvoke = (invokeFn, stepName) => {
+    return async function (args) {
+      return await WorkflowsTracer.trace(
+        `step_invoke:${snakeCase(stepName)}`,
+        async function (span) {
+          span.setAttributes({
+            "workflow-step.transaction_id": args.transaction.transactionId,
+            "workflow-step.id": args.step.id,
+            "workflow-step.uuid": args.step.uuid,
+            "workflow-step.group_id": args.context?.eventGroupId,
+            "workflow-step.attempts": args.step.attempts,
+            "workflow-step.failures": args.step.failures,
+          })
+          Object.entries(args.metadata).forEach(([key, value]) => {
+            span.setAttribute(`workflow-step.${key}`, value)
+          })
+          return invokeFn(args).finally(() => span.end())
+        }
+      )
+    }
+  }
+
+  applyStep.traceCompensate = (invokeFn, stepName) => {
+    return async function (args) {
+      return await WorkflowsTracer.trace(
+        `step_compensate:${snakeCase(stepName)}`,
+        async function (span) {
+          span.setAttributes({
+            "workflow-step.transaction_id": args.transaction.transactionId,
+            "workflow-step.id": args.step.id,
+            "workflow-step.uuid": args.step.uuid,
+            "workflow-step.group_id": args.context?.eventGroupId,
+            "workflow-step.attempts": args.step.attempts,
+            "workflow-step.failures": args.step.failures,
+          })
+          Object.entries(args.metadata).forEach(([key, value]) => {
+            span.setAttribute(`workflow-step.${key}`, value)
+          })
+          return invokeFn(args).finally(() => span.end())
+        }
+      )
+    }
+  }
 }
 
 /**
