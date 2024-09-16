@@ -26,12 +26,14 @@ This chapter covers how to integrate a dummy third-party system in a service as 
 Start by creating the file `src/modules/brand/services/client.ts` with the following content:
 
 export const serviceHighlights = [
-  ["3", "BrandClientOptions", "Define the options that the Brand Module receives necessary for the integration."],
-  ["7", "InjectedDependencies", "Define the dependencies injected into the service."],
+  ["4", "BrandClientOptions", "Define the options that the Brand Module receives necessary for the integration."],
+  ["8", "InjectedDependencies", "Define the dependencies injected into the service."],
+  ["20", "moduleDef", "Retrieve the module's configuration."]
 ]
 
 ```ts title="src/modules/brand/services/client.ts" highlights={serviceHighlights}
-import { Logger } from "@medusajs/types"
+import { Logger, ConfigModule } from "@medusajs/types"
+import { BRAND_MODULE } from ".."
 
 export type BrandClientOptions = {
   apiKey: string
@@ -39,33 +41,39 @@ export type BrandClientOptions = {
 
 type InjectedDependencies = {
   logger: Logger
+  configModule: ConfigModule
 }
 
 export class BrandClient {
   private options_: BrandClientOptions
   private logger_: Logger
 
-  constructor({ logger }: InjectedDependencies) {
+  constructor({ logger, configModule }: InjectedDependencies) {
     this.logger_ = logger
-  }
 
-  setOptions(options: BrandClientOptions) {
-    this.options_ = options
+    const moduleDef = configModule.modules[BRAND_MODULE]
+    if (typeof moduleDef !== "boolean") {
+      this.options_ = moduleDef.options
+    }
   }
 }
 ```
 
-This creates a `BrandClient` service that, for now, resolves the `logger` from the container using dependency injection.
+This creates a `BrandClient` service. Using dependency injection, you resolve the `logger` and `configModule` from the Module's container.
+
+`logger` is useful to log messages, and `configModule` has configurations exported in `medusa-config.js`.
+
+You also define an `options_` property in your service to store the module's options.
+
+The `configModule`'s `modules` property is an object whose keys are registered module names and values are the module's configuration.
+
+If the module's configuration isn't a boolean, it has an `options` property that holds the module's options. You use it to set the `options_` property's value.
 
 <Note title="Tip">
 
-The `logger` is used to log messages in the Medusa application's logs.
+If the service integrating the third-party system was a main service, it receives the module's options as a second parameter.
 
 </Note>
-
-You also define an `options_` property in your service to store the module's options, which you'll learn later how to pass to the module.
-
-These options are useful configuring the connection to the third-party system.
 
 ### Integration Methods
 
@@ -154,27 +162,15 @@ class BrandModuleService extends MedusaService({
 }) {
   public client: BrandClient
 
-  constructor(
-    { brandClient }: InjectedDependencies, 
-    moduleOptions: BrandClientOptions
-  ) {
+  constructor({ brandClient }: InjectedDependencies) {
     super(...arguments)
 
     this.client = brandClient
-    this.client.setOptions(moduleOptions)
   }
 }
 ```
 
 In the main module service, you first resolve through dependency injection the `brandClient` from the container and set it in a public property `client`.
-
-Then, you use the `setOptions` method of the client to set its options to the module's options. That's because only the main service receives the module options as a second parameter in the constructor.
-
-<Note title="Tip">
-
-If the service integrating the third-party system was a main service, you'd use the options passed as a second parameter to its constructor directly to create a client.
-
-</Note>
 
 ---
 
@@ -196,7 +192,7 @@ module.exports = defineConfig({
 })
 ```
 
-A module's configuration accepts an `options` property, which can hold any options to pass to the module's main service.
+A module's configuration accepts an `options` property, which can hold any options to pass to the module.
 
 ---
 
