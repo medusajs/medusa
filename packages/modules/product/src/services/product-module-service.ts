@@ -1463,7 +1463,7 @@ export default class ProductModuleService
       await this.productService_.upsertWithReplace(
         normalizedInput,
         {
-          relations: ["images", "tags", "categories"],
+          relations: ["images", "tags", "categories", "options"],
         },
         sharedContext
       )
@@ -1749,7 +1749,9 @@ export default class ProductModuleService
           if (productsOptions.length !== variant.options.length) {
             throw new MedusaError(
               MedusaError.Types.INVALID_DATA,
-              `Product has ${productsOptions.length} but there were ${variant.options.length} provided option values for the variant: ${variant.title}.`
+              `Product has ${productsOptions.length} but there were ${
+                variant.options?.length || 0
+              } provided option values for the variant: ${variant.title}.`
             )
           }
 
