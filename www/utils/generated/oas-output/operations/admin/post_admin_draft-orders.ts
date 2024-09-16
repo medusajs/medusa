@@ -324,7 +324,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/draft-orders' \
- *       -H 'x-medusa-access-token: {api_token}' \
+ *       -H 'Authorization: Bearer {access_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "sales_channel_id": "{value}",
