@@ -12,13 +12,13 @@ import { NamespaceGenerateDetails } from "types"
 
 export function load(app: Application) {
   app.options.addDeclaration({
-    name: "enableNamespaceGenerator",
+    name: "enablePathNamespaceGenerator",
     type: ParameterType.Boolean,
     defaultValue: false,
     help: "Whether to enable the namespace generator plugin.",
   })
   app.options.addDeclaration({
-    name: "generateNamespaces",
+    name: "generatePathNamespaces",
     type: ParameterType.Mixed,
     defaultValue: [],
     help: "The namespaces to generate.",
@@ -27,15 +27,15 @@ export function load(app: Application) {
   const generatedNamespaces: Map<string, DeclarationReflection> = new Map()
 
   app.converter.on(Converter.EVENT_BEGIN, (context) => {
-    if (!app.options.getValue("enableNamespaceGenerator")) {
+    if (!app.options.getValue("enablePathNamespaceGenerator")) {
       return
     }
 
     const namespaces = app.options.getValue(
-      "generateNamespaces"
+      "generatePathNamespaces"
     ) as unknown as NamespaceGenerateDetails[]
 
-    const generateNamespaces = (ns: NamespaceGenerateDetails[]) => {
+    const generatePathNamespaces = (ns: NamespaceGenerateDetails[]) => {
       const createdNamespaces: DeclarationReflection[] = []
       ns.forEach((namespace) => {
         const genNamespace = createNamespace(context, namespace)
@@ -43,7 +43,7 @@ export function load(app: Application) {
         generatedNamespaces.set(namespace.pathPattern, genNamespace)
 
         if (namespace.children) {
-          generateNamespaces(namespace.children).forEach((child) =>
+          generatePathNamespaces(namespace.children).forEach((child) =>
             genNamespace.addChild(child)
           )
         }
@@ -54,13 +54,13 @@ export function load(app: Application) {
       return createdNamespaces
     }
 
-    generateNamespaces(namespaces)
+    generatePathNamespaces(namespaces)
   })
 
   app.converter.on(
     Converter.EVENT_CREATE_DECLARATION,
     (context, reflection) => {
-      if (!app.options.getValue("enableNamespaceGenerator")) {
+      if (!app.options.getValue("enablePathNamespaceGenerator")) {
         return
       }
 
@@ -72,7 +72,7 @@ export function load(app: Application) {
       }
 
       const namespaces = app.options.getValue(
-        "generateNamespaces"
+        "generatePathNamespaces"
       ) as unknown as NamespaceGenerateDetails[]
 
       const findNamespace = (
