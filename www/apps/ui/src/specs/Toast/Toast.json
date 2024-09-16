@@ -22,7 +22,8 @@
     "description": {
       "required": false,
       "tsType": {
-        "name": "string"
+        "name": "ReactReactNode",
+        "raw": "React.ReactNode"
       },
       "description": "The toast's text."
     },
@@ -89,17 +90,6 @@
         }
       },
       "description": "The toast's action buttons."
-    },
-    "dismissLabel": {
-      "required": false,
-      "tsType": {
-        "name": "string"
-      },
-      "description": "The label of the dismiss button, if available.",
-      "defaultValue": {
-        "value": "\"Close\"",
-        "computed": false
-      }
     }
   }
 }

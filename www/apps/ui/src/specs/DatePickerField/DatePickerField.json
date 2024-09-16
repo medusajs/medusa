@@ -1,36 +1,32 @@
 {
   "description": "",
   "methods": [],
-  "displayName": "DatePicker.Display",
+  "displayName": "DatePickerField",
   "props": {
-    "placeholder": {
-      "required": false,
-      "tsType": {
-        "name": "string"
-      },
-      "description": "Placeholder of the date picker's input."
-    },
     "size": {
       "required": false,
       "tsType": {
         "name": "union",
-        "raw": "\"small\" | \"base\"",
+        "raw": "\"base\" | \"small\"",
         "elements": [
           {
             "name": "literal",
-            "value": "\"small\""
+            "value": "\"base\""
           },
           {
             "name": "literal",
-            "value": "\"base\""
+            "value": "\"small\""
           }
         ]
       },
-      "description": "The size of the date picker's input.",
+      "description": "",
       "defaultValue": {
         "value": "\"base\"",
         "computed": false
       }
     }
-  }
+  },
+  "composes": [
+    "AriaDatePickerProps"
+  ]
 }

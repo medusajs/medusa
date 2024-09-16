@@ -1,372 +1,419 @@
 {
-  "description": "This component is based on the [Calendar](https://docs.medusajs.com/ui/components/calendar)\ncomponent and [Radix UI Popover](https://www.radix-ui.com/primitives/docs/components/popover).",
+  "description": "",
   "methods": [],
   "displayName": "DatePicker",
   "props": {
-    "fromYear": {
-      "required": false,
-      "tsType": {
-        "name": "number"
-      },
-      "description": "The year to start showing the dates from."
-    },
-    "toYear": {
-      "required": false,
-      "tsType": {
-        "name": "number"
-      },
-      "description": "The year to show dates to."
-    },
-    "fromMonth": {
-      "required": false,
-      "tsType": {
-        "name": "Date"
-      },
-      "description": "The month to start showing dates from."
-    },
-    "toMonth": {
-      "required": false,
-      "tsType": {
-        "name": "Date"
-      },
-      "description": "The month to show dates to."
-    },
-    "fromDay": {
-      "required": false,
-      "tsType": {
-        "name": "Date"
-      },
-      "description": "The day to start showing dates from."
-    },
-    "toDay": {
-      "required": false,
-      "tsType": {
-        "name": "Date"
-      },
-      "description": "The day to show dates to."
-    },
-    "fromDate": {
-      "required": false,
-      "tsType": {
-        "name": "Date"
-      },
-      "description": "The date to show dates from."
-    },
-    "toDate": {
-      "required": false,
-      "tsType": {
-        "name": "Date"
-      },
-      "description": "The date to show dates to."
-    },
-    "locale": {
-      "required": false,
-      "tsType": {
-        "name": "Locale"
-      },
-      "description": "The locale to use for formatting dates. To change the locale pass a date-fns locale object."
-    },
-    "className": {
+    "aria-describedby": {
+      "description": "Identifies the element (or elements) that describes the object.",
       "required": false,
       "tsType": {
         "name": "string"
-      },
-      "description": "The class name to apply on the date picker."
+      }
     },
-    "disabled": {
-      "required": false,
-      "tsType": {
-        "name": "boolean"
-      },
-      "description": "Whether the date picker's input is disabled."
-    },
-    "required": {
-      "required": false,
-      "tsType": {
-        "name": "boolean"
-      },
-      "description": "Whether the date picker's input is required."
-    },
-    "placeholder": {
+    "aria-details": {
+      "description": "Identifies the element (or elements) that provide a detailed, extended description for the object.",
       "required": false,
       "tsType": {
         "name": "string"
-      },
-      "description": "The date picker's placeholder."
+      }
     },
-    "size": {
+    "aria-label": {
+      "description": "Defines a string value that labels the current element.",
+      "required": false,
+      "tsType": {
+        "name": "string"
+      }
+    },
+    "aria-labelledby": {
+      "description": "Identifies the element (or elements) that labels the current element.",
+      "required": false,
+      "tsType": {
+        "name": "string"
+      }
+    },
+    "autoFocus": {
+      "description": "Whether the element should receive focus on render.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "defaultOpen": {
+      "description": "Whether the overlay is open by default (uncontrolled).",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "description": {
+      "description": "A description for the field. Provides a hint such as specific requirements for what to choose.",
+      "required": false,
+      "tsType": {
+        "name": "ReactNode",
+        "elements": [],
+        "raw": "ReactNode"
+      }
+    },
+    "errorMessage": {
+      "description": "An error message for the field.",
       "required": false,
       "tsType": {
         "name": "union",
-        "raw": "\"small\" | \"base\"",
+        "raw": "ReactNode \\| (v: ValidationResult) => ReactNode",
         "elements": [
           {
-            "name": "literal",
-            "value": "\"small\""
+            "name": "ReactNode",
+            "elements": [],
+            "raw": "ReactNode"
           },
           {
-            "name": "literal",
-            "value": "\"base\""
+            "name": "signature",
+            "type": "function",
+            "raw": "(v: ValidationResult) => ReactNode",
+            "signature": {
+              "arguments": [
+                {
+                  "name": "v",
+                  "type": {
+                    "name": "ValidationResult"
+                  },
+                  "rest": false
+                }
+              ],
+              "return": {
+                "name": "ReactNode"
+              }
+            }
           }
         ]
-      },
-      "description": "The date picker's size."
+      }
     },
-    "showTimePicker": {
+    "hideTimeZone": {
+      "description": "Whether to hide the time zone abbreviation.",
       "required": false,
       "tsType": {
         "name": "boolean"
-      },
-      "description": "Whether to show a time picker along with the date picker."
+      }
     },
-    "translations": {
+    "hourCycle": {
+      "description": "Whether to display the time in 12 or 24 hour format. By default, this is determined by the user's locale.",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "12 \\| 24",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "12"
+          },
+          {
+            "name": "literal",
+            "value": "24"
+          }
+        ]
+      }
+    },
+    "id": {
+      "description": "The element's unique identifier. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/id).",
+      "required": false,
+      "tsType": {
+        "name": "string"
+      }
+    },
+    "isDisabled": {
+      "description": "Whether the input is disabled.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "isInvalid": {
+      "description": "Whether the input value is invalid.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "isOpen": {
+      "description": "Whether the overlay is open by default (controlled).",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "isReadOnly": {
+      "description": "Whether the input can be selected but not changed by the user.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "isRequired": {
+      "description": "Whether user input is required on the input before form submission.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "label": {
+      "description": "The content to display as the label.",
+      "required": false,
+      "tsType": {
+        "name": "ReactNode",
+        "elements": [],
+        "raw": "ReactNode"
+      }
+    },
+    "name": {
+      "description": "The name of the input element, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).",
+      "required": false,
+      "tsType": {
+        "name": "string"
+      }
+    },
+    "onBlur": {
+      "description": "Handler that is called when the element loses focus.",
       "required": false,
       "tsType": {
         "name": "signature",
-        "type": "object",
-        "raw": "{\n  cancel?: string\n  apply?: string\n  start?: string\n  end?: string\n  range?: string\n}",
+        "type": "function",
+        "raw": "(e: FocusEvent&#60;Element, Element&#62;) => void",
         "signature": {
-          "properties": [
+          "arguments": [
             {
-              "key": "cancel",
-              "value": {
-                "name": "string",
-                "required": false
-              }
-            },
-            {
-              "key": "apply",
-              "value": {
-                "name": "string",
-                "required": false
-              }
-            },
-            {
-              "key": "start",
-              "value": {
-                "name": "string",
-                "required": false
-              }
-            },
-            {
-              "key": "end",
-              "value": {
-                "name": "string",
-                "required": false
-              }
-            },
-            {
-              "key": "range",
-              "value": {
-                "name": "string",
-                "required": false
-              }
+              "name": "e",
+              "type": {
+                "name": "FocusEvent",
+                "elements": [],
+                "raw": "FocusEvent&#60;Element, Element&#62;"
+              },
+              "rest": false
             }
-          ]
+          ],
+          "return": {
+            "name": "void"
+          }
         }
-      },
-      "description": "Translation keys for the date picker. Use this to localize the date picker."
+      }
     },
-    "mode": {
-      "defaultValue": {
-        "value": "\"single\"",
-        "computed": false
-      },
-      "description": "The date picker's mode.",
+    "onFocus": {
+      "description": "Handler that is called when the element receives focus.",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(e: FocusEvent&#60;Element, Element&#62;) => void",
+        "signature": {
+          "arguments": [
+            {
+              "name": "e",
+              "type": {
+                "name": "FocusEvent",
+                "elements": [],
+                "raw": "FocusEvent&#60;Element, Element&#62;"
+              },
+              "rest": false
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      }
+    },
+    "onFocusChange": {
+      "description": "Handler that is called when the element's focus status changes.",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(isFocused: boolean) => void",
+        "signature": {
+          "arguments": [
+            {
+              "name": "isFocused",
+              "type": {
+                "name": "boolean"
+              },
+              "rest": false
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      }
+    },
+    "onKeyDown": {
+      "description": "Handler that is called when a key is pressed.",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(e: KeyboardEvent) => void",
+        "signature": {
+          "arguments": [
+            {
+              "name": "e",
+              "type": {
+                "name": "KeyboardEvent",
+                "elements": [],
+                "raw": "KeyboardEvent"
+              },
+              "rest": false
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      }
+    },
+    "onKeyUp": {
+      "description": "Handler that is called when a key is released.",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(e: KeyboardEvent) => void",
+        "signature": {
+          "arguments": [
+            {
+              "name": "e",
+              "type": {
+                "name": "KeyboardEvent",
+                "elements": [],
+                "raw": "KeyboardEvent"
+              },
+              "rest": false
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      }
+    },
+    "onOpenChange": {
+      "description": "Handler that is called when the overlay's open state changes.",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(isOpen: boolean) => void",
+        "signature": {
+          "arguments": [
+            {
+              "name": "isOpen",
+              "type": {
+                "name": "boolean"
+              },
+              "rest": false
+            }
+          ],
+          "return": {
+            "name": "void"
+          }
+        }
+      }
+    },
+    "pageBehavior": {
+      "description": "Controls the behavior of paging. Pagination either works by advancing the visible page by visibleDuration (default) or one unit of visibleDuration.",
+      "required": false,
+      "tsType": {
+        "name": "PageBehavior",
+        "elements": [],
+        "raw": "PageBehavior"
+      }
+    },
+    "placeholderValue": {
+      "description": "A placeholder date that influences the format of the placeholder shown when no value is selected. Defaults to today's date at midnight.",
+      "required": false,
       "tsType": {
         "name": "union",
-        "raw": "\"single\" \\| \"range\"",
+        "raw": "CalendarDate \\| CalendarDateTime",
+        "elements": [
+          {
+            "name": "CalendarDate",
+            "elements": [],
+            "raw": "CalendarDate"
+          },
+          {
+            "name": "CalendarDateTime",
+            "elements": [],
+            "raw": "CalendarDateTime"
+          }
+        ]
+      }
+    },
+    "shouldForceLeadingZeros": {
+      "description": "Whether to always show leading zeros in the month, day, and hour fields.\nBy default, this is determined by the user's locale.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "validate": {
+      "description": "A function that returns an error message if a given value is invalid.\nValidation errors are displayed to the user when the form is submitted\nif `validationBehavior=\"native\"`. For realtime validation, use the `isInvalid`\nprop instead.",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(value: CalendarDate \\| CalendarDateTime) => undefined \\| null \\| true \\| ValidationError",
+        "signature": {
+          "arguments": [
+            {
+              "name": "value",
+              "type": {
+                "name": "union",
+                "raw": "CalendarDate \\| CalendarDateTime",
+                "elements": [
+                  {
+                    "name": "CalendarDate"
+                  },
+                  {
+                    "name": "CalendarDateTime"
+                  }
+                ]
+              },
+              "rest": false
+            }
+          ],
+          "return": {
+            "name": "union",
+            "raw": "undefined \\| null \\| true \\| ValidationError",
+            "elements": [
+              {
+                "name": "undefined"
+              },
+              {
+                "name": "null"
+              },
+              {
+                "name": "true"
+              },
+              {
+                "name": "ValidationError"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "validationBehavior": {
+      "description": "Whether to use native HTML form validation to prevent form submission\nwhen the value is missing or invalid, or mark the field as required\nor invalid via ARIA.",
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"aria\" \\| \"native\"",
         "elements": [
           {
             "name": "literal",
-            "value": "\"single\""
+            "value": "\"aria\""
           },
           {
             "name": "literal",
-            "value": "\"range\""
-          }
-        ]
-      },
-      "required": false
-    },
-    "defaultValue": {
-      "description": "The date selected by default.",
-      "required": false,
-      "tsType": {
-        "name": "union",
-        "raw": "Date \\| DateRange",
-        "elements": [
-          {
-            "name": "Date",
-            "elements": [],
-            "raw": "Date"
-          },
-          {
-            "name": "DateRange",
-            "elements": [
-              {
-                "name": "signature",
-                "type": "object",
-                "raw": "&#123; from: Date \\| undefined ; to?: Date  &#125;",
-                "signature": {
-                  "properties": [
-                    {
-                      "key": "from",
-                      "value": {
-                        "name": "Date \\| undefined"
-                      },
-                      "description": "The range's start date."
-                    },
-                    {
-                      "key": "to",
-                      "value": {
-                        "name": "Date"
-                      },
-                      "description": "The range's end date."
-                    }
-                  ]
-                }
-              }
-            ],
-            "raw": "DateRange"
-          }
-        ]
-      }
-    },
-    "onChange": {
-      "description": "A function to handle the change in the selected date.",
-      "required": false,
-      "tsType": {
-        "name": "union",
-        "raw": "(date: undefined \\| Date) => void \\| (dateRange: undefined \\| DateRange) => void",
-        "elements": [
-          {
-            "name": "signature",
-            "type": "function",
-            "raw": "(date: undefined \\| Date) => void",
-            "signature": {
-              "arguments": [
-                {
-                  "name": "date",
-                  "type": {
-                    "name": "undefined \\| Date"
-                  },
-                  "rest": false
-                }
-              ],
-              "return": {
-                "name": "void"
-              }
-            }
-          },
-          {
-            "name": "signature",
-            "type": "function",
-            "raw": "(dateRange: undefined \\| DateRange) => void",
-            "signature": {
-              "arguments": [
-                {
-                  "name": "dateRange",
-                  "type": {
-                    "name": "undefined \\| DateRange"
-                  },
-                  "rest": false
-                }
-              ],
-              "return": {
-                "name": "void"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "presets": {
-      "description": "Provide selectable preset configurations.",
-      "required": false,
-      "tsType": {
-        "name": "union",
-        "raw": "DatePreset[] \\| DateRangePreset[]",
-        "elements": [
-          {
-            "name": "Array",
-            "elements": [
-              {
-                "name": "DatePreset",
-                "elements": [
-                  {
-                    "name": "Date"
-                  },
-                  {
-                    "name": "string"
-                  }
-                ],
-                "raw": "DatePreset"
-              }
-            ],
-            "raw": "DatePreset[]"
-          },
-          {
-            "name": "Array",
-            "elements": [
-              {
-                "name": "DateRangePreset",
-                "elements": [
-                  {
-                    "name": "DateRange"
-                  },
-                  {
-                    "name": "string"
-                  }
-                ],
-                "raw": "DateRangePreset"
-              }
-            ],
-            "raw": "DateRangePreset[]"
-          }
-        ]
-      }
-    },
-    "value": {
-      "description": "The selected date.",
-      "required": false,
-      "tsType": {
-        "name": "union",
-        "raw": "Date \\| DateRange",
-        "elements": [
-          {
-            "name": "Date",
-            "elements": [],
-            "raw": "Date"
-          },
-          {
-            "name": "DateRange",
-            "elements": [
-              {
-                "name": "signature",
-                "type": "object",
-                "raw": "&#123; from: Date \\| undefined ; to?: Date  &#125;",
-                "signature": {
-                  "properties": [
-                    {
-                      "key": "from",
-                      "value": {
-                        "name": "Date \\| undefined"
-                      },
-                      "description": "The range's start date."
-                    },
-                    {
-                      "key": "to",
-                      "value": {
-                        "name": "Date"
-                      },
-                      "description": "The range's end date."
-                    }
-                  ]
-                }
-              }
-            ],
-            "raw": "DateRange"
+            "value": "\"native\""
           }
         ]
       }
