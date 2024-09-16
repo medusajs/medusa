@@ -30,4 +30,5 @@ const eventBaseNames: [
 export const FulfillmentEvents = {
   ...buildEventNamesFromEntityName(eventBaseNames, Modules.FULFILLMENT),
   SHIPMENT_CREATED: "shipment.created",
+  DELIVERY_CREATED: "delivery.created",
 }

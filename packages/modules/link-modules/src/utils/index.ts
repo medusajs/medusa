@@ -1,6 +1,5 @@
 import { MODULE_RESOURCE_TYPE } from "@medusajs/modules-sdk"
 
-export * from "./compose-link-name"
 export * from "./generate-entity"
 export * from "./generate-schema"
 

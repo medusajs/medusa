@@ -4,7 +4,7 @@ import {
   ReturnReasonUpdatableFields,
 } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
 } from "@medusajs/utils"
@@ -22,9 +22,7 @@ export const updateReturnReasonStepId = "update-return-reasons"
 export const updateReturnReasonsStep = createStep(
   updateReturnReasonStepId,
   async (data: UpdateReturnReasonStepInput, { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -46,9 +44,7 @@ export const updateReturnReasonsStep = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await promiseAll(
       prevReturnReasons.map((c) =>

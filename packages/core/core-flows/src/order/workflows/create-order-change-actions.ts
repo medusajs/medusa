@@ -2,7 +2,7 @@ import {
   CreateOrderChangeActionDTO,
   OrderChangeActionDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -20,7 +20,7 @@ export const createOrderChangeActionsWorkflow = createWorkflow(
     input: WorkflowData<CreateOrderChangeActionDTO[]>
   ): WorkflowResponse<OrderChangeActionDTO[]> => {
     const orderChangeActions = createEntitiesStep({
-      moduleRegistrationName: ModuleRegistrationName.ORDER,
+      moduleRegistrationName: Modules.ORDER,
       invokeMethod: "addOrderAction",
       compensateMethod: "deleteOrderChangeActions",
       data: input,

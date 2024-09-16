@@ -1,12 +1,9 @@
-import { PricingWorkflow, IPricingModuleService } from "@medusajs/types"
-import {
-  MedusaError,
-  ModuleRegistrationName,
-  arrayDifference,
-} from "@medusajs/utils"
+import { IPricingModuleService, PricingWorkflow } from "@medusajs/types"
+import { MedusaError, Modules, arrayDifference } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-export type UpdatePricePreferencesAsArrayStepInput = PricingWorkflow.UpdatePricePreferencesWorkflowInput["update"][]
+export type UpdatePricePreferencesAsArrayStepInput =
+  PricingWorkflow.UpdatePricePreferencesWorkflowInput["update"][]
 
 export const updatePricePreferencesAsArrayStepId =
   "update-price-preferences-as-array"
@@ -16,9 +13,7 @@ export const updatePricePreferencesAsArrayStepId =
 export const updatePricePreferencesAsArrayStep = createStep(
   updatePricePreferencesAsArrayStepId,
   async (input: UpdatePricePreferencesAsArrayStepInput, { container }) => {
-    const service = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
-    )
+    const service = container.resolve<IPricingModuleService>(Modules.PRICING)
 
     const prevData = await service.listPricePreferences({
       $or: input.map(
@@ -69,9 +64,7 @@ export const updatePricePreferencesAsArrayStep = createStep(
       return
     }
 
-    const service = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
-    )
+    const service = container.resolve<IPricingModuleService>(Modules.PRICING)
 
     await service.upsertPricePreferences(compensationData.prevData)
     await service.deletePricePreferences(compensationData.newDataIds)

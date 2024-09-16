@@ -6,7 +6,7 @@ import {
 import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 interface StepInput {
   selector: FilterableStockLocationProps
@@ -21,7 +21,7 @@ export const updateStockLocationsStep = createStep(
   updateStockLocationsStepId,
   async (input: StepInput, { container }) => {
     const stockLocationService = container.resolve<IStockLocationService>(
-      ModuleRegistrationName.STOCK_LOCATION
+      Modules.STOCK_LOCATION
     )
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       input.update,
@@ -49,7 +49,7 @@ export const updateStockLocationsStep = createStep(
     }
 
     const stockLocationService = container.resolve<IStockLocationService>(
-      ModuleRegistrationName.STOCK_LOCATION
+      Modules.STOCK_LOCATION
     )
 
     await stockLocationService.upsertStockLocations(

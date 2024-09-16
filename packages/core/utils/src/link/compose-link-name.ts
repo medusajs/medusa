@@ -1,7 +1,7 @@
-import { lowerCaseFirst, toPascalCase } from "../common"
+import { toPascalCase, upperCaseFirst } from "../common"
 
 export const composeLinkName = (...args) => {
-  return lowerCaseFirst(toPascalCase(composeTableName(...args.concat("link"))))
+  return upperCaseFirst(toPascalCase(composeTableName(...args.concat("link"))))
 }
 
 export const composeTableName = (...args) => {

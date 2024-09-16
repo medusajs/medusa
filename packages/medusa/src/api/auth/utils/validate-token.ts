@@ -5,11 +5,8 @@ import {
   MedusaResponse,
 } from "@medusajs/framework"
 import { ConfigModule, IAuthModuleService } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-} from "@medusajs/utils"
-import { decode, JwtPayload, verify } from "jsonwebtoken"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import { JwtPayload, decode, verify } from "jsonwebtoken"
 
 // Middleware to validate that a token is valid
 export const validateToken = () => {
@@ -32,9 +29,7 @@ export const validateToken = () => {
       ContainerRegistrationKeys.CONFIG_MODULE
     ).projectConfig
 
-    const authModule = req.scope.resolve<IAuthModuleService>(
-      ModuleRegistrationName.AUTH
-    )
+    const authModule = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
 
     let decoded = decode(token as string) as JwtPayload
 

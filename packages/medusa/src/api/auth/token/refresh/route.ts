@@ -1,12 +1,9 @@
 import { IAuthModuleService } from "@medusajs/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-} from "@medusajs/utils"
 import { generateJwtTokenForAuthIdentity } from "../../utils/generate-jwt-token"
 
 // Retrieve a newly generated JWT token. All checks that the existing token is valid already happen in the auth middleware.
@@ -16,9 +13,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const service: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
-  )
+  const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authIdentity = await service.retrieveAuthIdentity(
     req.auth_context.auth_identity_id

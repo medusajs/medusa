@@ -16,3 +16,13 @@ export interface CreateOrderShipmentWorkflowInput {
   no_notification?: boolean
   metadata?: MetadataType
 }
+
+interface CreateOrderDeliveryItem {
+  id: string
+  quantity: BigNumberInput
+}
+
+export interface CreateOrderDeliveryWorkflowInput {
+  order_id: string
+  fulfillment_id: string
+}

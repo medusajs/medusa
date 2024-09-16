@@ -1,5 +1,5 @@
 import { CreatePromotionDTO, IPromotionModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createPromotionsStepId = "create-promotions"
@@ -10,7 +10,7 @@ export const createPromotionsStep = createStep(
   createPromotionsStepId,
   async (data: CreatePromotionDTO[], { container }) => {
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     const createdPromotions = await promotionModule.createPromotions(data)
@@ -26,7 +26,7 @@ export const createPromotionsStep = createStep(
     }
 
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     await promotionModule.deletePromotions(createdPromotionIds)

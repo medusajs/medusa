@@ -1,5 +1,5 @@
 import { IOrderModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export type CompleteOrdersStepInput = {
@@ -13,9 +13,7 @@ export const completeOrdersStepId = "complete-orders"
 export const completeOrdersStep = createStep(
   completeOrdersStepId,
   async (data: CompleteOrdersStepInput, { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const orders = await service.listOrders(
       {
@@ -43,9 +41,7 @@ export const completeOrdersStep = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await service.updateOrders(completed)
   }

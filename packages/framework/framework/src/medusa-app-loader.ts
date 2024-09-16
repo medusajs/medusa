@@ -27,12 +27,12 @@ import {
 import { pgConnectionLoader } from "./database"
 
 import { asValue } from "awilix"
+import { configManager } from "./config"
 import {
   container,
   container as mainContainer,
   MedusaContainer,
 } from "./container"
-import { configManager } from "./config"
 
 export class MedusaAppLoader {
   /**
@@ -86,7 +86,6 @@ export class MedusaAppLoader {
     )) {
       const def = {} as ModuleDefinition
       def.key ??= key
-      def.registrationName ??= ModulesDefinition[key]?.registrationName ?? key
       def.label ??= ModulesDefinition[key]?.label ?? upperCaseFirst(key)
       def.isQueryable = ModulesDefinition[key]?.isQueryable ?? true
 
@@ -271,20 +270,14 @@ export class MedusaAppLoader {
 
     for (const moduleService of Object.values(medusaApp.modules)) {
       const loadedModule = moduleService as LoadedModule
-      container.register(
-        loadedModule.__definition.registrationName,
-        asValue(moduleService)
-      )
+      container.register(loadedModule.__definition.key, asValue(moduleService))
     }
 
     // Register all unresolved modules as undefined to be present in the container with undefined value by default
     // but still resolvable
     for (const moduleDefinition of Object.values(ModulesDefinition)) {
-      if (!container.hasRegistration(moduleDefinition.registrationName)) {
-        container.register(
-          moduleDefinition.registrationName,
-          asValue(undefined)
-        )
+      if (!container.hasRegistration(moduleDefinition.key)) {
+        container.register(moduleDefinition.key, asValue(undefined))
       }
     }
 

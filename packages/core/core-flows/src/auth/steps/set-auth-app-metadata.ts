@@ -1,7 +1,7 @@
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 import { IAuthModuleService } from "@medusajs/types"
-import { isDefined, ModuleRegistrationName } from "@medusajs/utils"
+import { isDefined, Modules } from "@medusajs/utils"
 
 export type SetAuthAppMetadataStepInput = {
   authIdentityId: string
@@ -16,9 +16,7 @@ export const setAuthAppMetadataStepId = "set-auth-app-metadata"
 export const setAuthAppMetadataStep = createStep(
   setAuthAppMetadataStepId,
   async (data: SetAuthAppMetadataStepInput, { container }) => {
-    const service = container.resolve<IAuthModuleService>(
-      ModuleRegistrationName.AUTH
-    )
+    const service = container.resolve<IAuthModuleService>(Modules.AUTH)
 
     const key = `${data.actorType}_id`
     const authIdentity = await service.retrieveAuthIdentity(data.authIdentityId)
@@ -52,9 +50,7 @@ export const setAuthAppMetadataStep = createStep(
 
     const { id, key, oldValue, value } = idAndKeyAndValue
 
-    const service = container.resolve<IAuthModuleService>(
-      ModuleRegistrationName.AUTH
-    )
+    const service = container.resolve<IAuthModuleService>(Modules.AUTH)
 
     const authIdentity = await service.retrieveAuthIdentity(id)
 

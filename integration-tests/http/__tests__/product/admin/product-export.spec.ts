@@ -1,13 +1,13 @@
 import { IEventBusModuleService } from "@medusajs/types"
+import { CommonEvents, Modules } from "@medusajs/utils"
+import fs from "fs/promises"
 import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
+import path from "path"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 import { getProductFixture } from "../../../../helpers/fixtures"
-import fs from "fs/promises"
-import path from "path"
-import { ModuleRegistrationName } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -56,7 +56,7 @@ medusaIntegrationTestRunner({
 
     let eventBus: IEventBusModuleService
     beforeAll(async () => {
-      eventBus = getContainer().resolve(ModuleRegistrationName.EVENT_BUS)
+      eventBus = getContainer().resolve(Modules.EVENT_BUS)
     })
 
     beforeEach(async () => {
@@ -201,7 +201,7 @@ medusaIntegrationTestRunner({
     describe("POST /admin/products/export", () => {
       it("should export a csv file containing the expected products", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-          "notification.notification.created",
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
           eventBus
         )
 
@@ -243,7 +243,7 @@ medusaIntegrationTestRunner({
 
       it("should export a csv file with categories", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-          "notification.notification.created",
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
           eventBus
         )
 
@@ -269,7 +269,7 @@ medusaIntegrationTestRunner({
 
       it("should export a csv file with region prices", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-          "notification.notification.created",
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
           eventBus
         )
 
@@ -328,7 +328,7 @@ medusaIntegrationTestRunner({
 
       it("should export a csv file filtered by specific products", async () => {
         const subscriberExecution = TestEventUtils.waitSubscribersExecution(
-          "notification.notification.created",
+          `${Modules.NOTIFICATION}.notification.${CommonEvents.CREATED}`,
           eventBus
         )
 
