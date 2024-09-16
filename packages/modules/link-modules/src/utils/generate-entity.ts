@@ -35,8 +35,6 @@ export function generateEntity(
       foreign.foreignKey
     )
 
-  const hashTableName = simpleHash(tableName)
-
   const fields = fieldNames.reduce((acc, curr) => {
     acc[curr] = {
       type: "string",
@@ -58,6 +56,8 @@ export function generateEntity(
       ...(extraFields[column].options ?? {}),
     }
   }
+
+  const hashTableName = simpleHash(tableName)
 
   return new EntitySchema({
     class: getClass(
