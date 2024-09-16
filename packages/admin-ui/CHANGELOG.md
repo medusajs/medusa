@@ -1,5 +1,11 @@
 # @medusajs/admin-ui
 
+## 2.1.17
+
+### Patch Changes
+
+- [`9e00325ae6`](https://github.com/medusajs/medusa/commit/9e00325ae646efdc6680a451bfd4685a48ab9ca5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset for @medusajs/admin-ui
+
 ## 2.1.16
 
 ### Patch Changes

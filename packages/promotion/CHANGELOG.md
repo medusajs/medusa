@@ -1,5 +1,12 @@
 # @medusajs/promotion
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [[`74885620a8`](https://github.com/medusajs/medusa/commit/74885620a8e2fdb255053d5dc3c05ab139074b31)]:
+  - @medusajs/utils@1.11.11
+
 ## 0.0.5
 
 ### Patch Changes

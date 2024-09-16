@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.20.10
+
+### Patch Changes
+
+- [`e144887637`](https://github.com/medusajs/medusa/commit/e144887637774f99f0843d334a2f93f6c9df3f7c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset for @medusajs/medusa
+
+- Updated dependencies [[`74885620a8`](https://github.com/medusajs/medusa/commit/74885620a8e2fdb255053d5dc3c05ab139074b31)]:
+  - @medusajs/utils@1.11.11
+
 ## 1.20.9
 
 ### Patch Changes

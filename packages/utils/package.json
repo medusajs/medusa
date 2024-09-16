@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/utils",
-  "version": "1.11.10",
+  "version": "1.11.11",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

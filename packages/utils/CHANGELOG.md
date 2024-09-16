@@ -1,5 +1,11 @@
 # @medusajs/utils
 
+## 1.11.11
+
+### Patch Changes
+
+- [#9107](https://github.com/medusajs/medusa/pull/9107) [`74885620a8`](https://github.com/medusajs/medusa/commit/74885620a8e2fdb255053d5dc3c05ab139074b31) Thanks [@McTom234](https://github.com/McTom234)! - feat(utils): adds an identifier for MedusaError
+
 ## 1.11.10
 
 ### Patch Changes
