@@ -627,7 +627,10 @@ In the file `src/api/restaurants/route.ts` add the following API route:
 ```ts title="src/api/restaurants/route.ts"
 // other imports...
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { 
+  ContainerRegistrationKeys, 
+  QueryContext
+} from "@medusajs/utils"
 
 // ...
 
