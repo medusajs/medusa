@@ -205,8 +205,8 @@ export const CreateProductVariantForm = ({
         sku,
         allow_backorder,
         manage_inventory,
-        prices: (data.prices || {})
-          .entries(([currencyOrRegion, value]) => {
+        prices: Object.entries(data.prices ?? {})
+          .map(([currencyOrRegion, value]) => {
             const ret: AdminCreateProductVariantPrice = {}
             const amount = castNumber(value)
 
