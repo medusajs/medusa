@@ -35,7 +35,7 @@ Make sure that the version added in `package.json` is `preview` to avoid errors 
 Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 

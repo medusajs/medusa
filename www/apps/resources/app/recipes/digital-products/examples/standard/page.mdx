@@ -1506,9 +1506,7 @@ Finally, register the module provider in `medusa-config.js`:
 
 ```js title="medusa-config.js"
 // other imports...
-import { 
-  Modules,
-} from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 module.exports = defineConfig({
   modules: {
