@@ -174,8 +174,8 @@ export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
     return query.query.apply(query, args)
   }
 
-  backwardCompatibleQuery.graph = query.graph
-  backwardCompatibleQuery.gql = query.gql
+  backwardCompatibleQuery.graph = query.graph.bind(query)
+  backwardCompatibleQuery.gql = query.gql.bind(query)
 
   return backwardCompatibleQuery
 }
