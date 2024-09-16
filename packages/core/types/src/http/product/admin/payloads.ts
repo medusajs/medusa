@@ -32,7 +32,7 @@ export interface AdminCreateProductVariantPrice {
 
 export interface AdminCreateProductVariantInventoryKit {
   inventory_item_id: string
-  required_quantity: string
+  required_quantity?: number
 }
 
 export interface AdminCreateProductVariant {

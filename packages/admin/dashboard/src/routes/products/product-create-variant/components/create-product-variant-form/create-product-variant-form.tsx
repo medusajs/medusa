@@ -15,7 +15,6 @@ import { useCreateProductVariant } from "../../../../../hooks/api/products"
 import {
   CreateProductVariantSchema,
   CreateVariantDetailsFields,
-  CreateVariantDetailsSchema,
   CreateVariantPriceFields,
 } from "./constants"
 import DetailsTab from "./details-tab"
