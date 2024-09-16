@@ -15,7 +15,9 @@ import { useCreateProductVariant } from "../../../../../hooks/api/products"
 import {
   CreateProductVariantSchema,
   CreateVariantDetailsFields,
+  CreateVariantDetailsSchema,
   CreateVariantPriceFields,
+  CreateVariantPriceSchema,
 } from "./constants"
 import DetailsTab from "./details-tab"
 import PricingTab from "./pricing-tab"
@@ -140,7 +142,7 @@ export const CreateProductVariantForm = ({
           !partialFormValidation<z.infer<typeof CreateProductVariantSchema>>(
             form,
             CreateVariantDetailsFields,
-            CreateProductVariantSchema
+            CreateVariantDetailsSchema
           )
         ) {
           setTabState((prev) => ({
@@ -160,7 +162,7 @@ export const CreateProductVariantForm = ({
           !partialFormValidation<z.infer<typeof CreateProductVariantSchema>>(
             form,
             CreateVariantPriceFields,
-            CreateProductVariantSchema
+            CreateVariantPriceSchema
           )
         ) {
           setTabState((prev) => ({
@@ -227,7 +229,7 @@ export const CreateProductVariantForm = ({
             return ret
           })
           .filter(Boolean),
-        inventory_items: (data.inventory || [])!
+        inventory_items: (data.inventory || [])
           .map((i) => {
             if (!i.required_quantity || !i.inventory_item_id) {
               return false
@@ -275,7 +277,7 @@ export const CreateProductVariantForm = ({
                   >
                     {t("priceLists.create.tabs.prices")}
                   </ProgressTabs.Trigger>
-                  {inventoryTabEnabled && (
+                  {!!inventoryTabEnabled && (
                     <ProgressTabs.Trigger
                       status={tabState.inventory}
                       value={Tab.INVENTORY}
@@ -300,7 +302,7 @@ export const CreateProductVariantForm = ({
             >
               <PricingTab form={form} />
             </ProgressTabs.Content>
-            {inventoryTabEnabled && (
+            {!!inventoryTabEnabled && (
               <ProgressTabs.Content
                 className="size-full overflow-hidden"
                 value={Tab.INVENTORY}
@@ -320,7 +322,7 @@ export const CreateProductVariantForm = ({
                 tab={tab}
                 next={handleNextTab}
                 isLoading={isPending}
-                inventoryTabEnabled={inventoryTabEnabled}
+                inventoryTabEnabled={!!inventoryTabEnabled}
               />
             </div>
           </RouteFocusModal.Footer>
