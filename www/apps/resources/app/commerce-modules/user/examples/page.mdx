@@ -16,14 +16,14 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const userModuleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
+    Modules.USER
   )
 
   const user = await userModuleService.createUsers({
@@ -72,14 +72,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const userModuleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
+    Modules.USER
   )
 
   res.json({
@@ -118,14 +118,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const userModuleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
+    Modules.USER
   )
 
   const user = await userModuleService.updateUsers({
@@ -172,14 +172,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const userModuleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
+    Modules.USER
   )
 
   await userModuleService.deleteUsers(["user_123"])
@@ -214,14 +214,14 @@ export async function DELETE(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const userModuleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
+    Modules.USER
   )
 
   const invite = await userModuleService.createInvites({
@@ -268,14 +268,14 @@ export async function POST(request: Request, { params }: ContextType) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const userModuleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
+    Modules.USER
   )
 
   const invite = await userModuleService.validateInviteToken("secret_123")
@@ -338,14 +338,14 @@ export async function POST(request: Request, { params }: ContextType) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IUserModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const userModuleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
+    Modules.USER
   )
 
   const invites = await userModuleService.refreshInviteTokens(["invite_123"])

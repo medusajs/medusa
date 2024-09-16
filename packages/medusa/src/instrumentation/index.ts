@@ -1,14 +1,14 @@
-import { snakeCase } from "lodash"
-import { NodeSDK } from "@opentelemetry/sdk-node"
-import { Resource } from "@opentelemetry/resources"
-import { SpanStatusCode } from "@opentelemetry/api"
 import { Query, RoutesLoader, Tracer } from "@medusajs/framework"
+import { SpanStatusCode } from "@opentelemetry/api"
+import type { Instrumentation } from "@opentelemetry/instrumentation"
+import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
+import { Resource } from "@opentelemetry/resources"
+import { NodeSDK } from "@opentelemetry/sdk-node"
 import {
   SimpleSpanProcessor,
   type SpanExporter,
 } from "@opentelemetry/sdk-trace-node"
-import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
-import type { Instrumentation } from "@opentelemetry/instrumentation"
+import { snakeCase } from "lodash"
 
 import start from "../commands/start"
 import { TransactionOrchestrator } from "@medusajs/orchestration"
@@ -133,7 +133,7 @@ export function instrumentRemoteQuery() {
 
   Query.instrument.graphQuery(async function (queryFn, queryOptions) {
     return await QueryTracer.trace(
-      `query.graph: ${queryOptions.entryPoint}`,
+      `query.graph: ${queryOptions.entity}`,
       async (span) => {
         span.setAttributes({
           "query.fields": queryOptions.fields,

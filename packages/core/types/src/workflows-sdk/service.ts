@@ -18,6 +18,9 @@ type FlowRunOptions<TData = unknown> = {
 export type Acknowledgement = {
   workflowId: string
   transactionId: string
+  parentStepIdempotencyKey?: string
+  hasFinished: boolean
+  hasFailed: boolean
 }
 
 export interface WorkflowOrchestratorRunDTO<T = unknown>

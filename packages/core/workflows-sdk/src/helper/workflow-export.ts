@@ -74,6 +74,7 @@ function createContextualWorkflowRunner<
   ) => {
     if (!executionContainer) {
       const container_ = flow.container as MedusaContainer
+
       if (!container_ || !isPresent(container_?.registrations)) {
         executionContainer = MedusaModule.getLoadedModules().map(
           (mod) => Object.values(mod)[0]
@@ -85,12 +86,13 @@ function createContextualWorkflowRunner<
       flow.container = executionContainer
     }
 
-    const { eventGroupId } = context
+    const { eventGroupId, parentStepIdempotencyKey } = context
 
     attachOnFinishReleaseEvents(events, eventGroupId!, flow, { logOnError })
 
     const flowMetadata = {
       eventGroupId,
+      parentStepIdempotencyKey,
     }
 
     const args = [

@@ -16,14 +16,14 @@ In this document, you’ll find common examples of how you can use the Inventory
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   const inventoryItem = await inventoryModuleService.createInventoryItems({
@@ -71,14 +71,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   const inventoryItems = await inventoryModuleService.listInventoryItems({})
@@ -117,14 +117,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   const inventoryItem = await inventoryModuleService.retrieveInventoryItem(
@@ -173,14 +173,14 @@ export async function GET(request: Request, { params }: ContextType) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   const inventoryLevel = await inventoryModuleService.createInventoryLevels({
@@ -228,14 +228,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   const inventoryLevel = await inventoryModuleService.adjustInventory(
@@ -283,14 +283,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   res.json({
@@ -338,14 +338,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   const reservationItem = await inventoryModuleService.createReservationItems({
@@ -395,14 +395,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   const reservedQuantity =
@@ -482,14 +482,14 @@ export async function POST(request: Request, { params }: ContextType) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const inventoryModuleService: IInventoryService = request.scope.resolve(
-    ModuleRegistrationName.INVENTORY
+    Modules.INVENTORY
   )
 
   await inventoryModuleService.deleteReservationItems([

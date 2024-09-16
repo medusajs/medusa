@@ -860,7 +860,10 @@ export class TransactionOrchestrator extends EventEmitter {
               // cc test from engine redis
               promise
                 .then(async (response: any) => {
-                  if (!step.definition.backgroundExecution) {
+                  if (
+                    !step.definition.backgroundExecution ||
+                    step.definition.nested
+                  ) {
                     const eventName = DistributedTransactionEvent.STEP_AWAITING
                     transaction.emit(eventName, { step, transaction })
 
@@ -890,6 +893,7 @@ export class TransactionOrchestrator extends EventEmitter {
                     )
                   }
 
+                  // check nested flow
                   await transaction.scheduleRetry(
                     step,
                     step.definition.retryInterval ?? 0
@@ -1116,6 +1120,7 @@ export class TransactionOrchestrator extends EventEmitter {
       hasAsyncSteps: false,
       hasStepTimeouts: false,
       hasRetriesTimeout: false,
+      hasNestedTransactions: false,
     }
 
     while (queue.length > 0) {
@@ -1154,6 +1159,10 @@ export class TransactionOrchestrator extends EventEmitter {
             definitionCopy.retryIntervalAwaiting
           ) {
             features.hasRetriesTimeout = true
+          }
+
+          if (definitionCopy.nested) {
+            features.hasNestedTransactions = true
           }
 
           states[id] = Object.assign(

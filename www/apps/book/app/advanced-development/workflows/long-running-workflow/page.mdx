@@ -73,7 +73,7 @@ So, when you execute the `hello-world` workflow, it continues its execution in t
 
 Once the workflow's execution reaches an async step, it'll wait in the background for the step to succeed or fail before it moves to the rest of the steps.
 
-To change fail or succeed a step, use the workflow engine's main service that is registered in the Medusa Container under the `ModuleRegistrationName.WORKFLOW_ENGINE` (or `workflowsModuleService`) key.
+To change fail or succeed a step, use the workflow engine's main service that is registered in the Medusa Container under the `Modules.WORKFLOW_ENGINE` (or `workflowsModuleService`) key.
 
 ### Retrieve Transaction ID
 
@@ -103,7 +103,7 @@ export const successStatusHighlights = [
 
 ```ts highlights={successStatusHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import {
-  ModuleRegistrationName,
+  Modules,
   TransactionHandlerType,
 } from "@medusajs/utils";
 import { 
@@ -122,7 +122,7 @@ export const setStepSuccessStep = createStep(
     { container }
   ) {
     const workflowEngineService = container.resolve(
-      ModuleRegistrationName.WORKFLOW_ENGINE
+      Modules.WORKFLOW_ENGINE
     );
 
     await workflowEngineService.setStepSuccess({
@@ -221,7 +221,7 @@ export const failureStatusHighlights = [
 
 ```ts highlights={failureStatusHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import {
-  ModuleRegistrationName,
+  Modules,
   TransactionHandlerType,
 } from "@medusajs/utils";
 import { 
@@ -240,7 +240,7 @@ export const setStepFailureStep = createStep(
     { container }
   ) {
     const workflowEngineService = container.resolve(
-      ModuleRegistrationName.WORKFLOW_ENGINE
+      Modules.WORKFLOW_ENGINE
     );
 
     await workflowEngineService.setStepFailure({
@@ -282,7 +282,7 @@ import myWorkflow from "../../../workflows/hello-world"
 import { 
   IWorkflowEngineService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const { transaction, result } = await myWorkflow(req.scope).run()
@@ -290,7 +290,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const workflowEngineService = req.scope.resolve<
     IWorkflowEngineService
   >(
-    ModuleRegistrationName.WORKFLOW_ENGINE
+    Modules.WORKFLOW_ENGINE
   )
 
   const subscriptionOptions = {
