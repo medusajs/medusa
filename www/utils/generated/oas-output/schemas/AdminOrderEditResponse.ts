@@ -1,7 +1,7 @@
 /**
  * @schema AdminOrderEditResponse
  * type: object
- * description: SUMMARY
+ * description: An order edit's details.
  * x-schemaName: AdminOrderEditResponse
  * required:
  *   - order_change

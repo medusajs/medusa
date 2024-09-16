@@ -22,7 +22,6 @@ describe("load internal - load resources", () => {
         ),
         definition: {
           key: "module-with-dml-mixed-without-joiner-config",
-          registrationName: "service",
           label: "Module with DML mixed without joiner config",
           defaultPackage: false,
           defaultModuleDeclaration: {
@@ -75,15 +74,15 @@ describe("load internal - load resources", () => {
           alias: [
             {
               name: ["dml_entity", "dml_entities"],
+              entity: "DmlEntity",
               args: {
-                entity: "DmlEntity",
                 methodSuffix: "DmlEntities",
               },
             },
             {
               name: ["entity_model", "entity_models"],
+              entity: "EntityModel",
               args: {
-                entity: "EntityModel",
                 methodSuffix: "EntityModels",
               },
             },
@@ -103,7 +102,6 @@ describe("load internal - load resources", () => {
         ),
         definition: {
           key: "module-with-dml-without-joiner-config",
-          registrationName: "service",
           label: "Module with DML without joiner config",
           defaultPackage: false,
           defaultModuleDeclaration: {
@@ -156,15 +154,15 @@ describe("load internal - load resources", () => {
           alias: [
             {
               name: ["entity_model", "entity_models"],
+              entity: "EntityModel",
               args: {
-                entity: "EntityModel",
                 methodSuffix: "EntityModels",
               },
             },
             {
               name: ["dml_entity", "dml_entities"],
+              entity: "DmlEntity",
               args: {
-                entity: "DmlEntity",
                 methodSuffix: "DmlEntities",
               },
             },
@@ -184,7 +182,6 @@ describe("load internal - load resources", () => {
         ),
         definition: {
           key: "module-without-joiner-config",
-          registrationName: "service",
           label: "Module without joiner config",
           defaultPackage: false,
           defaultModuleDeclaration: {
@@ -237,15 +234,15 @@ describe("load internal - load resources", () => {
         alias: [
           {
             name: ["entity2", "entity2s"],
+            entity: "Entity2",
             args: {
-              entity: "Entity2",
               methodSuffix: "Entity2s",
             },
           },
           {
             name: ["entity_model", "entity_models"],
+            entity: "EntityModel",
             args: {
-              entity: "EntityModel",
               methodSuffix: "EntityModels",
             },
           },
@@ -264,7 +261,6 @@ describe("load internal - load resources", () => {
         ),
         definition: {
           key: "module-without-joiner-config",
-          registrationName: "service",
           label: "Module without joiner config",
           defaultPackage: false,
           defaultModuleDeclaration: {
@@ -310,8 +306,8 @@ describe("load internal - load resources", () => {
         alias: [
           {
             name: ["custom_name"],
+            entity: "Custom",
             args: {
-              entity: "Custom",
               methodSuffix: "Customs",
             },
           },

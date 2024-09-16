@@ -1,5 +1,5 @@
 import { FulfillmentTypes, IFulfillmentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createReturnFulfillmentStepId = "create-return-fulfillment"
@@ -10,7 +10,7 @@ export const createReturnFulfillmentStep = createStep(
   createReturnFulfillmentStepId,
   async (data: FulfillmentTypes.CreateFulfillmentDTO, { container }) => {
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const fulfillment = await service.createReturnFulfillment(data)
@@ -23,7 +23,7 @@ export const createReturnFulfillmentStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     // await service.cancelReturnFulfillment(id) // TODO: Implement cancelReturnFulfillment

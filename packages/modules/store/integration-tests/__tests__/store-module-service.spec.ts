@@ -1,8 +1,8 @@
 import { IStoreModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { createStoreFixture } from "../__fixtures__"
 import { Module, Modules } from "@medusajs/utils"
 import { StoreModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { createStoreFixture } from "../__fixtures__"
 
 jest.setTimeout(100000)
 
@@ -25,16 +25,18 @@ moduleIntegrationTestRunner<IStoreModuleService>({
           store: {
             id: {
               linkable: "store_id",
+              entity: "Store",
               primaryKey: "id",
-              serviceName: "store",
+              serviceName: "Store",
               field: "store",
             },
           },
           storeCurrency: {
             id: {
               linkable: "store_currency_id",
+              entity: "StoreCurrency",
               primaryKey: "id",
-              serviceName: "store",
+              serviceName: "Store",
               field: "storeCurrency",
             },
           },

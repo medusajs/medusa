@@ -1,5 +1,5 @@
 import { IRegionModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteRegionsStepId = "delete-regions"
@@ -9,9 +9,7 @@ export const deleteRegionsStepId = "delete-regions"
 export const deleteRegionsStep = createStep(
   deleteRegionsStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
-    )
+    const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
     await service.softDeleteRegions(ids)
 
@@ -22,9 +20,7 @@ export const deleteRegionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IRegionModuleService>(
-      ModuleRegistrationName.REGION
-    )
+    const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
     await service.restoreRegions(prevIds)
   }

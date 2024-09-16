@@ -19,9 +19,9 @@ In this chapter, you'll learn how to write integration tests for API routes usin
 
 ## Test a GET API Route
 
-Consider the following API route created at `src/api/store/custom/route.ts`:
+Consider the following API route created at `src/api/custom/route.ts`:
 
-```ts title="src/api/store/custom/route.ts"
+```ts title="src/api/custom/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 
 export async function GET(
@@ -37,7 +37,7 @@ export async function GET(
 To write an integration test that tests this API route, create the file `integration-tests/http/custom-routes.spec.ts` with the following content:
 
 export const getHighlights = [
-  ["8", "api.get", "Send a GET request to the `/store/custom` API route."]
+  ["8", "api.get", "Send a GET request to the `/custom` API route."]
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={getHighlights}
@@ -46,10 +46,10 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 medusaIntegrationTestRunner({
   testSuite: ({ api, getContainer }) => {
     describe("Custom endpoints", () => {
-      describe("GET /store/custom", () => {
+      describe("GET /custom", () => {
         it("returns correct message", async () => {
           const response = await api.get(
-            `/store/custom`
+            `/custom`
           )
   
           expect(response.status).toEqual(200)
@@ -64,7 +64,7 @@ medusaIntegrationTestRunner({
 
 You use the `medusaIntegrationTestRunner` to write your tests.
 
-You add a single test that sends a `GET` request to `/store/custom` using the `api.get` method. For the test to pass, the response is expected to:
+You add a single test that sends a `GET` request to `/custom` using the `api.get` method. For the test to pass, the response is expected to:
 
 - Have a code status `200`,
 - Have a `message` property in the returned data.
@@ -103,9 +103,9 @@ const MyCustom = model.define("my_custom", {
 export default MyCustom
 ```
 
-And consider that the file `src/api/store/custom/route.ts` defines another route handler for `POST` requests:
+And consider that the file `src/api/custom/route.ts` defines another route handler for `POST` requests:
 
-```ts title="src/api/store/custom/route.ts"
+```ts title="src/api/custom/route.ts"
 // other imports...
 import HelloModuleService from "../../../modules/hello/service"
 
@@ -134,7 +134,7 @@ This API route creates a new record of `MyCustom`.
 To write tests for this API route, add the following at the end of the `testSuite` function in `integration-tests/http/custom-routes.spec.ts`:
 
 export const postHighlights = [
-  ["14", "api.post", "Send a POST request to the `/store/custom` API route."]
+  ["14", "api.post", "Send a POST request to the `/custom` API route."]
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={postHighlights}
@@ -146,13 +146,13 @@ medusaIntegrationTestRunner({
     describe("Custom endpoints", () => {
       // other tests...
 
-      describe("POST /store/custom", () => {
+      describe("POST /custom", () => {
         const id = "1"
 
         it("Creates my custom", async () => {
   
           const response = await api.post(
-            `/store/custom`,
+            `/custom`,
             {
               id,
               name: "Test",
@@ -174,7 +174,7 @@ medusaIntegrationTestRunner({
 })
 ```
 
-This adds a test for the `POST /store/custom` API route. It uses `api.post` to send the POST request. The `api.post` method accepts as a second parameter the data to pass in the request body.
+This adds a test for the `POST /custom` API route. It uses `api.post` to send the POST request. The `api.post` method accepts as a second parameter the data to pass in the request body.
 
 The test passes if the response has:
 
@@ -188,7 +188,7 @@ To ensure consistency in the database for the rest of the tests after the above 
 
 Use the `getContainer` function passed as a parameter to the `testSuite` function to resolve a service and use it for setup or teardown purposes
 
-So, add an `afterAll` hook in the `describe` block for `POST /store/custom`:
+So, add an `afterAll` hook in the `describe` block for `POST /custom`:
 
 ```ts title="integration-tests/http/custom-routes.spec.ts"
 // other imports...
@@ -199,7 +199,7 @@ medusaIntegrationTestRunner({
     describe("Custom endpoints", () => {
       // other tests...
 
-      describe("POST /store/custom", () => {
+      describe("POST /custom", () => {
         // ...
         afterAll(() => async () => {
           const helloModuleService: HelloModuleService = getContainer().resolve(
@@ -220,9 +220,9 @@ The `afterAll` hook resolves the `HelloModuleService` and use its `deleteMyCusto
 
 ## Test a DELETE API Route
 
-Consider a `/store/custom/:id` API route created at `src/api/store/custom/[id]/route.ts`:
+Consider a `/custom/:id` API route created at `src/api/custom/[id]/route.ts`:
 
-```ts title="src/api/store/custom/[id]/route.ts"
+```ts title="src/api/custom/[id]/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import HelloModuleService from "../../../modules/hello/service"
 
@@ -247,7 +247,7 @@ This API route accepts an ID path parameter, and uses the `HelloModuleService` t
 To add tests for this API route, add the following to `integration-tests/http/custom-routes.spec.ts`:
 
 export const deleteHighlights = [
-  ["21", "api.delete", "Send a DELETE request to the `/store/custom/:id` API route."]
+  ["21", "api.delete", "Send a DELETE request to the `/custom/:id` API route."]
 ]
 
 ```ts title="integration-tests/http/custom-routes.spec.ts" highlights={deleteHighlights}
@@ -256,7 +256,7 @@ medusaIntegrationTestRunner({
     describe("Custom endpoints", () => {
       // ...
 
-      describe("DELETE /store/custom/:id", () => {
+      describe("DELETE /custom/:id", () => {
         const id = "1"
 
         beforeAll(() => async () => {
@@ -272,7 +272,7 @@ medusaIntegrationTestRunner({
 
         it("Deletes my custom", async () => {
           const response = await api.delete(
-            `/store/custom/${id}`
+            `/custom/${id}`
           )
 
           expect(response.status).toEqual(200)
@@ -285,9 +285,9 @@ medusaIntegrationTestRunner({
 })
 ```
 
-This adds a new test for the `DELETE /store/custom/:id` API route. You use the `beforeAll` hook to create a `MyCustom` record using the `HelloModuleService`.
+This adds a new test for the `DELETE /custom/:id` API route. You use the `beforeAll` hook to create a `MyCustom` record using the `HelloModuleService`.
 
-In the test, you use the `api.delete` method to send a `DELETE` request to `/store/custom/:id`. The test passes if the response:
+In the test, you use the `api.delete` method to send a `DELETE` request to `/custom/:id`. The test passes if the response:
 
 - Has a `200` status code.
 - Has a `success` property in its data.

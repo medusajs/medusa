@@ -7,9 +7,7 @@ export class ModuleService implements IModuleService {
       alias: [
         {
           name: ["custom_name"],
-          args: {
-            entity: "Custom",
-          },
+          entity: "Custom",
         },
       ],
     })

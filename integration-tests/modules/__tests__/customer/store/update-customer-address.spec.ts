@@ -1,6 +1,10 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 jest.setTimeout(50000)
@@ -13,20 +17,25 @@ medusaIntegrationTestRunner({
     describe("POST /store/customers/:id/addresses/:address_id", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
-      it("should update a customer address", async () => {
+      beforeEach(async () => {
+        appContainer = getContainer()
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
+      })
+
+      it.only("should update a customer address", async () => {
         const { customer, jwt } = await createAuthenticatedCustomer(
           appContainer
         )
 
-        const address = await customerModuleService.createAddresses({
+        const address = await customerModuleService.createCustomerAddresses({
           customer_id: customer.id,
           first_name: "John",
           last_name: "Doe",
@@ -38,7 +47,12 @@ medusaIntegrationTestRunner({
           {
             first_name: "Jane",
           },
-          { headers: { authorization: `Bearer ${jwt}` } }
+          {
+            headers: {
+              authorization: `Bearer ${jwt}`,
+              ...storeHeaders.headers,
+            },
+          }
         )
 
         expect(response.status).toEqual(200)
@@ -59,7 +73,7 @@ medusaIntegrationTestRunner({
           last_name: "Doe",
         })
 
-        const address = await customerModuleService.createAddresses({
+        const address = await customerModuleService.createCustomerAddresses({
           customer_id: otherCustomer.id,
           first_name: "John",
           last_name: "Doe",
@@ -70,7 +84,12 @@ medusaIntegrationTestRunner({
           .post(
             `/store/customers/me/addresses/${address.id}`,
             { first_name: "Jane" },
-            { headers: { authorization: `Bearer ${jwt}` } }
+            {
+              headers: {
+                authorization: `Bearer ${jwt}`,
+                ...storeHeaders.headers,
+              },
+            }
           )
           .catch((e) => e.response)
 

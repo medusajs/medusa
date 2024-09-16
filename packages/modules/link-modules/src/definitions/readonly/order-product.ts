@@ -9,6 +9,7 @@ export const OrderProduct: ModuleJoinerConfig = {
       serviceName: Modules.ORDER,
       relationship: {
         serviceName: Modules.PRODUCT,
+        entity: "Product",
         primaryKey: "id",
         foreignKey: "items.product_id",
         alias: "product",
@@ -21,6 +22,7 @@ export const OrderProduct: ModuleJoinerConfig = {
       serviceName: Modules.ORDER,
       relationship: {
         serviceName: Modules.PRODUCT,
+        entity: "ProductVariant",
         primaryKey: "id",
         foreignKey: "items.variant_id",
         alias: "variant",
@@ -33,12 +35,13 @@ export const OrderProduct: ModuleJoinerConfig = {
       serviceName: Modules.PRODUCT,
       relationship: {
         serviceName: Modules.ORDER,
+        entity: "OrderLineItem",
         primaryKey: "variant_id",
         foreignKey: "id",
         alias: "order_items",
         isList: true,
         args: {
-          methodSuffix: "LineItems",
+          methodSuffix: "OrderLineItems",
         },
       },
     },

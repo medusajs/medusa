@@ -3,7 +3,7 @@ import {
   createPaymentSessionsWorkflowId,
 } from "@medusajs/core-flows"
 import { IPaymentModuleService, IRegionModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -21,8 +21,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
+        paymentModule = appContainer.resolve(Modules.PAYMENT)
+        regionModule = appContainer.resolve(Modules.REGION)
         remoteLink = appContainer.resolve("remoteLink")
       })
 

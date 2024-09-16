@@ -386,8 +386,8 @@ const Item = ({
 }) => {
   const { t } = useTranslation()
   const isInventoryManaged = item.variant?.manage_inventory
-
-  const hasInventoryKit = (item.variant.inventory_items?.length || 0) > 1
+  const hasInventoryKit =
+    isInventoryManaged && (item.variant?.inventory_items?.length || 0) > 1
 
   return (
     <>

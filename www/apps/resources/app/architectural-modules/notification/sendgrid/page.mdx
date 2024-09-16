@@ -50,7 +50,7 @@ Only one provider can be defined for a channel.
 </Note>
 
 ```js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 
@@ -144,7 +144,7 @@ import type {
   SubscriberArgs,
   SubscriberConfig,
 } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { INotificationModuleService } from "@medusajs/types"
 
 export default async function productCreateHandler({
@@ -152,7 +152,7 @@ export default async function productCreateHandler({
   container,
 }: SubscriberArgs<{ id: string }>) {
   const notificationModuleService: INotificationModuleService =
-    container.resolve(ModuleRegistrationName.NOTIFICATION)
+    container.resolve(Modules.NOTIFICATION)
 
   await notificationModuleService.createNotifications({
     to: "test@gmail.com",

@@ -1,5 +1,5 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -19,9 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {
@@ -34,7 +32,7 @@ medusaIntegrationTestRunner({
           last_name: "Doe",
         })
 
-        const address = await customerModuleService.createAddresses({
+        const address = await customerModuleService.createCustomerAddresses({
           customer_id: customer.id,
           first_name: "John",
           last_name: "Doe",
@@ -66,21 +64,23 @@ medusaIntegrationTestRunner({
           first_name: "John",
           last_name: "Doe",
         })
-        const [, address] = await customerModuleService.createAddresses([
-          {
-            customer_id: customer.id,
-            first_name: "John",
-            last_name: "Doe",
-            address_1: "Test street 1",
-            is_default_shipping: true,
-          },
-          {
-            customer_id: customer.id,
-            first_name: "John",
-            last_name: "Doe",
-            address_1: "Test street 2",
-          },
-        ])
+        const [, address] = await customerModuleService.createCustomerAddresses(
+          [
+            {
+              customer_id: customer.id,
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "Test street 1",
+              is_default_shipping: true,
+            },
+            {
+              customer_id: customer.id,
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "Test street 2",
+            },
+          ]
+        )
 
         const response = await api.post(
           `/admin/customers/${customer.id}/addresses/${address.id}`,
@@ -93,10 +93,11 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const [defaultAddress] = await customerModuleService.listAddresses({
-          customer_id: customer.id,
-          is_default_shipping: true,
-        })
+        const [defaultAddress] =
+          await customerModuleService.listCustomerAddresses({
+            customer_id: customer.id,
+            is_default_shipping: true,
+          })
 
         expect(defaultAddress.first_name).toEqual("jane")
         expect(defaultAddress.address_1).toEqual("Test street 2")
@@ -108,21 +109,23 @@ medusaIntegrationTestRunner({
           first_name: "John",
           last_name: "Doe",
         })
-        const [, address] = await customerModuleService.createAddresses([
-          {
-            customer_id: customer.id,
-            first_name: "John",
-            last_name: "Doe",
-            address_1: "Test street 1",
-            is_default_billing: true,
-          },
-          {
-            customer_id: customer.id,
-            first_name: "John",
-            last_name: "Doe",
-            address_1: "Test street 2",
-          },
-        ])
+        const [, address] = await customerModuleService.createCustomerAddresses(
+          [
+            {
+              customer_id: customer.id,
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "Test street 1",
+              is_default_billing: true,
+            },
+            {
+              customer_id: customer.id,
+              first_name: "John",
+              last_name: "Doe",
+              address_1: "Test street 2",
+            },
+          ]
+        )
 
         const response = await api.post(
           `/admin/customers/${customer.id}/addresses/${address.id}`,
@@ -135,10 +138,11 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const [defaultAddress] = await customerModuleService.listAddresses({
-          customer_id: customer.id,
-          is_default_billing: true,
-        })
+        const [defaultAddress] =
+          await customerModuleService.listCustomerAddresses({
+            customer_id: customer.id,
+            is_default_billing: true,
+          })
 
         expect(defaultAddress.first_name).toEqual("jane")
         expect(defaultAddress.address_1).toEqual("Test street 2")

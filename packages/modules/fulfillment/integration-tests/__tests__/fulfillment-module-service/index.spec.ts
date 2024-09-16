@@ -131,96 +131,108 @@ moduleIntegrationTestRunner({
           fulfillmentAddress: {
             id: {
               linkable: "fulfillment_address_id",
+              entity: "FulfillmentAddress",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "fulfillmentAddress",
             },
           },
           fulfillmentItem: {
             id: {
               linkable: "fulfillment_item_id",
+              entity: "FulfillmentItem",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "fulfillmentItem",
             },
           },
           fulfillmentLabel: {
             id: {
               linkable: "fulfillment_label_id",
+              entity: "FulfillmentLabel",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "fulfillmentLabel",
             },
           },
           fulfillmentProvider: {
             id: {
               linkable: "fulfillment_provider_id",
+              entity: "FulfillmentProvider",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "fulfillmentProvider",
             },
           },
           fulfillmentSet: {
             id: {
               linkable: "fulfillment_set_id",
+              entity: "FulfillmentSet",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "fulfillmentSet",
             },
           },
           fulfillment: {
             id: {
               linkable: "fulfillment_id",
+              entity: "Fulfillment",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "fulfillment",
             },
           },
           geoZone: {
             id: {
               linkable: "geo_zone_id",
+              entity: "GeoZone",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "geoZone",
             },
           },
           serviceZone: {
             id: {
               linkable: "service_zone_id",
+              entity: "ServiceZone",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "serviceZone",
             },
           },
           shippingOptionRule: {
             id: {
               linkable: "shipping_option_rule_id",
+              entity: "ShippingOptionRule",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "shippingOptionRule",
             },
           },
           shippingOptionType: {
             id: {
               linkable: "shipping_option_type_id",
+              entity: "ShippingOptionType",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "shippingOptionType",
             },
           },
           shippingOption: {
             id: {
               linkable: "shipping_option_id",
+              entity: "ShippingOption",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "shippingOption",
             },
           },
           shippingProfile: {
             id: {
               linkable: "shipping_profile_id",
+              entity: "ShippingProfile",
               primaryKey: "id",
-              serviceName: "fulfillment",
+              serviceName: "Fulfillment",
               field: "shippingProfile",
             },
           },

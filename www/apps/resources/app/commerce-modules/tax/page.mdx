@@ -10,7 +10,7 @@ The Tax Module is the `@medusajs/tax` NPM package that provides tax-related feat
 
 ## How to Use Tax Module's Service
 
-You can use the Tax Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.TAX` imported from `@medusajs/utils`.
+You can use the Tax Module's main service by resolving from the Medusa container the resource `Modules.TAX` imported from `@medusajs/utils`.
 
 For example:
 
@@ -20,14 +20,14 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ITaxModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const taxModuleService: ITaxModuleService = req.scope.resolve(
-    ModuleRegistrationName.TAX
+    Modules.TAX
   )
 
   res.json({
@@ -42,11 +42,11 @@ export async function GET(
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { ITaxModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
   const taxModuleService: ITaxModuleService = container.resolve(
-    ModuleRegistrationName.TAX
+    Modules.TAX
   )
 
   const taxRegions = await taxModuleService.listTaxRegions()
@@ -59,11 +59,11 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { ITaxModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 const step1 = createStep("step-1", async (_, { container }) => {
   const taxModuleService: ITaxModuleService = container.resolve(
-    ModuleRegistrationName.TAX
+    Modules.TAX
   )
 
   const taxRegions = await taxModuleService.listTaxRegions()

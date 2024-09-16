@@ -1,6 +1,10 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  generatePublishableKey,
+  generateStoreHeaders,
+} from "../../../../helpers/create-admin-user"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 const env = { MEDUSA_FF_MEDUSA_V2: true }
@@ -13,12 +17,17 @@ medusaIntegrationTestRunner({
     describe("DELETE /store/customers/me/addresses/:address_id", () => {
       let appContainer
       let customerModuleService: ICustomerModuleService
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
+      })
+
+      beforeEach(async () => {
+        appContainer = getContainer()
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       it("should delete a customer address", async () => {
@@ -26,7 +35,7 @@ medusaIntegrationTestRunner({
           appContainer
         )
 
-        const address = await customerModuleService.createAddresses({
+        const address = await customerModuleService.createCustomerAddresses({
           customer_id: customer.id,
           first_name: "John",
           last_name: "Doe",
@@ -35,7 +44,12 @@ medusaIntegrationTestRunner({
 
         const response = await api.delete(
           `/store/customers/me/addresses/${address.id}`,
-          { headers: { authorization: `Bearer ${jwt}` } }
+          {
+            headers: {
+              authorization: `Bearer ${jwt}`,
+              ...storeHeaders.headers,
+            },
+          }
         )
 
         expect(response.status).toEqual(200)
@@ -57,7 +71,7 @@ medusaIntegrationTestRunner({
           first_name: "Jane",
           last_name: "Doe",
         })
-        const address = await customerModuleService.createAddresses({
+        const address = await customerModuleService.createCustomerAddresses({
           customer_id: otherCustomer.id,
           first_name: "John",
           last_name: "Doe",
@@ -66,7 +80,10 @@ medusaIntegrationTestRunner({
 
         const response = await api
           .delete(`/store/customers/me/addresses/${address.id}`, {
-            headers: { authorization: `Bearer ${jwt}` },
+            headers: {
+              authorization: `Bearer ${jwt}`,
+              ...storeHeaders.headers,
+            },
           })
           .catch((e) => e.response)
 

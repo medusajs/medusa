@@ -1,7 +1,7 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Module, Modules } from "@medusajs/utils"
 import { CustomerModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -15,7 +15,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
         }).linkable
 
         expect(Object.keys(linkable)).toEqual([
-          "address",
+          "customerAddress",
           "customerGroupCustomer",
           "customerGroup",
           "customer",
@@ -26,35 +26,39 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
         })
 
         expect(linkable).toEqual({
-          address: {
+          customerAddress: {
             id: {
-              linkable: "address_id",
+              linkable: "customer_address_id",
+              entity: "CustomerAddress",
               primaryKey: "id",
-              serviceName: "customer",
-              field: "address",
+              serviceName: "Customer",
+              field: "customerAddress",
             },
           },
           customerGroupCustomer: {
             id: {
               linkable: "customer_group_customer_id",
+              entity: "CustomerGroupCustomer",
               primaryKey: "id",
-              serviceName: "customer",
+              serviceName: "Customer",
               field: "customerGroupCustomer",
             },
           },
           customerGroup: {
             id: {
               linkable: "customer_group_id",
+              entity: "CustomerGroup",
               primaryKey: "id",
-              serviceName: "customer",
+              serviceName: "Customer",
               field: "customerGroup",
             },
           },
           customer: {
             id: {
               linkable: "customer_id",
+              entity: "Customer",
               primaryKey: "id",
-              serviceName: "customer",
+              serviceName: "Customer",
               field: "customer",
             },
           },
@@ -196,7 +200,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
           }
           const customer = await service.createCustomers(customerData)
 
-          const [address] = await service.listAddresses({
+          const [address] = await service.listCustomerAddresses({
             customer_id: customer.id,
           })
 
@@ -675,7 +679,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             first_name: "John",
             last_name: "Doe",
           })
-          await service.createAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -684,17 +688,17 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
           })
 
           // verify that the address was added
-          const customerWithAddress = await service.retrieveCustomer(
+          const customerWithCustomerAddress = await service.retrieveCustomer(
             customer.id,
             {
               relations: ["addresses"],
             }
           )
-          expect(customerWithAddress.addresses?.length).toBe(1)
+          expect(customerWithCustomerAddress.addresses?.length).toBe(1)
 
           await service.deleteCustomers(customer.id)
 
-          const res = await service.listAddresses({
+          const res = await service.listCustomerAddresses({
             customer_id: customer.id,
           })
           expect(res.length).toBe(0)
@@ -793,25 +797,25 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
         })
       })
 
-      describe("addAddresses", () => {
+      describe("addCustomerAddresses", () => {
         it("should add a single address to a customer", async () => {
           const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const address = await service.createAddresses({
+          const address = await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
             postal_code: "10001",
             country_code: "US",
           })
-          const [customerWithAddress] = await service.listCustomers(
+          const [customerWithCustomerAddress] = await service.listCustomers(
             { id: customer.id },
             { relations: ["addresses"] }
           )
 
-          expect(customerWithAddress.addresses).toEqual([
+          expect(customerWithCustomerAddress.addresses).toEqual([
             expect.objectContaining({ id: address.id }),
           ])
         })
@@ -821,7 +825,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             first_name: "John",
             last_name: "Doe",
           })
-          const addresses = await service.createAddresses([
+          const addresses = await service.createCustomerAddresses([
             {
               customer_id: customer.id,
               first_name: "John",
@@ -837,12 +841,12 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
               country_code: "US",
             },
           ])
-          const [customerWithAddresses] = await service.listCustomers(
+          const [customerWithCustomerAddresses] = await service.listCustomers(
             { id: customer.id },
             { relations: ["addresses"] }
           )
 
-          expect(customerWithAddresses.addresses).toEqual(
+          expect(customerWithCustomerAddresses.addresses).toEqual(
             expect.arrayContaining([
               expect.objectContaining({ id: addresses[0].id }),
               expect.objectContaining({ id: addresses[1].id }),
@@ -855,7 +859,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             first_name: "John",
             last_name: "Doe",
           })
-          await service.createAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -863,7 +867,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             country_code: "US",
             is_default_shipping: true,
           })
-          await service.createAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -873,7 +877,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
           })
 
           await expect(
-            service.createAddresses({
+            service.createCustomerAddresses({
               customer_id: customer.id,
               first_name: "John",
               last_name: "Doe",
@@ -891,7 +895,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             first_name: "John",
             last_name: "Doe",
           })
-          await service.createAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -899,7 +903,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             country_code: "US",
             is_default_billing: true,
           })
-          await service.createAddresses({
+          await service.createCustomerAddresses({
             customer_id: customer.id,
             first_name: "John",
             last_name: "Doe",
@@ -909,7 +913,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
           })
 
           await expect(
-            service.createAddresses({
+            service.createCustomerAddresses({
               customer_id: customer.id,
               first_name: "John",
               last_name: "Doe",
@@ -923,19 +927,19 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
         })
       })
 
-      describe("updateAddresses", () => {
+      describe("updateCustomerAddresses", () => {
         it("should update a single address", async () => {
           const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const address = await service.createAddresses({
+          const address = await service.createCustomerAddresses({
             customer_id: customer.id,
             address_name: "Home",
             address_1: "123 Main St",
           })
 
-          await service.updateAddresses(address.id, {
+          await service.updateCustomerAddresses(address.id, {
             address_name: "Work",
             address_1: "456 Main St",
           })
@@ -959,18 +963,18 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             first_name: "John",
             last_name: "Doe",
           })
-          const address1 = await service.createAddresses({
+          const address1 = await service.createCustomerAddresses({
             customer_id: customer.id,
             address_name: "Home",
             address_1: "123 Main St",
           })
-          const address2 = await service.createAddresses({
+          const address2 = await service.createCustomerAddresses({
             customer_id: customer.id,
             address_name: "Work",
             address_1: "456 Main St",
           })
 
-          await service.updateAddresses(
+          await service.updateCustomerAddresses(
             { customer_id: customer.id },
             {
               address_name: "Under Construction",
@@ -1001,7 +1005,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             first_name: "John",
             last_name: "Doe",
           })
-          const [address1, address2] = await service.createAddresses([
+          const [address1, address2] = await service.createCustomerAddresses([
             {
               customer_id: customer.id,
               address_name: "Home",
@@ -1014,7 +1018,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             },
           ])
 
-          await service.updateAddresses([address1.id, address2.id], {
+          await service.updateCustomerAddresses([address1.id, address2.id], {
             address_name: "Under Construction",
           })
 
@@ -1049,27 +1053,29 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
               },
             ],
           })
-          const address = await service.createAddresses({
+          const address = await service.createCustomerAddresses({
             customer_id: customer.id,
             address_name: "Work",
             address_1: "456 Main St",
           })
 
           await expect(
-            service.updateAddresses(address.id, { is_default_shipping: true })
+            service.updateCustomerAddresses(address.id, {
+              is_default_shipping: true,
+            })
           ).rejects.toThrow(
             /Customer address with customer_id: .*? already exists./
           )
         })
       })
 
-      describe("listAddresses", () => {
+      describe("listCustomerAddresses", () => {
         it("should list all addresses for a customer", async () => {
           const customer = await service.createCustomers({
             first_name: "John",
             last_name: "Doe",
           })
-          const [address1, address2] = await service.createAddresses([
+          const [address1, address2] = await service.createCustomerAddresses([
             {
               customer_id: customer.id,
               address_name: "Home",
@@ -1083,7 +1089,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
             },
           ])
 
-          const addresses = await service.listAddresses({
+          const addresses = await service.listCustomerAddresses({
             customer_id: customer.id,
           })
 

@@ -34,64 +34,72 @@ moduleIntegrationTestRunner<ICartModuleService>({
           cart: {
             id: {
               linkable: "cart_id",
+              entity: "Cart",
               primaryKey: "id",
-              serviceName: "cart",
+              serviceName: "Cart",
               field: "cart",
             },
           },
           address: {
             id: {
               linkable: "address_id",
+              entity: "Address",
               primaryKey: "id",
-              serviceName: "cart",
+              serviceName: "Cart",
               field: "address",
             },
           },
           lineItem: {
             id: {
               linkable: "line_item_id",
+              entity: "LineItem",
               primaryKey: "id",
-              serviceName: "cart",
+              serviceName: "Cart",
               field: "lineItem",
             },
           },
           lineItemAdjustment: {
             id: {
               linkable: "line_item_adjustment_id",
+              entity: "LineItemAdjustment",
               primaryKey: "id",
-              serviceName: "cart",
+              serviceName: "Cart",
               field: "lineItemAdjustment",
             },
           },
           lineItemTaxLine: {
             id: {
               linkable: "line_item_tax_line_id",
+              entity: "LineItemTaxLine",
               primaryKey: "id",
-              serviceName: "cart",
+              serviceName: "Cart",
               field: "lineItemTaxLine",
             },
           },
           shippingMethod: {
             id: {
               linkable: "shipping_method_id",
+              entity: "ShippingMethod",
               primaryKey: "id",
-              serviceName: "cart",
+              serviceName: "Cart",
               field: "shippingMethod",
             },
           },
           shippingMethodAdjustment: {
             id: {
               linkable: "shipping_method_adjustment_id",
+              entity: "ShippingMethodAdjustment",
               primaryKey: "id",
-              serviceName: "cart",
+              serviceName: "Cart",
               field: "shippingMethodAdjustment",
             },
           },
           shippingMethodTaxLine: {
             id: {
               linkable: "shipping_method_tax_line_id",
+              entity: "ShippingMethodTaxLine",
               primaryKey: "id",
-              serviceName: "cart",
+              serviceName: "Cart",
               field: "shippingMethodTaxLine",
             },
           },

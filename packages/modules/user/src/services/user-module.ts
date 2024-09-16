@@ -1,13 +1,11 @@
 import {
   Context,
   DAL,
-  IEventBusModuleService,
   InternalModuleDeclaration,
   ModulesSdkTypes,
   UserTypes,
 } from "@medusajs/types"
 import {
-  arrayDifference,
   CommonEvents,
   EmitEvents,
   InjectManager,
@@ -16,6 +14,7 @@ import {
   MedusaError,
   MedusaService,
   UserEvents,
+  arrayDifference,
 } from "@medusajs/utils"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import crypto from "node:crypto"
@@ -26,7 +25,6 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   userService: ModulesSdkTypes.IMedusaInternalService<any>
   inviteService: ModulesSdkTypes.IMedusaInternalService<any>
-  eventBusModuleService: IEventBusModuleService
 }
 
 // 1 day

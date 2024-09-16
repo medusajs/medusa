@@ -2,7 +2,6 @@ import { RemoteLink } from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   PromotionType,
 } from "@medusajs/utils"
@@ -10,6 +9,8 @@ import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
+  generatePublishableKey,
+  generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
@@ -24,13 +25,12 @@ medusaIntegrationTestRunner({
       let cartModuleService: ICartModuleService
       let promotionModuleService: IPromotionModuleService
       let remoteLinkService: RemoteLink
+      let storeHeaders
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-        promotionModuleService = appContainer.resolve(
-          ModuleRegistrationName.PROMOTION
-        )
+        cartModuleService = appContainer.resolve(Modules.CART)
+        promotionModuleService = appContainer.resolve(Modules.PROMOTION)
         remoteLinkService = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_LINK
         )
@@ -38,6 +38,8 @@ medusaIntegrationTestRunner({
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
+        const publishableKey = await generatePublishableKey(appContainer)
+        storeHeaders = generateStoreHeaders({ publishableKey })
       })
 
       describe("POST /store/carts/:id/promotions", () => {
@@ -123,9 +125,11 @@ medusaIntegrationTestRunner({
             [Modules.PROMOTION]: { promotion_id: appliedPromotion.id },
           })
 
-          const created = await api.post(`/store/carts/${cart.id}/promotions`, {
-            promo_codes: [createdPromotion.code],
-          })
+          const created = await api.post(
+            `/store/carts/${cart.id}/promotions`,
+            { promo_codes: [createdPromotion.code] },
+            storeHeaders
+          )
 
           expect(created.status).toEqual(200)
           expect(created.data.cart).toEqual(
@@ -264,9 +268,11 @@ medusaIntegrationTestRunner({
               },
             ])
 
-          const created = await api.post(`/store/carts/${cart.id}/promotions`, {
-            promo_codes: [newPromotion.code],
-          })
+          const created = await api.post(
+            `/store/carts/${cart.id}/promotions`,
+            { promo_codes: [newPromotion.code] },
+            storeHeaders
+          )
 
           expect(created.status).toEqual(200)
           expect(created.data.cart).toEqual(

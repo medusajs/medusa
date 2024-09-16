@@ -14,15 +14,14 @@ export const OrderClaimPaymentCollection: ModuleJoinerConfig = {
         "order_claim_payment_collection",
         "order_claim_payment_collections",
       ],
-      args: {
-        entity: "LinkOrderClaimPaymentCollection",
-      },
+      entity: "LinkOrderClaimPaymentCollection",
     },
   ],
   primaryKeys: ["id", "claim_id", "payment_collection_id"],
   relationships: [
     {
       serviceName: Modules.ORDER,
+      entity: "OrderClaim",
       primaryKey: "id",
       foreignKey: "claim_id",
       alias: "order",
@@ -32,6 +31,7 @@ export const OrderClaimPaymentCollection: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.PAYMENT,
+      entity: "PaymentCollection",
       primaryKey: "id",
       foreignKey: "payment_collection_id",
       alias: "payment_collection",

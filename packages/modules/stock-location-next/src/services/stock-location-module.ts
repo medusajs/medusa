@@ -18,6 +18,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
   MedusaService,
+  Modules,
   isString,
   promiseAll,
 } from "@medusajs/utils"
@@ -25,7 +26,7 @@ import { joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
 
 type InjectedDependencies = {
-  eventBusModuleService: IEventBusService
+  [Modules.EVENT_BUS]: IEventBusService
   baseRepository: DAL.RepositoryService
   stockLocationService: ModulesSdkTypes.IMedusaInternalService<any>
   stockLocationAddressService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -48,7 +49,7 @@ export default class StockLocationModuleService
 
   constructor(
     {
-      eventBusModuleService,
+      [Modules.EVENT_BUS]: eventBusModuleService,
       baseRepository,
       stockLocationService,
       stockLocationAddressService,

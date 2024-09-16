@@ -3,10 +3,7 @@ import {
   IStoreModuleService,
   UpdateStoreDTO,
 } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type UpdateStoresStepInput = {
@@ -21,9 +18,7 @@ export const updateStoresStepId = "update-stores"
 export const updateStoresStep = createStep(
   updateStoresStepId,
   async (data: UpdateStoresStepInput, { container }) => {
-    const service = container.resolve<IStoreModuleService>(
-      ModuleRegistrationName.STORE
-    )
+    const service = container.resolve<IStoreModuleService>(Modules.STORE)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -42,9 +37,7 @@ export const updateStoresStep = createStep(
       return
     }
 
-    const service = container.resolve<IStoreModuleService>(
-      ModuleRegistrationName.STORE
-    )
+    const service = container.resolve<IStoreModuleService>(Modules.STORE)
 
     await service.upsertStores(
       prevData.map((r) => ({

@@ -28,25 +28,28 @@ moduleIntegrationTestRunner<IInventoryService>({
           inventoryItem: {
             id: {
               field: "inventoryItem",
+              entity: "InventoryItem",
               linkable: "inventory_item_id",
               primaryKey: "id",
-              serviceName: "inventoryService",
+              serviceName: "Inventory",
             },
           },
           inventoryLevel: {
             id: {
               field: "inventoryLevel",
+              entity: "InventoryLevel",
               linkable: "inventory_level_id",
               primaryKey: "id",
-              serviceName: "inventoryService",
+              serviceName: "Inventory",
             },
           },
           reservationItem: {
             id: {
               field: "reservationItem",
+              entity: "ReservationItem",
               linkable: "reservation_item_id",
               primaryKey: "id",
-              serviceName: "inventoryService",
+              serviceName: "Inventory",
             },
           },
         })

@@ -4,7 +4,7 @@ import {
   IProductModuleService,
   ProductVariantDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface GetVariantsStepInput {
@@ -20,7 +20,7 @@ export const getVariantsStep = createStep(
   getVariantsStepId,
   async (data: GetVariantsStepInput, { container }) => {
     const productModuleService = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
+      Modules.PRODUCT
     )
 
     const variants = await productModuleService.listProductVariants(
