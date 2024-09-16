@@ -4597,10 +4597,10 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @param {RegisterOrderDeliveryDTO} data - The ordes's delivery data.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the shipment's data are registered successfully.
+   * @returns {Promise<void>} Resolves when the delivery is registered successfully.
    *
    * @example
-   * await orderModuleService.registerShipment({
+   * await orderModuleService.registerDelivery({
    *   order_id: "123",
    *   items: [
    *     {
