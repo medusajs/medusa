@@ -17,7 +17,7 @@ export function toRemoteJoinerQuery(
 
       const canExpand =
         typeof value === "object" &&
-        !["fields", "__args", "__directives"].includes(key)
+        !["fields", "__fields", "__args", "__directives"].includes(key) // TODO: deprecate "fields"
 
       if (!canExpand) {
         continue
@@ -65,8 +65,8 @@ export function toRemoteJoinerQuery(
         )
       }
 
-      if (value.fields) {
-        reference.fields = value.fields
+      if (value.__fields || value.fields) {
+        reference.fields = value.__fields ?? value.fields
       }
 
       if (isEntryPoint) {

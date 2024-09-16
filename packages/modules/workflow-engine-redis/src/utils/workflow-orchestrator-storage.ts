@@ -66,16 +66,16 @@ export class RedisDistributedTransactionStorage
   }
 
   async onApplicationStart() {
+    const allowedJobs = [
+      JobType.RETRY,
+      JobType.STEP_TIMEOUT,
+      JobType.TRANSACTION_TIMEOUT,
+    ]
+
     this.worker = new Worker(
       this.queueName,
       async (job) => {
-        const allJobs = [
-          JobType.RETRY,
-          JobType.STEP_TIMEOUT,
-          JobType.TRANSACTION_TIMEOUT,
-        ]
-
-        if (allJobs.includes(job.name as JobType)) {
+        if (allowedJobs.includes(job.name as JobType)) {
           await this.executeTransaction(
             job.data.workflowId,
             job.data.transactionId

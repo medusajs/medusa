@@ -79,7 +79,7 @@ export default myWorkflow
 
 3. Execute the workflow from a resource, such as an API route:
 
-```ts title="src/api/store/workflow/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
+```ts title="src/api/workflow/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -103,10 +103,10 @@ export async function GET(
 npm run dev
 ```
 
-5. Send a `GET` request to `/store/workflow`:
+5. Send a `GET` request to `/workflow`:
 
-```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflow"
-curl http://localhost:9000/store/workflow
+```bash
+curl http://localhost:9000/workflow
 ```
 
 In the console, you'll see:

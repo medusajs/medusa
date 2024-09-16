@@ -45,7 +45,9 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl -X POST '{backend_url}/store/carts/{id}'
+ *     source: |-
+ *       curl -X POST '{backend_url}/store/carts/{id}' \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  * tags:
  *   - Carts
  * responses:

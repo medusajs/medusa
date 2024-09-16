@@ -48,7 +48,7 @@ declare module "@medusajs/types" {
     [ContainerRegistrationKeys.CONFIG_MODULE]: ConfigModule
     [ContainerRegistrationKeys.PG_CONNECTION]: Knex<any>
     [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
-    [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
+    [ContainerRegistrationKeys.QUERY]: Omit<RemoteQueryFunction, symbol>
     [ContainerRegistrationKeys.LOGGER]: Logger
   }
 }
@@ -520,7 +520,7 @@ async function MedusaApp_({
     onApplicationStart,
     modules: allModules,
     link: remoteLink,
-    query: createQuery(remoteQuery),
+    query: createQuery(remoteQuery) as any, // TODO: rm any once we remove the old RemoteQueryFunction and rely on the Query object instead,
     entitiesMap: schema.getTypeMap(),
     gqlSchema: schema,
     notFound,

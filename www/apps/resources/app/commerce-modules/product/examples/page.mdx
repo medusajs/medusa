@@ -16,11 +16,11 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   const products = await productModuleService.createProducts([
@@ -97,11 +97,11 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   const products = await productModuleService.listProducts()
@@ -140,11 +140,11 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   const product = await productModuleService.retrieveProduct(request.params.id)
@@ -187,11 +187,11 @@ export async function GET(
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   const data = await productModuleService.listProducts({
@@ -234,11 +234,11 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   const categories = await productModuleService.listProductCategories()
@@ -277,11 +277,11 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   const data = await productModuleService.listProductCategories({

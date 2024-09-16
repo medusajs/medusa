@@ -37,7 +37,7 @@ import type {
   SubscriberArgs,
   SubscriberConfig,
 } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { INotificationModuleService } from "@medusajs/types"
 
 export default async function productCreateHandler({
@@ -45,7 +45,7 @@ export default async function productCreateHandler({
   container,
 }: SubscriberArgs<{ id: string }>) {
   const notificationModuleService: INotificationModuleService =
-    container.resolve(ModuleRegistrationName.NOTIFICATION)
+    container.resolve(Modules.NOTIFICATION)
 
   await notificationModuleService.createNotifications({
     to: "shahednasser@gmail.com",

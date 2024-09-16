@@ -590,12 +590,10 @@ export const GET = async (
   )
 
   const { data: [vendor] } = await query.graph({
-    entryPoint: "vendor",
+    entity: "vendor",
     fields: ["products.*"],
-    variables: {
-      filters: {
-        id: [vendorAdmin.vendor.id],
-      },
+    filters: {
+      id: [vendorAdmin.vendor.id],
     },
   })
 
@@ -624,7 +622,7 @@ import {
 } from "@medusajs/types"
 import { 
   Modules, 
-  ModuleRegistrationName,
+  Modules,
 } from "@medusajs/utils"
 
 // GET method...
@@ -639,9 +637,9 @@ export const POST = async (
   const marketplaceModuleService: MarketplaceModuleService = 
     req.scope.resolve(MARKETPLACE_MODULE)
   const productModuleService: IProductModuleService = req.scope
-    .resolve(ModuleRegistrationName.PRODUCT)
+    .resolve(Modules.PRODUCT)
   const salesChannelModuleService: ISalesChannelModuleService = req.scope
-    .resolve(ModuleRegistrationName.SALES_CHANNEL)
+    .resolve(Modules.SALES_CHANNEL)
   // Retrieve default sales channel to make the product available in.
   // Alternatively, you can link sales channels to vendors and allow vendors
   // to manage sales channels
@@ -830,12 +828,10 @@ const groupVendorItemsStep = createStep(
 
     await Promise.all(cart.items?.map(async (item) => {
       const { data: [product] } = await query.graph({
-        entryPoint: "product",
+        entity: "product",
         fields: ["vendor.*"],
-        variables: {
-          filters: {
-            id: [item.product_id],
-          },
+        filters: {
+          id: [item.product_id],
         },
       })
 
@@ -1274,12 +1270,10 @@ export const GET = async (
   )
 
   const { data: [vendor] } = await query.graph({
-    entryPoint: "vendor",
+    entity: "vendor",
     fields: ["orders.*"],
-    variables: {
-      filters: {
-        id: [vendorAdmin.vendor.id],
-      },
+    filters: {
+      id: [vendorAdmin.vendor.id],
     },
   })
 
