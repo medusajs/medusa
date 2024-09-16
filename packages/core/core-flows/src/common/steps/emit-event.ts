@@ -1,5 +1,5 @@
 import { EventBusTypes, IEventBusModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepExecutionContext, createStep } from "@medusajs/workflows-sdk"
 
 /**
@@ -64,7 +64,7 @@ export const emitEventStep = createStep(
     const { container } = context
 
     const eventBus: IEventBusModuleService = container.resolve(
-      ModuleRegistrationName.EVENT_BUS
+      Modules.EVENT_BUS
     )
 
     const data_ =

@@ -26,7 +26,6 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   RuleOperator,
 } from "@medusajs/utils"
@@ -62,24 +61,16 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-        regionModuleService = appContainer.resolve(
-          ModuleRegistrationName.REGION
-        )
-        scModuleService = appContainer.resolve(
-          ModuleRegistrationName.SALES_CHANNEL
-        )
-        customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
-        productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-        pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-        paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
-        inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
-        stockLocationModule = appContainer.resolve(
-          ModuleRegistrationName.STOCK_LOCATION
-        )
-        fulfillmentModule = appContainer.resolve(
-          ModuleRegistrationName.FULFILLMENT
-        )
+        cartModuleService = appContainer.resolve(Modules.CART)
+        regionModuleService = appContainer.resolve(Modules.REGION)
+        scModuleService = appContainer.resolve(Modules.SALES_CHANNEL)
+        customerModule = appContainer.resolve(Modules.CUSTOMER)
+        productModule = appContainer.resolve(Modules.PRODUCT)
+        pricingModule = appContainer.resolve(Modules.PRICING)
+        paymentModule = appContainer.resolve(Modules.PAYMENT)
+        inventoryModule = appContainer.resolve(Modules.INVENTORY)
+        stockLocationModule = appContainer.resolve(Modules.STOCK_LOCATION)
+        fulfillmentModule = appContainer.resolve(Modules.FULFILLMENT)
         remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY

@@ -3,10 +3,7 @@ import {
   ITaxModuleService,
   UpdateTaxRateDTO,
 } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type UpdateTaxRatesStepInput = {
@@ -21,9 +18,7 @@ export const updateTaxRatesStepId = "update-tax-rates"
 export const updateTaxRatesStep = createStep(
   updateTaxRatesStepId,
   async (data: UpdateTaxRatesStepInput, { container }) => {
-    const service = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
+    const service = container.resolve<ITaxModuleService>(Modules.TAX)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -43,9 +38,7 @@ export const updateTaxRatesStep = createStep(
       return
     }
 
-    const service = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
+    const service = container.resolve<ITaxModuleService>(Modules.TAX)
 
     await service.upsertTaxRates(prevData)
   }

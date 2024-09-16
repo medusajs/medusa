@@ -2,11 +2,7 @@ import {
   IApiKeyModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  Modules,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { Modules, remoteQueryObjectFromString } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -25,10 +21,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        apiKeyModule = appContainer.resolve(ModuleRegistrationName.API_KEY)
-        scModuleService = appContainer.resolve(
-          ModuleRegistrationName.SALES_CHANNEL
-        )
+        apiKeyModule = appContainer.resolve(Modules.API_KEY)
+        scModuleService = appContainer.resolve(Modules.SALES_CHANNEL)
         remoteQuery = appContainer.resolve("remoteQuery")
         remoteLink = appContainer.resolve("remoteLink")
       })

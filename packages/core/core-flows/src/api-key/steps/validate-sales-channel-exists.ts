@@ -1,9 +1,5 @@
 import { ISalesChannelModuleService } from "@medusajs/types"
-import {
-  MedusaError,
-  ModuleRegistrationName,
-  arrayDifference,
-} from "@medusajs/utils"
+import { MedusaError, Modules, arrayDifference } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface ValidateSalesChannelsExistStepInput {
@@ -18,9 +14,7 @@ export const validateSalesChannelsExistStep = createStep(
   validateSalesChannelsExistStepId,
   async (data: ValidateSalesChannelsExistStepInput, { container }) => {
     const salesChannelModuleService =
-      container.resolve<ISalesChannelModuleService>(
-        ModuleRegistrationName.SALES_CHANNEL
-      )
+      container.resolve<ISalesChannelModuleService>(Modules.SALES_CHANNEL)
 
     const salesChannels = await salesChannelModuleService.listSalesChannels(
       { id: data.sales_channel_ids },

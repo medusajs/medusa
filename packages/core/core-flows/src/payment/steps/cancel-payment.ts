@@ -1,9 +1,5 @@
 import { IPaymentModuleService, Logger } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-  promiseAll,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules, promiseAll } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
 
 export type CancelPaymentStepInput = {
@@ -19,7 +15,7 @@ export const cancelPaymentStep = createStep(
   async (input: CancelPaymentStepInput, { container }) => {
     const logger = container.resolve<Logger>(ContainerRegistrationKeys.LOGGER)
     const paymentModule = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
+      Modules.PAYMENT
     )
 
     const paymentIds = Array.isArray(input.paymentIds)

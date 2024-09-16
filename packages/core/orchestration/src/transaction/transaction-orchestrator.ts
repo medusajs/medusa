@@ -52,7 +52,10 @@ export class TransactionOrchestrator extends EventEmitter {
     return this.workflowOptions[modelId]
   }
 
-  static tranceTransaction?: (
+  /**
+   * Trace workflow transaction for instrumentation
+   */
+  static traceTransaction?: (
     transactionResume: (...args: any[]) => Promise<void>,
     metadata: {
       model_id: string
@@ -61,7 +64,10 @@ export class TransactionOrchestrator extends EventEmitter {
     }
   ) => Promise<any>
 
-  static tranceStep?: (
+  /**
+   * Trace workflow steps for instrumentation
+   */
+  static traceStep?: (
     handler: (...args: any[]) => Promise<any>,
     metadata: {
       action: string
@@ -783,8 +789,8 @@ export class TransactionOrchestrator extends EventEmitter {
           }
 
           let promise: Promise<unknown>
-          if (TransactionOrchestrator.tranceStep) {
-            promise = TransactionOrchestrator.tranceStep(stepHandler, traceData)
+          if (TransactionOrchestrator.traceStep) {
+            promise = TransactionOrchestrator.traceStep(stepHandler, traceData)
           } else {
             promise = stepHandler()
           }
@@ -840,8 +846,8 @@ export class TransactionOrchestrator extends EventEmitter {
 
           let promise: Promise<unknown>
 
-          if (TransactionOrchestrator.tranceStep) {
-            promise = TransactionOrchestrator.tranceStep(stepHandler, traceData)
+          if (TransactionOrchestrator.traceStep) {
+            promise = TransactionOrchestrator.traceStep(stepHandler, traceData)
           } else {
             promise = stepHandler()
           }
@@ -960,10 +966,10 @@ export class TransactionOrchestrator extends EventEmitter {
     }
 
     if (
-      TransactionOrchestrator.tranceTransaction &&
+      TransactionOrchestrator.traceTransaction &&
       !transaction.getFlow().hasAsyncSteps
     ) {
-      await TransactionOrchestrator.tranceTransaction(executeNext, {
+      await TransactionOrchestrator.traceTransaction(executeNext, {
         model_id: transaction.modelId,
         transaction_id: transaction.transactionId,
         flow_metadata: transaction.getFlow().metadata,

@@ -3,7 +3,7 @@ import {
   updateShippingProfilesWorkflow,
 } from "@medusajs/core-flows"
 import { HttpTypes, IFulfillmentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -34,7 +34,7 @@ export const DELETE = async (
   const { id } = req.params
 
   const fulfillmentModuleService = req.scope.resolve<IFulfillmentModuleService>(
-    ModuleRegistrationName.FULFILLMENT
+    Modules.FULFILLMENT
   )
 
   // Test if exists

@@ -1,5 +1,5 @@
 import { CreateOrderLineItemDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface CreateOrderLineItemsStepInput {
@@ -13,7 +13,7 @@ export const createOrderLineItemsStepId = "create-order-line-items-step"
 export const createOrderLineItemsStep = createStep(
   createOrderLineItemsStepId,
   async (input: CreateOrderLineItemsStepInput, { container }) => {
-    const orderModule = container.resolve(ModuleRegistrationName.ORDER)
+    const orderModule = container.resolve(Modules.ORDER)
 
     const createdItems = input.items.length
       ? await orderModule.createOrderLineItems(input.items)
@@ -29,7 +29,7 @@ export const createOrderLineItemsStep = createStep(
       return
     }
 
-    const orderModule = container.resolve(ModuleRegistrationName.ORDER)
+    const orderModule = container.resolve(Modules.ORDER)
 
     await orderModule.deleteOrderLineItems(itemIds)
   }

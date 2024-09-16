@@ -1,11 +1,10 @@
 import { IPromotionModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   PromotionActions,
 } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface UpdateCartPromotionStepInput {
   id: string
@@ -29,7 +28,7 @@ export const updateCartPromotionsStep = createStep(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
     const promotionService = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     const existingCartPromotionLinks = await remoteQuery({

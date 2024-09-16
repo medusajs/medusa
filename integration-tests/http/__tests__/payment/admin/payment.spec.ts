@@ -37,7 +37,8 @@ medusaIntegrationTestRunner({
     beforeEach(async () => {
       container = getContainer()
       await createAdminUser(dbConnection, adminHeaders, container)
-      order = await createOrderSeeder({ api, container })
+      const seeders = await createOrderSeeder({ api, container })
+      order = seeders.order
 
       await api.post(
         `/admin/orders/${order.id}/fulfillments`,

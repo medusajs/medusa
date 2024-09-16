@@ -1,5 +1,5 @@
 import { CreateLineItemForCartDTO, ICartModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface CreateLineItemsCartStepInput {
@@ -14,9 +14,7 @@ export const createLineItemsStepId = "create-line-items-step"
 export const createLineItemsStep = createStep(
   createLineItemsStepId,
   async (data: CreateLineItemsCartStepInput, { container }) => {
-    const cartModule = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const cartModule = container.resolve<ICartModuleService>(Modules.CART)
 
     const createdItems = data.items.length
       ? await cartModule.addLineItems(data.items)
@@ -29,9 +27,7 @@ export const createLineItemsStep = createStep(
       return
     }
 
-    const cartModule: ICartModuleService = container.resolve(
-      ModuleRegistrationName.CART
-    )
+    const cartModule: ICartModuleService = container.resolve(Modules.CART)
 
     await cartModule.deleteLineItems(createdItems.map((c) => c.id))
   }

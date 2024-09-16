@@ -1,5 +1,5 @@
 import { CartDTO, FindConfig, ICartModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface RetrieveCartStepInput {
@@ -15,7 +15,7 @@ export const retrieveCartStep = createStep(
   retrieveCartStepId,
   async (data: RetrieveCartStepInput, { container }) => {
     const cartModuleService = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
+      Modules.CART
     )
 
     const cart = await cartModuleService.retrieveCart(data.id, data.config)

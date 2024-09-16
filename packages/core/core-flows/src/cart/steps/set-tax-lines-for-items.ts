@@ -6,7 +6,7 @@ import {
   ItemTaxLineDTO,
   ShippingTaxLineDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface SetTaxLinesForItemsStepInput {
@@ -23,9 +23,7 @@ export const setTaxLinesForItemsStep = createStep(
   setTaxLinesForItemsStepId,
   async (data: SetTaxLinesForItemsStepInput, { container }) => {
     const { cart, item_tax_lines, shipping_tax_lines } = data
-    const cartService = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const cartService = container.resolve<ICartModuleService>(Modules.CART)
 
     const getShippingTaxLinesPromise =
       await cartService.listShippingMethodTaxLines({
@@ -72,9 +70,7 @@ export const setTaxLinesForItemsStep = createStep(
     const { cart, existingLineItemTaxLines, existingShippingMethodTaxLines } =
       revertData
 
-    const cartService = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const cartService = container.resolve<ICartModuleService>(Modules.CART)
 
     if (existingLineItemTaxLines) {
       await cartService.setLineItemTaxLines(

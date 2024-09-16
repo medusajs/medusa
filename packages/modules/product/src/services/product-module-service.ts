@@ -32,6 +32,7 @@ import {
   MedusaContext,
   MedusaError,
   MedusaService,
+  Modules,
   ProductStatus,
   promiseAll,
   removeUndefined,
@@ -64,7 +65,7 @@ type InjectedDependencies = {
   productTypeService: ModulesSdkTypes.IMedusaInternalService<any>
   productOptionService: ModulesSdkTypes.IMedusaInternalService<any>
   productOptionValueService: ModulesSdkTypes.IMedusaInternalService<any>
-  eventBusModuleService?: IEventBusModuleService
+  [Modules.EVENT_BUS]?: IEventBusModuleService
 }
 
 export default class ProductModuleService
@@ -129,7 +130,7 @@ export default class ProductModuleService
       productTypeService,
       productOptionService,
       productOptionValueService,
-      eventBusModuleService,
+      [Modules.EVENT_BUS]: eventBusModuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {

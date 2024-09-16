@@ -1,6 +1,5 @@
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   OrderChangeStatus,
   RuleOperator,
@@ -130,7 +129,7 @@ medusaIntegrationTestRunner({
         )
       ).data.product
 
-      const orderModule = container.resolve(ModuleRegistrationName.ORDER)
+      const orderModule = container.resolve(Modules.ORDER)
 
       order = await orderModule.createOrders({
         region_id: region.id,

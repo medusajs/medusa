@@ -210,7 +210,7 @@ export function instrumentRemoteQuery() {
 export function instrumentWorkflows() {
   const WorkflowsTracer = new Tracer("@medusajs/workflows-sdk", "2.0.0")
 
-  TransactionOrchestrator.tranceTransaction = async (
+  TransactionOrchestrator.traceTransaction = async (
     transactionResumeFn,
     metadata
   ) => {
@@ -230,7 +230,7 @@ export function instrumentWorkflows() {
     )
   }
 
-  TransactionOrchestrator.tranceStep = async (stepHandler, metadata) => {
+  TransactionOrchestrator.traceStep = async (stepHandler, metadata) => {
     return await WorkflowsTracer.trace(
       `step:${snakeCase(metadata.action)}:${metadata.type}`,
       async function (span) {
