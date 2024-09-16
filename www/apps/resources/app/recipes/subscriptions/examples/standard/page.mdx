@@ -677,14 +677,12 @@ export const POST = async (
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: [cart] } = await query.graph({
-    entryPoint: "cart",
+    entity: "cart",
     fields: [
       "metadata",
     ],
-    variables: {
-      filters: {
-        id: [req.params.id],
-      },
+    filters: {
+      id: [req.params.id],
     },
   })
   
@@ -998,14 +996,14 @@ export const GET = async (
     data: subscriptions,
     metadata: { count, take, skip },
   } = await query.graph({
-    entryPoint: "subscription",
+    entity: "subscription",
     fields: [
       "*",
       "orders.*",
       "customer.*",
       ...(req.validatedQuery?.fields.split(",") || []),
     ],
-    variables: {
+    pagination: {
       skip: offset,
       take: limit,
       order: {
@@ -1051,17 +1049,15 @@ export const GET = async (
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: [subscription] } = await query.graph({
-    entryPoint: "subscription",
+    entity: "subscription",
     fields: [
       "*",
       "orders.*",
       "customer.*",
       ...(req.validatedQuery?.fields.split(",") || []),
     ],
-    variables: {
-      filters: {
-        id: [req.params.id],
-      },
+    filters: {
+      id: [req.params.id],
     },
   })
 
@@ -2134,14 +2130,12 @@ export const GET = async (
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   const { data: [customer] } = await query.graph({
-    entryPoint: "customer",
+    entity: "customer",
     fields: [
       "subscriptions.*",
     ],
-    variables: {
-      filters: {
-        id: [req.auth_context.actor_id],
-      },
+    filters: {
+      id: [req.auth_context.actor_id],
     },
   })
 
