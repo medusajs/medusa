@@ -2,11 +2,11 @@ import { MedusaModule } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
 import {
   camelToSnakeCase,
+  composeTableName,
   isString,
   lowerCaseFirst,
   toPascalCase,
 } from "@medusajs/utils"
-import { composeTableName } from "./compose-link-name"
 
 export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,

@@ -869,6 +869,25 @@
           "nullable": false,
           "mappedType": "json"
         },
+        "delivered_quantity": {
+          "name": "delivered_quantity",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "raw_delivered_quantity": {
+          "name": "raw_delivered_quantity",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
         "shipped_quantity": {
           "name": "shipped_quantity",
           "type": "numeric",

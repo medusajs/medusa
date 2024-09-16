@@ -12,7 +12,10 @@ import {
 } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  Action,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { UserLink } from "../../../../../components/common/user-link"
 import {
@@ -97,11 +100,12 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
     })
   }
 
-  const dangerousActions = [
+  const dangerousActions: Action[] = [
     {
       icon: <Trash />,
       label: t("actions.delete"),
       onClick: handleDelete,
+      disabled: !apiKey.revoked_at,
     },
   ]
 
@@ -110,6 +114,7 @@ export const ApiKeyGeneralSection = ({ apiKey }: ApiKeyGeneralSectionProps) => {
       icon: <XCircle />,
       label: t("apiKeyManagement.actions.revoke"),
       onClick: handleRevoke,
+      disabled: !!apiKey.revoked_at,
     })
   }
 

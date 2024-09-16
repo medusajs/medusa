@@ -3,8 +3,8 @@ import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
 
 import {
-  DistributedTransactionType,
   DistributedTransactionEvents,
+  DistributedTransactionType,
 } from "../transaction"
 import { WorkflowDefinition, WorkflowManager } from "./workflow-manager"
 
@@ -33,8 +33,8 @@ export class GlobalWorkflow extends WorkflowManager {
       container = createMedusaContainer()
 
       for (const mod of modulesLoaded || []) {
-        const registrationName = mod.__definition.registrationName
-        container.register(registrationName, asValue(mod))
+        const keyName = mod.__definition.key
+        container.register(keyName, asValue(mod))
       }
     }
 

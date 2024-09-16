@@ -16,12 +16,12 @@ export const unsetForCreate = async (
     return acc
   }, [])
 
-  const customerDefaultAddresses = await customerService.listAddresses({
+  const customerDefaultAddresses = await customerService.listCustomerAddresses({
     customer_id: customerIds,
     [field]: true,
   })
 
-  await customerService.updateAddresses(
+  await customerService.updateCustomerAddresses(
     { customer_id: customerIds, [field]: true },
     { [field]: false }
   )

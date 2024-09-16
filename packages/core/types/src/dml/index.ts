@@ -90,7 +90,7 @@ export type PropertyType<T> = {
 export type RelationshipOptions = {
   /**
    * The name of the relationship as defined in the other
-   * data model. This is only required by the `belongsTo`
+   * data model. This is only required by the `belongsTo` and `manyToMany`
    * relationship method.
    */
   mappedBy?: string

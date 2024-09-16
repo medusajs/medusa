@@ -49,14 +49,14 @@ export const updateProductHighlights = [
 ```ts title="src/workflows/update-product-erp/steps/update-product.ts" highlights={updateProductHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { UpdateProductAndErpWorkflowInput } from ".."
 
 const updateProduct = createStep(
   "update-product",
   async (input: UpdateProductAndErpWorkflowInput, context) => {
     const productModuleService: IProductModuleService =
-      context.container.resolve(ModuleRegistrationName.PRODUCT)
+      context.container.resolve(Modules.PRODUCT)
 
     const { id } = input
     const previousProductData =
@@ -72,7 +72,7 @@ const updateProduct = createStep(
   // compensation function
   async ({ previousProductData }, context) => {
     const productModuleService: IProductModuleService =
-      context.container.resolve(ModuleRegistrationName.PRODUCT)
+      context.container.resolve(Modules.PRODUCT)
 
     const { id, type, options, variants, ...previousData } = previousProductData
 

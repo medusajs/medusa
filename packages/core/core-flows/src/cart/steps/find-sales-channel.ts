@@ -3,7 +3,7 @@ import {
   IStoreModuleService,
   SalesChannelDTO,
 } from "@medusajs/types"
-import { MedusaError, ModuleRegistrationName, isDefined } from "@medusajs/utils"
+import { MedusaError, Modules, isDefined } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface FindSalesChannelStepInput {
@@ -19,11 +19,9 @@ export const findSalesChannelStep = createStep(
   findSalesChannelStepId,
   async (data: FindSalesChannelStepInput, { container }) => {
     const salesChannelService = container.resolve<ISalesChannelModuleService>(
-      ModuleRegistrationName.SALES_CHANNEL
+      Modules.SALES_CHANNEL
     )
-    const storeModule = container.resolve<IStoreModuleService>(
-      ModuleRegistrationName.STORE
-    )
+    const storeModule = container.resolve<IStoreModuleService>(Modules.STORE)
 
     let salesChannel: SalesChannelDTO | undefined
 

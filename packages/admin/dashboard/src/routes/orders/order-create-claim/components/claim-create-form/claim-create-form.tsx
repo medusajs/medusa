@@ -323,22 +323,26 @@ export const ClaimCreateForm = ({
   }, [previewItems])
 
   useEffect(() => {
-    let method = preview.shipping_methods.find(
+    const inboundShipping = preview.shipping_methods.find(
       (s) =>
         !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !!a.return_id)
     )
 
-    if (method) {
-      form.setValue("inbound_option_id", method.shipping_option_id)
+    if (inboundShipping) {
+      form.setValue("inbound_option_id", inboundShipping.shipping_option_id)
+    } else {
+      form.setValue("inbound_option_id", null)
     }
 
-    method = preview.shipping_methods.find(
+    const outboundShipping = preview.shipping_methods.find(
       (s) =>
         !!s.actions?.find((a) => a.action === "SHIPPING_ADD" && !a.return_id)
     )
 
-    if (method) {
-      form.setValue("outbound_option_id", method.shipping_option_id)
+    if (outboundShipping) {
+      form.setValue("outbound_option_id", outboundShipping.shipping_option_id)
+    } else {
+      form.setValue("outbound_option_id", null)
     }
   }, [preview.shipping_methods])
 
@@ -420,10 +424,25 @@ export const ClaimCreateForm = ({
   }
 
   const onShippingOptionChange = async (selectedOptionId: string) => {
-    const promises = preview.shipping_methods
-      .map((s) => s.actions?.find((a) => a.action === "SHIPPING_ADD")?.id)
+    const inboundShippingMethods = preview.shipping_methods.filter((s) => {
+      const action = s.actions?.find(
+        (a) => a.action === "SHIPPING_ADD" && !!a.return_id
+      )
+
+      return action && !!!action?.return_id
+    })
+
+    const promises = inboundShippingMethods
       .filter(Boolean)
-      .map(deleteInboundShipping)
+      .map((inboundShippingMethod) => {
+        const action = inboundShippingMethod.actions?.find(
+          (a) => a.action === "SHIPPING_ADD" && !!a.return_id
+        )
+
+        if (action) {
+          return deleteInboundShipping(action.id)
+        }
+      })
 
     await Promise.all(promises)
 

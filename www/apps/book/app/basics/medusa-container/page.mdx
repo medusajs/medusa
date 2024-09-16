@@ -18,7 +18,7 @@ export const highlights = [
   ["9", "resolve", "Resolve the Product Module's main service."],
   [
     "10",
-    "ModuleRegistrationName.PRODUCT",
+    "Modules.PRODUCT",
     "The resource registration name imported from `@medusajs/utils`.",
   ],
 ]
@@ -26,14 +26,14 @@ export const highlights = [
 ```ts highlights={highlights}
 import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export const GET = async (
   req: MedusaRequest, 
   res: MedusaResponse
 ) => {
   const productModuleService: IProductModuleService = req.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   const [, count] = await productModuleService

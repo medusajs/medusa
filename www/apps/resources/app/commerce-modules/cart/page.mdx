@@ -10,7 +10,7 @@ The Cart Module is the `@medusajs/cart` NPM package that provides cart-related f
 
 ## How to Use Cart Module's Service
 
-You can use the Cart Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.CART` imported from `@medusajs/utils`.
+You can use the Cart Module's main service by resolving from the Medusa container the resource `Modules.CART` imported from `@medusajs/utils`.
 
 For example:
 
@@ -20,14 +20,14 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const cartModuleService: ICartModuleService = req.scope.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   res.json({
@@ -42,11 +42,11 @@ export async function GET(
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
   const cartModuleService: ICartModuleService = container.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   const carts = await cartModuleService.listCarts()
@@ -59,11 +59,11 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
   ```ts title="src/workflows/hello-world/step1.ts"
   import { createStep } from "@medusajs/workflows-sdk"
   import { ICartModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 const step1 = createStep("step-1", async (_, { container }) => {
   const cartModuleService: ICartModuleService = container.resolve(
-    ModuleRegistrationName.CART
+    Modules.CART
   )
 
   const carts = await cartModuleService.listCarts()

@@ -5,6 +5,8 @@ import {
   RemoteQueryFunction,
 } from "@medusajs/types"
 import { Module, Modules, TransactionHandlerType } from "@medusajs/utils"
+import { WorkflowsModuleService } from "@services"
+import { asFunction } from "awilix"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
@@ -20,8 +22,6 @@ import {
   workflowEventGroupIdStep2Mock,
 } from "../__fixtures__/workflow_event_group_id"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
-import { WorkflowsModuleService } from "@services"
-import { asFunction } from "awilix"
 
 jest.setTimeout(100000)
 
@@ -51,8 +51,9 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           workflowExecution: {
             id: {
               linkable: "workflow_execution_id",
+              entity: "WorkflowExecution",
               primaryKey: "id",
-              serviceName: "workflows",
+              serviceName: "Workflows",
               field: "workflowExecution",
             },
           },

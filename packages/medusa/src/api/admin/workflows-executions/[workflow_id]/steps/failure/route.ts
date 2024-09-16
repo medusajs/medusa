@@ -6,7 +6,7 @@ import {
 } from "../../../../../../types/routing"
 
 import { IWorkflowEngineService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { AdminCreateWorkflowsAsyncResponseType } from "../../../validators"
 
 export const POST = async (
@@ -14,7 +14,7 @@ export const POST = async (
   res: MedusaResponse<{ success: boolean }>
 ) => {
   const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
-    ModuleRegistrationName.WORKFLOW_ENGINE
+    Modules.WORKFLOW_ENGINE
   )
 
   const { workflow_id } = req.params

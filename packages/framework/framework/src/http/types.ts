@@ -1,5 +1,5 @@
-import { ZodObject } from "zod"
 import type { NextFunction, Request, Response } from "express"
+import { ZodObject } from "zod"
 
 import { MedusaPricingContext, RequestQueryFields } from "@medusajs/types"
 import * as core from "express-serve-static-core"
@@ -36,7 +36,7 @@ export type AsyncRouteHandler = (
   res: MedusaResponse
 ) => Promise<void>
 
-type RouteHandler = SyncRouteHandler | AsyncRouteHandler
+export type RouteHandler = SyncRouteHandler | AsyncRouteHandler
 
 export type RouteImplementation = {
   method?: RouteVerb
@@ -162,9 +162,20 @@ export interface AuthContext {
   app_metadata: Record<string, unknown>
 }
 
+export interface PublishableKeyContext {
+  key: string
+  sales_channel_ids: string[]
+}
+
 export interface AuthenticatedMedusaRequest<Body = never>
   extends MedusaRequest<Body> {
   auth_context: AuthContext
+  publishable_key_context?: PublishableKeyContext
+}
+
+export interface MedusaStoreRequest<Body = never> extends MedusaRequest<Body> {
+  auth_context?: AuthContext
+  publishable_key_context: PublishableKeyContext
 }
 
 export type MedusaResponse<Body = unknown> = Response<Body>

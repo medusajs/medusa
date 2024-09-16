@@ -1,5 +1,5 @@
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -19,9 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {
@@ -91,7 +89,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const [address] = await customerModuleService.listAddresses({
+        const [address] = await customerModuleService.listCustomerAddresses({
           customer_id: customer.id,
           is_default_shipping: true,
         })
@@ -126,7 +124,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const [address] = await customerModuleService.listAddresses({
+        const [address] = await customerModuleService.listCustomerAddresses({
           customer_id: customer.id,
           is_default_billing: true,
         })

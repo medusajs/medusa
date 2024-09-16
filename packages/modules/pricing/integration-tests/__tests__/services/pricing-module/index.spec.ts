@@ -1,7 +1,7 @@
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { IPricingModuleService } from "@medusajs/types"
 import { Module, Modules } from "@medusajs/utils"
 import { PricingModuleService } from "@services"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
@@ -27,32 +27,36 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           priceSet: {
             id: {
               linkable: "price_set_id",
+              entity: "PriceSet",
               primaryKey: "id",
-              serviceName: "pricingService",
+              serviceName: "Pricing",
               field: "priceSet",
             },
           },
           priceList: {
             id: {
               linkable: "price_list_id",
+              entity: "PriceList",
               primaryKey: "id",
-              serviceName: "pricingService",
+              serviceName: "Pricing",
               field: "priceList",
             },
           },
           price: {
             id: {
               linkable: "price_id",
+              entity: "Price",
               primaryKey: "id",
-              serviceName: "pricingService",
+              serviceName: "Pricing",
               field: "price",
             },
           },
           pricePreference: {
             id: {
               linkable: "price_preference_id",
+              entity: "PricePreference",
               primaryKey: "id",
-              serviceName: "pricingService",
+              serviceName: "Pricing",
               field: "pricePreference",
             },
           },

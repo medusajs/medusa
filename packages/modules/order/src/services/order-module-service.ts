@@ -3295,4 +3295,12 @@ export default class OrderModuleService<
   ): Promise<void> {
     return await BundledActions.registerShipment.bind(this)(data, sharedContext)
   }
+
+  @InjectTransactionManager("baseRepository_")
+  async registerDelivery(
+    data: OrderTypes.RegisterOrderDeliveryDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<void> {
+    return await BundledActions.registerDelivery.bind(this)(data, sharedContext)
+  }
 }

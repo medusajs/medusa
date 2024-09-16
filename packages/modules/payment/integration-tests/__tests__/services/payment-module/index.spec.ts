@@ -35,40 +35,45 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
           payment: {
             id: {
               linkable: "payment_id",
+              entity: "Payment",
               primaryKey: "id",
-              serviceName: "payment",
+              serviceName: "Payment",
               field: "payment",
             },
           },
           paymentCollection: {
             id: {
               linkable: "payment_collection_id",
+              entity: "PaymentCollection",
               primaryKey: "id",
-              serviceName: "payment",
+              serviceName: "Payment",
               field: "paymentCollection",
             },
           },
           paymentProvider: {
             id: {
               linkable: "payment_provider_id",
+              entity: "PaymentProvider",
               primaryKey: "id",
-              serviceName: "payment",
+              serviceName: "Payment",
               field: "paymentProvider",
             },
           },
           paymentSession: {
             id: {
               field: "paymentSession",
+              entity: "PaymentSession",
               linkable: "payment_session_id",
               primaryKey: "id",
-              serviceName: "payment",
+              serviceName: "Payment",
             },
           },
           refundReason: {
             id: {
               linkable: "refund_reason_id",
+              entity: "RefundReason",
               primaryKey: "id",
-              serviceName: "payment",
+              serviceName: "Payment",
               field: "refundReason",
             },
           },

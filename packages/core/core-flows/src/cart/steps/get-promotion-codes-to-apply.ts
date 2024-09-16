@@ -1,5 +1,5 @@
 import { IPromotionModuleService } from "@medusajs/types"
-import { ModuleRegistrationName, PromotionActions } from "@medusajs/utils"
+import { Modules, PromotionActions } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface GetPromotionCodesToApplyStepInput {
@@ -25,7 +25,7 @@ export const getPromotionCodesToApply = createStep(
     const { items = [], shipping_methods = [] } = cart
     const adjustmentCodes: string[] = []
     const promotionService = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     const objects = items.concat(shipping_methods)

@@ -129,6 +129,12 @@ medusaIntegrationTestRunner({
 
       describe("DELETE /admin/api-keys/:id", () => {
         it("delete a publishable key", async () => {
+          await api.post(
+            `/admin/api-keys/${pubKey1.id}/revoke`,
+            {},
+            adminHeaders
+          )
+
           const response1 = await api.delete(
             `/admin/api-keys/${pubKey1.id}`,
             adminHeaders

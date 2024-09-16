@@ -5,7 +5,7 @@ import {
   IRegionModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName, Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -26,16 +26,12 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
-        customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
-        scModuleService = appContainer.resolve(
-          ModuleRegistrationName.SALES_CHANNEL
-        )
-        regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
-        paymentModuleService = appContainer.resolve(
-          ModuleRegistrationName.PAYMENT
-        )
+        cartModuleService = appContainer.resolve(Modules.CART)
+        regionModule = appContainer.resolve(Modules.REGION)
+        customerModule = appContainer.resolve(Modules.CUSTOMER)
+        scModuleService = appContainer.resolve(Modules.SALES_CHANNEL)
+        regionModule = appContainer.resolve(Modules.REGION)
+        paymentModuleService = appContainer.resolve(Modules.PAYMENT)
         remoteQuery = appContainer.resolve("remoteQuery")
         remoteLink = appContainer.resolve("remoteLink")
       })

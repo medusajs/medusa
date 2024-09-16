@@ -28,22 +28,25 @@ moduleIntegrationTestRunner<IStockLocationService>({
           stockLocationAddress: {
             id: {
               linkable: "stock_location_address_id",
+              entity: "StockLocationAddress",
               primaryKey: "id",
-              serviceName: "stockLocationService",
+              serviceName: "StockLocation",
               field: "stockLocationAddress",
             },
           },
           stockLocation: {
             id: {
               field: "stockLocation",
+              entity: "StockLocation",
               linkable: "stock_location_id",
               primaryKey: "id",
-              serviceName: "stockLocationService",
+              serviceName: "StockLocation",
             },
             location_id: {
               linkable: "location_id",
+              entity: "StockLocation",
               primaryKey: "location_id",
-              serviceName: "stockLocationService",
+              serviceName: "StockLocation",
               field: "stockLocation",
             },
           },

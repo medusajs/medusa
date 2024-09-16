@@ -1,6 +1,6 @@
 import { IPromotionModuleService, UpdateCampaignDTO } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
+  Modules,
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,
 } from "@medusajs/utils"
@@ -14,7 +14,7 @@ export const updateCampaignsStep = createStep(
   updateCampaignsStepId,
   async (data: UpdateCampaignDTO[], { container }) => {
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
@@ -39,7 +39,7 @@ export const updateCampaignsStep = createStep(
     const { dataBeforeUpdate, selects, relations } = revertInput
 
     const promotionModule = container.resolve<IPromotionModuleService>(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     await promotionModule.updateCampaigns(

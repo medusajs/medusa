@@ -461,7 +461,7 @@ export const createSubscriptionsHighlights = [
 ```ts title="src/workflows/create-subscription/steps/create-subscription.ts" highlights={createSubscriptionsHighlights} collapsibleLines="1-7" expandMoreLabel="Show Imports"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { Modules } from "@medusajs/utils"
-import { LinkDefinition } from "@medusajs/modules-sdk"
+import { LinkDefinition } from "@medusajs/types"
 import { SubscriptionInterval } from "../../../modules/subscription/types"
 import SubscriptionModuleService from "../../../modules/subscription/service"
 import { SUBSCRIPTION_MODULE } from "../../../modules/subscription"
@@ -1491,13 +1491,12 @@ import {
   CartWorkflowDTO,
   PaymentCollectionDTO,
   IOrderModuleService,
+  LinkDefinition,
 } from "@medusajs/types"
 import { 
   Modules,
-  ModuleRegistrationName,
 } from "@medusajs/utils"
 import { createOrdersWorkflow } from "@medusajs/core-flows"
-import { LinkDefinition } from "@medusajs/modules-sdk"
 import { SubscriptionData } from "../../../modules/subscription/types"
 import { SUBSCRIPTION_MODULE } from "../../../modules/subscription"
 
@@ -1624,7 +1623,7 @@ Finally, replace the `TODO` in the compensation function to cancel the order in 
 
 ```ts title="src/workflows/create-subscription-order/steps/create-subscription-order.ts"
 const orderModuleService: IOrderModuleService = container.resolve(
-  ModuleRegistrationName.ORDER
+  Modules.ORDER
 )
 
 await orderModuleService.cancel(order.id)

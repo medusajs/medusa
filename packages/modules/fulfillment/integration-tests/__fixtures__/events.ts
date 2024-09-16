@@ -13,7 +13,7 @@ export function buildExpectedEventMessageShape(options: {
     metadata: {
       action: options.action,
       eventGroupId: options.eventGroupId,
-      source: "fulfillment",
+      source: "Fulfillment",
       object: options.object,
     },
     data: options.data,

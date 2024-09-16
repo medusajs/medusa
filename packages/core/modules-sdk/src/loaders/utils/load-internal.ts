@@ -11,11 +11,11 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
-  defineJoinerConfig,
   DmlEntity,
   MedusaModuleType,
   ModulesSdkUtils,
+  createMedusaContainer,
+  defineJoinerConfig,
   toMikroOrmEntities,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
@@ -45,9 +45,9 @@ export async function loadInternalModule(
   migrationOnly?: boolean,
   loaderOnly?: boolean
 ): Promise<{ error?: Error } | void> {
-  const registrationName = !loaderOnly
-    ? resolution.definition.registrationName
-    : resolution.definition.registrationName + "__loaderOnly"
+  const keyName = !loaderOnly
+    ? resolution.definition.key
+    : resolution.definition.key + "__loaderOnly"
 
   const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
@@ -95,7 +95,7 @@ export async function loadInternalModule(
 
   if (!loadedModule?.service && !moduleResources.moduleService) {
     container.register({
-      [registrationName]: asValue(undefined),
+      [keyName]: asValue(undefined),
     })
 
     return {
@@ -112,8 +112,9 @@ export async function loadInternalModule(
     const moduleService = {
       __joinerConfig: moduleService_.prototype.__joinerConfig,
     }
+
     container.register({
-      [registrationName]: asValue(moduleService),
+      [keyName]: asValue(moduleService),
     })
     return
   }
@@ -155,7 +156,7 @@ export async function loadInternalModule(
     logger,
     resolution,
     loaderOnly,
-    registrationName,
+    keyName,
   })
 
   if (error) {
@@ -165,7 +166,7 @@ export async function loadInternalModule(
   const moduleService = moduleResources.moduleService ?? loadedModule.service
 
   container.register({
-    [registrationName]: asFunction((cradle) => {
+    [keyName]: asFunction((cradle) => {
       ;(moduleService as any).__type = MedusaModuleType
       return new moduleService(
         localContainer.cradle,
@@ -177,7 +178,7 @@ export async function loadInternalModule(
 
   if (loaderOnly) {
     // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
-    const service = container.resolve<IModuleService>(registrationName)
+    const service = container.resolve<IModuleService>(keyName)
     await service.__hooks?.onApplicationPrepareShutdown?.()
     await service.__hooks?.onApplicationShutdown?.()
   }
@@ -348,14 +349,7 @@ export async function loadResources(
 
 async function runLoaders(
   loaders: Function[] = [],
-  {
-    localContainer,
-    container,
-    logger,
-    resolution,
-    loaderOnly,
-    registrationName,
-  }
+  { localContainer, container, logger, resolution, loaderOnly, keyName }
 ): Promise<void | { error: Error }> {
   try {
     for (const loader of loaders) {
@@ -371,7 +365,7 @@ async function runLoaders(
     }
   } catch (err) {
     container.register({
-      [registrationName]: asValue(undefined),
+      [keyName]: asValue(undefined),
     })
 
     return {

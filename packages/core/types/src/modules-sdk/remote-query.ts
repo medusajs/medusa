@@ -2,6 +2,7 @@ import { Prettify } from "../common"
 import { RemoteJoinerOptions, RemoteJoinerQuery } from "../joiner"
 import { RemoteQueryEntryPoints } from "./remote-query-entry-points"
 import {
+  RemoteQueryInput,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
 } from "./remote-query-object-from-string"
@@ -32,7 +33,7 @@ export type GraphResultSet<TEntry extends string> = {
  */
 export type QueryGraphFunction = {
   <const TEntry extends string>(
-    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    queryConfig: RemoteQueryInput<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<Prettify<GraphResultSet<TEntry>>>
 }
@@ -94,6 +95,52 @@ export type RemoteQueryFunction = {
    * @param options
    */
   (query: RemoteJoinerQuery, options?: RemoteJoinerOptions): Promise<any>
+
+  /**
+   * Graph function uses the remoteQuery under the hood and
+   * returns a result set
+   */
+  graph: QueryGraphFunction
+
+  /**
+   * Query wrapper to provide specific GraphQL like API around remoteQuery.query
+   * @param query
+   * @param variables
+   * @param options
+   */
+  gql: (
+    query: string,
+    variables?: Record<string, unknown>,
+    options?: RemoteJoinerOptions
+  ) => Promise<any>
+}
+
+export interface Query {
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  query<const TEntry extends string>(
+    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param queryConfig
+   * @param options
+   */
+  query<const TConfig extends RemoteQueryObjectFromStringResult<any>>(
+    queryConfig: TConfig,
+    options?: RemoteJoinerOptions
+  ): Promise<any>
+  /**
+   * Query wrapper to provide specific API's and pre processing around remoteQuery.query
+   * @param query
+   * @param options
+   */
+  query(query: RemoteJoinerQuery, options?: RemoteJoinerOptions): Promise<any>
 
   /**
    * Graph function uses the remoteQuery under the hood and
