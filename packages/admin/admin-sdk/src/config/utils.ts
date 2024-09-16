@@ -102,14 +102,14 @@ export function createFormHelper<TData>() {
     ): CustomFormField<TData, T> => {
       return field
     },
-    string: z.string,
+    string: z.string, // Could we make this populate the field with type: string?
     number: z.number,
     boolean: z.boolean,
     date: z.date,
     array: z.array,
     object: z.object,
     null: z.null,
-    nullable: z.nullable,
+    nullable: z.nullable, // Could we make this populate the field with optional: true? The same if we use .nullish or .optional?
     undefined: z.undefined,
     coerce: z.coerce,
   }
