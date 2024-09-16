@@ -205,6 +205,7 @@ export const CreateProductVariantForm = ({
         sku,
         allow_backorder,
         manage_inventory,
+        options: data.options,
         prices: Object.entries(data.prices ?? {})
           .map(([currencyOrRegion, value]) => {
             const ret: AdminCreateProductVariantPrice = {}
@@ -226,8 +227,8 @@ export const CreateProductVariantForm = ({
             return ret
           })
           .filter(Boolean),
-        inventory_kit: data
-          .inventory!.map((i) => {
+        inventory_items: (data.inventory || [])!
+          .map((i) => {
             if (!i.required_quantity || !i.inventory_item_id) {
               return false
             }

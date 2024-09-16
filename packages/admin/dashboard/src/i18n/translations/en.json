@@ -538,6 +538,7 @@
       "create": {
         "header": "Variant details"
       },
+      "deleteWarning": "Are you sure you want to delete this variant?",
       "pricesPagination": "1 - {{current}} of {{total}} prices",
       "tableItemAvailable": "{{availableCount}} available",
       "tableItem_one": "{{availableCount}} available at {{locationCount}} location",
