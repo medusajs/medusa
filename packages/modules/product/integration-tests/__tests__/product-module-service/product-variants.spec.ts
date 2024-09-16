@@ -406,6 +406,74 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ])
           )
         })
+
+        it("should throw if there is an existing variant with same options combination", async () => {
+          jest.clearAllMocks()
+          let error
+
+          const productFour = await service.createProducts({
+            id: "product-4",
+            title: "product 4",
+            status: ProductStatus.PUBLISHED,
+            options: [
+              {
+                title: "size",
+                values: ["large", "small"],
+              },
+              {
+                title: "color",
+                values: ["red", "blue"],
+              },
+            ],
+          } as CreateProductDTO)
+
+          const data: CreateProductVariantDTO[] = [
+            {
+              title: "new variant",
+              product_id: productFour.id,
+              options: { size: "small", color: "red" },
+            },
+          ]
+
+          const [variant] = await service.createProductVariants(data)
+
+          expect(variant).toEqual(
+            expect.objectContaining({
+              title: "new variant",
+              product_id: productFour.id,
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  id: productFour.options
+                    .find((o) => o.title === "size")
+                    ?.values?.find((v) => v.value === "small")?.id,
+                  value: "small",
+                }),
+                expect.objectContaining({
+                  id: productFour.options
+                    .find((o) => o.title === "color")
+                    ?.values?.find((v) => v.value === "red")?.id,
+                  value: "red",
+                }),
+              ]),
+            })
+          )
+
+          try {
+            await service.createProductVariants([
+              {
+                title: "new variant",
+                product_id: productFour.id,
+                options: { size: "small", color: "red" },
+              },
+            ] as CreateProductVariantDTO[])
+          } catch (e) {
+            error = e
+          }
+
+          expect(error.message).toEqual(
+            `Variant (${variant.title}) with provided options already exists.`
+          )
+        })
       })
 
       describe("softDelete variant", () => {

@@ -6,6 +6,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   ProductTypes,
+  ProductVariantDTO,
 } from "@medusajs/types"
 import {
   Product,
@@ -210,8 +211,24 @@ export default class ProductModuleService
       sharedContext
     )
 
+    const variants = await this.productVariantService_.list(
+      {
+        product_id: [...new Set<string>(data.map((v) => v.product_id!))],
+      },
+      {
+        take: null,
+        relations: ["options"],
+      },
+      sharedContext
+    )
+
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(data, productOptions)
+
+    ProductModuleService.validateUniqueOptionsCombinations(
+      productVariantsWithOptions as any,
+      variants
+    )
 
     const createdVariants = await this.productVariantService_.create(
       productVariantsWithOptions,
@@ -1758,5 +1775,34 @@ export default class ProductModuleService
     })
 
     return variantsWithOptions
+  }
+
+  protected static validateUniqueOptionsCombinations(
+    data: (
+      | ProductTypes.CreateProductVariantDTO[]
+      | ProductTypes.UpdateProductVariantDTO[]
+    ) & { options: { id: string }[] },
+    variants: ProductVariant[]
+  ) {
+    for (const toCreateVariant of data) {
+      const existingVariant = variants.find((v) => {
+        // @ts-ignore TODO: check product_id
+        if (toCreateVariant.product_id !== v.product_id) {
+          return false
+        }
+
+        return (toCreateVariant.options as unknown as { id: string }[])!.every(
+          ({ id: optionValueId }) =>
+            !!v.options.find((vo) => vo.id === optionValueId)
+        )
+      })
+
+      if (existingVariant) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Variant (${existingVariant.title}) with provided options already exists.`
+        )
+      }
+    }
   }
 }
