@@ -1786,8 +1786,11 @@ export default class ProductModuleService
   ) {
     for (const toCreateVariant of data) {
       const existingVariant = variants.find((v) => {
-        // @ts-ignore TODO: check product_id
-        if (toCreateVariant.product_id !== v.product_id) {
+        if (
+          // @ts-ignore TODO: check product_id
+          toCreateVariant.product_id !== v.product_id ||
+          !toCreateVariant.options?.length
+        ) {
           return false
         }
 
