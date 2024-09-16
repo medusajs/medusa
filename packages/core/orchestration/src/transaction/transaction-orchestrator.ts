@@ -70,6 +70,8 @@ export class TransactionOrchestrator extends EventEmitter {
       step_uuid: string
       attempts: number
       failures: number
+      async: boolean
+      idempotency_key: string
     }
   ) => Promise<any>
 
@@ -762,6 +764,7 @@ export class TransactionOrchestrator extends EventEmitter {
             type === "invoke"
               ? step.definition.async
               : step.definition.compensateAsync,
+          idempotency_key: payload.metadata.idempotency_key,
         }
 
         const handlerArgs = [
