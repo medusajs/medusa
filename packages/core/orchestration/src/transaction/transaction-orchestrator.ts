@@ -760,10 +760,9 @@ export class TransactionOrchestrator extends EventEmitter {
           step_uuid: step.uuid + "",
           attempts: step.attempts,
           failures: step.failures,
-          async:
-            type === "invoke"
-              ? step.definition.async
-              : step.definition.compensateAsync,
+          async: !!(type === "invoke"
+            ? step.definition.async
+            : step.definition.compensateAsync),
           idempotency_key: payload.metadata.idempotency_key,
         }
 
