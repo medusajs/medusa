@@ -27,6 +27,9 @@ export const fetchHighlights = [
   ```ts highlights={fetchHighlights}
 fetch(`http://localhost:9000/store/collections/${id}`, {
     credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    },
   })
   .then((res) => res.json())
   .then(({ collection }) => {
@@ -41,7 +44,8 @@ fetch(`http://localhost:9000/store/collections/${id}`, {
 export const highlights = [
   ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
   ["23"], ["24"], ["25"], ["26"],
-  ["27"], ["28"], ["29"], ["30"]
+  ["27"], ["28"], ["29"], ["30"],
+  ["31"], ["32"], ["33"]
 ]
 
   ```tsx highlights={highlights}
@@ -69,6 +73,9 @@ export const highlights = [
 
       fetch(`http://localhost:9000/store/collections/${id}`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
       })
       .then((res) => res.json())
       .then(({ collection: dataCollection }) => {
@@ -115,6 +122,9 @@ export const handleFetchHighlights = [
     handle
   }`, {
     credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    },
   })
   .then((res) => res.json())
   .then(({ collections }) => {
@@ -133,7 +143,8 @@ export const handleFetchHighlights = [
 export const handleHighlights = [
   ["13", "{ params: { handle } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
   ["25"], ["26"], ["27"], ["28"],
-  ["29"], ["30"], ["31"], ["32"], ["33"], ["34"], ["35"], ["36"]
+  ["29"], ["30"], ["31"], ["32"], ["33"], ["34"], ["35"], ["36"],
+  ["37"], ["38"], ["39"]
 ]
 
   ```tsx highlights={handleHighlights}
@@ -165,6 +176,9 @@ export const handleHighlights = [
         handle
       }`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
       })
       .then((res) => res.json())
       .then(({ collections }) => {

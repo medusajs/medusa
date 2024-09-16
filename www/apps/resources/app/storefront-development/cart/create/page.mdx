@@ -20,7 +20,7 @@ For example:
   <CodeTab label="Fetch API" value="fetch">
 
 export const fetchHighlights = [
-  ["5", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to associate the correct sales channel(s)."],
+  ["5", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to associate the correct sales channel(s)."],
   ["9", "region_id", "Associate the cart with the chosen region for accurate pricing."],
   ["14", "setItem", "Set the cart's ID in the `localStorage`."]
 ]
@@ -30,7 +30,7 @@ export const fetchHighlights = [
     method: "POST",
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -50,7 +50,7 @@ export const highlights = [
   ["8", "region", "Assuming you previously retrieved the chosen region."],
   ["15", "cartId", "Retrieve the cart ID from `localStorage`, if exists."],
   ["21", "", "Send a request to create the cart."],
-  ["26", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to associate the correct sales channel(s)."],
+  ["26", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to associate the correct sales channel(s)."],
   ["30", "region_id", "Associate the cart with the chosen region for accurate pricing."],
   ["35", "setItem", "Set the cart's ID in the `localStorage`."]
 ]
@@ -81,7 +81,7 @@ export const highlights = [
         method: "POST",
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

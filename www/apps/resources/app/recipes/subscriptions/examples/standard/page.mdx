@@ -2234,7 +2234,8 @@ Then, send a `GET` request to `/store/customers/me/subscriptions` to retrieve th
 
 ```bash
 curl 'http://localhost:9000/store/customers/me/subscriptions' \
--H 'Authorization: Bearer {token}'
+-H 'Authorization: Bearer {token}' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 ```
 
 Where `{token}` is the token retrieved from the previous request.
@@ -2243,7 +2244,8 @@ To cancel a subscription, send a `POST` request to `/store/customers/me/subscrip
 
 ```bash
 curl -X POST 'http://localhost:9000/store/customers/me/subscriptions/01J2VB8TVC14K29FREQ2DRS6NA' \
--H 'Authorization: Bearer {token}'
+-H 'Authorization: Bearer {token}' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 ```
 
 ---

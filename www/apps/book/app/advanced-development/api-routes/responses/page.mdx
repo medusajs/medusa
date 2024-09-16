@@ -16,7 +16,7 @@ export const jsonHighlights = [
   ["7", "json", "Return a JSON object."]
 ]
 
-```ts title="src/api/store/custom/route.ts" highlights={jsonHighlights} apiTesting testApiUrl="http://localhost:9000/store/custom" testApiMethod="GET"
+```ts title="src/api/custom/route.ts" highlights={jsonHighlights}
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 
 export const GET = async (
@@ -51,7 +51,7 @@ export const statusHighlight = [
   ["7", "status", "Set the response code to `201`."]
 ]
 
-```ts title="src/api/store/custom/route.ts" highlights={statusHighlight} apiTesting testApiUrl="http://localhost:9000/store/custom" testApiMethod="GET"
+```ts title="src/api/custom/route.ts" highlights={statusHighlight}
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 
 export const GET = async (

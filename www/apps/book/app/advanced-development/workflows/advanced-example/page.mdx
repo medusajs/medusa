@@ -239,9 +239,9 @@ In the workflow construction function, you first run the `updateProduct` step, t
 
 You can now use and execute your workflow in your Medusa application.
 
-To execute the workflow in an API route, create the file `src/api/store/products/[id]/erp/route.ts` with the following content:
+To execute the workflow in an API route, create the file `src/api/products/[id]/erp/route.ts` with the following content:
 
-```ts title="src/api/store/products/[id]/erp/route.ts"
+```ts title="src/api/products/[id]/erp/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import updateProductAndErpWorkflow, {
   UpdateProductAndErpWorkflowInput,
