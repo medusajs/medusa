@@ -1,5 +1,5 @@
 declare module "virtual:medusa/widgets/*" {
-  import type { ComponentType } from "react";
+  import type { ComponentType } from "react"
 
   const widgets: { Component: ComponentType<any> }[]
 
@@ -17,7 +17,7 @@ declare module "virtual:medusa/routes/pages" {
 }
 
 declare module "virtual:medusa/routes/links" {
-  import type { ComponentType } from "react";
+  import type { ComponentType } from "react"
 
   const links: { path: string; label: string; icon?: ComponentType }[]
 
@@ -27,7 +27,7 @@ declare module "virtual:medusa/routes/links" {
 }
 
 declare module "virtual:medusa/custom-fields/*/$field" {
-  import type { ComponentType } from "react";
+  import type { ComponentType } from "react"
 
   const sections: Record<
     string,
@@ -51,7 +51,7 @@ declare module "virtual:medusa/custom-fields/*/$config" {
 }
 
 declare module "virtual:medusa/custom-fields/*/$display" {
-  import type { ComponentType } from "react";
+  import type { ComponentType } from "react"
 
   const containers: {
     component: ComponentType<any>

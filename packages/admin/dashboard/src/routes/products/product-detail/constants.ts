@@ -1,5 +1,3 @@
-import links from "virtual:medusa/custom-fields/product/$link"
+import { getExtendedProductFields } from "../common/get-extended-product-fields"
 
-console.log(links)
-
-export const PRODUCT_DETAIL_FIELDS = ["*categories"].join(",")
+export const PRODUCT_DETAIL_FIELDS = getExtendedProductFields("*categories")

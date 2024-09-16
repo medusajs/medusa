@@ -44,12 +44,12 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
     },
     schema: EditProductSchema,
     extensions: extensions,
+    data: product,
   })
 
   const { mutateAsync, isPending } = useUpdateProduct(product.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log("data", data)
     const { title, discountable, handle, status, ...optional } = data
 
     const nullableData = transformNullableFormData(optional)

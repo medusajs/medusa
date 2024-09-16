@@ -129,11 +129,15 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
   }
 
   function getCustomFieldImports(paths: string[]): Set<string> {
-    return new Set(
+    const set = new Set(
       paths.map((form) =>
         resolveVirtualId(getVirtualId(getCustomFieldPath(form)))
       )
     )
+
+    console.log("getCustomFieldImports", Array.from(set))
+
+    return set
   }
 
   async function handleInvalidFile(file: string) {

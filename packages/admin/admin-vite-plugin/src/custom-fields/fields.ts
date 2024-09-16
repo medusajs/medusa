@@ -224,6 +224,7 @@ export async function generateCustomFieldFormFieldEntrypoint(
                 type: fieldConfig.validation,
                 label: fieldConfig.label,
                 description: fieldConfig.description,
+                placeholder: fieldConfig.placeholder,
                 component: fieldConfig.component,
               }
             ])

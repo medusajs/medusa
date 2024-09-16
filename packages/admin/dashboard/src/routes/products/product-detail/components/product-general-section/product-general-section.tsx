@@ -32,8 +32,6 @@ type ProductGeneralSectionProps = {
 export const ProductGeneralSection = ({
   product,
 }: ProductGeneralSectionProps) => {
-  console.log(details)
-
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
@@ -102,7 +100,7 @@ export const ProductGeneralSection = ({
         value={product.discountable ? t("fields.true") : t("fields.false")}
       />
       {details.containers.map((b, index) => {
-        return <b.component key={index} />
+        return <b.component key={index} data={product} />
       })}
     </Container>
   )

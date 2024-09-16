@@ -1,11 +1,15 @@
-import { Input } from "@medusajs/ui"
-import { UseFormReturn } from "react-hook-form"
+import { Input, Switch } from "@medusajs/ui"
+import { ComponentType } from "react"
+import { ControllerRenderProps, UseFormReturn } from "react-hook-form"
 import { Form } from "../../../../components/common/form"
+import { InlineTip } from "../../../../components/common/inline-tip"
 import {
   FormFieldExtension,
   FormFieldImport,
   FormFieldSection,
 } from "../../types"
+import { FormFieldType } from "./types"
+import { getFieldType } from "./utils"
 
 type FormExtensionZoneProps = {
   extensions: FormFieldImport
@@ -53,14 +57,6 @@ function getFieldLabel(field: FormFieldExtension, name: string) {
     .join(" ")
 }
 
-function getComponent(field: FormFieldExtension) {
-  if (field.component) {
-    return field.component
-  }
-
-  return Input
-}
-
 type FormExtensionFieldProps = {
   field: FormFieldExtension
   name: string
@@ -70,7 +66,10 @@ type FormExtensionFieldProps = {
 const FormExtensionField = ({ field, name, form }: FormExtensionFieldProps) => {
   const label = getFieldLabel(field, name)
   const description = field.description
-  const Component = getComponent(field)
+  const placeholder = field.placeholder
+  const component = field.component
+
+  const type = getFieldType(field.type)
 
   const { control } = form
 
@@ -84,7 +83,12 @@ const FormExtensionField = ({ field, name, form }: FormExtensionFieldProps) => {
             <Form.Label>{label}</Form.Label>
             {description && <Form.Hint>{description}</Form.Hint>}
             <Form.Control>
-              <Component {...field} />
+              <FormExtensionFieldComponent
+                field={field}
+                type={type}
+                component={component}
+                placeholder={placeholder}
+              />
             </Form.Control>
             <Form.ErrorMessage />
           </Form.Item>
@@ -92,4 +96,44 @@ const FormExtensionField = ({ field, name, form }: FormExtensionFieldProps) => {
       }}
     />
   )
+}
+
+type FormExtensionFieldComponentProps = {
+  field: ControllerRenderProps
+  type: FormFieldType
+  component?: ComponentType<any>
+  placeholder?: string
+}
+
+const FormExtensionFieldComponent = ({
+  field,
+  type,
+  component,
+  placeholder,
+}: FormExtensionFieldComponentProps) => {
+  if (component) {
+    const Component = component
+
+    return <Component {...field} placeholder={placeholder} />
+  }
+
+  switch (type) {
+    case "text": {
+      return <Input {...field} placeholder={placeholder} />
+    }
+    case "number": {
+      return <Input {...field} placeholder={placeholder} type="number" />
+    }
+    case "boolean": {
+      return <Switch {...field} />
+    }
+    default: {
+      return (
+        <InlineTip variant="warning">
+          The field type does not support rendering a fallback component. Please
+          provide a component prop.
+        </InlineTip>
+      )
+    }
+  }
 }
