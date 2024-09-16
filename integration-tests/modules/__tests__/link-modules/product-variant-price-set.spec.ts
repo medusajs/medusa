@@ -1,7 +1,6 @@
 import { IPricingModuleService, IProductModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -23,8 +22,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-        pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
+        productModule = appContainer.resolve(Modules.PRODUCT)
+        pricingModule = appContainer.resolve(Modules.PRICING)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )

@@ -1,5 +1,5 @@
 import { IPricingModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deletePricePreferencesStepId = "delete-price-preferences"
@@ -9,9 +9,7 @@ export const deletePricePreferencesStepId = "delete-price-preferences"
 export const deletePricePreferencesStep = createStep(
   deletePricePreferencesStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
-    )
+    const service = container.resolve<IPricingModuleService>(Modules.PRICING)
 
     await service.softDeletePricePreferences(ids)
 
@@ -22,9 +20,7 @@ export const deletePricePreferencesStep = createStep(
       return
     }
 
-    const service = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
-    )
+    const service = container.resolve<IPricingModuleService>(Modules.PRICING)
 
     await service.restorePricePreferences(prevIds)
   }

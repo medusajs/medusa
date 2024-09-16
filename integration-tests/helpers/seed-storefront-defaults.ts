@@ -4,18 +4,14 @@ import {
   IStoreModuleService,
   MedusaContainer,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export const seedStorefrontDefaults = async (
   container: MedusaContainer,
   defaultCurrency: string = "usd"
 ) => {
-  const regionModule: IRegionModuleService = container.resolve(
-    ModuleRegistrationName.REGION
-  )
-  const storeModule: IStoreModuleService = container.resolve(
-    ModuleRegistrationName.STORE
-  )
+  const regionModule: IRegionModuleService = container.resolve(Modules.REGION)
+  const storeModule: IStoreModuleService = container.resolve(Modules.STORE)
 
   // Creates the stores & default sales channel
   await createDefaultsWorkflow(container).run()

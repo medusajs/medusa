@@ -1,12 +1,12 @@
 import { Event, IEventBusModuleService, Subscriber } from "@medusajs/types"
-import { kebabCase, ModuleRegistrationName, promiseAll } from "@medusajs/utils"
+import { Modules, kebabCase, promiseAll } from "@medusajs/utils"
 import { access, readdir } from "fs/promises"
 import { join, parse } from "path"
 
 import { configManager } from "../config"
 import { container } from "../container"
-import { SubscriberArgs, SubscriberConfig } from "./types"
 import { logger } from "../logger"
+import { SubscriberArgs, SubscriberConfig } from "./types"
 
 type SubscriberHandler<T> = (args: SubscriberArgs<T>) => Promise<void>
 
@@ -190,7 +190,7 @@ export class SubscriberLoader {
     handler: SubscriberHandler<T>
   }) {
     const eventBusService: IEventBusModuleService = container.resolve(
-      ModuleRegistrationName.EVENT_BUS
+      Modules.EVENT_BUS
     )
 
     const { event } = config

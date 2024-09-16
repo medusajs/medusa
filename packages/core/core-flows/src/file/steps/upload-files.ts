@@ -1,5 +1,5 @@
 import { IFileModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type UploadFilesStepInput = {
@@ -18,9 +18,7 @@ export const uploadFilesStepId = "upload-files"
 export const uploadFilesStep = createStep(
   uploadFilesStepId,
   async (data: UploadFilesStepInput, { container }) => {
-    const service = container.resolve<IFileModuleService>(
-      ModuleRegistrationName.FILE
-    )
+    const service = container.resolve<IFileModuleService>(Modules.FILE)
     const created = await service.createFiles(data.files)
     return new StepResponse(
       created,
@@ -32,9 +30,7 @@ export const uploadFilesStep = createStep(
       return
     }
 
-    const service = container.resolve<IFileModuleService>(
-      ModuleRegistrationName.FILE
-    )
+    const service = container.resolve<IFileModuleService>(Modules.FILE)
 
     await service.deleteFiles(createdIds)
   }

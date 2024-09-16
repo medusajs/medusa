@@ -1,9 +1,6 @@
 import { IAuthModuleService } from "@medusajs/types"
 
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
@@ -37,7 +34,7 @@ medusaIntegrationTestRunner({
       // TODO: Reenable once the customer authentication is fixed, and use the HTTP endpoints instead.
       it.skip("should create a customer", async () => {
         const authService: IAuthModuleService = appContainer.resolve(
-          ModuleRegistrationName.AUTH
+          Modules.AUTH
         )
         const { http } = appContainer.resolve(
           ContainerRegistrationKeys.CONFIG_MODULE

@@ -1,5 +1,5 @@
 import { BigNumberInput, IPaymentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type CreatePaymentCollectionCartStepInput = {
@@ -16,9 +16,7 @@ export const createPaymentCollectionsStepId = "create-payment-collections"
 export const createPaymentCollectionsStep = createStep(
   createPaymentCollectionsStepId,
   async (data: CreatePaymentCollectionCartStepInput[], { container }) => {
-    const service = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
-    )
+    const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 
     const created = await service.createPaymentCollections(data)
 
@@ -32,9 +30,7 @@ export const createPaymentCollectionsStep = createStep(
       return
     }
 
-    const service = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
-    )
+    const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 
     await service.deletePaymentCollections(createdIds)
   }

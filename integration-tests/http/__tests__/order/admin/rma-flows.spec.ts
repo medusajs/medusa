@@ -1,8 +1,4 @@
-import {
-  ClaimType,
-  ModuleRegistrationName,
-  RuleOperator,
-} from "@medusajs/utils"
+import { ClaimType, Modules, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -26,7 +22,7 @@ medusaIntegrationTestRunner({
     beforeEach(async () => {
       const container = getContainer()
 
-      await setupTaxStructure(container.resolve(ModuleRegistrationName.TAX))
+      await setupTaxStructure(container.resolve(Modules.TAX))
       await createAdminUser(dbConnection, adminHeaders, container)
       const seeders = await createOrderSeeder({ api, container })
       order = seeders.order

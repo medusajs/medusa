@@ -4,7 +4,7 @@ import {
   UpdateOrderChangeDTO,
 } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
+  Modules,
   deduplicate,
   getSelectsAndRelationsFromObjectArray,
 } from "@medusajs/utils"
@@ -17,9 +17,7 @@ export const cancelOrderChangeStepId = "cancel-order-change"
 export const cancelOrderChangeStep = createStep(
   cancelOrderChangeStepId,
   async (data: CancelOrderChangeDTO, { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(
       [data],
@@ -50,9 +48,7 @@ export const cancelOrderChangeStep = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await service.updateOrderChanges(rollbackData as UpdateOrderChangeDTO)
   }

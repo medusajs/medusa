@@ -166,17 +166,28 @@ export const useDataGridCell = <TData, TValue>({
         return
       }
 
-      const event = new KeyboardEvent(e.type, e.nativeEvent)
-
       inputRef.current.focus()
       setShowOverlay(false)
 
-      // if the inputRef can use .select() then we can use it here
       if (inputRef.current instanceof HTMLInputElement) {
-        inputRef.current.select()
+        // Clear the current value
+        inputRef.current.value = ""
+
+        // Simulate typing the new key
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value"
+        )?.set
+        nativeInputValueSetter?.call(inputRef.current, e.key)
+
+        // Trigger input event to notify react-hook-form
+        const event = new Event("input", { bubbles: true })
+        inputRef.current.dispatchEvent(event)
       }
 
-      inputRef.current.dispatchEvent(event)
+      // Prevent the original event from propagating
+      e.stopPropagation()
+      e.preventDefault()
     },
     [showOverlay, validateKeyStroke]
   )

@@ -1,5 +1,5 @@
 import { INotificationModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type SendNotificationsStepInput = {
@@ -23,7 +23,7 @@ export const sendNotificationsStep = createStep(
   sendNotificationsStepId,
   async (data: SendNotificationsStepInput, { container }) => {
     const service = container.resolve<INotificationModuleService>(
-      ModuleRegistrationName.NOTIFICATION
+      Modules.NOTIFICATION
     )
     const created = await service.createNotifications(data)
     return new StepResponse(

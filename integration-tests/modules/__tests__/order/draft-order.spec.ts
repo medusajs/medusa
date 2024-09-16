@@ -9,11 +9,7 @@ import {
   IStockLocationServiceNext,
   ITaxModuleService,
 } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-  Modules,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -42,21 +38,15 @@ medusaIntegrationTestRunner({
 
     beforeAll(async () => {
       appContainer = getContainer()
-      cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
-      regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
-      scModuleService = appContainer.resolve(
-        ModuleRegistrationName.SALES_CHANNEL
-      )
-      productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-      pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-      inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
-      stockLocationModule = appContainer.resolve(
-        ModuleRegistrationName.STOCK_LOCATION
-      )
-      fulfillmentModule = appContainer.resolve(
-        ModuleRegistrationName.FULFILLMENT
-      )
-      taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
+      cartModuleService = appContainer.resolve(Modules.CART)
+      regionModuleService = appContainer.resolve(Modules.REGION)
+      scModuleService = appContainer.resolve(Modules.SALES_CHANNEL)
+      productModule = appContainer.resolve(Modules.PRODUCT)
+      pricingModule = appContainer.resolve(Modules.PRICING)
+      inventoryModule = appContainer.resolve(Modules.INVENTORY)
+      stockLocationModule = appContainer.resolve(Modules.STOCK_LOCATION)
+      fulfillmentModule = appContainer.resolve(Modules.FULFILLMENT)
+      taxModule = appContainer.resolve(Modules.TAX)
       remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
       remoteQuery = appContainer.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
     })
