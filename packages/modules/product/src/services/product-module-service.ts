@@ -156,7 +156,6 @@ export default class ProductModuleService
     return joinerConfig
   }
 
-  // TODO: Add options validation, among other things
   // @ts-ignore
   createProductVariants(
     data: ProductTypes.CreateProductVariantDTO[],
@@ -1743,9 +1742,18 @@ export default class ProductModuleService
     const variantsWithOptions = variants.map((variant: any) => {
       const variantOptions = Object.entries(variant.options ?? {}).map(
         ([key, val]) => {
-          const option = options.find(
-            (o) => o.title === key && o.product_id === variant.product_id
+          const productsOptions = options.filter(
+            (o) => o.product_id === variant.product_id
           )
+
+          if (productsOptions.length !== variant.options.length) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Product has ${productsOptions.length} but there were ${variant.options.length} provided option values for the variant: ${variant.title}.`
+            )
+          }
+
+          const option = productsOptions.find((o) => o.title === key)
 
           const optionValue = option?.values?.find(
             (v: any) => (v.value?.value ?? v.value) === val
