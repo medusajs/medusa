@@ -25,6 +25,7 @@ import {
 } from "../../../../../hooks/api/exchanges"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { sdk } from "../../../../../lib/client"
+import { OutboundShippingPlaceholder } from "../../../common/placeholders"
 import { ItemPlaceholder } from "../../../order-create-claim/components/claim-create-form/item-placeholder"
 import { AddExchangeOutboundItemsTable } from "../add-exchange-outbound-items-table"
 import { ExchangeOutboundItem } from "./exchange-outbound-item"
@@ -402,6 +403,7 @@ export const ExchangeOutboundSection = ({
                   <Form.Item>
                     <Form.Control>
                       <Combobox
+                        noResultsPlaceholder={<OutboundShippingPlaceholder />}
                         value={value ?? undefined}
                         onChange={(val) => {
                           onChange(val)
