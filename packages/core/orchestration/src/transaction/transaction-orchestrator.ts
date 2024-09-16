@@ -819,7 +819,7 @@ export class TransactionOrchestrator extends EventEmitter {
               TransactionOrchestrator.tranceStep(stepHandler, traceData)
             )
           } else {
-            await stepHandler()
+            execution.push(stepHandler())
           }
         } else {
           const stepHandler = async () => {
