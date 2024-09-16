@@ -195,7 +195,7 @@ function createContextualWorkflowRunner<
       events
     )
   }
-  flow.run = newRun as any
+  flow.run = exportWorkflow.traceRun(newRun as any, workflowId) as any
 
   const newRegisterStepSuccess = async (
     {
@@ -415,6 +415,10 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       container
     )(inputArgs)
   }
+  exportedWorkflow.run = exportWorkflow.traceRun(
+    exportedWorkflow.run,
+    workflowId
+  )
 
   exportedWorkflow.registerStepSuccess = async <
     TDataOverride = undefined,
@@ -487,6 +491,13 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
   MedusaWorkflow.registerWorkflow(workflowId, exportedWorkflow)
   return exportedWorkflow as MainExportedWorkflow<TData, TResult>
+}
+
+exportWorkflow.traceRun = function (
+  workflowRunner: (args?: FlowRunOptions<any>) => Promise<WorkflowResult<any>>,
+  _: string
+): (args?: FlowRunOptions<any>) => Promise<WorkflowResult<any>> {
+  return (args) => workflowRunner(args)
 }
 
 function attachOnFinishReleaseEvents(

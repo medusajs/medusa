@@ -11,7 +11,7 @@ import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
 import type { Instrumentation } from "@opentelemetry/instrumentation"
 
 import start from "../commands/start"
-import { applyStep } from "@medusajs/workflows-sdk"
+import { applyStep, exportWorkflow } from "@medusajs/workflows-sdk"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -209,6 +209,31 @@ export function instrumentRemoteQuery() {
  */
 export function instrumentWorkflows() {
   const WorkflowsTracer = new Tracer("@medusajs/workflows-sdk", "2.0.0")
+
+  exportWorkflow.traceRun = (workflowRunner, workflowId) => {
+    return async function (args) {
+      return await WorkflowsTracer.trace(
+        `workflow:${snakeCase(workflowId)}`,
+        async function (span) {
+          if (args?.context) {
+            span.setAttributes({
+              "workflow.transaction_id": args.context.transactionId,
+              "workflow.group_id": args.context?.eventGroupId,
+            })
+            if ("metadata" in args.context) {
+              Object.entries(args.context).forEach(([key, value]) => {
+                span.setAttribute(
+                  `workflow-step.${key}`,
+                  value as string | number
+                )
+              })
+            }
+          }
+          return workflowRunner(args).finally(() => span.end())
+        }
+      )
+    }
+  }
 
   applyStep.traceInvoke = (invokeFn, stepName) => {
     return async function (args) {
