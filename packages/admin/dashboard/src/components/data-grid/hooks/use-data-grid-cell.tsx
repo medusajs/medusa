@@ -170,8 +170,7 @@ export const useDataGridCell = <TData, TValue>({
       setShowOverlay(false)
 
       if (
-        inputRef.current instanceof HTMLInputElement ||
-        inputRef.current instanceof HTMLTextAreaElement
+        inputRef.current instanceof HTMLInputElement
       ) {
         // Clear the current value
         inputRef.current.value = ""
