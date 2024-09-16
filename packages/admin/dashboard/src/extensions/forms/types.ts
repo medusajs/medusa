@@ -1,4 +1,5 @@
 import { ComponentType } from "react"
+import { ZodType } from "zod"
 
 type FormConfigExtension = {
   defaultValue: ((data: any) => any) | any
@@ -16,7 +17,7 @@ export type FormFieldExtension = {
   label?: string
   description?: string
   placeholder?: string
-  validation?: any
+  type: ZodType
 }
 
 export type FormFieldSection = Record<string, FormFieldExtension>

@@ -6,7 +6,7 @@ import type {
   InjectionZone,
 } from "@medusajs/admin-shared"
 import type { ComponentType } from "react"
-import { infer as ZodInfer, ZodType } from "zod"
+import { ZodFirstPartySchemaTypes } from "zod"
 
 export interface WidgetConfig {
   /**
@@ -26,7 +26,10 @@ export interface RouteConfig {
   icon?: ComponentType
 }
 
-export type CustomFormField<TData, TValidation extends ZodType = ZodType> = {
+export type CustomFormField<
+  TData = unknown,
+  TValidation extends ZodFirstPartySchemaTypes = ZodFirstPartySchemaTypes
+> = {
   /**
    * The rules that the field should be validated against.
    *
@@ -39,7 +42,7 @@ export type CustomFormField<TData, TValidation extends ZodType = ZodType> = {
   /**
    * The default value of the field.
    */
-  defaultValue: ((data: TData) => ZodInfer<TValidation>) | ZodInfer<TValidation>
+  defaultValue: ((data: TData) => any) | any
   /**
    * The label of the field. If not provided, the label will be inferred from the field name.
    */
@@ -117,7 +120,7 @@ export interface CustomFieldConfig<TModel extends CustomFieldModel> {
          * ```
          */
         zone: K
-        fields: Record<string, CustomFormField<ZodType>>
+        fields: Record<string, CustomFormField<any, any>>
       } & (CustomFieldModelFormTabsMap[TModel][K] extends never
         ? {}
         : { tab: CustomFieldModelFormTabsMap[TModel][K] })

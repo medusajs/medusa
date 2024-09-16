@@ -135,8 +135,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
       )
     )
 
-    console.log("getCustomFieldImports", Array.from(set))
-
     return set
   }
 

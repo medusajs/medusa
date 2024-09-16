@@ -1,5 +1,5 @@
 import type { CustomFieldModelFormMap } from "@medusajs/admin-shared"
-import { z, ZodType } from "zod"
+import { z, ZodFirstPartySchemaTypes } from "zod"
 import {
   CustomFieldConfig,
   CustomFormField,
@@ -97,20 +97,39 @@ export function createFormHelper<TData>() {
      * @param field The field to define.
      * @returns The field.
      */
-    define: <T extends ZodType>(
-      field: CustomFormField<TData, T>
+    define: <T extends ZodFirstPartySchemaTypes>(
+      field: Omit<CustomFormField<TData, T>, "validation"> & { validation: T }
     ): CustomFormField<TData, T> => {
-      return field
+      return field as CustomFormField<TData, T>
     },
-    string: z.string, // Could we make this populate the field with type: string?
-    number: z.number,
-    boolean: z.boolean,
-    date: z.date,
+    string: () => z.string(),
+    number: () => z.number(),
+    boolean: () => z.boolean(),
+    date: () => z.date(),
     array: z.array,
     object: z.object,
-    null: z.null,
-    nullable: z.nullable, // Could we make this populate the field with optional: true? The same if we use .nullish or .optional?
-    undefined: z.undefined,
+    null: () => z.null(),
+    nullable: z.nullable,
+    undefined: () => z.undefined(),
     coerce: z.coerce,
   }
 }
+
+// const form = createFormHelper()
+
+// defineCustomFieldsConfig({
+//   model: "product",
+//   link: "categories",
+//   forms: [
+//     {
+//       zone: "create",
+//       tab: "general",
+//       fields: {
+//         brand_id: form.define({
+//           validation: form.string().nullish(),
+//           defaultValue: "",
+//         }),
+//       },
+//     },
+//   ],
+// })
