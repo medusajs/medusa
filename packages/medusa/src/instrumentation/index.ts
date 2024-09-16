@@ -234,12 +234,8 @@ export function instrumentWorkflows() {
     return await WorkflowsTracer.trace(
       `step:${snakeCase(metadata.action)}:${metadata.type}`,
       async function (span) {
-        span.setAttributes({
-          "workflow.step.type": metadata.type,
-          "workflow.step.id": metadata.step_id,
-          "workflow.step.uuid": metadata.step_uuid,
-          "workflow.step.attempts": metadata.attempts,
-          "workflow.step.failures": metadata.failures,
+        Object.entries(metadata).forEach(([key, value]) => {
+          span.setAttribute(`workflow.step.${key}`, value)
         })
 
         return await stepHandler().finally(() => span.end())

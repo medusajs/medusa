@@ -758,21 +758,27 @@ export class TransactionOrchestrator extends EventEmitter {
           step_uuid: step.uuid + "",
           attempts: step.attempts,
           failures: step.failures,
+          async:
+            type === "invoke"
+              ? step.definition.async
+              : step.definition.compensateAsync,
         }
+
+        const handlerArgs = [
+          step.definition.action + "",
+          type,
+          payload,
+          transaction,
+          step,
+          this,
+        ] as Parameters<TransactionStepHandler>
 
         if (!isAsync) {
           hasSyncSteps = true
 
           const stepHandler = async () => {
             return await transaction
-              .handler(
-                step.definition.action + "",
-                type,
-                payload,
-                transaction,
-                step,
-                this
-              )
+              .handler(...handlerArgs)
               .then(async (response: any) => {
                 if (this.hasExpired({ transaction, step }, Date.now())) {
                   await this.checkStepTimeout(transaction, step)
@@ -824,14 +830,7 @@ export class TransactionOrchestrator extends EventEmitter {
         } else {
           const stepHandler = async () => {
             return await transaction
-              .handler(
-                step.definition.action + "",
-                type,
-                payload,
-                transaction,
-                step,
-                this
-              )
+              .handler(...handlerArgs)
               .then(async (response: any) => {
                 if (!step.definition.backgroundExecution) {
                   const eventName = DistributedTransactionEvent.STEP_AWAITING
