@@ -4,7 +4,6 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
   Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
@@ -26,12 +25,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        fulfillmentModule = appContainer.resolve(
-          ModuleRegistrationName.FULFILLMENT
-        )
-        locationModule = appContainer.resolve(
-          ModuleRegistrationName.STOCK_LOCATION
-        )
+        fulfillmentModule = appContainer.resolve(Modules.FULFILLMENT)
+        locationModule = appContainer.resolve(Modules.STOCK_LOCATION)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )

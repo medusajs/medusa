@@ -10,7 +10,7 @@ import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaContextType,
-  ModuleRegistrationName,
+  Modules,
   isPresent,
 } from "@medusajs/utils"
 import { EOL } from "os"
@@ -537,7 +537,7 @@ function attachOnFinishReleaseEvents(
     await onFinish?.(args)
 
     const eventBusService = (flow.container as MedusaContainer).resolve(
-      ModuleRegistrationName.EVENT_BUS,
+      Modules.EVENT_BUS,
       { allowUnregistered: true }
     )
 

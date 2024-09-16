@@ -4,7 +4,7 @@ import {
   FindConfig,
   ICartModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface ListLineItemsStepInput {
@@ -20,9 +20,7 @@ export const listLineItemsStepId = "list-line-items"
 export const listLineItemsStep = createStep(
   listLineItemsStepId,
   async (data: ListLineItemsStepInput, { container }) => {
-    const service = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const service = container.resolve<ICartModuleService>(Modules.CART)
 
     const items = await service.listLineItems(data.filters, data.config)
 

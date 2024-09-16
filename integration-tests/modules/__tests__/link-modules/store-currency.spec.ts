@@ -1,8 +1,5 @@
 import { ICurrencyModuleService, IStoreModuleService } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { Modules, remoteQueryObjectFromString } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -20,10 +17,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        storeModuleService = appContainer.resolve(ModuleRegistrationName.STORE)
-        currencyModuleService = appContainer.resolve(
-          ModuleRegistrationName.CURRENCY
-        )
+        storeModuleService = appContainer.resolve(Modules.STORE)
+        currencyModuleService = appContainer.resolve(Modules.CURRENCY)
         remoteQuery = appContainer.resolve("remoteQuery")
       })
 

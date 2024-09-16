@@ -1,5 +1,5 @@
 import { IOrderModuleService, ReceiveOrderReturnDTO } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const receiveReturnStepId = "receive-return"
@@ -9,9 +9,7 @@ export const receiveReturnStepId = "receive-return"
 export const receiveReturnStep = createStep(
   receiveReturnStepId,
   async (data: ReceiveOrderReturnDTO, { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     if (!data.items?.length) {
       return new StepResponse(void 0)
@@ -25,9 +23,7 @@ export const receiveReturnStep = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await service.revertLastVersion(orderId)
   }

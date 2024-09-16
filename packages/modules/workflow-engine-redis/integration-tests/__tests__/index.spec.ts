@@ -35,7 +35,6 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   },
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {
     describe("Workflow Orchestrator module", function () {
-      const afterEach_ = async () => {}
       beforeEach(async () => {
         await TestDatabase.clearTables()
         jest.clearAllMocks()
@@ -84,7 +83,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
               linkable: "workflow_execution_id",
               entity: "WorkflowExecution",
               primaryKey: "id",
-              serviceName: "workflows",
+              serviceName: "Workflows",
               field: "workflowExecution",
             },
           },

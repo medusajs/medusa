@@ -230,7 +230,6 @@ export class WorkflowOrchestratorService {
       TransactionState.FAILED,
     ].includes(ret.transaction.getFlow().state)
 
-    // TODO: temporary - Create an Aknowledgement type
     const acknowledgement = {
       transactionId: context.transactionId,
       workflowId: workflowId,

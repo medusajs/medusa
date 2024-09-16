@@ -1,5 +1,5 @@
 import { IOrderModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export type ArchiveOrdersStepInput = {
@@ -13,9 +13,7 @@ export const archiveOrdersStepId = "archive-orders"
 export const archiveOrdersStep = createStep(
   archiveOrdersStepId,
   async (data: ArchiveOrdersStepInput, { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const archived = await service.archive(data.orderIds)
     return new StepResponse(
@@ -33,9 +31,7 @@ export const archiveOrdersStep = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await service.updateOrders(archived)
   }

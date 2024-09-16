@@ -60,7 +60,7 @@ moduleIntegrationTestRunner<INotificationModuleService>({
               linkable: "notification_id",
               entity: "Notification",
               primaryKey: "id",
-              serviceName: "notification",
+              serviceName: "Notification",
               field: "notification",
             },
           },

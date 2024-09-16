@@ -179,10 +179,20 @@ export class WorkflowOrchestratorService {
       events,
     })
 
-    // TODO: temporary
+    const hasFinished = ret.transaction.hasFinished()
+    const metadata = ret.transaction.getFlow().metadata
+    const { parentStepIdempotencyKey } = metadata ?? {}
+    const hasFailed = [
+      TransactionState.REVERTED,
+      TransactionState.FAILED,
+    ].includes(ret.transaction.getFlow().state)
+
     const acknowledgement = {
       transactionId: context.transactionId,
       workflowId: workflowId,
+      parentStepIdempotencyKey,
+      hasFinished,
+      hasFailed,
     }
 
     if (ret.transaction.hasFinished()) {
