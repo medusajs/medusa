@@ -1,7 +1,7 @@
 import { compressName } from "../compress-name"
 
 describe("compressName", () => {
-  it("should remove consecutive duplicate names in sequence if it exceds 63 chars", () => {
+  it("should remove consecutive duplicate names in sequence if it exceds 58 chars", () => {
     const name =
       "product_product_variant_id_order_order_id_long_long_long_long_name"
     const result = compressName(name)
@@ -18,9 +18,9 @@ describe("compressName", () => {
     const name =
       "CustomModuleImplementationContainingAReallyBigNameThatExceedsPosgresLimitToNameATableModule"
     const result = compressName(name)
-    expect(result).toHaveLength(63)
+    expect(result).toHaveLength(58)
     expect(result).toBe(
-      "cust_modu_impl_cont_area_big_name_that_exce_posg_limi_1f1cc72da"
+      "cust_modu_impl_cont_area_big_name_that_exce_posg_1f1cc72da"
     )
   })
 })

@@ -55,9 +55,11 @@ moduleIntegrationTestRunner<ILinkModule>({
         })
 
         let actionPlan = await planner.createPlan()
+
         await planner.executePlan(actionPlan)
 
         expect(actionPlan).toHaveLength(2)
+
         expect(actionPlan[0]).toEqual({
           action: "create",
           linkDescriptor: {

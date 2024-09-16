@@ -1,6 +1,6 @@
 import { camelToSnakeCase, simpleHash } from "@medusajs/utils"
 
-export function compressName(name: string, limit = 63) {
+export function compressName(name: string, limit = 58) {
   if (name.length <= limit) {
     return name.toLowerCase()
   }
