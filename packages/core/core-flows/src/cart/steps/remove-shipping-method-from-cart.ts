@@ -1,5 +1,5 @@
 import { ICartModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface RemoveShippingMethodFromCartStepInput {
@@ -14,9 +14,7 @@ export const removeShippingMethodFromCartStepId =
 export const removeShippingMethodFromCartStep = createStep(
   removeShippingMethodFromCartStepId,
   async (data: RemoveShippingMethodFromCartStepInput, { container }) => {
-    const cartService = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const cartService = container.resolve<ICartModuleService>(Modules.CART)
 
     const methods = await cartService.softDeleteShippingMethods(
       data.shipping_method_ids
@@ -29,9 +27,7 @@ export const removeShippingMethodFromCartStep = createStep(
       return
     }
 
-    const cartService: ICartModuleService = container.resolve(
-      ModuleRegistrationName.CART
-    )
+    const cartService: ICartModuleService = container.resolve(Modules.CART)
 
     await cartService.restoreShippingMethods(ids)
   }

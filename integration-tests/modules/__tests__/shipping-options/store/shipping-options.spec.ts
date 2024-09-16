@@ -2,11 +2,7 @@ import {
   IFulfillmentModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-  Modules,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   createAdminUser,
@@ -39,10 +35,8 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        fulfillmentModule = appContainer.resolve(
-          ModuleRegistrationName.FULFILLMENT
-        )
-        regionService = appContainer.resolve(ModuleRegistrationName.REGION)
+        fulfillmentModule = appContainer.resolve(Modules.FULFILLMENT)
+        regionService = appContainer.resolve(Modules.REGION)
         const publishableKey = await generatePublishableKey(appContainer)
         storeHeaders = generateStoreHeaders({ publishableKey })
       })

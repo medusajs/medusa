@@ -4,7 +4,7 @@ import {
   TaxRateDTO,
   UpdateTaxRateDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import {
   StepResponse,
   WorkflowData,
@@ -75,9 +75,7 @@ export const maybeListTaxRateRuleIdsStep = createStep(
       return new StepResponse([])
     }
 
-    const service = container.resolve<ITaxModuleService>(
-      ModuleRegistrationName.TAX
-    )
+    const service = container.resolve<ITaxModuleService>(Modules.TAX)
 
     const rules = await service.listTaxRateRules(
       { tax_rate_id: tax_rate_ids },
@@ -94,7 +92,9 @@ export const updateTaxRatesWorkflowId = "update-tax-rates"
  */
 export const updateTaxRatesWorkflow = createWorkflow(
   updateTaxRatesWorkflowId,
-  (input: WorkflowData<UpdateTaxRatesWorkflowInput>): WorkflowResponse<TaxRateDTO[]> => {
+  (
+    input: WorkflowData<UpdateTaxRatesWorkflowInput>
+  ): WorkflowResponse<TaxRateDTO[]> => {
     const cleanedUpdateInput = transform(input, (data) => {
       // Transform clones data so we can safely modify it
       if (data.update.rules) {

@@ -2,7 +2,7 @@ import {
   CreateShippingMethodAdjustmentDTO,
   ICartModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface CreateShippingMethodAdjustmentsStepInput {
@@ -19,7 +19,7 @@ export const createShippingMethodAdjustmentsStep = createStep(
   async (data: CreateShippingMethodAdjustmentsStepInput, { container }) => {
     const { shippingMethodAdjustmentsToCreate = [] } = data
     const cartModuleService: ICartModuleService = container.resolve(
-      ModuleRegistrationName.CART
+      Modules.CART
     )
 
     const createdShippingMethodAdjustments =
@@ -31,7 +31,7 @@ export const createShippingMethodAdjustmentsStep = createStep(
   },
   async (createdShippingMethodAdjustments, { container }) => {
     const cartModuleService: ICartModuleService = container.resolve(
-      ModuleRegistrationName.CART
+      Modules.CART
     )
 
     if (!createdShippingMethodAdjustments?.length) {

@@ -1,5 +1,5 @@
 import { IStoreModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteStoresStepId = "delete-stores"
@@ -9,9 +9,7 @@ export const deleteStoresStepId = "delete-stores"
 export const deleteStoresStep = createStep(
   deleteStoresStepId,
   async (ids: string[], { container }) => {
-    const storeModule = container.resolve<IStoreModuleService>(
-      ModuleRegistrationName.STORE
-    )
+    const storeModule = container.resolve<IStoreModuleService>(Modules.STORE)
 
     await storeModule.softDeleteStores(ids)
     return new StepResponse(void 0, ids)
@@ -21,9 +19,7 @@ export const deleteStoresStep = createStep(
       return
     }
 
-    const storeModule = container.resolve<IStoreModuleService>(
-      ModuleRegistrationName.STORE
-    )
+    const storeModule = container.resolve<IStoreModuleService>(Modules.STORE)
 
     await storeModule.restoreStores(idsToRestore)
   }

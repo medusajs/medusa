@@ -1,4 +1,4 @@
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -298,9 +298,7 @@ medusaIntegrationTestRunner({
         await api.delete(`/admin/stock-locations/${location1.id}`, adminHeaders)
 
         // TODO: Ideally we use HTTP here, maybe we should have a get endpoint for fulfillment sets?
-        const fulfillmentModule = getContainer().resolve(
-          ModuleRegistrationName.FULFILLMENT
-        )
+        const fulfillmentModule = getContainer().resolve(Modules.FULFILLMENT)
         const sets = await fulfillmentModule.listFulfillmentSets()
         expect(sets).toHaveLength(0)
       })

@@ -24,7 +24,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: false,
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -53,7 +52,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/default",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -94,7 +92,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/brokenloader",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -120,7 +117,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/no-service",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -148,7 +144,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/no-service",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -178,7 +173,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@medusajs/testService",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "@medusajs/testService",
           label: "TestService",
@@ -210,7 +204,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/no-service",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",
@@ -242,7 +235,6 @@ describe("modules loader", () => {
       testService: {
         resolutionPath: "@modules/no-service",
         definition: {
-          registrationName: "testService",
           key: "testService",
           defaultPackage: "testService",
           label: "TestService",

@@ -5,7 +5,7 @@ import {
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export const updateInventoryLevelsStepId = "update-inventory-levels-step"
 /**
@@ -18,7 +18,7 @@ export const updateInventoryLevelsStep = createStep(
     { container }
   ) => {
     const inventoryService: IInventoryService = container.resolve(
-      ModuleRegistrationName.INVENTORY
+      Modules.INVENTORY
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(input)
@@ -49,7 +49,7 @@ export const updateInventoryLevelsStep = createStep(
 
     const { dataBeforeUpdate, selects, relations } = revertInput
 
-    const inventoryService = container.resolve(ModuleRegistrationName.INVENTORY)
+    const inventoryService = container.resolve(Modules.INVENTORY)
 
     await inventoryService.updateInventoryLevels(
       dataBeforeUpdate.map((data) =>

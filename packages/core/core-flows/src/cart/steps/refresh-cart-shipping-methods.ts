@@ -3,7 +3,7 @@ import {
   ICartModuleService,
   IFulfillmentModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName, arrayDifference } from "@medusajs/utils"
+import { Modules, arrayDifference } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface RefreshCartShippingMethodsStepInput {
@@ -25,12 +25,10 @@ export const refreshCartShippingMethodsStep = createStep(
     }
 
     const fulfillmentModule = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
-    const cartModule = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const cartModule = container.resolve<ICartModuleService>(Modules.CART)
 
     const shippingOptionIds: string[] = shippingMethods.map(
       (sm) => sm.shipping_option_id!
@@ -67,9 +65,7 @@ export const refreshCartShippingMethodsStep = createStep(
   },
   async (shippingMethodsToRestore, { container }) => {
     if (shippingMethodsToRestore?.length) {
-      const cartModule = container.resolve<ICartModuleService>(
-        ModuleRegistrationName.CART
-      )
+      const cartModule = container.resolve<ICartModuleService>(Modules.CART)
 
       await cartModule.restoreShippingMethods(shippingMethodsToRestore)
     }

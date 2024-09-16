@@ -6,7 +6,7 @@ import {
   OrderDTO,
   ShippingTaxLineDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName, promiseAll } from "@medusajs/utils"
+import { Modules, promiseAll } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface SetOrderTaxLinesForItemsStepInput {
@@ -23,9 +23,7 @@ export const setOrderTaxLinesForItemsStep = createStep(
   setOrderTaxLinesForItemsStepId,
   async (data: SetOrderTaxLinesForItemsStepInput, { container }) => {
     const { order, item_tax_lines, shipping_tax_lines } = data
-    const orderService = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const orderService = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const getShippingTaxLinesPromise =
       await orderService.listOrderShippingMethodTaxLines({
@@ -74,9 +72,7 @@ export const setOrderTaxLinesForItemsStep = createStep(
     const { order, existingLineItemTaxLines, existingShippingMethodTaxLines } =
       revertData
 
-    const orderService = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const orderService = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     if (existingLineItemTaxLines) {
       await orderService.setOrderLineItemTaxLines(

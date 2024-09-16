@@ -1,5 +1,5 @@
 import { IOrderModuleService, OrderChangeActionDTO } from "@medusajs/types"
-import { ChangeActionType, ModuleRegistrationName } from "@medusajs/utils"
+import { ChangeActionType, Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type CreateOrderClaimItemsFromActionsInput = {
@@ -14,7 +14,7 @@ export const createOrderClaimItemsFromActionsStep = createStep(
   "create-claim-items-from-change-actions",
   async (input: CreateOrderClaimItemsFromActionsInput, { container }) => {
     const orderModuleService = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
+      Modules.ORDER
     )
 
     const claimItems = input.changes.map((item) => {
@@ -54,7 +54,7 @@ export const createOrderClaimItemsFromActionsStep = createStep(
     }
 
     const orderModuleService = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
+      Modules.ORDER
     )
 
     await orderModuleService.deleteOrderClaimItems(ids)

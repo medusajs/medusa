@@ -1,5 +1,5 @@
 import { IFulfillmentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
 import {
@@ -24,7 +24,7 @@ medusaIntegrationTestRunner({
 
     beforeAll(() => {
       container = getContainer()
-      service = container.resolve(ModuleRegistrationName.FULFILLMENT)
+      service = container.resolve(Modules.FULFILLMENT)
     })
 
     beforeEach(async () => {

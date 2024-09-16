@@ -7,7 +7,7 @@ import {
   RemoveItemAdjustmentAction,
   RemoveShippingMethodAdjustment,
 } from "@medusajs/types"
-import { ComputedActions, ModuleRegistrationName } from "@medusajs/utils"
+import { ComputedActions, Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface PrepareAdjustmentsFromPromotionActionsStepInput {
@@ -22,9 +22,12 @@ export const prepareAdjustmentsFromPromotionActionsStepId =
  */
 export const prepareAdjustmentsFromPromotionActionsStep = createStep(
   prepareAdjustmentsFromPromotionActionsStepId,
-  async (data: PrepareAdjustmentsFromPromotionActionsStepInput, { container }) => {
+  async (
+    data: PrepareAdjustmentsFromPromotionActionsStepInput,
+    { container }
+  ) => {
     const promotionModuleService: IPromotionModuleService = container.resolve(
-      ModuleRegistrationName.PROMOTION
+      Modules.PROMOTION
     )
 
     const { actions = [] } = data

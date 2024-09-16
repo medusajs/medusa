@@ -7,11 +7,7 @@ import {
 } from "@medusajs/workflows-sdk"
 
 import { FilterableInventoryLevelProps } from "@medusajs/types"
-import {
-  deduplicate,
-  MedusaError,
-  ModuleRegistrationName,
-} from "@medusajs/utils"
+import { deduplicate, MedusaError, Modules } from "@medusajs/utils"
 import { useRemoteQueryStep } from "../../common"
 import { deleteEntitiesStep } from "../../common/steps/delete-entities"
 
@@ -61,7 +57,7 @@ export const deleteInventoryLevelsWorkflow = createWorkflow(
     )
 
     deleteEntitiesStep({
-      moduleRegistrationName: ModuleRegistrationName.INVENTORY,
+      moduleRegistrationName: Modules.INVENTORY,
       invokeMethod: "softDeleteInventoryLevels",
       compensateMethod: "restoreInventoryLevels",
       data: idsToDelete,

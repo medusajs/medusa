@@ -97,6 +97,12 @@ export default class OrderItem {
   raw_fulfilled_quantity: BigNumberRawValue
 
   @MikroOrmBigNumberProperty()
+  delivered_quantity: BigNumber | number = 0
+
+  @Property({ columnType: "jsonb" })
+  raw_delivered_quantity: BigNumberRawValue
+
+  @MikroOrmBigNumberProperty()
   shipped_quantity: BigNumber | number = 0
 
   @Property({ columnType: "jsonb" })

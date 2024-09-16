@@ -19,3 +19,5 @@ export interface AdminCreateOrderShipment {
 export interface AdminCancelOrderFulfillment {
   no_notification?: boolean
 }
+
+export interface AdminMarkOrderFulfillmentAsDelivered {}
