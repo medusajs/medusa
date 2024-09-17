@@ -33,7 +33,7 @@ This workflow updates collections matching the specified filters.
 import { updateCollectionsWorkflow } from "@medusajs/core-flows"
 
 updateCollectionsWorkflow.hooks.collectionsUpdated(
-	async (({ additional_data, collections }, { container }) => {
+	(async ({ additional_data, collections }, { container }) => {
 		//TODO
 	})
 )

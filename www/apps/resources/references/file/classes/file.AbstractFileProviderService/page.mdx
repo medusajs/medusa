@@ -76,6 +76,18 @@ export default MyFileProviderService
 
 ### constructor
 
+### validateOptions
+
+Override this static method in order for the loader to validate the options provided to the module provider.
+
+#### Parameters
+
+<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Override this static method in order for the loader to validate the options provided to the module provider.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
 ### upload
 
 This method uploads a file using your provider's custom logic.
@@ -135,10 +147,10 @@ class MyFileProviderService extends AbstractFileProviderService {
 
 ### getPresignedDownloadUrl
 
-This method is used to retrieve a download URL of the file. For some providers, 
+This method is used to retrieve a download URL of the file. For some providers,
 such as S3, a presigned URL indicates a temporary URL to get access to a file.
 
-If your provider doesn’t perform or offer a similar functionality, you can 
+If your provider doesn’t perform or offer a similar functionality, you can
 return the URL to download the file.
 
 #### Example
@@ -159,7 +171,7 @@ class MyFileProviderService extends AbstractFileProviderService {
 
 #### Parameters
 
-<TypeList types={[{"name":"fileData","type":"[ProviderGetFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderGetFileDTO/page.mdx)","description":"The details of the file to get its \npresigned URL.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getPresignedDownloadUrl"/>
+<TypeList types={[{"name":"fileData","type":"[ProviderGetFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderGetFileDTO/page.mdx)","description":"The details of the file to get its\npresigned URL.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="getPresignedDownloadUrl"/>
 
 #### Returns
 
@@ -194,7 +206,7 @@ The File Module accepts one provider only.
 </Note>
 
 ```js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 

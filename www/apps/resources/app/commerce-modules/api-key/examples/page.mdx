@@ -16,11 +16,11 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
-    ModuleRegistrationName.API_KEY
+    Modules.API_KEY
   )
 
   const apiKey = await apiKeyModuleService.createApiKeys({
@@ -71,11 +71,11 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
-    ModuleRegistrationName.API_KEY
+    Modules.API_KEY
   )
 
   res.json({
@@ -114,14 +114,14 @@ export async function GET(request: Request) {
 ```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { IApiKeyModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) {
   const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
-    ModuleRegistrationName.API_KEY
+    Modules.API_KEY
   )
 
   const revokedKey = await apiKeyModuleService.revoke(request.params.id, {
@@ -175,11 +175,11 @@ export async function POST(request: Request, { params }: ContextType) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
-    ModuleRegistrationName.API_KEY
+    Modules.API_KEY
   )
 
   const authenticatedToken = await apiKeyModuleService.authenticate(
@@ -235,14 +235,14 @@ export async function POST(request: Request, { params }: ContextType) {
     MedusaResponse,
   } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) {
   const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
-    ModuleRegistrationName.API_KEY
+    Modules.API_KEY
   )
 
   const revokedKey = await apiKeyModuleService.revoke(request.params.id, {

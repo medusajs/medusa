@@ -6,15 +6,15 @@ import {
   PlannerActionLinkDescriptor,
 } from "@medusajs/types"
 
-import { generateEntity } from "../utils"
-import { EntitySchema, MikroORM } from "@mikro-orm/core"
-import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import {
-  arrayDifference,
   DALUtils,
   ModulesSdkUtils,
+  arrayDifference,
   promiseAll,
 } from "@medusajs/utils"
+import { EntitySchema, MikroORM } from "@mikro-orm/core"
+import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
+import { generateEntity } from "../utils"
 
 /**
  * The migrations execution planner creates a plan of SQL queries
@@ -145,6 +145,7 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
     const positionalArgs = new Array(existingTables.length)
       .fill("(?, ?)")
       .join(", ")
+
     await orm.em
       .getDriver()
       .getConnection()
@@ -211,7 +212,10 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   protected async getTrackedLinksTables(
     orm: MikroORM<PostgreSqlDriver>
   ): Promise<
-    { table_name: string; link_descriptor: PlannerActionLinkDescriptor }[]
+    {
+      table_name: string
+      link_descriptor: PlannerActionLinkDescriptor
+    }[]
   > {
     const results = await orm.em.getDriver().getConnection().execute<
       {
@@ -309,6 +313,72 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
   }
 
   /**
+   * This method loops over the tables we have fetched from the
+   * "link_module_migrations" tables and checks if their new
+   * name is different from the tracked name and in that
+   * case it will rename the actual table and also the
+   * tracked entry.
+   */
+  protected async migrateOldTables(
+    orm: MikroORM<PostgreSqlDriver>,
+    trackedTables: {
+      table_name: string
+      link_descriptor: PlannerActionLinkDescriptor
+    }[]
+  ) {
+    const migratedTables: {
+      table_name: string
+      link_descriptor: PlannerActionLinkDescriptor
+    }[] = []
+
+    for (let trackedTable of trackedTables) {
+      const newTableName = this.#linksEntities.find((entity) => {
+        return (
+          entity.linkDescriptor.fromModel ===
+            trackedTable.link_descriptor.fromModel &&
+          entity.linkDescriptor.toModel ===
+            trackedTable.link_descriptor.toModel &&
+          entity.linkDescriptor.fromModule ===
+            trackedTable.link_descriptor.fromModule &&
+          entity.linkDescriptor.toModule ===
+            trackedTable.link_descriptor.toModule
+        )
+      })?.entity.meta.collection
+
+      /**
+       * Perform rename
+       */
+      if (newTableName && trackedTable.table_name !== newTableName) {
+        await this.renameOldTable(orm, trackedTable.table_name, newTableName)
+        migratedTables.push({
+          ...trackedTable,
+          table_name: newTableName,
+        })
+      } else {
+        migratedTables.push({
+          ...trackedTable,
+        })
+      }
+    }
+
+    return migratedTables
+  }
+
+  /**
+   * Renames existing table and also its tracked entry
+   */
+  protected async renameOldTable(
+    orm: MikroORM<PostgreSqlDriver>,
+    oldName: string,
+    newName: string
+  ) {
+    await orm.em.getDriver().getConnection().execute(`
+      ALTER TABLE "${oldName}" RENAME TO "${newName}";
+      UPDATE "${this.tableName}" SET table_name = '${newName}' WHERE table_name = '${oldName}';
+    `)
+  }
+
+  /**
    * Creates a plan to executed in order to keep the database state in
    * sync with the user-defined links.
    *
@@ -325,7 +395,10 @@ export class MigrationsExecutionPlanner implements ILinkMigrationsPlanner {
 
       await this.ensureMigrationsTableUpToDate(orm)
 
-      const trackedTables = await this.getTrackedLinksTables(orm)
+      const trackedTables = await this.migrateOldTables(
+        orm,
+        await this.getTrackedLinksTables(orm)
+      )
       const trackedTablesNames = trackedTables.map(
         ({ table_name }) => table_name
       )

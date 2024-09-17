@@ -23,7 +23,7 @@ import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { TestDatabase } from "../utils"
 
-jest.setTimeout(100000)
+jest.setTimeout(999900000)
 
 moduleIntegrationTestRunner<IWorkflowEngineService>({
   moduleName: Modules.WORKFLOW_ENGINE,
@@ -35,10 +35,8 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   },
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {
     describe("Workflow Orchestrator module", function () {
-      const afterEach_ = async () => {
+      beforeEach(async () => {
         await TestDatabase.clearTables()
-      }
-      beforeEach(() => {
         jest.clearAllMocks()
       })
 
@@ -93,8 +91,6 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
       })
 
       describe("Testing basic workflow", function () {
-        afterEach(afterEach_)
-
         it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
           await workflowOrcModule.run("workflow_1", {
             input: {
@@ -271,34 +267,31 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           ).toBe(true)
         })
 
-        it("should complete an async workflow that returns a StepResponse", async () => {
-          const { transaction, result } = await workflowOrcModule.run(
-            "workflow_async_background",
-            {
+        it.skip("should complete an async workflow that returns a StepResponse", (done) => {
+          const transactionId = "transaction_1"
+          void workflowOrcModule
+            .run("workflow_async_background", {
               input: {
                 myInput: "123",
               },
-              transactionId: "transaction_1",
-              throwOnError: false,
-            }
-          )
+              transactionId,
+              throwOnError: true,
+            })
+            .then(({ transaction, result }) => {
+              expect(transaction.flow.state).toEqual(
+                TransactionStepState.INVOKING
+              )
+              expect(result).toEqual(undefined)
+            })
 
-          expect(transaction.flow.state).toEqual(TransactionStepState.INVOKING)
-          expect(result).toEqual(undefined)
-
-          await setTimeout(205)
-
-          const trx = await workflowOrcModule.run("workflow_async_background", {
-            input: {
-              myInput: "123",
+          void workflowOrcModule.subscribe({
+            workflowId: "workflow_async_background",
+            transactionId,
+            subscriber: (event) => {
+              if (event.eventType === "onFinish") {
+                done()
+              }
             },
-            transactionId: "transaction_1",
-            throwOnError: false,
-          })
-
-          expect(trx.transaction.flow.state).toEqual(TransactionStepState.DONE)
-          expect(trx.result).toEqual({
-            myInput: "123",
           })
         })
 

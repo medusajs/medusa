@@ -51,21 +51,3 @@ module.exports = defineConfig({
   // ...
 })
 ```
-
----
-
-## Use Publishable API Keys
-
-Publishable API keys specify the scope of a request. Admin users create them, and they can only be used on the client-side, such as in a storefront.
-
-Publishable API keys are associated with sales channels. Then, when the publishable API key is passed in the header of a request, the Medusa application automatically infers what sales channel is being used.
-
-<Note>
-
-Products, carts, and orders are associated with a sales channel. If you don’t specify a sales channel or a publishable API key, the products, carts, and orders are associated with the default sales channel.
-
-</Note>
-
-{/* TODO replace link with admin how-to guide once available. */}
-
-Create a publishable API key either using the Medusa Admin or the [Admin API routes](!api!/admin#api-keys_postapikeys).

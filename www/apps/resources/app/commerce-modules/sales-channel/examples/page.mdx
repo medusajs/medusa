@@ -16,14 +16,14 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const salesChannelModuleService: ISalesChannelModuleService =
-    request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    request.scope.resolve(Modules.SALES_CHANNEL)
 
   const salesChannel = await salesChannelModuleService.createSalesChannels({
     name: "B2B",
@@ -67,14 +67,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const salesChannelModuleService: ISalesChannelModuleService =
-    request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    request.scope.resolve(Modules.SALES_CHANNEL)
 
   res.json({
     sales_channels: salesChannelModuleService.listSalesChannels(),
@@ -112,14 +112,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const salesChannelModuleService: ISalesChannelModuleService =
-    request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    request.scope.resolve(Modules.SALES_CHANNEL)
 
   const salesChannel = await salesChannelModuleService.retrieveSalesChannel(
     "sc_123"
@@ -163,14 +163,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const salesChannelModuleService: ISalesChannelModuleService =
-    request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    request.scope.resolve(Modules.SALES_CHANNEL)
 
   const salesChannel = await salesChannelModuleService.updateSalesChannels({
     id: "sc_123",
@@ -216,14 +216,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const salesChannelModuleService: ISalesChannelModuleService =
-    request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+    request.scope.resolve(Modules.SALES_CHANNEL)
 
   await salesChannelModuleService.deleteSalesChannels("sc_123")
 

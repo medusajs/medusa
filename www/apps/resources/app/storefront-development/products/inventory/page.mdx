@@ -15,7 +15,7 @@ For example:
 
 export const fetchHighlights = [
   ["2", "fields", "Pass `+variants.inventory_quantity` in the fields to retrieve."],
-  ["8", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to retrieve the inventory quantity based on the associated sales channels' stock locations."], 
+  ["8", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to retrieve the inventory quantity based on the associated sales channels' stock locations."], 
   ["14", "isInStock", "Consider the variant in stock either if its `manage_inventory` property is disabled, or the `inventory_quantity` is greater than `0`."]
 ]
 
@@ -27,7 +27,7 @@ const queryParams = new URLSearchParams({
 fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
   credentials: "include",
   headers: {
-    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
   },
 })
 .then((res) => res.json())
@@ -61,7 +61,7 @@ A variant is in stock if:
 export const reactHighlights = [
   ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
   ["25", "fields", "Pass `+variants.inventory_quantity` in the fields to retrieve."],
-  ["31", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to retrieve the inventory quantity based on the associated sales channels' stock locations."], 
+  ["31", "process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "Pass the Publishable API key to retrieve the inventory quantity based on the associated sales channels' stock locations."], 
   ["55", "isInStock", "Consider the selected variant in stock either if its `manage_inventory` property is disabled, or the `inventory_quantity` is greater than `0`."],
   ["96", "isInStock", "Show whether the selected variant is in stock."]
 ]
@@ -97,7 +97,7 @@ export default function Product({ params: { id } }: Params) {
     fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
       credentials: "include",
       headers: {
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
     })
     .then((res) => res.json())

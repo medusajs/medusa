@@ -182,7 +182,7 @@ export const workflowHighlights = [
       WorkflowResponse,
     } from "@medusajs/workflows-sdk"
     import { IProductModuleService } from "@medusajs/types"
-    import { ModuleRegistrationName } from "@medusajs/utils"
+    import { Modules } from "@medusajs/utils"
     import ErpModuleService from "../modules/erp/service"
 
     type WorkflowInput = {
@@ -200,7 +200,7 @@ export const workflowHighlights = [
         "erpModuleService"
       )
       const productModuleService: IProductModuleService = container
-        .resolve(ModuleRegistrationName.PRODUCT)
+        .resolve(Modules.PRODUCT)
       
       const createdProductData = await productModuleService
         .retrieveProduct(productId)
@@ -226,7 +226,7 @@ export const workflowHighlights = [
         "erpModuleService"
       )
       const productModuleService: IProductModuleService = container
-        .resolve(ModuleRegistrationName.PRODUCT)
+        .resolve(Modules.PRODUCT)
 
       await erpModuleService.deleteProduct(erpId)
       await productModuleService.updateProducts(productId, {
@@ -315,7 +315,7 @@ For example, suppose an administrator changes the product data in the ERP system
       UpdateProductDTO
     } from "@medusajs/types"
     import {
-      ModuleRegistrationName
+      Modules
     } from "@medusajs/utils"
 
     type WebhookReq = {
@@ -331,7 +331,7 @@ For example, suppose an administrator changes the product data in the ERP system
 
       const productService: IProductModuleService = req.scope
         .resolve(
-          ModuleRegistrationName.PRODUCT
+          Modules.PRODUCT
         )
 
       await productService.updateProducts(id, updatedData)

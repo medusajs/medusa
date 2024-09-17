@@ -18,7 +18,7 @@ export const highlights = [
   ["24", "CustomerProvider", "The provider component to use in your component tree."],
   ["36", "fetch", "Try to retrieve the customer's details,\nif the customer is authentiated."],
   ["37", `credentials: "include"`, "Important to include this option for cookie session authentication.\nFor token authentication, pass the authorization header instead."],
-  ["58", "useCustomer", "The hook that child components of the provider use to access the customer."]
+  ["61", "useCustomer", "The hook that child components of the provider use to access the customer."]
 ]
 
 ```tsx highlights={highlights}
@@ -59,6 +59,9 @@ export const CustomerProvider = ({
 
     fetch(`http://localhost:9000/store/customers/me`, {
       credentials: "include",
+      headers: {
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+      },
     })
     .then((res) => res.json())
     .then(({ customer }) => {

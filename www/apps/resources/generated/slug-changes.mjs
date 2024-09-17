@@ -845,6 +845,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.deleteCustomersWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.removeCustomerAccountWorkflow",
+    "newSlug": "/references/medusa-workflows/removeCustomerAccountWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.removeCustomerAccountWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.updateCustomerAddressesWorkflow",
     "newSlug": "/references/medusa-workflows/updateCustomerAddressesWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Customer/Workflows_Customer/functions/core_flows.Customer.Workflows_Customer.updateCustomerAddressesWorkflow/page.mdx"
@@ -1065,6 +1070,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.deleteShippingOptionsWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.markFulfillmentAsDeliveredWorkflow",
+    "newSlug": "/references/medusa-workflows/markFulfillmentAsDeliveredWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.markFulfillmentAsDeliveredWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.updateFulfillmentWorkflow",
     "newSlug": "/references/medusa-workflows/updateFulfillmentWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.updateFulfillmentWorkflow/page.mdx"
@@ -1083,6 +1093,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.updateShippingProfilesWorkflow",
     "newSlug": "/references/medusa-workflows/updateShippingProfilesWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.updateShippingProfilesWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.validateFulfillmentDeliverabilityStep",
+    "newSlug": "/references/medusa-workflows/validateFulfillmentDeliverabilityStep",
+    "filePath": "/www/apps/resources/references/core_flows/Fulfillment/Workflows_Fulfillment/functions/core_flows.Fulfillment.Workflows_Fulfillment.validateFulfillmentDeliverabilityStep/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.adjustInventoryLevelsStep",
@@ -1108,11 +1123,6 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.deleteInventoryItemStep",
     "newSlug": "/references/medusa-workflows/steps/deleteInventoryItemStep",
     "filePath": "/www/apps/resources/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.deleteInventoryItemStep/page.mdx"
-  },
-  {
-    "origSlug": "/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.deleteInventoryLevelsFromItemAndLocationsStep",
-    "newSlug": "/references/medusa-workflows/steps/deleteInventoryLevelsFromItemAndLocationsStep",
-    "filePath": "/www/apps/resources/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.deleteInventoryLevelsFromItemAndLocationsStep/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Inventory/Steps_Inventory/functions/core_flows.Inventory.Steps_Inventory.deleteInventoryLevelsStep",
@@ -1173,6 +1183,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.updateInventoryLevelsWorkflow",
     "newSlug": "/references/medusa-workflows/updateInventoryLevelsWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.updateInventoryLevelsWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.validateInventoryLevelsDelete",
+    "newSlug": "/references/medusa-workflows/validateInventoryLevelsDelete",
+    "filePath": "/www/apps/resources/references/core_flows/Inventory/Workflows_Inventory/functions/core_flows.Inventory.Workflows_Inventory.validateInventoryLevelsDelete/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Invite/Steps_Invite/functions/core_flows.Invite.Steps_Invite.createInviteStep",
@@ -1780,6 +1795,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.getOrdersListWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.markOrderFulfillmentAsDeliveredWorkflow",
+    "newSlug": "/references/medusa-workflows/markOrderFulfillmentAsDeliveredWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.markOrderFulfillmentAsDeliveredWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.markPaymentCollectionAsPaid",
     "newSlug": "/references/medusa-workflows/markPaymentCollectionAsPaid",
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.markPaymentCollectionAsPaid/page.mdx"
@@ -1843,6 +1863,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.orderExchangeRequestItemReturnWorkflow",
     "newSlug": "/references/medusa-workflows/orderExchangeRequestItemReturnWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.orderExchangeRequestItemReturnWorkflow/page.mdx"
+  },
+  {
+    "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.orderFulfillmentDeliverablilityValidationStep",
+    "newSlug": "/references/medusa-workflows/orderFulfillmentDeliverablilityValidationStep",
+    "filePath": "/www/apps/resources/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.orderFulfillmentDeliverablilityValidationStep/page.mdx"
   },
   {
     "origSlug": "/references/core_flows/Order/Workflows_Order/functions/core_flows.Order.Workflows_Order.receiveAndCompleteReturnOrderWorkflow",
@@ -3105,6 +3130,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/User/Workflows_User/functions/core_flows.User.Workflows_User.deleteUsersWorkflow/page.mdx"
   },
   {
+    "origSlug": "/references/core_flows/User/Workflows_User/functions/core_flows.User.Workflows_User.removeUserAccountWorkflow",
+    "newSlug": "/references/medusa-workflows/removeUserAccountWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/User/Workflows_User/functions/core_flows.User.Workflows_User.removeUserAccountWorkflow/page.mdx"
+  },
+  {
     "origSlug": "/references/core_flows/User/Workflows_User/functions/core_flows.User.Workflows_User.updateUsersWorkflow",
     "newSlug": "/references/medusa-workflows/updateUsersWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/User/Workflows_User/functions/core_flows.User.Workflows_User.updateUsersWorkflow/page.mdx"
@@ -3140,9 +3170,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addCustomerToGroup/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createAddresses",
-    "newSlug": "/references/customer/createAddresses",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createAddresses/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerAddresses",
+    "newSlug": "/references/customer/createCustomerAddresses",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerAddresses/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroups",
@@ -3155,9 +3185,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomers/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteAddresses",
-    "newSlug": "/references/customer/deleteAddresses",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteAddresses/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomerAddresses",
+    "newSlug": "/references/customer/deleteCustomerAddresses",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomerAddresses/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomerGroups",
@@ -3170,14 +3200,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomers/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAddresses",
-    "newSlug": "/references/customer/listAddresses",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAddresses/page.mdx"
-  },
-  {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountAddresses",
-    "newSlug": "/references/customer/listAndCountAddresses",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountAddresses/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomerAddresses",
+    "newSlug": "/references/customer/listAndCountCustomerAddresses",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomerAddresses/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomerGroups",
@@ -3188,6 +3213,11 @@ export const slugChanges = [
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomers",
     "newSlug": "/references/customer/listAndCountCustomers",
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomers/page.mdx"
+  },
+  {
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerAddresses",
+    "newSlug": "/references/customer/listCustomerAddresses",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerAddresses/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerGroupCustomers",
@@ -3240,9 +3270,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomers/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateAddresses",
-    "newSlug": "/references/customer/updateAddresses",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateAddresses/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomerAddresses",
+    "newSlug": "/references/customer/updateCustomerAddresses",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomerAddresses/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomerGroups",
@@ -3260,14 +3290,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/interfaces/customer.ICustomerModuleService/page.mdx"
   },
   {
-    "origSlug": "/references/customer_models/classes/customer_models.Address",
-    "newSlug": "/references/customer/models/Address",
-    "filePath": "/www/apps/resources/references/customer_models/classes/customer_models.Address/page.mdx"
-  },
-  {
     "origSlug": "/references/customer_models/classes/customer_models.Customer",
     "newSlug": "/references/customer/models/Customer",
     "filePath": "/www/apps/resources/references/customer_models/classes/customer_models.Customer/page.mdx"
+  },
+  {
+    "origSlug": "/references/customer_models/classes/customer_models.CustomerAddress",
+    "newSlug": "/references/customer/models/CustomerAddress",
+    "filePath": "/www/apps/resources/references/customer_models/classes/customer_models.CustomerAddress/page.mdx"
   },
   {
     "origSlug": "/references/customer_models/classes/customer_models.CustomerGroup",
@@ -4498,6 +4528,11 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.receiveReturn",
     "newSlug": "/references/order/receiveReturn",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.receiveReturn/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerDelivery",
+    "newSlug": "/references/order/registerDelivery",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerDelivery/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerFulfillment",

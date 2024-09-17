@@ -16,14 +16,14 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPricingModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const pricingModuleService: IPricingModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRICING
+    Modules.PRICING
   )
 
   const priceSet = await pricingModuleService.createPriceSets([
@@ -87,14 +87,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPricingModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const pricingModuleService: IPricingModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRICING
+    Modules.PRICING
   )
 
   const priceSets = await pricingModuleService.listPriceSets()
@@ -133,14 +133,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPricingModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const pricingModuleService: IPricingModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRICING
+    Modules.PRICING
   )
 
   const priceSet = await pricingModuleService.retrievePriceSet("pset_123")
@@ -179,14 +179,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPricingModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const pricingModuleService: IPricingModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRICING
+    Modules.PRICING
   )
 
   const priceSet = await pricingModuleService.addPrices({
@@ -249,14 +249,14 @@ export async function POST(request: Request) {
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPricingModuleService } from "@medusajs/types"
   import { PriceListType } from "@medusajs/utils"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const pricingModuleService: IPricingModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRICING
+    Modules.PRICING
   )
 
   const priceLists = await pricingModuleService.createPriceLists([
@@ -333,14 +333,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPricingModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const pricingModuleService: IPricingModuleService = request.scope.resolve(
-    ModuleRegistrationName.PRICING
+    Modules.PRICING
   )
 
   const price = await pricingModuleService.calculatePrices(

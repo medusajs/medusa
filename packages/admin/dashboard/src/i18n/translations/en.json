@@ -835,6 +835,9 @@
   },
   "orders": {
     "domain": "Orders",
+    "claim": "Claim",
+    "exchange": "Exchange",
+    "return": "Return",
     "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
     "list": {
@@ -929,7 +932,7 @@
       "noteHint": "You can type freely if you want to specify something.",
       "location": "Location",
       "locationHint": "Choose which location you want to return the items to.",
-      "inboundShipping": "Inbound shipping",
+      "inboundShipping": "Return shipping",
       "inboundShippingHint": "Choose which method you want to use.",
       "returnableQuantityLabel": "Returnable quantity",
       "refundableAmountLabel": "Refundable amount",
@@ -943,6 +946,16 @@
       "cancel": {
         "title": "Cancel Return",
         "description": "Are you sure you want to cancel the return request?"
+      },
+      "placeholders": {
+        "noReturnShippingOptions": {
+          "title": "No return shipping options found",
+          "hint": "No return shipping options were created for the location. You can create one at <LinkComponent>Location & Shipping</LinkComponent>."
+        },
+        "outboundShippingOptions": {
+          "title": "No outbound shipping options found",
+          "hint": "No outbound shipping options were created for the location. You can create one at <LinkComponent>Location & Shipping</LinkComponent>."
+        }
       },
       "receive": {
         "action": "Receive items",
@@ -2561,6 +2574,8 @@
     "totalExclTax": "Total excl. tax",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
+    "outboundShipping": "Outbound Shipping",
+    "returnShipping": "Return Shipping",
     "tax": "Tax",
     "created": "Created",
     "key": "Key",

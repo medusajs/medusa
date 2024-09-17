@@ -28,7 +28,7 @@ This workflow creates one or more customer address.
 import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
 
 createCustomerAddressesWorkflow.hooks.addressesCreated(
-	async (({ addresses, additional_data }, { container }) => {
+	(async ({ addresses, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -86,7 +86,7 @@ This workflow creates one or more customers.
 import { createCustomersWorkflow } from "@medusajs/core-flows"
 
 createCustomersWorkflow.hooks.customersCreated(
-	async (({ customers, additional_data }, { container }) => {
+	(async ({ customers, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -122,7 +122,7 @@ This workflow deletes one or more customer addresses.
 import { deleteCustomerAddressesWorkflow } from "@medusajs/core-flows"
 
 deleteCustomerAddressesWorkflow.hooks.addressesDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -158,7 +158,7 @@ This workflow deletes one or more customers.
 import { deleteCustomersWorkflow } from "@medusajs/core-flows"
 
 deleteCustomersWorkflow.hooks.customersDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -169,6 +169,24 @@ deleteCustomersWorkflow.hooks.customersDeleted(
 Handlers consuming this hook accept the following input.
 
 <TypeList types={[{"name":"input","type":"object","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="customersDeleted"/>
+
+___
+
+## removeCustomerAccountWorkflow
+
+This workflow deletes a user and remove the association in the auth identity.
+
+### Steps
+
+<WorkflowDiagram workflow={{"name":"removeCustomerAccountWorkflow","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../core_flows.Steps_Common/page.mdx#useremotequerystep","depth":1},{"type":"workflow","name":"deleteCustomersWorkflow","description":"This workflow deletes one or more customers.","link":"../../core_flows.Workflows_Customer/page.mdx#deletecustomersworkflow","depth":2},{"type":"when","condition":"{\n      return !!customers[0]?.has_account\n    }","depth":"3","steps":[{"type":"step","name":"useRemoteQueryStep","description":"This step fetches data across modules using the remote query.\n\nLearn more in the [Remote Query documentation](https://docs.medusajs.com/v2/advanced-development/modules/remote-query).\n\n","link":"../../core_flows.Steps_Common/page.mdx#useremotequerystep","depth":3},{"type":"step","name":"setAuthAppMetadataStep","description":"This step sets the `app_metadata` property of an auth identity.","link":"../../core_flows.Steps_Auth/page.mdx#setauthappmetadatastep","depth":3}]}]}} />
+
+### Input
+
+<TypeList types={[{"name":"RemoveCustomerAccountWorkflowInput","type":"[RemoveCustomerAccountWorkflowInput](../../types/core_flows.RemoveCustomerAccountWorkflowInput/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"customerId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="removeCustomerAccountWorkflow"/>
+
+### Output
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="removeCustomerAccountWorkflow"/>
 
 ___
 
@@ -198,7 +216,7 @@ This workflow updates one or more customer addresses.
 import { updateCustomerAddressesWorkflow } from "@medusajs/core-flows"
 
 updateCustomerAddressesWorkflow.hooks.addressesUpdated(
-	async (({ addresses, additional_data }, { container }) => {
+	(async ({ addresses, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -238,7 +256,7 @@ This workflow updates one or more customers.
 import { updateCustomersWorkflow } from "@medusajs/core-flows"
 
 updateCustomersWorkflow.hooks.customersUpdated(
-	async (({ customers, additional_data }, { container }) => {
+	(async ({ customers, additional_data }, { container }) => {
 		//TODO
 	})
 )

@@ -1,1 +1,1 @@
-curl -X POST '{backend_url}/auth/customer/{auth_provider}'
+curl -X POST '{backend_url}/auth/customer/github'
