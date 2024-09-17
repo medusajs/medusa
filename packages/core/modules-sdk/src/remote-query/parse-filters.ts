@@ -6,12 +6,15 @@ import {
 import { isObject, isString } from "@medusajs/utils"
 import { MedusaModule } from "../medusa-module"
 
+const joinerConfigMapCache = new Map()
+
 /**
  * Parse and assign filters to remote query object to the corresponding relation level
  * @param entryPoint
  * @param filters
  * @param remoteQueryObject
  * @param isFieldAliasNestedRelation
+ * @param entitiesMap
  */
 export function parseAndAssignFilters(
   {
@@ -29,28 +32,17 @@ export function parseAndAssignFilters(
 ) {
   const joinerConfigs = MedusaModule.getAllJoinerConfigs()
 
-  const joinerConfigMapCache = new Map()
-
   for (const [filterKey, filterValue] of Object.entries(filters)) {
     let entryAlias!: JoinerServiceConfigAlias
     let entryJoinerConfig!: JoinerServiceConfig
 
-    if (!joinerConfigMapCache.has(filterKey)) {
-      const { joinerConfig, alias } = retrieveJoinerConfigFromPropertyName({
-        entryPoint: entryPoint,
-        joinerConfigs,
-      })
+    const { joinerConfig, alias } = retrieveJoinerConfigFromPropertyName({
+      entryPoint: entryPoint,
+      joinerConfigs,
+    })
 
-      entryAlias = alias
-      entryJoinerConfig = joinerConfig
-
-      joinerConfigMapCache.set(joinerConfig.serviceName, {
-        alias,
-      })
-    } else {
-      const data = joinerConfigMapCache.get(filterKey)
-      entryAlias = data.alias
-    }
+    entryAlias = alias
+    entryJoinerConfig = joinerConfig
 
     const entryEntity = entitiesMap[entryAlias.entity!]
     if (!entryEntity) {
@@ -116,6 +108,10 @@ export function parseAndAssignFilters(
 }
 
 function retrieveJoinerConfigFromPropertyName({ entryPoint, joinerConfigs }) {
+  if (joinerConfigMapCache.has(entryPoint)) {
+    return joinerConfigMapCache.get(entryPoint)!
+  }
+
   for (const joinerConfig of joinerConfigs) {
     const aliases = joinerConfig.alias
     const entryPointAlias = aliases.find((alias) => {
@@ -124,6 +120,11 @@ function retrieveJoinerConfigFromPropertyName({ entryPoint, joinerConfigs }) {
     })
 
     if (entryPointAlias) {
+      joinerConfigMapCache.set(entryPoint, {
+        joinerConfig,
+        alias: entryPointAlias,
+      })
+
       return { joinerConfig, alias: entryPointAlias }
     }
   }
