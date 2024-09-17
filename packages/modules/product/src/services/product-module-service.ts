@@ -6,7 +6,6 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   ProductTypes,
-  ProductVariantDTO,
 } from "@medusajs/types"
 import {
   Product,
@@ -342,7 +341,7 @@ export default class ProductModuleService
     const variantIdsToUpdate = data.map(({ id }) => id)
     const variants = await this.productVariantService_.list(
       { id: variantIdsToUpdate },
-      { take: null },
+      { take: null, relations: ["options"] },
       sharedContext
     )
     if (variants.length !== data.length) {
@@ -374,12 +373,20 @@ export default class ProductModuleService
       sharedContext
     )
 
+    const productVariantsWithOptions =
+      ProductModuleService.assignOptionsToVariants(
+        variantsWithProductId,
+        productOptions
+      )
+
+    ProductModuleService.validateUniqueOptionsCombinations(
+      productVariantsWithOptions as any,
+      variants
+    )
+
     const { entities: productVariants, performedActions } =
       await this.productVariantService_.upsertWithReplace(
-        ProductModuleService.assignOptionsToVariants(
-          variantsWithProductId,
-          productOptions
-        ),
+        productVariantsWithOptions,
         {
           relations: ["options"],
         },

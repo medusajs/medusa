@@ -597,7 +597,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
-        it("should createa variant with id that was passed if it does not exist", async () => {
+        it("should create a variant with id that was passed if it does not exist", async () => {
           const updateData = {
             id: productTwo.id,
             // Note: VariantThree is already assigned to productTwo, that should be deleted
