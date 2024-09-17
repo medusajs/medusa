@@ -4,7 +4,7 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { OrchestrationUtils, isString } from "@medusajs/utils"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
 import { StepResponse, resolveValue } from "./helpers"
 import { createStepHandler } from "./helpers/create-step-handler"

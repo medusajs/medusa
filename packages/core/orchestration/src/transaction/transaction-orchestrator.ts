@@ -52,6 +52,35 @@ export class TransactionOrchestrator extends EventEmitter {
     return this.workflowOptions[modelId]
   }
 
+  /**
+   * Trace workflow transaction for instrumentation
+   */
+  static traceTransaction?: (
+    transactionResume: (...args: any[]) => Promise<void>,
+    metadata: {
+      model_id: string
+      transaction_id: string
+      flow_metadata: TransactionFlow["metadata"]
+    }
+  ) => Promise<any>
+
+  /**
+   * Trace workflow steps for instrumentation
+   */
+  static traceStep?: (
+    handler: (...args: any[]) => Promise<any>,
+    metadata: {
+      action: string
+      type: "invoke" | "compensate"
+      step_id: string
+      step_uuid: string
+      attempts: number
+      failures: number
+      async: boolean
+      idempotency_key: string
+    }
+  ) => Promise<any>
+
   constructor({
     id,
     definition,
@@ -730,18 +759,44 @@ export class TransactionOrchestrator extends EventEmitter {
           }
         }
 
+        const traceData = {
+          action: step.definition.action + "",
+          type,
+          step_id: step.id,
+          step_uuid: step.uuid + "",
+          attempts: step.attempts,
+          failures: step.failures,
+          async: !!(type === "invoke"
+            ? step.definition.async
+            : step.definition.compensateAsync),
+          idempotency_key: payload.metadata.idempotency_key,
+        }
+
+        const handlerArgs = [
+          step.definition.action + "",
+          type,
+          payload,
+          transaction,
+          step,
+          this,
+        ] as Parameters<TransactionStepHandler>
+
         if (!isAsync) {
           hasSyncSteps = true
+
+          const stepHandler = async () => {
+            return await transaction.handler(...handlerArgs)
+          }
+
+          let promise: Promise<unknown>
+          if (TransactionOrchestrator.traceStep) {
+            promise = TransactionOrchestrator.traceStep(stepHandler, traceData)
+          } else {
+            promise = stepHandler()
+          }
+
           execution.push(
-            transaction
-              .handler(
-                step.definition.action + "",
-                type,
-                payload,
-                transaction,
-                step,
-                this
-              )
+            promise
               .then(async (response: any) => {
                 if (this.hasExpired({ transaction, step }, Date.now())) {
                   await this.checkStepTimeout(transaction, step)
@@ -783,17 +838,26 @@ export class TransactionOrchestrator extends EventEmitter {
               })
           )
         } else {
+          const stepHandler = async () => {
+            return await transaction.handler(...handlerArgs)
+          }
+
           execution.push(
             transaction.saveCheckpoint().then(() => {
-              transaction
-                .handler(
-                  step.definition.action + "",
-                  type,
-                  payload,
-                  transaction,
-                  step,
-                  this
+              let promise: Promise<unknown>
+
+              if (TransactionOrchestrator.traceStep) {
+                promise = TransactionOrchestrator.traceStep(
+                  stepHandler,
+                  traceData
                 )
+              } else {
+                promise = stepHandler()
+              }
+
+              // TODO discussion why do we not await here, adding an await I wouldnt expect the test to fail but it does, maybe we should split the test to also test after everything is executed?
+              // cc test from engine redis
+              promise
                 .then(async (response: any) => {
                   if (
                     !step.definition.backgroundExecution ||
@@ -877,28 +941,46 @@ export class TransactionOrchestrator extends EventEmitter {
       return
     }
 
-    const flow = transaction.getFlow()
+    const executeNext = async () => {
+      const flow = transaction.getFlow()
 
-    if (flow.state === TransactionState.NOT_STARTED) {
-      flow.state = TransactionState.INVOKING
-      flow.startedAt = Date.now()
+      if (flow.state === TransactionState.NOT_STARTED) {
+        flow.state = TransactionState.INVOKING
+        flow.startedAt = Date.now()
 
-      if (this.getOptions().store) {
-        await transaction.saveCheckpoint(
-          flow.hasAsyncSteps ? 0 : TransactionOrchestrator.DEFAULT_TTL
-        )
+        if (this.getOptions().store) {
+          await transaction.saveCheckpoint(
+            flow.hasAsyncSteps ? 0 : TransactionOrchestrator.DEFAULT_TTL
+          )
+        }
+
+        if (transaction.hasTimeout()) {
+          await transaction.scheduleTransactionTimeout(
+            transaction.getTimeout()!
+          )
+        }
+
+        this.emit(DistributedTransactionEvent.BEGIN, { transaction })
+      } else {
+        this.emit(DistributedTransactionEvent.RESUME, { transaction })
       }
 
-      if (transaction.hasTimeout()) {
-        await transaction.scheduleTransactionTimeout(transaction.getTimeout()!)
-      }
-
-      this.emit(DistributedTransactionEvent.BEGIN, { transaction })
-    } else {
-      this.emit(DistributedTransactionEvent.RESUME, { transaction })
+      return await this.executeNext(transaction)
     }
 
-    await this.executeNext(transaction)
+    if (
+      TransactionOrchestrator.traceTransaction &&
+      !transaction.getFlow().hasAsyncSteps
+    ) {
+      await TransactionOrchestrator.traceTransaction(executeNext, {
+        model_id: transaction.modelId,
+        transaction_id: transaction.transactionId,
+        flow_metadata: transaction.getFlow().metadata,
+      })
+      return
+    }
+
+    await executeNext()
   }
 
   /**
