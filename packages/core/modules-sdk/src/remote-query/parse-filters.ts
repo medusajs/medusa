@@ -10,6 +10,12 @@ function makeSchemaExecutable(inputSchema: string) {
   return makeExecutableSchema({ typeDefs: cleanedSchema })
 }
 
+/**
+ * Parse and assign filters to remote query object to the corresponding relation level
+ * @param entryPoint
+ * @param filters
+ * @param remoteQueryObject
+ */
 export function parseAndAssignFilters({
   entryPoint,
   filters,
