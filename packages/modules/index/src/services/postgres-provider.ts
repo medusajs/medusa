@@ -6,6 +6,7 @@ import {
 } from "@medusajs/types"
 import {
   MikroOrmBaseRepository as BaseRepository,
+  ContainerRegistrationKeys,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
@@ -26,7 +27,7 @@ import { QueryBuilder, createPartitions } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
-  remoteQuery: RemoteQueryFunction
+  [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
   baseRepository: BaseRepository
 }
 
@@ -50,7 +51,11 @@ export class PostgresProvider {
   protected baseRepository_: BaseRepository
 
   constructor(
-    { manager, remoteQuery, baseRepository }: InjectedDependencies,
+    {
+      manager,
+      [ContainerRegistrationKeys.REMOTE_QUERY]: remoteQuery,
+      baseRepository,
+    }: InjectedDependencies,
     options: {
       schemaObjectRepresentation: SchemaObjectRepresentation
       entityMap: Record<string, any>

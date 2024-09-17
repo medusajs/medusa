@@ -1,3 +1,4 @@
+import { MedusaAppOutput } from "@medusajs/modules-sdk"
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -83,11 +84,14 @@ export interface MedusaSuiteOptions<TService = unknown> {
     schema: string
     clientUrl: string
   }
+  getMedusaApp: () => MedusaAppOutput
 }
 
 export function medusaIntegrationTestRunner({
   moduleName,
   dbName,
+  medusaConfigFile,
+  loadApplication,
   schema = "public",
   env = {},
   debug = false,
@@ -97,6 +101,8 @@ export function medusaIntegrationTestRunner({
   moduleName?: string
   env?: Record<string, any>
   dbName?: string
+  medusaConfigFile?: string
+  loadApplication?: boolean
   schema?: string
   debug?: boolean
   inApp?: boolean
@@ -113,12 +119,13 @@ export function medusaIntegrationTestRunner({
     debug,
   }
 
-  const cwd = process.cwd()
+  const cwd = medusaConfigFile ?? process.cwd()
 
   let shutdown = async () => void 0
   const dbUtils = dbTestUtilFactory()
   let globalContainer: ContainerLike
   let apiUtils: any
+  let loadedApplication: any
 
   let options = {
     api: new Proxy(
@@ -137,6 +144,7 @@ export function medusaIntegrationTestRunner({
         },
       }
     ),
+    getMedusaApp: () => loadedApplication,
     getContainer: () => globalContainer,
     dbConfig: {
       dbName,
@@ -177,6 +185,10 @@ export function medusaIntegrationTestRunner({
     let containerRes: MedusaContainer = container
     let serverShutdownRes: () => any
     let portRes: number
+
+    if (loadApplication) {
+      loadedApplication = await appLoader.load()
+    }
 
     try {
       const {
