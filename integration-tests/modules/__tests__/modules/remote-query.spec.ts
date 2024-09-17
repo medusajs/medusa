@@ -1,4 +1,10 @@
-import { IRegionModuleService } from "@medusajs/types"
+import {
+  ICustomerModuleService,
+  IPricingModuleService,
+  IProductModuleService,
+  IRegionModuleService,
+  RemoteQueryFunction,
+} from "@medusajs/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../..//helpers/create-admin-user"
@@ -193,6 +199,172 @@ medusaIntegrationTestRunner({
             }
           )
         ).resolves.toHaveLength(1)
+      })
+    })
+
+    describe("Query", () => {
+      let appContainer
+      let query: RemoteQueryFunction
+
+      let pricingModule: IPricingModuleService
+      let productModule: IProductModuleService
+      let customerModule: ICustomerModuleService
+      let regionModule: IRegionModuleService
+
+      let product
+      let variant
+      let variant2
+      let region
+      let customerGroup
+
+      beforeAll(() => {
+        appContainer = getContainer()
+        query = appContainer.resolve(ContainerRegistrationKeys.QUERY)
+
+        pricingModule = appContainer.resolve(Modules.PRICING)
+        productModule = appContainer.resolve(Modules.PRODUCT)
+        customerModule = appContainer.resolve(Modules.CUSTOMER)
+        regionModule = appContainer.resolve(Modules.REGION)
+      })
+
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        /* customerGroup = await customerModule.createCustomerGroups({
+          name: "VIP",
+        })
+        region = await regionModule.createRegions({
+          name: "US",
+          currency_code: "USD",
+        })
+        ;[product] = await productModule.createProducts([
+          {
+            title: "test product",
+            variants: [
+              {
+                title: "test product variant",
+              },
+              {
+                title: "test product variant 2",
+              },
+            ],
+          },
+        ])
+
+        variant = product.variants[0]
+        variant2 = product.variants[1]
+
+        const priceSet = await createVariantPriceSet({
+          container: appContainer,
+          variantId: variant.id,
+          prices: [],
+        })
+
+        await pricingModule.createPriceLists([
+          {
+            title: "test price list",
+            description: "test",
+            ends_at: new Date().toDateString(),
+            starts_at: new Date().toDateString(),
+            status: PriceListStatus.ACTIVE,
+            type: PriceListType.OVERRIDE,
+            prices: [
+              {
+                amount: 5000,
+                currency_code: "usd",
+                price_set_id: priceSet.id,
+                rules: {
+                  region_id: region.id,
+                },
+              },
+            ],
+            rules: {
+              customer_group_id: [customerGroup.id],
+            },
+          },
+        ])*/
+
+        const payload = {
+          title: "Test Giftcard",
+          is_giftcard: true,
+          description: "test-giftcard-description",
+          options: [{ title: "Denominations", values: ["100"] }],
+          variants: [
+            {
+              title: "Test variant",
+              prices: [{ currency_code: "usd", amount: 100 }],
+              options: {
+                Denominations: "100",
+              },
+            },
+          ],
+        }
+
+        await api
+          .post("/admin/products", payload, adminHeaders)
+          .catch((err) => {
+            console.log(err)
+          })
+      })
+
+      it(`should perform cross module query and apply filters correctly to the correct modules`, async () => {
+        const { data } = await query.graph({
+          entity: "product",
+          fields: ["id", "title", "variants.*", "variants.prices.amount"],
+          filters: {
+            variants: {
+              prices: {
+                amount: {
+                  $gt: 100,
+                },
+              },
+            },
+          },
+        })
+
+        expect(data).toEqual([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "Test Giftcard",
+            variants: [
+              expect.objectContaining({
+                title: "Test variant",
+                prices: [],
+              }),
+            ],
+          }),
+        ])
+
+        const { data: dataWithPrice } = await query.graph({
+          entity: "product",
+          fields: ["id", "title", "variants.*", "variants.prices.amount"],
+          filters: {
+            variants: {
+              prices: {
+                amount: {
+                  $gt: 50,
+                },
+              },
+            },
+          },
+        })
+
+        expect(dataWithPrice).toEqual([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "Test Giftcard",
+            variants: [
+              expect.objectContaining({
+                title: "Test variant",
+                prices: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ])
       })
     })
   },
