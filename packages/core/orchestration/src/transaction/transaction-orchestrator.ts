@@ -795,8 +795,6 @@ export class TransactionOrchestrator extends EventEmitter {
             promise = stepHandler()
           }
 
-          promise
-
           execution.push(
             promise
               .then(async (response: any) => {
@@ -844,18 +842,19 @@ export class TransactionOrchestrator extends EventEmitter {
             return await transaction.handler(...handlerArgs)
           }
 
-          let promise: Promise<unknown>
-
-          if (TransactionOrchestrator.traceStep) {
-            promise = TransactionOrchestrator.traceStep(stepHandler, traceData)
-          } else {
-            promise = stepHandler()
-          }
-
-          promise
-
           execution.push(
             transaction.saveCheckpoint().then(() => {
+              let promise: Promise<unknown>
+
+              if (TransactionOrchestrator.traceStep) {
+                promise = TransactionOrchestrator.traceStep(
+                  stepHandler,
+                  traceData
+                )
+              } else {
+                promise = stepHandler()
+              }
+
               // TODO discussion why do we not await here, adding an await I wouldnt expect the test to fail but it does, maybe we should split the test to also test after everything is executed?
               // cc test from engine redis
               promise
