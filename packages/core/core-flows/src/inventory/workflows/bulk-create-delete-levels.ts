@@ -1,6 +1,7 @@
 import { InventoryLevelDTO, InventoryTypes } from "@medusajs/types"
 import {
   createWorkflow,
+  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/workflows-sdk"
@@ -22,12 +23,22 @@ export const bulkCreateDeleteLevelsWorkflow = createWorkflow(
   (
     input: WorkflowData<BulkCreateDeleteLevelsWorkflowInput>
   ): WorkflowResponse<InventoryLevelDTO[]> => {
-    deleteInventoryLevelsWorkflow.runAsStep({
-      input: {
-        $or: input.deletes,
-      },
+    when({ input }, ({ input }) => {
+      return !!input.deletes?.length
+    }).then(() => {
+      deleteInventoryLevelsWorkflow.runAsStep({
+        input: {
+          $or: input.deletes,
+        },
+      })
     })
 
-    return new WorkflowResponse(createInventoryLevelsStep(input.creates))
+    const created = when({ input }, ({ input }) => {
+      return !!input.creates?.length
+    }).then(() => {
+      return createInventoryLevelsStep(input.creates)
+    })
+
+    return new WorkflowResponse(created || [])
   }
 )
