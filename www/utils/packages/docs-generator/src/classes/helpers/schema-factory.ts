@@ -32,7 +32,10 @@ class SchemaFactory {
       type: "string",
     },
     IBigNumber: {
-      type: "string",
+      type: "number",
+    },
+    BigNumberValue: {
+      type: "number",
     },
   }
   /**
