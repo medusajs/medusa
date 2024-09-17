@@ -1,11 +1,11 @@
 export const schema = `
 type PriceSet {
   id: ID!
-  prices: [MoneyAmount]
+  prices: [Price]
   calculated_price: CalculatedPriceSet
 }
 
-type MoneyAmount {
+type Price {
   id: ID!
   currency_code: String
   amount: Float

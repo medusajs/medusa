@@ -1,17 +1,17 @@
 /**
  * @schema AdminPostOrderEditsItemsActionReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details to update in the item.
  * x-schemaName: AdminPostOrderEditsItemsActionReqSchema
  * properties:
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The order edit's quantity.
+ *     description: The item's quantity.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The order edit's internal note.
+ *     description: A note viewed only by admin users.
  * 
 */
 
