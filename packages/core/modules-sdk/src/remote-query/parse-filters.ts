@@ -22,11 +22,13 @@ export function parseAndAssignFilters({
   filters,
   remoteQueryObject,
   isFieldAliasNestedRelation,
+  targetNestedRelation,
 }: {
   remoteQueryObject: object
   entryPoint: string
   filters: object
   isFieldAliasNestedRelation?: boolean
+  targetNestedRelation?: string
 }) {
   const joinerConfigs = MedusaModule.getAllJoinerConfigs()
 
@@ -119,6 +121,8 @@ export function parseAndAssignFilters({
           )
 
           let isFieldAliasNestedRelation = false
+          let parentRelationAlias = nestedFilterKey
+
           if (linkJoinerConfig && relationsAlias?.length) {
             const fieldAlias = linkJoinerConfig.extends?.find(
               (extend) => extend.fieldAlias?.[nestedFilterKey]
@@ -131,12 +135,16 @@ export function parseAndAssignFilters({
 
               if (!relationsAlias.includes(path.split(".").pop())) {
                 isFieldAliasNestedRelation = true
+                parentRelationAlias = relationsAlias.find((alias) =>
+                  path.includes(alias)
+                )!
               }
             }
           }
 
           parseAndAssignFilters({
             entryPoint: nestedFilterKey,
+            targetNestedRelation: nestedFilterKey,
             filters: nestedFilterValue,
             remoteQueryObject: remoteQueryObject[entryPoint][filterKey],
             isFieldAliasNestedRelation,
@@ -147,19 +155,17 @@ export function parseAndAssignFilters({
       continue
     }
 
-    if (entryEntityFields?.includes(filterKey)) {
-      remoteQueryObject[entryPoint] ??= {}
-      remoteQueryObject[entryPoint].__args ??= {}
-      remoteQueryObject[entryPoint].__args["filters"] ??= {}
+    remoteQueryObject[entryPoint] ??= {}
+    remoteQueryObject[entryPoint].__args ??= {}
+    remoteQueryObject[entryPoint].__args["filters"] ??= {}
 
-      if (!isFieldAliasNestedRelation) {
-        remoteQueryObject[entryPoint].__args["filters"][filterKey] = filterValue
-      } else {
-        // In case of field alias that refers to a relation of linked entity we need to assign the filter on the relation filter itself instead of top level of the args\
-        remoteQueryObject[entryPoint].__args["filters"][entryPoint] ??= {}
-        remoteQueryObject[entryPoint].__args["filters"][entryPoint][filterKey] =
-          filterValue
-      }
+    if (!isFieldAliasNestedRelation) {
+      remoteQueryObject[entryPoint].__args["filters"][filterKey] = filterValue
+    } else {
+      // In case of field alias that refers to a relation of linked entity we need to assign the filter on the relation filter itself instead of top level of the args\
+      remoteQueryObject[entryPoint].__args["filters"][entryPoint] ??= {}
+      remoteQueryObject[entryPoint].__args["filters"][entryPoint][filterKey] =
+        filterValue
     }
   }
 }

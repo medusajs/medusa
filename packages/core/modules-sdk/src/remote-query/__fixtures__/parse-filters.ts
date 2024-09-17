@@ -36,10 +36,16 @@ const productJoinerConfig = defineJoinerConfig("product", {
 const pricingJoinerConfig = defineJoinerConfig("pricing", {
   schema: `
     type PriceSet {
+      id: ID
       prices: [Price]
     }
 
     type Price {
+      amount: Int
+      deep_nested_price: DeepNestedPrice
+    }
+    
+    type DeepNestedPrice {
       amount: Int
     }
   `,
@@ -56,6 +62,13 @@ const pricingJoinerConfig = defineJoinerConfig("pricing", {
       entity: "PriceSet",
       args: {
         methodSuffix: "priceSet",
+      },
+    },
+    {
+      name: ["deep_nested_price", "deep_nested_prices"],
+      entity: "DeepNestedPrice",
+      args: {
+        methodSuffix: "deepNestedPrice",
       },
     },
   ],
@@ -106,6 +119,10 @@ const linkProductVariantPriceSet = {
         prices: {
           path: "price_set_link.price_set.prices",
           isList: true,
+          forwardArgumentsOnPath: ["price_set_link.price_set"],
+        },
+        deep_nested_price: {
+          path: "price_set_link.price_set.deep_nested_price",
           forwardArgumentsOnPath: ["price_set_link.price_set"],
         },
         calculated_price: {

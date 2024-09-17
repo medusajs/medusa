@@ -2,148 +2,515 @@ import { parseAndAssignFilters } from "../parse-filters"
 import "../__fixtures__/parse-filters"
 
 describe("parse-filters", () => {
-  it("should parse filters through linked relations", () => {
-    const filters = {
-      id: "string",
-      variants: {
-        sku: {
-          $eq: "string",
+  describe("Without operator map usage", () => {
+    it("should parse filter for a single level module", () => {
+      const filters = {
+        id: "string",
+      }
+
+      const remoteQueryObject = {
+        product: {
+          fields: ["id", "title", "variants"],
         },
-        price_set: {
-          amount: {
-            $eq: 50,
-          },
-        },
-      },
-    }
+      }
 
-    const remoteQueryObject = {
-      product: {
-        fields: ["id", "title", "variants"],
+      parseAndAssignFilters({
+        remoteQueryObject,
+        entryPoint: "product",
+        filters,
+      })
 
-        variants: {
-          fields: ["id", "sku", "prices"],
-
-          price_set: {
-            fields: ["id", "amount"],
-
-            prices: {
-              fields: ["id", "amount"],
+      expect(remoteQueryObject).toEqual({
+        product: {
+          fields: ["id", "title", "variants"],
+          __args: {
+            filters: {
+              id: "string",
             },
           },
         },
-      },
-    }
-
-    parseAndAssignFilters({
-      remoteQueryObject,
-      entryPoint: "product",
-      filters,
+      })
     })
 
-    expect(remoteQueryObject).toEqual({
-      product: {
-        fields: ["id", "title", "variants"],
-        __args: {
-          filters: {
-            id: "string",
-            variants: {
-              sku: {
-                $eq: "string",
+    it("should parse filters through linked immediate relations", () => {
+      const filters = {
+        id: "string",
+        variants: {
+          sku: {
+            $eq: "string",
+          },
+          price_set: {
+            id: "id_test",
+            prices: {
+              amount: 50,
+            },
+          },
+        },
+      }
+
+      const remoteQueryObject = {
+        product: {
+          fields: ["id", "title", "variants"],
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            price_set: {
+              fields: ["id", "amount"],
+
+              prices: {
+                fields: ["id", "amount"],
               },
             },
           },
         },
+      }
 
-        variants: {
-          fields: ["id", "sku", "prices"],
+      parseAndAssignFilters({
+        remoteQueryObject,
+        entryPoint: "product",
+        filters,
+      })
 
-          price_set: {
-            fields: ["id", "amount"],
-            __args: {
-              filters: {
-                amount: {
-                  $eq: 50,
+      expect(remoteQueryObject).toEqual({
+        product: {
+          fields: ["id", "title", "variants"],
+          __args: {
+            filters: {
+              id: "string",
+              variants: {
+                sku: {
+                  $eq: "string",
                 },
               },
             },
+          },
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            price_set: {
+              fields: ["id", "amount"],
+              __args: {
+                filters: {
+                  id: "id_test",
+                  prices: {
+                    amount: 50,
+                  },
+                },
+              },
+
+              prices: {
+                fields: ["id", "amount"],
+              },
+            },
+          },
+        },
+      })
+    })
+
+    it("should parse filters through linked nested relations through configured field alias with forward args", () => {
+      const filters = {
+        id: "string",
+        variants: {
+          sku: {
+            $eq: "string",
+          },
+          prices: {
+            amount: 50,
+          },
+        },
+      }
+
+      const remoteQueryObject = {
+        product: {
+          fields: ["id", "title", "variants"],
+
+          variants: {
+            fields: ["id", "sku", "prices"],
 
             prices: {
               fields: ["id", "amount"],
             },
           },
         },
-      },
-    })
-  })
+      }
 
-  it("should parse filters through linked nested relations", () => {
-    const filters = {
-      id: "string",
-      variants: {
-        sku: {
-          $eq: "string",
-        },
-        prices: {
-          amount: {
-            $eq: 50,
-          },
-        },
-      },
-    }
+      parseAndAssignFilters({
+        remoteQueryObject,
+        entryPoint: "product",
+        filters,
+      })
 
-    const remoteQueryObject = {
-      product: {
-        fields: ["id", "title", "variants"],
-
-        variants: {
-          fields: ["id", "sku", "prices"],
-
-          prices: {
-            fields: ["id", "amount"],
-          },
-        },
-      },
-    }
-
-    parseAndAssignFilters({
-      remoteQueryObject,
-      entryPoint: "product",
-      filters,
-    })
-
-    expect(remoteQueryObject).toEqual({
-      product: {
-        fields: ["id", "title", "variants"],
-        __args: {
-          filters: {
-            id: "string",
-            variants: {
-              sku: {
-                $eq: "string",
+      expect(remoteQueryObject).toEqual({
+        product: {
+          fields: ["id", "title", "variants"],
+          __args: {
+            filters: {
+              id: "string",
+              variants: {
+                sku: {
+                  $eq: "string",
+                },
               },
             },
           },
-        },
 
-        variants: {
-          fields: ["id", "sku", "prices"],
+          variants: {
+            fields: ["id", "sku", "prices"],
 
-          prices: {
-            fields: ["id", "amount"],
+            prices: {
+              fields: ["id", "amount"],
 
-            __args: {
-              filters: {
-                prices: {
-                  amount: {
-                    $eq: 50,
+              __args: {
+                filters: {
+                  prices: {
+                    amount: 50,
                   },
                 },
               },
             },
           },
         },
-      },
+      })
+    })
+
+    it("should parse filters through linked deep nested relations through configured field alias with forward args", () => {
+      const filters = {
+        id: "string",
+        variants: {
+          sku: {
+            $eq: "string",
+          },
+          prices: {
+            amount: 50,
+
+            deep_nested_price: {
+              amount: 100,
+            },
+          },
+        },
+      }
+
+      const remoteQueryObject = {
+        product: {
+          fields: ["id", "title", "variants"],
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            prices: {
+              fields: ["id", "amount"],
+
+              deep_nested_price: {
+                fields: ["id", "amount"],
+              },
+            },
+          },
+        },
+      }
+
+      parseAndAssignFilters({
+        remoteQueryObject,
+        entryPoint: "product",
+        filters,
+      })
+
+      expect(remoteQueryObject).toEqual({
+        product: {
+          fields: ["id", "title", "variants"],
+          __args: {
+            filters: {
+              id: "string",
+              variants: {
+                sku: {
+                  $eq: "string",
+                },
+              },
+            },
+          },
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            prices: {
+              fields: ["id", "amount"],
+              __args: {
+                filters: {
+                  prices: {
+                    amount: 50,
+                    deep_nested_price: {
+                      amount: 100,
+                    },
+                  },
+                },
+              },
+
+              deep_nested_price: {
+                fields: ["id", "amount"],
+              },
+            },
+          },
+        },
+      })
+    })
+  })
+
+  describe("With operator map usage", () => {
+    it("should parse filter for a single level module", () => {
+      const filters = {
+        id: { $ilike: "%string%" },
+      }
+
+      const remoteQueryObject = {
+        product: {
+          fields: ["id", "title", "variants"],
+        },
+      }
+
+      parseAndAssignFilters({
+        remoteQueryObject,
+        entryPoint: "product",
+        filters,
+      })
+
+      expect(remoteQueryObject).toEqual({
+        product: {
+          fields: ["id", "title", "variants"],
+          __args: {
+            filters: {
+              id: { $ilike: "%string%" },
+            },
+          },
+        },
+      })
+    })
+
+    it("should parse filters through linked immediate relations", () => {
+      const filters = {
+        id: "string",
+        variants: {
+          sku: {
+            $eq: "string",
+          },
+          price_set: {
+            id: "id_test",
+            prices: {
+              amount: {
+                $gte: 50,
+              },
+            },
+          },
+        },
+      }
+
+      const remoteQueryObject = {
+        product: {
+          fields: ["id", "title", "variants"],
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            price_set: {
+              fields: ["id", "amount"],
+
+              prices: {
+                fields: ["id", "amount"],
+              },
+            },
+          },
+        },
+      }
+
+      parseAndAssignFilters({
+        remoteQueryObject,
+        entryPoint: "product",
+        filters,
+      })
+
+      expect(remoteQueryObject).toEqual({
+        product: {
+          fields: ["id", "title", "variants"],
+          __args: {
+            filters: {
+              id: "string",
+              variants: {
+                sku: {
+                  $eq: "string",
+                },
+              },
+            },
+          },
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            price_set: {
+              fields: ["id", "amount"],
+              __args: {
+                filters: {
+                  id: "id_test",
+                  prices: {
+                    amount: {
+                      $gte: 50,
+                    },
+                  },
+                },
+              },
+
+              prices: {
+                fields: ["id", "amount"],
+              },
+            },
+          },
+        },
+      })
+    })
+
+    it("should parse filters through linked nested relations through configured field alias with forward args", () => {
+      const filters = {
+        id: "string",
+        variants: {
+          sku: {
+            $eq: "string",
+          },
+          prices: {
+            amount: {
+              $lt: 50,
+            },
+          },
+        },
+      }
+
+      const remoteQueryObject = {
+        product: {
+          fields: ["id", "title", "variants"],
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            prices: {
+              fields: ["id", "amount"],
+            },
+          },
+        },
+      }
+
+      parseAndAssignFilters({
+        remoteQueryObject,
+        entryPoint: "product",
+        filters,
+      })
+
+      expect(remoteQueryObject).toEqual({
+        product: {
+          fields: ["id", "title", "variants"],
+          __args: {
+            filters: {
+              id: "string",
+              variants: {
+                sku: {
+                  $eq: "string",
+                },
+              },
+            },
+          },
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            prices: {
+              fields: ["id", "amount"],
+              __args: {
+                filters: {
+                  prices: {
+                    amount: { $lt: 50 },
+                  },
+                },
+              },
+            },
+          },
+        },
+      })
+    })
+
+    it("should parse filters through linked deep nested relations through configured field alias with forward args", () => {
+      const filters = {
+        id: "string",
+        variants: {
+          sku: {
+            $eq: "string",
+          },
+          prices: {
+            deep_nested_price: {
+              amount: {
+                $gte: 100,
+              },
+            },
+          },
+        },
+      }
+
+      const remoteQueryObject = {
+        product: {
+          fields: ["id", "title", "variants"],
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            prices: {
+              fields: ["id", "amount"],
+
+              deep_nested_price: {
+                fields: ["id", "amount"],
+              },
+            },
+          },
+        },
+      }
+
+      parseAndAssignFilters({
+        remoteQueryObject,
+        entryPoint: "product",
+        filters,
+      })
+
+      expect(remoteQueryObject).toEqual({
+        product: {
+          fields: ["id", "title", "variants"],
+          __args: {
+            filters: {
+              id: "string",
+              variants: {
+                sku: {
+                  $eq: "string",
+                },
+              },
+            },
+          },
+
+          variants: {
+            fields: ["id", "sku", "prices"],
+
+            prices: {
+              fields: ["id", "amount"],
+              __args: {
+                filters: {
+                  prices: {
+                    deep_nested_price: {
+                      amount: { $gte: 100 },
+                    },
+                  },
+                },
+              },
+
+              deep_nested_price: {
+                fields: ["id", "amount"],
+              },
+            },
+          },
+        },
+      })
     })
   })
 })

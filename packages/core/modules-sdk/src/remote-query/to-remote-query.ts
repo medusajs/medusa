@@ -85,7 +85,6 @@ export function toRemoteQuery<const TEntity extends string>(config: {
   }
 
   // Process filters and context recursively
-  /*processNestedObjects(joinerQuery[entity], filters)*/
   processNestedObjects(joinerQuery[entity], context)
 
   for (const field of fields) {
