@@ -1,17 +1,17 @@
 /**
  * @schema AdminPostReturnsReceiveItemsActionReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details of the received item.
  * x-schemaName: AdminPostReturnsReceiveItemsActionReqSchema
  * properties:
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The return's quantity.
+ *     description: The item's quantity.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The return's internal note.
+ *     description: A note viewed only by admin users.
  * 
 */
 
