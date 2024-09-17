@@ -20,7 +20,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/order-edits/{id}/confirm' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Order Edits
  * responses:

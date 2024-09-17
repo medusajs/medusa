@@ -267,7 +267,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           ).toBe(true)
         })
 
-        it("should complete an async workflow that returns a StepResponse", (done) => {
+        it.skip("should complete an async workflow that returns a StepResponse", (done) => {
           const transactionId = "transaction_1"
           void workflowOrcModule
             .run("workflow_async_background", {

@@ -46,7 +46,7 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: "curl -X DELETE '{backend_url}/admin/claims/{id}/outbound/items/{action_id}' \\ -H 'x-medusa-access-token: {api_token}'"
+ *     source: "curl -X DELETE '{backend_url}/admin/claims/{id}/outbound/items/{action_id}' \\ -H 'Authorization: Bearer {access_token}'"
  * tags:
  *   - Claims
  * responses:

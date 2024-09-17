@@ -113,7 +113,9 @@ class OasSchemaHelper {
       })
     }
 
-    this.schemas.set(schema["x-schemaName"], schema)
+    if (this.canAddSchema(schema)) {
+      this.schemas.set(schema["x-schemaName"], schema)
+    }
 
     return {
       $ref: this.constructSchemaReference(schema["x-schemaName"]),
@@ -181,6 +183,36 @@ class OasSchemaHelper {
     return clonedSchema
   }
 
+  isSchemaEmpty(schema: OpenApiSchema): boolean {
+    switch (schema.type) {
+      case "object":
+        return (
+          schema.properties === undefined ||
+          Object.keys(schema.properties).length === 0
+        )
+      case "array":
+        return (
+          !this.isRefObject(schema.items) && this.isSchemaEmpty(schema.items)
+        )
+      default:
+        return false
+    }
+  }
+
+  canAddSchema(schema: OpenApiSchema): boolean {
+    if (!schema["x-schemaName"]) {
+      return false
+    }
+
+    const existingSchema = this.schemas.get(schema["x-schemaName"])
+
+    if (!existingSchema) {
+      return true
+    }
+
+    return this.isSchemaEmpty(existingSchema) && !this.isSchemaEmpty(schema)
+  }
+
   /**
    * Retrieve the expected file name of the schema.
    *
@@ -212,7 +244,7 @@ class OasSchemaHelper {
     // check if it already exists in the schemas map
     if (this.schemas.has(schemaName)) {
       return {
-        schema: this.schemas.get(schemaName)!,
+        schema: JSON.parse(JSON.stringify(this.schemas.get(schemaName)!)),
         schemaPrefix: `@schema ${schemaName}`,
       }
     }
@@ -272,7 +304,7 @@ class OasSchemaHelper {
     return name
       .replace("DTO", "")
       .replace(this.schemaRefPrefix, "")
-      .replace(/(?<!AdminProduct)Type$/, "")
+      .replace(/(?<!(AdminProduct|CreateProduct))Type$/, "")
   }
 
   /**

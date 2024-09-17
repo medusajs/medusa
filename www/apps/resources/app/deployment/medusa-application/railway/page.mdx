@@ -143,7 +143,7 @@ For example, add the following dependencies in `package.json` for the Cache, Eve
 Then, add these modules in `medusa-config.js`:
 
 ```js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 module.exports = defineConfig({
   // ...
