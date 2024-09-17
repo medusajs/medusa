@@ -80,5 +80,6 @@ export const generatedEditDates = {
   "app/advanced-development/admin/constraints/page.mdx": "2024-09-10T11:39:51.165Z",
   "app/advanced-development/modules/query/page.mdx": "2024-09-11T10:46:49.512Z",
   "app/debugging-and-testing/testing-tools/modules-tests/module-example/page.mdx": "2024-09-10T11:39:51.171Z",
-  "app/debugging-and-testing/testing-tools/modules-tests/page.mdx": "2024-09-10T11:39:51.171Z"
+  "app/debugging-and-testing/testing-tools/modules-tests/page.mdx": "2024-09-10T11:39:51.171Z",
+  "app/debugging-and-testing/instrumentation/page.mdx": "2024-09-17T08:53:15.910Z"
 }
