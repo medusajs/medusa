@@ -1,7 +1,7 @@
 /**
  * @schema AdminPaymentCollection
  * type: object
- * description: The payment collection's payment collections.
+ * description: The payment collection's details.
  * x-schemaName: AdminPaymentCollection
  * required:
  *   - id
@@ -22,77 +22,41 @@
  *   region_id:
  *     type: string
  *     title: region_id
- *     description: The payment collection's region id.
+ *     description: The ID of the region this payment collection is associated with.
  *   amount:
- *     oneOf:
- *       - type: string
- *         title: amount
- *         description: The payment collection's amount.
- *       - type: number
- *         title: amount
- *         description: The payment collection's amount.
- *       - type: string
- *         title: amount
- *         description: The payment collection's amount.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: amount
+ *     description: The total amount to be paid.
  *   authorized_amount:
- *     oneOf:
- *       - type: string
- *         title: authorized_amount
- *         description: The payment collection's authorized amount.
- *       - type: number
- *         title: authorized_amount
- *         description: The payment collection's authorized amount.
- *       - type: string
- *         title: authorized_amount
- *         description: The payment collection's authorized amount.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: authorized_amount
+ *     description: The total authorized amount of the collection's payments.
  *   captured_amount:
- *     oneOf:
- *       - type: string
- *         title: captured_amount
- *         description: The payment collection's captured amount.
- *       - type: number
- *         title: captured_amount
- *         description: The payment collection's captured amount.
- *       - type: string
- *         title: captured_amount
- *         description: The payment collection's captured amount.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: captured_amount
+ *     description: The total captured amount of the collection's payments.
  *   refunded_amount:
- *     oneOf:
- *       - type: string
- *         title: refunded_amount
- *         description: The payment collection's refunded amount.
- *       - type: number
- *         title: refunded_amount
- *         description: The payment collection's refunded amount.
- *       - type: string
- *         title: refunded_amount
- *         description: The payment collection's refunded amount.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: refunded_amount
+ *     description: The total refunded amount of the collection's payments.
  *   completed_at:
- *     oneOf:
- *       - type: string
- *         title: completed_at
- *         description: The payment collection's completed at.
- *       - type: string
- *         title: completed_at
- *         description: The payment collection's completed at.
- *         format: date-time
+ *     type: string
+ *     format: date-time
+ *     title: completed_at
+ *     description: The date the payment collection was completed.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The payment collection's created at.
+ *     description: The date the payment collection was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The payment collection's updated at.
+ *     description: The date the payment collection was updated.
  *   metadata:
  *     type: object
- *     description: The payment collection's metadata.
+ *     description: The payment collection's metadata, can hold custom key-value pairs.
  *   status:
  *     type: string
  *     description: The payment collection's status.
@@ -104,7 +68,7 @@
  *       - partially_authorized
  *   payment_providers:
  *     type: array
- *     description: The payment collection's payment providers.
+ *     description: The payment provider used to process the collection's payments and sessions.
  *     items:
  *       $ref: "#/components/schemas/BasePaymentProvider"
  *   payment_sessions:

@@ -1,15 +1,15 @@
 /**
  * @schema AdminPostExchangesAddItemsReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details of outbound items.
  * x-schemaName: AdminPostExchangesAddItemsReqSchema
  * properties:
  *   items:
  *     type: array
- *     description: The exchange's items.
+ *     description: The details of outbound items.
  *     items:
  *       type: object
- *       description: The item's items.
+ *       description: An item's details.
  *       required:
  *         - variant_id
  *         - quantity
@@ -17,7 +17,7 @@
  *         variant_id:
  *           type: string
  *           title: variant_id
- *           description: The item's variant id.
+ *           description: The ID of the associated product variant.
  *         quantity:
  *           type: number
  *           title: quantity
@@ -29,14 +29,14 @@
  *         internal_note:
  *           type: string
  *           title: internal_note
- *           description: The item's internal note.
+ *           description: A note viewed only by admin users.
  *         allow_backorder:
  *           type: boolean
  *           title: allow_backorder
- *           description: The item's allow backorder.
+ *           description: Whether the item can be added even if it's not in stock.
  *         metadata:
  *           type: object
- *           description: The item's metadata.
+ *           description: The item's metadata, can hold custom key-value pairs.
  * 
 */
 

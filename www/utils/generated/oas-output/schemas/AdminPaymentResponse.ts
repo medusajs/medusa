@@ -1,7 +1,7 @@
 /**
  * @schema AdminPaymentResponse
  * type: object
- * description: SUMMARY
+ * description: The payment's details.
  * x-schemaName: AdminPaymentResponse
  * required:
  *   - payment

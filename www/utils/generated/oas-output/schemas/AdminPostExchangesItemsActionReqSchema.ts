@@ -1,17 +1,17 @@
 /**
  * @schema AdminPostExchangesItemsActionReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details to update in an outbound item.
  * x-schemaName: AdminPostExchangesItemsActionReqSchema
  * properties:
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The exchange's quantity.
+ *     description: The item's quantity.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The exchange's internal note.
+ *     description: A note only viewed by admin users.
  * 
 */
 
