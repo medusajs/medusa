@@ -231,7 +231,7 @@ medusaIntegrationTestRunner({
           })
       })
 
-      it(`should perform cross module query and apply filters correctly to the correct modules`, async () => {
+      it(`should perform cross module query and apply filters correctly to the correct modules [1]`, async () => {
         const { data } = await query.graph({
           entity: "product",
           fields: ["id", "title", "variants.*", "variants.prices.amount"],
@@ -258,7 +258,9 @@ medusaIntegrationTestRunner({
             ],
           }),
         ])
+      })
 
+      it(`should perform cross module query and apply filters correctly to the correct modules [2]`, async () => {
         const { data: dataWithPrice } = await query.graph({
           entity: "product",
           fields: ["id", "title", "variants.*", "variants.prices.amount"],
