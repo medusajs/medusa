@@ -1802,17 +1802,16 @@ export default class ProductModuleService
     ) & { options: { id: string }[] },
     variants: ProductVariant[]
   ) {
-    for (const toCreateVariant of data) {
+    for (const variantData of data) {
       const existingVariant = variants.find((v) => {
         if (
-          // @ts-ignore TODO: check product_id
-          toCreateVariant.product_id !== v.product_id ||
-          !toCreateVariant.options?.length
+          variantData.product_id! !== v.product_id ||
+          !variantData.options?.length
         ) {
           return false
         }
 
-        return (toCreateVariant.options as unknown as { id: string }[])!.every(
+        return (variantData.options as unknown as { id: string }[])!.every(
           ({ id: optionValueId }) =>
             !!v.options.find((vo) => vo.id === optionValueId)
         )
