@@ -11,6 +11,7 @@ import {
 import { snakeCase } from "lodash"
 
 import start from "../commands/start"
+import { TransactionOrchestrator } from "@medusajs/orchestration"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -21,7 +22,7 @@ function shouldExcludeResource(resource: string) {
 }
 
 /**
- * Instrumenting the first touch point of the HTTP layer to report traces to
+ * Instrument the first touch point of the HTTP layer to report traces to
  * OpenTelemetry
  */
 export function instrumentHttpLayer() {
@@ -125,7 +126,7 @@ export function instrumentHttpLayer() {
 }
 
 /**
- * Instrumenting the queries made using the remote query
+ * Instrument the queries made using the remote query
  */
 export function instrumentRemoteQuery() {
   const QueryTracer = new Tracer("@medusajs/query", "2.0.0")
@@ -204,6 +205,46 @@ export function instrumentRemoteQuery() {
 }
 
 /**
+ * Instrument the workflows and steps execution
+ */
+export function instrumentWorkflows() {
+  const WorkflowsTracer = new Tracer("@medusajs/workflows-sdk", "2.0.0")
+
+  TransactionOrchestrator.traceTransaction = async (
+    transactionResumeFn,
+    metadata
+  ) => {
+    return await WorkflowsTracer.trace(
+      `workflow:${snakeCase(metadata.model_id)}`,
+      async function (span) {
+        span.setAttribute("workflow.transaction_id", metadata.transaction_id)
+
+        if (metadata.flow_metadata) {
+          Object.entries(metadata.flow_metadata).forEach(([key, value]) => {
+            span.setAttribute(`workflow.flow_metadata.${key}`, value as string)
+          })
+        }
+
+        return await transactionResumeFn().finally(() => span.end())
+      }
+    )
+  }
+
+  TransactionOrchestrator.traceStep = async (stepHandler, metadata) => {
+    return await WorkflowsTracer.trace(
+      `step:${snakeCase(metadata.action)}:${metadata.type}`,
+      async function (span) {
+        Object.entries(metadata).forEach(([key, value]) => {
+          span.setAttribute(`workflow.step.${key}`, value)
+        })
+
+        return await stepHandler().finally(() => span.end())
+      }
+    )
+  }
+}
+
+/**
  * A helper function to configure the OpenTelemetry SDK with some defaults.
  * For better/more control, please configure the SDK manually.
  *
@@ -219,6 +260,11 @@ export function instrumentRemoteQuery() {
 export function registerOtel(options: {
   serviceName: string
   exporter: SpanExporter
+  instrument?: Partial<{
+    http: boolean
+    remoteQuery: boolean
+    workflows: boolean
+  }>
   instrumentations?: Instrumentation[]
 }) {
   const sdk = new NodeSDK({
@@ -232,6 +278,18 @@ export function registerOtel(options: {
       ...(options.instrumentations || []),
     ],
   })
+
+  const instrument = options.instrument || {}
+  if (instrument.http) {
+    instrumentHttpLayer()
+  }
+  if (instrument.remoteQuery) {
+    instrumentRemoteQuery()
+  }
+  if (instrument.workflows) {
+    instrumentWorkflows()
+  }
+
   sdk.start()
   return sdk
 }
