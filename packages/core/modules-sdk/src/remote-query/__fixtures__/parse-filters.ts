@@ -1,5 +1,6 @@
 import { defineJoinerConfig } from "@medusajs/utils"
 import { MedusaModule } from "../../medusa-module"
+import { ModuleJoinerConfig } from "@medusajs/types"
 
 const productJoinerConfig = defineJoinerConfig("product", {
   schema: `
@@ -50,8 +51,93 @@ const pricingJoinerConfig = defineJoinerConfig("pricing", {
         methodSuffix: "price",
       },
     },
+    {
+      name: ["price_set", "price_sets"],
+      entity: "PriceSet",
+      args: {
+        methodSuffix: "priceSet",
+      },
+    },
   ],
 })
 
+const linkProductVariantPriceSet = {
+  serviceName: "link-product-variant-price-set",
+  isLink: true,
+  databaseConfig: {
+    tableName: "product_variant_price_set",
+    idPrefix: "pvps",
+  },
+  alias: [
+    {
+      name: ["product_variant_price_set", "product_variant_price_sets"],
+      entity: "LinkProductVariantPriceSet",
+    },
+  ],
+  primaryKeys: ["id", "variant_id", "price_set_id"],
+  relationships: [
+    {
+      serviceName: "product",
+      entity: "ProductVariant",
+      primaryKey: "id",
+      foreignKey: "variant_id",
+      alias: "variant",
+      args: {
+        methodSuffix: "ProductVariants",
+      },
+    },
+    {
+      serviceName: "pricing",
+      entity: "PriceSet",
+      primaryKey: "id",
+      foreignKey: "price_set_id",
+      alias: "price_set",
+      args: {
+        methodSuffix: "PriceSets",
+      },
+      deleteCascade: true,
+    },
+  ],
+  extends: [
+    {
+      serviceName: "product",
+      fieldAlias: {
+        price_set: "price_set_link.price_set",
+        prices: {
+          path: "price_set_link.price_set.prices",
+          isList: true,
+          forwardArgumentsOnPath: ["price_set_link.price_set"],
+        },
+        calculated_price: {
+          path: "price_set_link.price_set.calculated_price",
+          forwardArgumentsOnPath: ["price_set_link.price_set"],
+        },
+      },
+      relationship: {
+        serviceName: "link-product-variant-price-set",
+        primaryKey: "variant_id",
+        foreignKey: "id",
+        alias: "price_set_link",
+      },
+    },
+    {
+      serviceName: "pricing",
+      relationship: {
+        serviceName: "link-product-variant-price-set",
+        primaryKey: "price_set_id",
+        foreignKey: "id",
+        alias: "variant_link",
+      },
+      fieldAlias: {
+        variant: "variant_link.variant",
+      },
+    },
+  ],
+} as ModuleJoinerConfig
+
 MedusaModule.setJoinerConfig("product", productJoinerConfig)
 MedusaModule.setJoinerConfig("pricing", pricingJoinerConfig)
+MedusaModule.setJoinerConfig(
+  "link-product-variant-price-set",
+  linkProductVariantPriceSet
+)
