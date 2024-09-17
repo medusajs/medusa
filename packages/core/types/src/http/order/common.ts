@@ -240,6 +240,7 @@ export interface BaseOrderFulfillment {
   shipped_at: Date | null
   delivered_at: Date | null
   canceled_at: Date | null
+  requires_shipping: boolean
   data: Record<string, unknown> | null
   provider_id: string
   shipping_option_id: string | null

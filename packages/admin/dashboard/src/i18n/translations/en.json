@@ -1087,6 +1087,7 @@
       "statusTitle": "Fulfillment Status",
       "fulfillItems": "Fulfill items",
       "awaitingFulfillmentBadge": "Awaiting fulfillment",
+      "requiresShipping": "Requires shipping",
       "number": "Fulfillment #{{number}}",
       "itemsToFulfill": "Items to fulfill",
       "create": "Create Fulfillment",

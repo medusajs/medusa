@@ -3,8 +3,10 @@ import {
   CartLineItemDTO,
   CreateOrderAdjustmentDTO,
   CreateOrderLineItemTaxLineDTO,
+  InventoryItemDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
+import { isDefined } from "@medusajs/utils"
 
 interface Input {
   item?: CartLineItemDTO
@@ -12,7 +14,9 @@ interface Input {
   metadata?: Record<string, any>
   unitPrice: BigNumberInput
   isTaxInclusive?: boolean
-  variant: ProductVariantDTO
+  variant: ProductVariantDTO & {
+    inventory_items: { inventory: InventoryItemDTO }[]
+  }
   taxLines?: CreateOrderLineItemTaxLineDTO[]
   adjustments?: CreateOrderAdjustmentDTO[]
   cartId?: string
@@ -34,6 +38,19 @@ export function prepareLineItemData(data: Input) {
   if (!variant.product) {
     throw new Error("Variant does not have a product")
   }
+
+  // Note: If any of the items require shipping, we enable fulfillment
+  // unless explicitly set to not require shipping by the item in the request
+  const { inventory_items: inventoryItems } = variant
+  const someInventoryRequiresShipping = inventoryItems.length
+    ? inventoryItems.some(
+        (inventoryItem) => !!inventoryItem.inventory.requires_shipping
+      )
+    : true
+
+  const requiresShipping = isDefined(item?.requires_shipping)
+    ? item.requires_shipping
+    : someInventoryRequiresShipping
 
   const lineItem: any = {
     quantity,
@@ -61,7 +78,7 @@ export function prepareLineItemData(data: Input) {
     variant_option_values: item?.variant_option_values,
 
     is_discountable: variant.product.discountable ?? item?.is_discountable,
-    requires_shipping: variant.requires_shipping ?? item?.requires_shipping,
+    requires_shipping: requiresShipping,
 
     unit_price: unitPrice,
     is_tax_inclusive: !!isTaxInclusive,

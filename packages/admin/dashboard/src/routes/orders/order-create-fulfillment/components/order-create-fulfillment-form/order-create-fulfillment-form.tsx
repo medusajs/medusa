@@ -8,6 +8,7 @@ import { Alert, Button, Select, Switch, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
 import { OrderLineItemDTO } from "@medusajs/types"
+import { useSearchParams } from "react-router-dom"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
@@ -16,9 +17,8 @@ import {
 import { useCreateOrderFulfillment } from "../../../../../hooks/api/orders"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
-import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
 import { CreateFulfillmentSchema } from "./constants"
-import { useShippingOptions } from "../../../../../hooks/api"
+import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
@@ -29,27 +29,35 @@ export function OrderCreateFulfillmentForm({
 }: OrderCreateFulfillmentFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const [searchParams] = useSearchParams()
+  const requiresShipping = searchParams.get("requires_shipping")
 
   const { mutateAsync: createOrderFulfillment, isPending: isMutating } =
     useCreateOrderFulfillment(order.id)
 
   const [fulfillableItems, setFulfillableItems] = useState(() =>
-    (order.items || []).filter((item) => getFulfillableQuantity(item) > 0)
+    (order.items || []).filter(
+      (item) =>
+        item.requires_shipping.toString() === requiresShipping &&
+        getFulfillableQuantity(item) > 0
+    )
   )
 
   const form = useForm<zod.infer<typeof CreateFulfillmentSchema>>({
     defaultValues: {
-      quantity: fulfillableItems.reduce((acc, item) => {
-        acc[item.id] = getFulfillableQuantity(item)
-        return acc
-      }, {} as Record<string, number>),
+      quantity: fulfillableItems.reduce(
+        (acc, item) => {
+          acc[item.id] = getFulfillableQuantity(item)
+          return acc
+        },
+        {} as Record<string, number>
+      ),
       send_notification: !order.no_notification,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
   })
 
   const { stock_locations = [] } = useStockLocations()
-  const { shipping_options = [] } = useShippingOptions()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
@@ -84,12 +92,18 @@ export function OrderCreateFulfillmentForm({
   })
 
   const fulfilledQuantityArray = (order.items || []).map(
-    (item) => item.detail.fulfilled_quantity
+    (item) =>
+      item.requires_shipping.toString() === requiresShipping &&
+      item.detail.fulfilled_quantity
   )
 
   useEffect(() => {
     const itemsToFulfill =
-      order?.items?.filter((item) => getFulfillableQuantity(item) > 0) || []
+      order?.items?.filter(
+        (item) =>
+          item.requires_shipping.toString() === requiresShipping &&
+          getFulfillableQuantity(item) > 0
+      ) || []
 
     setFulfillableItems(itemsToFulfill)
 
@@ -102,13 +116,16 @@ export function OrderCreateFulfillmentForm({
       })
     }
 
-    const quantityMap = itemsToFulfill.reduce((acc, item) => {
-      acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
-      return acc
-    }, {} as Record<string, number>)
+    const quantityMap = itemsToFulfill.reduce(
+      (acc, item) => {
+        acc[item.id] = getFulfillableQuantity(item as OrderLineItemDTO)
+        return acc
+      },
+      {} as Record<string, number>
+    )
 
     form.setValue("quantity", quantityMap)
-  }, [...fulfilledQuantityArray])
+  }, [...fulfilledQuantityArray, requiresShipping])
 
   return (
     <RouteFocusModal.Form form={form}>
