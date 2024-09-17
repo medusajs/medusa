@@ -1,116 +1,246 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Switch } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
+import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
+import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import { useEffect, useMemo, useState } from "react"
 import { z } from "zod"
 
-import { HttpTypes } from "@medusajs/types"
-import { Fragment } from "react"
-import { Divider } from "../../../../../components/common/divider"
-import { Form } from "../../../../../components/common/form"
-import { Combobox } from "../../../../../components/inputs/combobox"
-import { CountrySelect } from "../../../../../components/inputs/country-select"
-import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { AdminCreateProductVariantPrice, HttpTypes } from "@medusajs/types"
+import {
+  RouteDrawer,
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/modals"
 import { useCreateProductVariant } from "../../../../../hooks/api/products"
+import {
+  CreateProductVariantSchema,
+  CreateVariantDetailsFields,
+  CreateVariantDetailsSchema,
+  CreateVariantPriceFields,
+  CreateVariantPriceSchema,
+} from "./constants"
+import DetailsTab from "./details-tab"
+import PricingTab from "./pricing-tab"
+import InventoryKitTab from "./inventory-kit-tab"
 import { castNumber } from "../../../../../lib/cast-number"
-import { optionalInt } from "../../../../../lib/validation"
+import { useRegions } from "../../../../../hooks/api"
+import { partialFormValidation } from "../../../../../lib/validation"
+
+enum Tab {
+  DETAIL = "detail",
+  PRICE = "price",
+  INVENTORY = "inventory",
+}
+
+type TabState = Record<Tab, ProgressStatus>
+
+const initialTabState: TabState = {
+  [Tab.DETAIL]: "in-progress",
+  [Tab.PRICE]: "not-started",
+  [Tab.INVENTORY]: "not-started",
+}
 
 type CreateProductVariantFormProps = {
   product: HttpTypes.AdminProduct
-  isStockAndInventoryEnabled?: boolean
 }
-
-const CreateProductVariantSchema = z.object({
-  title: z.string().min(1),
-  material: z.string().optional(),
-  sku: z.string().optional(),
-  ean: z.string().optional(),
-  upc: z.string().optional(),
-  barcode: z.string().optional(),
-  manage_inventory: z.boolean(),
-  allow_backorder: z.boolean(),
-  weight: optionalInt,
-  height: optionalInt,
-  width: optionalInt,
-  length: optionalInt,
-  mid_code: z.string().optional(),
-  hs_code: z.string().optional(),
-  origin_country: z.string().optional(),
-  options: z.record(z.string()),
-})
 
 export const CreateProductVariantForm = ({
   product,
-  isStockAndInventoryEnabled = false,
 }: CreateProductVariantFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const [tab, setTab] = useState<Tab>(Tab.DETAIL)
+  const [tabState, setTabState] = useState<TabState>(initialTabState)
+
   const form = useForm<z.infer<typeof CreateProductVariantSchema>>({
     defaultValues: {
-      manage_inventory: true,
+      sku: "",
+      title: "",
+      manage_inventory: false,
       allow_backorder: false,
+      inventory_kit: false,
       options: {},
     },
     resolver: zodResolver(CreateProductVariantSchema),
   })
 
-  const { mutateAsync, isPending: isLoading } = useCreateProductVariant(
-    product.id
-  )
+  const { mutateAsync, isPending } = useCreateProductVariant(product.id)
 
-  const handleSubmit = form.handleSubmit(async (data) => {
-    const parseNumber = (value?: string | number) => {
-      if (typeof value === "undefined" || value === "") {
-        return undefined
-      }
+  const { regions } = useRegions({ limit: 9999 })
 
-      if (typeof value === "string") {
-        return castNumber(value)
-      }
-
-      return value
+  const regionsCurrencyMap = useMemo(() => {
+    if (!regions?.length) {
+      return {}
     }
 
-    const {
-      weight,
-      height,
-      width,
-      length,
-      allow_backorder,
-      manage_inventory,
-      sku,
-      ean,
-      upc,
-      barcode,
-      ...rest
-    } = data
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {} as Record<string, string>)
+  }, [regions])
 
-    /**
-     * If stock and inventory is not enabled, we need to send the inventory and
-     * stock related fields to the API. If it is enabled, it should be handled
-     * in the separate stock and inventory form.
-     */
-    const conditionalPayload = !isStockAndInventoryEnabled
-      ? {
-          sku,
-          ean,
-          upc,
-          barcode,
-          allow_backorder,
-          manage_inventory,
+  const isManageInventoryEnabled = useWatch({
+    control: form.control,
+    name: "manage_inventory",
+  })
+
+  const isInventoryKitEnabled = useWatch({
+    control: form.control,
+    name: "inventory_kit",
+  })
+
+  const inventoryField = useFieldArray({
+    control: form.control,
+    name: `inventory`,
+  })
+
+  const inventoryTabEnabled = isManageInventoryEnabled && isInventoryKitEnabled
+
+  const tabOrder = useMemo(() => {
+    if (inventoryTabEnabled) {
+      return [Tab.DETAIL, Tab.PRICE, Tab.INVENTORY] as const
+    }
+
+    return [Tab.DETAIL, Tab.PRICE] as const
+  }, [inventoryTabEnabled])
+
+  useEffect(() => {
+    if (isInventoryKitEnabled && inventoryField.fields.length === 0) {
+      inventoryField.append({
+        inventory_item_id: "",
+        required_quantity: undefined,
+      })
+    }
+  }, [isInventoryKitEnabled])
+
+  const handleChangeTab = (update: Tab) => {
+    if (tab === update) {
+      return
+    }
+
+    if (tabOrder.indexOf(update) < tabOrder.indexOf(tab)) {
+      const isCurrentTabDirty = false // isTabDirty(tab) TODO
+
+      setTabState((prev) => ({
+        ...prev,
+        [tab]: isCurrentTabDirty ? prev[tab] : "not-started",
+        [update]: "in-progress",
+      }))
+
+      setTab(update)
+      return
+    }
+
+    // get the tabs from the current tab to the update tab including the current tab
+    const tabs = tabOrder.slice(0, tabOrder.indexOf(update))
+
+    // validate all the tabs from the current tab to the update tab if it fails on any of tabs then set that tab as current tab
+    for (const tab of tabs) {
+      if (tab === Tab.DETAIL) {
+        if (
+          !partialFormValidation<z.infer<typeof CreateProductVariantSchema>>(
+            form,
+            CreateVariantDetailsFields,
+            CreateVariantDetailsSchema
+          )
+        ) {
+          setTabState((prev) => ({
+            ...prev,
+            [tab]: "in-progress",
+          }))
+          setTab(tab)
+          return
         }
-      : {}
+
+        setTabState((prev) => ({
+          ...prev,
+          [tab]: "completed",
+        }))
+      } else if (tab === Tab.PRICE) {
+        if (
+          !partialFormValidation<z.infer<typeof CreateProductVariantSchema>>(
+            form,
+            CreateVariantPriceFields,
+            CreateVariantPriceSchema
+          )
+        ) {
+          setTabState((prev) => ({
+            ...prev,
+            [tab]: "in-progress",
+          }))
+          setTab(tab)
+
+          return
+        }
+
+        setTabState((prev) => ({
+          ...prev,
+          [tab]: "completed",
+        }))
+      }
+    }
+
+    setTabState((prev) => ({
+      ...prev,
+      [tab]: "completed",
+      [update]: "in-progress",
+    }))
+    setTab(update)
+  }
+
+  const handleNextTab = (tab: Tab) => {
+    if (tabOrder.indexOf(tab) + 1 >= tabOrder.length) {
+      return
+    }
+
+    const nextTab = tabOrder[tabOrder.indexOf(tab) + 1]
+    handleChangeTab(nextTab)
+  }
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const { allow_backorder, manage_inventory, sku, title } = data
 
     await mutateAsync(
       {
-        weight: parseNumber(weight),
-        height: parseNumber(height),
-        width: parseNumber(width),
-        length: parseNumber(length),
-        prices: [],
-        ...conditionalPayload,
-        ...rest,
+        title,
+        sku,
+        allow_backorder,
+        manage_inventory,
+        options: data.options,
+        prices: Object.entries(data.prices ?? {})
+          .map(([currencyOrRegion, value]) => {
+            const ret: AdminCreateProductVariantPrice = {}
+            const amount = castNumber(value)
+
+            if (isNaN(amount) || value === "") {
+              return undefined
+            }
+
+            if (currencyOrRegion.startsWith("reg_")) {
+              ret.rules = { region_id: currencyOrRegion }
+              ret.currency_code = regionsCurrencyMap[currencyOrRegion]
+            } else {
+              ret.currency_code = currencyOrRegion
+            }
+
+            ret.amount = amount
+
+            return ret
+          })
+          .filter(Boolean),
+        inventory_items: (data.inventory || [])
+          .map((i) => {
+            if (!i.required_quantity || !i.inventory_item_id) {
+              return false
+            }
+
+            return {
+              ...i,
+              required_quantity: castNumber(i.required_quantity),
+            }
+          })
+          .filter(Boolean),
       },
       {
         onSuccess: () => {
@@ -121,340 +251,128 @@ export const CreateProductVariantForm = ({
   })
 
   return (
-    <RouteDrawer.Form form={form}>
-      <form
-        onSubmit={handleSubmit}
-        className="flex size-full flex-col overflow-hidden"
+    <RouteFocusModal.Form form={form}>
+      <ProgressTabs
+        value={tab}
+        onValueChange={(tab) => handleChangeTab(tab as Tab)}
+        className="flex h-full flex-col overflow-hidden"
       >
-        <RouteDrawer.Body className="flex size-full flex-col gap-y-8 overflow-auto">
-          <div className="flex flex-col gap-y-4">
-            <Form.Field
-              control={form.control}
-              name="title"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("fields.title")}</Form.Label>
-                    <Form.Control>
-                      <Input {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            {product.options.map((option: any) => {
-              return (
-                <Form.Field
-                  key={option.id}
-                  control={form.control}
-                  name={`options.${option.title}`}
-                  render={({ field: { value, onChange, ...field } }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label>{option.title}</Form.Label>
-                        <Form.Control>
-                          <Combobox
-                            value={value}
-                            onChange={(v) => {
-                              onChange(v)
-                            }}
-                            {...field}
-                            options={option.values.map((v: any) => ({
-                              label: v.value,
-                              value: v.value,
-                            }))}
-                          />
-                        </Form.Control>
-                      </Form.Item>
-                    )
-                  }}
-                />
-              )
-            })}
-          </div>
-          <Divider />
-          {!isStockAndInventoryEnabled && (
-            <Fragment>
-              <div className="flex flex-col gap-y-8">
-                <div className="flex flex-col gap-y-4">
-                  <Heading level="h2">
-                    {t("products.variant.inventory.header")}
-                  </Heading>
-                  <Form.Field
-                    control={form.control}
-                    name="sku"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>{t("fields.sku")}</Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="ean"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>{t("fields.ean")}</Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="upc"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>{t("fields.upc")}</Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="barcode"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label optional>
-                            {t("fields.barcode")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                </div>
-                <Form.Field
-                  control={form.control}
-                  name="manage_inventory"
-                  render={({ field: { value, onChange, ...field } }) => {
-                    return (
-                      <Form.Item>
-                        <div className="flex flex-col gap-y-1">
-                          <div className="flex items-center justify-between">
-                            <Form.Label>
-                              {t(
-                                "products.variant.inventory.manageInventoryLabel"
-                              )}
-                            </Form.Label>
-                            <Form.Control>
-                              <Switch
-                                checked={value}
-                                onCheckedChange={(checked) =>
-                                  onChange(!!checked)
-                                }
-                                {...field}
-                              />
-                            </Form.Control>
-                          </div>
-                          <Form.Hint>
-                            {t(
-                              "products.variant.inventory.manageInventoryHint"
-                            )}
-                          </Form.Hint>
-                        </div>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="allow_backorder"
-                  render={({ field: { value, onChange, ...field } }) => {
-                    return (
-                      <Form.Item>
-                        <div className="flex flex-col gap-y-1">
-                          <div className="flex items-center justify-between">
-                            <Form.Label>
-                              {t(
-                                "products.variant.inventory.allowBackordersLabel"
-                              )}
-                            </Form.Label>
-                            <Form.Control>
-                              <Switch
-                                checked={value}
-                                onCheckedChange={(checked) =>
-                                  onChange(!!checked)
-                                }
-                                {...field}
-                              />
-                            </Form.Control>
-                          </div>
-                          <Form.Hint>
-                            {t(
-                              "products.variant.inventory.allowBackordersHint"
-                            )}
-                          </Form.Hint>
-                        </div>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
+        <form
+          onSubmit={handleSubmit}
+          className="flex h-full flex-col overflow-hidden"
+        >
+          <RouteFocusModal.Header>
+            <div className="flex w-full items-center justify-between gap-x-4">
+              <div className="-my-2 w-full max-w-[600px] border-l">
+                <ProgressTabs.List className="grid w-full grid-cols-3">
+                  <ProgressTabs.Trigger
+                    status={tabState.detail}
+                    value={Tab.DETAIL}
+                  >
+                    {t("priceLists.create.tabs.details")}
+                  </ProgressTabs.Trigger>
+                  <ProgressTabs.Trigger
+                    status={tabState.price}
+                    value={Tab.PRICE}
+                  >
+                    {t("priceLists.create.tabs.prices")}
+                  </ProgressTabs.Trigger>
+                  {!!inventoryTabEnabled && (
+                    <ProgressTabs.Trigger
+                      status={tabState.inventory}
+                      value={Tab.INVENTORY}
+                    >
+                      {t("products.create.tabs.inventory")}
+                    </ProgressTabs.Trigger>
+                  )}
+                </ProgressTabs.List>
               </div>
-              <Divider />
-            </Fragment>
-          )}
-          <div className="flex flex-col gap-y-4">
-            <Heading level="h2">{t("products.attributes")}</Heading>
-            <Form.Field
-              control={form.control}
-              name="material"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.material")}</Form.Label>
-                    <Form.Control>
-                      <Input {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="weight"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.weight")}</Form.Label>
-                    <Form.Control>
-                      <Input type="number" {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="width"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.width")}</Form.Label>
-                    <Form.Control>
-                      <Input type="number" {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="length"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.length")}</Form.Label>
-                    <Form.Control>
-                      <Input type="number" {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="height"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.height")}</Form.Label>
-                    <Form.Control>
-                      <Input type="number" {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="mid_code"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.midCode")}</Form.Label>
-                    <Form.Control>
-                      <Input {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="hs_code"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.hsCode")}</Form.Label>
-                    <Form.Control>
-                      <Input {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="origin_country"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>
-                      {t("fields.countryOfOrigin")}
-                    </Form.Label>
-                    <Form.Control>
-                      <CountrySelect {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-          </div>
-        </RouteDrawer.Body>
-        <RouteDrawer.Footer>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteDrawer.Close asChild>
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteDrawer.Close>
-            <Button type="submit" size="small" isLoading={isLoading}>
-              {t("actions.save")}
-            </Button>
-          </div>
-        </RouteDrawer.Footer>
-      </form>
-    </RouteDrawer.Form>
+            </div>
+          </RouteFocusModal.Header>
+          <RouteFocusModal.Body className="size-full overflow-hidden">
+            <ProgressTabs.Content
+              className="size-full overflow-y-auto"
+              value={Tab.DETAIL}
+            >
+              <DetailsTab form={form} product={product} />
+            </ProgressTabs.Content>
+            <ProgressTabs.Content
+              className="size-full overflow-y-auto"
+              value={Tab.PRICE}
+            >
+              <PricingTab form={form} />
+            </ProgressTabs.Content>
+            {!!inventoryTabEnabled && (
+              <ProgressTabs.Content
+                className="size-full overflow-hidden"
+                value={Tab.INVENTORY}
+              >
+                <InventoryKitTab form={form} />
+              </ProgressTabs.Content>
+            )}
+          </RouteFocusModal.Body>
+          <RouteFocusModal.Footer>
+            <div className="flex items-center justify-end gap-x-2">
+              <RouteDrawer.Close asChild>
+                <Button variant="secondary" size="small">
+                  {t("actions.cancel")}
+                </Button>
+              </RouteDrawer.Close>
+              <PrimaryButton
+                tab={tab}
+                next={handleNextTab}
+                isLoading={isPending}
+                inventoryTabEnabled={!!inventoryTabEnabled}
+              />
+            </div>
+          </RouteFocusModal.Footer>
+        </form>
+      </ProgressTabs>
+    </RouteFocusModal.Form>
+  )
+}
+
+type PrimaryButtonProps = {
+  tab: Tab
+  next: (tab: Tab) => void
+  isLoading?: boolean
+  inventoryTabEnabled: boolean
+}
+
+const PrimaryButton = ({
+  tab,
+  next,
+  isLoading,
+  inventoryTabEnabled,
+}: PrimaryButtonProps) => {
+  const { t } = useTranslation()
+
+  if (
+    (inventoryTabEnabled && tab === Tab.INVENTORY) ||
+    (!inventoryTabEnabled && tab === Tab.PRICE)
+  ) {
+    return (
+      <Button
+        key="submit-button"
+        type="submit"
+        variant="primary"
+        size="small"
+        isLoading={isLoading}
+      >
+        {t("actions.save")}
+      </Button>
+    )
+  }
+
+  return (
+    <Button
+      key="next-button"
+      type="button"
+      variant="primary"
+      size="small"
+      onClick={() => next(tab)}
+    >
+      {t("actions.continue")}
+    </Button>
   )
 }
