@@ -1,7 +1,7 @@
 /**
  * @schema AdminPostOrderExchangesReqSchema
  * type: object
- * description: SUMMARY
+ * description: The exchange's details.
  * x-schemaName: AdminPostOrderExchangesReqSchema
  * required:
  *   - order_id
@@ -9,7 +9,7 @@
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The exchange's order id.
+ *     description: The ID of the order this exchange is created for.
  *   description:
  *     type: string
  *     title: description
@@ -17,10 +17,10 @@
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The exchange's internal note.
+ *     description: A note viewed only by admin users.
  *   metadata:
  *     type: object
- *     description: The exchange's metadata.
+ *     description: The exchange's metadata, can hold custom key-value pairs.
  * 
 */
 
