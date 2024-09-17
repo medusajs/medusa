@@ -1,16 +1,7 @@
-import { Query, RoutesLoader, Tracer } from "@medusajs/framework"
-import { SpanStatusCode } from "@opentelemetry/api"
-import type { Instrumentation } from "@opentelemetry/instrumentation"
-import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
-import { Resource } from "@opentelemetry/resources"
-import { NodeSDK } from "@opentelemetry/sdk-node"
-import {
-  SimpleSpanProcessor,
-  type SpanExporter,
-} from "@opentelemetry/sdk-trace-node"
 import { snakeCase } from "lodash"
-
-import start from "../commands/start"
+import { Query, RoutesLoader, Tracer } from "@medusajs/framework"
+import type { SpanExporter } from "@opentelemetry/sdk-trace-node"
+import type { Instrumentation } from "@opentelemetry/instrumentation"
 import { TransactionOrchestrator } from "@medusajs/orchestration"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
@@ -26,7 +17,9 @@ function shouldExcludeResource(resource: string) {
  * OpenTelemetry
  */
 export function instrumentHttpLayer() {
+  const start = require("../commands/start")
   const HTTPTracer = new Tracer("@medusajs/http", "2.0.0")
+  const { SpanStatusCode } = require("@opentelemetry/api")
 
   start.traceRequestHandler = async (requestHandler, req, res) => {
     if (shouldExcludeResource(req.url!)) {
@@ -130,6 +123,7 @@ export function instrumentHttpLayer() {
  */
 export function instrumentRemoteQuery() {
   const QueryTracer = new Tracer("@medusajs/query", "2.0.0")
+  const { SpanStatusCode } = require("@opentelemetry/api")
 
   Query.instrument.graphQuery(async function (queryFn, queryOptions) {
     return await QueryTracer.trace(
@@ -268,10 +262,15 @@ export function registerOtel(options: {
   }>
   instrumentations?: Instrumentation[]
 }) {
+  const { Resource } = require("@opentelemetry/resources")
+  const { NodeSDK } = require("@opentelemetry/sdk-node")
+  const { SimpleSpanProcessor } = require("@opentelemetry/sdk-trace-node")
+
   const instrument = options.instrument || {}
   const instrumentations = options.instrumentations || []
 
   if (instrument.db) {
+    const { PgInstrumentation } = require("@opentelemetry/instrumentation-pg")
     instrumentations.push(new PgInstrumentation())
   }
   if (instrument.http) {
