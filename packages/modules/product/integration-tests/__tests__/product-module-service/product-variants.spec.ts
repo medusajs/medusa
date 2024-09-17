@@ -66,7 +66,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           id: "test-1",
           title: "variant 1",
           product_id: productOne.id,
-          options: { size: "large" },
+          options: { size: "large", color: "red" },
         } as CreateProductVariantDTO)
 
         variantTwo = await service.createProductVariants({
