@@ -1,2 +1,2 @@
-export * from "./index-data"
-export * from "./index-relation"
+export { IndexData } from "./index-data"
+export { IndexRelation } from "./index-relation"

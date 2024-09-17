@@ -9,6 +9,7 @@ import { IndexTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
+  Modules,
 } from "@medusajs/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
@@ -56,7 +57,7 @@ const beforeAll_ = async () => {
     // Bootstrap modules
     const globalApp = await medusaAppLoader.load()
 
-    const index = container.resolve("indexService")
+    const index = container.resolve(Modules.INDEX)
 
     // Mock event bus  the index module
     ;(index as any).eventBusModuleService_ = eventBusMock
@@ -99,7 +100,7 @@ const afterEach_ = async () => {
   }
 }
 
-describe("SearchEngineModuleService query", function () {
+describe("IndexModuleService query", function () {
   let medusaApp: MedusaAppOutput
   let module: IndexTypes.IIndexService
   let onApplicationPrepareShutdown!: () => Promise<void>

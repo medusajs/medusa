@@ -318,7 +318,7 @@ export const ModulesDefinition: {
     defaultPackage: false,
     label: upperCaseFirst(Modules.INDEX),
     isRequired: false,
-    isQueryable: true,
+    isQueryable: false,
     dependencies: [
       Modules.EVENT_BUS,
       "logger",
