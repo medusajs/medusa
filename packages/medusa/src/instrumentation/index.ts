@@ -260,6 +260,11 @@ export function instrumentWorkflows() {
 export function registerOtel(options: {
   serviceName: string
   exporter: SpanExporter
+  instrument?: Partial<{
+    http: boolean
+    remoteQuery: boolean
+    workflows: boolean
+  }>
   instrumentations?: Instrumentation[]
 }) {
   const sdk = new NodeSDK({
@@ -273,6 +278,18 @@ export function registerOtel(options: {
       ...(options.instrumentations || []),
     ],
   })
+
+  const instrument = options.instrument || {}
+  if (instrument.http) {
+    instrumentHttpLayer()
+  }
+  if (instrument.remoteQuery) {
+    instrumentRemoteQuery()
+  }
+  if (instrument.workflows) {
+    instrumentWorkflows()
+  }
+
   sdk.start()
   return sdk
 }
