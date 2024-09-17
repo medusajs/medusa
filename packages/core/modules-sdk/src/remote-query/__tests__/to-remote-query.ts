@@ -111,14 +111,16 @@ describe("toRemoteQuery", () => {
     expect(format).toEqual({
       product: {
         __fields: ["id", "description"],
-        variants: {
-          __args: {
-            filters: {
+        __args: {
+          filters: {
+            variants: {
               sku: {
                 $ilike: "abc%",
               },
             },
           },
+        },
+        variants: {
           calculated_price: {
             __args: {
               context: {

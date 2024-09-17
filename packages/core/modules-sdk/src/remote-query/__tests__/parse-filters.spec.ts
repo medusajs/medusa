@@ -41,24 +41,27 @@ describe("parse-filters", () => {
       product: {
         fields: ["id", "title", "variants"],
         __args: {
-          id: "string",
+          filters: {
+            id: "string",
+            variants: {
+              sku: {
+                $eq: "string",
+              },
+            },
+          },
         },
 
         variants: {
           fields: ["id", "sku", "prices"],
 
-          __args: {
-            sku: {
-              $eq: "string",
-            },
-          },
-
           prices: {
             fields: ["id", "amount"],
 
             __args: {
-              amount: {
-                $eq: 50,
+              filters: {
+                amount: {
+                  $eq: 50,
+                },
               },
             },
           },

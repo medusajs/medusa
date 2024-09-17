@@ -40,13 +40,6 @@ export function parseAndAssignFilters({
         joinerConfigs,
       })
 
-      if (!joinerConfig) {
-        remoteQueryObject["__args"] ??= {}
-        remoteQueryObject["__args"]["filters"] ??= {}
-        remoteQueryObject["__args"]["filters"][entryPoint] = filters
-        return
-      }
-
       entryAlias = alias
       entryJoinerConfig = joinerConfig
 
@@ -76,13 +69,35 @@ export function parseAndAssignFilters({
     )
 
     if (isObject(filterValue)) {
-      remoteQueryObject[entryPoint] ??= {}
+      for (const [nestedFilterKey, nestedFilterValue] of Object.entries(
+        filterValue
+      )) {
+        const { joinerConfig: filterKeyJoinerConfig } =
+          retrieveJoinerConfigFromPropertyName({
+            entryPoint: nestedFilterKey,
+            joinerConfigs,
+          })
 
-      parseAndAssignFilters({
-        entryPoint: filterKey,
-        filters: filterValue,
-        remoteQueryObject: remoteQueryObject[entryPoint],
-      })
+        if (
+          !filterKeyJoinerConfig ||
+          filterKeyJoinerConfig.serviceName === entryJoinerConfig.serviceName
+        ) {
+          remoteQueryObject[entryPoint] ??= {}
+          remoteQueryObject[entryPoint]["__args"] ??= {}
+          remoteQueryObject[entryPoint]["__args"]["filters"] ??= {}
+          remoteQueryObject[entryPoint]["__args"]["filters"][filterKey] ??= {}
+          remoteQueryObject[entryPoint]["__args"]["filters"][filterKey][
+            nestedFilterKey
+          ] = nestedFilterValue
+        } else {
+          parseAndAssignFilters({
+            entryPoint: nestedFilterKey,
+            filters: nestedFilterValue,
+            remoteQueryObject: remoteQueryObject[entryPoint][filterKey],
+          })
+        }
+      }
+
       continue
     }
 
