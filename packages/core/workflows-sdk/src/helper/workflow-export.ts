@@ -9,9 +9,9 @@ import {
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  isPresent,
   MedusaContextType,
-  ModuleRegistrationName,
+  Modules,
+  isPresent,
 } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
@@ -74,6 +74,7 @@ function createContextualWorkflowRunner<
   ) => {
     if (!executionContainer) {
       const container_ = flow.container as MedusaContainer
+
       if (!container_ || !isPresent(container_?.registrations)) {
         executionContainer = MedusaModule.getLoadedModules().map(
           (mod) => Object.values(mod)[0]
@@ -85,12 +86,13 @@ function createContextualWorkflowRunner<
       flow.container = executionContainer
     }
 
-    const { eventGroupId } = context
+    const { eventGroupId, parentStepIdempotencyKey } = context
 
     attachOnFinishReleaseEvents(events, eventGroupId!, flow, { logOnError })
 
     const flowMetadata = {
       eventGroupId,
+      parentStepIdempotencyKey,
     }
 
     const args = [
@@ -535,7 +537,7 @@ function attachOnFinishReleaseEvents(
     await onFinish?.(args)
 
     const eventBusService = (flow.container as MedusaContainer).resolve(
-      ModuleRegistrationName.EVENT_BUS,
+      Modules.EVENT_BUS,
       { allowUnregistered: true }
     )
 

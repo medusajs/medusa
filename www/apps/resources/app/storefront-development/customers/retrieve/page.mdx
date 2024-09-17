@@ -23,6 +23,7 @@ export const bearerHighlights = [
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
     }
   )
@@ -47,6 +48,7 @@ export const sessionHighlights = [
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
     }
   )

@@ -1,5 +1,5 @@
 import { ISalesChannelModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteSalesChannelsStepId = "delete-sales-channels"
@@ -10,7 +10,7 @@ export const deleteSalesChannelsStep = createStep(
   deleteSalesChannelsStepId,
   async (ids: string[], { container }) => {
     const service = container.resolve<ISalesChannelModuleService>(
-      ModuleRegistrationName.SALES_CHANNEL
+      Modules.SALES_CHANNEL
     )
 
     await service.softDeleteSalesChannels(ids)
@@ -23,7 +23,7 @@ export const deleteSalesChannelsStep = createStep(
     }
 
     const service = container.resolve<ISalesChannelModuleService>(
-      ModuleRegistrationName.SALES_CHANNEL
+      Modules.SALES_CHANNEL
     )
 
     await service.restoreSalesChannels(prevSalesChannelIds)

@@ -101,3 +101,8 @@ export const AdminOrderChanges = z.object({
   deleted_at: createOperatorMap().optional(),
 })
 export type AdminOrderChangesType = z.infer<typeof AdminOrderChanges>
+
+export type AdminMarkOrderFulfillmentDeliveredType = z.infer<
+  typeof AdminMarkOrderFulfillmentDelivered
+>
+export const AdminMarkOrderFulfillmentDelivered = z.object({})

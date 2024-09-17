@@ -18,13 +18,12 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  MedusaError,
+  Modules,
+  ModulesSdkUtils,
   createMedusaContainer,
   isObject,
   isString,
-  MedusaError,
-  ModuleRegistrationName,
-  Modules,
-  ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
@@ -37,7 +36,7 @@ import {
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { createQuery, RemoteQuery } from "./remote-query"
+import { RemoteQuery, createQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
 
@@ -49,7 +48,7 @@ declare module "@medusajs/types" {
     [ContainerRegistrationKeys.CONFIG_MODULE]: ConfigModule
     [ContainerRegistrationKeys.PG_CONNECTION]: Knex<any>
     [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
-    [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
+    [ContainerRegistrationKeys.QUERY]: Omit<RemoteQueryFunction, symbol>
     [ContainerRegistrationKeys.LOGGER]: Logger
   }
 }
@@ -142,7 +141,7 @@ export async function loadModules(
 
       const service = loaded[moduleName]
       sharedContainer.register({
-        [service.__definition.registrationName]: asValue(service),
+        [service.__definition.key]: asValue(service),
       })
 
       if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
@@ -384,10 +383,12 @@ async function MedusaApp_({
   }
 
   // Share Event bus with link modules
-  injectedDependencies[ModuleRegistrationName.EVENT_BUS] =
-    sharedContainer_.resolve(ModuleRegistrationName.EVENT_BUS, {
+  injectedDependencies[Modules.EVENT_BUS] = sharedContainer_.resolve(
+    Modules.EVENT_BUS,
+    {
       allowUnregistered: true,
-    })
+    }
+  )
 
   linkModules ??= []
   if (!Array.isArray(linkModules)) {
@@ -519,7 +520,7 @@ async function MedusaApp_({
     onApplicationStart,
     modules: allModules,
     link: remoteLink,
-    query: createQuery(remoteQuery),
+    query: createQuery(remoteQuery) as any, // TODO: rm any once we remove the old RemoteQueryFunction and rely on the Query object instead,
     entitiesMap: schema.getTypeMap(),
     gqlSchema: schema,
     notFound,

@@ -1,9 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { HttpTypes } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -12,7 +12,7 @@ export const GET = async (
   const { id } = req.params
 
   // NOTE: Consider replacing with remoteQuery when possible
-  const orderModuleService = req.scope.resolve(ModuleRegistrationName.ORDER)
+  const orderModuleService = req.scope.resolve(Modules.ORDER)
 
   const order = (await orderModuleService.previewOrderChange(
     id

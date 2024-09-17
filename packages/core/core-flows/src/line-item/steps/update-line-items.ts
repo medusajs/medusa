@@ -3,7 +3,7 @@ import {
   UpdateLineItemWithSelectorDTO,
 } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
   removeUndefined,
@@ -18,9 +18,7 @@ export const updateLineItemsStepWithSelectorId =
 export const updateLineItemsStepWithSelector = createStep(
   updateLineItemsStepWithSelectorId,
   async (input: UpdateLineItemWithSelectorDTO, { container }) => {
-    const service = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const service = container.resolve<ICartModuleService>(Modules.CART)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       input.data,
@@ -40,9 +38,7 @@ export const updateLineItemsStepWithSelector = createStep(
       return
     }
 
-    const service = container.resolve<ICartModuleService>(
-      ModuleRegistrationName.CART
-    )
+    const service = container.resolve<ICartModuleService>(Modules.CART)
 
     await promiseAll(
       itemsBefore.map(async (i) =>

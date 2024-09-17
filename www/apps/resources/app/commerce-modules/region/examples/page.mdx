@@ -16,14 +16,14 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IRegionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const regionModuleService: IRegionModuleService = req.scope.resolve(
-    ModuleRegistrationName.REGION
+    Modules.REGION
   )
 
   const region = await regionModuleService.createRegions({
@@ -72,14 +72,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IRegionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const regionModuleService: IRegionModuleService = req.scope.resolve(
-    ModuleRegistrationName.REGION
+    Modules.REGION
   )
 
   res.json({
@@ -118,14 +118,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IRegionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const regionModuleService: IRegionModuleService = req.scope.resolve(
-    ModuleRegistrationName.REGION
+    Modules.REGION
   )
 
   const region = await regionModuleService.retrieveRegion("reg_123")
@@ -164,14 +164,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IRegionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const regionModuleService: IRegionModuleService = req.scope.resolve(
-    ModuleRegistrationName.REGION
+    Modules.REGION
   )
 
   const region = await regionModuleService.updateRegions("reg_123", {
@@ -214,14 +214,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IRegionModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const regionModuleService: IRegionModuleService = req.scope.resolve(
-    ModuleRegistrationName.REGION
+    Modules.REGION
   )
 
   await regionModuleService.deleteRegions("reg_123")

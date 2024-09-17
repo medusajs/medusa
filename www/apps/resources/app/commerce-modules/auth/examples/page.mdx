@@ -25,7 +25,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     IAuthModuleService,
     AuthenticationInput,
   } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
   import { MedusaError } from "@medusajs/utils"
   import jwt from "jsonwebtoken"
 
@@ -34,7 +34,7 @@ export async function POST(
   res: MedusaResponse
 ): Promise<void> {
   const authModuleService: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
 
   const { success, authIdentity, location, error } =
@@ -128,7 +128,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     IAuthModuleService,
     AuthenticationInput,
   } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
   import { MedusaError } from "@medusajs/utils"
   import jwt from "jsonwebtoken"
 
@@ -137,7 +137,7 @@ export async function POST(
   res: MedusaResponse
 ): Promise<void> {
   const authModuleService: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
 
   const { success, authIdentity, error, successRedirectUrl } =
@@ -227,14 +227,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const authModuleService: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
 
   const authIdentity = await authModuleService.createAuthIdentities({
@@ -283,14 +283,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const authModuleService: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
 
   res.json({
@@ -329,14 +329,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const authModuleService: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
 
   const authIdentity = await authModuleService.updateAuthIdentites({
@@ -395,14 +395,14 @@ export async function POST(request: Request, { params }: ContextType) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const authModuleService: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
+    Modules.AUTH
   )
 
   await authModuleService.deleteAuthIdentities(["authusr_123"])

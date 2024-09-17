@@ -1,6 +1,6 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { MedusaContainer } from "@medusajs/types"
-import { composeMessage, ModuleRegistrationName } from "@medusajs/utils"
+import { Modules, composeMessage } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import testEventPayloadHandlerMock from "../../dist/subscribers/test-event-payload"
 
 jest.setTimeout(30000)
@@ -15,7 +15,7 @@ medusaIntegrationTestRunner({
       })
 
       it(`should emit event with the expected shape to be received by the subscribers`, async () => {
-        const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
+        const eventBus = container.resolve(Modules.EVENT_BUS)
         const eventName = "test-event-payload"
 
         await eventBus.emit(

@@ -60,7 +60,7 @@ This exports the module's definition, indicating that the \`MyPaymentProviderSer
 To use your Payment Module Provider, add it to the \`providers\` array of the Payment Module:
 
 \`\`\`js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 

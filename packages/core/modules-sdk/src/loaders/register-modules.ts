@@ -84,7 +84,6 @@ function getCustomModuleResolution(
       isRequired: false,
       defaultPackage: "",
       dependencies,
-      registrationName: key,
       defaultModuleDeclaration: {
         resources: MODULE_RESOURCE_TYPE.SHARED,
         scope: MODULE_SCOPE.INTERNAL,

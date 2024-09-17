@@ -27,14 +27,14 @@ For example, you saw this code snippet in the [Medusa container chapter](../medu
 ```ts highlights={[["10"]]}
 import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 
 export const GET = async (
   req: MedusaRequest, 
   res: MedusaResponse
 ) => {
   const productModuleService: IProductModuleService = req.scope.resolve(
-    ModuleRegistrationName.PRODUCT
+    Modules.PRODUCT
   )
 
   const [, count] = await productModuleService
@@ -46,10 +46,10 @@ export const GET = async (
 }
 ```
 
-When you resolve the `ModuleRegistrationName.PRODUCT` (or `productModuleService`) registration name, you're actually resolving the main service of the Product Module.
+When you resolve the `Modules.PRODUCT` (or `productModuleService`) registration name, you're actually resolving the main service of the Product Module.
 
 <Note title="Tip">
 
-To resolve the main service of any commerce module, use the registration name defined in the `ModuleRegistrationName` enum imported from `@medusajs/utils`.
+To resolve the main service of any commerce module, use the registration name defined in the `Modules` enum imported from `@medusajs/utils`.
 
 </Note>

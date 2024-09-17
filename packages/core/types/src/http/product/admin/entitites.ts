@@ -30,10 +30,10 @@ export interface AdminProduct
 }
 export type AdminProductStatus = ProductStatus
 export interface AdminProductVariantInventoryLink {
-  productService: {
+  Product: {
     variant_id: string
   }
-  inventoryService: {
+  Inventory: {
     inventory_item_id: string
   }
 }

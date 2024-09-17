@@ -216,9 +216,13 @@ class OasExamplesGenerator {
     ]
 
     if (isAdminAuthenticated) {
-      exampleArr.push(`-H 'x-medusa-access-token: {api_token}'`)
+      exampleArr.push(`-H 'Authorization: Bearer {access_token}'`)
     } else if (isStoreAuthenticated) {
       exampleArr.push(`-H 'Authorization: Bearer {access_token}'`)
+    }
+
+    if (path.startsWith("/store")) {
+      exampleArr.push(`-H 'x-publishable-api-key: {your_publishable_api_key}'`)
     }
 
     if (requestSchema) {

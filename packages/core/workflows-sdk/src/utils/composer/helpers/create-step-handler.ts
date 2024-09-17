@@ -1,13 +1,13 @@
+import { WorkflowStepHandlerArguments } from "@medusajs/orchestration"
+import { OrchestrationUtils, deepCopy } from "@medusajs/utils"
+import { ApplyStepOptions } from "../create-step"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
   WorkflowData,
 } from "../type"
-import { WorkflowStepHandlerArguments } from "@medusajs/orchestration"
 import { resolveValue } from "./resolve-value"
 import { StepResponse } from "./step-response"
-import { deepCopy, OrchestrationUtils } from "@medusajs/utils"
-import { ApplyStepOptions } from "../create-step"
 
 export function createStepHandler<
   TInvokeInput,
@@ -36,6 +36,8 @@ export function createStepHandler<
       const idempotencyKey = metadata.idempotency_key
 
       stepArguments.context!.idempotencyKey = idempotencyKey
+
+      const flowMetadata = stepArguments.transaction.getFlow()?.metadata
       const executionContext: StepExecutionContext = {
         workflowId: metadata.model_id,
         stepName: metadata.action,
@@ -45,8 +47,9 @@ export function createStepHandler<
         container: stepArguments.container,
         metadata,
         eventGroupId:
-          stepArguments.transaction.getFlow()?.metadata?.eventGroupId ??
-          stepArguments.context!.eventGroupId,
+          flowMetadata?.eventGroupId ?? stepArguments.context!.eventGroupId,
+        parentStepIdempotencyKey:
+          flowMetadata?.parentStepIdempotencyKey as string,
         transactionId: stepArguments.context!.transactionId,
         context: stepArguments.context!,
       }
@@ -74,11 +77,14 @@ export function createStepHandler<
 
           stepArguments.context!.idempotencyKey = idempotencyKey
 
+          const flowMetadata = stepArguments.transaction.getFlow()?.metadata
           const executionContext: StepExecutionContext = {
             workflowId: metadata.model_id,
             stepName: metadata.action,
             action: "compensate",
             idempotencyKey,
+            parentStepIdempotencyKey:
+              flowMetadata?.parentStepIdempotencyKey as string,
             attempt: metadata.attempt,
             container: stepArguments.container,
             metadata,

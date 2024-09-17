@@ -1,5 +1,5 @@
 import { IPaymentModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteRefundReasonsStepId = "delete-refund-reasons"
@@ -9,9 +9,7 @@ export const deleteRefundReasonsStepId = "delete-refund-reasons"
 export const deleteRefundReasonsStep = createStep(
   deleteRefundReasonsStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
-    )
+    const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 
     await service.softDeleteRefundReasons(ids)
 
@@ -22,9 +20,7 @@ export const deleteRefundReasonsStep = createStep(
       return
     }
 
-    const service = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
-    )
+    const service = container.resolve<IPaymentModuleService>(Modules.PAYMENT)
 
     await service.restoreRefundReasons(prevCustomerIds)
   }

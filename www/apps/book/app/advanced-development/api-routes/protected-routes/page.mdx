@@ -20,7 +20,7 @@ Requests to `/admin` must be user-authenticated to access the route.
 
 <Note title="Tip">
 
-Refer to the API Reference for [Admin](https://docs.medusajs.com/api/admin#authentication) and [Store](https://docs.medusajs.com/api/store#authentication) authentication methods.
+Refer to the API Reference for [Admin](!api!/admin#authentication) and [Store](!api!/store#authentication) authentication methods.
 
 </Note>
 
@@ -119,7 +119,7 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { ICustomerModuleService } from "@medusajs/types"
 
 export const GET = async (
@@ -129,7 +129,7 @@ export const GET = async (
   if (req.auth_context?.actor_id) {
     // retrieve customer
     const customerModuleService: ICustomerModuleService = req.scope.resolve(
-      ModuleRegistrationName.CUSTOMER
+      Modules.CUSTOMER
     )
 
     const customer = await customerModuleService.retrieveCustomer(
@@ -154,7 +154,7 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { IUserModuleService } from "@medusajs/types"
 
 export const GET = async (
@@ -162,7 +162,7 @@ export const GET = async (
   res: MedusaResponse
 ) => {
   const userModuleService: IUserModuleService = req.scope.resolve(
-    ModuleRegistrationName.USER
+    Modules.USER
   )
 
   const user = await userModuleService.retrieveUser(

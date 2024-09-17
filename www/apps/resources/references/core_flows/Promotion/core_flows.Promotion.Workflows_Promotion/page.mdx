@@ -60,7 +60,7 @@ This workflow creates one or more campaigns.
 import { createCampaignsWorkflow } from "@medusajs/core-flows"
 
 createCampaignsWorkflow.hooks.campaignsCreated(
-	async (({ campaigns, additional_data }, { container }) => {
+	(async ({ campaigns, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -118,7 +118,7 @@ This workflow creates one or more promotions.
 import { createPromotionsWorkflow } from "@medusajs/core-flows"
 
 createPromotionsWorkflow.hooks.promotionsCreated(
-	async (({ promotions, additional_data }, { container }) => {
+	(async ({ promotions, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -154,7 +154,7 @@ This workflow deletes one or more campaigns.
 import { deleteCampaignsWorkflow } from "@medusajs/core-flows"
 
 deleteCampaignsWorkflow.hooks.campaignsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -204,7 +204,7 @@ This workflow deletes one or more promotions.
 import { deletePromotionsWorkflow } from "@medusajs/core-flows"
 
 deletePromotionsWorkflow.hooks.promotionsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -244,7 +244,7 @@ This workflow updates one or more campaigns.
 import { updateCampaignsWorkflow } from "@medusajs/core-flows"
 
 updateCampaignsWorkflow.hooks.campaignsUpdated(
-	async (({ campaigns, additional_data }, { container }) => {
+	(async ({ campaigns, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -302,7 +302,7 @@ This workflow updates one or more promotions.
 import { updatePromotionsWorkflow } from "@medusajs/core-flows"
 
 updatePromotionsWorkflow.hooks.promotionsUpdated(
-	async (({ promotions, additional_data }, { container }) => {
+	(async ({ promotions, additional_data }, { container }) => {
 		//TODO
 	})
 )

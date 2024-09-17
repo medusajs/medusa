@@ -397,6 +397,13 @@ moduleIntegrationTestRunner<IOrderModuleService>({
                 quantity: 4,
               },
             },
+            {
+              action: ChangeActionType.DELIVER_ITEM,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 1,
+              },
+            },
           ],
         })
 
@@ -421,6 +428,7 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           expect.objectContaining({
             quantity: 4,
             fulfilled_quantity: 1,
+            delivered_quantity: 1,
           })
         )
 
@@ -499,6 +507,30 @@ moduleIntegrationTestRunner<IOrderModuleService>({
             fulfilled_quantity: 2,
           })
         )
+
+        const orderChange5 = await service.createOrderChange({
+          order_id: createdOrder.id,
+          actions: [
+            {
+              action: ChangeActionType.DELIVER_ITEM,
+              details: {
+                reference_id: createdOrder.items![1].id,
+                quantity: 5,
+              },
+            },
+          ],
+        })
+
+        await expect(
+          service.confirmOrderChange({
+            id: orderChange5.id,
+          })
+        ).rejects.toThrow(
+          `Cannot deliver more items than what was fulfilled for item ${
+            createdOrder.items![1].id
+          }`
+        )
+        await service.deleteOrderChanges([orderChange5.id])
       })
 
       it("should create an order change, add actions to it, confirm the changes, revert all the changes and restore the changes again.", async function () {

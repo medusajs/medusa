@@ -5,7 +5,7 @@ import {
   batchProductVariantsWorkflowId,
 } from "@medusajs/core-flows"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -19,7 +19,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        service = appContainer.resolve(ModuleRegistrationName.PRODUCT)
+        service = appContainer.resolve(Modules.PRODUCT)
       })
 
       describe("batchProductWorkflow", () => {

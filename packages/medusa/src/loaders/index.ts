@@ -1,4 +1,3 @@
-import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
 import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -164,6 +163,8 @@ export default async ({
     expressApp,
     rootDirectory
   )
+
+  const { createDefaultsWorkflow } = await import("@medusajs/core-flows")
   await createDefaultsWorkflow(container).run()
   await onApplicationStart()
 

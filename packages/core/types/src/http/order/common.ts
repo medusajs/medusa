@@ -105,6 +105,7 @@ export interface BaseOrderShippingMethod {
   original_subtotal: BigNumberValue
   original_tax_total: BigNumberValue
   total: BigNumberValue
+  detail?: BaseOrderShippingDetail
   subtotal: BigNumberValue
   tax_total: BigNumberValue
   discount_total: BigNumberValue
@@ -165,12 +166,24 @@ export interface BaseOrderItemDetail {
   item: BaseOrderLineItem
   quantity: number
   fulfilled_quantity: number
+  delivered_quantity: number
   shipped_quantity: number
   return_requested_quantity: number
   return_received_quantity: number
   return_dismissed_quantity: number
   written_off_quantity: number
   metadata: Record<string, unknown> | null
+  created_at: Date
+  updated_at: Date
+}
+
+export interface BaseOrderShippingDetail {
+  id: string
+  shipping_method_id: string
+  shipping_method: BaseOrderShippingMethod
+  claim_id: string
+  exchange_id: string
+  return_id: string
   created_at: Date
   updated_at: Date
 }

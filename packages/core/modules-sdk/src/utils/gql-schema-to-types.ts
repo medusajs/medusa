@@ -78,8 +78,11 @@ export async function gqlSchemaToTypes({
     documents: [],
     config: {
       scalars: {
-        DateTime: { output: "Date | string" },
-        JSON: { output: "Record<any, unknown>" },
+        DateTime: { input: "Date | string", output: "Date | string" },
+        JSON: {
+          input: "Record<string, unknown>",
+          output: "Record<string, unknown>",
+        },
       },
     },
     filename: "",

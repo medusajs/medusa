@@ -16,14 +16,14 @@ In this guide, you’ll find common examples of how you can use the Payment Modu
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const paymentModuleService: IPaymentModuleService = req.scope.resolve(
-    ModuleRegistrationName.PAYMENT
+    Modules.PAYMENT
   )
 
   const paymentCollection = await paymentModuleService.createPaymentCollections(
@@ -78,14 +78,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const paymentModuleService: IPaymentModuleService = req.scope.resolve(
-    ModuleRegistrationName.PAYMENT
+    Modules.PAYMENT
   )
 
   const paymentSession = await paymentModuleService.createPaymentSession(
@@ -144,14 +144,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const paymentModuleService: IPaymentModuleService = req.scope.resolve(
-    ModuleRegistrationName.PAYMENT
+    Modules.PAYMENT
   )
 
   const paymentSessions = await paymentModuleService.listPaymentSessions({
@@ -198,14 +198,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const paymentModuleService: IPaymentModuleService = req.scope.resolve(
-    ModuleRegistrationName.PAYMENT
+    Modules.PAYMENT
   )
 
   const payment = await paymentModuleService.authorizePaymentSession(
@@ -254,14 +254,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const paymentModuleService: IPaymentModuleService = req.scope.resolve(
-    ModuleRegistrationName.PAYMENT
+    Modules.PAYMENT
   )
 
   const payments = await paymentModuleService.listPayments({
@@ -308,14 +308,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IPaymentModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const paymentModuleService: IPaymentModuleService = req.scope.resolve(
-    ModuleRegistrationName.PAYMENT
+    Modules.PAYMENT
   )
 
   const payment = await paymentModuleService.capturePayment({

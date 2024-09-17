@@ -16,14 +16,14 @@ In this document, you’ll find common examples of how you can use the Stock Loc
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const stockLocationModuleService: IStockLocationService =
-    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+    request.scope.resolve(Modules.STOCK_LOCATION)
 
   const stockLocation = await stockLocationModuleService.createStockLocations({
     name: "Warehouse 1",
@@ -67,14 +67,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const stockLocationModuleService: IStockLocationService =
-    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+    request.scope.resolve(Modules.STOCK_LOCATION)
 
   res.json({
     stock_locations: await stockLocationModuleService.listStockLocations({}),
@@ -112,14 +112,14 @@ export async function GET(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function POST(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const stockLocationModuleService: IStockLocationService =
-    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+    request.scope.resolve(Modules.STOCK_LOCATION)
 
   const stockLocation = await stockLocationModuleService.updateStockLocations({
     id: "sloc_123",
@@ -177,14 +177,14 @@ export async function POST(request: Request) {
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/utils"
+  import { Modules } from "@medusajs/utils"
 
 export async function DELETE(
   request: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
   const stockLocationModuleService: IStockLocationService =
-    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+    request.scope.resolve(Modules.STOCK_LOCATION)
 
   await stockLocationModuleService.deleteStockLocations("sloc_123")
 

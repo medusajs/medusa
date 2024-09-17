@@ -13,7 +13,7 @@ This workflow updates product options matching the specified filters.
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"updateProductOptionsWorkflow","steps":[{"type":"step","name":"updateProductOptionsStep","description":"This step updates product options matching the specified filters.","link":"../../../../core_flows.Steps_Product/page.mdx#updateproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsUpdated","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"updateProductOptionsWorkflow","steps":[{"type":"step","name":"updateProductOptionsStep","description":"This step updates product options matching the specified filters.","link":"../../../../core_flows.Steps_Product/page.mdx#updateproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsUpdated","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ## Input
 
@@ -33,7 +33,7 @@ This workflow updates product options matching the specified filters.
 import { updateProductOptionsWorkflow } from "@medusajs/core-flows"
 
 updateProductOptionsWorkflow.hooks.productOptionsUpdated(
-	async (({ product_options, additional_data }, { container }) => {
+	(async ({ product_options, additional_data }, { container }) => {
 		//TODO
 	})
 )

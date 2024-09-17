@@ -4,7 +4,7 @@ import {
   UpdateCustomerAddressDTO,
 } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
 } from "@medusajs/utils"
@@ -22,9 +22,7 @@ export const updateCustomerAddresseStepId = "update-customer-addresses"
 export const updateCustomerAddressesStep = createStep(
   updateCustomerAddresseStepId,
   async (data: UpdateCustomerAddresseStepInput, { container }) => {
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -46,9 +44,7 @@ export const updateCustomerAddressesStep = createStep(
       return
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     await promiseAll(
       prevCustomerAddresses.map((c) =>

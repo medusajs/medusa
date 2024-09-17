@@ -1,10 +1,10 @@
+import { Modules } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 
 import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
 
 const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 
@@ -22,9 +22,7 @@ medusaIntegrationTestRunner({
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
+        customerModuleService = appContainer.resolve(Modules.CUSTOMER)
       })
 
       beforeEach(async () => {
