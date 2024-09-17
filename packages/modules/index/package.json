@@ -24,7 +24,7 @@
     "watch": "tsc --build --watch",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "build": "rimraf dist && tsc --noEmit && tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
-    "test": "jest --runInBand --bail --forceExit --passWithNoTests -- src/**/__tests__/**/*.ts",
+    "test": "jest --passWithNoTests",
     "test:integration": "jest --runInBand --forceExit -- integration-tests/**/__tests__/**/*.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
