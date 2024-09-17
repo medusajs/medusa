@@ -262,33 +262,36 @@ export function registerOtel(options: {
   exporter: SpanExporter
   instrument?: Partial<{
     http: boolean
-    remoteQuery: boolean
+    query: boolean
     workflows: boolean
+    db: boolean
   }>
   instrumentations?: Instrumentation[]
 }) {
+  const instrument = options.instrument || {}
+  const instrumentations = options.instrumentations || []
+
+  if (instrument.db) {
+    instrumentations.push(new PgInstrumentation())
+  }
+  if (instrument.http) {
+    instrumentHttpLayer()
+  }
+  if (instrument.query) {
+    instrumentRemoteQuery()
+  }
+  if (instrument.workflows) {
+    instrumentWorkflows()
+  }
+
   const sdk = new NodeSDK({
     serviceName: options.serviceName,
     resource: new Resource({
       "service.name": options.serviceName,
     }),
     spanProcessor: new SimpleSpanProcessor(options.exporter),
-    instrumentations: [
-      new PgInstrumentation(),
-      ...(options.instrumentations || []),
-    ],
+    instrumentations: instrumentations,
   })
-
-  const instrument = options.instrument || {}
-  if (instrument.http) {
-    instrumentHttpLayer()
-  }
-  if (instrument.remoteQuery) {
-    instrumentRemoteQuery()
-  }
-  if (instrument.workflows) {
-    instrumentWorkflows()
-  }
 
   sdk.start()
   return sdk
