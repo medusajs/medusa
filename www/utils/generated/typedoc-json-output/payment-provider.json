@@ -1,161 +1,79 @@
 {
-	"id": 13772,
+	"id": 35436,
 	"name": "payment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 13776,
+			"id": 35440,
 			"name": "AbstractPaymentProvider",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {
 				"isAbstract": true
 			},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "## Overview\n\nA payment provider is used to handle and process payments, such as authorizing, capturing, and refund payments.\n\nRefer to [this guide](https://docs.medusajs.com/experimental/payment/payment-provider/) to learn more about payment providers.\n\nRefer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/) to learn more about the payment flow.\n\n---\n\n## How to Create a Payment Provider\n\nA payment provider is a TypeScript or JavaScript class that extends the "
-					},
-					{
-						"kind": "code",
-						"text": "`AbstractPaymentProvider`"
-					},
-					{
-						"kind": "text",
-						"text": " class imported from "
-					},
-					{
-						"kind": "code",
-						"text": "`@medusajsa/utils`"
-					},
-					{
-						"kind": "text",
-						"text": ".\n\nYou can create the payment provider in a module or plugin, then pass that module/plugin in the Payment Module's "
-					},
-					{
-						"kind": "code",
-						"text": "`providers`"
-					},
-					{
-						"kind": "text",
-						"text": " option. You can also pass the path to the file\nthat defines the provider if it's created in the Medusa application's codebase.\n\nFor example:\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\nabstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {\n  // ...\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\n---\n\n## Configuration Type Parameter\n\nThe "
-					},
-					{
-						"kind": "code",
-						"text": "`AbstractPaymentProvider`"
-					},
-					{
-						"kind": "text",
-						"text": " class accepts an optional type parameter that defines the type of configuration that your payment provider expects.\n\nFor example:\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\ninterface MyConfigurations {\n  apiKey: string\n}\n\nabstract class MyPayment extends AbstractPaymentProvider<MyConfigurations> {\n  // ...\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\n---\n\n## Identifier Property\n\nThe "
-					},
-					{
-						"kind": "code",
-						"text": "`PaymentProvider`"
-					},
-					{
-						"kind": "text",
-						"text": " data model has 2 properties: "
-					},
-					{
-						"kind": "code",
-						"text": "`id`"
-					},
-					{
-						"kind": "text",
-						"text": " and "
-					},
-					{
-						"kind": "code",
-						"text": "`is_enabled`"
-					},
-					{
-						"kind": "text",
-						"text": ".\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\nclass MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {\n  static identifier = \"my-payment\"\n  // ...\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\n---\n\n## PROVIDER Property\n\nThe "
-					},
-					{
-						"kind": "code",
-						"text": "`PROVIDER`"
-					},
-					{
-						"kind": "text",
-						"text": " static property is used when registering the provider in the dependency container. Typically, it would have the\nsame value as the "
-					},
-					{
-						"kind": "code",
-						"text": "`identifier`"
-					},
-					{
-						"kind": "text",
-						"text": " property.\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\nclass MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {\n  static PROVIDER = \"my-payment\"\n  // ...\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\n---\n\n## PaymentProviderError\n\nBefore diving into the methods of the Payment Provider, you'll notice that part of the expected return signature of these method includes "
-					},
-					{
-						"kind": "code",
-						"text": "`PaymentProviderError`"
-					},
-					{
-						"kind": "text",
-						"text": ".\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\ninterface PaymentProviderError {\n  error: string\n  code?: string\n  detail?: any\n}\n```"
-					},
-					{
-						"kind": "text",
-						"text": "\n\nWhile implementing the Payment Provider's methods, if you need to inform the Payment Module that an error occurred at a certain stage,\nreturn an object having the attributes defined in the "
-					},
-					{
-						"kind": "code",
-						"text": "`PaymentProviderError`"
-					},
-					{
-						"kind": "text",
-						"text": " interface.\n\nFor example, the Stripe payment provider has the following method to create the error object, which is used within other methods:\n\n"
-					},
-					{
-						"kind": "code",
-						"text": "```ts\nabstract class StripeBase extends AbstractPaymentProvider {\n  // ...\n  protected buildError(\n   message: string,\n   error: Stripe.StripeRawError | PaymentProviderError | Error\n ): PaymentProviderError {\n   return {\n     error: message,\n     code: \"code\" in error ? error.code : \"unknown\",\n     detail: isPaymentProviderError(error)\n       ? `${error.error}${EOL}${error.detail ?? \"\"}`\n       : \"detail\" in error\n       ? error.detail\n       : error.message ?? \"\",\n   }\n }\n\n  // used in other methods\n  async retrievePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<\n    PaymentProviderError |\n    PaymentProviderSessionResponse[\"session_data\"]\n  > {\n    try {\n      // ...\n    } catch (e) {\n      return this.buildError(\n        \"An error occurred in retrievePayment\",\n        e\n      )\n    }\n  }\n}\n```"
-					}
-				]
-			},
 			"children": [
 				{
-					"id": 13782,
+					"id": 35441,
+					"name": "validateOptions",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isStatic": true
+					},
+					"signatures": [
+						{
+							"id": 35442,
+							"name": "validateOptions",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Override this static method in order for the loader to validate the options provided to the module provider."
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 35443,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "any"
+											},
+											{
+												"type": "intrinsic",
+												"name": "any"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 35449,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -164,7 +82,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13783,
+							"id": 35450,
 							"name": "new AbstractPaymentProvider",
 							"variant": "signature",
 							"kind": 16384,
@@ -181,7 +99,7 @@
 									},
 									{
 										"kind": "text",
-										"text": " of your Payment Provider to have access to resources in your application through the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection).\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,\nyou can initialize it in the constructor and use it in other methods in the service.\n\nThe payment provider also can access the configurations of the module or plugin it's created in as a second parameter."
+										"text": " of the provider's service to access resources in your module's container.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,\nyou can initialize it in the constructor and use it in other methods in the service.\n\nThe provider can also access the module's options as a second parameter."
 									}
 								],
 								"blockTags": [
@@ -190,7 +108,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {\n  // ...\n  constructor(container, config) {\n    super(container, config)\n    // you can access options here\n\n    // you can also initialize a client that\n    // communicates with a third-party service.\n    this.client = new Client(options)\n  }\n  // ...\n}\n```"
+												"text": "```ts\nimport {\n  AbstractPaymentProvider\n} from \"@medusajs/utils\"\nimport { Logger } from \"@medusajs/types\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  apiKey: string\n}\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  protected logger_: Logger\n  protected options_: Options\n  // Assuming you're using a client to integrate\n  // with a third-party service\n  protected client\n\n  constructor(\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    // @ts-ignore\n    super(...arguments)\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // Assuming you're initializing a client\n    this.client = new Client(options)\n  }\n\n  // ...\n}\n\nexport default MyPaymentProviderService\n```"
 											}
 										]
 									}
@@ -198,7 +116,7 @@
 							},
 							"typeParameters": [
 								{
-									"id": 13784,
+									"id": 35451,
 									"name": "TConfig",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -226,7 +144,7 @@
 							],
 							"parameters": [
 								{
-									"id": 13785,
+									"id": 35452,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -235,15 +153,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "An instance of "
-											},
-											{
-												"kind": "code",
-												"text": "`MedusaContainer`"
-											},
-											{
-												"kind": "text",
-												"text": " that allows you to access other resources in the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection)"
+												"text": "The module's container used to resolve resources."
 											}
 										]
 									},
@@ -258,7 +168,7 @@
 									}
 								},
 								{
-									"id": 13786,
+									"id": 35453,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -267,13 +177,13 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "If this provider processor is created in a module or plugin, their options are passed in this parameter."
+												"text": "The options passed to the payment module provider."
 											}
 										]
 									},
 									"type": {
 										"type": "reference",
-										"target": 13784,
+										"target": 35451,
 										"name": "TConfig",
 										"package": "@medusajs/utils",
 										"qualifiedName": "AbstractPaymentProvider.TConfig",
@@ -284,11 +194,11 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 13776,
+								"target": 35440,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 13784,
+										"target": 35451,
 										"name": "TConfig",
 										"package": "@medusajs/utils",
 										"qualifiedName": "AbstractPaymentProvider.TConfig",
@@ -302,7 +212,7 @@
 					]
 				},
 				{
-					"id": 13787,
+					"id": 35454,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -314,15 +224,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "An instance of "
-							},
-							{
-								"kind": "code",
-								"text": "`MedusaContainer`"
-							},
-							{
-								"kind": "text",
-								"text": " that allows you to access other resources in the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection)"
+								"text": "The module's container used to resolve resources."
 							}
 						]
 					},
@@ -337,7 +239,7 @@
 					}
 				},
 				{
-					"id": 13788,
+					"id": 35455,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -349,13 +251,13 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "If this provider processor is created in a module or plugin, their options are passed in this parameter."
+								"text": "The options passed to the payment module provider."
 							}
 						]
 					},
 					"type": {
 						"type": "reference",
-						"target": 13784,
+						"target": 35451,
 						"name": "TConfig",
 						"package": "@medusajs/utils",
 						"qualifiedName": "AbstractPaymentProvider.TConfig",
@@ -364,7 +266,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 13781,
+					"id": 35448,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -376,35 +278,18 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "The "
-							},
+								"text": "Each payment provider has a unique identifier defined in its class."
+							}
+						],
+						"blockTags": [
 							{
-								"kind": "code",
-								"text": "`PaymentProvider`"
-							},
-							{
-								"kind": "text",
-								"text": " data model has 2 properties: "
-							},
-							{
-								"kind": "code",
-								"text": "`id`"
-							},
-							{
-								"kind": "text",
-								"text": " and "
-							},
-							{
-								"kind": "code",
-								"text": "`is_enabled`"
-							},
-							{
-								"kind": "text",
-								"text": ".\n\n"
-							},
-							{
-								"kind": "code",
-								"text": "```ts\nclass MyPaymentProvider extends AbstractPaymentProvider<MyConfigurations> {\n  static identifier = \"my-payment\"\n  // ...\n}\n```"
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  static identifier = \"my-payment\"\n  // ...\n}\n```\n```"
+									}
+								]
 							}
 						]
 					},
@@ -414,7 +299,7 @@
 					}
 				},
 				{
-					"id": 13791,
+					"id": 35458,
 					"name": "capturePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -423,7 +308,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13792,
+							"id": 35459,
 							"name": "capturePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -432,7 +317,26 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is called when a payment should be captured. The payment is captured in one of the following scenarios:\n\n- The payment provider supports automatically capturing the payment after authorization.\n- The merchant requests to capture the payment after its associated payment session was authorized.\n- A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)\n\nIn this method, you can interact with the third-party provider and perform any actions necessary to capture the payment."
+										"text": "This method is used to capture a payment. The payment is captured in one of the following scenarios:\n\n- The "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "authorizePayment",
+										"target": 35461,
+										"tsLinkText": ""
+									},
+									{
+										"kind": "text",
+										"text": " method returns the status "
+									},
+									{
+										"kind": "code",
+										"text": "`captured`"
+									},
+									{
+										"kind": "text",
+										"text": ", which automatically executed this method after authorization.\n- The merchant requests to capture the payment after its associated payment session was authorized.\n- A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/payment/webhook-events).\n\nIn this method, use the third-party provider to capture the payment."
 									}
 								],
 								"blockTags": [
@@ -441,7 +345,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Either an error object or a value that's stored in the "
+												"text": "The new data to store in the payment's "
 											},
 											{
 												"kind": "code",
@@ -449,7 +353,16 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of the payment."
+												"text": " property, or an error object."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  PaymentProviderError,\n  PaymentProviderSessionResponse,\n} from \"@medusajs/types\"\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async capturePayment(\n    paymentData: Record<string, unknown>\n  ): Promise<PaymentProviderError | PaymentProviderSessionResponse[\"data\"]> {\n    const externalId = paymentData.id\n\n    try {\n      const newData = await this.client.capturePayment(externalId)\n\n      return {\n        ...newData,\n        id: externalId\n      }\n    } catch (e) {\n      return {\n        error: e,\n        code: \"unknown\",\n        detail: e\n      }\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -457,8 +370,8 @@
 							},
 							"parameters": [
 								{
-									"id": 13793,
-									"name": "paymentSessionData",
+									"id": 35460,
+									"name": "paymentData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
@@ -474,7 +387,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of the payment."
+												"text": " property of the payment. Make sure to store in it\nany helpful identification for your third-party integration."
 											}
 										]
 									},
@@ -557,7 +470,7 @@
 					}
 				},
 				{
-					"id": 13794,
+					"id": 35461,
 					"name": "authorizePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -566,7 +479,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13795,
+							"id": 35462,
 							"name": "authorizePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -575,7 +488,26 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is called when a payment session should be authorized.\nYou can interact with a third-party provider and perform the necessary actions to authorize the payment.\n\nRefer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/#3-authorize-payment-session)\nto learn more about how this fits into the payment flow and how to handle required actions."
+										"text": "This method authorizes a payment session. When authorized successfully, a payment is created by the Payment\nModule which can be later captured using the "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "capturePayment",
+										"target": 35458,
+										"tsLinkText": ""
+									},
+									{
+										"kind": "text",
+										"text": " method.\n\nRefer to [this guide](https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment-flow#3-authorize-payment-session)\nto learn more about how this fits into the payment flow and how to handle required actions.\n\nTo automatically capture the payment after authorization, return the status "
+									},
+									{
+										"kind": "code",
+										"text": "`captured`"
+									},
+									{
+										"kind": "text",
+										"text": "."
 									}
 								],
 								"blockTags": [
@@ -584,7 +516,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The authorization details or an error object. If\nthe authorization details are returned, the "
+												"text": "Either an object of the new data to store in the created payment's "
 											},
 											{
 												"kind": "code",
@@ -592,15 +524,24 @@
 											},
 											{
 												"kind": "text",
-												"text": " and "
+												"text": " property and the\npayment's status, or an error object. Make sure to set in "
 											},
 											{
 												"kind": "code",
-												"text": "`status`"
+												"text": "`data`"
 											},
 											{
 												"kind": "text",
-												"text": " field are set in the associated payment session."
+												"text": " anything useful to later retrieve the session."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  PaymentProviderError,\n  PaymentProviderSessionResponse,\n  PaymentSessionStatus\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async authorizePayment(\n    paymentSessionData: Record<string, unknown>,\n    context: Record<string, unknown>\n  ): Promise<\n    PaymentProviderError | {\n      status: PaymentSessionStatus\n      data: PaymentProviderSessionResponse[\"data\"]\n    }\n  > {\n    const externalId = paymentSessionData.id\n\n    try {\n      const paymentData = await this.client.authorizePayment(externalId)\n\n      return {\n        data: {\n          ...paymentData,\n          id: externalId\n        },\n        status: \"authorized\"\n      }\n    } catch (e) {\n      return {\n        error: e,\n        code: \"unknown\",\n        detail: e\n      }\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -608,7 +549,7 @@
 							},
 							"parameters": [
 								{
-									"id": 13796,
+									"id": 35463,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -625,7 +566,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of the payment session."
+												"text": " property of the payment session. Make sure to store in it\nany helpful identification for your third-party integration."
 											}
 										]
 									},
@@ -650,7 +591,7 @@
 									}
 								},
 								{
-									"id": 13797,
+									"id": 35464,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -659,7 +600,15 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The context of the authorization."
+												"text": "The context in which the payment is being authorized. For example, in checkout,\nthe context has a "
+											},
+											{
+												"kind": "code",
+												"text": "`cart_id`"
+											},
+											{
+												"kind": "text",
+												"text": " property indicating the ID of the associated cart."
 											}
 										]
 									},
@@ -706,18 +655,26 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 13798,
+													"id": 35465,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 13799,
+															"id": 35466,
 															"name": "status",
 															"variant": "declaration",
 															"kind": 1024,
 															"flags": {},
+															"comment": {
+																"summary": [
+																	{
+																		"kind": "text",
+																		"text": "The new status of the payment."
+																	}
+																]
+															},
 															"type": {
 																"type": "reference",
 																"target": {
@@ -729,11 +686,27 @@
 															}
 														},
 														{
-															"id": 13800,
+															"id": 35467,
 															"name": "data",
 															"variant": "declaration",
 															"kind": 1024,
 															"flags": {},
+															"comment": {
+																"summary": [
+																	{
+																		"kind": "text",
+																		"text": "The data to store in the created payment's "
+																	},
+																	{
+																		"kind": "code",
+																		"text": "`data`"
+																	},
+																	{
+																		"kind": "text",
+																		"text": " property."
+																	}
+																]
+															},
 															"type": {
 																"type": "reference",
 																"target": {
@@ -759,8 +732,8 @@
 														{
 															"title": "Properties",
 															"children": [
-																13799,
-																13800
+																35466,
+																35467
 															]
 														}
 													]
@@ -786,7 +759,7 @@
 					}
 				},
 				{
-					"id": 13801,
+					"id": 35468,
 					"name": "cancelPayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -795,7 +768,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13802,
+							"id": 35469,
 							"name": "cancelPayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -804,7 +777,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is called when a payment is canceled.\n\nIn this method, you can interact with the third-party provider and perform any actions necessary to cancel the payment."
+										"text": "This method cancels a payment."
 									}
 								],
 								"blockTags": [
@@ -813,15 +786,16 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Either an error object or a value that's stored in the "
-											},
+												"text": "An error object if an error occurs, or the data received from the integration."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
 											{
 												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field of the payment."
+												"text": "```ts\n// other imports...\nimport {\n  PaymentProviderError,\n  PaymentProviderSessionResponse,\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async cancelPayment(\n    paymentData: Record<string, unknown>\n  ): Promise<PaymentProviderError | PaymentProviderSessionResponse[\"data\"]> {\n    const externalId = paymentData.id\n\n    try {\n      const paymentData = await this.client.cancelPayment(externalId)\n    } catch (e) {\n      return {\n        error: e,\n        code: \"unknown\",\n        detail: e\n      }\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -829,8 +803,8 @@
 							},
 							"parameters": [
 								{
-									"id": 13803,
-									"name": "paymentSessionData",
+									"id": 35470,
+									"name": "paymentData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
@@ -846,7 +820,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of the payment."
+												"text": " property of the payment. Make sure to store in it\nany helpful identification for your third-party integration."
 											}
 										]
 									},
@@ -929,7 +903,7 @@
 					}
 				},
 				{
-					"id": 13804,
+					"id": 35471,
 					"name": "initiatePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -938,7 +912,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13805,
+							"id": 35472,
 							"name": "initiatePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -947,7 +921,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This methods sends a request to the third-party provider to initialize the payment. It's called when the payment session is created.\n\nFor example, in the Stripe provider, this method is used to create a Payment Intent for the customer."
+										"text": "This method is used when a payment session is created. It can be used to initiate the payment\nin the third-party session, before authorizing or capturing the payment later."
 									}
 								],
 								"blockTags": [
@@ -956,7 +930,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Either the payment's data, which is stored in the "
+												"text": "An object whose "
 											},
 											{
 												"kind": "code",
@@ -964,7 +938,24 @@
 											},
 											{
 												"kind": "text",
-												"text": " field\nof the payment session, or an error object."
+												"text": " property is set in the created payment session, or an error\nobject. Make sure to set in "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " anything useful to later retrieve the session."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  PaymentProviderError,\n  PaymentProviderSessionResponse,\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async initiatePayment(\n    context: CreatePaymentProviderSession\n  ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {\n    const {\n      amount,\n      currency_code,\n      context: customerDetails\n    } = context\n\n    try {\n      const response = await this.client.init(\n        amount, currency_code, customerDetails\n      )\n\n      return {\n        ...response,\n        data: {\n          id: response.id\n        }\n      }\n    } catch (e) {\n      return {\n        error: e,\n        code: \"unknown\",\n        detail: e\n      }\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -972,11 +963,19 @@
 							},
 							"parameters": [
 								{
-									"id": 13806,
+									"id": 35473,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the payment session and its context."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -1036,7 +1035,7 @@
 					}
 				},
 				{
-					"id": 13807,
+					"id": 35474,
 					"name": "deletePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1045,7 +1044,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13808,
+							"id": 35475,
 							"name": "deletePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1054,7 +1053,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is called before a payment session is deleted. It's used to perform any actions necessary before the deletion."
+										"text": "This method is used when a payment session is deleted, which can only happen if it isn't authorized, yet.\n\nUse this to delete or cancel the payment in the third-party service."
 									}
 								],
 								"blockTags": [
@@ -1063,7 +1062,16 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Either an error object or an empty object."
+												"text": "An error object or the response from the third-party service."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  PaymentProviderError,\n  PaymentProviderSessionResponse,\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async deletePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<\n    PaymentProviderError | PaymentProviderSessionResponse[\"data\"]\n  > {\n    const externalId = paymentSessionData.id\n\n    try {\n      await this.client.cancelPayment(externalId)\n    } catch (e) {\n      return {\n        error: e,\n        code: \"unknown\",\n        detail: e\n      }\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -1071,7 +1079,7 @@
 							},
 							"parameters": [
 								{
-									"id": 13809,
+									"id": 35476,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1088,7 +1096,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of the Payment Session."
+												"text": " property of the payment session. Make sure to store in it\nany helpful identification for your third-party integration."
 											}
 										]
 									},
@@ -1171,7 +1179,7 @@
 					}
 				},
 				{
-					"id": 13810,
+					"id": 35477,
 					"name": "getPaymentStatus",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1180,7 +1188,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13811,
+							"id": 35478,
 							"name": "getPaymentStatus",
 							"variant": "signature",
 							"kind": 4096,
@@ -1189,7 +1197,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to get the status of a payment or a payment session."
+										"text": "This method gets the status of a payment session based on the status in the third-party integration."
 									}
 								],
 								"blockTags": [
@@ -1198,7 +1206,16 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "The status of the payment or payment session."
+												"text": "The payment session's status."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  PaymentSessionStatus\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async getPaymentStatus(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<PaymentSessionStatus> {\n    const externalId = paymentSessionData.id\n\n    try {\n      const status = await this.client.getStatus(externalId)\n\n      switch (status) {\n        case \"requires_capture\":\n          return \"authorized\"\n        case \"success\":\n          return \"captured\"\n        case \"canceled\":\n          return \"canceled\"\n        default:\n          return \"pending\"\n      }\n    } catch (e) {\n      return \"error\"\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -1206,7 +1223,7 @@
 							},
 							"parameters": [
 								{
-									"id": 13812,
+									"id": 35479,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1223,7 +1240,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of a payment as a parameter. You can use this data to interact with the third-party provider to check the status of the payment if necessary."
+												"text": " property of the payment session. Make sure to store in it\nany helpful identification for your third-party integration."
 											}
 										]
 									},
@@ -1282,7 +1299,7 @@
 					}
 				},
 				{
-					"id": 13813,
+					"id": 35480,
 					"name": "refundPayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1291,7 +1308,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13814,
+							"id": 35481,
 							"name": "refundPayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1300,7 +1317,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is called when a payment should be refunded. This is typically triggered manually by the merchant.\n\nIn this method, you can interact with the third-party provider and perform any actions necessary to refund the payment."
+										"text": "This method refunds an amount of a payment previously captured."
 									}
 								],
 								"blockTags": [
@@ -1309,7 +1326,7 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Either an error object or an object that's stored in the "
+												"text": "The new data to store in the payment's "
 											},
 											{
 												"kind": "code",
@@ -1317,7 +1334,16 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of the payment."
+												"text": " property, or an error object."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  PaymentProviderError,\n  PaymentProviderSessionResponse,\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async refundPayment(\n    paymentData: Record<string, unknown>,\n    refundAmount: number\n  ): Promise<\n    PaymentProviderError | PaymentProviderSessionResponse[\"data\"]\n  > {\n    const externalId = paymentData.id\n\n    try {\n      const newData = await this.client.refund(\n        externalId,\n        refundAmount\n      )\n\n      return {\n        ...newData,\n        id: externalId\n      }\n    } catch (e) {\n      return {\n        error: e,\n        code: \"unknown\",\n        detail: e\n      }\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -1325,8 +1351,8 @@
 							},
 							"parameters": [
 								{
-									"id": 13815,
-									"name": "paymentSessionData",
+									"id": 35482,
+									"name": "paymentData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
@@ -1342,7 +1368,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of a Payment."
+												"text": " property of the payment. Make sure to store in it\nany helpful identification for your third-party integration."
 											}
 										]
 									},
@@ -1367,7 +1393,7 @@
 									}
 								},
 								{
-									"id": 13816,
+									"id": 35483,
 									"name": "refundAmount",
 									"variant": "param",
 									"kind": 32768,
@@ -1444,7 +1470,7 @@
 					}
 				},
 				{
-					"id": 13817,
+					"id": 35484,
 					"name": "retrievePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1453,7 +1479,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13818,
+							"id": 35485,
 							"name": "retrievePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1462,7 +1488,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to provide a uniform way of retrieving the payment information from the third-party provider.\n\nFor example, in Stripe’s payment provider this method is used to retrieve the payment intent details from Stripe."
+										"text": "Retrieves the payment's data from the third-party service."
 									}
 								],
 								"blockTags": [
@@ -1471,7 +1497,24 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Either an error object or the payment's data retrieved from a third-party provider."
+												"text": "An object to be stored in the payment's "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " property, or an error object."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  PaymentProviderError,\n  PaymentProviderSessionResponse,\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async retrievePayment(\n    paymentSessionData: Record<string, unknown>\n  ): Promise<\n    PaymentProviderError | PaymentProviderSessionResponse[\"data\"]\n  > {\n    const externalId = paymentSessionData.id\n\n    try {\n      return await this.client.retrieve(externalId)\n    } catch (e) {\n      return {\n        error: e,\n        code: \"unknown\",\n        detail: e\n      }\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -1479,7 +1522,7 @@
 							},
 							"parameters": [
 								{
-									"id": 13819,
+									"id": 35486,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
@@ -1496,15 +1539,7 @@
 											},
 											{
 												"kind": "text",
-												"text": " field of a payment session. Make sure to store in the "
-											},
-											{
-												"kind": "code",
-												"text": "`data`"
-											},
-											{
-												"kind": "text",
-												"text": " field any necessary data that would allow you to retrieve the payment data from the third-party provider."
+												"text": " property of the payment. Make sure to store in it\nany helpful identification for your third-party integration."
 											}
 										]
 									},
@@ -1587,7 +1622,7 @@
 					}
 				},
 				{
-					"id": 13820,
+					"id": 35487,
 					"name": "updatePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1596,7 +1631,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13821,
+							"id": 35488,
 							"name": "updatePayment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1605,7 +1640,18 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used to update a payment associated with a session in the third-party provider."
+										"text": "Update a payment in the third-party service that was previously initiated with the "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "initiatePayment",
+										"target": 35471,
+										"tsLinkText": ""
+									},
+									{
+										"kind": "text",
+										"text": " method."
 									}
 								],
 								"blockTags": [
@@ -1614,7 +1660,32 @@
 										"content": [
 											{
 												"kind": "text",
-												"text": "Either the payment's data or an error object."
+												"text": "An object whose "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " property is set in the updated payment session, or an error\nobject. Make sure to set in "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " anything useful to later retrieve the session."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  UpdatePaymentProviderSession,\n  PaymentProviderError,\n  PaymentProviderSessionResponse,\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async updatePayment(\n    context: UpdatePaymentProviderSession\n  ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {\n    const {\n      amount,\n      currency_code,\n      context: customerDetails,\n      data\n    } = context\n    const externalId = data.id\n\n    try {\n      const response = await this.client.update(\n        externalId,\n        {\n          amount,\n          currency_code,\n          customerDetails\n        }\n      )\n\n      return {\n        ...response,\n        data: {\n          id: response.id\n        }\n      }\n    } catch (e) {\n      return {\n        error: e,\n        code: \"unknown\",\n        detail: e\n      }\n    }\n  }\n\n  // ...\n}\n```"
 											}
 										]
 									}
@@ -1622,7 +1693,7 @@
 							},
 							"parameters": [
 								{
-									"id": 13822,
+									"id": 35489,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -1631,7 +1702,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The data related to the update."
+												"text": "The details of the payment session and its context."
 											}
 										]
 									},
@@ -1694,7 +1765,7 @@
 					}
 				},
 				{
-					"id": 13823,
+					"id": 35490,
 					"name": "getWebhookActionAndData",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1703,7 +1774,7 @@
 					},
 					"signatures": [
 						{
-							"id": 13824,
+							"id": 35491,
 							"name": "getWebhookActionAndData",
 							"variant": "signature",
 							"kind": 4096,
@@ -1712,13 +1783,65 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "The method is called when a webhook event is received for this provider.\n\nThe method is responsible for normalizing the received event and inform the Payment Module of actions to perform, such as authorize or capture payment.\n\nLearn more about handling webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)"
+										"text": "This method is executed when a webhook event is received from the third-party payment provider. Use it\nto process the action of the payment provider.\n\nLearn more in [this documentation](https://docs.medusajs.com/v2/resources/commerce-modules/payment/webhook-events)"
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The webhook result. If the "
+											},
+											{
+												"kind": "code",
+												"text": "`action`"
+											},
+											{
+												"kind": "text",
+												"text": "'s value is "
+											},
+											{
+												"kind": "code",
+												"text": "`captured`"
+											},
+											{
+												"kind": "text",
+												"text": ", the payment is captured within Medusa as well.\nIf the "
+											},
+											{
+												"kind": "code",
+												"text": "`action`"
+											},
+											{
+												"kind": "text",
+												"text": "'s value is "
+											},
+											{
+												"kind": "code",
+												"text": "`authorized`"
+											},
+											{
+												"kind": "text",
+												"text": ", the associated payment session is authorized within Medusa."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// other imports...\nimport {\n  BigNumber\n} from \"@medusajs/utils\"\nimport {\n  ProviderWebhookPayload,\n  WebhookActionResult\n} from \"@medusajs/types\"\n\n\nclass MyPaymentProviderService extends AbstractPaymentProvider<\n  Options\n> {\n  async getWebhookActionAndData(\n    payload: ProviderWebhookPayload[\"payload\"]\n  ): Promise<WebhookActionResult> {\n    const {\n      data,\n      rawData,\n      headers\n    } = payload\n\n    try {\n      switch(data.event_type) {\n        case \"authorized_amount\":\n          return {\n            action: \"authorized\",\n            data: {\n              session_id: (data.metadata as Record<string, any>).session_id,\n              amount: new BigNumber(data.amount as number)\n            }\n          }\n        case \"success\":\n          return {\n            action: \"captured\",\n            data: {\n              session_id: (data.metadata as Record<string, any>).session_id,\n              amount: new BigNumber(data.amount as number)\n            }\n          }\n        default:\n          return {\n            action: \"not_supported\"\n          }\n      }\n    } catch (e) {\n      return {\n        action: \"failed\",\n        data: {\n          session_id: (data.metadata as Record<string, any>).session_id,\n          amount: new BigNumber(data.amount as number)\n        }\n      }\n    }\n  }\n\n  // ...\n}\n```"
+											}
+										]
 									}
 								]
 							},
 							"parameters": [
 								{
-									"id": 13825,
+									"id": 35492,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1727,21 +1850,21 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "The webhook event's details."
+												"text": "The webhook event's data"
 											}
 										]
 									},
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 13826,
+											"id": 35493,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 13827,
+													"id": 35494,
 													"name": "data",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1775,7 +1898,7 @@
 													}
 												},
 												{
-													"id": 13828,
+													"id": 35495,
 													"name": "rawData",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1809,7 +1932,7 @@
 													}
 												},
 												{
-													"id": 13829,
+													"id": 35496,
 													"name": "headers",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1847,9 +1970,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														13827,
-														13828,
-														13829
+														35494,
+														35495,
+														35496
 													]
 												}
 											]
@@ -1895,36 +2018,37 @@
 				{
 					"title": "Constructors",
 					"children": [
-						13782
+						35449
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						13787,
-						13788,
-						13781
+						35454,
+						35455,
+						35448
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						13791,
-						13794,
-						13801,
-						13804,
-						13807,
-						13810,
-						13813,
-						13817,
-						13820,
-						13823
+						35441,
+						35458,
+						35461,
+						35468,
+						35471,
+						35474,
+						35477,
+						35480,
+						35484,
+						35487,
+						35490
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 13830,
+					"id": 35497,
 					"name": "TConfig",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -1967,209 +2091,221 @@
 		{
 			"title": "Classes",
 			"children": [
-				13776
+				35440
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"13772": {
+		"35436": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": ""
 		},
-		"13776": {
+		"35440": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider"
 		},
-		"13781": {
+		"35441": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.validateOptions"
+		},
+		"35442": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.validateOptions"
+		},
+		"35443": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "options"
+		},
+		"35448": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.identifier"
 		},
-		"13782": {
+		"35449": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.__constructor"
 		},
-		"13783": {
+		"35450": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider"
 		},
-		"13784": {
+		"35451": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.TConfig"
 		},
-		"13785": {
+		"35452": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "container"
 		},
-		"13786": {
+		"35453": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "config"
 		},
-		"13787": {
+		"35454": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.container"
 		},
-		"13788": {
+		"35455": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.config"
 		},
-		"13791": {
+		"35458": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.capturePayment"
 		},
-		"13792": {
+		"35459": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.capturePayment"
 		},
-		"13793": {
+		"35460": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "paymentData"
 		},
-		"13794": {
-			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
-			"qualifiedName": "AbstractPaymentProvider.authorizePayment"
-		},
-		"13795": {
+		"35461": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.authorizePayment"
 		},
-		"13796": {
+		"35462": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.authorizePayment"
+		},
+		"35463": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"13797": {
+		"35464": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "context"
 		},
-		"13798": {
+		"35465": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"13799": {
+		"35466": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "__type.status"
 		},
-		"13800": {
+		"35467": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "__type.data"
 		},
-		"13801": {
+		"35468": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.cancelPayment"
 		},
-		"13802": {
+		"35469": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.cancelPayment"
 		},
-		"13803": {
+		"35470": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "paymentData"
 		},
-		"13804": {
-			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
-			"qualifiedName": "AbstractPaymentProvider.initiatePayment"
-		},
-		"13805": {
+		"35471": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.initiatePayment"
 		},
-		"13806": {
+		"35472": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
+			"qualifiedName": "AbstractPaymentProvider.initiatePayment"
+		},
+		"35473": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "context"
 		},
-		"13807": {
+		"35474": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.deletePayment"
 		},
-		"13808": {
+		"35475": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.deletePayment"
 		},
-		"13809": {
+		"35476": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"13810": {
+		"35477": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.getPaymentStatus"
 		},
-		"13811": {
+		"35478": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.getPaymentStatus"
 		},
-		"13812": {
+		"35479": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"13813": {
+		"35480": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.refundPayment"
 		},
-		"13814": {
+		"35481": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.refundPayment"
 		},
-		"13815": {
+		"35482": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
-			"qualifiedName": "paymentSessionData"
+			"qualifiedName": "paymentData"
 		},
-		"13816": {
+		"35483": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "refundAmount"
 		},
-		"13817": {
+		"35484": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.retrievePayment"
 		},
-		"13818": {
+		"35485": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.retrievePayment"
 		},
-		"13819": {
+		"35486": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"13820": {
+		"35487": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.updatePayment"
 		},
-		"13821": {
+		"35488": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.updatePayment"
 		},
-		"13822": {
+		"35489": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "context"
 		},
-		"13823": {
+		"35490": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.getWebhookActionAndData"
 		},
-		"13824": {
+		"35491": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.getWebhookActionAndData"
 		},
-		"13825": {
+		"35492": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "data"
 		},
-		"13826": {
+		"35493": {
 			"sourceFileName": "../../../../packages/core/types/src/payment/mutations.ts",
 			"qualifiedName": "__type"
 		},
-		"13827": {
+		"35494": {
 			"sourceFileName": "../../../../packages/core/types/src/payment/mutations.ts",
 			"qualifiedName": "__type.data"
 		},
-		"13828": {
+		"35495": {
 			"sourceFileName": "../../../../packages/core/types/src/payment/mutations.ts",
 			"qualifiedName": "__type.rawData"
 		},
-		"13829": {
+		"35496": {
 			"sourceFileName": "../../../../packages/core/types/src/payment/mutations.ts",
 			"qualifiedName": "__type.headers"
 		},
-		"13830": {
+		"35497": {
 			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.TConfig"
 		}
@@ -2179,7 +2315,7 @@
 			"1": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts"
 		},
 		"reflections": {
-			"1": 13772
+			"1": 35436
 		}
 	}
 }

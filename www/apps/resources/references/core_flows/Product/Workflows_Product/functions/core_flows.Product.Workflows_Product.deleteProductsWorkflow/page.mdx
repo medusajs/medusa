@@ -29,7 +29,7 @@ This workflow deletes one or more products.
 import { deleteProductsWorkflow } from "@medusajs/core-flows"
 
 deleteProductsWorkflow.hooks.productsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )

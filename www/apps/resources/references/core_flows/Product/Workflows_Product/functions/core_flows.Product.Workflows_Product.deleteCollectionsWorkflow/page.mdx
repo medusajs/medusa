@@ -29,7 +29,7 @@ This workflow deletes one or more collection.
 import { deleteCollectionsWorkflow } from "@medusajs/core-flows"
 
 deleteCollectionsWorkflow.hooks.collectionsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )

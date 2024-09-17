@@ -33,7 +33,7 @@ This workflow updates one or more customer addresses.
 import { updateCustomerAddressesWorkflow } from "@medusajs/core-flows"
 
 updateCustomerAddressesWorkflow.hooks.addressesUpdated(
-	async (({ addresses, additional_data }, { container }) => {
+	(async ({ addresses, additional_data }, { container }) => {
 		//TODO
 	})
 )
