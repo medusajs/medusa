@@ -344,6 +344,13 @@ export default class ProductModuleService
       { take: null, relations: ["options"] },
       sharedContext
     )
+
+    const allVariants = await this.productVariantService_.list(
+      { product_id: variants.map((v) => v.product_id) },
+      { take: null, relations: ["options"] },
+      sharedContext
+    )
+
     if (variants.length !== data.length) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -381,7 +388,7 @@ export default class ProductModuleService
 
     ProductModuleService.validateUniqueOptionsCombinations(
       productVariantsWithOptions as any,
-      variants
+      allVariants
     )
 
     const { entities: productVariants, performedActions } =

@@ -4,6 +4,7 @@ import {
   IProductModuleService,
   ProductDTO,
   ProductVariantDTO,
+  UpdateProductVariantDTO,
 } from "@medusajs/types"
 import {
   CommonEvents,
@@ -384,7 +385,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
-        it("should throw if there is an existing variant with same options combination", async () => {
+        it("should throw if there is an existing variant with same options combination (on update)", async () => {
           jest.clearAllMocks()
           let error
 
@@ -402,53 +403,31 @@ moduleIntegrationTestRunner<IProductModuleService>({
                 values: ["red", "blue"],
               },
             ],
-          } as CreateProductDTO)
-
-          const data: CreateProductVariantDTO[] = [
-            {
-              title: "new variant",
-              product_id: productFour.id,
-              options: { size: "small", color: "red" },
-            },
-          ]
-
-          const [variant] = await service.createProductVariants(data)
-
-          expect(variant).toEqual(
-            expect.objectContaining({
-              title: "new variant",
-              product_id: productFour.id,
-              options: expect.arrayContaining([
-                expect.objectContaining({
-                  id: productFour.options
-                    .find((o) => o.title === "size")
-                    ?.values?.find((v) => v.value === "small")?.id,
-                  value: "small",
-                }),
-                expect.objectContaining({
-                  id: productFour.options
-                    .find((o) => o.title === "color")
-                    ?.values?.find((v) => v.value === "red")?.id,
-                  value: "red",
-                }),
-              ]),
-            })
-          )
-
-          try {
-            await service.createProductVariants([
+            variants: [
               {
-                title: "new variant",
-                product_id: productFour.id,
+                title: "new variant 1",
                 options: { size: "small", color: "red" },
               },
-            ] as CreateProductVariantDTO[])
+              {
+                title: "new variant 2",
+                options: { size: "small", color: "blue" },
+              },
+            ],
+          } as CreateProductDTO)
+
+          try {
+            await service.updateProductVariants(
+              productFour.variants.find((v) => v.title === "new variant 2")!.id,
+              {
+                options: { size: "small", color: "red" },
+              } as UpdateProductVariantDTO
+            )
           } catch (e) {
             error = e
           }
 
           expect(error.message).toEqual(
-            `Variant (${variant.title}) with provided options already exists.`
+            `Variant (new variant 1) with provided options already exists.`
           )
         })
       })
