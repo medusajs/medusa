@@ -240,8 +240,10 @@ describe("Workflow composer", () => {
 
       expect(result).toEqual({ result: "hi from outside" })
 
-      expect(parentContext.transactionId).toEqual("transactionId")
-      expect(parentContext.transactionId).toEqual(childContext.transactionId)
+      expect(parentContext.transactionId).toEqual(expect.any(String))
+      expect(parentContext.transactionId).not.toEqual(
+        childContext.transactionId
+      )
 
       expect(parentContext.eventGroupId).toEqual("eventGroupId")
       expect(parentContext.eventGroupId).toEqual(childContext.eventGroupId)
@@ -287,7 +289,9 @@ describe("Workflow composer", () => {
       expect(result).toEqual({ result: "hi from outside" })
 
       expect(parentContext.transactionId).toBeTruthy()
-      expect(parentContext.transactionId).toEqual(childContext.transactionId)
+      expect(parentContext.transactionId).not.toEqual(
+        childContext.transactionId
+      )
 
       expect(parentContext.eventGroupId).toBeTruthy()
       expect(parentContext.eventGroupId).toEqual(childContext.eventGroupId)

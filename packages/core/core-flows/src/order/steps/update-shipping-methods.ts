@@ -2,10 +2,7 @@ import {
   IOrderModuleService,
   UpdateOrderShippingMethodDTO,
 } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateOrderShippingMethodsStepId = "update-order-shopping-methods"
@@ -15,9 +12,7 @@ export const updateOrderShippingMethodsStepId = "update-order-shopping-methods"
 export const updateOrderShippingMethodsStep = createStep(
   updateOrderShippingMethodsStepId,
   async (data: UpdateOrderShippingMethodDTO[], { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
       objectFields: ["metadata"],
@@ -36,9 +31,7 @@ export const updateOrderShippingMethodsStep = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await service.updateOrderShippingMethods(dataBeforeUpdate)
   }

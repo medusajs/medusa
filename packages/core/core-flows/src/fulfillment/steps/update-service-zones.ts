@@ -1,8 +1,5 @@
 import { FulfillmentWorkflow, IFulfillmentModuleService } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
+import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateServiceZonesStepId = "update-service-zones"
@@ -11,9 +8,12 @@ export const updateServiceZonesStepId = "update-service-zones"
  */
 export const updateServiceZonesStep = createStep(
   updateServiceZonesStepId,
-  async (input: FulfillmentWorkflow.UpdateServiceZonesWorkflowInput, { container }) => {
+  async (
+    input: FulfillmentWorkflow.UpdateServiceZonesWorkflowInput,
+    { container }
+  ) => {
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
@@ -38,7 +38,7 @@ export const updateServiceZonesStep = createStep(
     }
 
     const service = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     await service.upsertServiceZones(prevData)

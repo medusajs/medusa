@@ -835,6 +835,9 @@
   },
   "orders": {
     "domain": "Orders",
+    "claim": "Claim",
+    "exchange": "Exchange",
+    "return": "Return",
     "cancelWarning": "You are about to cancel the order {{id}}. This action cannot be undone.",
     "onDateFromSalesChannel": "{{date}} from {{salesChannel}}",
     "list": {
@@ -929,7 +932,7 @@
       "noteHint": "You can type freely if you want to specify something.",
       "location": "Location",
       "locationHint": "Choose which location you want to return the items to.",
-      "inboundShipping": "Inbound shipping",
+      "inboundShipping": "Return shipping",
       "inboundShippingHint": "Choose which method you want to use.",
       "returnableQuantityLabel": "Returnable quantity",
       "refundableAmountLabel": "Refundable amount",
@@ -943,6 +946,16 @@
       "cancel": {
         "title": "Cancel Return",
         "description": "Are you sure you want to cancel the return request?"
+      },
+      "placeholders": {
+        "noReturnShippingOptions": {
+          "title": "No return shipping options found",
+          "hint": "No return shipping options were created for the location. You can create one at <LinkComponent>Location & Shipping</LinkComponent>."
+        },
+        "outboundShippingOptions": {
+          "title": "No outbound shipping options found",
+          "hint": "No outbound shipping options were created for the location. You can create one at <LinkComponent>Location & Shipping</LinkComponent>."
+        }
       },
       "receive": {
         "action": "Receive items",
@@ -1065,6 +1078,7 @@
     },
     "fulfillment": {
       "cancelWarning": "You are about to cancel a fulfillment. This action cannot be undone.",
+      "markAsDeliveredWarning": "You are about to mark fulfillment as delivered. This action cannot be undone.",
       "unfulfilledItems": "Unfulfilled Items",
       "statusLabel": "Fulfillment status",
       "statusTitle": "Fulfillment Status",
@@ -1076,6 +1090,7 @@
       "available": "Available",
       "inStock": "In stock",
       "markAsShipped": "Mark as shipped",
+      "markAsDelivered": "Mark as delivered",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
       "sendNotificationHint": "Notify customers about the created fulfillment.",
@@ -1091,6 +1106,8 @@
         "fulfilled": "Fulfilled",
         "partiallyShipped": "Partially shipped",
         "shipped": "Shipped",
+        "delivered": "Delivered",
+        "partiallyDelivered": "Partially delivered",
         "partiallyReturned": "Partially returned",
         "returned": "Returned",
         "canceled": "Canceled",
@@ -1099,7 +1116,8 @@
       "toast": {
         "created": "Fulfillment created successfully",
         "canceled": "Fulfillment successfully canceled",
-        "fulfillmentShipped": "Cannot cancel an already shipped fulfillment"
+        "fulfillmentShipped": "Cannot cancel an already shipped fulfillment",
+        "fulfillmentDelivered": "Fulfillment marked as delivered successfully"
       },
       "trackingLabel": "Tracking",
       "shippingFromLabel": "Shipping from",
@@ -1155,6 +1173,7 @@
           "created": "Items fulfilled",
           "canceled": "Fulfillment canceled",
           "shipped": "Items shipped",
+          "delivered": "Items delivered",
           "items_one": "{{count}} item",
           "items_other": "{{count}} items"
         },
@@ -2555,6 +2574,8 @@
     "totalExclTax": "Total excl. tax",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
+    "outboundShipping": "Outbound Shipping",
+    "returnShipping": "Return Shipping",
     "tax": "Tax",
     "created": "Created",
     "key": "Key",

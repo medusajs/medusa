@@ -461,7 +461,7 @@ export const syncProductsWorkflowHighlight = [
 
   ```ts title="src/workflows/sync-products.ts" highlights={syncProductsWorkflowHighlight} collapsibleLines="1-16" expandButtonLabel="Show Imports"
   import { 
-    ModuleRegistrationName
+    Modules
   } from "@medusajs/utils"
   import { 
     IProductModuleService, 
@@ -483,7 +483,7 @@ export const syncProductsWorkflowHighlight = [
     "retrieve-store-step",
     async ({ id }: RetrieveStoreStepInput, { container }) => {
       const storeModuleService: IStoreModuleService = 
-        container.resolve(ModuleRegistrationName.STORE)
+        container.resolve(Modules.STORE)
 
       const store = await storeModuleService.retrieveStore(id)
 
@@ -499,7 +499,7 @@ export const syncProductsWorkflowHighlight = [
     "retrieve-products-to-update-step",
     async ({ last_sync_date }: RetrieveProductsToUpdateStepInput, { container }) => {
       const productModuleService: IProductModuleService = 
-        container.resolve(ModuleRegistrationName.PRODUCT)
+        container.resolve(Modules.PRODUCT)
 
       const products = await productModuleService.listProducts({
         updated_at: {
@@ -553,7 +553,7 @@ export const syncProductsWorkflowHighlight = [
     "update-store-last-sync-step",
     async ({ store }: UpdateStoreLastSyncStepInput, { container }) => {
       const storeModuleService: IStoreModuleService = 
-        container.resolve(ModuleRegistrationName.STORE)
+        container.resolve(Modules.STORE)
 
       const prevLastSyncDate = store.metadata.last_sync_date
 
@@ -570,7 +570,7 @@ export const syncProductsWorkflowHighlight = [
     },
     async ({ id, last_sync_date }, { container }) => {
       const storeModuleService: IStoreModuleService = 
-        container.resolve(ModuleRegistrationName.STORE)
+        container.resolve(Modules.STORE)
 
       await storeModuleService.updateStores(id, {
         metadata: {
@@ -764,7 +764,7 @@ The `order.placed` event is currently not emitted.
     SubscriberConfig,
   } from "@medusajs/medusa"
   import { 
-    ModuleRegistrationName,
+    Modules,
   } from "@medusajs/utils"
   import { 
     ICustomerModuleService, 
@@ -778,11 +778,11 @@ The `order.placed` event is currently not emitted.
     const orderId = data.id
 
     const orderModuleService: IOrderModuleService = container
-      .resolve(ModuleRegistrationName.ORDER)
+      .resolve(Modules.ORDER)
 
     const customerModuleService: 
       ICustomerModuleService = container.resolve(
-        ModuleRegistrationName.CUSTOMER
+        Modules.CUSTOMER
       )
 
     // check if VIP group exists
@@ -878,7 +878,7 @@ export const newsletterHighlights = [
     SubscriberConfig,
   } from "@medusajs/medusa"
   import { 
-    ModuleRegistrationName,
+    Modules,
   } from "@medusajs/utils"
   import { 
     ICustomerModuleService, 
@@ -891,17 +891,17 @@ export const newsletterHighlights = [
     container,
   }: SubscriberArgs<{ id: string }>) {
     const productModuleService: IProductModuleService = 
-      container.resolve(ModuleRegistrationName.PRODUCT)
+      container.resolve(Modules.PRODUCT)
 
     const storeModuleService: IStoreModuleService = 
-      container.resolve(ModuleRegistrationName.STORE)
+      container.resolve(Modules.STORE)
 
     const customerModuleService: ICustomerModuleService = 
-      container.resolve(ModuleRegistrationName.CUSTOMER)
+      container.resolve(Modules.CUSTOMER)
 
     const notificationModuleService:
       INotificationModuleService = container.resolve(
-        ModuleRegistrationName.NOTIFICATION
+        Modules.NOTIFICATION
       )
 
     const store = (await storeModuleService.listStores())[0]

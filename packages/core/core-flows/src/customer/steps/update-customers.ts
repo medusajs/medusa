@@ -4,7 +4,7 @@ import {
   ICustomerModuleService,
 } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
 } from "@medusajs/utils"
@@ -22,9 +22,7 @@ export const updateCustomersStepId = "update-customer"
 export const updateCustomersStep = createStep(
   updateCustomersStepId,
   async (data: UpdateCustomersStepInput, { container }) => {
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -43,9 +41,7 @@ export const updateCustomersStep = createStep(
       return
     }
 
-    const service = container.resolve<ICustomerModuleService>(
-      ModuleRegistrationName.CUSTOMER
-    )
+    const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
     await promiseAll(
       prevCustomers.map((c) =>

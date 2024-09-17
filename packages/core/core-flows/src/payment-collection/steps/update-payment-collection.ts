@@ -4,7 +4,7 @@ import {
   PaymentCollectionUpdatableFields,
 } from "@medusajs/types"
 import {
-  ModuleRegistrationName,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
   isPresent,
 } from "@medusajs/utils"
@@ -27,7 +27,7 @@ export const updatePaymentCollectionStep = createStep(
     }
 
     const paymentModuleService = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
+      Modules.PAYMENT
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
@@ -54,7 +54,7 @@ export const updatePaymentCollectionStep = createStep(
       return
     }
     const paymentModuleService = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
+      Modules.PAYMENT
     )
 
     await paymentModuleService.upsertPaymentCollections(

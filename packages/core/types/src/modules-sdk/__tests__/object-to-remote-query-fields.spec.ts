@@ -9,11 +9,13 @@ describe("ObjectToRemoteQueryFields", () => {
       description: string
       date: Date
       variants: {
+        __typename: string
         id: string
         sku: string
         title: string
       }[]
       sales_channel: {
+        __typename: string
         id: string
         name: string
         value: string
@@ -51,12 +53,14 @@ describe("ObjectToRemoteQueryFields", () => {
       date: Date
       variants: Maybe<
         Maybe<{
+          __typename: string
           id: string
           sku: string
           title: string
         }>[]
       >
       sales_channel?: Maybe<{
+        __typename: string
         id: string
         name: string
         value: string

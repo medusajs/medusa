@@ -51,7 +51,7 @@ This exports the module's definition, indicating that the \`MyAuthProviderServic
 To use your Auth Module Provider, add it to the \`providers\` array of the Auth Module:
 
 \`\`\`js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 

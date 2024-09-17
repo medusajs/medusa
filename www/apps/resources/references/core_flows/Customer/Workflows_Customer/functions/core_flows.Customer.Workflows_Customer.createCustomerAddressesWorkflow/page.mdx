@@ -33,7 +33,7 @@ This workflow creates one or more customer address.
 import { createCustomerAddressesWorkflow } from "@medusajs/core-flows"
 
 createCustomerAddressesWorkflow.hooks.addressesCreated(
-	async (({ addresses, additional_data }, { container }) => {
+	(async ({ addresses, additional_data }, { container }) => {
 		//TODO
 	})
 )

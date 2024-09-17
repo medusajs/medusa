@@ -20,6 +20,7 @@ import {
   ComponentPropsWithoutRef,
   ForwardedRef,
   Fragment,
+  ReactNode,
   useCallback,
   useDeferredValue,
   useImperativeHandle,
@@ -50,6 +51,7 @@ interface ComboboxProps<T extends Value = Value>
   fetchNextPage?: () => void
   isFetchingNextPage?: boolean
   onCreateOption?: (value: string) => void
+  noResultsPlaceholder?: ReactNode
 }
 
 const ComboboxImpl = <T extends Value = string>(
@@ -64,6 +66,7 @@ const ComboboxImpl = <T extends Value = string>(
     fetchNextPage,
     isFetchingNextPage,
     onCreateOption,
+    noResultsPlaceholder,
     ...inputProps
   }: ComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>
@@ -182,7 +185,7 @@ const ComboboxImpl = <T extends Value = string>(
     setOpen(open)
   }
 
-  const hasValue = selectedValues.length > 0
+  const hasValue = selectedValues?.length > 0
 
   const showTag = hasValue && isArrayValue
   const showSelected = showTag && !searchValue && !open
@@ -321,13 +324,20 @@ const ComboboxImpl = <T extends Value = string>(
             <div className="bg-ui-bg-component size-full h-5 w-full animate-pulse rounded-[4px]" />
           </div>
         )}
-        {!results.length && (
-          <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
-            <Text size="small" leading="compact" className="text-ui-fg-subtle">
-              {t("general.noResultsTitle")}
-            </Text>
-          </div>
-        )}
+        {!results.length &&
+          (noResultsPlaceholder && !searchValue?.length ? (
+            noResultsPlaceholder
+          ) : (
+            <div className="flex items-center gap-x-2 rounded-[4px] px-2 py-1.5">
+              <Text
+                size="small"
+                leading="compact"
+                className="text-ui-fg-subtle"
+              >
+                {t("general.noResultsTitle")}
+              </Text>
+            </div>
+          ))}
         {!results.length && onCreateOption && (
           <Fragment>
             <PrimitiveSeparator className="bg-ui-border-base -mx-1" />

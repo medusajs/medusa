@@ -3,8 +3,8 @@ import {
   IPricingModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { Modules } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface ShippingOptionsPriceCurrencyCode {
   currency_code: string
@@ -69,7 +69,7 @@ export const createShippingOptionsPriceSetsStep = createStep(
 
     if (regionIds.length) {
       const regionService = container.resolve<IRegionModuleService>(
-        ModuleRegistrationName.REGION
+        Modules.REGION
       )
       const regions = await regionService.listRegions(
         {
@@ -90,7 +90,7 @@ export const createShippingOptionsPriceSetsStep = createStep(
     )
 
     const pricingService = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     const priceSets = await pricingService.createPriceSets(priceSetsData)
@@ -113,7 +113,7 @@ export const createShippingOptionsPriceSetsStep = createStep(
     }
 
     const pricingService = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     await pricingService.deletePriceSets(priceSetIds)

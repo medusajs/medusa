@@ -66,6 +66,11 @@ export type TransactionStepsDefinition = {
   async?: boolean
 
   /**
+   * It flags where the step contains a sub transaction inside itself.
+   */
+  nested?: boolean
+
+  /**
    * It applies to "async" steps only, allowing them to run in the background and automatically complete without external intervention.
    * It is ideal for time-consuming tasks that will be complete after the execution, contrasting with standard "async" operations that require a response to be set in a later stage.
    */
@@ -237,6 +242,7 @@ export type TransactionFlow = {
   transactionId: string
   metadata?: {
     eventGroupId?: string
+    parentIdempotencyKey?: string
     [key: string]: unknown
   }
   hasAsyncSteps: boolean

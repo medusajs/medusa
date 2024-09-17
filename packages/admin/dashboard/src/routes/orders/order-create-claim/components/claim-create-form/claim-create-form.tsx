@@ -52,6 +52,7 @@ import {
 import { useUpdateReturn } from "../../../../../hooks/api/returns.tsx"
 import { sdk } from "../../../../../lib/client"
 import { currencies } from "../../../../../lib/data/currencies"
+import { ReturnShippingPlaceholder } from "../../../common/placeholders.tsx"
 import { ClaimOutboundSection } from "./claim-outbound-section"
 import { ItemPlaceholder } from "./item-placeholder"
 
@@ -715,12 +716,15 @@ export const ClaimCreateForm = ({
                 {/*INBOUND SHIPPING*/}
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div>
-                    <Form.Label
-                      tooltip={t(
-                        "orders.claims.tooltips.onlyReturnShippingOptions"
-                      )}
-                    >
+                    <Form.Label>
                       {t("orders.returns.inboundShipping")}
+                      <Text
+                        size="small"
+                        leading="compact"
+                        className="text-ui-fg-muted inline ml-1"
+                      >
+                        ({t("fields.optional")})
+                      </Text>
                     </Form.Label>
 
                     <Form.Hint className="!mt-1">
@@ -748,6 +752,9 @@ export const ClaimCreateForm = ({
                                 value: so.id,
                               }))}
                               disabled={!locationId}
+                              noResultsPlaceholder={
+                                <ReturnShippingPlaceholder />
+                              }
                             />
                           </Form.Control>
                         </Form.Item>

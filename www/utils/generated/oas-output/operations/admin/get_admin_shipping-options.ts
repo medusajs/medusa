@@ -521,7 +521,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/shipping-options' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Shipping Options
  * responses:

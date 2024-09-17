@@ -140,33 +140,30 @@ fetch(`<BACKEND_URL>/store/products`, {
 
 ## Publishable API Key
 
-Publishable API Keys allow you to send a request with a pre-defined scope. You can associate the
-publishable API key with one or more resources, such as sales channels, then include the publishable
-API key in the header of your requests.
+You must pass a publishable API key in the header of your requests to the store API routes.
 
-The Medusa application will infer the scope of the current
-request based on the publishable API key. At the moment, publishable API keys only work with sales channels.
-
-It's highly recommended to create a publishable API key and pass it in the header of all your requests to the 
-store APIs.
-
-{/* TODO add link to the v2 guide */}
-
-{/* You can learn more about publishable API keys and how to use them in [this documentation](https://docs.medusajs.com/development/publishable-api-keys/). */}
+Publishable API Keys sets the scope of your request to one or more sales channels. This ensures you only
+retrieve products available in the publishable API key's sales channels, retrieve correct inventory details,
+and associate placed orders with the specified sales channel.
 
 ### How to Create a Publishable API Key
 
 {/* TODO add v2 links */}
 
-Create a publishable API key either using the admin REST APIs, or using the Medusa Admin.
+Create a publishable API key either using the [admin REST APIs](https://docs.medusajs.com/v2/api/admin#api-keys_postapikeys), or using the Medusa Admin.
 
 ### How to Use a Publishable API Key
 
-You can pass the publishable API key in the header `x-publishable-api-key` in all your requests to the store APIs:
+You pass the publishable API key in the header `x-publishable-api-key` in all your requests to the store APIs.
+
+For example:
 
 ```bash
-x-publishable-api-key: {your_publishable_api_key}
+curl 'http://localhost:9000/store/products' \
+-H 'x-publishable-api-key: {your_publishable_api_key}'
 ```
+
+Where `{your_publishable_api_key}` is the token of the publishable API key.
 
 <Feedback
   event="survey_api-ref"

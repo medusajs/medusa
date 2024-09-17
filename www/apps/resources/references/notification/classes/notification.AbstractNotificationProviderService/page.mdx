@@ -80,6 +80,18 @@ export default MyNotificationProviderService
 
 ### constructor
 
+### validateOptions
+
+Override this static method in order for the loader to validate the options provided to the module provider.
+
+#### Parameters
+
+<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Override this static method in order for the loader to validate the options provided to the module provider.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
 ### send
 
 This method is used to send a notification using the third-party provider or your custom logic.
@@ -87,6 +99,12 @@ This method is used to send a notification using the third-party provider or you
 #### Example
 
 ```ts
+// other imports...
+import {
+  ProviderSendNotificationDTO,
+  ProviderSendNotificationResultsDTO
+} from "@medusajs/types"
+
 class MyNotificationProviderService extends AbstractNotificationProviderService {
   // ...
   async send(
@@ -141,7 +159,7 @@ The Notification Module accepts one provider per channel.
 </Note>
 
 ```js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 

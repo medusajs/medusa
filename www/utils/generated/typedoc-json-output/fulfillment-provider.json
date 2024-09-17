@@ -1,19 +1,19 @@
 {
-	"id": 13422,
+	"id": 34432,
 	"name": "fulfillment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 13423,
+			"id": 34433,
 			"name": "AbstractFulfillmentProviderService",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 13424,
+					"id": 34434,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -26,7 +26,7 @@
 					}
 				},
 				{
-					"id": 13425,
+					"id": 34435,
 					"name": "_isFulfillmentService",
 					"variant": "declaration",
 					"kind": 1024,
@@ -40,7 +40,7 @@
 					"defaultValue": "true"
 				},
 				{
-					"id": 13426,
+					"id": 34436,
 					"name": "isFulfillmentService",
 					"variant": "declaration",
 					"kind": 2048,
@@ -49,14 +49,14 @@
 					},
 					"signatures": [
 						{
-							"id": 13427,
+							"id": 34437,
 							"name": "isFulfillmentService",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 13428,
+									"id": 34438,
 									"name": "obj",
 									"variant": "param",
 									"kind": 32768,
@@ -75,21 +75,79 @@
 					]
 				},
 				{
-					"id": 13429,
+					"id": 34439,
+					"name": "validateOptions",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isStatic": true
+					},
+					"signatures": [
+						{
+							"id": 34440,
+							"name": "validateOptions",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "Override this static method in order for the loader to validate the options provided to the module provider."
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 34441,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "any"
+											},
+											{
+												"type": "intrinsic",
+												"name": "any"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 34442,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 13430,
+							"id": 34443,
 							"name": "new AbstractFulfillmentProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 13423,
+								"target": 34433,
 								"name": "AbstractFulfillmentProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -101,20 +159,21 @@
 				{
 					"title": "Constructors",
 					"children": [
-						13429
+						34442
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						13424,
-						13425
+						34434,
+						34435
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						13426
+						34436,
+						34439
 					]
 				}
 			],
@@ -135,39 +194,51 @@
 		{
 			"title": "Classes",
 			"children": [
-				13423
+				34433
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"13422": {
+		"34432": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": ""
 		},
-		"13423": {
+		"34433": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService"
 		},
-		"13424": {
+		"34434": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.identifier"
 		},
-		"13425": {
+		"34435": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService._isFulfillmentService"
 		},
-		"13426": {
+		"34436": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
 		},
-		"13427": {
+		"34437": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
 		},
-		"13428": {
+		"34438": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "obj"
+		},
+		"34439": {
+			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
+			"qualifiedName": "AbstractFulfillmentProviderService.validateOptions"
+		},
+		"34440": {
+			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
+			"qualifiedName": "AbstractFulfillmentProviderService.validateOptions"
+		},
+		"34441": {
+			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
+			"qualifiedName": "options"
 		}
 	},
 	"files": {
@@ -175,7 +246,7 @@
 			"1": "../../../../packages/core/utils/src/fulfillment/provider.ts"
 		},
 		"reflections": {
-			"1": 13422
+			"1": 34432
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import { IProductModuleService, LinkWorkflowInput } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const batchLinkProductsToCollectionStepId =
@@ -10,9 +10,7 @@ export const batchLinkProductsToCollectionStepId =
 export const batchLinkProductsToCollectionStep = createStep(
   batchLinkProductsToCollectionStepId,
   async (data: LinkWorkflowInput, { container }) => {
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     if (!data.add?.length && !data.remove?.length) {
       return new StepResponse(void 0, null)
@@ -45,9 +43,7 @@ export const batchLinkProductsToCollectionStep = createStep(
       return
     }
 
-    const service = container.resolve<IProductModuleService>(
-      ModuleRegistrationName.PRODUCT
-    )
+    const service = container.resolve<IProductModuleService>(Modules.PRODUCT)
 
     await service.updateProductCollections(prevData.id, {
       product_ids: prevData.productIds,

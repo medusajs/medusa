@@ -61,7 +61,7 @@ The Notification Module accepts one provider per channel.
 </Note>
 
 \`\`\`js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 

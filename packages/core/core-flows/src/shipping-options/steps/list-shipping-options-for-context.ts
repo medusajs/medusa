@@ -3,7 +3,7 @@ import {
   IFulfillmentModuleService,
   ShippingOptionDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface ListShippingOptionsForContextStepInput {
@@ -20,7 +20,7 @@ export const listShippingOptionsForContextStep = createStep(
   listShippingOptionsForContextStepId,
   async (data: ListShippingOptionsForContextStepInput, { container }) => {
     const fulfillmentService = container.resolve<IFulfillmentModuleService>(
-      ModuleRegistrationName.FULFILLMENT
+      Modules.FULFILLMENT
     )
 
     const shippingOptions =

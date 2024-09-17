@@ -10,11 +10,11 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  isDefined,
   LINKS,
-  ModuleRegistrationName,
+  Modules,
+  isDefined,
 } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface PriceRegionId {
   region_id: string
@@ -106,7 +106,7 @@ export const setShippingOptionsPricesStep = createStep(
 
     if (regionIds.length) {
       const regionService = container.resolve<IRegionModuleService>(
-        ModuleRegistrationName.REGION
+        Modules.REGION
       )
       const regions = await regionService.listRegions(
         {
@@ -156,7 +156,7 @@ export const setShippingOptionsPricesStep = createStep(
     )
 
     const pricingService = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     for (const data_ of data) {
@@ -179,7 +179,7 @@ export const setShippingOptionsPricesStep = createStep(
     }
 
     const pricingService = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     for (const data_ of rollbackData) {

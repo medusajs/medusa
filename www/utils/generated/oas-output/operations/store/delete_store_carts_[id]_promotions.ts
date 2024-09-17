@@ -32,7 +32,9 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl -X DELETE '{backend_url}/store/carts/{id}/promotions'
+ *     source: |-
+ *       curl -X DELETE '{backend_url}/store/carts/{id}/promotions' \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  * tags:
  *   - Carts
  * responses:

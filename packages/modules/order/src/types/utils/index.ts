@@ -24,6 +24,7 @@ export type VirtualOrder = {
       quantity: BigNumberInput
       shipped_quantity: BigNumberInput
       fulfilled_quantity: BigNumberInput
+      delivered_quantity: BigNumberInput
       return_requested_quantity: BigNumberInput
       return_received_quantity: BigNumberInput
       return_dismissed_quantity: BigNumberInput

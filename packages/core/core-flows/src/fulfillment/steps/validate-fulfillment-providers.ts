@@ -2,9 +2,9 @@ import { ServiceZoneDTO, ShippingOptionDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
-  ModuleRegistrationName,
+  Modules,
 } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export type FulfillmentProviderValidationWorkflowInput = {
   id?: string
@@ -28,9 +28,7 @@ export const validateFulfillmentProvidersStep = createStep(
       service_zone_id: string
       provider_id: string
     }[] = []
-    const fulfillmentService = container.resolve(
-      ModuleRegistrationName.FULFILLMENT
-    )
+    const fulfillmentService = container.resolve(Modules.FULFILLMENT)
 
     const shippingOptions = await fulfillmentService.listShippingOptions(
       {

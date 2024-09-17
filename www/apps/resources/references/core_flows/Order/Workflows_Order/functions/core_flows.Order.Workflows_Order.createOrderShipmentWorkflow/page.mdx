@@ -33,7 +33,7 @@ This workflow creates a shipment for an order.
 import { createOrderShipmentWorkflow } from "@medusajs/core-flows"
 
 createOrderShipmentWorkflow.hooks.shipmentCreated(
-	async (({ shipment, additional_data }, { container }) => {
+	(async ({ shipment, additional_data }, { container }) => {
 		//TODO
 	})
 )
