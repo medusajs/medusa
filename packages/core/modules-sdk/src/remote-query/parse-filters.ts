@@ -1,4 +1,4 @@
-import { JoinerServiceConfigAlias } from "@medusajs/types"
+import { JoinerServiceConfig, JoinerServiceConfigAlias } from "@medusajs/types"
 import { isObject } from "@medusajs/utils"
 import { cleanGraphQLSchema } from "../utils"
 import { makeExecutableSchema } from "@graphql-tools/schema"
@@ -32,6 +32,7 @@ export function parseAndAssignFilters({
   for (const [filterKey, filterValue] of Object.entries(filters)) {
     let executableSchema // : GraphqlSchema
     let entryAlias!: JoinerServiceConfigAlias
+    let entryJoinerConfig!: JoinerServiceConfig
 
     if (!executableSchemaMapCache.has(filterKey)) {
       const { joinerConfig, alias } = retrieveJoinerConfigFromPropertyName({
@@ -47,6 +48,7 @@ export function parseAndAssignFilters({
       }
 
       entryAlias = alias
+      entryJoinerConfig = joinerConfig
 
       executableSchema = makeSchemaExecutable(joinerConfig.schema)
       executableSchemaMapCache.set(joinerConfig.serviceName, {
@@ -62,11 +64,20 @@ export function parseAndAssignFilters({
     const entitiesMap = executableSchema.getTypeMap()
 
     const entryEntity = entitiesMap[entryAlias.entity!]
+
+    if (!entryEntity) {
+      throw new Error(
+        `Entity ${entryAlias.entity} not found in the public schema of the joiner config from ${entryJoinerConfig.serviceName}`
+      )
+    }
+
     const entryEntityFields = entryEntity.astNode?.fields?.map(
       (field) => field.name.value
     )
 
     if (isObject(filterValue)) {
+      remoteQueryObject[entryPoint] ??= {}
+
       parseAndAssignFilters({
         entryPoint: filterKey,
         filters: filterValue,
