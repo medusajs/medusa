@@ -366,12 +366,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
             {
               title: "new variant",
               product_id: productOne.id,
-              options: { size: "small" },
+              options: { size: "small", color: "red" },
             },
             {
               title: "new variant",
               product_id: productThree.id,
-              options: { size: "small" },
+              options: { size: "small", color: "blue" },
             },
           ]
 
@@ -389,6 +389,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
                       ?.values?.find((v) => v.value === "small")?.id,
                     value: "small",
                   }),
+                  expect.objectContaining({
+                    id: productOne.options
+                      .find((o) => o.title === "color")
+                      ?.values?.find((v) => v.value === "red")?.id,
+                    value: "red",
+                  }),
                 ]),
               }),
               expect.objectContaining({
@@ -396,10 +402,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
                 product_id: productThree.id,
                 options: expect.arrayContaining([
                   expect.objectContaining({
-                    id: productThree.options
-                      .find((o) => o.title === "size")
-                      ?.values?.find((v) => v.value === "small")?.id,
-                    value: "small",
+                    id: productOne.options
+                      .find((o) => o.title === "color")
+                      ?.values?.find((v) => v.value === "blue")?.id,
+                    value: "blue",
                   }),
                 ]),
               }),
