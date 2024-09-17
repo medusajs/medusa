@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductCategoryDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of deleting the category.
  * x-schemaName: AdminProductCategoryDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Product Category was deleted.
+ *     description: Whether the product category was deleted.
  * 
 */
 

@@ -35,11 +35,11 @@
  *   starts_at:
  *     type: string
  *     title: starts_at
- *     description: The price list's starts at.
+ *     description: The date the price list starts.
  *   ends_at:
  *     type: string
  *     title: ends_at
- *     description: The price list's ends at.
+ *     description: The date the price list ends.
  *   status:
  *     type: string
  *     description: The price list's status.
@@ -61,17 +61,17 @@
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The price list's created at.
+ *     description: The date the price list was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The price list's updated at.
+ *     description: The date the price list was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The price list's deleted at.
+ *     description: The date the price list was deleted.
  * 
 */
 
