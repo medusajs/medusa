@@ -1,5 +1,5 @@
 import { defineJoinerConfig } from "@medusajs/utils"
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaModule } from "../../medusa-module"
 
 const productJoinerConfig = defineJoinerConfig("product", {
   schema: `
