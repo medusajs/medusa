@@ -1,5 +1,13 @@
-import { parseAndAssignFilters } from "../parse-filters"
+import { MedusaModule } from "../../medusa-module"
+import { getEntitiesMap } from "../__fixtures__/get-entities-map"
 import "../__fixtures__/parse-filters"
+import { parseAndAssignFilters } from "../parse-filters"
+
+const entitiesMap = getEntitiesMap(
+  MedusaModule.getAllJoinerConfigs()
+    .map((m) => m.schema)
+    .join("\n")
+)
 
 describe("parse-filters", () => {
   describe("Without operator map usage", () => {
@@ -14,11 +22,14 @@ describe("parse-filters", () => {
         },
       }
 
-      parseAndAssignFilters({
-        remoteQueryObject,
-        entryPoint: "product",
-        filters,
-      })
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "product",
+          filters,
+        },
+        entitiesMap
+      )
 
       expect(remoteQueryObject).toEqual({
         product: {
@@ -66,11 +77,14 @@ describe("parse-filters", () => {
         },
       }
 
-      parseAndAssignFilters({
-        remoteQueryObject,
-        entryPoint: "product",
-        filters,
-      })
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "product",
+          filters,
+        },
+        entitiesMap
+      )
 
       expect(remoteQueryObject).toEqual({
         product: {
@@ -136,11 +150,14 @@ describe("parse-filters", () => {
         },
       }
 
-      parseAndAssignFilters({
-        remoteQueryObject,
-        entryPoint: "product",
-        filters,
-      })
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "product",
+          filters,
+        },
+        entitiesMap
+      )
 
       expect(remoteQueryObject).toEqual({
         product: {
@@ -210,11 +227,14 @@ describe("parse-filters", () => {
         },
       }
 
-      parseAndAssignFilters({
-        remoteQueryObject,
-        entryPoint: "product",
-        filters,
-      })
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "product",
+          filters,
+        },
+        entitiesMap
+      )
 
       expect(remoteQueryObject).toEqual({
         product: {
@@ -268,11 +288,14 @@ describe("parse-filters", () => {
         },
       }
 
-      parseAndAssignFilters({
-        remoteQueryObject,
-        entryPoint: "product",
-        filters,
-      })
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "product",
+          filters,
+        },
+        entitiesMap
+      )
 
       expect(remoteQueryObject).toEqual({
         product: {
@@ -322,11 +345,14 @@ describe("parse-filters", () => {
         },
       }
 
-      parseAndAssignFilters({
-        remoteQueryObject,
-        entryPoint: "product",
-        filters,
-      })
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "product",
+          filters,
+        },
+        entitiesMap
+      )
 
       expect(remoteQueryObject).toEqual({
         product: {
@@ -396,11 +422,14 @@ describe("parse-filters", () => {
         },
       }
 
-      parseAndAssignFilters({
-        remoteQueryObject,
-        entryPoint: "product",
-        filters,
-      })
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "product",
+          filters,
+        },
+        entitiesMap
+      )
 
       expect(remoteQueryObject).toEqual({
         product: {
@@ -469,11 +498,14 @@ describe("parse-filters", () => {
         },
       }
 
-      parseAndAssignFilters({
-        remoteQueryObject,
-        entryPoint: "product",
-        filters,
-      })
+      parseAndAssignFilters(
+        {
+          remoteQueryObject,
+          entryPoint: "product",
+          filters,
+        },
+        entitiesMap
+      )
 
       expect(remoteQueryObject).toEqual({
         product: {

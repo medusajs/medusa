@@ -4,17 +4,7 @@ import {
   ModuleJoinerConfig,
 } from "@medusajs/types"
 import { isObject, isString } from "@medusajs/utils"
-import { cleanGraphQLSchema } from "../utils"
-import { makeExecutableSchema } from "@graphql-tools/schema"
 import { MedusaModule } from "../medusa-module"
-
-const executableSchemaMapCache = new Map()
-
-function makeSchemaExecutable(inputSchema: string) {
-  const { schema: cleanedSchema } = cleanGraphQLSchema(inputSchema)
-
-  return makeExecutableSchema({ typeDefs: cleanedSchema })
-}
 
 /**
  * Parse and assign filters to remote query object to the corresponding relation level
@@ -23,25 +13,29 @@ function makeSchemaExecutable(inputSchema: string) {
  * @param remoteQueryObject
  * @param isFieldAliasNestedRelation
  */
-export function parseAndAssignFilters({
-  entryPoint,
-  filters,
-  remoteQueryObject,
-  isFieldAliasNestedRelation,
-}: {
-  remoteQueryObject: object
-  entryPoint: string
-  filters: object
-  isFieldAliasNestedRelation?: boolean
-}) {
+export function parseAndAssignFilters(
+  {
+    entryPoint,
+    filters,
+    remoteQueryObject,
+    isFieldAliasNestedRelation,
+  }: {
+    remoteQueryObject: object
+    entryPoint: string
+    filters: object
+    isFieldAliasNestedRelation?: boolean
+  },
+  entitiesMap: Map<string, any>
+) {
   const joinerConfigs = MedusaModule.getAllJoinerConfigs()
 
+  const joinerConfigMapCache = new Map()
+
   for (const [filterKey, filterValue] of Object.entries(filters)) {
-    let executableSchema: ReturnType<typeof makeExecutableSchema>
     let entryAlias!: JoinerServiceConfigAlias
     let entryJoinerConfig!: JoinerServiceConfig
 
-    if (!executableSchemaMapCache.has(filterKey)) {
+    if (!joinerConfigMapCache.has(filterKey)) {
       const { joinerConfig, alias } = retrieveJoinerConfigFromPropertyName({
         entryPoint: entryPoint,
         joinerConfigs,
@@ -50,21 +44,15 @@ export function parseAndAssignFilters({
       entryAlias = alias
       entryJoinerConfig = joinerConfig
 
-      executableSchema = makeSchemaExecutable(joinerConfig.schema)
-      executableSchemaMapCache.set(joinerConfig.serviceName, {
-        executableSchema,
+      joinerConfigMapCache.set(joinerConfig.serviceName, {
         alias,
       })
     } else {
-      const data = executableSchemaMapCache.get(filterKey)
-      executableSchema = data.executableSchema
+      const data = joinerConfigMapCache.get(filterKey)
       entryAlias = data.alias
     }
 
-    const entitiesMap = executableSchema.getTypeMap()
-
     const entryEntity = entitiesMap[entryAlias.entity!]
-
     if (!entryEntity) {
       throw new Error(
         `Entity ${entryAlias.entity} not found in the public schema of the joiner config from ${entryJoinerConfig.serviceName}`
@@ -102,12 +90,15 @@ export function parseAndAssignFilters({
             filterKeyJoinerConfig,
           })
 
-          parseAndAssignFilters({
-            entryPoint: nestedFilterKey,
-            filters: nestedFilterValue,
-            remoteQueryObject: remoteQueryObject[entryPoint][filterKey],
-            isFieldAliasNestedRelation: isFieldAliasNestedRelation_,
-          })
+          parseAndAssignFilters(
+            {
+              entryPoint: nestedFilterKey,
+              filters: nestedFilterValue,
+              remoteQueryObject: remoteQueryObject[entryPoint][filterKey],
+              isFieldAliasNestedRelation: isFieldAliasNestedRelation_,
+            },
+            entitiesMap
+          )
         }
       }
 

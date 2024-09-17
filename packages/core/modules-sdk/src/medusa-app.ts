@@ -413,10 +413,12 @@ async function MedusaApp_({
 
   const loadedSchema = getLoadedSchema()
   const { schema, notFound } = cleanAndMergeSchema(loadedSchema)
+  const entitiesMap = schema.getTypeMap() as unknown as Map<string, any>
 
   const remoteQuery = new RemoteQuery({
     servicesConfig,
     customRemoteFetchData: remoteFetchData,
+    entitiesMap,
   })
 
   const applyMigration = async ({
@@ -521,7 +523,7 @@ async function MedusaApp_({
     modules: allModules,
     link: remoteLink,
     query: createQuery(remoteQuery) as any, // TODO: rm any once we remove the old RemoteQueryFunction and rely on the Query object instead,
-    entitiesMap: schema.getTypeMap(),
+    entitiesMap,
     gqlSchema: schema,
     notFound,
     runMigrations,

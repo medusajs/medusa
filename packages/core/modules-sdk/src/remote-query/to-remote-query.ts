@@ -4,7 +4,7 @@ import {
   RemoteQueryGraph,
   RemoteQueryObjectConfig,
 } from "@medusajs/types"
-import { isObject, QueryContext, QueryFilter } from "@medusajs/utils"
+import { QueryContext, QueryFilter, isObject } from "@medusajs/utils"
 import { parseAndAssignFilters } from "./parse-filters"
 
 const FIELDS = "__fields"
@@ -28,16 +28,19 @@ const ARGUMENTS = "__args"
  * console.log(remoteQueryObject);
  */
 
-export function toRemoteQuery<const TEntity extends string>(config: {
-  entity: TEntity | keyof RemoteQueryEntryPoints
-  fields: RemoteQueryObjectConfig<TEntity>["fields"]
-  filters?: RemoteQueryFilters<TEntity>
-  pagination?: {
-    skip?: number
-    take?: number
-  }
-  context?: Record<string, any>
-}): RemoteQueryGraph<TEntity> {
+export function toRemoteQuery<const TEntity extends string>(
+  config: {
+    entity: TEntity | keyof RemoteQueryEntryPoints
+    fields: RemoteQueryObjectConfig<TEntity>["fields"]
+    filters?: RemoteQueryFilters<TEntity>
+    pagination?: {
+      skip?: number
+      take?: number
+    }
+    context?: Record<string, any>
+  },
+  entitiesMap: Map<string, any>
+): RemoteQueryGraph<TEntity> {
   const { entity, fields = [], filters = {}, context = {} } = config
 
   const joinerQuery: Record<string, any> = {
@@ -116,11 +119,14 @@ export function toRemoteQuery<const TEntity extends string>(config: {
     }
   }
 
-  parseAndAssignFilters({
-    entryPoint: entity,
-    filters: filters,
-    remoteQueryObject: joinerQuery,
-  })
+  parseAndAssignFilters(
+    {
+      entryPoint: entity,
+      filters: filters,
+      remoteQueryObject: joinerQuery,
+    },
+    entitiesMap
+  )
 
   return joinerQuery as RemoteQueryGraph<TEntity>
 }
