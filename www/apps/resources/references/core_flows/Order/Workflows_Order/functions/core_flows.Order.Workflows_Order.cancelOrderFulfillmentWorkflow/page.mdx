@@ -33,7 +33,7 @@ This workflow cancels an order's fulfillment.
 import { cancelOrderFulfillmentWorkflow } from "@medusajs/core-flows"
 
 cancelOrderFulfillmentWorkflow.hooks.orderFulfillmentCanceled(
-	async (({ fulfillment, additional_data }, { container }) => {
+	(async ({ fulfillment, additional_data }, { container }) => {
 		//TODO
 	})
 )

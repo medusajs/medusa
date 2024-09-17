@@ -33,7 +33,7 @@ This workflow creates one or more promotions.
 import { createPromotionsWorkflow } from "@medusajs/core-flows"
 
 createPromotionsWorkflow.hooks.promotionsCreated(
-	async (({ promotions, additional_data }, { container }) => {
+	(async ({ promotions, additional_data }, { container }) => {
 		//TODO
 	})
 )
