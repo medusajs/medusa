@@ -2641,33 +2641,6 @@ medusaIntegrationTestRunner({
           ).toEqual("Updated variant")
         })
 
-        // it("removes options not present in update", async () => {
-        //   const baseVariant = baseProduct.variants[0]
-        //   const updatedProduct = (
-        //     await api.post(
-        //       `/admin/products/${baseProduct.id}/variants/${baseVariant.id}`,
-        //       {
-        //         title: "Updated variant",
-        //         options: {
-        //           size: "small",
-        //         },
-        //       },
-        //       adminHeaders
-        //     )
-        //   ).data.product
-        //
-        //   expect(
-        //     updatedProduct.variants.find((v) => v.id === baseVariant.id).options
-        //   ).toEqual([
-        //     expect.objectContaining({
-        //       option: expect.objectContaining({
-        //         title: "size",
-        //       }),
-        //       value: "small",
-        //     }),
-        //   ])
-        // })
-
         it("updates multiple options in the same call", async () => {
           const baseVariant = baseProduct.variants[0]
           const updatedProduct = (

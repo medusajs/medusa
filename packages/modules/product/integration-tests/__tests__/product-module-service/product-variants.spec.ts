@@ -227,44 +227,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
-        // it("should upsert the options of a variant successfully", async () => {
-        //   await service.upsertProductVariants([
-        //     {
-        //       id: variantOne.id,
-        //       options: { size: "small" },
-        //     },
-        //   ])
-        //
-        //   const productVariant = await service.retrieveProductVariant(
-        //     variantOne.id,
-        //     {
-        //       relations: ["options"],
-        //     }
-        //   )
-        //   expect(productVariant.options).toEqual(
-        //     expect.arrayContaining([
-        //       expect.objectContaining({
-        //         value: "small",
-        //       }),
-        //     ])
-        //   )
-        //
-        //   expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
-        //   expect(eventBusEmitSpy).toHaveBeenCalledWith(
-        //     [
-        //       composeMessage(ProductEvents.PRODUCT_VARIANT_UPDATED, {
-        //         data: { id: variantOne.id },
-        //         object: "product_variant",
-        //         source: Modules.PRODUCT,
-        //         action: CommonEvents.UPDATED,
-        //       }),
-        //     ],
-        //     {
-        //       internal: true,
-        //     }
-        //   )
-        // })
-
         it("should do a partial update on the options of a variant successfully", async () => {
           await service.updateProductVariants(variantOne.id, {
             options: { size: "small", color: "red" },
