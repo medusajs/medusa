@@ -1,8 +1,14 @@
-import { JoinerServiceConfig, JoinerServiceConfigAlias } from "@medusajs/types"
+import {
+  JoinerServiceConfig,
+  JoinerServiceConfigAlias,
+  ModuleJoinerConfig,
+} from "@medusajs/types"
 import { isObject, isString } from "@medusajs/utils"
 import { cleanGraphQLSchema } from "../utils"
 import { makeExecutableSchema } from "@graphql-tools/schema"
 import { MedusaModule } from "../medusa-module"
+
+const executableSchemaMapCache = new Map()
 
 function makeSchemaExecutable(inputSchema: string) {
   const { schema: cleanedSchema } = cleanGraphQLSchema(inputSchema)
@@ -22,20 +28,16 @@ export function parseAndAssignFilters({
   filters,
   remoteQueryObject,
   isFieldAliasNestedRelation,
-  targetNestedRelation,
 }: {
   remoteQueryObject: object
   entryPoint: string
   filters: object
   isFieldAliasNestedRelation?: boolean
-  targetNestedRelation?: string
 }) {
   const joinerConfigs = MedusaModule.getAllJoinerConfigs()
 
-  const executableSchemaMapCache = new Map()
-
   for (const [filterKey, filterValue] of Object.entries(filters)) {
-    let executableSchema // : GraphqlSchema
+    let executableSchema: ReturnType<typeof makeExecutableSchema>
     let entryAlias!: JoinerServiceConfigAlias
     let entryJoinerConfig!: JoinerServiceConfig
 
@@ -69,10 +71,6 @@ export function parseAndAssignFilters({
       )
     }
 
-    const entryEntityFields = entryEntity.astNode?.fields?.map(
-      (field) => field.name.value
-    )
-
     if (isObject(filterValue)) {
       for (const [nestedFilterKey, nestedFilterValue] of Object.entries(
         filterValue
@@ -87,67 +85,28 @@ export function parseAndAssignFilters({
           !filterKeyJoinerConfig ||
           filterKeyJoinerConfig.serviceName === entryJoinerConfig.serviceName
         ) {
-          remoteQueryObject[entryPoint] ??= {}
-          remoteQueryObject[entryPoint]["__args"] ??= {}
-          remoteQueryObject[entryPoint]["__args"]["filters"] ??= {}
-
-          if (!isFieldAliasNestedRelation) {
-            remoteQueryObject[entryPoint]["__args"]["filters"][filterKey] ??= {}
-            remoteQueryObject[entryPoint]["__args"]["filters"][filterKey][
-              nestedFilterKey
-            ] = nestedFilterValue
-          } else {
-            // In case of field alias that refers to a relation of linked entity we need to assign the filter on the relation filter itself instead of top level of the args
-            remoteQueryObject[entryPoint]["__args"]["filters"][entryPoint] ??=
-              {}
-            remoteQueryObject[entryPoint]["__args"]["filters"][entryPoint][
-              filterKey
-            ] ??= {}
-            remoteQueryObject[entryPoint]["__args"]["filters"][entryPoint][
-              filterKey
-            ][nestedFilterKey] = nestedFilterValue
-          }
-        } else {
-          const linkJoinerConfig = joinerConfigs.find((joinerConfig) => {
-            return joinerConfig.relationships?.every(
-              (rel) =>
-                rel.serviceName === entryJoinerConfig.serviceName ||
-                rel.serviceName === filterKeyJoinerConfig.serviceName
-            )
+          assignNestedRemoteQueryObject({
+            entryPoint,
+            filterKey,
+            nestedFilterKey,
+            filterValue,
+            nestedFilterValue,
+            remoteQueryObject,
+            isFieldAliasNestedRelation,
           })
-
-          const relationsAlias = linkJoinerConfig?.relationships?.map(
-            (r) => r.alias
-          )
-
-          let isFieldAliasNestedRelation = false
-          let parentRelationAlias = nestedFilterKey
-
-          if (linkJoinerConfig && relationsAlias?.length) {
-            const fieldAlias = linkJoinerConfig.extends?.find(
-              (extend) => extend.fieldAlias?.[nestedFilterKey]
-            )?.fieldAlias
-
-            if (fieldAlias) {
-              const path = isString(fieldAlias?.[nestedFilterKey])
-                ? fieldAlias?.[nestedFilterKey]
-                : (fieldAlias?.[nestedFilterKey] as any).path
-
-              if (!relationsAlias.includes(path.split(".").pop())) {
-                isFieldAliasNestedRelation = true
-                parentRelationAlias = relationsAlias.find((alias) =>
-                  path.includes(alias)
-                )!
-              }
-            }
-          }
+        } else {
+          const isFieldAliasNestedRelation_ = isFieldAliasNestedRelationHelper({
+            nestedFilterKey,
+            entryJoinerConfig,
+            joinerConfigs,
+            filterKeyJoinerConfig,
+          })
 
           parseAndAssignFilters({
             entryPoint: nestedFilterKey,
-            targetNestedRelation: nestedFilterKey,
             filters: nestedFilterValue,
             remoteQueryObject: remoteQueryObject[entryPoint][filterKey],
-            isFieldAliasNestedRelation,
+            isFieldAliasNestedRelation: isFieldAliasNestedRelation_,
           })
         }
       }
@@ -155,18 +114,13 @@ export function parseAndAssignFilters({
       continue
     }
 
-    remoteQueryObject[entryPoint] ??= {}
-    remoteQueryObject[entryPoint].__args ??= {}
-    remoteQueryObject[entryPoint].__args["filters"] ??= {}
-
-    if (!isFieldAliasNestedRelation) {
-      remoteQueryObject[entryPoint].__args["filters"][filterKey] = filterValue
-    } else {
-      // In case of field alias that refers to a relation of linked entity we need to assign the filter on the relation filter itself instead of top level of the args\
-      remoteQueryObject[entryPoint].__args["filters"][entryPoint] ??= {}
-      remoteQueryObject[entryPoint].__args["filters"][entryPoint][filterKey] =
-        filterValue
-    }
+    assignRemoteQueryObject({
+      entryPoint,
+      filterKey,
+      filterValue,
+      remoteQueryObject,
+      isFieldAliasNestedRelation,
+    })
   }
 }
 
@@ -184,4 +138,110 @@ function retrieveJoinerConfigFromPropertyName({ entryPoint, joinerConfigs }) {
   }
 
   return {}
+}
+
+function assignRemoteQueryObject({
+  entryPoint,
+  filterKey,
+  filterValue,
+  remoteQueryObject,
+  isFieldAliasNestedRelation,
+}: {
+  entryPoint: string
+  filterKey: string
+  filterValue: any
+  remoteQueryObject: object
+  isFieldAliasNestedRelation?: boolean
+}) {
+  remoteQueryObject[entryPoint] ??= {}
+  remoteQueryObject[entryPoint].__args ??= {}
+  remoteQueryObject[entryPoint].__args["filters"] ??= {}
+
+  if (!isFieldAliasNestedRelation) {
+    remoteQueryObject[entryPoint].__args["filters"][filterKey] = filterValue
+  } else {
+    // In case of field alias that refers to a relation of linked entity we need to assign the filter on the relation filter itself instead of top level of the args\
+    remoteQueryObject[entryPoint].__args["filters"][entryPoint] ??= {}
+    remoteQueryObject[entryPoint].__args["filters"][entryPoint][filterKey] =
+      filterValue
+  }
+}
+
+function assignNestedRemoteQueryObject({
+  entryPoint,
+  filterKey,
+  nestedFilterKey,
+  nestedFilterValue,
+  remoteQueryObject,
+  isFieldAliasNestedRelation,
+}: {
+  entryPoint: string
+  filterKey: string
+  filterValue: any
+  nestedFilterKey: string
+  nestedFilterValue: any
+  remoteQueryObject: object
+  isFieldAliasNestedRelation?: boolean
+}) {
+  remoteQueryObject[entryPoint] ??= {}
+  remoteQueryObject[entryPoint]["__args"] ??= {}
+  remoteQueryObject[entryPoint]["__args"]["filters"] ??= {}
+
+  if (!isFieldAliasNestedRelation) {
+    remoteQueryObject[entryPoint]["__args"]["filters"][filterKey] ??= {}
+    remoteQueryObject[entryPoint]["__args"]["filters"][filterKey][
+      nestedFilterKey
+    ] = nestedFilterValue
+  } else {
+    // In case of field alias that refers to a relation of linked entity we need to assign the filter on the relation filter itself instead of top level of the args
+    remoteQueryObject[entryPoint]["__args"]["filters"][entryPoint] ??= {}
+    remoteQueryObject[entryPoint]["__args"]["filters"][entryPoint][
+      filterKey
+    ] ??= {}
+    remoteQueryObject[entryPoint]["__args"]["filters"][entryPoint][filterKey][
+      nestedFilterKey
+    ] = nestedFilterValue
+  }
+}
+
+function isFieldAliasNestedRelationHelper({
+  nestedFilterKey,
+  entryJoinerConfig,
+  joinerConfigs,
+  filterKeyJoinerConfig,
+}: {
+  nestedFilterKey: string
+  entryJoinerConfig: ModuleJoinerConfig
+  joinerConfigs: ModuleJoinerConfig[]
+  filterKeyJoinerConfig: ModuleJoinerConfig
+}): boolean {
+  const linkJoinerConfig = joinerConfigs.find((joinerConfig) => {
+    return joinerConfig.relationships?.every(
+      (rel) =>
+        rel.serviceName === entryJoinerConfig.serviceName ||
+        rel.serviceName === filterKeyJoinerConfig.serviceName
+    )
+  })
+
+  const relationsAlias = linkJoinerConfig?.relationships?.map((r) => r.alias)
+
+  let isFieldAliasNestedRelation = false
+
+  if (linkJoinerConfig && relationsAlias?.length) {
+    const fieldAlias = linkJoinerConfig.extends?.find(
+      (extend) => extend.fieldAlias?.[nestedFilterKey]
+    )?.fieldAlias
+
+    if (fieldAlias) {
+      const path = isString(fieldAlias?.[nestedFilterKey])
+        ? fieldAlias?.[nestedFilterKey]
+        : (fieldAlias?.[nestedFilterKey] as any).path
+
+      if (!relationsAlias.includes(path.split(".").pop())) {
+        isFieldAliasNestedRelation = true
+      }
+    }
+  }
+
+  return isFieldAliasNestedRelation
 }
