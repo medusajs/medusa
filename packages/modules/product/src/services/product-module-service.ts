@@ -1796,10 +1796,10 @@ export default class ProductModuleService
   }
 
   protected static validateUniqueOptionsCombinations(
-    data: (
-      | ProductTypes.CreateProductVariantDTO[]
-      | ProductTypes.UpdateProductVariantDTO[]
-    ) & { options: { id: string }[] },
+    data: ((
+      | ProductTypes.CreateProductVariantDTO
+      | ProductTypes.UpdateProductVariantDTO
+    ) & { options: { id: string }[]; product_id: string })[],
     variants: ProductVariant[]
   ) {
     for (const variantData of data) {
