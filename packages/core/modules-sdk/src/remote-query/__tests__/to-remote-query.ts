@@ -1,5 +1,6 @@
-import { QueryContext, QueryFilter } from "@medusajs/utils"
+import { QueryContext } from "@medusajs/utils"
 import "../__fixtures__/remote-query-type"
+import "../__fixtures__/parse-filters"
 import { toRemoteQuery } from "../to-remote-query"
 
 describe("toRemoteQuery", () => {
@@ -7,11 +8,11 @@ describe("toRemoteQuery", () => {
     const format = toRemoteQuery({
       entity: "product",
       fields: ["id", "handle", "description"],
-      filters: QueryFilter<"product">({
+      filters: {
         handle: {
           $ilike: "abc%",
         },
-      }),
+      },
     })
 
     expect(format).toEqual({
@@ -57,11 +58,11 @@ describe("toRemoteQuery", () => {
         skip: 5,
         take: 10,
       },
-      filters: QueryFilter<"product">({
+      filters: {
         handle: {
           $ilike: "abc%",
         },
-      }),
+      },
     })
 
     expect(format).toEqual({
@@ -91,11 +92,11 @@ describe("toRemoteQuery", () => {
         "variants.options.*",
       ],
       filters: {
-        variants: QueryFilter<"variants">({
+        variants: {
           sku: {
             $ilike: "abc%",
           },
-        }),
+        },
       },
       context: {
         variants: {
@@ -154,9 +155,9 @@ describe("toRemoteQuery", () => {
         "variants.*",
         "variants.variant_translation.*",
       ],
-      filters: QueryFilter<"product">({
+      filters: {
         id: "prod_01J742X0QPFW3R2ZFRTRC34FS8",
-      }),
+      },
       context: {
         product_translation: langContext,
         categories: {

@@ -35,7 +35,8 @@ export function parseAndAssignFilters({
 
       if (!joinerConfig) {
         remoteQueryObject["__args"] ??= {}
-        remoteQueryObject["__args"][entryPoint] = filters
+        remoteQueryObject["__args"]["filters"] ??= {}
+        remoteQueryObject["__args"]["filters"][entryPoint] = filters
         return
       }
 
@@ -71,7 +72,8 @@ export function parseAndAssignFilters({
     if (entryEntityFields?.includes(filterKey)) {
       remoteQueryObject[entryPoint] ??= {}
       remoteQueryObject[entryPoint].__args ??= {}
-      remoteQueryObject[entryPoint].__args[filterKey] = filterValue
+      remoteQueryObject[entryPoint].__args["filters"] ??= {}
+      remoteQueryObject[entryPoint].__args["filters"][filterKey] = filterValue
     }
   }
 }

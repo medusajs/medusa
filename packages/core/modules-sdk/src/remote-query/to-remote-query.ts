@@ -4,7 +4,8 @@ import {
   RemoteQueryGraph,
   RemoteQueryObjectConfig,
 } from "@medusajs/types"
-import { QueryContext, QueryFilter, isObject } from "@medusajs/utils"
+import { isObject, QueryContext, QueryFilter } from "@medusajs/utils"
+import { parseAndAssignFilters } from "./parse-filters"
 
 const FIELDS = "__fields"
 const ARGUMENTS = "__args"
@@ -84,7 +85,7 @@ export function toRemoteQuery<const TEntity extends string>(config: {
   }
 
   // Process filters and context recursively
-  processNestedObjects(joinerQuery[entity], filters)
+  /*processNestedObjects(joinerQuery[entity], filters)*/
   processNestedObjects(joinerQuery[entity], context)
 
   for (const field of fields) {
@@ -115,6 +116,12 @@ export function toRemoteQuery<const TEntity extends string>(config: {
       ...config.pagination,
     }
   }
+
+  parseAndAssignFilters({
+    entryPoint: entity,
+    filters: filters,
+    remoteQueryObject: joinerQuery,
+  })
 
   return joinerQuery as RemoteQueryGraph<TEntity>
 }
