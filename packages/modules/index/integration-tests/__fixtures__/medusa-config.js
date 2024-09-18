@@ -2,13 +2,17 @@ const { defineConfig, Modules } = require("@medusajs/utils")
 const { schema } = require("./schema")
 
 export const dbName = "medusa-index-integration-2024"
+const DB_HOST = process.env.DB_HOST ?? "localhost:5432"
+const DB_USERNAME = process.env.DB_USERNAME ?? ""
+const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${dbName}`
 
 const config = defineConfig({
   admin: {
     disable: true,
   },
   projectConfig: {
-    databaseUrl: `postgresql://localhost:5432/${dbName}`,
+    databaseUrl: DB_URL,
   },
 })
 
