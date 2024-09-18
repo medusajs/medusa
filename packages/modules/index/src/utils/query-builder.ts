@@ -151,7 +151,7 @@ export class QueryBuilder {
       path: string[],
       value: unknown
     ): string => {
-      const partialPath = path.slice(0, -1)
+      const partialPath = path.length > 1 ? path.slice(0, -1) : path
       const val = this.transformValueToType(attr, partialPath, value)
       const result = path.reduceRight((acc, key) => {
         return { [key]: acc }

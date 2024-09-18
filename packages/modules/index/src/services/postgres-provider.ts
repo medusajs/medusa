@@ -5,12 +5,12 @@ import {
   Subscriber,
 } from "@medusajs/types"
 import {
-  MikroOrmBaseRepository as BaseRepository,
   ContainerRegistrationKeys,
   InjectManager,
   InjectTransactionManager,
-  MedusaContext,
   isDefined,
+  MedusaContext,
+  MikroOrmBaseRepository as BaseRepository,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
@@ -23,7 +23,7 @@ import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
 } from "@types"
-import { QueryBuilder, createPartitions } from "../utils"
+import { createPartitions, QueryBuilder } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -248,7 +248,7 @@ export class PostgresProvider {
     selection: QueryFormat,
     options?: QueryOptions,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<[Record<string, any>[], number, PerformanceEntry]> {
     await this.#isReady_
 
     const { manager } = sharedContext as { manager: SqlEntityManager }
@@ -262,7 +262,14 @@ export class PostgresProvider {
     })
 
     const sql = qb.buildQuery(true, !!options?.keepFilteredEntities)
+    performance.mark("index-query-start")
     let resultset = await connection.execute(sql)
+    performance.mark("index-query-end")
+
+    const performanceMesurements = performance.measure(
+      "index-query-end",
+      "index-query-start"
+    )
 
     const count = +(resultset[0]?.count ?? 0)
 
@@ -278,11 +285,25 @@ export class PostgresProvider {
             [`${mainEntity}.id`]: ids,
           },
         }
-        return [await this.query(selection_, undefined, sharedContext), count]
+
+        performance.mark("index-query-start")
+        resultset = await this.query(selection_, undefined, sharedContext)
+        performance.mark("index-query-end")
+
+        const performanceMesurements = performance.measure(
+          "index-query-end",
+          "index-query-start"
+        )
+
+        return [resultset, count, performanceMesurements]
       }
     }
 
-    return [qb.buildObjectFromResultset(resultset), count]
+    return [
+      qb.buildObjectFromResultset(resultset),
+      count,
+      performanceMesurements,
+    ]
   }
 
   consumeEvent(

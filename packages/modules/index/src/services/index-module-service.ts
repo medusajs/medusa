@@ -5,17 +5,18 @@ import {
   RemoteQueryFunction,
 } from "@medusajs/types"
 import {
-  MikroOrmBaseRepository as BaseRepository,
   ContainerRegistrationKeys,
+  MikroOrmBaseRepository as BaseRepository,
   Modules,
 } from "@medusajs/utils"
 import {
   IndexModuleOptions,
   SchemaObjectRepresentation,
-  StorageProvider,
   schemaObjectRepresentationPropertiesToOmit,
+  StorageProvider,
 } from "@types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
+import { defaultSchema } from "../utils/default-schema"
 
 type InjectedDependencies = {
   [Modules.EVENT_BUS]: IEventBusModuleService
@@ -133,7 +134,7 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
     }
 
     const [objectRepresentation, entityMap] = buildSchemaObjectRepresentation(
-      this.moduleOptions_.schema ?? ""
+      this.moduleOptions_.schema ?? defaultSchema
     )
     this.schemaObjectRepresentation_ = objectRepresentation
     this.schemaEntitiesMap_ = entityMap
