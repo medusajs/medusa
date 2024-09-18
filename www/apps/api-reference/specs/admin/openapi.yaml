@@ -1000,6 +1000,8 @@ paths:
       paths/admin_workflows-executions_{workflow_id}_{transaction_id}_{step_id}_subscribe.yaml
   /auth/session:
     $ref: paths/auth_session.yaml
+  /auth/token/refresh:
+    $ref: paths/auth_token_refresh.yaml
   /auth/user/{auth_provider}:
     $ref: paths/auth_user_{auth_provider}.yaml
   /auth/user/{auth_provider}/callback:
