@@ -8,7 +8,11 @@ const baseRepoMock = {
   getFreshManager: jest.fn().mockReturnThis(),
 }
 
-const defaultContext = { __type: "MedusaContext", manager: baseRepoMock }
+const defaultContext = {
+  __type: "MedusaContext",
+  manager: baseRepoMock,
+  messageAggregator: new MessageAggregator(),
+}
 const defaultTransactionContext = {
   __type: "MedusaContext",
   manager: baseRepoMock,
