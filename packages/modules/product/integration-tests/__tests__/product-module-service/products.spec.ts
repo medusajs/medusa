@@ -565,6 +565,45 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
+        it("should update, create and delete variants", async () => {
+          const updateData = {
+            id: productTwo.id,
+            // Note: VariantThree is already assigned to productTwo, that should be deleted
+            variants: [
+              {
+                id: productTwo.variants[0].id,
+                title: "updated-variant",
+              },
+              {
+                title: "created-variant",
+              },
+            ],
+          }
+
+          await service.upsertProducts([updateData])
+
+          const product = await service.retrieveProduct(updateData.id, {
+            relations: ["variants"],
+          })
+
+          expect(product.variants).toHaveLength(2)
+          expect(product).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  id: productTwo.variants[0].id,
+                  title: "updated-variant",
+                }),
+                expect.objectContaining({
+                  id: expect.any(String),
+                  title: "created-variant",
+                }),
+              ]),
+            })
+          )
+        })
+
         it("should do a partial update on the options of a variant successfully", async () => {
           await service.updateProducts(productTwo.id, {
             variants: [
