@@ -17,8 +17,8 @@ import {
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
 
 const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME
-const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_USERNAME = process.env.DB_USERNAME ?? ''
+const DB_PASSWORD = process.env.DB_PASSWORD ?? ''
 
 const pgGodCredentials = {
   user: DB_USERNAME,
