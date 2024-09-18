@@ -105,8 +105,7 @@ async function performCascadingSoftDeletion<T>(
 
     if (isCollection) {
       if (!entityRelation.isInitialized()) {
-        entityRelation = await retrieveEntity()
-        entityRelation = entityRelation[relation.name]
+        await entityRelation.init()
       }
       relationEntities = entityRelation.getItems()
     } else {
