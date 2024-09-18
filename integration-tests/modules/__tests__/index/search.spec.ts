@@ -30,7 +30,7 @@ medusaIntegrationTestRunner({
 
     describe("Index engine", () => {
       it("should search through the indexed data and return the correct results ordered and filtered [1]", async () => {
-        const payloadqgitq = {
+        const payload = {
           title: "Test Giftcard",
           is_giftcard: true,
           description: "test-giftcard-description",
