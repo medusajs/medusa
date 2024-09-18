@@ -8,7 +8,7 @@ This workflow creates and deletes inventory levels.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"bulkCreateDeleteLevelsWorkflow","steps":[{"type":"workflow","name":"deleteInventoryLevelsWorkflow","description":"This workflow deletes one or more inventory levels.","link":"../../core_flows.Workflows_Inventory/page.mdx#deleteinventorylevelsworkflow","depth":1},{"type":"step","name":"createInventoryLevelsStep","description":"This step creates one or more inventory levels.","link":"../../core_flows.Steps_Inventory/page.mdx#createinventorylevelsstep","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"bulkCreateDeleteLevelsWorkflow","steps":[{"type":"when","condition":"{\n      return !!input.deletes?.length\n    }","depth":"1","steps":[{"type":"workflow","name":"deleteInventoryLevelsWorkflow","description":"This workflow deletes one or more inventory levels.","link":"../../core_flows.Workflows_Inventory/page.mdx#deleteinventorylevelsworkflow","depth":1}]},{"type":"when","condition":"{\n      return !!input.creates?.length\n    }","depth":"2","steps":[{"type":"step","name":"createInventoryLevelsStep","description":"This step creates one or more inventory levels.","link":"../../core_flows.Steps_Inventory/page.mdx#createinventorylevelsstep","depth":2}]}]}} />
 
 ### Input
 
