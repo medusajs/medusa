@@ -1,20 +1,20 @@
 /**
  * @schema AdminPostReturnsShippingActionReqSchema
  * type: object
- * description: SUMMARY
+ * description: The shipping method's details.
  * x-schemaName: AdminPostReturnsShippingActionReqSchema
  * properties:
  *   custom_amount:
  *     type: number
  *     title: custom_amount
- *     description: The return's custom amount.
+ *     description: Set a custom price for the shipping method.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The return's internal note.
+ *     description: A note viewed only by admin users.
  *   metadata:
  *     type: object
- *     description: The return's metadata.
+ *     description: The return's metadata, can hold custom key-value pairs.
  * 
 */
 
