@@ -1,6 +1,7 @@
 import { MedusaService } from "../medusa-service"
 import { model } from "../../dml"
 import { MessageAggregator } from "../../event-bus"
+import { ModuleJoinerConfig } from "@medusajs/types"
 
 const baseRepoMock = {
   serialize: jest.fn().mockImplementation((item) => item),
@@ -64,6 +65,9 @@ describe("Abstract Module Service Factory", () => {
     beforeEach(() => {
       jest.clearAllMocks()
       instance = new medusaService(containerMock)
+      ;(instance as any).__joinerConfig = {
+        serviceName: "serviceName",
+      } as ModuleJoinerConfig
     })
 
     it("should have retrieve method", async () => {
@@ -126,6 +130,9 @@ describe("Abstract Module Service Factory", () => {
     beforeEach(() => {
       jest.clearAllMocks()
       instance = new medusaService(containerMock)
+      ;(instance as any).__joinerConfig = {
+        serviceName: "serviceName",
+      }
     })
 
     it("should have retrieve method for other models", async () => {

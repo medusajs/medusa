@@ -193,7 +193,7 @@ export function MedusaService<
           const models = await service.create(serviceData, sharedContext)
           const response = Array.isArray(data) ? models : models[0]
 
-          klassPrototype.aggregatedEvents.bind(klassPrototype)({
+          klassPrototype.aggregatedEvents.bind(this)({
             action: CommonEvents.CREATED,
             object: camelToSnakeCase(modelName).toLowerCase(),
             data: response,
@@ -279,7 +279,7 @@ export function MedusaService<
           )
 
           primaryKeyValues_.map((primaryKeyValue) =>
-            klassPrototype.aggregatedEvents.bind(klassPrototype)({
+            klassPrototype.aggregatedEvents.bind(this)({
               action: CommonEvents.DELETED,
               object: camelToSnakeCase(modelName).toLowerCase(),
               data: isString(primaryKeyValue)
@@ -330,7 +330,7 @@ export function MedusaService<
                 if (entity) {
                   const linkableKeyEntity =
                     camelToSnakeCase(entity).toLowerCase()
-                  klassPrototype.aggregatedEvents.bind(klassPrototype)({
+                  klassPrototype.aggregatedEvents.bind(this)({
                     action: CommonEvents.DELETED,
                     object: linkableKeyEntity,
                     data: { id: ids },
@@ -385,7 +385,7 @@ export function MedusaService<
                 if (entity) {
                   const linkableKeyEntity =
                     camelToSnakeCase(entity).toLowerCase()
-                  klassPrototype.aggregatedEvents.bind(klassPrototype)({
+                  klassPrototype.aggregatedEvents.bind(this)({
                     action: CommonEvents.CREATED,
                     object: linkableKeyEntity,
                     data: { id: ids },
