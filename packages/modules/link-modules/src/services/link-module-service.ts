@@ -13,13 +13,13 @@ import {
   CommonEvents,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  mapObjectTo,
   MapToConfig,
   MedusaContext,
   MedusaError,
   Modules,
   ModulesSdkUtils,
-  isDefined,
-  mapObjectTo,
 } from "@medusajs/utils"
 import { LinkService } from "@services"
 import { shouldForceTransaction } from "../utils"
@@ -116,7 +116,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     })
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async retrieve(
     primaryKeyData: string | string[],
     foreignKeyData: string,
@@ -139,7 +139,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     return entry[0]
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async list(
     filters: Record<string, unknown> = {},
     config: FindConfig<unknown> = {},
@@ -154,7 +154,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     return await this.baseRepository_.serialize<object[]>(rows)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async listAndCount(
     filters: Record<string, unknown> = {},
     config: FindConfig<unknown> = {},
