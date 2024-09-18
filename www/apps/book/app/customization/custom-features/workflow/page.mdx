@@ -16,7 +16,7 @@ This chapter covers how to define a workflow that creates a brand as part of the
 
 When manipulating data, use workflows instead of invoking a service's methods directly in your API route or other customizations.
 
-Workflows eliminate data inconsistency in your application with its compensation mechanism that undoes changes if an error occurs.
+Workflows eliminate data inconsistency in your application with its compensation mechanism that undoes changes if an error occurs. For example, if a workflow's step creates a brand, it also defines a compensation mechanism to remove the brand if an error occurs.
 
 This is even more useful when you create workflows with many steps, or integrate third-party systems.
 
@@ -90,9 +90,9 @@ The step returns the created brand in the first parameter of the `StepResponse`'
 
 ### Add Compensation Function to Step
 
-The second parameter of the `StepResponse`'s constructor is passed to the compensation function.
-
 A compensation function rolls back changes made by the step if an error occurs in the workflow.
+
+The second parameter of the `StepResponse`'s constructor is passed to the compensation function.
 
 To add the compensation function, pass a third parameter to `createStep`:
 

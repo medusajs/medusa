@@ -8,8 +8,8 @@ In this chapter, you'll learn about the concepts you need to build custom featur
 
 To add a custom feature to your application, you create:
 
-1. A module whose main service interacts with the database or integrates a third-party service.
-2. A workflow that implements the steps of a custom functionality, such as creating a brand. You implement functionalities in a workflow to benefit from features such as roll-back in case of errors, retry configurations, and more.
+1. A module with data models and a main service to mange them.
+2. A workflow to create, update, and delete records of data models. You implement functionalities in a workflow to benefit from features such as roll-back in case of errors, retry configurations, and more.
 3. An API route that exposes the workflow's functionality to clients such as the storefront or admin dashbaord.
 
 ![Diagram showcasing the flow of a custom developed feature](https://res.cloudinary.com/dza7lstvk/image/upload/v1725867628/Medusa%20Book/custom-development_nofvp6.jpg)
