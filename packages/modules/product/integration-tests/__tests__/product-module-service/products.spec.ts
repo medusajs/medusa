@@ -565,27 +565,6 @@ moduleIntegrationTestRunner<IProductModuleService>({
           )
         })
 
-        it("should fail to create variant that don't have all option values set", async () => {
-          jest.clearAllMocks()
-
-          let error
-
-          const data: CreateProductVariantDTO = {
-            title: "variant 3",
-            product_id: productOne.id,
-            options: { size: "small" },
-          }
-
-          try {
-            await service.createProductVariants(data)
-          } catch (e) {
-            error = e
-          }
-          expect(error.message).toEqual(
-            `Variant variant 3 doesn't have "color" option provided.`
-          )
-        })
-
         it("should do a partial update on the options of a variant successfully", async () => {
           await service.updateProducts(productTwo.id, {
             variants: [

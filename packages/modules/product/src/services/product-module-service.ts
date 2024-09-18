@@ -1553,7 +1553,7 @@ export default class ProductModuleService
       // Note: It's safe to rely on the order here as `upsertWithReplace` preserves the order of the input
       normalizedInput.map(async (product, i) => {
         const upsertedProduct: any = productData[i]
-        let allOptions: any[] = []
+        let allOptions: any[] = upsertedProduct.options
 
         if (product.options?.length) {
           const { entities: productOptions } =
@@ -1590,19 +1590,27 @@ export default class ProductModuleService
         }
 
         if (product.variants?.length) {
+          const productVariantsWithOptions =
+            ProductModuleService.assignOptionsToVariants(
+              product.variants?.map((v) => ({
+                ...v,
+                product_id: upsertedProduct.id,
+              })) ?? [],
+              allOptions
+            )
+
           const { entities: productVariants } =
             await this.productVariantService_.upsertWithReplace(
-              ProductModuleService.assignOptionsToVariants(
-                product.variants?.map((v) => ({
-                  ...v,
-                  product_id: upsertedProduct.id,
-                })) ?? [],
-                allOptions
-              ),
+              productVariantsWithOptions,
               { relations: ["options"] },
               sharedContext
             )
+
           upsertedProduct.variants = productVariants
+
+          ProductModuleService.validateUpsertedVariantsHaveUniqueOptions(
+            productVariants
+          )
 
           await this.productVariantService_.delete(
             {
@@ -1858,6 +1866,33 @@ export default class ProductModuleService
           MedusaError.Types.INVALID_DATA,
           `Variant (${existingVariant.title}) with provided options already exists.`
         )
+      }
+    }
+  }
+
+  protected static validateUpsertedVariantsHaveUniqueOptions(
+    variants: ProductVariant[]
+  ) {
+    for (let i = 0; i < variants.length; i++) {
+      const variant = variants[i]
+      for (let j = i + 1; j < variants.length; j++) {
+        const compareVariant = variants[j]
+
+        const exists = (
+          variant.options as unknown as ProductOptionValue[]
+        ).every(
+          (optionValue) =>
+            !!compareVariant.options.find(
+              (compareOptionValue) => compareOptionValue.id === optionValue.id
+            )
+        )
+
+        if (exists) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Variant "${variant.title}" has same combination of option values as "${compareVariant.title}".`
+          )
+        }
       }
     }
   }
