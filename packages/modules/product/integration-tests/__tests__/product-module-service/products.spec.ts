@@ -1,5 +1,4 @@
 import {
-  CreateProductVariantDTO,
   IProductModuleService,
   ProductCategoryDTO,
   ProductTagDTO,
@@ -121,10 +120,17 @@ moduleIntegrationTestRunner<IProductModuleService>({
             id: "product-1",
             title: "product 1",
             status: ProductStatus.PUBLISHED,
+            options: [
+              {
+                title: "opt-title",
+                values: ["val-1", "val-2"],
+              },
+            ],
             variants: [
               {
                 id: "variant-1",
                 title: "variant 1",
+                options: { "opt-title": "val-1" },
               },
             ],
           })
@@ -175,6 +181,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const data = buildProductAndRelationsData({
             images,
             thumbnail: images[0].url,
+            options: [
+              {
+                title: "opt-title",
+                values: ["val-1", "val-2"],
+              },
+            ],
           })
 
           const variantTitle = data.variants[0].title
@@ -193,7 +205,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           productBefore.title = "updated title"
           productBefore.variants = [
-            ...productBefore.variants!,
+            {
+              ...productBefore.variants[0]!,
+              options: { "opt-title": "val-2" },
+            },
             ...data.variants,
           ]
           productBefore.options = data.options

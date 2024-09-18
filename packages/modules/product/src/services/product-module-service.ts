@@ -341,7 +341,7 @@ export default class ProductModuleService
     const variantIdsToUpdate = data.map(({ id }) => id)
     const variants = await this.productVariantService_.list(
       { id: variantIdsToUpdate },
-      { take: null, relations: ["options"] },
+      { take: null },
       sharedContext
     )
 
@@ -1553,7 +1553,7 @@ export default class ProductModuleService
       // Note: It's safe to rely on the order here as `upsertWithReplace` preserves the order of the input
       normalizedInput.map(async (product, i) => {
         const upsertedProduct: any = productData[i]
-        let allOptions: any[] = upsertedProduct.options
+        let allOptions: any[] = []
 
         if (product.options?.length) {
           const { entities: productOptions } =
@@ -1592,12 +1592,18 @@ export default class ProductModuleService
         if (product.variants?.length) {
           const productVariantsWithOptions =
             ProductModuleService.assignOptionsToVariants(
-              product.variants?.map((v) => ({
-                ...v,
-                product_id: upsertedProduct.id,
-              })) ?? [],
+              product.variants
+                ?.filter((v) => !Array.isArray(v.options)) // we don't need to assign to these
+                .map((v) => ({
+                  ...v,
+                  product_id: upsertedProduct.id,
+                })) ?? [],
               allOptions
             )
+
+          ProductModuleService.validateUpsertedVariantsHaveUniqueOptions(
+            productVariantsWithOptions as any
+          )
 
           const { entities: productVariants } =
             await this.productVariantService_.upsertWithReplace(
@@ -1607,10 +1613,6 @@ export default class ProductModuleService
             )
 
           upsertedProduct.variants = productVariants
-
-          ProductModuleService.validateUpsertedVariantsHaveUniqueOptions(
-            productVariants
-          )
 
           await this.productVariantService_.delete(
             {
@@ -1787,22 +1789,26 @@ export default class ProductModuleService
     }
 
     const variantsWithOptions = variants.map((variant: any) => {
-      const variantOptions = Object.entries(variant.options ?? {}).map(
+      const numOfProvidedVariantOptionValues = Object.keys(
+        variant.options || {}
+      ).length
+
+      const productsOptions = options.filter(
+        (o) => o.product_id === variant.product_id
+      )
+
+      if (
+        numOfProvidedVariantOptionValues &&
+        productsOptions.length !== numOfProvidedVariantOptionValues
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Product has ${productsOptions.length} but there were ${numOfProvidedVariantOptionValues} provided option values for the variant: ${variant.title}.`
+        )
+      }
+
+      const variantOptions = Object.entries(variant.options || {}).map(
         ([key, val]) => {
-          const productsOptions = options.filter(
-            (o) => o.product_id === variant.product_id
-          )
-
-          const numOfProvidedVariantOptionValues = Object.keys(
-            variant.options || {}
-          ).length
-          if (productsOptions.length !== numOfProvidedVariantOptionValues) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Product has ${productsOptions.length} but there were ${numOfProvidedVariantOptionValues} provided option values for the variant: ${variant.title}.`
-            )
-          }
-
           const option = productsOptions.find((o) => o.title === key)
 
           const optionValue = option?.values?.find(
@@ -1871,16 +1877,16 @@ export default class ProductModuleService
   }
 
   protected static validateUpsertedVariantsHaveUniqueOptions(
-    variants: ProductVariant[]
+    variants: (ProductTypes.UpdateProductVariantDTO & {
+      options: { id: string }[]
+    })[]
   ) {
     for (let i = 0; i < variants.length; i++) {
       const variant = variants[i]
       for (let j = i + 1; j < variants.length; j++) {
         const compareVariant = variants[j]
 
-        const exists = (
-          variant.options as unknown as ProductOptionValue[]
-        ).every(
+        const exists = variant.options?.every(
           (optionValue) =>
             !!compareVariant.options.find(
               (compareOptionValue) => compareOptionValue.id === optionValue.id
