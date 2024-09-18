@@ -7,6 +7,7 @@ import {
 } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
+import { compressName } from "./compress-name"
 
 function getClass(...properties) {
   return class LinkModel {
@@ -62,7 +63,7 @@ export function generateEntity(
     class: getClass(
       ...fieldNames.concat("created_at", "updated_at", "deleted_at")
     ) as any,
-    tableName,
+    tableName: compressName(tableName),
     properties: {
       id: {
         type: "string",

@@ -165,6 +165,8 @@ export const workflowEngineTestSuite = (
               acknowledgement: {
                 transactionId: "trx_123",
                 workflowId: "my-workflow-name",
+                hasFailed: false,
+                hasFinished: false,
               },
             })
 

@@ -1,7 +1,7 @@
 /**
  * @schema AdminPricePreferenceResponse
  * type: object
- * description: SUMMARY
+ * description: The price preference's details.
  * x-schemaName: AdminPricePreferenceResponse
  * required:
  *   - price_preference

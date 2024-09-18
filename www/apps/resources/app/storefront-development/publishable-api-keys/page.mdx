@@ -1,0 +1,80 @@
+export const metadata = {
+  title: `Use a Publishable API Key in the Storefront`,
+}
+
+# {metadata.title}
+
+When sending requests to the `/store` API routes, you must pass the publishable API key in the header of your request.
+
+## What is a Publishable API Key?
+
+Publishable API keys specify the scope of a request. Admin users create them, and they can only be used on the client-side, such as in a storefront.
+
+Publishable API keys are associated with sales channels. Then, when the publishable API key is passed in the header of a request, the Medusa application automatically infers what sales channel is being used.
+
+---
+
+## How to Create a Publishable API Key?
+
+{/* TODO replace link with admin how-to guide once available. */}
+
+You create a publishable API key either using the Medusa Admin or the [Admin API routes](!api!/admin#api-keys_postapikeys).
+
+For example, using the [Create API Key API Route](!api!/admin#api-keys_postapikeys):
+
+```bash
+curl -X POST 'http://localhost:9000/admin/api-keys' \
+-H 'Authorization: Bearer {token}' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "title": "Storefront Key",
+  "type": "publishable"
+}'
+```
+
+<Note title="Tip">
+
+Learn how to send authenticated admin requests in the [Admin API reference](!api!/admin#authentication)
+
+</Note>
+
+To add sales channels to the publishable API key's scope, use the [Manage Sales Channels API route](!api!/admin#api-keys_postapikeysidsaleschannels):
+
+```bash
+curl -X POST 'http://localhost:9000/admin/api-keys/apk_123/sales-channels' \
+-H 'Authorization: Bearer {token}' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "add": ["sc_123"]
+}'
+```
+
+Make sure to replace `apk_123` with the ID of the publishable API key, and `sc_123` with the ID of the sales channel.
+
+---
+
+## How to Use Publishable API Key in Storefront Requests
+
+In your storefront, pass the `x-publishable-api-key` in the header of all your requests to the Medusa application.
+
+For example:
+
+export const highlights = [
+  ["4", "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY", "An environment variable that holds the publishable API key's token."]
+]
+
+```ts
+fetch(`http://localhost:9000/store/products`, {
+  credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+  },
+})
+.then((res) => res.json())
+.then((data) => {
+  // use products...
+  console.log(data.products)
+})
+```
+
+Where `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` is an environment variable that holds your publishable API key's token.

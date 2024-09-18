@@ -96,7 +96,7 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
 <CodeTabs group="resource-types">
   <CodeTab label="API Route" value="api-route">
     
-    ```ts title="src/api/store/workflow/route.ts" highlights={[["11"], ["12"], ["13"], ["14"], ["15"], ["16"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+    ```ts title="src/api/workflow/route.ts" highlights={[["11"], ["12"], ["13"], ["14"], ["15"], ["16"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
     import type {
       MedusaRequest,
       MedusaResponse,
@@ -193,10 +193,10 @@ To test out your workflow, start your Medusa application:
 npm run dev
 ```
 
-Then, send a `GET` request to `/store/workflow`:
+Then, send a `GET` request to `/workflow`:
 
-```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflow"
-curl http://localhost:9000/store/workflow
+```bash
+curl http://localhost:9000/workflow
 ```
 
 You’ll receive the following response:

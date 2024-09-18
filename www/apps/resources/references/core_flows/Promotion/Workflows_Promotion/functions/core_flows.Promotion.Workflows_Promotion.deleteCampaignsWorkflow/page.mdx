@@ -29,7 +29,7 @@ This workflow deletes one or more campaigns.
 import { deleteCampaignsWorkflow } from "@medusajs/core-flows"
 
 deleteCampaignsWorkflow.hooks.campaignsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )

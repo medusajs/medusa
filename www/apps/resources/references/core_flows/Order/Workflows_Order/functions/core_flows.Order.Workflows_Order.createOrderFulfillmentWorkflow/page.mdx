@@ -33,7 +33,7 @@ This creates a fulfillment for an order.
 import { createOrderFulfillmentWorkflow } from "@medusajs/core-flows"
 
 createOrderFulfillmentWorkflow.hooks.fulfillmentCreated(
-	async (({ fulfillment, additional_data }, { container }) => {
+	(async ({ fulfillment, additional_data }, { container }) => {
 		//TODO
 	})
 )

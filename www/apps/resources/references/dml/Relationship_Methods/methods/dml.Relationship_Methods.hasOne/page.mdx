@@ -13,7 +13,7 @@ data model.
 
 For example: A user "hasOne" email.
 
-Use the [belongsTo](../dml.Relationship_Methods.belongsTo/page.mdx) method to define the inverse of this relationship in 
+Use the [belongsTo](../dml.Relationship_Methods.belongsTo/page.mdx) method to define the inverse of this relationship in
 the other data model.
 
 ## Example
@@ -33,4 +33,4 @@ const User = model.define("user", {
 
 ## Parameters
 
-<TypeList types={[{"name":"entityBuilder","type":"T","description":"A function that returns the data model this model is related to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[RelationshipOptions](../../../../types/DmlTypes/types/types.DmlTypes.RelationshipOptions/page.mdx)","description":"The relationship's options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"mappedBy","type":"`string`","description":"The name of the relationship as defined in the other\ndata model. This is only required by the `belongsTo`\nrelationship method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="hasOne"/>
+<TypeList types={[{"name":"entityBuilder","type":"T","description":"A function that returns the data model this model is related to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[RelationshipOptions](../../../../types/DmlTypes/types/types.DmlTypes.RelationshipOptions/page.mdx)","description":"The relationship's options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"mappedBy","type":"`string`","description":"The name of the relationship as defined in the other\ndata model. This is only required by the `belongsTo` and `manyToMany`\nrelationship method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="hasOne"/>

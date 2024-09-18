@@ -61,7 +61,9 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl '{backend_url}/store/payment-providers'
+ *     source: |-
+ *       curl '{backend_url}/store/payment-providers' \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  * tags:
  *   - Payment Providers
  * responses:

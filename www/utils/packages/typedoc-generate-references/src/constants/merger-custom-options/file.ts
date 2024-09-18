@@ -57,7 +57,7 @@ The File Module accepts one provider only.
 </Note>
 
 \`\`\`js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 

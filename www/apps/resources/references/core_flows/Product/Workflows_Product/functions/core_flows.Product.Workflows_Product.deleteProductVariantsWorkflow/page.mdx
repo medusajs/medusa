@@ -29,7 +29,7 @@ This workflow deletes one or more product variants.
 import { deleteProductVariantsWorkflow } from "@medusajs/core-flows"
 
 deleteProductVariantsWorkflow.hooks.productVariantsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )

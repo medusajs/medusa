@@ -1,4 +1,4 @@
-import { IRegionModuleService } from "@medusajs/types"
+import { IRegionModuleService, RemoteQueryFunction } from "@medusajs/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../..//helpers/create-admin-user"
@@ -193,6 +193,104 @@ medusaIntegrationTestRunner({
             }
           )
         ).resolves.toHaveLength(1)
+      })
+    })
+
+    describe("Query", () => {
+      let appContainer
+      let query: RemoteQueryFunction
+
+      beforeAll(() => {
+        appContainer = getContainer()
+        query = appContainer.resolve(ContainerRegistrationKeys.QUERY)
+      })
+
+      beforeEach(async () => {
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
+
+        const payload = {
+          title: "Test Giftcard",
+          is_giftcard: true,
+          description: "test-giftcard-description",
+          options: [{ title: "Denominations", values: ["100"] }],
+          variants: [
+            {
+              title: "Test variant",
+              prices: [{ currency_code: "usd", amount: 100 }],
+              options: {
+                Denominations: "100",
+              },
+            },
+          ],
+        }
+
+        await api
+          .post("/admin/products", payload, adminHeaders)
+          .catch((err) => {
+            console.log(err)
+          })
+      })
+
+      it(`should perform cross module query and apply filters correctly to the correct modules [1]`, async () => {
+        const { data } = await query.graph({
+          entity: "product",
+          fields: ["id", "title", "variants.*", "variants.prices.amount"],
+          filters: {
+            variants: {
+              prices: {
+                amount: {
+                  $gt: 100,
+                },
+              },
+            },
+          },
+        })
+
+        expect(data).toEqual([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "Test Giftcard",
+            variants: [
+              expect.objectContaining({
+                title: "Test variant",
+                prices: [],
+              }),
+            ],
+          }),
+        ])
+      })
+
+      it(`should perform cross module query and apply filters correctly to the correct modules [2]`, async () => {
+        const { data: dataWithPrice } = await query.graph({
+          entity: "product",
+          fields: ["id", "title", "variants.*", "variants.prices.amount"],
+          filters: {
+            variants: {
+              prices: {
+                amount: {
+                  $gt: 50,
+                },
+              },
+            },
+          },
+        })
+
+        expect(dataWithPrice).toEqual([
+          expect.objectContaining({
+            id: expect.any(String),
+            title: "Test Giftcard",
+            variants: [
+              expect.objectContaining({
+                title: "Test variant",
+                prices: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+              }),
+            ],
+          }),
+        ])
       })
     })
   },

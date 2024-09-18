@@ -20,8 +20,8 @@ For example:
 
 export const fetchHighlights = [
   ["3", "retrieveShippingOptions", "This function retrieves the shipping options of the customer's cart."],
-  ["16", "setShippingMethod", "This function sets the shipping method of the cart using the selected shipping option."],
-  ["29", "data", "Pass in this property any data relevant to the fulfillment provider."],
+  ["19", "setShippingMethod", "This function sets the shipping method of the cart using the selected shipping option."],
+  ["33", "data", "Pass in this property any data relevant to the fulfillment provider."],
 ]
 
   ```ts highlights={fetchHighlights}
@@ -33,6 +33,9 @@ export const fetchHighlights = [
         cart.id
       }`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
       }
     )
     .then((res) => res.json())
@@ -50,6 +53,7 @@ export const fetchHighlights = [
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
       },
       body: JSON.stringify({
         option_id: selectedShippingOptionId,
@@ -73,8 +77,8 @@ export const fetchHighlights = [
 export const highlights = [
   ["4", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
   ["22", "fetch", "Retrieve available shipping method of the customer's cart."],
-  ["43", "fetch", "Set the cart's shipping method using the selected shipping option."],
-  ["53", "data", "Pass in this property any data relevant to the fulfillment provider."]
+  ["46", "fetch", "Set the cart's shipping method using the selected shipping option."],
+  ["57", "data", "Pass in this property any data relevant to the fulfillment provider."]
 ]
 
   ```tsx highlights={highlights}
@@ -103,6 +107,9 @@ export const highlights = [
         cart.id
       }`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
       })
       .then((res) => res.json())
       .then(({ shipping_options }) => {
@@ -127,6 +134,7 @@ export const highlights = [
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
         },
         body: JSON.stringify({
           option_id: selectedShippingOption,

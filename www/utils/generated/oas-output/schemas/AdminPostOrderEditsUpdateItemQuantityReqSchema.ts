@@ -1,7 +1,7 @@
 /**
  * @schema AdminPostOrderEditsUpdateItemQuantityReqSchema
  * type: object
- * description: SUMMARY
+ * description: The order item's details to update.
  * x-schemaName: AdminPostOrderEditsUpdateItemQuantityReqSchema
  * required:
  *   - quantity
@@ -9,11 +9,11 @@
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The order edit's quantity.
+ *     description: The item's quantity.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The order edit's internal note.
+ *     description: A note viewed only by admin users.
  * 
 */
 

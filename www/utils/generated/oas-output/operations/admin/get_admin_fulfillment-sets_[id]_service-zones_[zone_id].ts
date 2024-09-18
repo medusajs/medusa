@@ -45,7 +45,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Fulfillment Sets
  * responses:

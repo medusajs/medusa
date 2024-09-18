@@ -42,6 +42,18 @@ export default MyFulfillmentProviderService
 
 <TypeList types={[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="isFulfillmentService"/>
 
+### validateOptions
+
+Override this static method in order for the loader to validate the options provided to the module provider.
+
+#### Parameters
+
+<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Override this static method in order for the loader to validate the options provided to the module provider.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
 ---
 
 ## 3. Create Module Definition File
@@ -65,7 +77,7 @@ This exports the module's definition, indicating that the `MyFulfillmentProvider
 To use your Fulfillment Module Provider, add it to the `providers` array of the Fulfillment Module:
 
 ```js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 
