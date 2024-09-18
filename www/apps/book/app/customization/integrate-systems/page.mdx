@@ -1,0 +1,28 @@
+export const metadata = {
+  title: `${pageNumber} Integrate Third-Party Systems`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to integrate a third-party system into Medusa.
+
+## How to Integrate a Third-Party System?
+
+To integrate a third-party system into Medusa, you:
+
+1. Implement the methods to interact with the system in a service. It can either be the main module's service, or an internal service in the module that's used by the main one.
+2. Implement in workflows custom features around the integration, such as sending data to the third-party system.
+    - Workflows roll-back mechanism ensures data consistency. This is essential as you integrate multiple systems into your application.
+3. Use the workflow in other resources to expose or utilize the custom functionality.
+
+---
+
+## Next Chapters: Syncing Brands Example
+
+In the next chapters, you'll implement an example of syncing brands with a third-party system, such as a Content Management System (CMS).
+
+That requires:
+
+1. Implementing the service that integrates the third-party system.
+2. Creating a brand in the third-party system when a brand is created in Medusa.
+2. Retrieving the brands from the third-party system to sync them with Medusa's brands at a scheduled interval.

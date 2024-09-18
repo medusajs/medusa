@@ -1,0 +1,25 @@
+export const metadata = {
+  title: `${pageNumber} Build Custom Features`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about the concepts you need to build custom features in your Medusa application.
+
+To add a custom feature to your application, you create:
+
+1. A module with data models and a main service to manage them.
+2. A workflow to create, update, and delete records of data models. You implement functionalities in a workflow to benefit from features such as roll-back in case of errors, retry configurations, and more.
+3. An API route that exposes the workflow's functionality to clients, such as the storefront or admin dashboard.
+
+![Diagram showcasing the flow of a custom developed feature](https://res.cloudinary.com/dza7lstvk/image/upload/v1725867628/Medusa%20Book/custom-development_nofvp6.jpg)
+
+---
+
+## Next Chapters: Brand Module Example
+
+In the next chapters, you'll follow an example to:
+
+1. Add a Brand Module that creates a `Brand` data model and provides data-management features.
+2. Add a workflow to create a brand.
+3. Expose an API route that allows admin users to create a brand using the workflow.
