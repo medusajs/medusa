@@ -112,7 +112,7 @@ function validateCustomFieldDisplayConfig(
     }
 
     hasOneValidDisplay = true
-    paths.add(zone)
+    paths.add(fullPath)
     validIndexes.add(index)
   })
 

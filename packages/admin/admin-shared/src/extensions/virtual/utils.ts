@@ -10,7 +10,10 @@ export function resolveVirtualId(id: string) {
   return `\0${id}`
 }
 
-function getIdentifierFromResolvedId<T>(resolvedId: string, type: string) {
+export function getIdentifierFromResolvedId<T>(
+  resolvedId: string,
+  type: string
+) {
   const virtualPrefix = `\0${PREFIX}${type}/`
 
   const identifier = resolvedId.replace(virtualPrefix, "").replace(/\//g, ".")

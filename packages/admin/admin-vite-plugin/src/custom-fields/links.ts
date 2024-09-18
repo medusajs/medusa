@@ -72,7 +72,7 @@ function validateCustomFieldLinkConfig(
     }
   }
 
-  const fullPath = `${model}/$link`
+  const fullPath = `${model}.$link`
 
   if (!isValidCustomFieldLinkPath(fullPath)) {
     return { valid: false, paths: null }

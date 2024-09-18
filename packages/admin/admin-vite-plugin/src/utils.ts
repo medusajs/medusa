@@ -82,6 +82,9 @@ export function generateModule(code: string) {
   return {
     code: magicString.toString(),
     map: magicString.generateMap({ hires: true }),
+    hot: {
+      accept: true,
+    },
   }
 }
 

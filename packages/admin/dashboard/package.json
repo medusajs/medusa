@@ -81,7 +81,8 @@
     "tailwindcss": "^3.4.1",
     "tsup": "^8.0.2",
     "typescript": "5.2.2",
-    "vite": "^5.2.11"
+    "vite": "^5.2.11",
+    "vite-plugin-inspect": "^0.8.7"
   },
   "packageManager": "yarn@3.2.1"
 }

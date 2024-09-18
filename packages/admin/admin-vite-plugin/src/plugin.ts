@@ -6,14 +6,16 @@ import {
   RESOLVED_CUSTOM_FIELD_FORM_FIELD_MODULES,
   RESOLVED_CUSTOM_FIELD_LINK_MODULES,
   RESOLVED_ROUTE_MODULES,
+  RESOLVED_VIRTUAL_MODULES,
   RESOLVED_WIDGET_MODULES,
   VIRTUAL_MODULES,
-  getCustomFieldPath,
+  getCustomFieldImport,
   getVirtualId,
   getWidgetImport,
   getWidgetZone,
   resolveVirtualId,
 } from "@medusajs/admin-shared"
+import path from "path"
 import type * as Vite from "vite"
 import {
   generateCustomFieldDisplayEntrypoint,
@@ -98,6 +100,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     }
 
     const { module, paths } = result
+
     for (const path of paths) {
       const extensionGraphPath = getExtensionGraphPath(path, options.type)
       const ids = _extensionGraph.get(extensionGraphPath) || new Set<string>()
@@ -107,18 +110,32 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     return module
   }
 
-  async function reloadModule(moduleId: string) {
+  async function hotReloadModule(moduleId: string) {
     const module = server?.moduleGraph.getModuleById(moduleId)
+
     if (module) {
-      await server?.reloadModule(module)
+      server?.hot.send({
+        type: "update",
+        updates: [
+          {
+            type: "js-update",
+            acceptedPath: moduleId,
+            path: moduleId,
+            timestamp: Date.now(),
+          },
+        ],
+      })
     }
   }
 
-  async function reloadModules(moduleIds: Set<string>) {
+  async function hotReloadModules(moduleIds: Set<string>) {
     for (const moduleId of moduleIds) {
-      await reloadModule(moduleId)
+      await hotReloadModule(moduleId)
     }
   }
+
+  // const reloadModule = hotReloadModule
+  // const reloadModules = hotReloadModules
 
   function getWidgetZoneImports(zoneValues: InjectionZone[]): Set<string> {
     return new Set(
@@ -130,8 +147,8 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
 
   function getCustomFieldImports(paths: string[]): Set<string> {
     const set = new Set(
-      paths.map((form) =>
-        resolveVirtualId(getVirtualId(getCustomFieldPath(form)))
+      paths.map((path) =>
+        resolveVirtualId(getVirtualId(getCustomFieldImport(path)))
       )
     )
 
@@ -142,13 +159,15 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     const extensionIds = _extensionGraph.get(file)
     _extensionGraph.delete(file)
     if (extensionIds) {
-      await reloadModules(extensionIds)
+      await hotReloadModules(extensionIds)
     }
   }
 
-  async function updateAndReload(graphPath: string, imports: Set<string>) {
+  async function updateExtensionGraphAndReloadModules(
+    graphPath: string,
+    imports: Set<string>
+  ) {
     _extensionGraph.set(graphPath, imports)
-    await reloadModules(imports)
   }
 
   async function genericHandler<TResult extends { valid: boolean }>(
@@ -170,7 +189,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     const imports = getImports(result)
 
     if (event === EVENT_ADD || !_extensionGraph.has(graphPath)) {
-      await updateAndReload(graphPath, imports)
+      await updateExtensionGraphAndReloadModules(graphPath, imports)
       return
     }
 
@@ -180,18 +199,19 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     for (const moduleId of existingModules) {
       if (!imports.has(moduleId)) {
         updatedImports.delete(moduleId)
-        await reloadModule(moduleId)
+        await hotReloadModule(moduleId)
       }
     }
 
     for (const moduleId of imports) {
       if (!existingModules.has(moduleId)) {
         updatedImports.add(moduleId)
-        await reloadModule(moduleId)
       }
+
+      await hotReloadModule(moduleId)
     }
 
-    await updateAndReload(graphPath, updatedImports)
+    _extensionGraph.set(graphPath, updatedImports)
   }
 
   async function handleWidgetChange(
@@ -265,6 +285,10 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     path: string,
     event: typeof EVENT_ADD | typeof EVENT_CHANGE
   ) {
+    if (!isFileInSources(path)) {
+      return
+    }
+
     const type = getModuleType(path)
 
     if (type === "none") {
@@ -279,11 +303,24 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
   }
 
   async function handleUnlink(path: string) {
+    if (!isFileInSources(path)) {
+      return
+    }
+
     const moduleIds = _extensionGraph.get(path)
     _extensionGraph.delete(path)
     if (moduleIds) {
-      await reloadModules(moduleIds)
+      await hotReloadModules(moduleIds)
     }
+  }
+
+  function isFileInSources(file: string): boolean {
+    for (const source of _sources) {
+      if (file.startsWith(path.resolve(source))) {
+        return true
+      }
+    }
+    return false
   }
 
   return {
@@ -292,6 +329,13 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     configureServer(_server) {
       server = _server
       watcher = _server.watcher
+
+      _server.hot.on("connection", () => {
+        console.log(
+          "Connection established HMR",
+          _server.hot.channels.map((channel) => channel.name)
+        )
+      })
 
       _sources.forEach((source) => {
         watcher?.add(source)
@@ -378,6 +422,28 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     async closeBundle() {
       if (watcher) {
         await watcher.close()
+      }
+    },
+    async handleHotUpdate({ file, modules, server }) {
+      if (!isFileInSources(file)) {
+        return
+      }
+
+      for (const module of modules) {
+        const importers = module.importers
+
+        for (const importer of importers) {
+          const id = importer.id
+
+          if (!id) {
+            console.log("no id", importer)
+            continue
+          }
+
+          if (RESOLVED_VIRTUAL_MODULES.includes(importer.url)) {
+            await server.reloadModule(importer)
+          }
+        }
       }
     },
   }
