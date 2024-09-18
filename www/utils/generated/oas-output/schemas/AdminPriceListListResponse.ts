@@ -1,7 +1,7 @@
 /**
  * @schema AdminPriceListListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of price lists.
  * x-schemaName: AdminPriceListListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The price list's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The price list's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The price list's count.
+ *     description: The total number of items.
  *   price_lists:
  *     type: array
- *     description: The price list's price lists.
+ *     description: The list of price lists.
  *     items:
  *       $ref: "#/components/schemas/AdminPriceList"
  * 

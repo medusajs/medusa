@@ -1,7 +1,7 @@
 /**
  * @schema AdminPriceListResponse
  * type: object
- * description: SUMMARY
+ * description: The price list's details.
  * x-schemaName: AdminPriceListResponse
  * required:
  *   - price_list

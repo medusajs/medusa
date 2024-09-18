@@ -46,6 +46,7 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
         prices: {
           path: "price_set_link.price_set.prices",
           isList: true,
+          forwardArgumentsOnPath: ["price_set_link.price_set"],
         },
         calculated_price: {
           path: "price_set_link.price_set.calculated_price",

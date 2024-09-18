@@ -1,7 +1,7 @@
 /**
  * @schema AdminPriceListDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the deleted price list.
  * x-schemaName: AdminPriceListDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Price List was deleted.
+ *     description: Whether the price list was deleted.
  * 
 */
 

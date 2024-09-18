@@ -1,5 +1,5 @@
 type: object
-description: SUMMARY
+description: The API key's details.
 x-schemaName: AdminCreateApiKey
 required:
   - title
@@ -8,10 +8,12 @@ properties:
   title:
     type: string
     title: title
-    description: The api key's title.
+    description: The API key's title.
   type:
     type: string
-    description: The api key's type.
+    description: >-
+      The API key's type. Use `secret` for a user's API key; Use `publishable`
+      for Publishable API keys.
     enum:
       - publishable
       - secret
