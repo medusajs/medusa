@@ -1,66 +1,66 @@
 import {
   CommonEvents,
-  eventBuilderFactory,
+  moduleEventBuilderFactory,
   Modules,
   PricingEvents,
 } from "@medusajs/utils"
 
 export const eventBuilders = {
-  createdPriceSet: eventBuilderFactory({
+  createdPriceSet: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.CREATED,
     object: "price_set",
     eventsEnum: PricingEvents,
   }),
-  createdPrice: eventBuilderFactory({
+  createdPrice: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.CREATED,
     object: "price",
     eventsEnum: PricingEvents,
   }),
-  createdPriceRule: eventBuilderFactory({
+  createdPriceRule: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.CREATED,
     object: "price_rule",
     eventsEnum: PricingEvents,
   }),
-  createdPriceList: eventBuilderFactory({
+  createdPriceList: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.CREATED,
     object: "price_list",
     eventsEnum: PricingEvents,
   }),
-  createdPriceListRule: eventBuilderFactory({
+  createdPriceListRule: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.CREATED,
     object: "price_list_rule",
     eventsEnum: PricingEvents,
   }),
-  attachedPriceListRule: eventBuilderFactory({
+  attachedPriceListRule: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.ATTACHED,
     object: "price_list_rule",
     eventsEnum: PricingEvents,
   }),
-  updatedPrice: eventBuilderFactory({
+  updatedPrice: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.UPDATED,
     object: "price",
     eventsEnum: PricingEvents,
   }),
-  updatedPriceRule: eventBuilderFactory({
+  updatedPriceRule: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.UPDATED,
     object: "price_rule",
     eventsEnum: PricingEvents,
   }),
-  deletedPrice: eventBuilderFactory({
+  deletedPrice: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.DELETED,
     object: "price",
     eventsEnum: PricingEvents,
   }),
-  deletedPriceRule: eventBuilderFactory({
+  deletedPriceRule: moduleEventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.DELETED,
     object: "price_rule",
