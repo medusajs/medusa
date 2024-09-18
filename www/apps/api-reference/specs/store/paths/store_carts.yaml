@@ -35,9 +35,9 @@ post:
       application/json:
         schema:
           allOf:
-            - $ref: ../components/schemas/CreateCartWorkflowInput.yaml
+            - $ref: ../components/schemas/StoreCreateCart.yaml
             - type: object
-              description: SUMMARY
+              description: The cart's details.
               properties:
                 additional_data:
                   type: object
@@ -45,7 +45,7 @@ post:
                     Pass additional custom data to the API route. This data is
                     passed to the underlying workflow under the
                     `additional_data` parameter.
-          description: SUMMARY
+          description: The cart's details.
   x-codeSamples:
     - lang: Shell
       label: cURL
