@@ -1,7 +1,7 @@
 /**
  * @schema AdminPricePreferenceDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the deleted price preference.
  * x-schemaName: AdminPricePreferenceDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Price Preference was deleted.
+ *     description: Whether the price preference was deleted.
  * 
 */
 

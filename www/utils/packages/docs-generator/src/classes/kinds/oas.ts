@@ -1047,7 +1047,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 itemType: propertyType,
                 title: propertyName,
                 descriptionOptions,
-                context: "request",
+                context: "query",
                 saveSchema: !forUpdate,
               }),
             })
@@ -1063,6 +1063,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           typeReferenceNode: node.parameters[0].type,
           itemType: requestTypeArguments[0],
         })
+        const isQuery = methodName === "get"
         const parameterSchema = this.typeToSchema({
           itemType: requestTypeArguments[0],
           descriptionOptions: {
@@ -1070,13 +1071,13 @@ class OasKindGenerator extends FunctionKindGenerator {
             rawParentName: this.checker.typeToString(requestTypeArguments[0]),
           },
           zodObjectTypeName: zodObjectTypeName,
-          context: "request",
+          context: isQuery ? "query" : "request",
           saveSchema: !forUpdate,
         })
 
         // If function is a GET function, add the type parameter to the
         // query parameters instead of request parameters.
-        if (methodName === "get") {
+        if (isQuery) {
           if (parameterSchema.type === "object" && parameterSchema.properties) {
             Object.entries(parameterSchema.properties).forEach(
               ([key, propertySchema]) => {
@@ -1244,7 +1245,7 @@ class OasKindGenerator extends FunctionKindGenerator {
     /**
      * Whether the type is in a request / response
      */
-    context?: "request" | "response"
+    context?: "request" | "response" | "query"
     /**
      * Whether to save object schemas. Useful when only getting schemas to update.
      */
@@ -1550,6 +1551,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             // if property's type is same as parent's property,
             // create a reference to the parent
             const arrHasParentType =
+              rest.context !== "query" &&
               this.checker.isArrayType(propertyType) &&
               this.areTypesEqual(
                 itemType,
@@ -1557,7 +1559,9 @@ class OasKindGenerator extends FunctionKindGenerator {
                   propertyType as ts.TypeReference
                 )[0]
               )
-            const isParentType = this.areTypesEqual(itemType, propertyType)
+            const isParentType =
+              rest.context !== "query" &&
+              this.areTypesEqual(itemType, propertyType)
 
             if (isParentType && objSchema["x-schemaName"]) {
               properties[property.name] = {

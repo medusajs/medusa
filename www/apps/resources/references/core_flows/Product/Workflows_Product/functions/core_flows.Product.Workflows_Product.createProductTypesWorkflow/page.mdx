@@ -13,7 +13,7 @@ This workflow creates one or more product types.
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"createProductTypesWorkflow","steps":[{"type":"step","name":"createProductTypesStep","description":"This step creates one or more product types.","link":"../../../../core_flows.Steps_Product/page.mdx#createproducttypesstep","depth":1},{"type":"hook","name":"productTypesCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesCreated","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"createProductTypesWorkflow","steps":[{"type":"step","name":"createProductTypesStep","description":"This step creates one or more product types.","link":"../../../../core_flows.Steps_Product/page.mdx#createproducttypesstep","depth":1},{"type":"hook","name":"productTypesCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesCreated","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ## Input
 
@@ -33,7 +33,7 @@ This workflow creates one or more product types.
 import { createProductTypesWorkflow } from "@medusajs/core-flows"
 
 createProductTypesWorkflow.hooks.productTypesCreated(
-	async (({ product_types, additional_data }, { container }) => {
+	(async ({ product_types, additional_data }, { container }) => {
 		//TODO
 	})
 )

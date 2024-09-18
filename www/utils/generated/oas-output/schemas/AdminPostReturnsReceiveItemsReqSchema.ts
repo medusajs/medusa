@@ -1,15 +1,15 @@
 /**
  * @schema AdminPostReturnsReceiveItemsReqSchema
  * type: object
- * description: SUMMARY
+ * description: The items details.
  * x-schemaName: AdminPostReturnsReceiveItemsReqSchema
  * properties:
  *   items:
  *     type: array
- *     description: The return's items.
+ *     description: The items details.
  *     items:
  *       type: object
- *       description: The item's items.
+ *       description: An item's details.
  *       required:
  *         - id
  *         - quantity
@@ -17,7 +17,7 @@
  *         id:
  *           type: string
  *           title: id
- *           description: The item's ID.
+ *           description: The ID of the item in the order.
  *         quantity:
  *           type: number
  *           title: quantity
@@ -29,7 +29,7 @@
  *         internal_note:
  *           type: string
  *           title: internal_note
- *           description: The item's internal note.
+ *           description: A note viewed only by admin users.
  * 
 */
 

@@ -1,15 +1,15 @@
 /**
  * @schema AdminPostClaimsAddItemsReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details of the outbound items to add to the claim.
  * x-schemaName: AdminPostClaimsAddItemsReqSchema
  * properties:
  *   items:
  *     type: array
- *     description: The claim's items.
+ *     description: The outbound item's details.
  *     items:
  *       type: object
- *       description: The item's items.
+ *       description: An item's details.
  *       required:
  *         - variant_id
  *         - quantity
@@ -17,11 +17,11 @@
  *         variant_id:
  *           type: string
  *           title: variant_id
- *           description: The item's variant id.
+ *           description: The ID of the associated product variant.
  *         quantity:
  *           type: number
  *           title: quantity
- *           description: The item's quantity.
+ *           description: The quantity to send to the customer.
  *         unit_price:
  *           type: number
  *           title: unit_price
@@ -29,10 +29,10 @@
  *         internal_note:
  *           type: string
  *           title: internal_note
- *           description: The item's internal note.
+ *           description: A note viewed only by admin users.
  *         metadata:
  *           type: object
- *           description: The item's metadata.
+ *           description: The item's metadata, can hold custom key-value pairs.
  * 
 */
 
