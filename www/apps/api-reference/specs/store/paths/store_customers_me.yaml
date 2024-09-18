@@ -1,10 +1,15 @@
 get:
   operationId: GetCustomersMe
-  summary: List Customers
+  summary: Get Logged-in Customer
+  x-sidebar-summary: Get Customer
   description: >-
-    Retrieve a list of customers. The customers can be filtered by fields such
-    as `id`. The customers can also be sorted or paginated.
+    Retrieve the logged-in customer. You can expand the customer's relations or
+    select the fields that should be returned.
   x-authenticated: true
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/customers/retrieve
+    description: 'Storefront guide: How to retrieve the logged-in customer.'
   parameters:
     - name: expand
       in: query
@@ -63,8 +68,12 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostCustomersMe
-  summary: Create Customer
-  description: Create a customer.
+  summary: Update Customer
+  description: Update the logged-in customer's details.
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/customers/profile
+    description: 'Storefront guide: How to edit a customer''s profile.'
   x-authenticated: true
   parameters:
     - name: expand

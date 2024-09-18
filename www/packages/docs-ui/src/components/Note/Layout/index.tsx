@@ -75,7 +75,7 @@ export const NoteLayout = ({ type, title, children }: NoteLayoutProps) => {
   return (
     <div
       className={clsx(
-        "py-[10px] px-docs_0.75 my-docs_0.5",
+        "py-[10px] px-docs_0.75 my-docs_1",
         "flex gap-docs_0.75 rounded-docs_DEFAULT items-stretch",
         "bg-medusa-bg-component border border-medusa-border-base"
       )}

@@ -197,6 +197,8 @@ paths:
     $ref: paths/auth_customer_{auth_provider}_register.yaml
   /auth/session:
     $ref: paths/auth_session.yaml
+  /auth/token/refresh:
+    $ref: paths/auth_token_refresh.yaml
   /store/carts:
     $ref: paths/store_carts.yaml
   /store/carts/{id}:

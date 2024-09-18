@@ -36,9 +36,12 @@ export function EmitEvents(
 
       const argIndex = target.MedusaContextIndex_[propertyKey]
       const aggregator = args[argIndex].messageAggregator as MessageAggregator
-      await target.emitEvents_.apply(this, [aggregator.getMessages(options)])
 
-      aggregator.clearMessages()
+      if (aggregator.count() > 0) {
+        await target.emitEvents_.apply(this, [aggregator.getMessages(options)])
+        aggregator.clearMessages()
+      }
+
       return result
     }
   }
