@@ -62,7 +62,7 @@ export default class SalesChannelModuleService
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createSalesChannels(
     data: CreateSalesChannelDTO | CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -79,7 +79,7 @@ export default class SalesChannelModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createSalesChannels_(
     data: CreateSalesChannelDTO[],
     @MedusaContext() sharedContext: Context
@@ -99,7 +99,7 @@ export default class SalesChannelModuleService
     sharedContext?: Context
   ): Promise<SalesChannelDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateSalesChannels(
     idOrSelector: string | FilterableSalesChannelProps,
     data: UpdateSalesChannelDTO | UpdateSalesChannelDTO[],
@@ -134,7 +134,7 @@ export default class SalesChannelModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async updateSalesChannels_(
     data: UpdateSalesChannelDTO[],
     sharedContext: Context
@@ -150,7 +150,7 @@ export default class SalesChannelModuleService
     data: UpsertSalesChannelDTO,
     sharedContext?: Context
   ): Promise<SalesChannelDTO>
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async upsertSalesChannels(
     data: UpsertSalesChannelDTO | UpsertSalesChannelDTO[],
     @MedusaContext() sharedContext: Context = {}
