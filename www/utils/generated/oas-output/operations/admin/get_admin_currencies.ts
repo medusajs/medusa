@@ -98,7 +98,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/currencies' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Currencies
  * responses:

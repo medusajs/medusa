@@ -1,7 +1,7 @@
 /**
  * @schema AdminOrderResponse
  * type: object
- * description: SUMMARY
+ * description: An order's details.
  * x-schemaName: AdminOrderResponse
  * required:
  *   - order

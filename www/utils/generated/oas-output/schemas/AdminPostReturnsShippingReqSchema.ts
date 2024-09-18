@@ -1,7 +1,7 @@
 /**
  * @schema AdminPostReturnsShippingReqSchema
  * type: object
- * description: SUMMARY
+ * description: The shipping method's details.
  * x-schemaName: AdminPostReturnsShippingReqSchema
  * required:
  *   - shipping_option_id
@@ -9,22 +9,22 @@
  *   shipping_option_id:
  *     type: string
  *     title: shipping_option_id
- *     description: The exchange's shipping option id.
+ *     description: The ID of the associated shipping option.
  *   custom_amount:
  *     type: number
  *     title: custom_amount
- *     description: The exchange's custom amount.
+ *     description: Set the price of the shipping method.
  *   description:
  *     type: string
  *     title: description
- *     description: The exchange's description.
+ *     description: The shipping method's description.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The exchange's internal note.
+ *     description: A note viewed only by admin users.
  *   metadata:
  *     type: object
- *     description: The exchange's metadata.
+ *     description: The exchange's metadata, can hold custom key-value pairs.
  * 
 */
 

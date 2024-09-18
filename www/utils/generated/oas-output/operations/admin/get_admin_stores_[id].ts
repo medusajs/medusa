@@ -38,7 +38,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/stores/{id}' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Stores
  * responses:

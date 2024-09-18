@@ -11,11 +11,11 @@ import {
   ProductVariantWorkflowEvents,
 } from "@medusajs/utils"
 import {
+  WorkflowData,
+  WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
-  WorkflowData,
-  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { createLinksWorkflow } from "../../common/workflows/create-links"
@@ -97,7 +97,7 @@ const buildLinksToCreate = (data: {
   const linksToCreate: LinkDefinition[] = []
 
   validateVariantsDuplicateInventoryItemIds(
-    data.createdVariants.map((variant, index) => {
+    (data.createdVariants ?? []).map((variant, index) => {
       const variantInput = data.input.product_variants[index]
       const inventoryItems = variantInput.inventory_items || []
 

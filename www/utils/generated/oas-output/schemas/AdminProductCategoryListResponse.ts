@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductCategoryListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of product categories.
  * x-schemaName: AdminProductCategoryListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The product category's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The product category's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The product category's count.
+ *     description: The total number of items.
  *   product_categories:
  *     type: array
- *     description: The product category's product categories.
+ *     description: The list of product categories.
  *     items:
  *       $ref: "#/components/schemas/AdminProductCategory"
  * 

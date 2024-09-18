@@ -9,8 +9,8 @@ import {
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
 import {
-  isObject,
   MedusaError,
+  isObject,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { RemoteQuery } from "./remote-query"
@@ -69,7 +69,10 @@ export class Query {
     if ("__value" in config) {
       normalizedQuery = config.__value
     } else if ("entity" in normalizedQuery) {
-      normalizedQuery = toRemoteQuery(normalizedQuery)
+      normalizedQuery = toRemoteQuery(
+        normalizedQuery,
+        this.#remoteQuery.getEntitiesMap()
+      )
     } else if (
       "entryPoint" in normalizedQuery ||
       "service" in normalizedQuery
@@ -141,7 +144,10 @@ export class Query {
     queryOptions: RemoteQueryInput<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<GraphResultSet<TEntry>> {
-    const normalizedQuery = toRemoteQuery<TEntry>(queryOptions)
+    const normalizedQuery = toRemoteQuery<TEntry>(
+      queryOptions,
+      this.#remoteQuery.getEntitiesMap()
+    )
     let response:
       | any[]
       | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }

@@ -1,20 +1,20 @@
 /**
  * @schema AdminPostExchangesShippingActionReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details of the shipping method to update.
  * x-schemaName: AdminPostExchangesShippingActionReqSchema
  * properties:
  *   custom_amount:
  *     type: number
  *     title: custom_amount
- *     description: The exchange's custom amount.
+ *     description: The shipping method's custom amount.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The exchange's internal note.
+ *     description: A note viewed by admin users only.
  *   metadata:
  *     type: object
- *     description: The exchange's metadata.
+ *     description: The exchange's metadata, can hold custom key-value pairs.
  * 
 */
 

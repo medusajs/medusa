@@ -37,7 +37,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/price-preferences' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Price Preferences
  * responses:

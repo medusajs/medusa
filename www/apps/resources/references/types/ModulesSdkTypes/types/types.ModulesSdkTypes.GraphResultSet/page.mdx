@@ -1,0 +1,16 @@
+import { TypeList } from "docs-ui"
+
+# GraphResultSet
+
+ **GraphResultSet**: `Object`
+
+The GraphResultSet presents a typed output for the
+result returned by the underlying remote query
+
+## Type Parameters
+
+<TypeList types={[{"name":"TEntry","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="GraphResultSet"/>
+
+## Properties
+
+<TypeList types={[{"name":"data","type":"TEntry extends keyof [RemoteQueryEntryPoints](../../interfaces/types.ModulesSdkTypes.RemoteQueryEntryPoints/page.mdx) ? [RemoteQueryEntryPoints](../../interfaces/types.ModulesSdkTypes.RemoteQueryEntryPoints/page.mdx)[TEntry][] : `any`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[RemoteQueryFunctionReturnPagination](../types.ModulesSdkTypes.RemoteQueryFunctionReturnPagination/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"skip","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="GraphResultSet"/>

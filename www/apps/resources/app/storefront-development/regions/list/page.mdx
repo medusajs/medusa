@@ -14,6 +14,9 @@ To list regions in your storefront, send a request to the [List Regions API rout
   ```ts
   fetch(`http://localhost:9000/store/regions`, {
     credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+    },
   })
   .then((res) => res.json())
   .then(({ regions }) => {
@@ -26,7 +29,8 @@ To list regions in your storefront, send a request to the [List Regions API rout
   <CodeTab label="React" value="react">
 
 export const highlights = [
-  ["17"], ["18"], ["19"], ["20"], ["21"], ["22"], ["23"], ["24"]
+  ["17"], ["18"], ["19"], ["20"], ["21"], ["22"], ["23"], ["24"],
+  ["25"], ["26"], ["27"]
 ]
 
   ```tsx highlights={highlights}
@@ -48,6 +52,9 @@ export const highlights = [
 
       fetch(`http://localhost:9000/store/regions`, {
         credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+        },
       })
       .then((res) => res.json())
       .then(({ regions: dataRegions }) => {

@@ -4,8 +4,8 @@ import {
   DAL,
   FilterableOrderReturnReasonProps,
   FindConfig,
-  IOrderModuleService,
   InternalModuleDeclaration,
+  IOrderModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   OrderDTO,
@@ -19,21 +19,21 @@ import {
 } from "@medusajs/types"
 import {
   BigNumber,
+  createRawPropertiesFromBigNumber,
   DecorateCartLikeInputDTO,
+  decorateCartTotals,
+  deduplicate,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  isObject,
+  isString,
   MathBN,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   OrderChangeStatus,
   OrderStatus,
-  createRawPropertiesFromBigNumber,
-  decorateCartTotals,
-  deduplicate,
-  isDefined,
-  isObject,
-  isString,
   promiseAll,
   transformPropertiesToBigNumber,
 } from "@medusajs/utils"
@@ -76,8 +76,8 @@ import {
 import { UpdateReturnReasonDTO } from "src/types/return-reason"
 import { joinerConfig } from "../joiner-config"
 import {
-  ApplyOrderChangeDTO,
   applyChangesToOrder,
+  ApplyOrderChangeDTO,
   calculateOrderChange,
   formatOrder,
 } from "../utils"
@@ -594,7 +594,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createOrders(
     data: OrderTypes.CreateOrderDTO[] | OrderTypes.CreateOrderDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -629,7 +629,7 @@ export default class OrderModuleService<
       | OrderTypes.OrderDTO[]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createOrders_(
     data: OrderTypes.CreateOrderDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -702,7 +702,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateOrders(
     dataOrIdOrSelector:
       | OrderTypes.UpdateOrderDTO[]
@@ -726,7 +726,7 @@ export default class OrderModuleService<
     return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateOrders_(
     dataOrIdOrSelector:
       | OrderTypes.UpdateOrderDTO[]
@@ -777,7 +777,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderLineItemDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createOrderLineItems(
     orderIdOrData:
       | string
@@ -829,7 +829,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createOrderLineItems_(
     orderId: string,
     items: OrderTypes.CreateOrderLineItemDTO[],
@@ -852,7 +852,7 @@ export default class OrderModuleService<
     return await this.createOrderLineItemsBulk_(toUpdate, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createOrderLineItemsBulk_(
     data: CreateOrderLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -900,7 +900,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderLineItemDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateOrderLineItems(
     lineItemIdOrDataOrSelector:
       | string
@@ -949,7 +949,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateOrderLineItem_(
     lineItemId: string,
     data: Partial<OrderTypes.UpdateOrderLineItemDTO>,
@@ -975,7 +975,7 @@ export default class OrderModuleService<
     return item
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateOrderLineItemsWithSelector_(
     updates: OrderTypes.UpdateOrderLineItemWithSelectorDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1022,7 +1022,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderItemDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateOrderItem(
     orderItemIdOrDataOrSelector:
       | string
@@ -1068,7 +1068,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateOrderItem_(
     orderItemId: string,
     data: Partial<OrderTypes.UpdateOrderItemDTO>,
@@ -1082,7 +1082,7 @@ export default class OrderModuleService<
     return detail
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateOrderItemWithSelector_(
     updates: OrderTypes.UpdateOrderItemWithSelectorDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1119,7 +1119,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderShippingMethodDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createOrderShippingMethods(
     orderIdOrData:
       | string
@@ -1175,7 +1175,7 @@ export default class OrderModuleService<
     >(methods, { populate: true })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createOrderShippingMethods_(
     orderId: string,
     data: CreateOrderShippingMethodDTO[],
@@ -1201,7 +1201,7 @@ export default class OrderModuleService<
     return await this.createOrderShippingMethodsBulk_(methods, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createOrderShippingMethodsBulk_(
     data: {
       shipping_method: OrderTypes.CreateOrderShippingMethodDTO
@@ -1218,7 +1218,7 @@ export default class OrderModuleService<
     return sm.map((s) => s.shipping_method)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   // @ts-ignore
   async softDeleteOrderShippingMethods<TReturnableLinkableKeys extends string>(
     ids: string | object | string[] | object[],
@@ -1244,7 +1244,7 @@ export default class OrderModuleService<
     return returned
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   // @ts-ignore
   async restoreOrderShippingMethods<TReturnableLinkableKeys extends string>(
     ids: string | object | string[] | object[],
@@ -1283,7 +1283,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderLineItemAdjustmentDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createOrderLineItemAdjustments(
     orderIdOrData:
       | string
@@ -1333,7 +1333,7 @@ export default class OrderModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async setOrderLineItemAdjustments(
     orderId: string,
     adjustments: (
@@ -1384,7 +1384,7 @@ export default class OrderModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async setOrderShippingMethodAdjustments(
     orderId: string,
     adjustments: (
@@ -1453,7 +1453,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderShippingMethodAdjustmentDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createOrderShippingMethodAdjustments(
     orderIdOrData:
       | string
@@ -1532,7 +1532,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderLineItemTaxLineDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createOrderLineItemTaxLines(
     orderIdOrData:
       | string
@@ -1577,7 +1577,7 @@ export default class OrderModuleService<
     return serialized
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async setOrderLineItemTaxLines(
     orderId: string,
     taxLines: (
@@ -1643,7 +1643,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderShippingMethodTaxLineDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createOrderShippingMethodTaxLines(
     orderIdOrData:
       | string
@@ -1687,7 +1687,7 @@ export default class OrderModuleService<
     return serialized
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async setOrderShippingMethodTaxLines(
     orderId: string,
     taxLines: (
@@ -1753,7 +1753,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.ReturnDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createReturns(
     data: OrderTypes.CreateOrderReturnDTO | OrderTypes.CreateOrderReturnDTO[],
     @MedusaContext() sharedContext?: Context
@@ -1783,7 +1783,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderClaimDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createOrderClaims(
     data: OrderTypes.CreateOrderClaimDTO | OrderTypes.CreateOrderClaimDTO[],
     @MedusaContext() sharedContext?: Context
@@ -1813,7 +1813,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderExchangeDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createOrderExchanges(
     data:
       | OrderTypes.CreateOrderExchangeDTO
@@ -1834,7 +1834,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async createOrderRelatedEntity_(
     data: any,
     service: any,
@@ -1880,7 +1880,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderChangeDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createOrderChange(
     data: CreateOrderChangeDTO | CreateOrderChangeDTO[],
     @MedusaContext() sharedContext?: Context
@@ -1895,7 +1895,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createOrderChange_(
     data: CreateOrderChangeDTO | CreateOrderChangeDTO[],
     @MedusaContext() sharedContext?: Context
@@ -1956,7 +1956,7 @@ export default class OrderModuleService<
     return await this.orderChangeService_.create(input, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async previewOrderChange(orderId: string, sharedContext?: Context) {
     const order = await this.retrieveOrder(
       orderId,
@@ -2101,7 +2101,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<void>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async cancelOrderChange(
     orderChangeIdOrData:
       | string
@@ -2141,7 +2141,7 @@ export default class OrderModuleService<
     data: OrderTypes.ConfirmOrderChangeDTO[],
     sharedContext?: Context
   )
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async confirmOrderChange(
     orderChangeIdOrData:
       | string
@@ -2191,7 +2191,7 @@ export default class OrderModuleService<
     data: OrderTypes.DeclineOrderChangeDTO[],
     sharedContext?: Context
   )
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async declineOrderChange(
     orderChangeIdOrData:
       | string
@@ -2221,7 +2221,7 @@ export default class OrderModuleService<
     await this.orderChangeService_.update(updates as any, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async applyPendingOrderActions(
     orderId: string | string[],
     @MedusaContext() sharedContext?: Context
@@ -2273,7 +2273,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async revertLastVersion(
     orderId: string,
     @MedusaContext() sharedContext?: Context
@@ -2296,7 +2296,7 @@ export default class OrderModuleService<
     return await this.revertLastChange_(order, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async revertLastChange_(
     order: OrderDTO,
     sharedContext?: Context
@@ -2517,7 +2517,7 @@ export default class OrderModuleService<
     data: OrderTypes.CreateOrderChangeActionDTO[],
     sharedContext?: Context
   ): Promise<OrderTypes.OrderChangeActionDTO[]>
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async addOrderAction(
     data:
       | OrderTypes.CreateOrderChangeActionDTO
@@ -2562,7 +2562,7 @@ export default class OrderModuleService<
     return Array.isArray(data) ? actions : actions[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async applyOrderChanges_(
     changeActions: ApplyOrderChangeDTO[],
     sharedContext?: Context
@@ -2662,7 +2662,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderTransactionDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async addOrderTransactions(
     transactionData:
       | OrderTypes.CreateOrderTransactionDTO
@@ -2710,7 +2710,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   // @ts-ignore
   async deleteOrderTransactions(
     transactionIds: string | object | string[] | object[],
@@ -2740,7 +2740,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   // @ts-ignore
   async softDeleteOrderTransactions<TReturnableLinkableKeys extends string>(
     transactionIds: string | object | string[] | object[],
@@ -2773,7 +2773,7 @@ export default class OrderModuleService<
     return returned
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   // @ts-ignore
   async restoreOrderTransactions<TReturnableLinkableKeys extends string>(
     transactionIds: string | object | string[] | object[],
@@ -2807,7 +2807,7 @@ export default class OrderModuleService<
     return returned
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async updateOrderPaidRefundableAmount_(
     transactionData: {
       order_id: string
@@ -2874,7 +2874,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async archive(
     orderId: string | string[],
     @MedusaContext() sharedContext?: Context
@@ -2932,7 +2932,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async completeOrder(
     orderId: string | string[],
     @MedusaContext() sharedContext?: Context
@@ -2984,7 +2984,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderTypes.OrderDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async cancel(
     orderId: string | string[],
     @MedusaContext() sharedContext?: Context
@@ -3020,7 +3020,7 @@ export default class OrderModuleService<
 
   // ------------------- Bundled Order Actions
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createReturn(
     data: OrderTypes.CreateOrderReturnDTO,
     @MedusaContext() sharedContext?: Context
@@ -3044,7 +3044,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async receiveReturn(
     data: OrderTypes.ReceiveOrderReturnDTO,
     @MedusaContext() sharedContext?: Context
@@ -3061,7 +3061,7 @@ export default class OrderModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async receiveReturn_(
     data: OrderTypes.ReceiveOrderReturnDTO,
     @MedusaContext() sharedContext?: Context
@@ -3069,7 +3069,7 @@ export default class OrderModuleService<
     return await BundledActions.receiveReturn.bind(this)(data, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async cancelReturn(
     data: OrderTypes.CancelOrderReturnDTO,
     @MedusaContext() sharedContext?: Context
@@ -3086,7 +3086,7 @@ export default class OrderModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async cancelReturn_(
     data: OrderTypes.CancelOrderReturnDTO,
     @MedusaContext() sharedContext?: Context
@@ -3094,7 +3094,7 @@ export default class OrderModuleService<
     return await BundledActions.cancelReturn.bind(this)(data, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createClaim(
     data: OrderTypes.CreateOrderClaimDTO,
     @MedusaContext() sharedContext?: Context
@@ -3128,7 +3128,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createClaim_(
     data: OrderTypes.CreateOrderClaimDTO,
     @MedusaContext() sharedContext?: Context
@@ -3136,7 +3136,7 @@ export default class OrderModuleService<
     return await BundledActions.createClaim.bind(this)(data, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async cancelClaim(
     data: OrderTypes.CancelOrderClaimDTO,
     @MedusaContext() sharedContext?: Context
@@ -3148,7 +3148,7 @@ export default class OrderModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async cancelClaim_(
     data: OrderTypes.CancelOrderClaimDTO,
     @MedusaContext() sharedContext?: Context
@@ -3156,7 +3156,7 @@ export default class OrderModuleService<
     return await BundledActions.cancelClaim.bind(this)(data, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createExchange(
     data: OrderTypes.CreateOrderExchangeDTO,
     @MedusaContext() sharedContext?: Context
@@ -3200,7 +3200,7 @@ export default class OrderModuleService<
     sharedContext?: Context
   ): Promise<OrderReturnReasonDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateReturnReasons(
     idOrSelector: string | FilterableOrderReturnReasonProps,
     data: UpdateOrderReturnReasonDTO,
@@ -3238,7 +3238,7 @@ export default class OrderModuleService<
       : updatedReturnReasons
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createExchange_(
     data: OrderTypes.CreateOrderExchangeDTO,
     @MedusaContext() sharedContext?: Context
@@ -3246,7 +3246,7 @@ export default class OrderModuleService<
     return await BundledActions.createExchange.bind(this)(data, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async cancelExchange(
     data: OrderTypes.CancelOrderExchangeDTO,
     @MedusaContext() sharedContext?: Context
@@ -3258,7 +3258,7 @@ export default class OrderModuleService<
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async cancelExchange_(
     data: OrderTypes.CancelOrderExchangeDTO,
     @MedusaContext() sharedContext?: Context
@@ -3266,7 +3266,7 @@ export default class OrderModuleService<
     return await BundledActions.cancelExchange.bind(this)(data, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async registerFulfillment(
     data: OrderTypes.RegisterOrderFulfillmentDTO,
     @MedusaContext() sharedContext?: Context
@@ -3277,7 +3277,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async cancelFulfillment(
     data: OrderTypes.CancelOrderFulfillmentDTO,
     @MedusaContext() sharedContext?: Context
@@ -3288,7 +3288,7 @@ export default class OrderModuleService<
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async registerShipment(
     data: OrderTypes.RegisterOrderShipmentDTO,
     @MedusaContext() sharedContext?: Context
@@ -3296,7 +3296,7 @@ export default class OrderModuleService<
     return await BundledActions.registerShipment.bind(this)(data, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async registerDelivery(
     data: OrderTypes.RegisterOrderDeliveryDTO,
     @MedusaContext() sharedContext?: Context

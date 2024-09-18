@@ -89,21 +89,35 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
 export default MyAuthProviderService
 ```
 
+### validateOptions
+
+Override this static method in order for the loader to validate the options provided to the module provider.
+
+#### Parameters
+
+<TypeList types={[{"name":"options","type":"`Record<any, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Override this static method in order for the loader to validate the options provided to the module provider.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateOptions"/>
+
 ### authenticate
 
 This method authenticates the user.
 
-The authentication happens either by directly authenticating or returning a redirect URL to continue 
+The authentication happens either by directly authenticating or returning a redirect URL to continue
 the authentication with a third party provider.
+
+Related Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route).
 
 #### Example
 
 For example, if your authentication provider doesn't require validating a callback:
 
 ```ts
-import { 
-  AuthIdentityProviderService, 
-  AuthenticationInput, 
+import {
+  AuthIdentityProviderService,
+  AuthenticationInput,
   AuthenticationResponse
 } from "@medusajs/types"
 // ...
@@ -111,13 +125,13 @@ import {
 class MyAuthProviderService extends AbstractAuthModuleProvider {
   // ...
   async authenticate(
-    data: AuthenticationInput, 
+    data: AuthenticationInput,
     authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse> {
     const isAuthenticated = false
     // TODO perform custom logic to authenticate the user
-    // ...
-    
+    // for example, verifying a password
+
     if (!isAuthenticated) {
       // if the authentication didn't succeed, return
       // an object of the following format
@@ -127,25 +141,11 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
       }
     }
 
-    // authentication is successful, create an auth identity
-    // if doesn't exist
-    let authIdentity
-
-    try {
-      authIdentity = await authIdentityProviderService.retrieve({
-        entity_id: data.body.email, // email or some ID
-        provider: this.provider
-      })
-    } catch (e) {
-      // The auth identity doesn't exist so create it
-      authIdentity = await authIdentityProviderService.create({
-        entity_id: data.body.email, // email or some ID
-        provider: this.provider,
-        provider_metadata: {
-          // can include password or any other relevant information
-        }
-      })
-    }
+    // authentication is successful, retrieve the identity
+    const authIdentity = await authIdentityProviderService.retrieve({
+      entity_id: data.body.email, // email or some ID
+      provider: this.provider
+    })
 
     return {
       success: true,
@@ -158,9 +158,9 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
 If your authentication provider requires validating callback:
 
 ```ts
-import { 
-  AuthIdentityProviderService, 
-  AuthenticationInput, 
+import {
+  AuthIdentityProviderService,
+  AuthenticationInput,
   AuthenticationResponse
 } from "@medusajs/types"
 // ...
@@ -168,13 +168,13 @@ import {
 class MyAuthProviderService extends AbstractAuthModuleProvider {
   // ...
   async authenticate(
-    data: AuthenticationInput, 
+    data: AuthenticationInput,
     authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse> {
     const isAuthenticated = false
     // TODO perform custom logic to authenticate the user
     // ...
-    
+
     if (!isAuthenticated) {
       // if the authentication didn't succeed, return
       // an object of the following format
@@ -194,11 +194,127 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"[AuthenticationInput](../../../auth/interfaces/auth.AuthenticationInput/page.mdx)","description":"The details of the authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"authIdentityProviderService","type":"`AuthIdentityProviderService`","description":"The service used to retrieve or \ncreate an auth identity. It has two methods: `create` to create an auth identity,\nand `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="authenticate"/>
+<TypeList types={[{"name":"data","type":"[AuthenticationInput](../../../auth/interfaces/auth.AuthenticationInput/page.mdx)","description":"The details of the authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"authIdentityProviderService","type":"`AuthIdentityProviderService`","description":"The service used to retrieve or\ncreate an auth identity. It has two methods: `create` to create an auth identity,\nand `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="authenticate"/>
 
 #### Returns
 
 <TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The authentication response.","expandable":false,"children":[{"name":"AuthenticationResponse","type":"[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)","optional":false,"defaultValue":"","description":"The details of the authentication response.","expandable":false,"children":[{"name":"success","type":"`boolean`","description":"Whether the authentication was successful.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authIdentity","type":"[AuthIdentityDTO](../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authenticated user's details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the auth identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_identities","type":"[ProviderIdentityDTO](../../../auth/interfaces/auth.ProviderIdentityDTO/page.mdx)[]","description":"The list of provider identities linked to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"Holds information related to the actor IDs tied to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"error","type":"`string`","description":"If an error occurs during the authentication process,\nwhether within the Auth Module or a third-party provider,\nthe error message is set in this field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"`string`","description":"The URL to redirect to for further authentication action\nwith a third-party provider. This takes precedence before\nthe `success` field.\n\nSo, after checking that authentication is successful,\nyou should check whether this field is defined and, if so, redirect to the\nspecified location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="authenticate"/>
+
+### register
+
+This method receives credentails to create a new auth identity. It performs any validation necessary
+before creating the auth identity.
+
+For example, in the `emailpass` provider, this method ensures that the provided email doesn't exist
+before creating the auth identity.
+
+This method is only used in a basic authentication flow, such as when using an email and password
+to register and authenticate a user.
+
+Related Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route).
+
+#### Example
+
+```ts
+import {
+  AuthIdentityProviderService,
+  AuthenticationInput,
+  AuthenticationResponse
+} from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
+// ...
+
+class MyAuthProviderService extends AbstractAuthModuleProvider {
+  // ...
+  async register(
+    data: AuthenticationInput,
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    try {
+      await authIdentityService.retrieve({
+        entity_id: data.body.email, // email or some ID
+      })
+    
+      return {
+        success: false,
+        error: "Identity with email already exists",
+      }
+    } catch (error) {
+      if (error.type === MedusaError.Types.NOT_FOUND) {
+        const createdAuthIdentity = await authIdentityProviderService.create({
+          entity_id: data.body.email, // email or some ID
+          provider: this.provider,
+          provider_metadata: {
+            // can include password or any other relevant information
+          }
+        })
+    
+        return {
+          success: true,
+          authIdentity: createdAuthIdentity,
+        }
+      }
+    
+      return { success: false, error: error.message }
+    }
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[AuthenticationInput](../../../auth/interfaces/auth.AuthenticationInput/page.mdx)","description":"The details of the authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"authIdentityProviderService","type":"`AuthIdentityProviderService`","description":"The service used to retrieve or\ncreate an auth identity. It has two methods: `create` to create an auth identity,\nand `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="register"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The created authentication identity if no errors occur.","expandable":false,"children":[{"name":"AuthenticationResponse","type":"[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)","optional":false,"defaultValue":"","description":"The details of the authentication response.","expandable":false,"children":[{"name":"success","type":"`boolean`","description":"Whether the authentication was successful.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authIdentity","type":"[AuthIdentityDTO](../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authenticated user's details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the auth identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_identities","type":"[ProviderIdentityDTO](../../../auth/interfaces/auth.ProviderIdentityDTO/page.mdx)[]","description":"The list of provider identities linked to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"Holds information related to the actor IDs tied to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"error","type":"`string`","description":"If an error occurs during the authentication process,\nwhether within the Auth Module or a third-party provider,\nthe error message is set in this field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"`string`","description":"The URL to redirect to for further authentication action\nwith a third-party provider. This takes precedence before\nthe `success` field.\n\nSo, after checking that authentication is successful,\nyou should check whether this field is defined and, if so, redirect to the\nspecified location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="register"/>
+
+### update
+
+This method is used to update an auth identity's details.
+
+For example, the `emailpass` provider's implementation of this method updates a user's password.
+
+#### Example
+
+```ts
+import {
+  AuthIdentityProviderService,
+  AuthenticationInput,
+  AuthenticationResponse
+} from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
+// ...
+
+class MyAuthProviderService extends AbstractAuthModuleProvider {
+  // ...
+  async update(
+    data: Record<string, unknown>,
+    authIdentityProviderService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    try {
+      const authIdentity = await authIdentityService.update(
+        data.email, // email or some ID used to identify the auth identity
+        {
+          user: data.user // example
+        }
+      )
+    
+      return { success: true, authIdentity }
+    } catch (error) {
+      return { success: false, error: error.message }
+    }
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`Record<string, unknown>`","description":"Data relevant to identify the auth identity and what to update in it. For example,\nthe `emailpass` provider expects in this object an `email` and `password` properties.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authIdentityProviderService","type":"`AuthIdentityProviderService`","description":"The service used to retrieve or\ncreate an auth identity. It has two methods: `create` to create an auth identity,\nand `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The updated authentication identity if no errors occur.","expandable":false,"children":[{"name":"AuthenticationResponse","type":"[AuthenticationResponse](../../../auth/interfaces/auth.AuthenticationResponse/page.mdx)","optional":false,"defaultValue":"","description":"The details of the authentication response.","expandable":false,"children":[{"name":"success","type":"`boolean`","description":"Whether the authentication was successful.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authIdentity","type":"[AuthIdentityDTO](../../../auth/interfaces/auth.AuthIdentityDTO/page.mdx)","description":"The authenticated user's details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the auth identity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_identities","type":"[ProviderIdentityDTO](../../../auth/interfaces/auth.ProviderIdentityDTO/page.mdx)[]","description":"The list of provider identities linked to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"app_metadata","type":"`Record<string, unknown>`","description":"Holds information related to the actor IDs tied to the auth identity.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"error","type":"`string`","description":"If an error occurs during the authentication process,\nwhether within the Auth Module or a third-party provider,\nthe error message is set in this field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"`string`","description":"The URL to redirect to for further authentication action\nwith a third-party provider. This takes precedence before\nthe `success` field.\n\nSo, after checking that authentication is successful,\nyou should check whether this field is defined and, if so, redirect to the\nspecified location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="update"/>
 
 ### validateCallback
 
@@ -207,15 +323,26 @@ This method validates the callback of an authentication request.
 In an authentication flow that requires performing an action with a third-party service, such as login
 with a social account, the [authenticate](page.mdx#authenticate) method is called first.
 
-Then, the third-party service redirects to the Medusa application's validate callback API route. 
-That route uses this method to authenticate the user.
+Then, the third-party service redirects to a frontend URL passing it a `code` query parameter.
+The frontend should then send a request to the Medusa application's validate callback API route, passing it the code.
+That route uses this method to verify the callback's code.
+
+If the callback is verified successfully, the provider creates an auth identity for the user, or updates the auth identity's user information.
+
+In the auth identity, yuse the following properties to store additional data:
+
+- `provider_metadata`: Store metadata useful for the provider, such as a password hash.
+- `user_metadata`: Store metadata of the user's details. For example, if the third-party service returns the user's information such as email
+or name, you store this data in this property.
+
+Related Guide: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route).
 
 #### Example
 
 ```ts
-import { 
-  AuthIdentityProviderService, 
-  AuthenticationInput, 
+import {
+  AuthIdentityProviderService,
+  AuthenticationInput,
   AuthenticationResponse
 } from "@medusajs/types"
 // ...
@@ -223,7 +350,7 @@ import {
 class MyAuthProviderService extends AbstractAuthModuleProvider {
   // ...
   async validateCallback(
-    data: AuthenticationInput, 
+    data: AuthenticationInput,
     authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse> {
     const isAuthenticated = false
@@ -255,6 +382,9 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
         provider: this.provider,
         provider_metadata: {
           // can include password or any other relevant information
+        },
+        user_metadata: {
+          // can include data retrieved from the third-party service
         }
       })
     }
@@ -269,7 +399,7 @@ class MyAuthProviderService extends AbstractAuthModuleProvider {
 
 #### Parameters
 
-<TypeList types={[{"name":"data","type":"[AuthenticationInput](../../../auth/interfaces/auth.AuthenticationInput/page.mdx)","description":"The details of the authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"authIdentityProviderService","type":"`AuthIdentityProviderService`","description":"The service used to retrieve or \ncreate an auth identity. It has two methods: `create` to create an auth identity,\nand `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateCallback"/>
+<TypeList types={[{"name":"data","type":"[AuthenticationInput](../../../auth/interfaces/auth.AuthenticationInput/page.mdx)","description":"The details of the authentication request.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"authIdentityProviderService","type":"`AuthIdentityProviderService`","description":"The service used to retrieve or\ncreate an auth identity. It has two methods: `create` to create an auth identity,\nand `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="validateCallback"/>
 
 #### Returns
 
@@ -298,7 +428,7 @@ This exports the module's definition, indicating that the `MyAuthProviderService
 To use your Auth Module Provider, add it to the `providers` array of the Auth Module:
 
 ```js title="medusa-config.js"
-import { Modules } from "@medusajs/utils"
+const { Modules } = require("@medusajs/utils")
 
 // ...
 

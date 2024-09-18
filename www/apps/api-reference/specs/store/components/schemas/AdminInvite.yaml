@@ -19,7 +19,7 @@ properties:
   accepted:
     type: boolean
     title: accepted
-    description: The invite's accepted.
+    description: Whether the invite has been accepted.
   token:
     type: string
     title: token
@@ -27,18 +27,18 @@ properties:
   expires_at:
     type: string
     title: expires_at
-    description: The invite's expires at.
+    description: The invite's expiry date.
     format: date-time
   metadata:
     type: object
-    description: The invite's metadata.
+    description: The invite's metadata, can hold custom key-value pairs.
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The invite's created at.
+    description: The date the invite was created.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The invite's updated at.
+    description: The date the invite was updated.

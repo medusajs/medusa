@@ -1,15 +1,15 @@
 type: object
-description: SUMMARY
+description: The inventory item's details.
 x-schemaName: AdminCreateInventoryItem
 properties:
   sku:
     type: string
     title: sku
-    description: The inventory item's sku.
+    description: The inventory item's SKU.
   hs_code:
     type: string
     title: hs_code
-    description: The inventory item's hs code.
+    description: The inventory item's HS code.
   weight:
     type: number
     title: weight
@@ -45,15 +45,15 @@ properties:
   description:
     type: string
     title: description
-    description: The inventory item's description.
+    description: The description of the variant associated with the inventory item.
   requires_shipping:
     type: boolean
     title: requires_shipping
-    description: The inventory item's requires shipping.
+    description: Whether the item requires shipping.
   thumbnail:
     type: string
     title: thumbnail
     description: The inventory item's thumbnail.
   metadata:
     type: object
-    description: The inventory item's metadata.
+    description: The inventory item's metadata, used to store custom key-value pairs.

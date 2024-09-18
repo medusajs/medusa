@@ -4,6 +4,7 @@ import { TypeList } from "docs-ui"
 
 ## Namespaces
 
+- [CoreFlowsUitls](../../utils/utils.CoreFlowsUitls/page.mdx)
 - [FulfillmentUtils](../../utils/utils.FulfillmentUtils/page.mdx)
 - [InventoryUtils](../../utils/utils.InventoryUtils/page.mdx)
 - [LinkUtils](../../utils/utils.LinkUtils/page.mdx)
@@ -15,6 +16,7 @@ import { TypeList } from "docs-ui"
 
 ## Enumerations
 
+- [NotificationStatus](../../utils/enums/utils.NotificationStatus/page.mdx)
 - [PaymentCollectionStatus](../../utils/enums/utils.PaymentCollectionStatus/page.mdx)
 - [PaymentSessionStatus](../../utils/enums/utils.PaymentSessionStatus/page.mdx)
 - [PaymentWebhookEvents](../../utils/enums/utils.PaymentWebhookEvents/page.mdx)
@@ -25,12 +27,17 @@ import { TypeList } from "docs-ui"
 ## Variables
 
 - [MedusaModuleType](page.mdx#medusamoduletype)
+- [NotificationEvents](page.mdx#notificationevents)
 - [PaymentEvents](page.mdx#paymentevents)
 - [PricingEvents](page.mdx#pricingevents)
 
 ## Functions
 
 - [generateJwtToken](page.mdx#generatejwttoken)
+- [parseConnectionString](page.mdx#parseconnectionstring)
+- [createClient](page.mdx#createclient)
+- [createDb](page.mdx#createdb)
+- [dbExists](page.mdx#dbexists)
 
 ___
 
@@ -39,6 +46,10 @@ ___
 ### MedusaModuleType
 
  `Const` **MedusaModuleType**: typeof [MedusaModuleType](page.mdx#medusamoduletype)
+
+### NotificationEvents
+
+ `Const` **NotificationEvents**: ReturnType&#60;["notification"]&#62;
 
 ### PaymentEvents
 
@@ -60,8 +71,60 @@ ___
 
 #### Parameters
 
-<TypeList types={[{"name":"tokenPayload","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"jwtConfig","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"secret","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"expiresIn","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="generateJwtToken"/>
+<TypeList types={[{"name":"tokenPayload","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"jwtConfig","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"secret","type":"`undefined` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"expiresIn","type":"`undefined` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="generateJwtToken"/>
 
 #### Returns
 
 <TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="generateJwtToken"/>
+
+### parseConnectionString
+
+Parsers the database connection string into an object
+of postgreSQL options
+
+#### Parameters
+
+<TypeList types={[{"name":"connectionString","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="parseConnectionString"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ConnectionOptions","type":"`ConnectionOptions`","optional":false,"defaultValue":"","description":"Parsers the database connection string into an object\nof postgreSQL options","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="parseConnectionString"/>
+
+### createClient
+
+Creates a PostgreSQL database client using the connection
+string or database options
+
+#### Parameters
+
+<TypeList types={[{"name":"options","type":"`string` \\| `ClientConfig`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createClient"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Client","type":"`Client`","optional":false,"defaultValue":"","description":"Creates a PostgreSQL database client using the connection\nstring or database options","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createClient"/>
+
+### createDb
+
+Creates a database using the client. Make sure to call
+`client.connect` before using this utility.
+
+#### Parameters
+
+<TypeList types={[{"name":"client","type":"`Client`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"databaseName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createDb"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Creates a database using the client. Make sure to call\n`client.connect` before using this utility.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createDb"/>
+
+### dbExists
+
+Checks if a database exists using the Client.  Make sure to call
+`client.connect` before using this utility.
+
+#### Parameters
+
+<TypeList types={[{"name":"client","type":"`Client`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"databaseName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="dbExists"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Checks if a database exists using the Client.  Make sure to call\n`client.connect` before using this utility.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="dbExists"/>

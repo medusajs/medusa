@@ -242,7 +242,7 @@ This workflow creates one or more collections.
 import { createCollectionsWorkflow } from "@medusajs/core-flows"
 
 createCollectionsWorkflow.hooks.collectionsCreated(
-	async (({ collections, additional_data }, { container }) => {
+	(async ({ collections, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -262,7 +262,7 @@ This workflow creates one or more product options.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"createProductOptionsWorkflow","steps":[{"type":"step","name":"createProductOptionsStep","description":"This step creates one or more product options.","link":"../core_flows.Steps_Product/page.mdx#createproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsCreated","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"createProductOptionsWorkflow","steps":[{"type":"step","name":"createProductOptionsStep","description":"This step creates one or more product options.","link":"../core_flows.Steps_Product/page.mdx#createproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsCreated","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -282,7 +282,7 @@ This workflow creates one or more product options.
 import { createProductOptionsWorkflow } from "@medusajs/core-flows"
 
 createProductOptionsWorkflow.hooks.productOptionsCreated(
-	async (({ product_options, additional_data }, { container }) => {
+	(async ({ product_options, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -302,7 +302,7 @@ This workflow creates one or more product tags.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"createProductTagsWorkflow","steps":[{"type":"step","name":"createProductTagsStep","description":"This step creates one or more product tags.","link":"../core_flows.Steps_Product/page.mdx#createproducttagsstep","depth":1},{"type":"hook","name":"productTagsCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsCreated","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"createProductTagsWorkflow","steps":[{"type":"step","name":"createProductTagsStep","description":"This step creates one or more product tags.","link":"../core_flows.Steps_Product/page.mdx#createproducttagsstep","depth":1},{"type":"hook","name":"productTagsCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsCreated","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -322,7 +322,7 @@ This workflow creates one or more product tags.
 import { createProductTagsWorkflow } from "@medusajs/core-flows"
 
 createProductTagsWorkflow.hooks.productTagsCreated(
-	async (({ product_tags, additional_data }, { container }) => {
+	(async ({ product_tags, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -342,7 +342,7 @@ This workflow creates one or more product types.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"createProductTypesWorkflow","steps":[{"type":"step","name":"createProductTypesStep","description":"This step creates one or more product types.","link":"../core_flows.Steps_Product/page.mdx#createproducttypesstep","depth":1},{"type":"hook","name":"productTypesCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesCreated","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"createProductTypesWorkflow","steps":[{"type":"step","name":"createProductTypesStep","description":"This step creates one or more product types.","link":"../core_flows.Steps_Product/page.mdx#createproducttypesstep","depth":1},{"type":"hook","name":"productTypesCreated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesCreated","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -362,7 +362,7 @@ This workflow creates one or more product types.
 import { createProductTypesWorkflow } from "@medusajs/core-flows"
 
 createProductTypesWorkflow.hooks.productTypesCreated(
-	async (({ product_types, additional_data }, { container }) => {
+	(async ({ product_types, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -402,7 +402,7 @@ This workflow creates one or more product variants.
 import { createProductVariantsWorkflow } from "@medusajs/core-flows"
 
 createProductVariantsWorkflow.hooks.productVariantsCreated(
-	async (({ product_variants, additional_data }, { container }) => {
+	(async ({ product_variants, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -442,7 +442,7 @@ This workflow creates one or more products.
 import { createProductsWorkflow } from "@medusajs/core-flows"
 
 createProductsWorkflow.hooks.productsCreated(
-	async (({ products, additional_data }, { container }) => {
+	(async ({ products, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -478,7 +478,7 @@ This workflow deletes one or more collection.
 import { deleteCollectionsWorkflow } from "@medusajs/core-flows"
 
 deleteCollectionsWorkflow.hooks.collectionsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -498,7 +498,7 @@ This workflow deletes one or more product options.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"deleteProductOptionsWorkflow","steps":[{"type":"step","name":"deleteProductOptionsStep","description":"This step deletes one or more product options.","link":"../core_flows.Steps_Product/page.mdx#deleteproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsDeleted","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteProductOptionsWorkflow","steps":[{"type":"step","name":"deleteProductOptionsStep","description":"This step deletes one or more product options.","link":"../core_flows.Steps_Product/page.mdx#deleteproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsDeleted","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -514,7 +514,7 @@ This workflow deletes one or more product options.
 import { deleteProductOptionsWorkflow } from "@medusajs/core-flows"
 
 deleteProductOptionsWorkflow.hooks.productOptionsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -534,7 +534,7 @@ This workflow deletes one or more product tags.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"deleteProductTagsWorkflow","steps":[{"type":"step","name":"deleteProductTagsStep","description":"This step deletes one or more product tags.","link":"../core_flows.Steps_Product/page.mdx#deleteproducttagsstep","depth":1},{"type":"hook","name":"productTagsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsDeleted","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteProductTagsWorkflow","steps":[{"type":"step","name":"deleteProductTagsStep","description":"This step deletes one or more product tags.","link":"../core_flows.Steps_Product/page.mdx#deleteproducttagsstep","depth":1},{"type":"hook","name":"productTagsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsDeleted","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -550,7 +550,7 @@ This workflow deletes one or more product tags.
 import { deleteProductTagsWorkflow } from "@medusajs/core-flows"
 
 deleteProductTagsWorkflow.hooks.productTagsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -570,7 +570,7 @@ This workflow deletes one or more product types.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"deleteProductTypesWorkflow","steps":[{"type":"step","name":"deleteProductTypesStep","description":"This step deletes one or more product types.","link":"../core_flows.Steps_Product/page.mdx#deleteproducttypesstep","depth":1},{"type":"hook","name":"productTypesDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesDeleted","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteProductTypesWorkflow","steps":[{"type":"step","name":"deleteProductTypesStep","description":"This step deletes one or more product types.","link":"../core_flows.Steps_Product/page.mdx#deleteproducttypesstep","depth":1},{"type":"hook","name":"productTypesDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesDeleted","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -586,7 +586,7 @@ This workflow deletes one or more product types.
 import { deleteProductTypesWorkflow } from "@medusajs/core-flows"
 
 deleteProductTypesWorkflow.hooks.productTypesDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -622,7 +622,7 @@ This workflow deletes one or more product variants.
 import { deleteProductVariantsWorkflow } from "@medusajs/core-flows"
 
 deleteProductVariantsWorkflow.hooks.productVariantsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -658,7 +658,7 @@ This workflow deletes one or more products.
 import { deleteProductsWorkflow } from "@medusajs/core-flows"
 
 deleteProductsWorkflow.hooks.productsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )
@@ -730,7 +730,7 @@ This workflow updates collections matching the specified filters.
 import { updateCollectionsWorkflow } from "@medusajs/core-flows"
 
 updateCollectionsWorkflow.hooks.collectionsUpdated(
-	async (({ additional_data, collections }, { container }) => {
+	(async ({ additional_data, collections }, { container }) => {
 		//TODO
 	})
 )
@@ -750,7 +750,7 @@ This workflow updates product options matching the specified filters.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"updateProductOptionsWorkflow","steps":[{"type":"step","name":"updateProductOptionsStep","description":"This step updates product options matching the specified filters.","link":"../core_flows.Steps_Product/page.mdx#updateproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsUpdated","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"updateProductOptionsWorkflow","steps":[{"type":"step","name":"updateProductOptionsStep","description":"This step updates product options matching the specified filters.","link":"../core_flows.Steps_Product/page.mdx#updateproductoptionsstep","depth":1},{"type":"hook","name":"productOptionsUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productOptionsUpdated","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -770,7 +770,7 @@ This workflow updates product options matching the specified filters.
 import { updateProductOptionsWorkflow } from "@medusajs/core-flows"
 
 updateProductOptionsWorkflow.hooks.productOptionsUpdated(
-	async (({ product_options, additional_data }, { container }) => {
+	(async ({ product_options, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -790,7 +790,7 @@ This workflow updates product tags matching the specified filters.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"updateProductTagsWorkflow","steps":[{"type":"step","name":"updateProductTagsStep","description":"This step updates product tags matching the specified filters.","link":"../core_flows.Steps_Product/page.mdx#updateproducttagsstep","depth":1},{"type":"hook","name":"productTagsUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsUpdated","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"updateProductTagsWorkflow","steps":[{"type":"step","name":"updateProductTagsStep","description":"This step updates product tags matching the specified filters.","link":"../core_flows.Steps_Product/page.mdx#updateproducttagsstep","depth":1},{"type":"hook","name":"productTagsUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsUpdated","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -810,7 +810,7 @@ This workflow updates product tags matching the specified filters.
 import { updateProductTagsWorkflow } from "@medusajs/core-flows"
 
 updateProductTagsWorkflow.hooks.productTagsUpdated(
-	async (({ product_tags, additional_data }, { container }) => {
+	(async ({ product_tags, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -830,7 +830,7 @@ This workflow updates product types matching the specified filters.
 
 ### Steps
 
-<WorkflowDiagram workflow={{"name":"updateProductTypesWorkflow","steps":[{"type":"step","name":"updateProductTypesStep","description":"This step updates product types matching the specified filters.","link":"../core_flows.Steps_Product/page.mdx#updateproducttypesstep","depth":1},{"type":"hook","name":"productTypesUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesUpdated","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"updateProductTypesWorkflow","steps":[{"type":"step","name":"updateProductTypesStep","description":"This step updates product types matching the specified filters.","link":"../core_flows.Steps_Product/page.mdx#updateproducttypesstep","depth":1},{"type":"hook","name":"productTypesUpdated","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTypesUpdated","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ### Input
 
@@ -850,7 +850,7 @@ This workflow updates product types matching the specified filters.
 import { updateProductTypesWorkflow } from "@medusajs/core-flows"
 
 updateProductTypesWorkflow.hooks.productTypesUpdated(
-	async (({ product_types, additional_data }, { container }) => {
+	(async ({ product_types, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -890,7 +890,7 @@ This workflow updates one or more product variants.
 import { updateProductVariantsWorkflow } from "@medusajs/core-flows"
 
 updateProductVariantsWorkflow.hooks.productVariantsUpdated(
-	async (({ product_variants, additional_data }, { container }) => {
+	(async ({ product_variants, additional_data }, { container }) => {
 		//TODO
 	})
 )
@@ -930,7 +930,7 @@ This workflow updates one or more products.
 import { updateProductsWorkflow } from "@medusajs/core-flows"
 
 updateProductsWorkflow.hooks.productsUpdated(
-	async (({ products, additional_data }, { container }) => {
+	(async ({ products, additional_data }, { container }) => {
 		//TODO
 	})
 )

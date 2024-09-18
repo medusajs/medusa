@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { ReactNode, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
@@ -54,6 +54,7 @@ import { getTotalCaptured } from "../../../../../lib/payment"
 import { getReturnableQuantity } from "../../../../../lib/rma"
 import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link"
 import ReturnInfoPopover from "./return-info-popover"
+import ShippingInfoPopover from "./shipping-info-popover"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -523,14 +524,16 @@ const Cost = ({
   label,
   value,
   secondaryValue,
+  tooltip,
 }: {
   label: string
   value: string | number
   secondaryValue: string
+  tooltip?: ReactNode
 }) => (
   <div className="grid grid-cols-3 items-center">
     <Text size="small" leading="compact">
-      {label}
+      {label} {tooltip}
     </Text>
     <div className="text-right">
       <Text size="small" leading="compact">
@@ -568,14 +571,23 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
         .sort((m1, m2) =>
           (m1.created_at as string).localeCompare(m2.created_at as string)
         )
-        .map((sm, i) => (
-          <Cost
-            key={sm.id}
-            label={t("fields.shipping") + (i ? ` ${i + 1}` : "")}
-            secondaryValue={sm.name}
-            value={getLocaleAmount(sm.total, order.currency_code)}
-          />
-        ))}
+        .map((sm, i) => {
+          return (
+            <div>
+              <Cost
+                key={sm.id}
+                label={
+                  sm.detail.return_id
+                    ? t("fields.returnShipping")
+                    : t("fields.outboundShipping")
+                }
+                secondaryValue={sm.name}
+                value={getLocaleAmount(sm.total, order.currency_code)}
+                tooltip={<ShippingInfoPopover key={i} shippingMethod={sm} />}
+              />
+            </div>
+          )
+        })}
     </div>
   )
 }

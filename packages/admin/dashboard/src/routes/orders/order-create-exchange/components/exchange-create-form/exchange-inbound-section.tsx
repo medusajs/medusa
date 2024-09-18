@@ -28,6 +28,7 @@ import {
 } from "../../../../../hooks/api/exchanges"
 import { useUpdateReturn } from "../../../../../hooks/api/returns"
 import { sdk } from "../../../../../lib/client"
+import { ReturnShippingPlaceholder } from "../../../common/placeholders"
 import { ItemPlaceholder } from "../../../order-create-claim/components/claim-create-form/item-placeholder"
 import { AddExchangeInboundItemsTable } from "../add-exchange-inbound-items-table"
 import { ExchangeInboundItem } from "./exchange-inbound-item"
@@ -480,12 +481,15 @@ export const ExchangeInboundSection = ({
           {/*INBOUND SHIPPING*/}
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <div>
-              <Form.Label
-                tooltip={t(
-                  "orders.exchanges.tooltips.onlyReturnShippingOptions"
-                )}
-              >
+              <Form.Label>
                 {t("orders.returns.inboundShipping")}
+                <Text
+                  size="small"
+                  leading="compact"
+                  className="text-ui-fg-muted inline ml-1"
+                >
+                  ({t("fields.optional")})
+                </Text>
               </Form.Label>
 
               <Form.Hint className="!mt-1">
@@ -512,6 +516,7 @@ export const ExchangeInboundSection = ({
                           value: so.id,
                         }))}
                         disabled={!locationId}
+                        noResultsPlaceholder={<ReturnShippingPlaceholder />}
                       />
                     </Form.Control>
                   </Form.Item>

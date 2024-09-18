@@ -1,5 +1,5 @@
 type: object
-description: The create's details.
+description: The product variant's details.
 x-schemaName: AdminCreateProductVariant
 required:
   - title
@@ -8,75 +8,81 @@ properties:
   title:
     type: string
     title: title
-    description: The create's title.
+    description: The variant's title.
   sku:
     type: string
     title: sku
-    description: The create's sku.
+    description: The variant's SKU.
   ean:
     type: string
     title: ean
-    description: The create's ean.
+    description: The variant's EAN.
   upc:
     type: string
     title: upc
-    description: The create's upc.
+    description: The variant's UPC.
   barcode:
     type: string
     title: barcode
-    description: The create's barcode.
+    description: The variant's barcode.
   hs_code:
     type: string
     title: hs_code
-    description: The create's hs code.
+    description: The variant's HS code.
   mid_code:
     type: string
     title: mid_code
-    description: The create's mid code.
+    description: The variant's MID code.
   allow_backorder:
     type: boolean
     title: allow_backorder
-    description: The create's allow backorder.
+    description: Whether it's allowed to order this variant when it's out of stock.
   manage_inventory:
     type: boolean
     title: manage_inventory
-    description: The create's manage inventory.
+    description: >-
+      Whether Medusa manages the variant's inventory quantity. If disabled, the
+      product variant is always considered in stock.
   variant_rank:
     type: number
     title: variant_rank
-    description: The create's variant rank.
+    description: The sorting order of the variant among other variants in the product.
   weight:
     type: number
     title: weight
-    description: The create's weight.
+    description: The variant's weight.
   length:
     type: number
     title: length
-    description: The create's length.
+    description: The variant's length.
   height:
     type: number
     title: height
-    description: The create's height.
+    description: The variant's height.
   width:
     type: number
     title: width
-    description: The create's width.
+    description: The variant's width.
   origin_country:
     type: string
     title: origin_country
-    description: The create's origin country.
+    description: The variant's origin country.
   material:
     type: string
     title: material
-    description: The create's material.
+    description: The variant's material.
   metadata:
     type: object
-    description: The create's metadata.
+    description: The variant's metadata, used to store custom key-value pairs.
   prices:
     type: array
-    description: The create's prices.
+    description: The variant's prices.
     items:
       $ref: ./AdminCreateProductVariantPrice.yaml
   options:
     type: object
-    description: The create's options.
+    description: >-
+      The variant's options, where the key is an option's name, and the value is
+      the option's value.
+    example:
+      Color: Black

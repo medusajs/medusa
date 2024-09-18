@@ -1,15 +1,15 @@
 /**
  * @schema AdminPostOrderEditsAddItemsReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details of items to be edited.
  * x-schemaName: AdminPostOrderEditsAddItemsReqSchema
  * properties:
  *   items:
  *     type: array
- *     description: The order edit's items.
+ *     description: The details of items to be edited.
  *     items:
  *       type: object
- *       description: The item's items.
+ *       description: An item's details.
  *       required:
  *         - variant_id
  *         - quantity
@@ -17,7 +17,7 @@
  *         variant_id:
  *           type: string
  *           title: variant_id
- *           description: The item's variant id.
+ *           description: The ID of the associated product variant.
  *         quantity:
  *           type: number
  *           title: quantity
@@ -29,14 +29,14 @@
  *         internal_note:
  *           type: string
  *           title: internal_note
- *           description: The item's internal note.
+ *           description: A note viewed only by admin users.
  *         allow_backorder:
  *           type: boolean
  *           title: allow_backorder
- *           description: The item's allow backorder.
+ *           description: Whether the item can be added even if there's no available invenotory quantity of the variant.
  *         metadata:
  *           type: object
- *           description: The item's metadata.
+ *           description: The item's metadata, can hold custom key-value pairs.
  * 
 */
 

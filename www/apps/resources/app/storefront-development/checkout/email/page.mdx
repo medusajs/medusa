@@ -27,6 +27,7 @@ For example:
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
     },
     body: JSON.stringify({
       email,
@@ -46,7 +47,7 @@ export const highlights = [
   ["4", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
   ["13", "TODO", "Cart must have at least one item. If not, redirect to another page."],
   ["27"], ["28"], ["29"], ["30"], ["31"], ["32"], ["33"], ["34"],
-  ["35"], ["36"], ["37"], ["38"], ["39"], ["40"]
+  ["35"], ["36"], ["37"], ["38"], ["39"], ["40"], ["41"]
 ]
 
   ```tsx highlights={highlights}
@@ -81,6 +82,7 @@ export const highlights = [
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
         },
         body: JSON.stringify({
           email,

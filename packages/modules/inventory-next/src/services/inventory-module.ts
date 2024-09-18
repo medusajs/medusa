@@ -224,7 +224,7 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.ReservationItemDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async createReservationItems(
     input:
@@ -259,7 +259,7 @@ export default class InventoryModuleService
       : serializedReservations[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createReservationItems_(
     input: InventoryTypes.CreateReservationItemInput[],
     @MedusaContext() context: Context = {}
@@ -324,7 +324,7 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.InventoryItemDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async createInventoryItems(
     input:
@@ -359,7 +359,7 @@ export default class InventoryModuleService
     return Array.isArray(input) ? serializedItems : serializedItems[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createInventoryItems_(
     input: InventoryTypes.CreateInventoryItemInput[],
     @MedusaContext() context: Context = {}
@@ -377,7 +377,7 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.InventoryLevelDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async createInventoryLevels(
     input:
@@ -413,7 +413,7 @@ export default class InventoryModuleService
     return Array.isArray(input) ? serialized : serialized[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createInventoryLevels_(
     input: InventoryTypes.CreateInventoryLevelInput[],
     @MedusaContext() context: Context = {}
@@ -431,7 +431,7 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.InventoryItemDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async updateInventoryItems(
     input:
@@ -467,7 +467,7 @@ export default class InventoryModuleService
     return Array.isArray(input) ? serializedItems : serializedItems[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async updateInventoryItems_(
     input: (Partial<InventoryTypes.CreateInventoryItemInput> & {
       id: string
@@ -477,7 +477,7 @@ export default class InventoryModuleService
     return await this.inventoryItemService_.update(input, context)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   @EmitEvents()
   async deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
@@ -508,7 +508,7 @@ export default class InventoryModuleService
    * @param locationId - the id of the location associated with the level
    * @param context
    */
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async deleteInventoryLevel(
     inventoryItemId: string,
     locationId: string,
@@ -546,7 +546,7 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.InventoryLevelDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async updateInventoryLevels(
     updates:
@@ -582,7 +582,7 @@ export default class InventoryModuleService
     return Array.isArray(updates) ? updatedLevels : updatedLevels[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async updateInventoryLevels_(
     updates: InventoryTypes.BulkUpdateInventoryLevelInput[],
     @MedusaContext() context: Context = {}
@@ -633,7 +633,7 @@ export default class InventoryModuleService
     context?: Context
   ): Promise<InventoryTypes.ReservationItemDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async updateReservationItems(
     input:
@@ -666,7 +666,7 @@ export default class InventoryModuleService
     return Array.isArray(input) ? serialized : serialized[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async updateReservationItems_(
     input: (InventoryTypes.UpdateReservationItemInput & { id: string })[],
     @MedusaContext() context: Context = {}
@@ -787,7 +787,7 @@ export default class InventoryModuleService
     return result
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   // @ts-expect-error
   async softDeleteReservationItems(
     ids: string | string[],
@@ -811,7 +811,7 @@ export default class InventoryModuleService
     result
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   // @ts-expect-error
   async restoreReservationItems(
     ids: string | string[],
@@ -829,7 +829,7 @@ export default class InventoryModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   @EmitEvents()
   async deleteReservationItemByLocationId(
     locationId: string | string[],
@@ -866,7 +866,7 @@ export default class InventoryModuleService
    * @param context
    */
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   @EmitEvents()
   async deleteReservationItemsByLineItem(
     lineItemId: string | string[],
@@ -903,7 +903,7 @@ export default class InventoryModuleService
    * @param context
    */
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   @EmitEvents()
   async restoreReservationItemsByLineItem(
     lineItemId: string | string[],
@@ -959,7 +959,7 @@ export default class InventoryModuleService
     context: Context
   ): Promise<InventoryTypes.InventoryLevelDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async adjustInventory(
     inventoryItemIdOrData: string | any,
@@ -1010,7 +1010,7 @@ export default class InventoryModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async adjustInventory_(
     inventoryItemId: string,
     locationId: string,
@@ -1037,7 +1037,7 @@ export default class InventoryModuleService
     return result[0]
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async retrieveInventoryLevelByItemAndLocation(
     inventoryItemId: string,
     locationId: string,
@@ -1067,7 +1067,7 @@ export default class InventoryModuleService
    * @return The available quantity
    * @throws when the inventory item is not found
    */
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async retrieveAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[],
@@ -1103,7 +1103,7 @@ export default class InventoryModuleService
    * @return The stocked quantity
    * @throws when the inventory item is not found
    */
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async retrieveStockedQuantity(
     inventoryItemId: string,
     locationIds: string[],
@@ -1140,7 +1140,7 @@ export default class InventoryModuleService
    * @return The reserved quantity
    * @throws when the inventory item is not found
    */
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async retrieveReservedQuantity(
     inventoryItemId: string,
     locationIds: string[],
@@ -1177,7 +1177,7 @@ export default class InventoryModuleService
    * @param context
    * @return Whether there is sufficient inventory
    */
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async confirmInventory(
     inventoryItemId: string,
     locationIds: string[],

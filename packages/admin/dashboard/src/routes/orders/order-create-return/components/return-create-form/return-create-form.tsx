@@ -46,6 +46,7 @@ import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { sdk } from "../../../../../lib/client"
 import { currencies } from "../../../../../lib/data/currencies"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { ReturnShippingPlaceholder } from "../../../common/placeholders"
 import { AddReturnItemsTable } from "../add-return-items-table"
 import { ReturnItem } from "./return-item"
 import { ReturnCreateSchema, ReturnCreateSchemaType } from "./schema"
@@ -549,7 +550,15 @@ export const ReturnCreateForm = ({
                   <div>
                     <Form.Label>
                       {t("orders.returns.inboundShipping")}
+                      <Text
+                        size="small"
+                        leading="compact"
+                        className="text-ui-fg-muted inline ml-1"
+                      >
+                        ({t("fields.optional")})
+                      </Text>
                     </Form.Label>
+
                     <Form.Hint className="!mt-1">
                       {t("orders.returns.inboundShippingHint")}
                     </Form.Hint>
@@ -588,6 +597,9 @@ export const ReturnCreateForm = ({
                                   value: so.id,
                                 }))}
                               disabled={!locationId}
+                              noResultsPlaceholder={
+                                <ReturnShippingPlaceholder />
+                              }
                             />
                           </Form.Control>
                         </Form.Item>
