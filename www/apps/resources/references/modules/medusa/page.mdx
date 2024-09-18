@@ -52,6 +52,7 @@ import { TypeList } from "docs-ui"
 
 - [instrumentHttpLayer](page.mdx#instrumenthttplayer)
 - [instrumentRemoteQuery](page.mdx#instrumentremotequery)
+- [instrumentWorkflows](page.mdx#instrumentworkflows)
 - [registerOtel](page.mdx#registerotel)
 
 ___
@@ -70,20 +71,28 @@ ___
 
 ### instrumentHttpLayer
 
-Instrumenting the first touch point of the HTTP layer to report traces to
+Instrument the first touch point of the HTTP layer to report traces to
 OpenTelemetry
 
 #### Returns
 
-<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Instrumenting the first touch point of the HTTP layer to report traces to\nOpenTelemetry","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="instrumentHttpLayer"/>
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Instrument the first touch point of the HTTP layer to report traces to\nOpenTelemetry","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="instrumentHttpLayer"/>
 
 ### instrumentRemoteQuery
 
-Instrumenting the queries made using the remote query
+Instrument the queries made using the remote query
 
 #### Returns
 
-<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Instrumenting the queries made using the remote query","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="instrumentRemoteQuery"/>
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Instrument the queries made using the remote query","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="instrumentRemoteQuery"/>
+
+### instrumentWorkflows
+
+Instrument the workflows and steps execution
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Instrument the workflows and steps execution","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="instrumentWorkflows"/>
 
 ### registerOtel
 
@@ -101,8 +110,8 @@ telemetry to work
 
 #### Parameters
 
-<TypeList types={[{"name":"options","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"serviceName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"exporter","type":"`SpanExporter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"instrumentations","type":"Instrumentation&#60;InstrumentationConfig&#62;[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="registerOtel"/>
+<TypeList types={[{"name":"options","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"serviceName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"exporter","type":"`SpanExporter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"instrument","type":"Partial&#60;object&#62;","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"http","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"workflows","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"db","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"instrumentations","type":"Instrumentation&#60;InstrumentationConfig&#62;[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="registerOtel"/>
 
 #### Returns
 
-<TypeList types={[{"name":"NodeSDK","type":"`NodeSDK`","optional":false,"defaultValue":"","description":"A helper function to configure the OpenTelemetry SDK with some defaults.\nFor better/more control, please configure the SDK manually.\n\nYou will have to install the following packages within your app for\ntelemetry to work\n\n- @opentelemetry/sdk-node\n- @opentelemetry/resources\n- @opentelemetry/sdk-trace-node\n- @opentelemetry/instrumentation-pg\n- @opentelemetry/instrumentation","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="registerOtel"/>
+<TypeList types={[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"A helper function to configure the OpenTelemetry SDK with some defaults.\nFor better/more control, please configure the SDK manually.\n\nYou will have to install the following packages within your app for\ntelemetry to work\n\n- @opentelemetry/sdk-node\n- @opentelemetry/resources\n- @opentelemetry/sdk-trace-node\n- @opentelemetry/instrumentation-pg\n- @opentelemetry/instrumentation","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="registerOtel"/>
