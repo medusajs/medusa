@@ -49,14 +49,14 @@ medusaIntegrationTestRunner({
           })),
         }
 
-        // Timeout to allow indexing to finish
-        await setTimeout(2000)
-
         await api
           .post("/admin/products", payload, adminHeaders)
           .catch((err) => {
             console.log(err)
           })
+
+        // Timeout to allow indexing to finish
+        await setTimeout(2000)
 
         const [results, count] = await indexEngine.queryAndCount(
           {
