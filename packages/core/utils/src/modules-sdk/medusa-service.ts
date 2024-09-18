@@ -217,7 +217,7 @@ export function MedusaService<
           const models = await service.update(serviceData, sharedContext)
           const response = Array.isArray(data) ? models : models[0]
 
-          klassPrototype.aggregatedEvents.bind(klassPrototype)({
+          klassPrototype.aggregatedEvents.bind(this)({
             action: CommonEvents.UPDATED,
             object: camelToSnakeCase(modelName).toLowerCase(),
             data: response,
@@ -324,12 +324,14 @@ export function MedusaService<
                 ? this.__joinerConfig()
                 : this.__joinerConfig
             ) as ModuleJoinerConfig
+
             Object.entries(mappedCascadedModelsMap).forEach(
               ([linkableKey, ids]) => {
                 const entity = joinerConfig.linkableKeys?.[linkableKey]!
                 if (entity) {
                   const linkableKeyEntity =
                     camelToSnakeCase(entity).toLowerCase()
+
                   klassPrototype.aggregatedEvents.bind(this)({
                     action: CommonEvents.DELETED,
                     object: linkableKeyEntity,
@@ -379,6 +381,7 @@ export function MedusaService<
                 ? this.__joinerConfig()
                 : this.__joinerConfig
             ) as ModuleJoinerConfig
+
             Object.entries(mappedCascadedModelsMap).forEach(
               ([linkableKey, ids]) => {
                 const entity = joinerConfig.linkableKeys?.[linkableKey]!
