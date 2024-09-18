@@ -66,7 +66,7 @@ export default class NotificationModuleService
     sharedContext?: Context
   ): Promise<NotificationTypes.NotificationDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async createNotifications(
     data:
@@ -95,7 +95,7 @@ export default class NotificationModuleService
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   protected async createNotifications_(
     data: NotificationTypes.CreateNotificationDTO[],
     @MedusaContext() sharedContext: Context = {}
