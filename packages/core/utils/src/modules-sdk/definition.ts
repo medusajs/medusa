@@ -79,6 +79,6 @@ declare module "@medusajs/types" {
     [Modules.CURRENCY]: ICurrencyModuleService
     [Modules.FILE]: IFileModuleService
     [Modules.NOTIFICATION]: INotificationModuleService
-    [ModuleRegistrationName.INDEX]: any // TODO: define index module interface
+    [Modules.INDEX]: any // TODO: define index module interface
   }
 }
