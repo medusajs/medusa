@@ -1592,12 +1592,10 @@ export default class ProductModuleService
         if (product.variants?.length) {
           const productVariantsWithOptions =
             ProductModuleService.assignOptionsToVariants(
-              product.variants
-                ?.filter((v) => !Array.isArray(v.options)) // we don't need to assign to these
-                .map((v) => ({
-                  ...v,
-                  product_id: upsertedProduct.id,
-                })) ?? [],
+              product.variants.map((v) => ({
+                ...v,
+                product_id: upsertedProduct.id,
+              })) ?? [],
               allOptions
             )
 
