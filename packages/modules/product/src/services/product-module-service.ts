@@ -1819,8 +1819,12 @@ export default class ProductModuleService
         }
 
         return (variantData.options as unknown as { id: string }[])!.every(
-          ({ id: optionValueId }) =>
-            !!v.options.find((vo) => vo.id === optionValueId)
+          (optionValue) => {
+            const variantOptionValue = v.options.find(
+              (vo) => vo.id === optionValue.id
+            )
+            return !!variantOptionValue
+          }
         )
       })
 
