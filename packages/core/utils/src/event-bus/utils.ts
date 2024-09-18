@@ -34,7 +34,7 @@ type ReturnType<TNames extends string[]> = {
  * @param objectName
  * @param action
  */
-export function buildEventNameFromObjectName({
+export function buildModuleResourceEventName({
   prefix,
   objectName,
   action,
@@ -62,6 +62,7 @@ export function buildEventNameFromObjectName({
  * }
  *
  * @param names
+ * @param prefix
  */
 export function buildEventNamesFromEntityName<TNames extends string[]>(
   names: TNames,
@@ -72,12 +73,11 @@ export function buildEventNamesFromEntityName<TNames extends string[]>(
   for (let i = 0; i < names.length; i++) {
     const name = names[i]
     const snakedCaseName = camelToSnakeCase(name).toUpperCase()
-    const kebabCaseName = lowerCaseFirst(kebabCase(name))
 
     for (const event of Object.values(CommonEvents) as string[]) {
       const upperCasedEvent = event.toUpperCase()
       events[`${snakedCaseName}_${upperCasedEvent}`] =
-        buildEventNameFromObjectName({
+        buildModuleResourceEventName({
           prefix,
           objectName: name,
           action: event,

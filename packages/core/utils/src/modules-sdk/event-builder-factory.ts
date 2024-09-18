@@ -1,14 +1,14 @@
 import { Context, EventBusTypes } from "@medusajs/types"
-import { buildEventNameFromObjectName } from "../event-bus"
+import { buildModuleResourceEventName } from "../event-bus"
 
-// TODO should that move closer to the event bus? and maybe be rename to moduleEventBuilderFactory
+// TODO should that move closer to the event bus? and maybe be rename to modulemoduleEventBuilderFactory
 
 /**
  *
  * Factory function to create event builders for different entities
  *
  * @example
- * const createdFulfillment = eventBuilderFactory({
+ * const createdFulfillment = moduleEventBuilderFactory({
  *   source: Modules.FULFILLMENT,
  *   action: CommonEvents.CREATED,
  *   object: "fulfillment",
@@ -25,7 +25,7 @@ import { buildEventNameFromObjectName } from "../event-bus"
  * @param eventsEnum
  * @param service
  */
-export function eventBuilderFactory({
+export function moduleEventBuilderFactory({
   action,
   object,
   eventsEnum,
@@ -64,7 +64,7 @@ export function eventBuilderFactory({
       : eventName
 
     if (!eventName_) {
-      eventName_ = buildEventNameFromObjectName({
+      eventName_ = buildModuleResourceEventName({
         prefix: source,
         objectName: object,
         action,

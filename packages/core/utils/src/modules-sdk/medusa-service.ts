@@ -33,7 +33,7 @@ import {
   ModelsConfigTemplate,
 } from "./types/medusa-service"
 import { CommonEvents } from "../event-bus"
-import { eventBuilderFactory } from "./event-builder-factory"
+import { moduleEventBuilderFactory } from "./event-builder-factory"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -441,7 +441,7 @@ export function MedusaService<
           : this.__joinerConfig
       ) as ModuleJoinerConfig
 
-      const eventBuilder = eventBuilderFactory({
+      const eventBuilder = moduleEventBuilderFactory({
         action,
         object,
         source: source || __joinerConfig.serviceName!,
