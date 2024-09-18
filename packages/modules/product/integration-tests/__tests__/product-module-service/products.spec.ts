@@ -149,6 +149,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
               {
                 id: "variant-2",
                 title: "variant 2",
+                options: {
+                  size: "large",
+                  color: "blue",
+                },
               },
               {
                 id: "variant-3",

@@ -1468,7 +1468,7 @@ export default class ProductModuleService
           d,
           sharedContext
         )
-        this.validateProductPayload(normalized)
+        this.validateProductCreatePayload(normalized)
         return normalized
       })
     )
@@ -1633,6 +1633,31 @@ export default class ProductModuleService
         `Invalid product handle '${productData.handle}'. It must contain URL safe characters`
       )
     }
+  }
+
+  protected validateProductCreatePayload(
+    productData: ProductTypes.CreateProductDTO
+  ) {
+    this.validateProductPayload(productData)
+
+    const options = productData.options
+
+    if (options?.length) {
+      productData.variants?.forEach((variant) => {
+        options.forEach((option) => {
+          if (!variant.options?.[option.title]) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Variant ${variant.title} doesn't have "${option.title}" option provided.`
+            )
+          }
+        })
+      })
+    }
+  }
+
+  protected validateProductUpdatePayload(productData: UpdateProductInput) {
+    this.validateProductPayload(productData)
   }
 
   protected async normalizeCreateProductInput(
