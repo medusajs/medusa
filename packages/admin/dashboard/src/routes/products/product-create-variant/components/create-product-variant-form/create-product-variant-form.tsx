@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
+import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { useEffect, useMemo, useState } from "react"
@@ -204,7 +204,7 @@ export const CreateProductVariantForm = ({
     await mutateAsync(
       {
         title,
-        sku,
+        sku: sku || undefined,
         allow_backorder,
         manage_inventory,
         options: data.options,
@@ -245,6 +245,9 @@ export const CreateProductVariantForm = ({
       {
         onSuccess: () => {
           handleSuccess()
+        },
+        onError: (error) => {
+          toast.error(error.message)
         },
       }
     )
