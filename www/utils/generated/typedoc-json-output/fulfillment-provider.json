@@ -1,19 +1,19 @@
 {
-	"id": 34432,
+	"id": 34434,
 	"name": "fulfillment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 34433,
+			"id": 34435,
 			"name": "AbstractFulfillmentProviderService",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 34434,
+					"id": 34436,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -26,7 +26,7 @@
 					}
 				},
 				{
-					"id": 34435,
+					"id": 34437,
 					"name": "_isFulfillmentService",
 					"variant": "declaration",
 					"kind": 1024,
@@ -40,7 +40,7 @@
 					"defaultValue": "true"
 				},
 				{
-					"id": 34436,
+					"id": 34438,
 					"name": "isFulfillmentService",
 					"variant": "declaration",
 					"kind": 2048,
@@ -49,14 +49,14 @@
 					},
 					"signatures": [
 						{
-							"id": 34437,
+							"id": 34439,
 							"name": "isFulfillmentService",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 34438,
+									"id": 34440,
 									"name": "obj",
 									"variant": "param",
 									"kind": 32768,
@@ -75,7 +75,7 @@
 					]
 				},
 				{
-					"id": 34439,
+					"id": 34441,
 					"name": "validateOptions",
 					"variant": "declaration",
 					"kind": 2048,
@@ -84,7 +84,7 @@
 					},
 					"signatures": [
 						{
-							"id": 34440,
+							"id": 34442,
 							"name": "validateOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -99,7 +99,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34441,
+									"id": 34443,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -133,21 +133,21 @@
 					]
 				},
 				{
-					"id": 34442,
+					"id": 34444,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34443,
+							"id": 34445,
 							"name": "new AbstractFulfillmentProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 34433,
+								"target": 34435,
 								"name": "AbstractFulfillmentProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -159,21 +159,21 @@
 				{
 					"title": "Constructors",
 					"children": [
-						34442
+						34444
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						34434,
-						34435
+						34436,
+						34437
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						34436,
-						34439
+						34438,
+						34441
 					]
 				}
 			],
@@ -194,49 +194,49 @@
 		{
 			"title": "Classes",
 			"children": [
-				34433
+				34435
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"34432": {
+		"34434": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": ""
 		},
-		"34433": {
+		"34435": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService"
 		},
-		"34434": {
+		"34436": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.identifier"
 		},
-		"34435": {
+		"34437": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService._isFulfillmentService"
 		},
-		"34436": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
-		},
-		"34437": {
-			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
-		},
 		"34438": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "obj"
+			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
 		},
 		"34439": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.validateOptions"
+			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
 		},
 		"34440": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
-			"qualifiedName": "AbstractFulfillmentProviderService.validateOptions"
+			"qualifiedName": "obj"
 		},
 		"34441": {
+			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
+			"qualifiedName": "AbstractFulfillmentProviderService.validateOptions"
+		},
+		"34442": {
+			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
+			"qualifiedName": "AbstractFulfillmentProviderService.validateOptions"
+		},
+		"34443": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "options"
 		}
@@ -246,7 +246,7 @@
 			"1": "../../../../packages/core/utils/src/fulfillment/provider.ts"
 		},
 		"reflections": {
-			"1": 34432
+			"1": 34434
 		}
 	}
 }
