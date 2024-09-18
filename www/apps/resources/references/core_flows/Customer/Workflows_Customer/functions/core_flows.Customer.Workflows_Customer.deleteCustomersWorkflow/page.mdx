@@ -29,7 +29,7 @@ This workflow deletes one or more customers.
 import { deleteCustomersWorkflow } from "@medusajs/core-flows"
 
 deleteCustomersWorkflow.hooks.customersDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )

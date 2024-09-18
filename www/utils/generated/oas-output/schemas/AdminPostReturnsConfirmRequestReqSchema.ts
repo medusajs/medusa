@@ -1,13 +1,13 @@
 /**
  * @schema AdminPostReturnsConfirmRequestReqSchema
  * type: object
- * description: SUMMARY
+ * description: The confirmation's details.
  * x-schemaName: AdminPostReturnsConfirmRequestReqSchema
  * properties:
  *   no_notification:
  *     type: boolean
  *     title: no_notification
- *     description: The return's no notification.
+ *     description: Whether to send the customer a notification about the confirmation.
  * 
 */
 

@@ -33,7 +33,7 @@ This workflow creates one or more customers.
 import { createCustomersWorkflow } from "@medusajs/core-flows"
 
 createCustomersWorkflow.hooks.customersCreated(
-	async (({ customers, additional_data }, { container }) => {
+	(async ({ customers, additional_data }, { container }) => {
 		//TODO
 	})
 )

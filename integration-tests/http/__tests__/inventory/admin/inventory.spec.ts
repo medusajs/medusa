@@ -175,6 +175,38 @@ medusaIntegrationTestRunner({
             message: `Cannot remove Inventory Levels for ${stockLocation1.id} because there are stocked or reserved items at the locations`,
           })
         })
+
+        it("should successfully add an inventory location", async () => {
+          await api.post(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels/${stockLocation1.id}`,
+            { stocked_quantity: 10 },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels/batch`,
+            { create: [{ location_id: stockLocation2.id }] },
+            adminHeaders
+          )
+
+          const {
+            data: { inventory_levels: inventoryLevels },
+          } = await api.get(
+            `/admin/inventory-items/${inventoryItem1.id}/location-levels`,
+            adminHeaders
+          )
+
+          expect(inventoryLevels).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                location_id: stockLocation1.id,
+              }),
+              expect.objectContaining({
+                location_id: stockLocation2.id,
+              }),
+            ])
+          )
+        })
       })
 
       describe("DELETE /admin/inventory-items/:id/location-levels/:id", () => {

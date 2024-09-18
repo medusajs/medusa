@@ -41,7 +41,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/fulfillments/{id}/cancel' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Fulfillments
  * responses:

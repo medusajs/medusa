@@ -1,7 +1,7 @@
 /**
  * @schema AdminOrderPreviewResponse
  * type: object
- * description: SUMMARY
+ * description: The preview of an order.
  * x-schemaName: AdminOrderPreviewResponse
  * required:
  *   - order

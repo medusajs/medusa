@@ -33,7 +33,7 @@ This workflow creates one or more campaigns.
 import { createCampaignsWorkflow } from "@medusajs/core-flows"
 
 createCampaignsWorkflow.hooks.campaignsCreated(
-	async (({ campaigns, additional_data }, { container }) => {
+	(async ({ campaigns, additional_data }, { container }) => {
 		//TODO
 	})
 )

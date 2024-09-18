@@ -13,7 +13,7 @@ This workflow deletes one or more product tags.
 
 ## Steps
 
-<WorkflowDiagram workflow={{"name":"deleteProductTagsWorkflow","steps":[{"type":"step","name":"deleteProductTagsStep","description":"This step deletes one or more product tags.","link":"../../../../core_flows.Steps_Product/page.mdx#deleteproducttagsstep","depth":1},{"type":"hook","name":"productTagsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsDeleted","depth":2}]}} />
+<WorkflowDiagram workflow={{"name":"deleteProductTagsWorkflow","steps":[{"type":"step","name":"deleteProductTagsStep","description":"This step deletes one or more product tags.","link":"../../../../core_flows.Steps_Product/page.mdx#deleteproducttagsstep","depth":1},{"type":"hook","name":"productTagsDeleted","description":"This step is a hook that you can inject custom functionality into.\n\n","link":"#productTagsDeleted","depth":2},{"type":"step","name":"emitEventStep","description":"Emit an event.\n\n","link":"../../../../core_flows.Steps_Common/page.mdx#emiteventstep","depth":3}]}} />
 
 ## Input
 
@@ -29,7 +29,7 @@ This workflow deletes one or more product tags.
 import { deleteProductTagsWorkflow } from "@medusajs/core-flows"
 
 deleteProductTagsWorkflow.hooks.productTagsDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )

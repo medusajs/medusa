@@ -9,7 +9,7 @@ import { TypeList } from "docs-ui"
  `Optional` **mappedBy**: `string`
 
 The name of the relationship as defined in the other
-data model. This is only required by the `belongsTo`
+data model. This is only required by the `belongsTo` and `manyToMany`
 relationship method.
 
 ___
@@ -25,9 +25,9 @@ ___
 
 ## pivotEntity
 
- `Optional` **pivotEntity**: () => [DmlEntity](../../../entity/classes/dml.entity.DmlEntity/page.mdx)&#60;any&#62;
+ `Optional` **pivotEntity**: () => [DmlEntity](../../../entity/classes/dml.entity.DmlEntity/page.mdx)&#60;any, any&#62;
 
-A function that returns the data model 
+A function that returns the data model
 representing the pivot table created in the
 database for this relationship.
 

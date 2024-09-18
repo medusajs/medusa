@@ -1,7 +1,7 @@
 /**
  * @schema AdminProduct
  * type: object
- * description: The product's parent.
+ * description: The product's details.
  * x-schemaName: AdminProduct
  * required:
  *   - type
@@ -35,37 +35,37 @@
  *     $ref: "#/components/schemas/AdminCollection"
  *   categories:
  *     type: array
- *     description: The parent's categories.
+ *     description: The product's categories.
  *     items:
  *       $ref: "#/components/schemas/AdminProductCategory"
  *   sales_channels:
  *     type: array
- *     description: The parent's sales channels.
+ *     description: The sales channels that the product is available in.
  *     items:
  *       $ref: "#/components/schemas/AdminSalesChannel"
  *   variants:
  *     type: array
- *     description: The parent's variants.
+ *     description: The product's variants.
  *     items:
  *       $ref: "#/components/schemas/AdminProductVariant"
  *   type:
  *     $ref: "#/components/schemas/AdminProductType"
  *   tags:
  *     type: array
- *     description: The parent's tags.
+ *     description: The product's tags.
  *     items:
  *       $ref: "#/components/schemas/AdminProductTag"
  *   length:
  *     type: number
  *     title: length
- *     description: The parent's length.
+ *     description: The product's length.
  *   title:
  *     type: string
  *     title: title
- *     description: The parent's title.
+ *     description: The product's title.
  *   status:
  *     type: string
- *     description: The parent's status.
+ *     description: The product's status.
  *     enum:
  *       - draft
  *       - proposed
@@ -73,100 +73,100 @@
  *       - rejected
  *   options:
  *     type: array
- *     description: The parent's options.
+ *     description: The product's options.
  *     items:
  *       $ref: "#/components/schemas/BaseProductOption"
  *   description:
  *     type: string
  *     title: description
- *     description: The parent's description.
+ *     description: The product's description.
  *   id:
  *     type: string
  *     title: id
- *     description: The parent's ID.
+ *     description: The product's ID.
  *   metadata:
  *     type: object
- *     description: The parent's metadata.
+ *     description: The product's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The parent's created at.
+ *     description: The date the product was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The parent's updated at.
+ *     description: The date the product was updated.
  *   handle:
  *     type: string
  *     title: handle
- *     description: The parent's handle.
+ *     description: The product's unique handle.
  *   subtitle:
  *     type: string
  *     title: subtitle
- *     description: The parent's subtitle.
+ *     description: The product's subtitle.
  *   is_giftcard:
  *     type: boolean
  *     title: is_giftcard
- *     description: The parent's is giftcard.
+ *     description: Whether the product is a gift card.
  *   thumbnail:
  *     type: string
  *     title: thumbnail
- *     description: The parent's thumbnail.
+ *     description: The product's thumbnail.
  *   width:
  *     type: number
  *     title: width
- *     description: The parent's width.
+ *     description: The product's width.
  *   weight:
  *     type: number
  *     title: weight
- *     description: The parent's weight.
+ *     description: The product's weight.
  *   height:
  *     type: number
  *     title: height
- *     description: The parent's height.
+ *     description: The product's height.
  *   origin_country:
  *     type: string
  *     title: origin_country
- *     description: The parent's origin country.
+ *     description: The product's origin country.
  *   hs_code:
  *     type: string
  *     title: hs_code
- *     description: The parent's hs code.
+ *     description: The product's HS code.
  *   mid_code:
  *     type: string
  *     title: mid_code
- *     description: The parent's mid code.
+ *     description: The product's MID code.
  *   material:
  *     type: string
  *     title: material
- *     description: The parent's material.
+ *     description: The product's material.
  *   collection_id:
  *     type: string
  *     title: collection_id
- *     description: The parent's collection id.
+ *     description: The ID of the collection that the product belongs to.
  *   type_id:
  *     type: string
  *     title: type_id
- *     description: The parent's type id.
+ *     description: The ID of the product's type.
  *   images:
  *     type: array
- *     description: The parent's images.
+ *     description: The product's images.
  *     items:
  *       $ref: "#/components/schemas/BaseProductImage"
  *   discountable:
  *     type: boolean
  *     title: discountable
- *     description: The parent's discountable.
+ *     description: Whether discounts can be applied on the product.
  *   external_id:
  *     type: string
  *     title: external_id
- *     description: The parent's external id.
+ *     description: The ID of a product in an external system, such as an ERP or CMS.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The parent's deleted at.
+ *     description: The date the product was deleted.
  * 
 */
 

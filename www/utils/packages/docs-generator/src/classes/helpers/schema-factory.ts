@@ -31,6 +31,12 @@ class SchemaFactory {
     BigNumber: {
       type: "string",
     },
+    IBigNumber: {
+      type: "number",
+    },
+    BigNumberValue: {
+      type: "number",
+    },
   }
   /**
    * Schemas used only for response types.
@@ -60,7 +66,7 @@ class SchemaFactory {
   public tryGetSchema(
     name: string,
     additionalData?: Partial<OpenApiSchema>,
-    type: "request" | "response" | "all" = "all"
+    type: "request" | "query" | "response" | "all" = "all"
   ): OpenApiSchema | undefined {
     const schemasFactory =
       type === "response"
@@ -79,7 +85,7 @@ class SchemaFactory {
       schema = Object.assign(schema, {
         ...additionalData,
         // keep the description
-        description: schema.description || additionalData.description
+        description: schema.description || additionalData.description,
       })
     }
 

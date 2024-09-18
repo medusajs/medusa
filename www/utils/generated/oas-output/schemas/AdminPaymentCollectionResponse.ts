@@ -1,7 +1,7 @@
 /**
  * @schema AdminPaymentCollectionResponse
  * type: object
- * description: SUMMARY
+ * description: The payment collection's details.
  * x-schemaName: AdminPaymentCollectionResponse
  * required:
  *   - payment_collection

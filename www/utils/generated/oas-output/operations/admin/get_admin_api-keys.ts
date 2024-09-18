@@ -1059,7 +1059,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/api-keys' \
- *       -H 'x-medusa-access-token: {api_token}'
+ *       -H 'Authorization: Bearer {access_token}'
  * tags:
  *   - Api Keys
  * responses:
