@@ -1,6 +1,6 @@
 import {
   CommonEvents,
-  eventBuilderFactory,
+  moduleEventBuilderFactory,
   Modules,
   PricingEvents,
 } from "@medusajs/utils"
