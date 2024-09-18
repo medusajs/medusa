@@ -85,5 +85,6 @@ export const generatedEditDates = {
   "app/advanced-development/module-links/remote-link/page.mdx": "2024-09-16T12:42:27.581Z",
   "app/advanced-development/modules/db-operations/page.mdx": "2024-09-16T14:38:29.150Z",
   "app/advanced-development/modules/multiple-services/page.mdx": "2024-09-16T14:41:32.975Z",
-  "app/advanced-development/modules/page.mdx": "2024-09-16T14:33:48.217Z"
+  "app/advanced-development/modules/page.mdx": "2024-09-16T14:33:48.217Z",
+  "app/debugging-and-testing/instrumentation/page.mdx": "2024-09-17T08:53:15.910Z"
 }

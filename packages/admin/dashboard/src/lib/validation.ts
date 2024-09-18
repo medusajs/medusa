@@ -1,6 +1,7 @@
 import i18next from "i18next"
 import { z } from "zod"
 import { castNumber } from "./cast-number"
+import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
 
 /**
  * Validates that an optional value is an integer.
@@ -45,3 +46,37 @@ export const metadataFormSchema = z.array(
     isIgnored: z.boolean().optional(),
   })
 )
+
+/**
+ * Validate subset of form fields
+ * @param form
+ * @param fields
+ * @param schema
+ */
+export function partialFormValidation<TForm extends FieldValues>(
+  form: UseFormReturn<TForm>,
+  fields: FieldPath<any>[],
+  schema: z.ZodSchema<any>
+) {
+  form.clearErrors(fields as any)
+
+  const values = fields.reduce((acc, key) => {
+    acc[key] = form.getValues(key as any)
+    return acc
+  }, {} as Record<string, unknown>)
+
+  const validationResult = schema.safeParse(values)
+
+  if (!validationResult.success) {
+    validationResult.error.errors.forEach(({ path, message, code }) => {
+      form.setError(path.join(".") as any, {
+        type: code,
+        message,
+      })
+    })
+
+    return false
+  }
+
+  return true
+}

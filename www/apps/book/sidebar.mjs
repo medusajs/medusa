@@ -443,6 +443,11 @@ export const sidebar = numberSidebarItems(
         },
         {
           type: "link",
+          path: "/debugging-and-testing/instrumentation",
+          title: "Instrumentation",
+        },
+        {
+          type: "link",
           path: "/debugging-and-testing/logging",
           title: "Logging",
         },

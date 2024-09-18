@@ -29,7 +29,7 @@ This workflow deletes one or more customer addresses.
 import { deleteCustomerAddressesWorkflow } from "@medusajs/core-flows"
 
 deleteCustomerAddressesWorkflow.hooks.addressesDeleted(
-	async (({ ids }, { container }) => {
+	(async ({ ids }, { container }) => {
 		//TODO
 	})
 )

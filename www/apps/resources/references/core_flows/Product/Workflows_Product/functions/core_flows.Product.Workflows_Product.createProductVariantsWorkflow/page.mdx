@@ -33,7 +33,7 @@ This workflow creates one or more product variants.
 import { createProductVariantsWorkflow } from "@medusajs/core-flows"
 
 createProductVariantsWorkflow.hooks.productVariantsCreated(
-	async (({ product_variants, additional_data }, { container }) => {
+	(async ({ product_variants, additional_data }, { container }) => {
 		//TODO
 	})
 )

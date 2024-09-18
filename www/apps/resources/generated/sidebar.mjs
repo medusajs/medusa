@@ -1286,8 +1286,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/customer/createAddresses",
-                        "title": "createAddresses",
+                        "path": "/references/customer/createCustomerAddresses",
+                        "title": "createCustomerAddresses",
                         "children": []
                       },
                       {
@@ -1310,8 +1310,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/customer/deleteAddresses",
-                        "title": "deleteAddresses",
+                        "path": "/references/customer/deleteCustomerAddresses",
+                        "title": "deleteCustomerAddresses",
                         "children": []
                       },
                       {
@@ -1334,16 +1334,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/customer/listAddresses",
-                        "title": "listAddresses",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "type": "link",
-                        "path": "/references/customer/listAndCountAddresses",
-                        "title": "listAndCountAddresses",
+                        "path": "/references/customer/listAndCountCustomerAddresses",
+                        "title": "listAndCountCustomerAddresses",
                         "children": []
                       },
                       {
@@ -1360,6 +1352,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/customer/listAndCountCustomers",
                         "title": "listAndCountCustomers",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/customer/listCustomerAddresses",
+                        "title": "listCustomerAddresses",
                         "children": []
                       },
                       {
@@ -1446,8 +1446,8 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/customer/updateAddresses",
-                        "title": "updateAddresses",
+                        "path": "/references/customer/updateCustomerAddresses",
+                        "title": "updateCustomerAddresses",
                         "children": []
                       },
                       {
@@ -1490,16 +1490,16 @@ export const generatedSidebar = [
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/customer/models/Address",
-                        "title": "Address",
+                        "path": "/references/customer/models/Customer",
+                        "title": "Customer",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "type": "link",
-                        "path": "/references/customer/models/Customer",
-                        "title": "Customer",
+                        "path": "/references/customer/models/CustomerAddress",
+                        "title": "CustomerAddress",
                         "children": []
                       },
                       {
@@ -3372,6 +3372,14 @@ export const generatedSidebar = [
                         "type": "link",
                         "path": "/references/order/receiveReturn",
                         "title": "receiveReturn",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "type": "link",
+                        "path": "/references/order/registerDelivery",
+                        "title": "registerDelivery",
                         "children": []
                       },
                       {
@@ -9895,6 +9903,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/removeCustomerAccountWorkflow",
+                    "title": "removeCustomerAccountWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/updateCustomerAddressesWorkflow",
                     "title": "updateCustomerAddressesWorkflow",
                     "children": []
@@ -10263,6 +10279,14 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
+                    "path": "/references/medusa-workflows/markFulfillmentAsDeliveredWorkflow",
+                    "title": "markFulfillmentAsDeliveredWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
                     "path": "/references/medusa-workflows/updateFulfillmentWorkflow",
                     "title": "updateFulfillmentWorkflow",
                     "children": []
@@ -10433,6 +10457,14 @@ export const generatedSidebar = [
                     "path": "/references/medusa-workflows/steps/validateShipmentStep",
                     "title": "validateShipmentStep",
                     "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/validateFulfillmentDeliverabilityStep",
+                    "title": "validateFulfillmentDeliverabilityStep",
+                    "children": []
                   }
                 ],
                 "loaded": true
@@ -10556,14 +10588,6 @@ export const generatedSidebar = [
                     "loaded": true,
                     "isPathHref": true,
                     "type": "link",
-                    "path": "/references/medusa-workflows/steps/deleteInventoryLevelsFromItemAndLocationsStep",
-                    "title": "deleteInventoryLevelsFromItemAndLocationsStep",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
                     "path": "/references/medusa-workflows/steps/deleteInventoryLevelsStep",
                     "title": "deleteInventoryLevelsStep",
                     "children": []
@@ -10598,6 +10622,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/validateInventoryLocationsStep",
                     "title": "validateInventoryLocationsStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/validateInventoryLevelsDelete",
+                    "title": "validateInventoryLevelsDelete",
                     "children": []
                   }
                 ],
@@ -11081,6 +11113,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/getOrdersListWorkflow",
                     "title": "getOrdersListWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/markOrderFulfillmentAsDeliveredWorkflow",
+                    "title": "markOrderFulfillmentAsDeliveredWorkflow",
                     "children": []
                   },
                   {
@@ -11968,6 +12008,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/orderEditUpdateItemQuantityValidationStep",
                     "title": "orderEditUpdateItemQuantityValidationStep",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/orderFulfillmentDeliverablilityValidationStep",
+                    "title": "orderFulfillmentDeliverablilityValidationStep",
                     "children": []
                   },
                   {
@@ -14088,6 +14136,14 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/deleteUsersWorkflow",
                     "title": "deleteUsersWorkflow",
+                    "children": []
+                  },
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "type": "link",
+                    "path": "/references/medusa-workflows/removeUserAccountWorkflow",
+                    "title": "removeUserAccountWorkflow",
                     "children": []
                   },
                   {

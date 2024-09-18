@@ -26,6 +26,7 @@ import {
 } from "../../../../../hooks/api/claims"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { sdk } from "../../../../../lib/client"
+import { OutboundShippingPlaceholder } from "../../../common/placeholders"
 import { AddClaimOutboundItemsTable } from "../add-claim-outbound-items-table"
 import { ClaimOutboundItem } from "./claim-outbound-item"
 import { ItemPlaceholder } from "./item-placeholder"
@@ -405,6 +406,7 @@ export const ClaimOutboundSection = ({
                           value: so.id,
                         }))}
                         disabled={!shipping_options.length}
+                        noResultsPlaceholder={<OutboundShippingPlaceholder />}
                       />
                     </Form.Control>
                   </Form.Item>
