@@ -223,7 +223,7 @@ export default class ProductModuleService
     const productVariantsWithOptions =
       ProductModuleService.assignOptionsToVariants(data, productOptions)
 
-    ProductModuleService.validateUniqueOptionsCombinations(
+    ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
       productVariantsWithOptions as any,
       variants
     )
@@ -386,7 +386,7 @@ export default class ProductModuleService
         productOptions
       )
 
-    ProductModuleService.validateUniqueOptionsCombinations(
+    ProductModuleService.checkIfVariantWithOptionsAlreadyExists(
       productVariantsWithOptions as any,
       allVariants
     )
@@ -1599,7 +1599,7 @@ export default class ProductModuleService
               allOptions
             )
 
-          ProductModuleService.validateUpsertedVariantsHaveUniqueOptions(
+          ProductModuleService.checkIfVariantsHaveUniqueOptionsCombinations(
             productVariantsWithOptions as any
           )
 
@@ -1839,7 +1839,14 @@ export default class ProductModuleService
     return variantsWithOptions
   }
 
-  protected static validateUniqueOptionsCombinations(
+  /**
+   * Validate that `data` doesn't create or update a variant to have same options combination
+   * as an existing variant on the product.
+   * @param data - create / update payloads
+   * @param variants - existing variants
+   * @protected
+   */
+  protected static checkIfVariantWithOptionsAlreadyExists(
     data: ((
       | ProductTypes.CreateProductVariantDTO
       | ProductTypes.UpdateProductVariantDTO
@@ -1874,7 +1881,12 @@ export default class ProductModuleService
     }
   }
 
-  protected static validateUpsertedVariantsHaveUniqueOptions(
+  /**
+   * Validate that array of variants that we are upserting doesn't have variants with the same options.
+   * @param variants -
+   * @protected
+   */
+  protected static checkIfVariantsHaveUniqueOptionsCombinations(
     variants: (ProductTypes.UpdateProductVariantDTO & {
       options: { id: string }[]
     })[]
