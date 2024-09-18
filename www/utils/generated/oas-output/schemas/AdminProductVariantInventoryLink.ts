@@ -8,25 +8,25 @@
  *   - inventoryService
  * properties:
  *   productService:
- *    type: object
- *    description: The product variant's details.
- *    required:
- *      - variant_id
- *    properties:
- *      variant_id:
- *        type: string
- *        title: variant_id
- *        description: The ID of the product variant.
- *    ventoryService:
- *    type: object
- *    description: The inventory item's details.
- *    required:
- *      - inventory_item_id
- *    properties:
- *      inventory_item_id:
- *        type: string
- *        title: inventory_item_id
- *        description: The ID of the inventory item.
+ *     type: object
+ *     description: The product variant's details.
+ *     required:
+ *       - variant_id
+ *     properties:
+ *       variant_id:
+ *         type: string
+ *         title: variant_id
+ *         description: The ID of the product variant.
+ *   inventoryService:
+ *     type: object
+ *     description: The inventory item's details.
+ *     required:
+ *       - inventory_item_id
+ *     properties:
+ *       inventory_item_id:
+ *         type: string
+ *         title: inventory_item_id
+ *         description: The ID of the inventory item.
  * 
 */
 
