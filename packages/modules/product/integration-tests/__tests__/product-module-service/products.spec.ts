@@ -1,4 +1,5 @@
 import {
+  CreateProductVariantDTO,
   IProductModuleService,
   ProductCategoryDTO,
   ProductTagDTO,
@@ -536,42 +537,52 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(error).toEqual(`Product with id: does-not-exist was not found`)
         })
 
-        it("should update, create and delete variants", async () => {
-          const updateData = {
-            id: productTwo.id,
-            // Note: VariantThree is already assigned to productTwo, that should be deleted
-            variants: [
+        it("should throw because variant doesn't have all options set", async () => {
+          let error
+
+          try {
+            await service.createProducts([
               {
-                id: productTwo.variants[0].id,
-                title: "updated-variant",
+                title: "Product with variants and options",
+                options: [
+                  { title: "opt1", values: ["1", "2"] },
+                  { title: "opt2", values: ["3", "4"] },
+                ],
+                variants: [
+                  {
+                    title: "missing option",
+                    options: { opt1: "1" },
+                  },
+                ],
               },
-              {
-                title: "created-variant",
-              },
-            ],
+            ])
+          } catch (e) {
+            error = e
           }
 
-          await service.upsertProducts([updateData])
+          expect(error.message).toEqual(
+            `Variant "missing option" doesn't have "opt2" option provided.`
+          )
+        })
 
-          const product = await service.retrieveProduct(updateData.id, {
-            relations: ["variants"],
-          })
+        it("should fail to create variant that don't have all option values set", async () => {
+          jest.clearAllMocks()
 
-          expect(product.variants).toHaveLength(2)
-          expect(product).toEqual(
-            expect.objectContaining({
-              id: expect.any(String),
-              variants: expect.arrayContaining([
-                expect.objectContaining({
-                  id: productTwo.variants[0].id,
-                  title: "updated-variant",
-                }),
-                expect.objectContaining({
-                  id: expect.any(String),
-                  title: "created-variant",
-                }),
-              ]),
-            })
+          let error
+
+          const data: CreateProductVariantDTO = {
+            title: "variant 3",
+            product_id: productOne.id,
+            options: { size: "small" },
+          }
+
+          try {
+            await service.createProductVariants(data)
+          } catch (e) {
+            error = e
+          }
+          expect(error.message).toEqual(
+            `Variant variant 3 doesn't have "color" option provided.`
           )
         })
 

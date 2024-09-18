@@ -1534,7 +1534,7 @@ export default class ProductModuleService
           d,
           sharedContext
         )
-        this.validateProductPayload(normalized)
+        this.validateProductUpdatePayload(normalized)
         return normalized
       })
     )
@@ -1648,7 +1648,7 @@ export default class ProductModuleService
           if (!variant.options?.[option.title]) {
             throw new MedusaError(
               MedusaError.Types.INVALID_DATA,
-              `Variant ${variant.title} doesn't have "${option.title}" option provided.`
+              `Variant "${variant.title}" doesn't have "${option.title}" option provided.`
             )
           }
         })

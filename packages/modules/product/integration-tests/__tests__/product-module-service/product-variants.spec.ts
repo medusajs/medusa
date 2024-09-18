@@ -18,6 +18,7 @@ import {
   MockEventBusService,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
+import * as console from "node:console"
 
 jest.setTimeout(30000)
 
