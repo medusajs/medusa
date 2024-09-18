@@ -1,11 +1,11 @@
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { IndexTypes } from "@medusajs/types"
 import { defaultCurrencies, Modules } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { setTimeout } from "timers/promises"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
-import { setTimeout } from "timers/promises"
 
 jest.setTimeout(120000)
 
@@ -48,6 +48,9 @@ medusaIntegrationTestRunner({
             },
           })),
         }
+
+        // Timeout to allow indexing to finish
+        await setTimeout(2000)
 
         await api
           .post("/admin/products", payload, adminHeaders)
@@ -111,6 +114,9 @@ medusaIntegrationTestRunner({
           .catch((err) => {
             console.log(err)
           })
+
+        // Timeout to allow indexing to finish
+        await setTimeout(2000)
 
         const [results, count] = await indexEngine.queryAndCount(
           {
