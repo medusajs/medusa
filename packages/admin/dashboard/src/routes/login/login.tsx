@@ -8,7 +8,7 @@ import * as z from "zod"
 import { Divider } from "../../components/common/divider"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
-import { useSignInWithEmailPassword } from "../../hooks/api/auth"
+import { useSignInWithEmailPass } from "../../hooks/api/auth"
 
 import after from "virtual:medusa/widgets/login/after"
 import before from "virtual:medusa/widgets/login/before"
@@ -34,7 +34,7 @@ export const Login = () => {
     },
   })
 
-  const { mutateAsync, isPending } = useSignInWithEmailPassword()
+  const { mutateAsync, isPending } = useSignInWithEmailPass()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
     try {
