@@ -6,6 +6,7 @@ import {
 } from "@medusajs/types"
 import {
   MikroOrmBaseRepository as BaseRepository,
+  ContainerRegistrationKeys,
   Modules,
 } from "@medusajs/utils"
 import {
@@ -20,7 +21,7 @@ type InjectedDependencies = {
   [Modules.EVENT_BUS]: IEventBusModuleService
   storageProviderCtr: StorageProvider
   storageProviderCtrOptions: unknown
-  remoteQuery: RemoteQueryFunction
+  [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
   baseRepository: BaseRepository
 }
 
