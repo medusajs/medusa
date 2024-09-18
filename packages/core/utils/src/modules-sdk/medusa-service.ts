@@ -13,7 +13,6 @@ import {
 import {
   camelToSnakeCase,
   isString,
-  kebabCase,
   lowerCaseFirst,
   mapObjectTo,
   MapToConfig,
@@ -194,7 +193,7 @@ export function MedusaService<
           const models = await service.create(serviceData, sharedContext)
           const response = Array.isArray(data) ? models : models[0]
 
-          service.aggregatedEvents({
+          klassPrototype.aggregatedEvents.bind(klassPrototype)({
             action: CommonEvents.CREATED,
             object: camelToSnakeCase(modelName).toLowerCase(),
             data: response,
@@ -217,6 +216,13 @@ export function MedusaService<
           const service = this.__container__[serviceRegistrationName]
           const models = await service.update(serviceData, sharedContext)
           const response = Array.isArray(data) ? models : models[0]
+
+          klassPrototype.aggregatedEvents.bind(klassPrototype)({
+            action: CommonEvents.UPDATED,
+            object: camelToSnakeCase(modelName).toLowerCase(),
+            data: response,
+            context: sharedContext,
+          })
 
           return await this.baseRepository_.serialize<T | T[]>(response)
         }
@@ -272,17 +278,15 @@ export function MedusaService<
             sharedContext
           )
 
-          await this.eventBusModuleService_?.emit(
-            primaryKeyValues_.map((primaryKeyValue) => ({
-              name: `${kebabCase(modelName)}.deleted`,
+          primaryKeyValues_.map((primaryKeyValue) =>
+            klassPrototype.aggregatedEvents.bind(klassPrototype)({
+              action: CommonEvents.DELETED,
+              object: camelToSnakeCase(modelName).toLowerCase(),
               data: isString(primaryKeyValue)
                 ? { id: primaryKeyValue }
                 : primaryKeyValue,
-              metadata: { source: "", action: "", object: "" },
-            })),
-            {
-              internal: true,
-            }
+              context: sharedContext,
+            })
           )
         }
 
@@ -300,24 +304,9 @@ export function MedusaService<
             ? primaryKeyValues
             : [primaryKeyValues]
 
-          const [models, cascadedModelsMap] = await this.__container__[
+          const [, cascadedModelsMap] = await this.__container__[
             serviceRegistrationName
           ].softDelete(primaryKeyValues_, sharedContext)
-
-          const softDeletedModels = await this.baseRepository_.serialize<T[]>(
-            models
-          )
-
-          await this.eventBusModuleService_?.emit(
-            softDeletedModels.map(({ id }) => ({
-              name: `${kebabCase(modelName)}.deleted`,
-              metadata: { source: "", action: "", object: "" },
-              data: { id },
-            })),
-            {
-              internal: true,
-            }
-          )
 
           // Map internal table/column names to their respective external linkable keys
           // eg: product.id = product_id, variant.id = variant_id
@@ -328,6 +317,29 @@ export function MedusaService<
               pick: config.returnLinkableKeys,
             }
           )
+
+          if (mappedCascadedModelsMap) {
+            const joinerConfig = (
+              typeof this.__joinerConfig === "function"
+                ? this.__joinerConfig()
+                : this.__joinerConfig
+            ) as ModuleJoinerConfig
+            Object.entries(mappedCascadedModelsMap).forEach(
+              ([linkableKey, ids]) => {
+                const entity = joinerConfig.linkableKeys?.[linkableKey]!
+                if (entity) {
+                  const linkableKeyEntity =
+                    camelToSnakeCase(entity).toLowerCase()
+                  klassPrototype.aggregatedEvents.bind(klassPrototype)({
+                    action: CommonEvents.DELETED,
+                    object: linkableKeyEntity,
+                    data: { id: ids },
+                    context: sharedContext,
+                  })
+                }
+              }
+            )
+          }
 
           return mappedCascadedModelsMap ? mappedCascadedModelsMap : void 0
         }
@@ -346,7 +358,7 @@ export function MedusaService<
             ? primaryKeyValues
             : [primaryKeyValues]
 
-          const [_, cascadedModelsMap] = await this.__container__[
+          const [, cascadedModelsMap] = await this.__container__[
             serviceRegistrationName
           ].restore(primaryKeyValues_, sharedContext)
 
@@ -360,6 +372,29 @@ export function MedusaService<
               pick: config.returnLinkableKeys,
             }
           )
+
+          if (mappedCascadedModelsMap) {
+            const joinerConfig = (
+              typeof this.__joinerConfig === "function"
+                ? this.__joinerConfig()
+                : this.__joinerConfig
+            ) as ModuleJoinerConfig
+            Object.entries(mappedCascadedModelsMap).forEach(
+              ([linkableKey, ids]) => {
+                const entity = joinerConfig.linkableKeys?.[linkableKey]!
+                if (entity) {
+                  const linkableKeyEntity =
+                    camelToSnakeCase(entity).toLowerCase()
+                  klassPrototype.aggregatedEvents.bind(klassPrototype)({
+                    action: CommonEvents.CREATED,
+                    object: linkableKeyEntity,
+                    data: { id: ids },
+                    context: sharedContext,
+                  })
+                }
+              }
+            )
+          }
 
           return mappedCascadedModelsMap ? mappedCascadedModelsMap : void 0
         }
