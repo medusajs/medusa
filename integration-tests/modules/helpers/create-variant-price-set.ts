@@ -24,7 +24,7 @@ export const createVariantPriceSet = async ({
 }): Promise<PriceSetDTO> => {
   const remoteLink = container.resolve("remoteLink")
   const pricingModuleService: IPricingModuleService = container.resolve(
-    "pricingModuleService"
+    Modules.PRICING
   )
 
   const priceSet = await pricingModuleService.createPriceSets({

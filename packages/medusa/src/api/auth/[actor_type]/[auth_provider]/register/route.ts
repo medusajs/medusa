@@ -6,7 +6,7 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
-  ModuleRegistrationName,
+  Modules,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { generateJwtTokenForAuthIdentity } from "../../../utils/generate-jwt-token"
@@ -17,9 +17,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     ContainerRegistrationKeys.CONFIG_MODULE
   )
 
-  const service: IAuthModuleService = req.scope.resolve(
-    ModuleRegistrationName.AUTH
-  )
+  const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
 
   const authData = {
     url: req.url,

@@ -2,6 +2,7 @@ import { Prettify } from "../common"
 import { RemoteJoinerOptions, RemoteJoinerQuery } from "../joiner"
 import { RemoteQueryEntryPoints } from "./remote-query-entry-points"
 import {
+  RemoteQueryInput,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
 } from "./remote-query-object-from-string"
@@ -32,7 +33,7 @@ export type GraphResultSet<TEntry extends string> = {
  */
 export type QueryGraphFunction = {
   <const TEntry extends string>(
-    queryConfig: RemoteQueryObjectConfig<TEntry>,
+    queryConfig: RemoteQueryInput<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<Prettify<GraphResultSet<TEntry>>>
 }

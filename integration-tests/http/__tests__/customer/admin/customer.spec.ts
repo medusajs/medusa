@@ -1,5 +1,5 @@
 import { IAuthModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
@@ -443,9 +443,7 @@ medusaIntegrationTestRunner({
 
         const { auth_identity_id } = jwt.decode(registeredCustomerToken)
 
-        const authModule: IAuthModuleService = container.resolve(
-          ModuleRegistrationName.AUTH
-        )
+        const authModule: IAuthModuleService = container.resolve(Modules.AUTH)
 
         const authIdentity = await authModule.retrieveAuthIdentity(
           auth_identity_id

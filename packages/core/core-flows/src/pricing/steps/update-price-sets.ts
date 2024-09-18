@@ -1,7 +1,7 @@
 import { IPricingModuleService, PricingTypes } from "@medusajs/types"
 import {
   MedusaError,
-  ModuleRegistrationName,
+  Modules,
   getSelectsAndRelationsFromObjectArray,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
@@ -23,7 +23,7 @@ export const updatePriceSetsStep = createStep(
   updatePriceSetsStepId,
   async (data: UpdatePriceSetsStepInput, { container }) => {
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     if ("price_sets" in data) {
@@ -65,7 +65,7 @@ export const updatePriceSetsStep = createStep(
   },
   async (revertInput, { container }) => {
     const pricingModule = container.resolve<IPricingModuleService>(
-      ModuleRegistrationName.PRICING
+      Modules.PRICING
     )
 
     if (!revertInput) {

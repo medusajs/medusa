@@ -77,7 +77,9 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: curl '{backend_url}/store/shipping-options'
+ *     source: |-
+ *       curl '{backend_url}/store/shipping-options' \
+ *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  * tags:
  *   - Shipping Options
  * responses:

@@ -1,8 +1,7 @@
+import { logger } from "@medusajs/framework"
+import { Modules } from "@medusajs/utils"
 import express from "express"
 import { track } from "medusa-telemetry"
-
-import { logger } from "@medusajs/framework"
-import { ModuleRegistrationName } from "@medusajs/utils"
 import loaders from "../loaders"
 
 export default async function ({
@@ -27,8 +26,8 @@ export default async function ({
       expressApp: app,
     })
 
-    const userService = container.resolve(ModuleRegistrationName.USER)
-    const authService = container.resolve(ModuleRegistrationName.AUTH)
+    const userService = container.resolve(Modules.USER)
+    const authService = container.resolve(Modules.AUTH)
 
     const provider = "emailpass"
 

@@ -1,15 +1,14 @@
 import { RemoteLink } from "@medusajs/modules-sdk"
 import { IPaymentModuleService, RemoteQueryFunction } from "@medusajs/types"
 import {
-  arrayDifference,
   ContainerRegistrationKeys,
   LINKS,
   MedusaError,
-  ModuleRegistrationName,
   Modules,
+  arrayDifference,
   promiseAll,
 } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface SetRegionsPaymentProvidersStepInput {
   input: {
@@ -104,7 +103,7 @@ export const setRegionsPaymentProvidersStep = createStep(
     }
 
     const paymentService = container.resolve<IPaymentModuleService>(
-      ModuleRegistrationName.PAYMENT
+      Modules.PAYMENT
     )
     const remoteLink = container.resolve<RemoteLink>(
       ContainerRegistrationKeys.REMOTE_LINK

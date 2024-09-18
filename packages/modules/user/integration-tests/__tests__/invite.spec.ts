@@ -31,7 +31,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
     jwt_secret: "test",
   },
   injectedDependencies: {
-    eventBusModuleService: new MockEventBusService(),
+    [Modules.EVENT_BUS]: new MockEventBusService(),
   },
   testSuite: ({ service }) => {
     describe("UserModuleService - Invite", () => {

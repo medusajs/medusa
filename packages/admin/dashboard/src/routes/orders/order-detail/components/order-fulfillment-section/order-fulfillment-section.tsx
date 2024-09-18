@@ -22,7 +22,10 @@ import { Link, useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { useCancelOrderFulfillment } from "../../../../../hooks/api/orders"
+import {
+  useCancelOrderFulfillment,
+  useMarkOrderFulfillmentAsDelivered,
+} from "../../../../../hooks/api/orders"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
@@ -183,6 +186,10 @@ const Fulfillment = ({
     statusText = "Canceled"
     statusColor = "red"
     statusTimestamp = fulfillment.canceled_at
+  } else if (fulfillment.delivered_at) {
+    statusText = "Delivered"
+    statusColor = "green"
+    statusTimestamp = fulfillment.delivered_at
   } else if (fulfillment.shipped_at) {
     statusText = "Shipped"
     statusColor = "green"
@@ -190,8 +197,41 @@ const Fulfillment = ({
   }
 
   const { mutateAsync } = useCancelOrderFulfillment(order.id, fulfillment.id)
+  const { mutateAsync: markAsDelivered } = useMarkOrderFulfillmentAsDelivered(
+    order.id,
+    fulfillment.id
+  )
 
-  const showShippingButton = !fulfillment.canceled_at && !fulfillment.shipped_at
+  const showShippingButton =
+    !fulfillment.canceled_at &&
+    !fulfillment.shipped_at &&
+    !fulfillment.delivered_at
+  const showDeliveryButton =
+    !fulfillment.canceled_at && !fulfillment.delivered_at
+
+  const handleMarkAsDelivered = async () => {
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("orders.fulfillment.markAsDeliveredWarning"),
+      confirmText: t("actions.continue"),
+      cancelText: t("actions.cancel"),
+      variant: "confirmation",
+    })
+
+    if (res) {
+      await markAsDelivered(
+        {},
+        {
+          onSuccess: () => {
+            toast.success(t("orders.fulfillment.toast.fulfillmentDelivered"))
+          },
+          onError: (e) => {
+            toast.error(e.message)
+          },
+        }
+      )
+    }
+  }
 
   const handleCancel = async () => {
     if (fulfillment.shipped_at) {
@@ -343,14 +383,23 @@ const Fulfillment = ({
           )}
         </div>
       </div>
-      {showShippingButton && (
-        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
-          <Button
-            onClick={() => navigate(`./${fulfillment.id}/create-shipment`)}
-            variant="secondary"
-          >
-            {t("orders.fulfillment.markAsShipped")}
-          </Button>
+
+      {(showShippingButton || showDeliveryButton) && (
+        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4 gap-x-2">
+          {showDeliveryButton && (
+            <Button onClick={handleMarkAsDelivered} variant="secondary">
+              {t("orders.fulfillment.markAsDelivered")}
+            </Button>
+          )}
+
+          {showShippingButton && (
+            <Button
+              onClick={() => navigate(`./${fulfillment.id}/create-shipment`)}
+              variant="secondary"
+            >
+              {t("orders.fulfillment.markAsShipped")}
+            </Button>
+          )}
         </div>
       )}
     </Container>

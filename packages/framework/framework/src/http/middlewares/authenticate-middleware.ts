@@ -1,8 +1,5 @@
 import { ApiKeyDTO, IApiKeyModuleService } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  ModuleRegistrationName,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import { JwtPayload, verify } from "jsonwebtoken"
 import { ConfigModule } from "../../config"
@@ -139,7 +136,7 @@ const getApiKeyInfo = async (req: MedusaRequest): Promise<ApiKeyDTO | null> => {
   }
 
   const apiKeyModule = req.scope.resolve(
-    ModuleRegistrationName.API_KEY
+    Modules.API_KEY
   ) as IApiKeyModuleService
   try {
     const apiKey = await apiKeyModule.authenticate(normalizedToken)

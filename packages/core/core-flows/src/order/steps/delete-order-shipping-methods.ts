@@ -1,5 +1,5 @@
 import { IOrderModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { Modules } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export interface DeleteOrderShippingMethodsStepInput {
@@ -12,9 +12,7 @@ export interface DeleteOrderShippingMethodsStepInput {
 export const deleteOrderShippingMethods = createStep(
   "delete-order-shipping-methods",
   async (input: DeleteOrderShippingMethodsStepInput, { container }) => {
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     const deleted = await service.softDeleteOrderShippingMethods(input.ids)
 
@@ -25,9 +23,7 @@ export const deleteOrderShippingMethods = createStep(
       return
     }
 
-    const service = container.resolve<IOrderModuleService>(
-      ModuleRegistrationName.ORDER
-    )
+    const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
     await service.restoreOrderShippingMethods(ids)
   }

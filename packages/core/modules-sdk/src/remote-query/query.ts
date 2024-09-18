@@ -1,10 +1,10 @@
-import { RemoteQuery } from "./remote-query"
 import {
   GraphResultSet,
   RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteQueryFunction,
   RemoteQueryFunctionReturnPagination,
+  RemoteQueryInput,
   RemoteQueryObjectConfig,
   RemoteQueryObjectFromStringResult,
 } from "@medusajs/types"
@@ -13,6 +13,8 @@ import {
   MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { RemoteQuery } from "./remote-query"
+import { toRemoteQuery } from "./to-remote-query"
 
 /**
  * API wrapper around the remoteQuery
@@ -25,7 +27,7 @@ export class Query {
    */
   static traceGraphQuery?: (
     queryFn: () => Promise<any>,
-    queryOptions: RemoteQueryObjectConfig<any>
+    queryOptions: RemoteQueryInput<any>
   ) => Promise<any>
 
   /**
@@ -58,14 +60,16 @@ export class Query {
 
   #unwrapQueryConfig(
     config:
-      | RemoteQueryObjectConfig<any>
       | RemoteQueryObjectFromStringResult<any>
+      | RemoteQueryObjectConfig<any>
       | RemoteJoinerQuery
   ): object {
     let normalizedQuery: any = config
 
     if ("__value" in config) {
       normalizedQuery = config.__value
+    } else if ("entity" in normalizedQuery) {
+      normalizedQuery = toRemoteQuery(normalizedQuery)
     } else if (
       "entryPoint" in normalizedQuery ||
       "service" in normalizedQuery
@@ -95,6 +99,7 @@ export class Query {
 
   async query(
     queryOptions:
+      | RemoteQueryInput<any>
       | RemoteQueryObjectConfig<any>
       | RemoteQueryObjectFromStringResult<any>
       | RemoteJoinerQuery,
@@ -110,7 +115,7 @@ export class Query {
     const config = this.#unwrapQueryConfig(queryOptions)
     if (Query.traceRemoteQuery) {
       return await Query.traceRemoteQuery(
-        async () => this.#remoteQuery.query(config, undefined, options),
+        async () => await this.#remoteQuery.query(config, undefined, options),
         queryOptions
       )
     }
@@ -133,10 +138,10 @@ export class Query {
    * returns a result set
    */
   async graph<const TEntry extends string>(
-    queryOptions: RemoteQueryObjectConfig<TEntry>,
+    queryOptions: RemoteQueryInput<TEntry>,
     options?: RemoteJoinerOptions
   ): Promise<GraphResultSet<TEntry>> {
-    const normalizedQuery = remoteQueryObjectFromString(queryOptions).__value
+    const normalizedQuery = toRemoteQuery<TEntry>(queryOptions)
     let response:
       | any[]
       | { rows: any[]; metadata: RemoteQueryFunctionReturnPagination }
@@ -148,8 +153,8 @@ export class Query {
     if (Query.traceGraphQuery) {
       response = await Query.traceGraphQuery(
         async () =>
-          this.#remoteQuery.query(normalizedQuery, undefined, options),
-        queryOptions
+          await this.#remoteQuery.query(normalizedQuery, undefined, options),
+        queryOptions as RemoteQueryInput<any>
       )
     } else {
       response = await this.#remoteQuery.query(
@@ -167,7 +172,7 @@ export class Query {
  * API wrapper around the remoteQuery with backward compatibility support
  * @param remoteQuery
  */
-export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
+export function createQuery(remoteQuery: RemoteQuery) {
   const query = new Query(remoteQuery)
 
   function backwardCompatibleQuery(...args: any[]) {
@@ -177,5 +182,5 @@ export function createQuery(remoteQuery: RemoteQuery): RemoteQueryFunction {
   backwardCompatibleQuery.graph = query.graph.bind(query)
   backwardCompatibleQuery.gql = query.gql.bind(query)
 
-  return backwardCompatibleQuery
+  return backwardCompatibleQuery as Omit<RemoteQueryFunction, symbol>
 }

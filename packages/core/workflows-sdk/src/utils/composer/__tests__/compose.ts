@@ -5,7 +5,7 @@ import {
   WorkflowScheduler,
 } from "@medusajs/orchestration"
 import {
-  ModuleRegistrationName,
+  Modules,
   composeMessage,
   createMedusaContainer,
   promiseAll,
@@ -2105,7 +2105,7 @@ describe("Workflow composer", function () {
   it("should emit grouped events once the workflow is executed and finished", async () => {
     const container = createMedusaContainer()
     container.register({
-      [ModuleRegistrationName.EVENT_BUS]: asValue({
+      [Modules.EVENT_BUS]: asValue({
         releaseGroupedEvents: jest
           .fn()
           .mockImplementation(() => Promise.resolve()),
@@ -2117,9 +2117,7 @@ describe("Workflow composer", function () {
       .fn()
       .mockImplementation(
         async (input, { context: stepContext, container }) => {
-          const eventBusService = container.resolve(
-            ModuleRegistrationName.EVENT_BUS
-          )
+          const eventBusService = container.resolve(Modules.EVENT_BUS)
 
           await eventBusService.emit(
             "event1",
@@ -2149,7 +2147,7 @@ describe("Workflow composer", function () {
     expect(mockStep1Fn).toHaveBeenCalledTimes(1)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
 
-    const eventBusMock = container.resolve(ModuleRegistrationName.EVENT_BUS)
+    const eventBusMock = container.resolve(Modules.EVENT_BUS)
     expect(eventBusMock.emit).toHaveBeenCalledTimes(1)
     expect(eventBusMock.emit.mock.calls[0][0]).toEqual("event1")
 
@@ -2162,7 +2160,7 @@ describe("Workflow composer", function () {
   it("should clear grouped events on fail state", async () => {
     const container = createMedusaContainer()
     container.register({
-      [ModuleRegistrationName.EVENT_BUS]: asValue({
+      [Modules.EVENT_BUS]: asValue({
         releaseGroupedEvents: jest
           .fn()
           .mockImplementation(() => Promise.resolve()),
@@ -2177,9 +2175,7 @@ describe("Workflow composer", function () {
       .fn()
       .mockImplementation(
         async (input, { context: stepContext, container }) => {
-          const eventBusService = container.resolve(
-            ModuleRegistrationName.EVENT_BUS
-          )
+          const eventBusService = container.resolve(Modules.EVENT_BUS)
 
           await eventBusService.emit(
             "event1",
@@ -2213,7 +2209,7 @@ describe("Workflow composer", function () {
       throwOnError: false,
     })
 
-    const eventBusMock = container.resolve(ModuleRegistrationName.EVENT_BUS)
+    const eventBusMock = container.resolve(Modules.EVENT_BUS)
 
     expect(eventBusMock.emit).toHaveBeenCalledTimes(1)
     expect(eventBusMock.releaseGroupedEvents).toHaveBeenCalledTimes(0)

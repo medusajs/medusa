@@ -1,9 +1,5 @@
 import { ModuleDefinition } from "@medusajs/types"
-import {
-  ModuleRegistrationName,
-  Modules,
-  upperCaseFirst,
-} from "@medusajs/utils"
+import { Modules, upperCaseFirst } from "@medusajs/utils"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 export const MODULE_PACKAGE_NAMES = {
@@ -38,9 +34,8 @@ export const ModulesDefinition: {
 } = {
   [Modules.EVENT_BUS]: {
     key: Modules.EVENT_BUS,
-    registrationName: ModuleRegistrationName.EVENT_BUS,
     defaultPackage: MODULE_PACKAGE_NAMES[Modules.EVENT_BUS],
-    label: upperCaseFirst(ModuleRegistrationName.EVENT_BUS),
+    label: upperCaseFirst(Modules.EVENT_BUS),
     isRequired: true,
     isQueryable: false,
     dependencies: ["logger"],
@@ -51,12 +46,11 @@ export const ModulesDefinition: {
   },
   [Modules.STOCK_LOCATION]: {
     key: Modules.STOCK_LOCATION,
-    registrationName: ModuleRegistrationName.STOCK_LOCATION,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.STOCK_LOCATION),
+    label: upperCaseFirst(Modules.STOCK_LOCATION),
     isRequired: false,
     isQueryable: true,
-    dependencies: [ModuleRegistrationName.EVENT_BUS],
+    dependencies: [Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -64,12 +58,11 @@ export const ModulesDefinition: {
   },
   [Modules.INVENTORY]: {
     key: Modules.INVENTORY,
-    registrationName: ModuleRegistrationName.INVENTORY,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.INVENTORY),
+    label: upperCaseFirst(Modules.INVENTORY),
     isRequired: false,
     isQueryable: true,
-    dependencies: [ModuleRegistrationName.EVENT_BUS],
+    dependencies: [Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -77,9 +70,8 @@ export const ModulesDefinition: {
   },
   [Modules.CACHE]: {
     key: Modules.CACHE,
-    registrationName: ModuleRegistrationName.CACHE,
     defaultPackage: MODULE_PACKAGE_NAMES[Modules.CACHE],
-    label: upperCaseFirst(ModuleRegistrationName.CACHE),
+    label: upperCaseFirst(Modules.CACHE),
     isRequired: true,
     isQueryable: false,
     defaultModuleDeclaration: {
@@ -89,12 +81,11 @@ export const ModulesDefinition: {
   },
   [Modules.PRODUCT]: {
     key: Modules.PRODUCT,
-    registrationName: ModuleRegistrationName.PRODUCT,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.PRODUCT),
+    label: upperCaseFirst(Modules.PRODUCT),
     isRequired: false,
     isQueryable: true,
-    dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
+    dependencies: [Modules.EVENT_BUS, "logger"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -102,12 +93,11 @@ export const ModulesDefinition: {
   },
   [Modules.PRICING]: {
     key: Modules.PRICING,
-    registrationName: ModuleRegistrationName.PRICING,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.PRICING),
+    label: upperCaseFirst(Modules.PRICING),
     isRequired: false,
     isQueryable: true,
-    dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
+    dependencies: [Modules.EVENT_BUS, "logger"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -115,9 +105,8 @@ export const ModulesDefinition: {
   },
   [Modules.PROMOTION]: {
     key: Modules.PROMOTION,
-    registrationName: ModuleRegistrationName.PROMOTION,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.PROMOTION),
+    label: upperCaseFirst(Modules.PROMOTION),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -128,9 +117,8 @@ export const ModulesDefinition: {
   },
   [Modules.AUTH]: {
     key: Modules.AUTH,
-    registrationName: ModuleRegistrationName.AUTH,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.AUTH),
+    label: upperCaseFirst(Modules.AUTH),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -141,9 +129,8 @@ export const ModulesDefinition: {
   },
   [Modules.WORKFLOW_ENGINE]: {
     key: Modules.WORKFLOW_ENGINE,
-    registrationName: ModuleRegistrationName.WORKFLOW_ENGINE,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.WORKFLOW_ENGINE),
+    label: upperCaseFirst(Modules.WORKFLOW_ENGINE),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -155,9 +142,8 @@ export const ModulesDefinition: {
   },
   [Modules.SALES_CHANNEL]: {
     key: Modules.SALES_CHANNEL,
-    registrationName: ModuleRegistrationName.SALES_CHANNEL,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.SALES_CHANNEL),
+    label: upperCaseFirst(Modules.SALES_CHANNEL),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -168,12 +154,11 @@ export const ModulesDefinition: {
   },
   [Modules.FULFILLMENT]: {
     key: Modules.FULFILLMENT,
-    registrationName: ModuleRegistrationName.FULFILLMENT,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.FULFILLMENT),
+    label: upperCaseFirst(Modules.FULFILLMENT),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger", ModuleRegistrationName.EVENT_BUS],
+    dependencies: ["logger", Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -181,9 +166,8 @@ export const ModulesDefinition: {
   },
   [Modules.CART]: {
     key: Modules.CART,
-    registrationName: ModuleRegistrationName.CART,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.CART),
+    label: upperCaseFirst(Modules.CART),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -194,9 +178,8 @@ export const ModulesDefinition: {
   },
   [Modules.CUSTOMER]: {
     key: Modules.CUSTOMER,
-    registrationName: ModuleRegistrationName.CUSTOMER,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.CUSTOMER),
+    label: upperCaseFirst(Modules.CUSTOMER),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -207,9 +190,8 @@ export const ModulesDefinition: {
   },
   [Modules.PAYMENT]: {
     key: Modules.PAYMENT,
-    registrationName: ModuleRegistrationName.PAYMENT,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.PAYMENT),
+    label: upperCaseFirst(Modules.PAYMENT),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -220,12 +202,11 @@ export const ModulesDefinition: {
   },
   [Modules.USER]: {
     key: Modules.USER,
-    registrationName: ModuleRegistrationName.USER,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.USER),
+    label: upperCaseFirst(Modules.USER),
     isRequired: false,
     isQueryable: true,
-    dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
+    dependencies: [Modules.EVENT_BUS, "logger"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -233,9 +214,8 @@ export const ModulesDefinition: {
   },
   [Modules.REGION]: {
     key: Modules.REGION,
-    registrationName: ModuleRegistrationName.REGION,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.REGION),
+    label: upperCaseFirst(Modules.REGION),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -246,12 +226,11 @@ export const ModulesDefinition: {
   },
   [Modules.ORDER]: {
     key: Modules.ORDER,
-    registrationName: ModuleRegistrationName.ORDER,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.ORDER),
+    label: upperCaseFirst(Modules.ORDER),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger", ModuleRegistrationName.EVENT_BUS],
+    dependencies: ["logger", Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -259,12 +238,11 @@ export const ModulesDefinition: {
   },
   [Modules.TAX]: {
     key: Modules.TAX,
-    registrationName: ModuleRegistrationName.TAX,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.TAX),
+    label: upperCaseFirst(Modules.TAX),
     isRequired: false,
     isQueryable: true,
-    dependencies: ["logger", ModuleRegistrationName.EVENT_BUS],
+    dependencies: ["logger", Modules.EVENT_BUS],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -272,9 +250,8 @@ export const ModulesDefinition: {
   },
   [Modules.API_KEY]: {
     key: Modules.API_KEY,
-    registrationName: ModuleRegistrationName.API_KEY,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.API_KEY),
+    label: upperCaseFirst(Modules.API_KEY),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -285,9 +262,8 @@ export const ModulesDefinition: {
   },
   [Modules.STORE]: {
     key: Modules.STORE,
-    registrationName: ModuleRegistrationName.STORE,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.STORE),
+    label: upperCaseFirst(Modules.STORE),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -298,9 +274,8 @@ export const ModulesDefinition: {
   },
   [Modules.CURRENCY]: {
     key: Modules.CURRENCY,
-    registrationName: ModuleRegistrationName.CURRENCY,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.CURRENCY),
+    label: upperCaseFirst(Modules.CURRENCY),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -311,9 +286,8 @@ export const ModulesDefinition: {
   },
   [Modules.FILE]: {
     key: Modules.FILE,
-    registrationName: ModuleRegistrationName.FILE,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.FILE),
+    label: upperCaseFirst(Modules.FILE),
     isRequired: false,
     isQueryable: true,
     dependencies: ["logger"],
@@ -324,12 +298,11 @@ export const ModulesDefinition: {
   },
   [Modules.NOTIFICATION]: {
     key: Modules.NOTIFICATION,
-    registrationName: ModuleRegistrationName.NOTIFICATION,
     defaultPackage: false,
-    label: upperCaseFirst(ModuleRegistrationName.NOTIFICATION),
+    label: upperCaseFirst(Modules.NOTIFICATION),
     isRequired: false,
     isQueryable: true,
-    dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
+    dependencies: [Modules.EVENT_BUS, "logger"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
