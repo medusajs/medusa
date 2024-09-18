@@ -153,15 +153,10 @@ export function MedusaService<
         value: klassPrototype[methodName],
       }
 
+      // The order of the decorators is important, do not change it
       MedusaContext()(klassPrototype, methodName, contextIndex)
-
-      InjectManager("baseRepository_")(
-        klassPrototype,
-        methodName,
-        descriptorMockRef
-      )
-
       EmitEvents()(klassPrototype, methodName, descriptorMockRef)
+      InjectManager()(klassPrototype, methodName, descriptorMockRef)
 
       klassPrototype[methodName] = descriptorMockRef.value
     }
@@ -271,6 +266,7 @@ export function MedusaService<
           const primaryKeyValues_ = Array.isArray(primaryKeyValues)
             ? primaryKeyValues
             : [primaryKeyValues]
+
           await this.__container__[serviceRegistrationName].delete(
             primaryKeyValues_,
             sharedContext

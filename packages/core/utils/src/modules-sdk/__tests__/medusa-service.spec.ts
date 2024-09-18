@@ -1,5 +1,6 @@
 import { MedusaService } from "../medusa-service"
 import { model } from "../../dml"
+import { MessageAggregator } from "../../event-bus"
 
 const baseRepoMock = {
   serialize: jest.fn().mockImplementation((item) => item),
@@ -11,6 +12,7 @@ const defaultContext = { __type: "MedusaContext", manager: baseRepoMock }
 const defaultTransactionContext = {
   __type: "MedusaContext",
   manager: baseRepoMock,
+  messageAggregator: new MessageAggregator(),
 }
 
 describe("Abstract Module Service Factory", () => {
