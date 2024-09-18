@@ -1,4 +1,5 @@
 import { Context, EventBusTypes } from "@medusajs/types"
+import { buildEventNameFromObjectName } from "../event-bus"
 
 // TODO should that move closer to the event bus? and maybe be rename to moduleEventBuilderFactory
 
@@ -28,20 +29,27 @@ export function eventBuilderFactory({
   action,
   object,
   eventsEnum,
+  eventName,
   source,
 }: {
   action: string
   object: string
-  eventsEnum: Record<string, string>
+  /**
+   * @deprecated use eventName instead
+   */
+  eventsEnum?: Record<string, string>
+  eventName?: string
   source: string
 }) {
   return function ({
     data,
     sharedContext,
   }: {
-    data: { id: string }[]
+    data: { id: string } | { id: string }[]
     sharedContext: Context
   }) {
+    data = Array.isArray(data) ? data : [data]
+
     if (!data.length) {
       return
     }
@@ -51,8 +59,17 @@ export function eventBuilderFactory({
 
     // The event enums contains event formatted like so [object]_[action] e.g. PRODUCT_CREATED
     // We expect the keys of events to be fully uppercased
-    const eventName =
-      eventsEnum[`${object.toUpperCase()}_${action.toUpperCase()}`]
+    let eventName_ = eventsEnum
+      ? eventsEnum[`${object.toUpperCase()}_${action.toUpperCase()}`]
+      : eventName
+
+    if (!eventName_) {
+      eventName_ = buildEventNameFromObjectName({
+        prefix: source,
+        objectName: object,
+        action,
+      })
+    }
 
     data.forEach((dataItem) => {
       messages.push({
@@ -60,7 +77,7 @@ export function eventBuilderFactory({
         action,
         context: sharedContext,
         data: { id: dataItem.id },
-        eventName,
+        eventName: eventName_,
         object,
       })
     })

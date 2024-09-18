@@ -29,6 +29,25 @@ type ReturnType<TNames extends string[]> = {
 }
 
 /**
+ * Build a conventional event name from the object name and the action and the prefix if provided
+ * @param prefix
+ * @param objectName
+ * @param action
+ */
+export function buildEventNameFromObjectName({
+  prefix,
+  objectName,
+  action,
+}: {
+  prefix?: string
+  objectName: string
+  action: string
+}): string {
+  const kebabCaseName = lowerCaseFirst(kebabCase(objectName))
+  return `${prefix ? `${prefix}.` : ""}${kebabCaseName}.${action}`
+}
+
+/**
  * From the given strings it will produce the event names accordingly.
  * the result will look like:
  * input: 'serviceZone'
@@ -57,9 +76,12 @@ export function buildEventNamesFromEntityName<TNames extends string[]>(
 
     for (const event of Object.values(CommonEvents) as string[]) {
       const upperCasedEvent = event.toUpperCase()
-      events[`${snakedCaseName}_${upperCasedEvent}`] = `${
-        prefix ? prefix + "." : ""
-      }${kebabCaseName}.${event}` as `${KebabCase<typeof name>}.${typeof event}`
+      events[`${snakedCaseName}_${upperCasedEvent}`] =
+        buildEventNameFromObjectName({
+          prefix,
+          objectName: name,
+          action: event,
+        }) as `${KebabCase<typeof name>}.${typeof event}`
     }
   }
 

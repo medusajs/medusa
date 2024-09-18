@@ -11,16 +11,17 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
-  MapToConfig,
+  camelToSnakeCase,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
+  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
 import { DmlEntity } from "../dml"
-import { InjectManager, MedusaContext } from "./decorators"
+import { EmitEvents, InjectManager, MedusaContext } from "./decorators"
 import { Modules } from "./definition"
 import { buildModelsNameToLinkableKeysMap } from "./joiner-config-builder"
 import {
@@ -31,6 +32,8 @@ import {
   ModelEntries,
   ModelsConfigTemplate,
 } from "./types/medusa-service"
+import { CommonEvents } from "../event-bus"
+import { eventBuilderFactory } from "./event-builder-factory"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -158,6 +161,8 @@ export function MedusaService<
         descriptorMockRef
       )
 
+      EmitEvents()(klassPrototype, methodName, descriptorMockRef)
+
       klassPrototype[methodName] = descriptorMockRef.value
     }
 
@@ -193,6 +198,13 @@ export function MedusaService<
           const service = this.__container__[serviceRegistrationName]
           const models = await service.create(serviceData, sharedContext)
           const response = Array.isArray(data) ? models : models[0]
+
+          service.aggregatedEvents({
+            action: CommonEvents.CREATED,
+            object: camelToSnakeCase(modelName).toLowerCase(),
+            data: response,
+            context: sharedContext,
+          })
 
           return await this.baseRepository_.serialize<T | T[]>(response)
         }
@@ -396,6 +408,50 @@ export function MedusaService<
         buildModelsNameToLinkableKeysMap(
           this.__joinerConfig?.()?.linkableKeys ?? {}
         )
+    }
+
+    /**
+     * helper function to aggregate events. Will format the message properly and store in
+     * the message aggregator from the context. The method must be decorated with `@EmitEvents`
+     * @param action
+     * @param object
+     * @param eventName optional, can be inferred from the module joiner config + action + object
+     * @param source optional, can be inferred from the module joiner config
+     * @param data
+     * @param context
+     */
+    protected aggregatedEvents({
+      action,
+      object,
+      eventName,
+      source,
+      data,
+      context,
+    }: {
+      action: string
+      object: string
+      eventName?: string
+      source?: string
+      data: { id: any } | { id: any }[]
+      context: Context
+    }) {
+      const __joinerConfig = (
+        typeof this.__joinerConfig === "function"
+          ? this.__joinerConfig()
+          : this.__joinerConfig
+      ) as ModuleJoinerConfig
+
+      const eventBuilder = eventBuilderFactory({
+        action,
+        object,
+        source: source || __joinerConfig.serviceName!,
+        eventName,
+      })
+
+      eventBuilder({
+        data,
+        sharedContext: context,
+      })
     }
 
     /**
