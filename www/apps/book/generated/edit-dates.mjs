@@ -7,7 +7,6 @@ export const generatedEditDates = {
   "app/basics/commerce-modules/page.mdx": "2024-09-03T07:48:48.148Z",
   "app/advanced-development/workflows/retry-failed-steps/page.mdx": "2024-07-31T17:01:33+03:00",
   "app/advanced-development/workflows/workflow-hooks/page.mdx": "2024-09-10T11:39:51.168Z",
-  "app/cheatsheet/page.mdx": "2024-07-11T13:53:40+03:00",
   "app/debugging-and-testing/logging/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/more-resources/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/storefront-development/page.mdx": "2024-09-11T10:58:59.290Z",
@@ -99,5 +98,7 @@ export const generatedEditDates = {
   "app/customization/integrate-systems/service/page.mdx": "2024-09-12T12:39:12.831Z",
   "app/customization/next-steps/page.mdx": "2024-09-12T10:50:04.873Z",
   "app/customization/page.mdx": "2024-09-12T11:16:18.504Z",
-  "app/debugging-and-testing/instrumentation/page.mdx": "2024-09-17T08:53:15.910Z"
+  "app/debugging-and-testing/instrumentation/page.mdx": "2024-09-17T08:53:15.910Z",
+  "app/more-resources/cheatsheet/page.mdx": "2024-07-11T16:11:26.480Z",
+  "app/more-resources/examples/page.mdx": "2024-09-19T10:30:30.398Z"
 }

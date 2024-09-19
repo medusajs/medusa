@@ -545,11 +545,18 @@ export const sidebar = numberSidebarItems(
       type: "link",
       path: "/more-resources",
       title: "More Resources",
-    },
-    {
-      type: "link",
-      path: "/cheatsheet",
-      title: "Cheat Sheet",
+      children: [
+        {
+          type: "link",
+          path: "/more-resources/cheatsheet",
+          title: "Cheat Sheet",
+        },
+        {
+          type: "link",
+          path: "/more-resources/examples",
+          title: "Examples",
+        },
+      ],
     },
   ])
 )
