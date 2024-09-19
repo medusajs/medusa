@@ -1,7 +1,7 @@
 /**
  * @schema AdminSalesChannel
  * type: object
- * description: The order's sales channel.
+ * description: The sales channel's details.
  * x-schemaName: AdminSalesChannel
  * required:
  *   - id
@@ -28,25 +28,25 @@
  *   is_disabled:
  *     type: boolean
  *     title: is_disabled
- *     description: The sales channel's is disabled.
+ *     description: Whether the sales channel is disabled.
  *   metadata:
  *     type: object
- *     description: The sales channel's metadata.
+ *     description: The sales channel's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The sales channel's created at.
+ *     description: The date the sales channel was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The sales channel's updated at.
+ *     description: The date the sales channel was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The sales channel's deleted at.
+ *     description: The date the sales channel was deleted.
  * 
 */
 

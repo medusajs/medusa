@@ -1,25 +1,22 @@
 /**
  * @schema AdminRuleValueOption
  * type: object
- * description: The value's values.
+ * description: The details of a potential rule value.
  * x-schemaName: AdminRuleValueOption
  * required:
- *   - id
  *   - value
  *   - label
  * properties:
- *   id:
- *     type: string
- *     title: id
- *     description: The value's ID.
  *   value:
  *     type: string
  *     title: value
- *     description: The value's details.
+ *     description: The rule value's value.
+ *     example: "reg_123"
  *   label:
  *     type: string
  *     title: label
- *     description: The value's label.
+ *     description: The rule value's label.
+ *     example: "Europe Region"
  * 
 */
 
