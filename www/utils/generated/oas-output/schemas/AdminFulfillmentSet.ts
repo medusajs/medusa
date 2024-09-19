@@ -1,7 +1,7 @@
 /**
  * @schema AdminFulfillmentSet
  * type: object
- * description: The fulfillment set's parent.
+ * description: The service zone's fulfillment set.
  * x-schemaName: AdminFulfillmentSet
  * required:
  *   - id
@@ -16,37 +16,37 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The parent's ID.
+ *     description: The fulfillment set's ID.
  *   name:
  *     type: string
  *     title: name
- *     description: The parent's name.
+ *     description: The fulfillment set's name.
  *   type:
  *     type: string
  *     title: type
- *     description: The parent's type.
+ *     description: The fulfillment set's type.
  *   location:
  *     $ref: "#/components/schemas/AdminStockLocation"
  *   service_zones:
  *     type: array
- *     description: The parent's service zones.
+ *     description: The fulfillment set's service zones.
  *     items:
  *       $ref: "#/components/schemas/AdminServiceZone"
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The parent's created at.
+ *     description: The fulfillment set's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The parent's updated at.
+ *     description: The fulfillment set's updated at.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The parent's deleted at.
+ *     description: The fulfillment set's deleted at.
  * 
 */
 

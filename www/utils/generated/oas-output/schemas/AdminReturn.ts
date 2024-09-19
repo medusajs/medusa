@@ -1,7 +1,7 @@
 /**
  * @schema AdminReturn
  * type: object
- * description: The exchange's return.
+ * description: The return's details.
  * x-schemaName: AdminReturn
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The return's order id.
+ *     description: The ID of the order this return is created for.
  *   status:
  *     type: string
  *     title: status
@@ -28,19 +28,19 @@
  *   exchange_id:
  *     type: string
  *     title: exchange_id
- *     description: The return's exchange id.
+ *     description: The ID of the exchange that this return belongs to.
  *   location_id:
  *     type: string
  *     title: location_id
- *     description: The return's location id.
+ *     description: The ID of the location the items are returned to.
  *   claim_id:
  *     type: string
  *     title: claim_id
- *     description: The return's claim id.
+ *     description: The ID of the claim that this return belongs to.
  *   order_version:
  *     type: number
  *     title: order_version
- *     description: The return's order version.
+ *     description: The version of the order once the return is applied.
  *   display_id:
  *     type: number
  *     title: display_id
@@ -48,11 +48,11 @@
  *   no_notification:
  *     type: boolean
  *     title: no_notification
- *     description: The return's no notification.
+ *     description: Whether the customer should receive notifications about the return's updates.
  *   refund_amount:
  *     type: number
  *     title: refund_amount
- *     description: The return's refund amount.
+ *     description: The amount to refund as a result of the return.
  *   items:
  *     type: array
  *     description: The return's items.
@@ -61,16 +61,16 @@
  *   received_at:
  *     type: string
  *     title: received_at
- *     description: The return's received at.
+ *     description: The date the return was received.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The return's created at.
+ *     description: The date the return was created.
  *   canceled_at:
  *     type: string
  *     title: canceled_at
- *     description: The return's canceled at.
+ *     description: The date the return was canceled.
  * 
 */
 

@@ -1,7 +1,7 @@
 /**
  * @schema AdminShippingOptionResponse
  * type: object
- * description: SUMMARY
+ * description: The shipping option's details.
  * x-schemaName: AdminShippingOptionResponse
  * required:
  *   - shipping_option
