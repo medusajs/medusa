@@ -290,7 +290,7 @@ describe("IndexModuleService query", function () {
     const [result, count] = await module.queryAndCount({
       fields: ["product.*", "product.variants.*", "product.variants.prices.*"],
       pagination: {
-        orderBy: {
+        order: {
           product: {
             variants: {
               sku: "DESC",

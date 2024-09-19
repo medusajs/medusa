@@ -208,7 +208,7 @@ export class PostgresProvider {
       filters = {},
       joinFilters = {},
     } = config
-    const { take, skip, orderBy: inputOrderBy = {} } = config.pagination ?? {}
+    const { take, skip, order: inputOrderBy = {} } = config.pagination ?? {}
 
     const select = normalizeFieldsSelection(fields)
     const where = flattenObjectKeys(filters)
@@ -277,7 +277,7 @@ export class PostgresProvider {
       filters = {},
       joinFilters = {},
     } = config
-    const { take, skip, orderBy: inputOrderBy = {} } = config.pagination ?? {}
+    const { take, skip, order: inputOrderBy = {} } = config.pagination ?? {}
 
     const select = normalizeFieldsSelection(fields)
     const where = flattenObjectKeys(filters)

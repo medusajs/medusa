@@ -16,7 +16,7 @@ export type IndexQueryConfig<TEntry extends string> = {
   pagination?: {
     skip?: number
     take?: number
-    orderBy?: IndexOrderBy<TEntry>
+    order?: IndexOrderBy<TEntry>
   }
   keepFilteredEntities?: boolean
 }

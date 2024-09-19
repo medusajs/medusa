@@ -74,7 +74,7 @@ medusaIntegrationTestRunner({
             },
           },
           pagination: {
-            orderBy: {
+            order: {
               product: {
                 variants: {
                   prices: {
@@ -144,7 +144,7 @@ medusaIntegrationTestRunner({
               },
             },
             pagination: {
-              orderBy: {
+              order: {
                 product: {
                   variants: {
                     prices: {
@@ -216,7 +216,7 @@ medusaIntegrationTestRunner({
             },
           },
           pagination: {
-            orderBy: {
+            order: {
               product: {
                 variants: {
                   prices: {
