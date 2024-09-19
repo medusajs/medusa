@@ -65,10 +65,20 @@ ${entryPoints
   output += remoteQueryEntryPoints
 
   await fileSystem.create(filename + ".d.ts", output)
-  await fileSystem.create(
-    "index.d.ts",
-    `export * as ${interfaceName}Types from './${filename}'`
-  )
+
+  const doesBarrelExists = await fileSystem.exists("index.d.ts")
+  if (!doesBarrelExists) {
+    await fileSystem.create(
+      "index.d.ts",
+      `export * as ${interfaceName}Types from './${filename}'`
+    )
+  } else {
+    const content = await fileSystem.contents("index.d.ts")
+    if (!content.includes(`${interfaceName}Types`)) {
+      const newContent = `export * as ${interfaceName}Types from './${filename}'\n${content}`
+      await fileSystem.create("index.d.ts", newContent)
+    }
+  }
 }
 
 export async function gqlSchemaToTypes({

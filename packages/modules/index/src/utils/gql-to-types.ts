@@ -5,20 +5,22 @@ import {
   MedusaModule,
 } from "@medusajs/modules-sdk"
 import { FileSystem } from "@medusajs/utils"
+import * as process from "process"
 
 export async function gqlSchemaToTypes(schema: string) {
   const augmentedSchema = CustomDirectives.Listeners.definition + schema
   const executableSchema = makeSchemaExecutable(augmentedSchema)
   const filename = "index-service-entry-points"
   const filenameWithExt = filename + ".d.ts"
+  const dir = join(process.cwd(), ".medusa")
 
   await ModulesSdkGqlSchemaToTypes({
     schema: executableSchema,
     filename,
-    outputDir: join(__dirname, "../.generated"),
+    outputDir: dir,
   })
 
-  const fileSystem = new FileSystem(join(__dirname, "../.generated"))
+  const fileSystem = new FileSystem(dir)
   let content = await fileSystem.contents(filenameWithExt)
 
   await fileSystem.remove(filenameWithExt)
