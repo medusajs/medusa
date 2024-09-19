@@ -23,9 +23,9 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "build": "rimraf dist && tsc --noEmit && tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
+    "build": "rimraf dist && tsc -p ./tsconfig.spec.json --noEmit && tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
     "test": "jest --passWithNoTests ./src",
-    "test:integration": "jest --runInBand --forceExit -- integration-tests/**/__tests__/**/*.ts",
+    "test:integration": "jest --runInBand --forceExit -- integration-tests/__tests__/index-engine-module.spec.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
     "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",

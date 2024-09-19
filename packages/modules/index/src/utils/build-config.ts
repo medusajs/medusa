@@ -27,7 +27,7 @@ export const CustomDirectives = {
   },
 }
 
-function makeSchemaExecutable(inputSchema: string) {
+export function makeSchemaExecutable(inputSchema: string) {
   const { schema: cleanedSchema } = cleanGraphQLSchema(inputSchema)
 
   return makeExecutableSchema({ typeDefs: cleanedSchema })

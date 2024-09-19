@@ -19,41 +19,41 @@ import { OPERATOR_MAP } from "./query-builder"
  *   e: 4,
  * }
  *
- * @param where
+ * @param input
  */
-export function flattenObjectKeys(where: Record<string, any>) {
+export function flattenObjectKeys(input: Record<string, any>) {
   const result: Record<string, any> = {}
 
   function flatten(obj: Record<string, any>, path?: string) {
     for (const key in obj) {
       const isOperatorMap = !!OPERATOR_MAP[key]
 
-      if (!isOperatorMap) {
-        const newPath = path ? `${path}.${key}` : key
+      if (isOperatorMap) {
+        result[path ?? key] = obj
+        continue
+      }
 
-        if (obj[key] === null) {
-          result[newPath] = null
-          continue
-        }
+      const newPath = path ? `${path}.${key}` : key
 
-        if (Array.isArray(obj[key])) {
-          result[newPath] = obj[key]
-          continue
-        }
+      if (obj[key] === null) {
+        result[newPath] = null
+        continue
+      }
 
-        if (typeof obj[key] === "object" && !isOperatorMap) {
-          flatten(obj[key], newPath)
-          continue
-        }
-
+      if (Array.isArray(obj[key])) {
         result[newPath] = obj[key]
         continue
       }
 
-      result[path ?? key] = obj
+      if (typeof obj[key] === "object" && !isOperatorMap) {
+        flatten(obj[key], newPath)
+        continue
+      }
+
+      result[newPath] = obj[key]
     }
   }
 
-  flatten(where)
+  flatten(input)
   return result
 }

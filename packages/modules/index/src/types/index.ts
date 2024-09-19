@@ -120,10 +120,12 @@ export interface StorageProvider {
 
   onApplicationStart?(): Promise<void>
 
-  query(config: IndexTypes.IndexQueryConfig): Promise<any[]>
+  query<const TEntry extends string>(
+    config: IndexTypes.IndexQueryConfig<TEntry>
+  ): Promise<any[]>
 
-  queryAndCount(
-    config: IndexTypes.IndexQueryConfig
+  queryAndCount<const TEntry extends string>(
+    config: IndexTypes.IndexQueryConfig<TEntry>
   ): Promise<[any[], number, PerformanceMeasure]>
 
   consumeEvent(

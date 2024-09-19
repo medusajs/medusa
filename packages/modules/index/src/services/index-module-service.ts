@@ -17,6 +17,7 @@ import {
 } from "@types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { defaultSchema } from "../utils/default-schema"
+import { gqlSchemaToTypes } from "../utils/gql-to-types"
 
 type InjectedDependencies = {
   [Modules.EVENT_BUS]: IEventBusModuleService
@@ -93,16 +94,22 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
       if (this.storageProvider_.onApplicationStart) {
         await this.storageProvider_.onApplicationStart()
       }
+
+      await gqlSchemaToTypes(this.moduleOptions_.schema ?? defaultSchema)
     } catch (e) {
       console.log(e)
     }
   }
 
-  async query(config: IndexTypes.IndexQueryConfig) {
+  async query<const TEntry extends string>(
+    config: IndexTypes.IndexQueryConfig<TEntry>
+  ) {
     return await this.storageProvider_.query(config)
   }
 
-  async queryAndCount(config: IndexTypes.IndexQueryConfig) {
+  async queryAndCount<const TEntry extends string>(
+    config: IndexTypes.IndexQueryConfig<TEntry>
+  ) {
     return await this.storageProvider_.queryAndCount(config)
   }
 
@@ -133,6 +140,7 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
     const [objectRepresentation, entityMap] = buildSchemaObjectRepresentation(
       this.moduleOptions_.schema ?? defaultSchema
     )
+
     this.schemaObjectRepresentation_ = objectRepresentation
     this.schemaEntitiesMap_ = entityMap
 

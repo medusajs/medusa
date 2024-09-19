@@ -196,8 +196,8 @@ export class PostgresProvider {
   }
 
   @InjectManager("baseRepository_")
-  async query(
-    config: IndexTypes.IndexQueryConfig,
+  async query<const TEntry extends string>(
+    config: IndexTypes.IndexQueryConfig<TEntry>,
     @MedusaContext() sharedContext: Context = {}
   ) {
     await this.#isReady_
@@ -265,8 +265,8 @@ export class PostgresProvider {
   }
 
   @InjectManager("baseRepository_")
-  async queryAndCount(
-    config: IndexTypes.IndexQueryConfig,
+  async queryAndCount<const TEntry extends string>(
+    config: IndexTypes.IndexQueryConfig<TEntry>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[Record<string, any>[], number, PerformanceEntry]> {
     await this.#isReady_

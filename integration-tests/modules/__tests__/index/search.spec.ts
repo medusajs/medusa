@@ -58,7 +58,7 @@ medusaIntegrationTestRunner({
         // Timeout to allow indexing to finish
         await setTimeout(2000)
 
-        const [results, count] = await indexEngine.queryAndCount({
+        const [results, count] = await indexEngine.queryAndCount<"product">({
           fields: [
             "product.*",
             "product.variants.*",
@@ -128,7 +128,7 @@ medusaIntegrationTestRunner({
         // Timeout to allow indexing to finish
         await setTimeout(2000)
 
-        const [results, count] = await indexEngine.queryAndCount({
+        const [results, count] = await indexEngine.queryAndCount<"product">({
           fields: [
             "product.*",
             "product.variants.*",
@@ -228,11 +228,10 @@ medusaIntegrationTestRunner({
           },
         }
 
-        await indexEngine.queryAndCount(queryArgs)
+        await indexEngine.queryAndCount<"product">(queryArgs)
 
-        const [results, count, perf] = await indexEngine.queryAndCount(
-          queryArgs
-        )
+        const [results, count, perf] =
+          await indexEngine.queryAndCount<"product">(queryArgs)
 
         console.log(perf)
       })

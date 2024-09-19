@@ -1,5 +1,5 @@
 import { MedusaModule } from "../medusa-module"
-import { FileSystem } from "@medusajs/utils"
+import { FileSystem, toCamelCase } from "@medusajs/utils"
 import { GraphQLSchema } from "graphql/type"
 import { parse, printSchema } from "graphql"
 import { codegen } from "@graphql-codegen/core"
@@ -21,13 +21,13 @@ function buildEntryPointsTypeMap(
 
       return aliases.flatMap((alias) => {
         const names = Array.isArray(alias.name) ? alias.name : [alias.name]
-        const entity = alias.args?.["entity"]
+        const entity = alias?.["entity"]
         return names.map((aliasItem) => {
           return {
             entryPoint: aliasItem,
             entityType: entity
               ? schema.includes(`export type ${entity} `)
-                ? alias.args?.["entity"]
+                ? alias?.["entity"]
                 : "any"
               : "any",
           }
@@ -39,9 +39,11 @@ function buildEntryPointsTypeMap(
 
 async function generateTypes({
   outputDir,
+  filename,
   config,
 }: {
   outputDir: string
+  filename: string
   config: Parameters<typeof codegen>[0]
 }) {
   const fileSystem = new FileSystem(outputDir)
@@ -49,9 +51,11 @@ async function generateTypes({
   let output = await codegen(config)
   const entryPoints = buildEntryPointsTypeMap(output)
 
+  const interfaceName = toCamelCase(filename)
+
   const remoteQueryEntryPoints = `
 declare module '@medusajs/types' {
-  interface RemoteQueryEntryPoints {
+  interface ${interfaceName} {
 ${entryPoints
   .map((entry) => `    ${entry.entryPoint}: ${entry.entityType}`)
   .join("\n")}
@@ -60,19 +64,21 @@ ${entryPoints
 
   output += remoteQueryEntryPoints
 
-  await fileSystem.create("remote-query-types.d.ts", output)
+  await fileSystem.create(filename + ".d.ts", output)
   await fileSystem.create(
     "index.d.ts",
-    "export * as RemoteQueryTypes from './remote-query-types'"
+    `export * as ${interfaceName}Types from './${filename}'`
   )
 }
 
 export async function gqlSchemaToTypes({
   schema,
   outputDir,
+  filename,
 }: {
   schema: GraphQLSchema
   outputDir: string
+  filename: string
 }) {
   const config = {
     documents: [],
@@ -98,5 +104,5 @@ export async function gqlSchemaToTypes({
     },
   }
 
-  await generateTypes({ outputDir, config })
+  await generateTypes({ outputDir, filename, config })
 }

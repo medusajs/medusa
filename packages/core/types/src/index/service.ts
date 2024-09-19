@@ -1,24 +1,11 @@
 import { IModuleService } from "../modules-sdk"
-
-type OrderBy = {
-  [key: string]: OrderBy | "ASC" | "DESC" | 1 | -1 | true | false
-}
-
-export type IndexQueryConfig = {
-  fields: string[]
-  filters?: Record<string, any>
-  joinFilters?: Record<string, any>
-  pagination?: {
-    skip?: number
-    take?: number
-    orderBy?: OrderBy
-  }
-  keepFilteredEntities?: boolean
-}
+import { IndexQueryConfig } from "./query-config"
 
 export interface IIndexService extends IModuleService {
-  query(config: IndexQueryConfig): Promise<any[]>
-  queryAndCount(
-    config: IndexQueryConfig
+  query<const TEntry extends string>(
+    config: IndexQueryConfig<TEntry>
+  ): Promise<any[]>
+  queryAndCount<const TEntry extends string>(
+    config: IndexQueryConfig<TEntry>
   ): Promise<[any[], number, PerformanceMeasure]>
 }

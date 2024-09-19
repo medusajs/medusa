@@ -27,9 +27,9 @@
       "@types": ["./src/types"]
     }
   },
-  "include": ["src", "integration-tests"],
+  "include": ["src", "**/.generated"],
   "exclude": [
     "dist",
     "node_modules"
-  ]
+  ],
 }

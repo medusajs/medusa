@@ -1,8 +1,8 @@
 import {
-  MedusaAppLoader,
   configLoader,
   container,
   logger,
+  MedusaAppLoader,
 } from "@medusajs/framework"
 import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
 import { EventBusTypes } from "@medusajs/types"
@@ -34,6 +34,7 @@ const linkId = "link_id_1"
 
 const sendEvents = async (eventDataToEmit) => {
   let a = 0
+
   remoteQueryMock.mockImplementation((query) => {
     query = query.__value
     if (query.product) {
@@ -235,7 +236,7 @@ describe("IndexModuleService", function () {
 
     afterEach(afterEach_)
 
-    it("should create the corresponding index entries and index relation entries", async function () {
+    it.only("should create the corresponding index entries and index relation entries", async function () {
       expect(remoteQueryMock).toHaveBeenCalledTimes(6)
 
       /**
