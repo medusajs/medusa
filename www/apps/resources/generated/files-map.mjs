@@ -15364,6 +15364,10 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.TransactionStepStatus"
   },
   {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/interfaces/types.IndexTypes.IIndexService/page.mdx",
+    "pathname": "/references/types/IndexTypes/interfaces/types.IndexTypes.IIndexService"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.BulkUpdateInventoryLevelInput/page.mdx",
     "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.BulkUpdateInventoryLevelInput"
   },
@@ -16574,6 +16578,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types.HttpTypes/page.mdx",
     "pathname": "/references/types/types.HttpTypes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types.IndexTypes/page.mdx",
+    "pathname": "/references/types/types.IndexTypes"
   },
   {
     "filePath": "/www/apps/resources/references/types/types.InventoryTypes/page.mdx",
