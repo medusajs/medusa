@@ -32,14 +32,14 @@
  *       - type: string
  *         title: value
  *         description: The rule's value.
- *         example: `"true"`
+ *         example: '"true"'
  *       - type: array
  *         description: The rule's values.
  *         items:
  *           type: string
  *           title: value
  *           description: A rule's value
- *           example: `"true"`
+ *           example: '"true"'
  *   shipping_option_id:
  *     type: string
  *     title: shipping_option_id
