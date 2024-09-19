@@ -1,7 +1,7 @@
 /**
  * @schema AdminUserListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of users.
  * x-schemaName: AdminUserListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The user's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The user's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The user's count.
+ *     description: The total number of items.
  *   users:
  *     type: array
- *     description: The user's users.
+ *     description: The list of users.
  *     items:
  *       $ref: "#/components/schemas/AdminUser"
  * 

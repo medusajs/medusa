@@ -1,7 +1,7 @@
 /**
  * @schema AdminUpdateVariantInventoryItem
  * type: object
- * description: SUMMARY
+ * description: The properties to update of the variant's inventory item association.
  * x-schemaName: AdminUpdateVariantInventoryItem
  * required:
  *   - required_quantity
@@ -9,7 +9,7 @@
  *   required_quantity:
  *     type: number
  *     title: required_quantity
- *     description: The product's required quantity.
+ *     description: The inventory's required quantity.
  * 
 */
 
