@@ -546,6 +546,7 @@
       "inventory": {
         "notManaged": "Not managed",
         "manageItems": "Manage inventory items",
+        "notManagedDesc":"Inventory is not managed for this variant. Turn on ‘Manage Inventory’ to track the variant's inventory.",
         "manageKit": "Manage inventory kit",
         "navigateToItem": "Go to inventory item",
         "actions": {

@@ -6,7 +6,10 @@ import { useProductVariant } from "../../../hooks/api/products"
 import { variantLoader } from "./loader"
 import { VARIANT_DETAIL_FIELDS } from "./constants"
 import { VariantGeneralSection } from "./components/variant-general-section"
-import { VariantInventorySection } from "./components/variant-inventory-section"
+import {
+  InventorySectionPlaceholder,
+  VariantInventorySection,
+} from "./components/variant-inventory-section"
 import { VariantPricesSection } from "./components/variant-prices-section"
 
 export const ProductVariantDetail = () => {
@@ -37,16 +40,19 @@ export const ProductVariantDetail = () => {
       <div className="flex flex-col gap-x-4 gap-y-3 xl:flex-row xl:items-start">
         <div className="flex w-full flex-col gap-y-3">
           <VariantGeneralSection variant={variant} />
-          <VariantInventorySection
-            inventoryItems={variant.inventory_items.map((i) => {
-              return {
-                ...i.inventory,
-                required_quantity: i.required_quantity,
-                variant,
-              }
-            })}
-            manageInventory={variant.manage_inventory}
-          />
+          {!variant.manage_inventory ? (
+            <InventorySectionPlaceholder />
+          ) : (
+            <VariantInventorySection
+              inventoryItems={variant.inventory_items.map((i) => {
+                return {
+                  ...i.inventory,
+                  required_quantity: i.required_quantity,
+                  variant,
+                }
+              })}
+            />
+          )}
 
           <div className="hidden xl:block">
             <JsonViewSection data={variant} root="product" />
