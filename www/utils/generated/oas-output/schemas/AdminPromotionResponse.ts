@@ -1,7 +1,7 @@
 /**
  * @schema AdminPromotionResponse
  * type: object
- * description: SUMMARY
+ * description: The promotion's details.
  * x-schemaName: AdminPromotionResponse
  * required:
  *   - promotion
