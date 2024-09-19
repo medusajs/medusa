@@ -1,7 +1,7 @@
 /**
  * @schema AdminUpdateApiKey
  * type: object
- * description: SUMMARY
+ * description: The details to update in an API key.
  * x-schemaName: AdminUpdateApiKey
  * required:
  *   - title
@@ -9,7 +9,7 @@
  *   title:
  *     type: string
  *     title: title
- *     description: The api key's title.
+ *     description: The API key's title.
  * 
 */
 

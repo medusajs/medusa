@@ -1,7 +1,7 @@
 /**
  * @schema AdminUserResponse
  * type: object
- * description: SUMMARY
+ * description: The user's details.
  * x-schemaName: AdminUserResponse
  * required:
  *   - user
