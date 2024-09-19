@@ -519,7 +519,7 @@ export const sidebar = numberSidebarItems(
           children: [
             {
               type: "link",
-              path: "/debugging-and-testing/testing-tools/unit-tests/module-example",
+              path: "/debugging-and-testing/testing-tools/modules-tests/module-example",
               title: "Example",
             },
           ],
