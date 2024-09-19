@@ -9,6 +9,7 @@ export const defaultStoreShippingOptionsFields = [
 ]
 
 export const listTransformQueryConfig = {
+  defaults: defaultStoreShippingOptionsFields,
   defaultLimit: 20,
   isList: true,
 }

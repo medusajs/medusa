@@ -36,6 +36,8 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
         "stock_locations.fulfillment_sets.service_zones.shipping_options.provider_id",
         "stock_locations.fulfillment_sets.service_zones.shipping_options.data",
         "stock_locations.fulfillment_sets.service_zones.shipping_options.amount",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.rules.attribute",
+        "stock_locations.fulfillment_sets.service_zones.shipping_options.rules.value",
 
         "stock_locations.fulfillment_sets.service_zones.shipping_options.type.id",
         "stock_locations.fulfillment_sets.service_zones.shipping_options.type.label",
