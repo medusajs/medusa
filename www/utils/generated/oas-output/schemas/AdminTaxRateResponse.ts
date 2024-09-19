@@ -1,7 +1,7 @@
 /**
  * @schema AdminTaxRateResponse
  * type: object
- * description: SUMMARY
+ * description: The tax rate's details.
  * x-schemaName: AdminTaxRateResponse
  * required:
  *   - tax_rate

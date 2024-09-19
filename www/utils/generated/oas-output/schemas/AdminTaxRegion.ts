@@ -1,19 +1,13 @@
 /**
  * @schema AdminTaxRegion
  * type: object
- * description: The parent's tax region.
+ * description: The tax region's details.
  * x-schemaName: AdminTaxRegion
  * required:
  *   - id
- *   - rate
- *   - code
  *   - country_code
  *   - province_code
- *   - name
  *   - metadata
- *   - tax_region_id
- *   - is_combinable
- *   - is_default
  *   - parent_id
  *   - created_at
  *   - updated_at
@@ -27,18 +21,11 @@
  *     type: string
  *     title: id
  *     description: The tax region's ID.
- *   rate:
- *     type: number
- *     title: rate
- *     description: The tax region's rate.
- *   code:
- *     type: string
- *     title: code
- *     description: The tax region's code.
  *   country_code:
  *     type: string
  *     title: country_code
  *     description: The tax region's country code.
+ *     example: us
  *   province_code:
  *     type: string
  *     title: province_code
@@ -49,45 +36,33 @@
  *     description: The tax region's name.
  *   metadata:
  *     type: object
- *     description: The tax region's metadata.
- *   tax_region_id:
- *     type: string
- *     title: tax_region_id
- *     description: The tax region's tax region id.
- *   is_combinable:
- *     type: boolean
- *     title: is_combinable
- *     description: The tax region's is combinable.
- *   is_default:
- *     type: boolean
- *     title: is_default
- *     description: The tax region's is default.
+ *     description: The tax region's metadata, can hold custom key-value pairs.
  *   parent_id:
  *     type: string
  *     title: parent_id
- *     description: The tax region's parent id.
+ *     description: The ID of the parent tax region.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The tax region's created at.
+ *     description: The date the tax region was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The tax region's updated at.
+ *     description: The date the tax region was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The tax region's deleted at.
+ *     description: The date the tax region was deleted.
  *   created_by:
  *     type: string
  *     title: created_by
- *     description: The tax region's created by.
+ *     description: The ID of the user that created the tax region.
  *   tax_rates:
  *     type: array
- *     description: The tax region's tax rates.
+ *     description: The tax region's rates.
  *     items:
  *       $ref: "#/components/schemas/AdminTaxRate"
  *   parent:
