@@ -154,6 +154,11 @@ const nextConfig = {
         destination: "/advanced-development/module-links/remote-link",
         permanent: true,
       },
+      {
+        source: "/cheatsheet",
+        destination: "/more-resources/cheatsheet",
+        permanent: true,
+      },
     ]
   },
 }

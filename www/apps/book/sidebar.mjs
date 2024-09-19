@@ -344,7 +344,7 @@ export const sidebar = numberSidebarItems(
             {
               type: "link",
               path: "/advanced-development/data-models/index",
-              title: "Index",
+              title: "Define Index",
             },
             {
               type: "link",
@@ -537,7 +537,7 @@ export const sidebar = numberSidebarItems(
           children: [
             {
               type: "link",
-              path: "/debugging-and-testing/testing-tools/unit-tests/module-example",
+              path: "/debugging-and-testing/testing-tools/modules-tests/module-example",
               title: "Example",
             },
           ],
@@ -563,11 +563,18 @@ export const sidebar = numberSidebarItems(
       type: "link",
       path: "/more-resources",
       title: "More Resources",
-    },
-    {
-      type: "link",
-      path: "/cheatsheet",
-      title: "Cheat Sheet",
+      children: [
+        {
+          type: "link",
+          path: "/more-resources/cheatsheet",
+          title: "Cheat Sheet",
+        },
+        {
+          type: "link",
+          path: "/more-resources/examples",
+          title: "Examples",
+        },
+      ],
     },
   ])
 )

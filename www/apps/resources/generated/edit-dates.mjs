@@ -474,7 +474,7 @@ export const generatedEditDates = {
   "references/medusa_config/interfaces/medusa_config.ConfigModule/page.mdx": "2024-09-03T00:11:20.891Z",
   "references/medusa_config/interfaces/medusa_config.ProjectConfigOptions/page.mdx": "2024-08-28T00:11:31.266Z",
   "references/modules/auth/page.mdx": "2024-08-28T00:11:06.310Z",
-  "references/modules/modules_sdk/page.mdx": "2024-09-17T00:11:24.783Z",
+  "references/modules/modules_sdk/page.mdx": "2024-09-19T00:12:25.760Z",
   "references/modules_sdk/classes/modules_sdk.RemoteLink/page.mdx": "2024-09-17T00:11:24.823Z",
   "references/modules_sdk/classes/modules_sdk.RemoteQuery/page.mdx": "2024-09-18T00:11:33.763Z",
   "references/modules_sdk/types/modules_sdk.LinkModuleBootstrapOptions/page.mdx": "2024-09-17T00:11:24.803Z",
@@ -762,7 +762,7 @@ export const generatedEditDates = {
   "references/core_flows/types/core_flows.UpdateOrderTaxLinesWorkflowInput/page.mdx": "2024-08-30T00:11:25.754Z",
   "references/core_flows/types/core_flows.UpdateTaxLinesWorkflowInput/page.mdx": "2024-09-03T00:11:19.047Z",
   "references/helper_steps/functions/helper_steps.useRemoteQueryStep/page.mdx": "2024-08-30T00:11:27.218Z",
-  "references/modules/types/page.mdx": "2024-09-17T00:10:57.795Z",
+  "references/modules/types/page.mdx": "2024-09-19T00:11:56.800Z",
   "references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn/page.mdx": "2024-09-17T00:11:26.515Z",
   "references/order/interfaces/order.CancelOrderClaimDTO/page.mdx": "2024-08-30T00:11:28.474Z",
   "references/order/interfaces/order.CancelOrderExchangeDTO/page.mdx": "2024-08-30T00:11:28.478Z",
@@ -1743,5 +1743,7 @@ export const generatedEditDates = {
   "references/workflows/types/workflows.CompensateFn/page.mdx": "2024-09-17T00:11:28.827Z",
   "references/workflows/types/workflows.CreateWorkflowComposerContext/page.mdx": "2024-09-17T00:11:28.859Z",
   "references/workflows/types/workflows.InvokeFn/page.mdx": "2024-09-17T00:11:28.827Z",
-  "references/workflows/types/workflows.StepFunctionResult/page.mdx": "2024-09-17T00:11:28.847Z"
+  "references/workflows/types/workflows.StepFunctionResult/page.mdx": "2024-09-17T00:11:28.847Z",
+  "references/types/IndexTypes/interfaces/types.IndexTypes.IIndexService/page.mdx": "2024-09-19T00:11:57.874Z",
+  "references/types/types.IndexTypes/page.mdx": "2024-09-19T00:11:57.871Z"
 }
