@@ -134,6 +134,11 @@ const nextConfig = {
         destination: "/advanced-development/modules/query",
         permanent: true,
       },
+      {
+        source: "/cheatsheet",
+        destination: "/more-resources/cheatsheet",
+        permanent: true,
+      },
     ]
   },
 }
