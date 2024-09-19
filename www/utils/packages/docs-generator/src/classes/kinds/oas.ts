@@ -1543,6 +1543,15 @@ class OasKindGenerator extends FunctionKindGenerator {
             ) {
               return
             }
+
+            const shouldIgnore = property
+              .getJsDocTags()
+              .some((tag) => tag.name === "ignore")
+
+            if (shouldIgnore) {
+              return
+            }
+
             if (this.isRequired(property)) {
               requiredProperties.push(property.name)
             }

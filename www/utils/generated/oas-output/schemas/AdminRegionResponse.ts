@@ -1,7 +1,7 @@
 /**
  * @schema AdminRegionResponse
  * type: object
- * description: SUMMARY
+ * description: The region's details.
  * x-schemaName: AdminRegionResponse
  * required:
  *   - region

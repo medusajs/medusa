@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductTagDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the product tag deletion.
  * x-schemaName: AdminProductTagDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Product Tag was deleted.
+ *     description: Whether the product tag was deleted.
  * 
 */
 

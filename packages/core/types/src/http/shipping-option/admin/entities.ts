@@ -1,3 +1,4 @@
+import { RuleOperatorType } from "../../../common"
 import { ShippingOptionPriceType } from "../../../fulfillment"
 import { AdminFulfillmentProvider } from "../../fulfillment-provider"
 import { AdminServiceZone } from "../../fulfillment-set"
@@ -18,7 +19,7 @@ export interface AdminShippingOptionType {
 export interface AdminShippingOptionRule {
   id: string
   attribute: string
-  operator: string
+  operator: RuleOperatorType
   value: string | string[] | null
   shipping_option_id: string
   created_at: string
