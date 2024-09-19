@@ -326,7 +326,7 @@ export const sidebar = numberSidebarItems(
             {
               type: "link",
               path: "/advanced-development/data-models/index",
-              title: "Index",
+              title: "Define Index",
             },
             {
               type: "link",
