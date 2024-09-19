@@ -1,7 +1,7 @@
 /**
  * @schema AdminSalesChannelResponse
  * type: object
- * description: SUMMARY
+ * description: The sales channel's details.
  * x-schemaName: AdminSalesChannelResponse
  * required:
  *   - sales_channel
