@@ -30,10 +30,6 @@
  *     type: string
  *     title: province_code
  *     description: The tax region's province code.
- *   name:
- *     type: string
- *     title: name
- *     description: The tax region's name.
  *   metadata:
  *     type: object
  *     description: The tax region's metadata, can hold custom key-value pairs.
