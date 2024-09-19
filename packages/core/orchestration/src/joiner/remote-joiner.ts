@@ -882,8 +882,6 @@ export class RemoteJoiner {
         const args = isCurrentProp ? expand.args : []
 
         if (relationship) {
-          relationship.entity ??= entity
-
           const parentExpand =
             parsedExpands.get([BASE_PATH, ...currentPath].join(".")) || query
           if (parentExpand) {
@@ -1068,8 +1066,6 @@ export class RemoteJoiner {
       )
 
       if (relationship) {
-        relationship.entity ??= entity
-
         currentServiceConfig = this.getServiceConfig(
           relationship.serviceName,
           undefined,
