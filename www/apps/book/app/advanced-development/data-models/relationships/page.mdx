@@ -8,6 +8,12 @@ export const metadata = {
 
 In this chapter, you’ll learn how to define relationships between data models in your module.
 
+## What is a Relationship Property?
+
+A relationship property defines an association in the database between two models. It's created using methods on the `models` utility, such as `hasOne` or `belongsTo`.
+
+When you generate a migration for these data models, the migrations include foreign key columns or pivot tables, based on the relationship's type.
+
 <Note title="Use data model relationships when" type="success">
 
 You want to create a relation between data models in the same module.
@@ -20,13 +26,11 @@ You want to create a relationship between data models in different modules. Use 
 
 </Note>
 
-## What is a Relationship Property?
-
-A relationship property is defined using relation methods, such as `hasOne` or `belongsTo`. It represents a relationship between two data models in a module. 
-
 ---
 
 ## One-to-One Relationship
+
+A one-to-one relationship indicates that one record of a data model belongs to or is associated with another.
 
 To define a one-to-one relationship, create relationship properties in the data models using the following methods:
 
@@ -57,15 +61,26 @@ const Email = model.define("email", {
 })
 ```
 
+In the example above, a user has one email, and an email belongs to one user.
+
 The `hasOne` and `belongsTo` methods accept a function as a first parameter. The function returns the associated data model.
 
 The `belongsTo` method also requires passing as a second parameter an object with the property `mappedBy`. Its value is the name of the relationship property in the other data model.
 
-In the example above, a user has one email, and an email belongs to one user.
+### One-to-One Relationship in the Database
+
+When you generate the migrations of data models that have a one-to-one relationship, the migration adds to the table of the data model that has the `belongsTo` property:
+
+1. A column of the format `{relation_name}_id` to store the ID of the record of the related data model. For example, the `email` table will have a `user_id` column.
+2. A foreign key on the `{relation_name}_id` column to the table of the related data model.
+
+![Diagram illustrating the relation between user and email records in the database](https://res.cloudinary.com/dza7lstvk/image/upload/v1726733492/Medusa%20Book/one-to-one_cj5np3.jpg)
 
 ---
 
 ## One-to-Many Relationship
+
+A one-to-many relationship indicates that one record of a data model has many records of another data model.
 
 To define a one-to-many relationship, create relationship properties in the data models using the following methods:
 
@@ -98,9 +113,20 @@ const Product = model.define("product", {
 
 In this example, a store has many products, but a product belongs to one store.
 
+### One-to-Many Relationship in the Database
+
+When you generate the migrations of data models that have a one-to-many relationship, the migration adds to the table of the data model that has the `belongsTo` property:
+
+1. A column of the format `{relation_name}_id` to store the ID of the record of the related data model. For example, the `product` table will have a `store_id` column.
+2. A foreign key on the `{relation_name}_id` column to the table of the related data model.
+
+![Diagram illustrating the relation between a store and product records in the database](https://res.cloudinary.com/dza7lstvk/image/upload/v1726733937/Medusa%20Book/one-to-many_d6wtcw.jpg)
+
 ---
 
 ## Many-to-Many Relationship
+
+A many-to-many relationship indicates that many records of a data model can be associated to many records of another data model.
 
 To define a many-to-many relationship, create relationship properties in the data models using the `manyToMany` method.
 
@@ -129,15 +155,25 @@ const Product = model.define("product", {
 })
 ```
 
-At least one side of the many-to-many relationship should have the `mappedBy` property set in the second object parameter of the `manyToMany` object. Its value is the name of the relationship property in the other data model.
+At least one side of the many-to-many relationship must have the `mappedBy` property set in the second object parameter of the `manyToMany` object. Its value is the name of the relationship property in the other data model.
 
 In this example, an order is associated with many products, and a product is associated with many orders.
 
+### Many-to-Many Relationship in the Database
+
+When you generate the migrations of data models that have a many-to-many relationship, the migration adds a new pivot table.
+
+The pivot table has a column with the name `{data_model}_id` for each of the data model's tables. It also has foreign keys on each of these columns to their respective tables.
+
+![Diagram illustrating the relation between order and product records in the database](https://res.cloudinary.com/dza7lstvk/image/upload/v1726734269/Medusa%20Book/many-to-many_fzy5pq.jpg)
+
 ---
 
-## Configure Relationship Property Name
+## Set Relationship Name in the Other Model
 
 The relationship property methods accept as a second parameter an object of options. The `mappedBy` property defines the name of the relationship in the other data model.
+
+This is useful if the relationship property’s name is different than that of the associated data model.
 
 As seen in previous examples, the `mappedBy` option is required for the `belongsTo` method.
 
@@ -167,8 +203,6 @@ const Email = model.define("email", {
 ```
 
 In this example, you specify in the `User` data model’s relationship property that the name of the relationship in the `Email` data model is `owner`.
-
-This is useful if the relationship property’s name is different than that of the associated data model.
 
 ---
 

@@ -12,7 +12,7 @@ In this chapter, you'll learn how to manage relationships between data models wh
 
 When you create a record of a data model that belongs to another, pass the ID of the other data model's record in the `{relation_name}_id` property.
 
-For example, assuming you have the [User and Email data models from the previous chapter](../relationships/page.mdx#one-to-one-relationship):
+For example, assuming you have the [User and Email data models from the previous chapter](../relationships/page.mdx#one-to-one-relationship), set an email's user ID as follows:
 
 export const belongsHighlights = [
   ["4", "user_id", "The ID of the user the email belongs to."],
@@ -21,13 +21,13 @@ export const belongsHighlights = [
 
 ```ts highlights={belongsHighlights}
 // when creating an email
-const email = await helloModuleService.createEmail({
+const email = await helloModuleService.createEmails({
   // other properties...
   user_id: "123",
 })
 
 // when updating an email
-const email = await helloModuleService.updateEmail({
+const email = await helloModuleService.updateEmails({
   id: "321",
   // other properties...
   user_id: "123",
@@ -42,7 +42,7 @@ In the example above, you pass the `user_id` property when creating or updating 
 
 When you create or update a record of a data model that has a many-to-many relationship to another data model, pass an array of IDs of the other data model's records in the `{relation_name}_ids` property.
 
-For example, assuming you have the [Order and Product data models from the previous chapter](../relationships/page.mdx#many-to-many-relationship):
+For example, assuming you have the [Order and Product data models from the previous chapter](../relationships/page.mdx#many-to-many-relationship), set the association between products and orders as follows:
 
 export const manyHighlights = [
   ["4", "order_ids", "The IDs of the orders associated with the product."],
@@ -51,13 +51,13 @@ export const manyHighlights = [
 
 ```ts highlights={manyHighlights}
 // when creating a product
-const product = await helloModuleService.createProduct({
+const product = await helloModuleService.createProducts({
   // other properties...
   order_ids: ["123", "321"],
 })
 
 // when updating an order
-const order = await helloModuleService.updateOrder({
+const order = await helloModuleService.updateOrders({
   id: "321",
   // other properties...
   product_ids: ["123", "321"],
@@ -74,14 +74,14 @@ The `list`, `listAndCount`, and `retrieve` methods of a module's main service ac
 
 To retrieve the records associated with a data model's records through a relationship, pass in the second parameter object a `relations` property whose value is an array of relationship names.
 
-For example, assuming you have the [Order and Product data models from the previous chapter](../relationships/page.mdx#many-to-many-relationship):
+For example, assuming you have the [Order and Product data models from the previous chapter](../relationships/page.mdx#many-to-many-relationship), you retrieve a product's orders as follows:
 
 export const retrieveHighlights = [
   ["4", `"orders"`, "Retrieve the records associated with the product\nthrough the `orders` relationship."]
 ]
 
 ```ts highlights={retrieveHighlights}
-const product = await helloModuleService.retrieveProduct(
+const product = await helloModuleService.retrieveProducts(
   "123",
   {
     relations: ["orders"],
