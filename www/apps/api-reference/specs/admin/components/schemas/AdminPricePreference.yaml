@@ -18,26 +18,28 @@ properties:
     type: string
     title: attribute
     description: The price preference's attribute.
+    example: region_id
   value:
     type: string
     title: value
     description: The price preference's value.
+    example: reg_123
   is_tax_inclusive:
     type: boolean
     title: is_tax_inclusive
-    description: The price preference's is tax inclusive.
+    description: Whether prices matching this preference include taxes.
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The price preference's created at.
+    description: The date the price preference was created.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The price preference's updated at.
+    description: The date the price preference was updated.
   deleted_at:
     type: string
     format: date-time
     title: deleted_at
-    description: The price preference's deleted at.
+    description: The date the price preference was deleted.
