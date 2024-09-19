@@ -1,3 +1,5 @@
+import { AdminInventoryItem } from "../../inventory"
+
 export interface AdminReservation {
   id: string
   line_item_id: string | null
@@ -6,7 +8,7 @@ export interface AdminReservation {
   external_id: string | null
   description: string | null
   inventory_item_id: string
-  inventory_item: Record<string, unknown> // TODO: add InventoryItemResponse
+  inventory_item?: AdminInventoryItem
   metadata?: Record<string, unknown>
   created_by?: string | null
   deleted_at?: Date | string | null
