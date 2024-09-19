@@ -8,63 +8,173 @@ export const metadata = {
 
 In this chapter, you'll learn how to manage relationships between data models when creating, updating, or retrieving records using the module's main service.
 
-## Manage One-to-One and One-to-Many Relationship
+## Manage One-to-One Relationship
 
-When you create a record of a data model that belongs to another, pass the ID of the other data model's record in the `{relation_name}_id` property.
+### BelongsTo Side of One-to-One
+
+When you create a record of a data model that belongs to another through a one-to-one relation, pass the ID of the other data model's record in the relation property.
 
 For example, assuming you have the [User and Email data models from the previous chapter](../relationships/page.mdx#one-to-one-relationship), set an email's user ID as follows:
 
 export const belongsHighlights = [
-  ["4", "user_id", "The ID of the user the email belongs to."],
-  ["11", "user_id", "The ID of the user the email belongs to."]
+  ["4", "user", "The ID of the user the email belongs to."],
+  ["11", "user", "The ID of the user the email belongs to."]
 ]
 
 ```ts highlights={belongsHighlights}
 // when creating an email
 const email = await helloModuleService.createEmails({
   // other properties...
-  user_id: "123",
+  user: "123",
 })
 
 // when updating an email
 const email = await helloModuleService.updateEmails({
   id: "321",
   // other properties...
-  user_id: "123",
+  user: "123",
 })
 ```
 
-In the example above, you pass the `user_id` property when creating or updating an email to specify the user it belongs to.
+In the example above, you pass the `user` property when creating or updating an email to specify the user it belongs to.
+
+### HasOne Side
+
+When you create a record of a data model that has one of another, pass the ID of the other data model's record in the relation property.
+
+For example, assuming you have the [User and Email data models from the previous chapter](../relationships/page.mdx#one-to-one-relationship), set an user's email ID as follows:
+
+export const hasOneHighlights = [
+  ["4", "email", "The ID of the email that the user has."],
+  ["11", "email", "The ID of the email that the user has."]
+]
+
+```ts highlights={hasOneHighlights}
+// when creating a user
+const user = await helloModuleService.createUsers({
+  // other properties...
+  email: "123",
+})
+
+// when updating a user
+const user = await helloModuleService.updateUsers({
+  id: "321",
+  // other properties...
+  email: "123",
+})
+```
+
+In the example above, you pass the `email` property when creating or updating a user to specify the email it has.
+
+---
+
+## Manage One-to-Many Relationship
+
+In a one-to-many relationship, you can only manage the associations from the `belongsTo` side.
+
+When you create a record of the data model on the `belongsTo` side, pass the ID of the other data model's record in the `{relation}_id` property, where `{relation}` is the name of the relation property.
+
+For example, assuming you have the [Product and Store data models from the previous chapter](../relationships/page.mdx#one-to-many-relationship), set a product's store ID as follows:
+
+export const manyBelongsHighlights = [
+  ["4", "store_id", "The ID of the store the product belongs to."],
+  ["11", "store_id", "The ID of the store the product belongs to."]
+]
+
+```ts highlights={manyBelongsHighlights}
+// when creating a product
+const product = await helloModuleService.createProducts({
+  // other properties...
+  store_id: "123",
+})
+
+// when updating a product
+const product = await helloModuleService.updateProducts({
+  id: "321",
+  // other properties...
+  store_id: "123",
+})
+```
+
+In the example above, you pass the `store_id` property when creating or updating a product to specify the store it belongs to.
 
 ---
 
 ## Manage Many-to-Many Relationship
 
-When you create or update a record of a data model that has a many-to-many relationship to another data model, pass an array of IDs of the other data model's records in the `{relation_name}_ids` property.
+### Create Associations
+
+When you create a record of a data model that has a many-to-many relationship to another data model, pass an array of IDs of the other data model's records in the relation property.
 
 For example, assuming you have the [Order and Product data models from the previous chapter](../relationships/page.mdx#many-to-many-relationship), set the association between products and orders as follows:
 
 export const manyHighlights = [
-  ["4", "order_ids", "The IDs of the orders associated with the product."],
-  ["11", "product_ids", "The IDs of the products associated with the order."]
+  ["4", "orders", "The IDs of the orders associated with the product."],
+  ["11", "products", "The IDs of the products associated with the order."]
 ]
 
 ```ts highlights={manyHighlights}
 // when creating a product
 const product = await helloModuleService.createProducts({
   // other properties...
-  order_ids: ["123", "321"],
+  orders: ["123", "321"],
 })
 
-// when updating an order
-const order = await helloModuleService.updateOrders({
+// when creating an order
+const order = await helloModuleService.createOrders({
   id: "321",
   // other properties...
-  product_ids: ["123", "321"],
+  products: ["123", "321"],
 })
 ```
 
-In the example above, you pass the `order_ids` property when you create (or update) a product, and you pass the `product_ids` property when you update (or create) an order.
+In the example above, you pass the `orders` property when you create a product, and you pass the `products` property when you create an order.
+
+### Update Associations
+
+When you use the `update` methods generated by the service factory, you also pass an array of IDs as the relation property's value to add new associated records.
+
+However, this removes any existing associations to records whose IDs aren't included in the array.
+
+For example, assuming you have the [Order and Product data models from the previous chapter](../relationships/page.mdx#many-to-many-relationship), you update the product's related orders as so:
+
+```ts
+const product = await helloModuleService.updateProducts({
+  id: "123",
+  // other properties...
+  orders: ["321"],
+})
+```
+
+If the product was associated with an order, and you don't include that order's ID in the `orders` array, the association between the product and order is removed.
+
+So, to add a new association without removing existing ones, retrieve the product first to pass its associated orders when updating the product:
+
+export const updateAssociationHighlights = [
+  ["1", "retrieveProduct", "Retrieve the product with its orders."],
+  ["12", "", "Pass the IDs of the orders previously associated with the product."],
+  ["13", "", "Associate the product with a new order."]
+]
+
+```ts highlights={updateAssociationHighlights}
+const product = await helloModuleService.retrieveProduct(
+  "123",
+  {
+    relations: ["orders"]
+  }
+)
+
+const updatedProduct = await helloModuleService.updateProducts({
+  id: product.id,
+  // other properties...
+  orders: [
+    ...product.orders.map((order) => order.id),
+    "321"
+  ],
+})
+```
+
+This keeps existing associations between the product and orders, and adds a new one.
 
 ---
 

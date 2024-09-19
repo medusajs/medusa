@@ -150,7 +150,7 @@ const Order = model.define("order", {
 const Product = model.define("product", {
   id: model.id().primaryKey(),
   orders: model.manyToMany(() => Order, {
-    mappedBy: "orders"
+    mappedBy: "products"
   }),
 })
 ```
