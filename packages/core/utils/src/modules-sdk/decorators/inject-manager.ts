@@ -13,6 +13,8 @@ export function InjectManager(managerProperty?: string): MethodDecorator {
       )
     }
 
+    managerProperty ??= "baseRepository_"
+
     const originalMethod = descriptor.value
     const argIndex = target.MedusaContextIndex_[propertyKey]
 

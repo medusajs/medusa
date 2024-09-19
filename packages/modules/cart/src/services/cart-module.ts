@@ -9,16 +9,16 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/types"
 import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-  ModulesSdkUtils,
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
   deduplicate,
+  InjectManager,
+  InjectTransactionManager,
   isObject,
   isString,
+  MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import {
   Address,
@@ -246,7 +246,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createCarts(
     data: CartTypes.CreateCartDTO[] | CartTypes.CreateCartDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -268,7 +268,7 @@ export default class CartModuleService
       | CartTypes.CartDTO[]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createCarts_(
     data: CartTypes.CreateCartDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -314,7 +314,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateCarts(
     dataOrIdOrSelector:
       | CartTypes.UpdateCartDTO[]
@@ -338,7 +338,7 @@ export default class CartModuleService
     return isString(dataOrIdOrSelector) ? serializedResult[0] : serializedResult
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateCarts_(
     dataOrIdOrSelector:
       | CartTypes.UpdateCartDTO[]
@@ -388,7 +388,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async addLineItems(
     cartIdOrData:
       | string
@@ -417,7 +417,7 @@ export default class CartModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async addLineItems_(
     cartId: string,
     items: CartTypes.CreateLineItemDTO[],
@@ -439,7 +439,7 @@ export default class CartModuleService
     return await this.addLineItemsBulk_(toUpdate, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async addLineItemsBulk_(
     data: CreateLineItemDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -462,7 +462,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartLineItemDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateLineItems(
     lineItemIdOrDataOrSelector:
       | string
@@ -506,7 +506,7 @@ export default class CartModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateLineItem_(
     lineItemId: string,
     data: Partial<CartTypes.UpdateLineItemDTO>,
@@ -520,7 +520,7 @@ export default class CartModuleService
     return item
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateLineItemsWithSelector_(
     updates: CartTypes.UpdateLineItemWithSelectorDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -550,7 +550,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartAddressDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createAddresses(
     data: CartTypes.CreateAddressDTO[] | CartTypes.CreateAddressDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -569,7 +569,7 @@ export default class CartModuleService
       | CartTypes.CartAddressDTO[]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createAddresses_(
     data: CartTypes.CreateAddressDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -587,7 +587,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartAddressDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO[] | CartTypes.UpdateAddressDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -606,7 +606,7 @@ export default class CartModuleService
       | CartTypes.CartAddressDTO[]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateAddresses_(
     data: CartTypes.UpdateAddressDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -626,7 +626,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.CartShippingMethodDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async addShippingMethods(
     cartIdOrData:
       | string
@@ -659,7 +659,7 @@ export default class CartModuleService
     >(methods, { populate: true })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async addShippingMethods_(
     cartId: string,
     data: CartTypes.CreateShippingMethodForSingleCartDTO[],
@@ -681,7 +681,7 @@ export default class CartModuleService
     return await this.addShippingMethodsBulk_(methods, sharedContext)
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async addShippingMethodsBulk_(
     data: CartTypes.CreateShippingMethodDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -704,7 +704,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.LineItemAdjustmentDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async addLineItemAdjustments(
     cartIdOrData:
       | string
@@ -752,7 +752,7 @@ export default class CartModuleService
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async setLineItemAdjustments(
     cartId: string,
     adjustments: (
@@ -807,7 +807,7 @@ export default class CartModuleService
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async setShippingMethodAdjustments(
     cartId: string,
     adjustments: (
@@ -876,7 +876,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.ShippingMethodAdjustmentDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async addShippingMethodAdjustments(
     cartIdOrData:
       | string
@@ -950,7 +950,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.LineItemTaxLineDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async addLineItemTaxLines(
     cartIdOrData:
       | string
@@ -994,7 +994,7 @@ export default class CartModuleService
     return serialized
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async setLineItemTaxLines(
     cartId: string,
     taxLines: (
@@ -1064,7 +1064,7 @@ export default class CartModuleService
     sharedContext?: Context
   ): Promise<CartTypes.ShippingMethodTaxLineDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async addShippingMethodTaxLines(
     cartIdOrData:
       | string
@@ -1110,7 +1110,7 @@ export default class CartModuleService
     return serialized
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async setShippingMethodTaxLines(
     cartId: string,
     taxLines: (

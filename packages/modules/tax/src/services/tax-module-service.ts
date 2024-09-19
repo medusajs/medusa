@@ -84,7 +84,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createTaxRates(
     data: TaxTypes.CreateTaxRateDTO[] | TaxTypes.CreateTaxRateDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -94,7 +94,7 @@ export default class TaxModuleService
     return Array.isArray(data) ? rates : rates[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async createTaxRates_(
     data: TaxTypes.CreateTaxRateDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -157,7 +157,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateTaxRates(
     selector: string | string[] | TaxTypes.FilterableTaxRateProps,
     data: TaxTypes.UpdateTaxRateDTO,
@@ -170,7 +170,7 @@ export default class TaxModuleService
     return isString(selector) ? serialized[0] : serialized
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async updateTaxRates_(
     idOrSelector: string | string[] | TaxTypes.FilterableTaxRateProps,
     data: TaxTypes.UpdateTaxRateDTO,
@@ -269,7 +269,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateDTO>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async upsertTaxRates(
     data: TaxTypes.UpsertTaxRateDTO | TaxTypes.UpsertTaxRateDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -292,7 +292,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxRegionDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createTaxRegions(
     data: TaxTypes.CreateTaxRegionDTO | TaxTypes.CreateTaxRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -348,7 +348,7 @@ export default class TaxModuleService
     sharedContext?: Context
   ): Promise<TaxTypes.TaxRateRuleDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createTaxRateRules(
     data: TaxTypes.CreateTaxRateRuleDTO | TaxTypes.CreateTaxRateRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -358,7 +358,7 @@ export default class TaxModuleService
     return Array.isArray(data) ? result : result[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createTaxRateRules_(
     data: TaxTypes.CreateTaxRateRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -372,7 +372,7 @@ export default class TaxModuleService
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async getTaxLines(
     items: (TaxTypes.TaxableItemDTO | TaxTypes.TaxableShippingDTO)[],
     calculationContext: TaxTypes.TaxCalculationContext,
@@ -712,7 +712,7 @@ export default class TaxModuleService
     return code.toLowerCase()
   }
 
-  // @InjectTransactionManager("baseRepository_")
+  // @InjectTransactionManager()
   // async createProvidersOnLoad(@MedusaContext() sharedContext: Context = {}) {
   //   const providersToLoad = this.container_["tax_providers"] as ITaxProvider[]
 

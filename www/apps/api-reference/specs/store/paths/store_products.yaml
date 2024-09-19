@@ -5,6 +5,10 @@ get:
     Retrieve a list of products. The products can be filtered by fields such as
     `id`. The products can also be sorted or paginated.
   x-authenticated: false
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/products/price
+    description: 'Storefront guide: How to retrieve a product variants'' prices.'
   parameters:
     - name: expand
       in: query
@@ -63,32 +67,40 @@ get:
           with `-`.
     - name: $and
       in: query
+      description: >-
+        Join query parameters with an AND condition. Each object's content is
+        the same type as the expected query parameters.
       required: false
       schema:
         type: array
-        description: The product's $and.
+        description: >-
+          Join query parameters with an AND condition. Each object's content is
+          the same type as the expected query parameters.
         items:
           type: object
-          description: The $and's details.
         title: $and
     - name: $or
       in: query
+      description: >-
+        Join query parameters with an OR condition. Each object's content is the
+        same type as the expected query parameters.
       required: false
       schema:
         type: array
-        description: The product's $or.
+        description: >-
+          Join query parameters with an OR condition. Each object's content is
+          the same type as the expected query parameters.
         items:
           type: object
-          description: The $or's details.
         title: $or
     - name: q
       in: query
-      description: The product's q.
+      description: Search term to filter the product's searchable properties.
       required: false
       schema:
         type: string
         title: q
-        description: The product's q.
+        description: Search term to filter the product's searchable properties.
     - name: id
       in: query
       required: false
@@ -96,122 +108,153 @@ get:
         oneOf:
           - type: string
             title: id
-            description: The product's ID.
+            description: Filter by a product ID.
           - type: array
-            description: The product's ID.
+            description: Filter by product IDs.
             items:
               type: string
               title: id
-              description: The id's ID.
+              description: A product ID.
     - name: title
       in: query
-      description: The product's title.
+      description: Filter by product titles.
       required: false
       schema:
         oneOf:
           - type: string
             title: title
-            description: The product's title.
+            description: Filter by a title.
           - type: array
-            description: The product's title.
+            description: Filter by titles.
             items:
               type: string
               title: title
-              description: The title's details.
+              description: A title.
     - name: handle
       in: query
-      description: The product's handle.
+      description: Filter by product handles.
       required: false
       schema:
         oneOf:
           - type: string
             title: handle
-            description: The product's handle.
+            description: Filter by a product handle.
           - type: array
-            description: The product's handle.
+            description: Filter by product handles.
             items:
               type: string
               title: handle
-              description: The handle's details.
+              description: A product handle.
     - name: is_giftcard
       in: query
-      description: The product's is giftcard.
+      description: Whether the product is a gift card.
       required: false
       schema:
         type: boolean
         title: is_giftcard
-        description: The product's is giftcard.
+        description: Whether the product is a gift card.
     - name: collection_id
       in: query
-      description: The product's collection id.
+      description: Filter by a collection's ID to retrieve the products in it.
       required: false
       schema:
-        description: The product's collection id.
+        description: Filter by a collection's ID to retrieve the products in it.
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/v2/resources/storefront-development/products/collections/products
+          description: 'Storefront guide: Retrieve a collection''s products.'
         items:
           type: string
           title: collection_id
-          description: The collection id's details.
+          description: A collection's ID.
+    - name: tag_id
+      in: query
+      description: Filter by a tag's ID to retrieve the products in it.
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: tag_id
+            description: Filter by a product tag's ID.
+          - type: array
+            description: Filter by product tag IDs.
+            items:
+              type: string
+              title: tag_id
+              description: A product tag ID.
     - name: type_id
       in: query
-      description: The product's type id.
+      description: Filter by a type's ID to retrieve the products in it.
       required: false
       schema:
-        description: The product's type id.
-        items:
-          type: string
-          title: type_id
-          description: The type id's details.
+        oneOf:
+          - type: string
+            title: type_id
+            description: Filter by a product type's ID.
+          - type: array
+            description: Filter by product type IDs.
+            items:
+              type: string
+              title: type_id
+              description: A product type ID.
     - name: created_at
       in: query
-      description: The product's created at.
+      description: Filter by the product's creation date.
       required: false
       schema:
         type: object
-        description: The product's created at.
+        description: Filter by the product's creation date.
         properties:
           $and:
             type: array
-            description: The created at's $and.
+            description: >-
+              Join query parameters with an AND condition. Each object's content
+              is the same type as the expected query parameters.
             items:
               type: object
+            title: $and
           $or:
             type: array
-            description: The created at's $or.
+            description: >-
+              Join query parameters with an OR condition. Each object's content
+              is the same type as the expected query parameters.
             items:
               type: object
+            title: $or
           $eq:
             oneOf:
               - type: string
                 title: $eq
                 description: Filter by an exact match.
               - type: array
-                description: Filter by an exact match.
+                description: Filter by multiple exact matches.
                 items:
                   type: string
                   title: $eq
-                  description: Filter by an exact match.
+                  description: An exact match.
           $ne:
             type: string
             title: $ne
+            description: Filter by values not equal to this parameter.
           $in:
             type: array
-            description: The created at's $in.
+            description: Filter by values in this array.
             items:
               type: string
               title: $in
+              description: The value to match.
           $nin:
             type: array
-            description: The created at's $nin.
+            description: Filter by values not in this array.
             items:
               type: string
               title: $nin
+              description: The value not to match.
           $not:
             oneOf:
               - type: string
                 title: $not
-                description: >-
-                  Filter by values not matching the conditions in this
-                  parameter.
+                description: Filter by values not matching this parameter.
               - type: object
                 description: >-
                   Filter by values not matching the conditions in this
@@ -219,13 +262,17 @@ get:
                 properties:
                   $and:
                     type: array
-                    description: The $not's $and.
+                    description: >-
+                      Join query parameters with an AND condition. Each object's
+                      content is the same type as the expected query parameters.
                     items:
                       type: object
                     title: $and
                   $or:
                     type: array
-                    description: The $not's $or.
+                    description: >-
+                      Join query parameters with an OR condition. Each object's
+                      content is the same type as the expected query parameters.
                     items:
                       type: object
                     title: $or
@@ -235,50 +282,46 @@ get:
                         title: $eq
                         description: Filter by an exact match.
                       - type: array
-                        description: Filter by an exact match.
+                        description: Filter by multiple exact matches.
                         items:
                           type: string
                           title: $eq
-                          description: Filter by an exact match.
+                          description: The value to match.
                   $ne:
                     type: string
                     title: $ne
-                    description: Filter by values not equal to this parameter.
+                    description: Filter by values not matching this parameter.
                   $in:
                     type: array
                     description: Filter by values in this array.
                     items:
                       type: string
                       title: $in
-                      description: Filter by values in this array.
+                      description: The value to match.
                   $nin:
                     type: array
                     description: Filter by values not in this array.
                     items:
                       type: string
                       title: $nin
-                      description: Filter by values not in this array.
+                      description: The value to not match
                   $not:
                     oneOf:
                       - type: string
                         title: $not
-                        description: >-
-                          Filter by values not matching the conditions in this
-                          parameter.
+                        description: Filter by values not matching this parameter
                       - type: object
                         description: >-
                           Filter by values not matching the conditions in this
                           parameter.
                       - type: array
                         description: >-
-                          Filter by values not matching the conditions in this
+                          Filter by values not matching the values of this
                           parameter.
                         items:
                           type: string
                           title: $not
-                          description: >-
-                            Filter by values not matching the conditions in this
-                            parameter.
+                          description: The values to not match.
                   $gt:
                     type: string
                     title: $gt
@@ -329,9 +372,7 @@ get:
                     items:
                       type: string
                       title: $overlap
-                      description: >-
-                        Filter arrays that have overlapping values with this
-                        parameter.
+                      description: The value to match.
                   $contains:
                     type: array
                     description: >-
@@ -340,16 +381,14 @@ get:
                     items:
                       type: string
                       title: $contains
-                      description: >-
-                        Filter arrays that contain some of the values of this
-                        parameter.
+                      description: The values to match.
                   $contained:
                     type: array
                     description: Filter arrays that contain all values of this parameter.
                     items:
                       type: string
                       title: $contained
-                      description: Filter arrays that contain all values of this parameter.
+                      description: The values to match.
                   $exists:
                     type: boolean
                     title: $exists
@@ -357,119 +396,134 @@ get:
                       Filter by whether a value for this parameter exists (not
                       `null`).
               - type: array
-                description: >-
-                  Filter by values not matching the conditions in this
-                  parameter.
+                description: Filter by values not matching those in this parameter.
                 items:
                   type: string
                   title: $not
-                  description: >-
-                    Filter by values not matching the conditions in this
-                    parameter.
+                  description: The values to not match.
           $gt:
             type: string
             title: $gt
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
           $gte:
             type: string
             title: $gte
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
           $lt:
             type: string
             title: $lt
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
           $lte:
             type: string
             title: $lte
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
           $like:
             type: string
             title: $like
-            description: The created at's $like.
+            description: Apply a `like` filter. Useful for strings only.
           $re:
             type: string
             title: $re
-            description: The created at's $re.
+            description: Apply a regex filter. Useful for strings only.
           $ilike:
             type: string
             title: $ilike
-            description: The created at's $ilike.
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
           $fulltext:
             type: string
             title: $fulltext
-            description: The created at's $fulltext.
+            description: Filter to apply on full-text properties.
           $overlap:
             type: array
-            description: The created at's $overlap.
+            description: Filter arrays that have overlapping values with this parameter.
             items:
               type: string
               title: $overlap
-              description: The $overlap's details.
+              description: The values to match.
           $contains:
             type: array
-            description: The created at's $contains.
+            description: Filter arrays that contain some of the values of this parameter.
             items:
               type: string
               title: $contains
-              description: The $contain's $contains.
+              description: The values to match.
           $contained:
             type: array
-            description: The created at's $contained.
+            description: Filter arrays that contain all values of this parameter.
             items:
               type: string
               title: $contained
-              description: The $contained's details.
+              description: The values to match.
           $exists:
             type: boolean
             title: $exists
-            description: The created at's $exists.
+            description: Filter by whether a value for this parameter exists (not `null`).
     - name: updated_at
       in: query
-      description: The product's updated at.
+      description: Filter by the product's update date.
       required: false
       schema:
         type: object
-        description: The product's updated at.
+        description: Filter by the product's update date.
         properties:
           $and:
             type: array
-            description: The updated at's $and.
+            description: >-
+              Join query parameters with an AND condition. Each object's content
+              is the same type as the expected query parameters.
             items:
               type: object
+            title: $and
           $or:
             type: array
-            description: The updated at's $or.
+            description: >-
+              Join query parameters with an OR condition. Each object's content
+              is the same type as the expected query parameters.
             items:
               type: object
+            title: $or
           $eq:
             oneOf:
               - type: string
                 title: $eq
                 description: Filter by an exact match.
               - type: array
-                description: Filter by an exact match.
+                description: Filter by multiple exact matches.
                 items:
                   type: string
                   title: $eq
-                  description: Filter by an exact match.
+                  description: An exact match.
           $ne:
             type: string
             title: $ne
+            description: Filter by values not equal to this parameter.
           $in:
             type: array
-            description: The updated at's $in.
+            description: Filter by values in this array.
             items:
               type: string
               title: $in
+              description: The value to match.
           $nin:
             type: array
-            description: The updated at's $nin.
+            description: Filter by values not in this array.
             items:
               type: string
               title: $nin
+              description: The value not to match.
           $not:
             oneOf:
               - type: string
                 title: $not
-                description: >-
-                  Filter by values not matching the conditions in this
-                  parameter.
+                description: Filter by values not matching this parameter.
               - type: object
                 description: >-
                   Filter by values not matching the conditions in this
@@ -477,13 +531,17 @@ get:
                 properties:
                   $and:
                     type: array
-                    description: The $not's $and.
+                    description: >-
+                      Join query parameters with an AND condition. Each object's
+                      content is the same type as the expected query parameters.
                     items:
                       type: object
                     title: $and
                   $or:
                     type: array
-                    description: The $not's $or.
+                    description: >-
+                      Join query parameters with an OR condition. Each object's
+                      content is the same type as the expected query parameters.
                     items:
                       type: object
                     title: $or
@@ -493,50 +551,46 @@ get:
                         title: $eq
                         description: Filter by an exact match.
                       - type: array
-                        description: Filter by an exact match.
+                        description: Filter by multiple exact matches.
                         items:
                           type: string
                           title: $eq
-                          description: Filter by an exact match.
+                          description: The value to match.
                   $ne:
                     type: string
                     title: $ne
-                    description: Filter by values not equal to this parameter.
+                    description: Filter by values not matching this parameter.
                   $in:
                     type: array
                     description: Filter by values in this array.
                     items:
                       type: string
                       title: $in
-                      description: Filter by values in this array.
+                      description: The value to match.
                   $nin:
                     type: array
                     description: Filter by values not in this array.
                     items:
                       type: string
                       title: $nin
-                      description: Filter by values not in this array.
+                      description: The value to not match
                   $not:
                     oneOf:
                       - type: string
                         title: $not
-                        description: >-
-                          Filter by values not matching the conditions in this
-                          parameter.
+                        description: Filter by values not matching this parameter
                       - type: object
                         description: >-
                           Filter by values not matching the conditions in this
                           parameter.
                       - type: array
                         description: >-
-                          Filter by values not matching the conditions in this
+                          Filter by values not matching the values of this
                           parameter.
                         items:
                           type: string
                           title: $not
-                          description: >-
-                            Filter by values not matching the conditions in this
-                            parameter.
+                          description: The values to not match.
                   $gt:
                     type: string
                     title: $gt
@@ -587,9 +641,7 @@ get:
                     items:
                       type: string
                       title: $overlap
-                      description: >-
-                        Filter arrays that have overlapping values with this
-                        parameter.
+                      description: The value to match.
                   $contains:
                     type: array
                     description: >-
@@ -598,16 +650,14 @@ get:
                     items:
                       type: string
                       title: $contains
-                      description: >-
-                        Filter arrays that contain some of the values of this
-                        parameter.
+                      description: The values to match.
                   $contained:
                     type: array
                     description: Filter arrays that contain all values of this parameter.
                     items:
                       type: string
                       title: $contained
-                      description: Filter arrays that contain all values of this parameter.
+                      description: The values to match.
                   $exists:
                     type: boolean
                     title: $exists
@@ -615,119 +665,134 @@ get:
                       Filter by whether a value for this parameter exists (not
                       `null`).
               - type: array
-                description: >-
-                  Filter by values not matching the conditions in this
-                  parameter.
+                description: Filter by values not matching those in this parameter.
                 items:
                   type: string
                   title: $not
-                  description: >-
-                    Filter by values not matching the conditions in this
-                    parameter.
+                  description: The values to not match.
           $gt:
             type: string
             title: $gt
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
           $gte:
             type: string
             title: $gte
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
           $lt:
             type: string
             title: $lt
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
           $lte:
             type: string
             title: $lte
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
           $like:
             type: string
             title: $like
-            description: The updated at's $like.
+            description: Apply a `like` filter. Useful for strings only.
           $re:
             type: string
             title: $re
-            description: The updated at's $re.
+            description: Apply a regex filter. Useful for strings only.
           $ilike:
             type: string
             title: $ilike
-            description: The updated at's $ilike.
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
           $fulltext:
             type: string
             title: $fulltext
-            description: The updated at's $fulltext.
+            description: Filter to apply on full-text properties.
           $overlap:
             type: array
-            description: The updated at's $overlap.
+            description: Filter arrays that have overlapping values with this parameter.
             items:
               type: string
               title: $overlap
-              description: The $overlap's details.
+              description: The values to match.
           $contains:
             type: array
-            description: The updated at's $contains.
+            description: Filter arrays that contain some of the values of this parameter.
             items:
               type: string
               title: $contains
-              description: The $contain's $contains.
+              description: The values to match.
           $contained:
             type: array
-            description: The updated at's $contained.
+            description: Filter arrays that contain all values of this parameter.
             items:
               type: string
               title: $contained
-              description: The $contained's details.
+              description: The values to match.
           $exists:
             type: boolean
             title: $exists
-            description: The updated at's $exists.
+            description: Filter by whether a value for this parameter exists (not `null`).
     - name: deleted_at
       in: query
-      description: The product's deleted at.
+      description: Filter by the product's date date.
       required: false
       schema:
         type: object
-        description: The product's deleted at.
+        description: Filter by the product's date date.
         properties:
           $and:
             type: array
-            description: The deleted at's $and.
+            description: >-
+              Join query parameters with an AND condition. Each object's content
+              is the same type as the expected query parameters.
             items:
               type: object
+            title: $and
           $or:
             type: array
-            description: The deleted at's $or.
+            description: >-
+              Join query parameters with an OR condition. Each object's content
+              is the same type as the expected query parameters.
             items:
               type: object
+            title: $or
           $eq:
             oneOf:
               - type: string
                 title: $eq
                 description: Filter by an exact match.
               - type: array
-                description: Filter by an exact match.
+                description: Filter by multiple exact matches.
                 items:
                   type: string
                   title: $eq
-                  description: Filter by an exact match.
+                  description: An exact match.
           $ne:
             type: string
             title: $ne
+            description: Filter by values not equal to this parameter.
           $in:
             type: array
-            description: The deleted at's $in.
+            description: Filter by values in this array.
             items:
               type: string
               title: $in
+              description: The value to match.
           $nin:
             type: array
-            description: The deleted at's $nin.
+            description: Filter by values not in this array.
             items:
               type: string
               title: $nin
+              description: The value not to match.
           $not:
             oneOf:
               - type: string
                 title: $not
-                description: >-
-                  Filter by values not matching the conditions in this
-                  parameter.
+                description: Filter by values not matching this parameter.
               - type: object
                 description: >-
                   Filter by values not matching the conditions in this
@@ -735,13 +800,17 @@ get:
                 properties:
                   $and:
                     type: array
-                    description: The $not's $and.
+                    description: >-
+                      Join query parameters with an AND condition. Each object's
+                      content is the same type as the expected query parameters.
                     items:
                       type: object
                     title: $and
                   $or:
                     type: array
-                    description: The $not's $or.
+                    description: >-
+                      Join query parameters with an OR condition. Each object's
+                      content is the same type as the expected query parameters.
                     items:
                       type: object
                     title: $or
@@ -751,50 +820,46 @@ get:
                         title: $eq
                         description: Filter by an exact match.
                       - type: array
-                        description: Filter by an exact match.
+                        description: Filter by multiple exact matches.
                         items:
                           type: string
                           title: $eq
-                          description: Filter by an exact match.
+                          description: The value to match.
                   $ne:
                     type: string
                     title: $ne
-                    description: Filter by values not equal to this parameter.
+                    description: Filter by values not matching this parameter.
                   $in:
                     type: array
                     description: Filter by values in this array.
                     items:
                       type: string
                       title: $in
-                      description: Filter by values in this array.
+                      description: The value to match.
                   $nin:
                     type: array
                     description: Filter by values not in this array.
                     items:
                       type: string
                       title: $nin
-                      description: Filter by values not in this array.
+                      description: The value to not match
                   $not:
                     oneOf:
                       - type: string
                         title: $not
-                        description: >-
-                          Filter by values not matching the conditions in this
-                          parameter.
+                        description: Filter by values not matching this parameter
                       - type: object
                         description: >-
                           Filter by values not matching the conditions in this
                           parameter.
                       - type: array
                         description: >-
-                          Filter by values not matching the conditions in this
+                          Filter by values not matching the values of this
                           parameter.
                         items:
                           type: string
                           title: $not
-                          description: >-
-                            Filter by values not matching the conditions in this
-                            parameter.
+                          description: The values to not match.
                   $gt:
                     type: string
                     title: $gt
@@ -845,9 +910,7 @@ get:
                     items:
                       type: string
                       title: $overlap
-                      description: >-
-                        Filter arrays that have overlapping values with this
-                        parameter.
+                      description: The value to match.
                   $contains:
                     type: array
                     description: >-
@@ -856,16 +919,14 @@ get:
                     items:
                       type: string
                       title: $contains
-                      description: >-
-                        Filter arrays that contain some of the values of this
-                        parameter.
+                      description: The values to match.
                   $contained:
                     type: array
                     description: Filter arrays that contain all values of this parameter.
                     items:
                       type: string
                       title: $contained
-                      description: Filter arrays that contain all values of this parameter.
+                      description: The values to match.
                   $exists:
                     type: boolean
                     title: $exists
@@ -873,92 +934,132 @@ get:
                       Filter by whether a value for this parameter exists (not
                       `null`).
               - type: array
-                description: >-
-                  Filter by values not matching the conditions in this
-                  parameter.
+                description: Filter by values not matching those in this parameter.
                 items:
                   type: string
                   title: $not
-                  description: >-
-                    Filter by values not matching the conditions in this
-                    parameter.
+                  description: The values to not match.
           $gt:
             type: string
             title: $gt
+            description: >-
+              Filter by values greater than this parameter. Useful for numbers
+              and dates only.
           $gte:
             type: string
             title: $gte
+            description: >-
+              Filter by values greater than or equal to this parameter. Useful
+              for numbers and dates only.
           $lt:
             type: string
             title: $lt
+            description: >-
+              Filter by values less than this parameter. Useful for numbers and
+              dates only.
           $lte:
             type: string
             title: $lte
+            description: >-
+              Filter by values less than or equal to this parameter. Useful for
+              numbers and dates only.
           $like:
             type: string
             title: $like
-            description: The deleted at's $like.
+            description: Apply a `like` filter. Useful for strings only.
           $re:
             type: string
             title: $re
-            description: The deleted at's $re.
+            description: Apply a regex filter. Useful for strings only.
           $ilike:
             type: string
             title: $ilike
-            description: The deleted at's $ilike.
+            description: Apply a case-insensitive `like` filter. Useful for strings only.
           $fulltext:
             type: string
             title: $fulltext
-            description: The deleted at's $fulltext.
+            description: Filter to apply on full-text properties.
           $overlap:
             type: array
-            description: The deleted at's $overlap.
+            description: Filter arrays that have overlapping values with this parameter.
             items:
               type: string
               title: $overlap
-              description: The $overlap's details.
+              description: The values to match.
           $contains:
             type: array
-            description: The deleted at's $contains.
+            description: Filter arrays that contain some of the values of this parameter.
             items:
               type: string
               title: $contains
-              description: The $contain's $contains.
+              description: The values to match.
           $contained:
             type: array
-            description: The deleted at's $contained.
+            description: Filter arrays that contain all values of this parameter.
             items:
               type: string
               title: $contained
-              description: The $contained's details.
+              description: The values to match.
           $exists:
             type: boolean
             title: $exists
-            description: The deleted at's $exists.
+            description: Filter by whether a value for this parameter exists (not `null`).
     - name: region_id
       in: query
-      description: The product's region id.
+      description: >-
+        The ID of the region the products are being viewed from. This is
+        required if you're retrieving product variant prices with taxes.
       required: false
       schema:
         type: string
         title: region_id
-        description: The product's region id.
-    - name: currency_code
+        description: >-
+          The ID of the region the products are being viewed from. This is
+          required if you're retrieving product variant prices with taxes.
+        externalDocs:
+          url: >-
+            https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
+          description: 'Storefront guide: How to show product variants'' prices with taxes.'
+    - name: country_code
       in: query
-      description: The product's currency code.
+      description: >-
+        The country code the products are being viewed from. This is required if
+        you're retrieving product variant prices with taxes.
       required: false
       schema:
         type: string
-        title: currency_code
-        description: The product's currency code.
+        title: country_code
+        description: >-
+          The country code the products are being viewed from. This is required
+          if you're retrieving product variant prices with taxes.
     - name: province
       in: query
-      description: The product's province.
+      description: >-
+        The province the products are being viewed from. This is useful to
+        narrow down the tax context when calculating product variant prices with
+        taxes.
       required: false
       schema:
         type: string
         title: province
-        description: The product's province.
+        description: >-
+          The province the products are being viewed from. This is useful to
+          narrow down the tax context when calculating product variant prices
+          with taxes.
+    - name: cart_id
+      in: query
+      description: >-
+        The ID of the customer's cart. If set, the cart's region and shipping
+        address's country code and province are used instead of the `region_id`,
+        `country_code`, and `province` properties.
+      required: false
+      schema:
+        type: string
+        title: cart_id
+        description: >-
+          The ID of the customer's cart. If set, the cart's region and shipping
+          address's country code and province are used instead of the
+          `region_id`, `country_code`, and `province` properties.
     - name: sales_channel_id
       in: query
       required: false
@@ -966,13 +1067,13 @@ get:
         oneOf:
           - type: string
             title: sales_channel_id
-            description: The product's sales channel id.
+            description: The ID of a sales channel to retrieve products in it.
           - type: array
-            description: The product's sales channel id.
+            description: The IDs of sales channels to retrieve products in them.
             items:
               type: string
               title: sales_channel_id
-              description: The sales channel id's details.
+              description: A sales channel's ID.
     - name: category_id
       in: query
       required: false
@@ -980,27 +1081,13 @@ get:
         oneOf:
           - type: string
             title: category_id
-            description: The product's category id.
+            description: The ID of a product category to retrieve products in it.
           - type: array
-            description: The product's category id.
+            description: The ID of product categories to retrieve products in them.
             items:
               type: string
               title: category_id
-              description: The category id's details.
-    - name: tag_id
-      in: query
-      required: false
-      schema:
-        oneOf:
-          - type: string
-            title: tag_id
-            description: The product's tag id.
-          - type: array
-            description: The product's tag id.
-            items:
-              type: string
-              title: tag_id
-              description: The tag id's details.
+              description: A product category's ID.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -1016,7 +1103,7 @@ get:
           schema:
             allOf:
               - type: object
-                description: SUMMARY
+                description: The paginated list of products.
                 required:
                   - limit
                   - offset
@@ -1025,23 +1112,25 @@ get:
                   limit:
                     type: number
                     title: limit
-                    description: The product's limit.
+                    description: The maximum number of items returned.
                   offset:
                     type: number
                     title: offset
-                    description: The product's offset.
+                    description: >-
+                      The number of items skipped before retrieving the returned
+                      items.
                   count:
                     type: number
                     title: count
-                    description: The product's count.
+                    description: The total number of items.
               - type: object
-                description: SUMMARY
+                description: The paginated list of products.
                 required:
                   - products
                 properties:
                   products:
                     type: array
-                    description: The product's products.
+                    description: The list of products.
                     items:
                       type: object
     '400':

@@ -1,6 +1,7 @@
 post:
   operationId: PostCartsIdPromotions
   summary: Add Promotions to Cart
+  x-sidebar-summary: Add Promotions
   description: Add a list of promotions to a cart.
   x-authenticated: false
   parameters:
@@ -41,17 +42,17 @@ post:
       application/json:
         schema:
           type: object
-          description: SUMMARY
+          description: The promotion's details.
           required:
             - promo_codes
           properties:
             promo_codes:
               type: array
-              description: The cart's promo codes.
+              description: Promotion codes to add to the cart.
               items:
                 type: string
                 title: promo_codes
-                description: The promo code's promo codes.
+                description: A promotion code.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -82,9 +83,7 @@ post:
 delete:
   operationId: DeleteCartsIdPromotions
   summary: Remove Promotions from Cart
-  description: >-
-    Remove a list of promotions from a cart. This doesn't delete the Promotion,
-    only the association between the Promotion and the cart.
+  description: Remove a list of promotions from a cart.
   x-authenticated: false
   parameters:
     - name: id
@@ -133,7 +132,7 @@ delete:
         application/json:
           schema:
             type: object
-            description: SUMMARY
+            description: The cart's details.
             required:
               - cart
             properties:
