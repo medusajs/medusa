@@ -10,6 +10,19 @@ import {
   Select,
 } from "../types"
 
+export const OPERATOR_MAP = {
+  $eq: "=",
+  $lt: "<",
+  $gt: ">",
+  $lte: "<=",
+  $gte: ">=",
+  $ne: "!=",
+  $in: "IN",
+  $is: "IS",
+  $like: "LIKE",
+  $ilike: "ILIKE",
+}
+
 export class QueryBuilder {
   private readonly structure: Select
   private readonly entityMap: Record<string, any>
@@ -119,18 +132,6 @@ export class QueryBuilder {
     obj: object,
     builder: Knex.QueryBuilder
   ) {
-    const OPERATOR_MAP = {
-      $eq: "=",
-      $lt: "<",
-      $gt: ">",
-      $lte: "<=",
-      $gte: ">=",
-      $ne: "!=",
-      $in: "IN",
-      $is: "IS",
-      $like: "LIKE",
-      $ilike: "ILIKE",
-    }
     const keys = Object.keys(obj)
 
     const getPathAndField = (key: string) => {

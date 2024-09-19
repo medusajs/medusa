@@ -1,8 +1,8 @@
 import {
-  MedusaAppLoader,
   configLoader,
   container,
   logger,
+  MedusaAppLoader,
 } from "@medusajs/framework"
 import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
 import { IndexTypes } from "@medusajs/types"
@@ -287,20 +287,18 @@ describe("IndexModuleService query", function () {
   afterEach(afterEach_)
 
   it("should query all products ordered by sku DESC", async () => {
-    const [result, count] = await module.queryAndCount(
-      {
-        select: {
+    const [result, count] = await module.queryAndCount({
+      fields: ["product.*", "product.variants.*", "product.variants.prices.*"],
+      pagination: {
+        orderBy: {
           product: {
             variants: {
-              prices: true,
+              sku: "DESC",
             },
           },
         },
       },
-      {
-        orderBy: [{ "product.variants.sku": "DESC" }],
-      }
-    )
+    })
 
     expect(count).toEqual(2)
     expect(result).toEqual([
@@ -346,15 +344,13 @@ describe("IndexModuleService query", function () {
 
   it("should query products filtering by variant sku", async () => {
     const result = await module.query({
-      select: {
+      fields: ["product.*", "product.variants.*", "product.variants.prices.*"],
+      filters: {
         product: {
           variants: {
-            prices: true,
+            sku: { $like: "aaa%" },
           },
         },
-      },
-      where: {
-        "product.variants.sku": { $like: "aaa%" },
       },
     })
 
@@ -378,23 +374,20 @@ describe("IndexModuleService query", function () {
   })
 
   it("should query products filtering by price and returning the complete entity", async () => {
-    const [result] = await module.queryAndCount(
-      {
-        select: {
-          product: {
-            variants: {
-              prices: true,
+    const [result] = await module.queryAndCount({
+      fields: ["product.*", "product.variants.*", "product.variants.prices.*"],
+      filters: {
+        product: {
+          variants: {
+            prices: {
+              amount: { $gt: 50 },
             },
           },
         },
-        where: {
-          "product.variants.prices.amount": { $gt: "50" },
-        },
       },
-      {
-        keepFilteredEntities: true,
-      }
-    )
+      keepFilteredEntities: true,
+    })
+
     expect(result).toEqual([
       {
         id: "prod_1",
@@ -426,13 +419,7 @@ describe("IndexModuleService query", function () {
 
   it("should query all products", async () => {
     const [result, count] = await module.queryAndCount({
-      select: {
-        product: {
-          variants: {
-            prices: true,
-          },
-        },
-      },
+      fields: ["product.*", "product.variants.*", "product.variants.prices.*"],
     })
 
     expect(count).toEqual(2)
@@ -477,21 +464,13 @@ describe("IndexModuleService query", function () {
   })
 
   it("should paginate products", async () => {
-    const result = await module.query(
-      {
-        select: {
-          product: {
-            variants: {
-              prices: true,
-            },
-          },
-        },
-      },
-      {
+    const result = await module.query({
+      fields: ["product.*", "product.variants.*", "product.variants.prices.*"],
+      pagination: {
         take: 1,
         skip: 1,
-      }
-    )
+      },
+    })
 
     expect(result).toEqual([
       {
@@ -510,15 +489,13 @@ describe("IndexModuleService query", function () {
 
   it("should handle null values on where clause", async () => {
     const result = await module.query({
-      select: {
+      fields: ["product.*", "product.variants.*", "product.variants.prices.*"],
+      filters: {
         product: {
           variants: {
-            prices: true,
+            sku: null,
           },
         },
-      },
-      where: {
-        "product.variants.sku": null,
       },
     })
 
@@ -539,13 +516,18 @@ describe("IndexModuleService query", function () {
 
   it("should query products filtering by deep nested levels", async () => {
     const [result] = await module.queryAndCount({
-      select: {
-        product: true,
-      },
-      where: {
-        "product.deep.obj.b": 15,
+      fields: ["product.*"],
+      filters: {
+        product: {
+          deep: {
+            obj: {
+              b: 15,
+            },
+          },
+        },
       },
     })
+
     expect(result).toEqual([
       {
         id: "prod_2",

@@ -1,4 +1,5 @@
 import {
+  IndexTypes,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   Subscriber,
@@ -119,9 +120,11 @@ export interface StorageProvider {
 
   onApplicationStart?(): Promise<void>
 
-  query(...args): unknown
+  query(config: IndexTypes.IndexQueryConfig): Promise<any[]>
 
-  queryAndCount(...args): unknown
+  queryAndCount(
+    config: IndexTypes.IndexQueryConfig
+  ): Promise<[any[], number, PerformanceMeasure]>
 
   consumeEvent(
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation

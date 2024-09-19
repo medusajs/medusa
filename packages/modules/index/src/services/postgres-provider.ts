@@ -1,6 +1,7 @@
 import {
   Context,
   Event,
+  IndexTypes,
   RemoteQueryFunction,
   Subscriber,
 } from "@medusajs/types"
@@ -18,12 +19,12 @@ import { IndexData, IndexRelation } from "@models"
 import {
   EntityNameModuleConfigMap,
   IndexModuleOptions,
-  QueryFormat,
-  QueryOptions,
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
 } from "@types"
 import { createPartitions, QueryBuilder } from "../utils"
+import { flattenObjectKeys } from "../utils/flatten-object-keys"
+import { normalizeFieldsSelection } from "../utils/normalize-fields-selection"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -196,18 +197,27 @@ export class PostgresProvider {
 
   @InjectManager("baseRepository_")
   async query(
-    selection: QueryFormat,
-    options?: QueryOptions,
+    config: IndexTypes.IndexQueryConfig,
     @MedusaContext() sharedContext: Context = {}
   ) {
     await this.#isReady_
 
+    const {
+      keepFilteredEntities,
+      fields = [],
+      filters = {},
+      joinFilters = {},
+    } = config
+    const { take, skip, orderBy: inputOrderBy = {} } = config.pagination ?? {}
+
+    const select = normalizeFieldsSelection(fields)
+    const where = flattenObjectKeys(filters)
+    const joinWhere = flattenObjectKeys(joinFilters)
+    const orderBy = flattenObjectKeys(inputOrderBy)
+
     const { manager } = sharedContext as { manager: SqlEntityManager }
     let hasPagination = false
-    if (
-      typeof options?.take === "number" ||
-      typeof options?.skip === "number"
-    ) {
+    if (typeof take === "number" || typeof skip === "number") {
       hasPagination = true
     }
 
@@ -216,27 +226,38 @@ export class PostgresProvider {
       schema: this.schemaObjectRepresentation_,
       entityMap: this.schemaEntitiesMap_,
       knex: connection.getKnex(),
-      selector: selection,
-      options,
+      selector: {
+        select,
+        where,
+        joinWhere,
+      },
+      options: {
+        skip,
+        take,
+        keepFilteredEntities,
+        orderBy,
+      },
     })
 
-    const sql = qb.buildQuery(hasPagination, !!options?.keepFilteredEntities)
+    const sql = qb.buildQuery(hasPagination, !!keepFilteredEntities)
 
     let resultset = await manager.execute(sql)
 
-    if (options?.keepFilteredEntities) {
-      const mainEntity = Object.keys(selection.select)[0]
+    if (keepFilteredEntities) {
+      const mainEntity = Object.keys(select)[0]
 
       const ids = resultset.map((r) => r[`${mainEntity}.id`])
       if (ids.length) {
         const selection_ = {
-          select: selection.select,
-          joinWhere: selection.joinWhere,
-          where: {
-            [`${mainEntity}.id`]: ids,
+          fields,
+          joinFilters: joinFilters,
+          filters: {
+            [mainEntity]: {
+              id: ids,
+            },
           },
         }
-        return await this.query(selection_, undefined, sharedContext)
+        return await this.query(selection_, sharedContext)
       }
     }
 
@@ -245,11 +266,23 @@ export class PostgresProvider {
 
   @InjectManager("baseRepository_")
   async queryAndCount(
-    selection: QueryFormat,
-    options?: QueryOptions,
+    config: IndexTypes.IndexQueryConfig,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[Record<string, any>[], number, PerformanceEntry]> {
     await this.#isReady_
+
+    const {
+      keepFilteredEntities,
+      fields = [],
+      filters = {},
+      joinFilters = {},
+    } = config
+    const { take, skip, orderBy: inputOrderBy = {} } = config.pagination ?? {}
+
+    const select = normalizeFieldsSelection(fields)
+    const where = flattenObjectKeys(filters)
+    const joinWhere = flattenObjectKeys(joinFilters)
+    const orderBy = flattenObjectKeys(inputOrderBy)
 
     const { manager } = sharedContext as { manager: SqlEntityManager }
     const connection = manager.getConnection()
@@ -257,11 +290,20 @@ export class PostgresProvider {
       schema: this.schemaObjectRepresentation_,
       entityMap: this.schemaEntitiesMap_,
       knex: connection.getKnex(),
-      selector: selection,
-      options,
+      selector: {
+        select,
+        where,
+        joinWhere,
+      },
+      options: {
+        skip,
+        take,
+        keepFilteredEntities,
+        orderBy,
+      },
     })
 
-    const sql = qb.buildQuery(true, !!options?.keepFilteredEntities)
+    const sql = qb.buildQuery(true, !!keepFilteredEntities)
     performance.mark("index-query-start")
     let resultset = await connection.execute(sql)
     performance.mark("index-query-end")
@@ -273,21 +315,23 @@ export class PostgresProvider {
 
     const count = +(resultset[0]?.count ?? 0)
 
-    if (options?.keepFilteredEntities) {
-      const mainEntity = Object.keys(selection.select)[0]
+    if (keepFilteredEntities) {
+      const mainEntity = Object.keys(select)[0]
 
       const ids = resultset.map((r) => r[`${mainEntity}.id`])
       if (ids.length) {
-        const selection_ = {
-          select: selection.select,
-          joinWhere: selection.joinWhere,
-          where: {
-            [`${mainEntity}.id`]: ids,
+        const selection_: Parameters<typeof this.query>[0] = {
+          fields,
+          joinFilters: joinFilters,
+          filters: {
+            [mainEntity]: {
+              id: ids,
+            },
           },
         }
 
         performance.mark("index-query-start")
-        resultset = await this.query(selection_, undefined, sharedContext)
+        resultset = await this.query(selection_, sharedContext)
         performance.mark("index-query-end")
 
         const performanceMesurements = performance.measure(

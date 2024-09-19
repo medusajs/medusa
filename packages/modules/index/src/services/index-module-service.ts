@@ -98,15 +98,12 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
     }
   }
 
-  async query(...args) {
-    return await this.storageProvider_.query.apply(this.storageProvider_, args)
+  async query(config: IndexTypes.IndexQueryConfig) {
+    return await this.storageProvider_.query(config)
   }
 
-  async queryAndCount(...args) {
-    return await this.storageProvider_.queryAndCount.apply(
-      this.storageProvider_,
-      args
-    )
+  async queryAndCount(config: IndexTypes.IndexQueryConfig) {
+    return await this.storageProvider_.queryAndCount(config)
   }
 
   protected registerListeners() {

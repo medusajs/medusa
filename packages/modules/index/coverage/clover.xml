@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1726733616211" clover="3.2.0">
+  <project timestamp="1726733616211" name="All files">
+    <metrics statements="9" coveredstatements="9" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2" elements="15" coveredelements="14" complexity="0" loc="9" ncloc="9" packages="1" files="1" classes="1"/>
+    <file name="flatten-object-keys.ts" path="/Users/adriendeperetti/Documents/02-personnel/01-projects/medusa/packages/modules/index/src/utils/flatten-object-keys.ts">
+      <metrics statements="9" coveredstatements="9" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="23" count="1" type="stmt"/>
+      <line num="26" count="2" type="stmt"/>
+      <line num="27" count="5" type="cond" truecount="2" falsecount="0"/>
+      <line num="28" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="29" count="1" type="stmt"/>
+      <line num="31" count="4" type="stmt"/>
+      <line num="36" count="1" type="stmt"/>
+      <line num="37" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
