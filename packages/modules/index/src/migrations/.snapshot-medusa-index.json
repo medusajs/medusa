@@ -1,0 +1,151 @@
+{
+  "namespaces": ["public"],
+  "name": "public",
+  "tables": [
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'{}'",
+          "mappedType": "json"
+        }
+      },
+      "name": "index_data",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": ["id"],
+          "composite": false,
+          "keyName": "IDX_index_data_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["name"],
+          "composite": false,
+          "keyName": "IDX_index_data_name",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "IDX_index_data_gin",
+          "columnNames": ["data"],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "type": "GIN"
+        },
+        {
+          "keyName": "index_data_pkey",
+          "columnNames": ["id", "name"],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "pivot": {
+          "name": "pivot",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "parent_name": {
+          "name": "parent_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "child_id": {
+          "name": "child_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "child_name": {
+          "name": "child_name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "index_relation",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_index_relation_child_id",
+          "columnNames": ["child_id"],
+          "composite": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "index_relation_pkey",
+          "columnNames": ["id", "pivot"],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    }
+  ]
+}

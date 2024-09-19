@@ -56,6 +56,9 @@ export const OrderFulfillment: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.FULFILLMENT,
+      fieldAlias: {
+        order: "order_link.order",
+      },
       relationship: {
         serviceName: LINKS.OrderFulfillment,
         primaryKey: "fulfillment_id",

@@ -1,5 +1,9 @@
 import { ModuleDefinition } from "@medusajs/types"
-import { Modules, upperCaseFirst } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  upperCaseFirst,
+} from "@medusajs/utils"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 export const MODULE_PACKAGE_NAMES = {
@@ -27,6 +31,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.CURRENCY]: "@medusajs/currency",
   [Modules.FILE]: "@medusajs/file",
   [Modules.NOTIFICATION]: "@medusajs/notification",
+  [Modules.INDEX]: "@medusajs/index",
 }
 
 export const ModulesDefinition: {
@@ -303,6 +308,22 @@ export const ModulesDefinition: {
     isRequired: false,
     isQueryable: true,
     dependencies: [Modules.EVENT_BUS, "logger"],
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
+  },
+  [Modules.INDEX]: {
+    key: Modules.INDEX,
+    defaultPackage: false,
+    label: upperCaseFirst(Modules.INDEX),
+    isRequired: false,
+    isQueryable: false,
+    dependencies: [
+      Modules.EVENT_BUS,
+      "logger",
+      ContainerRegistrationKeys.REMOTE_QUERY,
+    ],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,

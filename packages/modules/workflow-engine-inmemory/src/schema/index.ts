@@ -1,7 +1,4 @@
 export default `
-scalar DateTime
-scalar JSON
-
 enum TransactionState {
   NOT_STARTED
   INVOKING
