@@ -11,6 +11,7 @@ export async function getViteConfig(
   const { searchForWorkspaceRoot, mergeConfig } = await import("vite")
   const { default: react } = await import("@vitejs/plugin-react")
   const { default: medusa } = await import("@medusajs/admin-vite-plugin")
+  const { default: inspect } = await import("vite-plugin-inspect")
 
   const getPort = await import("get-port")
   const hmrPort = await getPort.default()
@@ -55,6 +56,7 @@ export async function getViteConfig(
       },
     },
     plugins: [
+      inspect(),
       react(),
       medusa({
         sources: options.sources,
@@ -64,7 +66,6 @@ export async function getViteConfig(
 
   if (options.vite) {
     const customConfig = options.vite(baseConfig)
-
     return mergeConfig(baseConfig, customConfig)
   }
 

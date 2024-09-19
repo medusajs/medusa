@@ -194,7 +194,8 @@ export async function generateCustomFieldFormConfigEntrypoint(
             ])
           )
         )
-      )`
+      )
+      `
     })
     .join(", ")}
   ],

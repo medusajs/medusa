@@ -213,21 +213,24 @@ export async function generateCustomFieldFormFieldEntrypoint(
 
   const exportString = `export default {
   sections: [${validatedForms
-    .map(({ indexes }, formIndex) => {
+    .map(({ indexes, src }, formIndex) => {
       return `...((CustomFieldFormFieldExt${formIndex}.forms || [])
         .filter((_, i) => ${JSON.stringify(indexes)}.includes(i))
         .map(form => 
           Object.fromEntries(
-            Object.entries(form.fields || {}).map(([fieldName, fieldConfig]) => [
-              fieldName,
-              {
-                type: fieldConfig.validation,
-                label: fieldConfig.label,
-                description: fieldConfig.description,
-                placeholder: fieldConfig.placeholder,
-                component: fieldConfig.component,
-              }
-            ])
+            Object.entries(form.fields || {}).map(([fieldName, fieldConfig]) => {
+              return [
+                fieldName,
+                {
+                  type: fieldConfig.validation,
+                  label: fieldConfig.label,
+                  description: fieldConfig.description,
+                  placeholder: fieldConfig.placeholder,
+                  component: fieldConfig.component,
+                  __hmrId: "${Date.now().toString()}_${src}"
+                }
+              ]
+            })
           )
         )
       )`
