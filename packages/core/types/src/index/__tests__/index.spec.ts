@@ -40,7 +40,7 @@ describe("IndexQueryConfig", () => {
       | {
           skip?: number
           take?: number
-          orderBy?: {
+          order?: {
             id?: OrderBy
             title?: OrderBy
             variants?: {
