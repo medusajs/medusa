@@ -67,6 +67,10 @@ The `hasOne` and `belongsTo` methods accept a function as a first parameter. The
 
 The `belongsTo` method also requires passing as a second parameter an object with the property `mappedBy`. Its value is the name of the relationship property in the other data model.
 
+### Optional Relationship
+
+To make the relationship optional on the `hasOne` or `belongsTo` side, use the `nullable` method on either properties as explained in [this chapter](../configure-properties/page.mdx#nullable-property).
+
 ### One-to-One Relationship in the Database
 
 When you generate the migrations of data models that have a one-to-one relationship, the migration adds to the table of the data model that has the `belongsTo` property:
@@ -112,6 +116,10 @@ const Product = model.define("product", {
 ```
 
 In this example, a store has many products, but a product belongs to one store.
+
+### Optional Relationship
+
+To make the relationship optional on the `belongsTo` side, use the `nullable` method on the property as explained in [this chapter](../configure-properties/page.mdx#nullable-property).
 
 ### One-to-Many Relationship in the Database
 
