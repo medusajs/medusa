@@ -143,13 +143,13 @@ medusaIntegrationTestRunner({
                 },
               },
             },
-            pagination: {
-              order: {
-                product: {
-                  variants: {
-                    prices: {
-                      amount: "DESC",
-                    },
+          },
+          pagination: {
+            order: {
+              product: {
+                variants: {
+                  prices: {
+                    amount: "DESC",
                   },
                 },
               },
