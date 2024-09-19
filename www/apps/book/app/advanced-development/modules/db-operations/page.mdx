@@ -16,62 +16,16 @@ This chapter is intended for more advanced database use-cases where you need mor
 
 ## Run Queries
 
-The Medusa application registers in a module's container a `manager` dependency, which is an instance of [EntityManager from the @mikro-orm/knex package](https://mikro-orm.io/api/5.9/knex/class/EntityManager).
+[MikroORM's entity manager](https://mikro-orm.io/docs/entity-manager) is a class that has methods to run queries on the database and perform operations.
 
-Use this manager to run SQL queries or perform operations that retrieves data from the database.
+Medusa provides an `InjectManager` decorator imported from `@medusajs/utils` that injects a service's method with a [forked entity manager](https://mikro-orm.io/docs/identity-map#forking-entity-manager).
 
-For example, resolve the `manager` in your service's constructor:
+So, to run database queries in a service:
 
-<CodeTabs group="service-type">
-  <CodeTab label="Extending Service Factory" value="service-factory">
+1. Add the `InjectManager` decorator to the method.
+2. Add as a last parameter an optional `sharedContext` parameter that has the `MedusaContext` decorator imported from `@medusajs/utils`. This context holds database-related context, including the manager injected by `InjectManager`
 
-```ts highlights={[["14"]]}
-import { MedusaService } from "@medusajs/utils"
-import MyCustom from "./models/my-custom"
-import { EntityManager } from "@mikro-orm/knex"
-
-type InjectedDependencies = {
-  manager: EntityManager
-}
-
-class HelloModuleService extends MedusaService({
-  MyCustom,
-}){
-  protected manager_: EntityManager
-
-  constructor({ manager }: InjectedDependencies) {
-    super(...arguments)
-    this.manager_ = manager
-  }
-}
-
-export default HelloModuleService
-```
-  </CodeTab>
-  <CodeTab label="Without Service Factory" value="no-service-factory">
-
-```ts highlights={[["10"]]}
-import { EntityManager } from "@mikro-orm/knex"
-
-type InjectedDependencies = {
-  manager: EntityManager
-}
-
-class HelloModuleService {
-  protected manager_: EntityManager
-
-  constructor({ manager }: InjectedDependencies) {
-    this.manager_ = manager
-  }
-}
-
-export default HelloModuleService
-```
-
-  </CodeTab>
-</CodeTabs>
-
-Then, add the following methods that use it:
+For example, in your service, add the following methods:
 
 export const methodsHighlight = [
   ["4", "getCount", "Retrieves the number of records in `my_custom` using the `count` method."],
@@ -79,15 +33,27 @@ export const methodsHighlight = [
 ]
 
 ```ts highlights={methodsHighlight}
+// other imports...
+import { 
+  InjectManager,
+  MedusaContext
+} from "@medusajs/utils"
+
 class HelloModuleService {
   // ...
 
-  async getCount(): Promise<number> {
-    return await this.manager_.count("my_custom")
+  @InjectManager()
+  async getCount(
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<number> {
+    return await sharedContext.manager.count("my_custom")
   }
   
-  async getCountSql(): Promise<number> {
-    const data = await this.manager_.execute(
+  @InjectManager()
+  async getCountSql(
+    @MedusaContext() sharedContext?: Context<EntityManager>
+  ): Promise<number> {
+    const data = await sharedContext.manager.execute(
       "SELECT COUNT(*) as num FROM my_custom"
     ) 
     
@@ -96,7 +62,11 @@ class HelloModuleService {
 }
 ```
 
-The `getCount` method retrieves the number of records in a table, whereas the `getCountSql` runs a PostgreSQL query to retrieve the count.
+You add two methods `getCount` and `getCountSql` that have the `InjectManager` decorator. Each of the methods also accept the `sharedContext` parameter which has the `MedusaContext` decorator.
+
+The entity manager is injected to the `sharedContext.manager` property, which is an instance of [EntityManager from the @mikro-orm/knex package](https://mikro-orm.io/api/5.9/knex/class/EntityManager).
+
+You use the manager in the `getCount` method to retrieve the number of records in a table, and in the `getCountSql` to run a PostgreSQL query that retrieves the count.
 
 <Note>
 
@@ -111,7 +81,7 @@ Refer to [MikroORM's reference](https://mikro-orm.io/api/5.9/knex/class/EntityMa
 To wrap database operations in a transaction, you create two methods:
 
 1. A private or protected method that's wrapped in a transaction. To wrap it in a transaction, you use the `InjectTransactionManager` decorator imported from `@medusajs/utils`.
-2. A public method that calls the transactional method. You use on it the `InjectManager` decorator imported from `@medusajs/utils` that injects the method with a [forked entity manager](https://mikro-orm.io/docs/identity-map#forking-entity-manager).
+2. A public method that calls the transactional method. You use on it the `InjectManager` decorator as explained in the previous section.
 
 Both methods must accept as a last parameter an optional `sharedContext` parameter that has the `MedusaContext` decorator imported from `@medusajs/utils`. It holds database-related contexts passed through the Medusa application.
 
@@ -206,6 +176,9 @@ This is also useful if you perform heavy data normalization outside of the datab
 For example, the `update` method could be changed to the following:
 
 ```ts
+// other imports...
+import { EntityManager } from "@mikro-orm/knex"
+
 class HelloModuleService {
   // ...
   @InjectManager()
@@ -233,6 +206,9 @@ If your transactional method uses other methods that accept a Medusa context, pa
 For example:
 
 ```ts
+// other imports...
+import { EntityManager } from "@mikro-orm/knex"
+
 class HelloModuleService {
   // ...
   @InjectTransactionManager()
@@ -364,6 +340,9 @@ class HelloModuleService {
         )
 
         return updatedRecord
+      },
+      {
+        transaction: sharedContext.transactionManager
       }
     )
   }
@@ -383,7 +362,9 @@ class HelloModuleService {
 
 The `update_` method uses the `baseRepository_.transaction` method to wrap a function in a transaction.
 
-The function receives a transactional entity manager as a parameter. Use it to perform the database operations.
+The function parameter receives a transactional entity manager as a parameter. Use it to perform the database operations.
+
+The `baseRepository_.transaction` method also receives as a second parameter an object of options. You must pass in it the `transaction` property and set its value to the `sharedContext.transactionManager` property so that the function wrapped in the transaction uses the injected transaction manager.
 
 <Note>
 
@@ -391,15 +372,16 @@ Refer to [MikroORM's reference](https://mikro-orm.io/api/5.9/knex/class/EntityMa
 
 </Note>
 
-### Configuration Parameter
+### Transaction Options
 
-The `transaction` method of the `baseRepository` accepts an optional second parameter to configure the transaction.
+The second parameter of the `baseRepository_.transaction` method is an object of options that accepts the following properties:
 
-It's an object having the following properties:
-
-1. `transaction`: Set the transactional entity manager passed to the function. This is useful if your method must be a nested transaction:
+1. `transaction`: Set the transactional entity manager passed to the function. You must provide this option as explained in the previous section.
 
 ```ts highlights={[["16"]]}
+// other imports...
+import { EntityManager } from "@mikro-orm/knex"
+
 class HelloModuleService {
   // ...
   @InjectTransactionManager()
