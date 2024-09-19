@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductVariantResponse
  * type: object
- * description: SUMMARY
+ * description: The product variant's details.
  * x-schemaName: AdminProductVariantResponse
  * required:
  *   - variant
