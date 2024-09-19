@@ -118,16 +118,10 @@ const UnfulfilledItemBreakdown = ({ order }: { order: AdminOrder }) => {
     (i) => !i.requires_shipping && i.detail.fulfilled_quantity < i.quantity
   )
 
-  if (
-    !unfulfilledItemsWithShipping.length &&
-    !unfulfilledItemsWithoutShipping.length
-  ) {
-    return null
-  }
 
   return (
     <>
-      {!!unfulfilledItemsWithShipping?.length && (
+      {!!unfulfilledItemsWithShipping.length && (
         <UnfulfilledItemDisplay
           order={order}
           unfulfilledItems={unfulfilledItemsWithShipping}
@@ -135,7 +129,7 @@ const UnfulfilledItemBreakdown = ({ order }: { order: AdminOrder }) => {
         />
       )}
 
-      {!!unfulfilledItemsWithoutShipping?.length && (
+      {!!unfulfilledItemsWithoutShipping.length && (
         <UnfulfilledItemDisplay
           order={order}
           unfulfilledItems={unfulfilledItemsWithoutShipping}
