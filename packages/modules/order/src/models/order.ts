@@ -1,6 +1,7 @@
 import { DAL } from "@medusajs/types"
 import {
   OrderStatus,
+  OrderTypes,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -32,6 +33,12 @@ type OptionalOrderProps =
 const DisplayIdIndex = createPsqlIndexStatementHelper({
   tableName: "order",
   columns: "display_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const TypeIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "type",
   where: "deleted_at IS NOT NULL",
 })
 
@@ -89,6 +96,10 @@ export default class Order {
 
   @PrimaryKey({ columnType: "text" })
   id: string
+
+  @Property({ columnType: "text", default: OrderTypes.STANDARD })
+  @TypeIndex.MikroORMIndex()
+  type: string = OrderTypes.STANDARD
 
   @Property({ autoincrement: true, primary: false })
   @DisplayIdIndex.MikroORMIndex()

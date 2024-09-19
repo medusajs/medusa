@@ -183,6 +183,16 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'standard'",
+          "mappedType": "text"
+        },
         "display_id": {
           "name": "display_id",
           "type": "serial",
@@ -357,6 +367,16 @@
       "name": "order",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_order_type",
+          "columnNames": [
+            "type"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_order_type\" ON \"order\" (type) WHERE deleted_at IS NOT NULL"
+        },
         {
           "keyName": "IDX_order_display_id",
           "columnNames": [

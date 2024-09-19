@@ -85,3 +85,13 @@ export enum ClaimReason {
   PRODUCTION_FAILURE = "production_failure",
   OTHER = "other",
 }
+
+/**
+ * @enum
+ *
+ * The order's type
+ */
+export enum OrderTypes {
+  STANDARD = "standard",
+  DRAFT = "draft",
+}
