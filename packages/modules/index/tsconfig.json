@@ -20,6 +20,9 @@
     "downlevelIteration": true, // to use ES5 specific tooling
     "baseUrl": ".",
     "resolveJsonModule": true,
+    "types": [
+      "dist/.generated/index-service-entry-points.d.ts"
+    ],
     "paths": {
       "@models": ["./src/models"],
       "@services": ["./src/services"],
@@ -27,7 +30,7 @@
       "@types": ["./src/types"]
     }
   },
-  "include": ["src", "**/.generated"],
+  "include": ["src", "dist/.generated"],
   "exclude": [
     "dist",
     "node_modules"
