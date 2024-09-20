@@ -16,6 +16,7 @@ decorators:
         - ProductCategoryResponse
       AdminShippingOption:
         - AdminShippingOption
+        - AdminServiceZone
       AdminProductCategory:
         - AdminProductCategory
         - AdminProduct
@@ -41,6 +42,8 @@ decorators:
       AdminTaxRegion:
         - AdminTaxRegion
         - AdminTaxRate
+      AdminInventoryLevel:
+        - AdminInventoryItem
 theme:
   openapi:
     theme:
