@@ -1,3 +1,5 @@
+import { Details } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Pass Additional Data to Medusa's API Route`,
 }
@@ -13,6 +15,41 @@ Some of Medusa's API Routes accept an `additional_data` parameter whose type is 
 This is useful when you have a link from your custom module to a commerce module, and you want to perform an additional action when a request is sent to an existing API route.
 
 For example, the [Create Product API Route](!api!/admin#products_postproducts) accepts an `additional_data` parameter. If you have a data model linked to it, you consume the `productsCreated` hook to create a record of the data model using the custom data and link it to the product.
+
+### API Routes Accepting Additional Data
+
+<Details summaryContent="API Routes List">
+
+- Campaigns
+    - [Create Campaign](!api!/admin#campaigns_postcampaigns)
+    - [Update Campaign](!api!/admin#campaigns_postcampaignsid)
+- Cart
+    - [Create Cart](!api!/store#carts_postcarts)
+    - [Update Cart](!api!/store#carts_postcartsid)
+- Customers
+    - [Create Customer](!api!/admin#customers_postcustomers)
+    - [Update Customer](!api!/admin#customers_postcustomersid)
+    - [Create Address](!api!/admin#customers_postcustomersidaddresses)
+    - [Update Address](!api!/admin#customers_postcustomersidaddressesaddress_id)
+- Draft Orders
+    - [Create Draft Order](!api!/admin#draft-orders_postdraftorders)
+- Orders
+    - [Complete Orders](!api!/admin#orders_postordersidcomplete)
+    - [Cancel Order's Fulfillment](!api!/admin#orders_postordersidfulfillmentsfulfillment_idcancel)
+    - [Create Shipment](!api!/admin#orders_postordersidfulfillmentsfulfillment_idshipments)
+    - [Create Fulfillment](!api!/admin#orders_postordersidfulfillments)
+- Products
+    - [Create Product](!api!/admin#products_postproducts)
+    - [Update Product](!api!/admin#products_postproductsid)
+    - [Create Product Variant](!api!/admin#products_postproductsidvariants)
+    - [Update Product Variant](!api!/admin#products_postproductsidvariantsvariant_id)
+    - [Create Product Option](!api!/admin#products_postproductsidoptions)
+    - [Update Product Option](!api!/admin#products_postproductsidoptionsoption_id)
+- Promotions
+    - [Create Promotion](!api!/admin#promotions_postpromotions)
+    - [Update Promotion](!api!/admin#promotions_postpromotionsid)
+
+</Details>
 
 ---
 
