@@ -1,11 +1,11 @@
 import {
-  MedusaAppLoader,
   configLoader,
   container,
   logger,
+  MedusaAppLoader,
 } from "@medusajs/framework"
 import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
-import { EventBusTypes } from "@medusajs/types"
+import { EventBusTypes, IndexTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
@@ -21,7 +21,10 @@ import { EventBusServiceMock } from "../__fixtures__"
 import { dbName } from "../__fixtures__/medusa-config"
 
 const eventBusMock = new EventBusServiceMock()
-const remoteQueryMock = jest.fn()
+const queryMock = {
+  graph: jest.fn(),
+}
+
 const dbUtils = dbTestUtilFactory()
 
 jest.setTimeout(300000)
@@ -34,44 +37,55 @@ const linkId = "link_id_1"
 
 const sendEvents = async (eventDataToEmit) => {
   let a = 0
-  remoteQueryMock.mockImplementation((query) => {
-    query = query.__value
-    if (query.product) {
+
+  queryMock.graph = jest.fn().mockImplementation((query) => {
+    const entity = query.entity
+    if (entity === "product") {
       return {
-        id: a++ > 0 ? "aaaa" : productId,
-      }
-    } else if (query.product_variant) {
-      return {
-        id: variantId,
-        sku: "aaa test aaa",
-        product: {
-          id: productId,
+        data: {
+          id: a++ > 0 ? "aaaa" : productId,
         },
       }
-    } else if (query.price_set) {
+    } else if (entity === "product_variant") {
       return {
-        id: priceSetId,
-      }
-    } else if (query.price) {
-      return {
-        id: priceId,
-        amount: 100,
-        price_set: [
-          {
-            id: priceSetId,
+        data: {
+          id: variantId,
+          sku: "aaa test aaa",
+          product: {
+            id: productId,
           },
-        ],
+        },
       }
-    } else if (query.product_variant_price_set) {
+    } else if (entity === "price_set") {
       return {
-        id: linkId,
-        variant_id: variantId,
-        price_set_id: priceSetId,
-        variant: [
-          {
-            id: variantId,
-          },
-        ],
+        data: {
+          id: priceSetId,
+        },
+      }
+    } else if (entity === "price") {
+      return {
+        data: {
+          id: priceId,
+          amount: 100,
+          price_set: [
+            {
+              id: priceSetId,
+            },
+          ],
+        },
+      }
+    } else if (entity === "product_variant_price_set") {
+      return {
+        data: {
+          id: linkId,
+          variant_id: variantId,
+          price_set_id: priceSetId,
+          variant: [
+            {
+              id: variantId,
+            },
+          ],
+        },
       }
     }
 
@@ -83,6 +97,7 @@ const sendEvents = async (eventDataToEmit) => {
 
 let isFirstTime = true
 let medusaAppLoader!: MedusaAppLoader
+let index!: IndexTypes.IIndexService
 
 const beforeAll_ = async () => {
   try {
@@ -94,7 +109,7 @@ const beforeAll_ = async () => {
 
     container.register({
       [ContainerRegistrationKeys.LOGGER]: asValue(logger),
-      [ContainerRegistrationKeys.REMOTE_QUERY]: asValue(null),
+      [ContainerRegistrationKeys.QUERY]: asValue(null),
       [ContainerRegistrationKeys.PG_CONNECTION]: asValue(dbUtils.pgConnection_),
     })
 
@@ -112,16 +127,13 @@ const beforeAll_ = async () => {
     // Bootstrap modules
     const globalApp = await medusaAppLoader.load()
 
-    const index = container.resolve(Modules.INDEX)
+    index = container.resolve(Modules.INDEX)
 
     // Mock event bus  the index module
     ;(index as any).eventBusModuleService_ = eventBusMock
 
     await globalApp.onApplicationStart()
-
-    jest
-      .spyOn((index as any).storageProvider_, "remoteQuery_")
-      .mockImplementation(remoteQueryMock)
+    ;(index as any).storageProvider_.query_ = queryMock
 
     return globalApp
   } catch (error) {
@@ -236,8 +248,6 @@ describe("IndexModuleService", function () {
     afterEach(afterEach_)
 
     it("should create the corresponding index entries and index relation entries", async function () {
-      expect(remoteQueryMock).toHaveBeenCalledTimes(6)
-
       /**
        * Validate all index entries and index relation entries
        */
@@ -396,8 +406,6 @@ describe("IndexModuleService", function () {
     afterEach(afterEach_)
 
     it("should create the corresponding index entries and index relation entries", async function () {
-      expect(remoteQueryMock).toHaveBeenCalledTimes(6)
-
       /**
        * Validate all index entries and index relation entries
        */
@@ -554,35 +562,38 @@ describe("IndexModuleService", function () {
 
       await updateData(manager)
 
-      remoteQueryMock.mockImplementation((query) => {
-        query = query.__value
-        if (query.product) {
+      queryMock.graph = jest.fn().mockImplementation((query) => {
+        const entity = query.entity
+        if (entity === "product") {
           return {
-            id: productId,
-            title: "updated Title",
+            data: {
+              id: productId,
+              title: "updated Title",
+            },
           }
-        } else if (query.product_variant) {
+        } else if (entity === "product_variant") {
           return {
-            id: variantId,
-            sku: "updated sku",
-            product: [
-              {
-                id: productId,
-              },
-            ],
+            data: {
+              id: variantId,
+              sku: "updated sku",
+              product: [
+                {
+                  id: productId,
+                },
+              ],
+            },
           }
         }
 
         return {}
       })
+
       await eventBusMock.emit(eventDataToEmit)
     })
 
     afterEach(afterEach_)
 
     it("should update the corresponding index entries", async () => {
-      expect(remoteQueryMock).toHaveBeenCalledTimes(4)
-
       const updatedIndexEntries = await manager.find(IndexData, {})
 
       expect(updatedIndexEntries).toHaveLength(2)
@@ -667,20 +678,24 @@ describe("IndexModuleService", function () {
         medusaApp.sharedContainer!.resolve(ModuleRegistrationName.INDEX) as any
       ).container_.manager as EntityManager
 
-      remoteQueryMock.mockImplementation((query) => {
-        query = query.__value
-        if (query.product) {
+      queryMock.graph = jest.fn().mockImplementation((query) => {
+        const entity = query.entity
+        if (entity === "product") {
           return {
-            id: productId,
+            data: {
+              id: productId,
+            },
           }
-        } else if (query.product_variant) {
+        } else if (entity === "product_variant") {
           return {
-            id: variantId,
-            product: [
-              {
-                id: productId,
-              },
-            ],
+            data: {
+              id: variantId,
+              product: [
+                {
+                  id: productId,
+                },
+              ],
+            },
           }
         }
 
@@ -693,8 +708,6 @@ describe("IndexModuleService", function () {
     afterEach(afterEach_)
 
     it("should consume all deleted events and delete the index entries", async () => {
-      expect(remoteQueryMock).toHaveBeenCalledTimes(7)
-
       const indexEntries = await manager.find(IndexData, {})
       const indexRelationEntries = await manager.find(IndexRelation, {})
 

@@ -1,44 +1,41 @@
 import {
+  Constructor,
   IEventBusModuleService,
   IndexTypes,
   InternalModuleDeclaration,
   RemoteQueryFunction,
 } from "@medusajs/types"
 import {
-  MikroOrmBaseRepository as BaseRepository,
   ContainerRegistrationKeys,
+  MikroOrmBaseRepository as BaseRepository,
   Modules,
 } from "@medusajs/utils"
-import {
-  IndexModuleOptions,
-  SchemaObjectRepresentation,
-  StorageProvider,
-  schemaObjectRepresentationPropertiesToOmit,
-} from "@types"
+import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { defaultSchema } from "../utils/default-schema"
+import { gqlSchemaToTypes } from "../utils/gql-to-types"
 
 type InjectedDependencies = {
   [Modules.EVENT_BUS]: IEventBusModuleService
-  storageProviderCtr: StorageProvider
+  storageProviderCtr: Constructor<IndexTypes.StorageProvider>
+  [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
   storageProviderCtrOptions: unknown
-  [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
   baseRepository: BaseRepository
 }
 
 export default class IndexModuleService implements IndexTypes.IIndexService {
   private readonly container_: InjectedDependencies
-  private readonly moduleOptions_: IndexModuleOptions
+  private readonly moduleOptions_: IndexTypes.IndexModuleOptions
 
   protected readonly eventBusModuleService_: IEventBusModuleService
 
-  protected schemaObjectRepresentation_: SchemaObjectRepresentation
+  protected schemaObjectRepresentation_: IndexTypes.SchemaObjectRepresentation
   protected schemaEntitiesMap_: Record<string, any>
 
-  protected readonly storageProviderCtr_: StorageProvider
+  protected readonly storageProviderCtr_: Constructor<IndexTypes.StorageProvider>
   protected readonly storageProviderCtrOptions_: unknown
 
-  protected storageProvider_: StorageProvider
+  protected storageProvider_: IndexTypes.StorageProvider
 
   constructor(
     container: InjectedDependencies,
@@ -46,7 +43,7 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
   ) {
     this.container_ = container
     this.moduleOptions_ = (moduleDeclaration.options ??
-      moduleDeclaration) as unknown as IndexModuleOptions
+      moduleDeclaration) as unknown as IndexTypes.IndexModuleOptions
 
     const {
       [Modules.EVENT_BUS]: eventBusModuleService,
@@ -63,10 +60,6 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
         "EventBusModuleService is required for the IndexModule to work"
       )
     }
-  }
-
-  __joinerConfig() {
-    return {}
   }
 
   __hooks = {
@@ -94,31 +87,29 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
           entityMap: this.schemaEntitiesMap_,
         }),
         this.moduleOptions_
-      )
+      ) as IndexTypes.StorageProvider
 
       this.registerListeners()
 
       if (this.storageProvider_.onApplicationStart) {
         await this.storageProvider_.onApplicationStart()
       }
+
+      await gqlSchemaToTypes(this.moduleOptions_.schema ?? defaultSchema)
     } catch (e) {
       console.log(e)
     }
   }
 
-  async query(...args) {
-    return await this.storageProvider_.query.apply(this.storageProvider_, args)
-  }
-
-  async queryAndCount(...args) {
-    return await this.storageProvider_.queryAndCount.apply(
-      this.storageProvider_,
-      args
-    )
+  async query<const TEntry extends string>(
+    config: IndexTypes.IndexQueryConfig<TEntry>
+  ): Promise<IndexTypes.QueryResultSet<TEntry>> {
+    return await this.storageProvider_.query(config)
   }
 
   protected registerListeners() {
-    const schemaObjectRepresentation = this.schemaObjectRepresentation_ ?? {}
+    const schemaObjectRepresentation = (this.schemaObjectRepresentation_ ??
+      {}) as IndexTypes.SchemaObjectRepresentation
 
     for (const [entityName, schemaEntityObjectRepresentation] of Object.entries(
       schemaObjectRepresentation
@@ -127,7 +118,9 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
         continue
       }
 
-      schemaEntityObjectRepresentation.listeners.forEach((listener) => {
+      ;(
+        schemaEntityObjectRepresentation as IndexTypes.SchemaObjectEntityRepresentation
+      ).listeners.forEach((listener) => {
         this.eventBusModuleService_.subscribe(
           listener,
           this.storageProvider_.consumeEvent(schemaEntityObjectRepresentation)
@@ -144,6 +137,7 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
     const [objectRepresentation, entityMap] = buildSchemaObjectRepresentation(
       this.moduleOptions_.schema ?? defaultSchema
     )
+
     this.schemaObjectRepresentation_ = objectRepresentation
     this.schemaEntitiesMap_ = entityMap
 

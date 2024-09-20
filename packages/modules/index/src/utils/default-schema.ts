@@ -1,5 +1,5 @@
 export const defaultSchema = `
-    type Product @Listeners(values: ["Product.product.created", "Product.product.updated", "Product.product.deleted"]) {
+  type Product @Listeners(values: ["Product.product.created", "Product.product.updated", "Product.product.deleted"]) {
     id: String
     title: String
     variants: [ProductVariant]
