@@ -249,7 +249,7 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
 
     const { manager } = sharedContext as { manager: SqlEntityManager }
     let hasPagination = false
-    if (typeof take === "number" || typeof skip === "number") {
+    if (isDefined(skip)) {
       hasPagination = true
     }
 
