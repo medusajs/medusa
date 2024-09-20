@@ -4,15 +4,15 @@ import { AnimatePresence, motion } from "framer-motion"
 import i18n from "i18next"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Trans, useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next"
 import { decodeToken } from "react-jwt"
 import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 import { Form } from "../../components/common/form"
-import { LogoBox } from "../../components/common/logo-box"
 import { useSignUpWithEmailPass } from "../../hooks/api/auth"
 import { useAcceptInvite } from "../../hooks/api/invites"
 import { isFetchError } from "../../lib/is-fetch-error"
+import AvatarBox from "../../components/common/logo-box/avatar-box"
 
 const CreateAccountSchema = z
   .object({
@@ -52,21 +52,7 @@ export const Invite = () => {
   return (
     <div className="bg-ui-bg-subtle relative flex min-h-dvh w-dvw items-center justify-center p-4">
       <div className="flex w-full max-w-[280px] flex-col items-center">
-        <LogoBox
-          className="mb-4"
-          checked={success}
-          containerTransition={{
-            duration: 1.2,
-            delay: 0.8,
-            ease: [0, 0.71, 0.2, 1.01],
-          }}
-          pathTransition={{
-            duration: 1.3,
-            delay: 1.1,
-            bounce: 0.6,
-            ease: [0.1, 0.8, 0.2, 1.01],
-          }}
-        />
+        <AvatarBox checked={success} />
         <div className="max-h-[557px] w-full will-change-contents">
           {isValidInvite ? (
             <AnimatePresence>
@@ -150,15 +136,13 @@ const LoginLink = () => {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="my-6 h-px w-full border-b border-dotted" />
-      <span className="txt-small">
-        <Link
-          key="login-link"
-          to="/login"
-          className="text-ui-fg-interactive !text-ui-fg-base font-medium transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
-        >
-          {t("invite.backToLogin")}
-        </Link>
-      </span>
+      <Link
+        key="login-link"
+        to="/login"
+        className="text-ui-fg-interactive txt-small !text-ui-fg-base font-medium transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
+      >
+        {t("invite.backToLogin")}
+      </Link>
     </div>
   )
 }
@@ -405,6 +389,14 @@ const SuccessView = () => {
           {t("invite.successAction")}
         </Link>
       </Button>
+
+      <Link
+        key="login-link"
+        to="/login"
+        className="text-ui-fg-interactive txt-small !text-ui-fg-base transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover mt-3 font-medium outline-none"
+      >
+        {t("invite.backToLogin")}
+      </Link>
     </div>
   )
 }

@@ -12,7 +12,7 @@ import { useSignInWithEmailPassword } from "../../hooks/api/auth"
 import after from "virtual:medusa/widgets/login/after"
 import before from "virtual:medusa/widgets/login/before"
 import { isFetchError } from "../../lib/is-fetch-error"
-import { IconAvatar } from "../../components/common/icon-avatar"
+import AvatarBox from "../../components/common/logo-box/avatar-box"
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -75,9 +75,7 @@ export const Login = () => {
   return (
     <div className="bg-ui-bg-subtle flex min-h-dvh w-dvw items-center justify-center">
       <div className="m-4 flex w-full max-w-[280px] flex-col items-center">
-        <IconAvatar size="xlarge" className="mb-4">
-          <img width={44} height={44} src="/medusa-avatar.png" />
-        </IconAvatar>
+        <AvatarBox />
         <div className="mb-4 flex flex-col items-center">
           <Heading>{t("login.title")}</Heading>
           <Text size="small" className="text-ui-fg-subtle text-center">
