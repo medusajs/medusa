@@ -240,7 +240,7 @@ ${hint}
       const originalContent = await readYaml(redoclyConfigPath) as CircularReferenceConfig
       Object.keys(recommendation).forEach((recKey) => {
         originalContent.decorators["medusa/circular-patch"].schemas[recKey] = [
-          ...(originalContent.decorators["medusa/circular-patch"].schemas[recKey] || {}),
+          ...(originalContent.decorators["medusa/circular-patch"].schemas[recKey] || []),
           ...recommendation[recKey]
         ]
       })
