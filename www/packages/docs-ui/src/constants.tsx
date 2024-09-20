@@ -9,6 +9,7 @@ import { NavigationDropdownUiIcon } from "./components/Icons/NavigationDropdown/
 import { NavigationDropdownDocV1Icon } from "./components/Icons/NavigationDropdown/DocV1"
 import { NavigationDropdownUserIcon } from "./components/Icons/NavigationDropdown/User"
 import { NavigationDropdownResourcesIcon } from "./components/Icons/NavigationDropdown/Resources"
+import { NavigationDropdownModulesIcon } from "./components/Icons/NavigationDropdown/Modules"
 
 export const GITHUB_ISSUES_PREFIX = `https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml`
 export const GITHUB_UI_ISSUES_PREFIX = `https://github.com/medusajs/ui/issues/new?labels=documentation`
@@ -23,7 +24,7 @@ export const navDropdownItemsV2: NavigationDropdownItem[] = [
   {
     type: "link",
     path: `/v2/resources/commerce-modules`,
-    icon: NavigationDropdownResourcesIcon,
+    icon: NavigationDropdownModulesIcon,
     title: "Commerce Modules",
   },
   {
