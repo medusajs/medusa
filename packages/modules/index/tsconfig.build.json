@@ -7,5 +7,5 @@
     "src/**/__mocks__",
     "src/**/__fixtures__",
     "node_modules"
-  ],
+  ]
 }
