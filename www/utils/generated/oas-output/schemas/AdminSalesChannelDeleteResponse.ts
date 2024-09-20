@@ -1,7 +1,7 @@
 /**
  * @schema AdminSalesChannelDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of deleting a sales channel.
  * x-schemaName: AdminSalesChannelDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Sales Channel was deleted.
+ *     description: Whether the sales channel was deleted.
  * 
 */
 

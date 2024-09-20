@@ -323,6 +323,7 @@ export const ModulesDefinition: {
       Modules.EVENT_BUS,
       "logger",
       ContainerRegistrationKeys.REMOTE_QUERY,
+      ContainerRegistrationKeys.QUERY,
     ],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,

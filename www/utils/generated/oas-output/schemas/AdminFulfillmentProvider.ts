@@ -3,18 +3,18 @@
  * type: object
  * description: The fulfillment provider's details.
  * x-schemaName: AdminFulfillmentProvider
+ * required:
+ *   - id
+ *   - is_enabled
  * properties:
  *   id:
  *     type: string
  *     title: id
- *     description: The fulfillment provider's ID.
+ *     description: The provider's ID.
  *   is_enabled:
  *     type: boolean
  *     title: is_enabled
- *     description: Whether the fulfillment provider is enabled.
- * required:
- *   - id
- *   - is_enabled
+ *     description: The provider's is enabled.
  * 
 */
 

@@ -1,7 +1,7 @@
 /**
  * @schema AdminReturnResponse
  * type: object
- * description: SUMMARY
+ * description: The return's details.
  * x-schemaName: AdminReturnResponse
  * required:
  *   - return
