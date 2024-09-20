@@ -10,6 +10,9 @@ import {
 } from "express"
 import { readdir } from "fs/promises"
 import { extname, join, parse, sep } from "path"
+import { configManager } from "../config"
+import { logger } from "../logger"
+import { authenticate, AuthType, errorHandler } from "./middlewares"
 import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
@@ -25,9 +28,6 @@ import {
   RouteHandler,
   RouteVerb,
 } from "./types"
-import { authenticate, AuthType, errorHandler } from "./middlewares"
-import { configManager } from "../config"
-import { logger } from "../logger"
 
 const log = ({
   activityId,
@@ -486,43 +486,32 @@ class ApiRoutesLoader {
 
     const absolutePath = join(this.#sourceDir, middlewareFilePath)
 
-    try {
-      await import(absolutePath).then((import_) => {
-        const middlewaresConfig = import_.default as
-          | MiddlewaresConfig
-          | undefined
+    await import(absolutePath).then((import_) => {
+      const middlewaresConfig = import_.default as MiddlewaresConfig | undefined
 
-        if (!middlewaresConfig) {
-          log({
-            activityId: this.#activityId,
-            message: `No middleware configuration found in ${absolutePath}. Skipping middleware configuration.`,
-          })
-          return
-        }
-
-        middlewaresConfig.routes = middlewaresConfig.routes?.map((route) => {
-          return {
-            ...route,
-            method: route.method ?? "USE",
-          }
+      if (!middlewaresConfig) {
+        log({
+          activityId: this.#activityId,
+          message: `No middleware configuration found in ${absolutePath}. Skipping middleware configuration.`,
         })
+        return
+      }
 
-        const descriptor: GlobalMiddlewareDescriptor = {
-          config: middlewaresConfig,
+      middlewaresConfig.routes = middlewaresConfig.routes?.map((route) => {
+        return {
+          ...route,
+          method: route.method ?? "USE",
         }
-
-        this.validateMiddlewaresConfig(descriptor)
-
-        this.#globalMiddlewaresDescriptor = descriptor
-      })
-    } catch (error) {
-      log({
-        activityId: this.#activityId,
-        message: `Failed to load middleware configuration in ${absolutePath}. Skipping middleware configuration.`,
       })
 
-      return
-    }
+      const descriptor: GlobalMiddlewareDescriptor = {
+        config: middlewaresConfig,
+      }
+
+      this.validateMiddlewaresConfig(descriptor)
+
+      this.#globalMiddlewaresDescriptor = descriptor
+    })
   }
 
   protected async createRoutesMap(): Promise<void> {
