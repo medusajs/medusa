@@ -20,7 +20,7 @@ import {
 function validateRouteConfig(
   path: NodePath<ExportNamedDeclaration>,
   resolveMenuItem: boolean
-) {
+): { valid: boolean; config: boolean } {
   const properties = getConfigObjectProperties(path)
 
   /**
@@ -31,14 +31,14 @@ function validateRouteConfig(
    * menu item, so we can skip the validation, and return false.
    */
   if (!properties && resolveMenuItem) {
-    return false
+    return { valid: false, config: false }
   }
 
   /**
    * A config is not required for a component to be a valid route.
    */
   if (!properties) {
-    return true
+    return { valid: true, config: false }
   }
 
   const labelProperty = properties.find(
@@ -51,7 +51,7 @@ function validateRouteConfig(
   const labelIsValid =
     !labelProperty || labelProperty.value.type === "StringLiteral"
 
-  return labelIsValid
+  return { valid: labelIsValid, config: true }
 }
 
 export async function validateRoute(file: string, resolveMenuItem = false) {
@@ -63,11 +63,12 @@ export async function validateRoute(file: string, resolveMenuItem = false) {
   try {
     ast = parse(content, parserOptions)
   } catch (_e) {
-    return { valid: false }
+    return { valid: false, config: false }
   }
 
   let hasDefaultExport = false
   let hasNamedExport = resolveMenuItem ? false : true
+  let hasConfig = false
 
   try {
     traverse(ast, {
@@ -75,14 +76,16 @@ export async function validateRoute(file: string, resolveMenuItem = false) {
         hasDefaultExport = isDefaultExportComponent(path, ast)
       },
       ExportNamedDeclaration(path) {
-        hasNamedExport = validateRouteConfig(path, resolveMenuItem)
+        const { valid, config } = validateRouteConfig(path, resolveMenuItem)
+        hasNamedExport = valid
+        hasConfig = config
       },
     })
   } catch (_e) {
-    return { valid: false }
+    return { valid: false, config: false }
   }
 
-  return { valid: hasNamedExport && hasDefaultExport }
+  return { valid: hasNamedExport && hasDefaultExport, config: hasConfig }
 }
 
 function createRoutePath(file: string) {

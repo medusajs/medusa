@@ -213,7 +213,7 @@ export async function generateCustomFieldFormFieldEntrypoint(
 
   const exportString = `export default {
   sections: [${validatedForms
-    .map(({ indexes, src }, formIndex) => {
+    .map(({ indexes }, formIndex) => {
       return `...((CustomFieldFormFieldExt${formIndex}.forms || [])
         .filter((_, i) => ${JSON.stringify(indexes)}.includes(i))
         .map(form => 
@@ -227,7 +227,6 @@ export async function generateCustomFieldFormFieldEntrypoint(
                   description: fieldConfig.description,
                   placeholder: fieldConfig.placeholder,
                   component: fieldConfig.component,
-                  __hmrId: "${Date.now().toString()}_${src}"
                 }
               ]
             })

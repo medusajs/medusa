@@ -7,6 +7,8 @@ import {
   RESOLVED_ROUTE_MODULES,
   RESOLVED_WIDGET_MODULES,
   VIRTUAL_MODULES,
+  getVirtualId,
+  getWidgetImport,
   getWidgetZone,
   resolveVirtualId,
 } from "@medusajs/admin-shared"
@@ -60,7 +62,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
   const _extensionGraph: ExtensionGraph = new Map<string, Set<string>>()
   const _sources = new Set<string>(options?.sources ?? [])
 
-  // let server: Vite.ViteDevServer | undefined
   let watcher: Vite.FSWatcher | undefined
 
   async function generateEntrypoint(options: LoadModuleOptions) {
@@ -105,210 +106,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     return module
   }
 
-  // async function hotReloadModule(moduleId: string) {
-  //   const module = server?.moduleGraph.getModuleById(moduleId)
-
-  //   if (module) {
-  //     server?.hot.send({
-  //       type: "update",
-  //       updates: [
-  //         {
-  //           type: "js-update",
-  //           acceptedPath: moduleId,
-  //           path: moduleId,
-  //           timestamp: Date.now(),
-  //         },
-  //       ],
-  //     })
-  //   }
-  // }
-
-  // async function hotReloadModules(moduleIds: Set<string>) {
-  //   for (const moduleId of moduleIds) {
-  //     await hotReloadModule(moduleId)
-  //   }
-  // }
-
-  // const reloadModule = hotReloadModule
-  // const reloadModules = hotReloadModules
-
-  // function getWidgetZoneImports(zoneValues: InjectionZone[]): Set<string> {
-  //   return new Set(
-  //     zoneValues.map((zone) =>
-  //       resolveVirtualId(getVirtualId(getWidgetImport(zone)))
-  //     )
-  //   )
-  // }
-
-  // function getCustomFieldImports(paths: string[]): Set<string> {
-  //   const set = new Set(
-  //     paths.map((path) =>
-  //       resolveVirtualId(getVirtualId(getCustomFieldImport(path)))
-  //     )
-  //   )
-
-  //   return set
-  // }
-
-  // async function handleInvalidFile(file: string) {
-  //   const extensionIds = _extensionGraph.get(file)
-  //   _extensionGraph.delete(file)
-  //   if (extensionIds) {
-  //     await hotReloadModules(extensionIds)
-  //   }
-  // }
-
-  // async function updateExtensionGraphAndReloadModules(
-  //   graphPath: string,
-  //   imports: Set<string>
-  // ) {
-  //   _extensionGraph.set(graphPath, imports)
-  // }
-
-  // async function genericHandler<TResult extends { valid: boolean }>(
-  //   file: string,
-  //   event: typeof EVENT_ADD | typeof EVENT_CHANGE,
-  //   validator: (file: string) => Promise<TResult>,
-  //   getImports: (result: TResult) => Set<string>,
-  //   getGraphPath: (file: string) => string
-  // ) {
-  //   const result = await validator(file)
-  //   const graphPath = getGraphPath(file)
-
-  //   if (!result.valid) {
-  //     return event === EVENT_CHANGE
-  //       ? await handleInvalidFile(graphPath)
-  //       : undefined
-  //   }
-
-  //   const imports = getImports(result)
-
-  //   if (event === EVENT_ADD || !_extensionGraph.has(graphPath)) {
-  //     await updateExtensionGraphAndReloadModules(graphPath, imports)
-  //     return
-  //   }
-
-  //   const existingModules = _extensionGraph.get(graphPath) || new Set<string>()
-  //   const updatedImports = new Set<string>(existingModules)
-
-  //   for (const moduleId of existingModules) {
-  //     if (!imports.has(moduleId)) {
-  //       updatedImports.delete(moduleId)
-  //       await hotReloadModule(moduleId)
-  //     }
-  //   }
-
-  //   for (const moduleId of imports) {
-  //     if (!existingModules.has(moduleId)) {
-  //       updatedImports.add(moduleId)
-  //     }
-
-  //     await hotReloadModule(moduleId)
-  //   }
-
-  //   _extensionGraph.set(graphPath, updatedImports)
-  // }
-
-  // async function handleWidgetChange(
-  //   file: string,
-  //   event: typeof EVENT_ADD | typeof EVENT_CHANGE
-  // ) {
-  //   await genericHandler(
-  //     file,
-  //     event,
-  //     validateWidget,
-  //     (result) =>
-  //       getWidgetZoneImports(
-  //         Array.isArray(result.zone!) ? result.zone! : [result.zone!]
-  //       ),
-  //     (file) => file
-  //   )
-  // }
-
-  // async function handleRouteChange(
-  //   file: string,
-  //   event: typeof EVENT_ADD | typeof EVENT_CHANGE
-  // ) {
-  //   await genericHandler(
-  //     file,
-  //     event,
-  //     validateRoute,
-  //     () => new Set(RESOLVED_ROUTE_MODULES),
-  //     (file) => file
-  //   )
-  // }
-
-  // async function handleCustomFieldChange(
-  //   path: string,
-  //   event: typeof EVENT_ADD | typeof EVENT_CHANGE
-  // ) {
-  //   const customFieldTypes = [
-  //     { type: "config", validator: validateCustomFieldFormConfig },
-  //     { type: "field", validator: validateCustomFieldFormField },
-  //     { type: "display", validator: validateCustomFieldDisplay },
-  //     { type: "link", validator: validateCustomFieldLink },
-  //   ] as const
-
-  //   const handleCustomFieldType = async (
-  //     type: (typeof customFieldTypes)[number]["type"],
-  //     validator: (typeof customFieldTypes)[number]["validator"]
-  //   ) => {
-  //     const graphPath = getCustomFieldGraphPath(path, type)
-  //     await genericHandler(
-  //       path,
-  //       event,
-  //       validator,
-  //       (result) => getCustomFieldImports(result.paths!),
-  //       () => graphPath
-  //     )
-  //   }
-
-  //   await Promise.all(
-  //     customFieldTypes.map(async ({ type, validator }) =>
-  //       handleCustomFieldType(type, validator)
-  //     )
-  //   )
-  // }
-
-  // const handlers = {
-  //   widget: handleWidgetChange,
-  //   route: handleRouteChange,
-  //   "custom-field": handleCustomFieldChange,
-  // }
-
-  // async function handleAddOrChange(
-  //   path: string,
-  //   event: typeof EVENT_ADD | typeof EVENT_CHANGE
-  // ) {
-  //   if (!isFileInSources(path)) {
-  //     return
-  //   }
-
-  //   const type = getModuleType(path)
-
-  //   if (type === "none") {
-  //     return
-  //   }
-
-  //   const handler = handlers[type]
-
-  //   if (handler) {
-  //     await handler(path, event)
-  //   }
-  // }
-
-  // async function handleUnlink(path: string) {
-  //   if (!isFileInSources(path)) {
-  //     return
-  //   }
-
-  //   const moduleIds = _extensionGraph.get(path)
-  //   _extensionGraph.delete(path)
-  //   if (moduleIds) {
-  //     await hotReloadModules(moduleIds)
-  //   }
-  // }
-
   function isFileInSources(file: string): boolean {
     for (const source of _sources) {
       if (file.startsWith(path.resolve(source))) {
@@ -322,28 +119,9 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     name: "@medusajs/admin-vite-plugin",
     enforce: "pre",
     configureServer(_server) {
-      // server = _server
       watcher = _server.watcher
 
       watcher?.add(Array.from(_sources))
-
-      console.log(
-        "[@medusajs/admin-vite-plugin]: Running in middleware mode:",
-        _server.config.server.middlewareMode
-      )
-
-      // watcher.on("all", async (event, path) => {
-      //   switch (event) {
-      //     case "add":
-      //     case "change":
-      //       await handleAddOrChange(path, event)
-      //       break
-      //     case "unlinkDir":
-      //     case "unlink":
-      //       await handleUnlink(path)
-      //       break
-      //   }
-      // })
     },
     resolveId(id) {
       if (VIRTUAL_MODULES.includes(id)) {
@@ -420,8 +198,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
         return
       }
 
-      const modulesToReload: Vite.ModuleNode[] = []
-
       for (const module of ctx.modules) {
         const importers = module.importers
 
@@ -449,8 +225,11 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
               const routeType = getRouteType(importer.url)
 
               if (!routeType) {
+                console.log("routeType", routeType, importer.url)
                 continue
               }
+
+              console.log("routeType", routeType)
 
               const result = await validateRoute(ctx.file, routeType === "link")
               valid = result.valid
@@ -500,18 +279,161 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
             continue
           }
 
-          // Check if the ctx.file is imported by the module
-
           if (!valid || shouldReload) {
+            // Remove the module from the module graph
+            ctx.server.moduleGraph.invalidateModule(mod)
             await ctx.server.reloadModule(mod)
             continue
           }
+        }
 
-          modulesToReload.push(mod)
+        const extensionType = getExtensionFolder(ctx.file)
+
+        console.log("module", module.id)
+        console.log(
+          "importers",
+          Array.from(importers).map((i) => i.url)
+        )
+
+        /**
+         * If importers is an empty Set, that means that it is not being imported by any virtual module.
+         * We should re-evaluate the file and see if it should be added to the virtual modules.
+         */
+        if (importers.size === 0) {
+          if (!extensionType) {
+            continue
+          }
+
+          switch (extensionType) {
+            case "widgets": {
+              const { valid, zone } = await validateWidget(ctx.file)
+
+              if (!valid) {
+                break
+              }
+
+              const zoneValues = Array.isArray(zone) ? zone : [zone]
+
+              for (const zone of zoneValues) {
+                const zonePath = getWidgetImport(zone)
+                const virtualModuleId = getVirtualId(zonePath)
+                const resolvedVirtualModuleId =
+                  resolveVirtualId(virtualModuleId)
+
+                const mod = ctx.server.moduleGraph.getModuleById(
+                  resolvedVirtualModuleId
+                )
+
+                if (!mod) {
+                  continue
+                }
+
+                ctx.server.moduleGraph.invalidateModule(mod)
+                await ctx.server.reloadModule(mod)
+              }
+
+              break
+            }
+            case "routes": {
+              const { valid, config } = await validateRoute(ctx.file)
+
+              if (!valid) {
+                break
+              }
+
+              for (const resolvedVirtualModuleId of RESOLVED_ROUTE_MODULES) {
+                /**
+                 * If the route does not have a config, then there is no need to reload the link module.
+                 */
+                if (!config && resolvedVirtualModuleId.endsWith("link")) {
+                  console.log(
+                    "Skipping reload of link module because route does not have a config"
+                  )
+                  continue
+                }
+
+                const mod = ctx.server.moduleGraph.getModuleById(
+                  resolvedVirtualModuleId
+                )
+
+                if (!mod) {
+                  continue
+                }
+
+                await ctx.server.reloadModule(mod)
+              }
+
+              break
+            }
+            case "custom-fields": {
+              const validationResults = [
+                {
+                  result: await validateCustomFieldFormConfig(ctx.file),
+                  modules: RESOLVED_CUSTOM_FIELD_FORM_CONFIG_MODULES,
+                },
+                {
+                  result: await validateCustomFieldFormField(ctx.file),
+                  modules: RESOLVED_CUSTOM_FIELD_FORM_FIELD_MODULES,
+                },
+                {
+                  result: await validateCustomFieldDisplay(ctx.file),
+                  modules: RESOLVED_CUSTOM_FIELD_DISPLAY_MODULES,
+                },
+                {
+                  result: await validateCustomFieldLink(ctx.file),
+                  modules: RESOLVED_CUSTOM_FIELD_LINK_MODULES,
+                },
+              ]
+
+              for (const { result, modules } of validationResults) {
+                if (result.valid) {
+                  const paths = result.paths.map((path) =>
+                    path.replace(".", "/")
+                  )
+                  const resolvedPaths = modules.filter((resolved) =>
+                    paths.some((p) => resolved.includes(p))
+                  )
+
+                  for (const path of resolvedPaths) {
+                    const mod = ctx.server.moduleGraph.getModuleById(path)
+                    if (mod) {
+                      await ctx.server.reloadModule(mod)
+                    }
+                  }
+                }
+              }
+              break
+            }
+          }
+        }
+
+        /**
+         * If there is a change to a route file, and it's currently only being imported by one
+         * virtual module (e.g. the pages module), then we should check if it now contains a
+         * config with a label. If so, we should reload the links module.
+         */
+        if (extensionType === "routes" && importers.size === 1) {
+          const result = await validateRoute(ctx.file, true)
+
+          if (result.valid) {
+            const resolvedId = RESOLVED_ROUTE_MODULES.find((id) =>
+              id.endsWith("link")
+            )
+
+            if (!resolvedId) {
+              continue
+            }
+
+            const mod = ctx.server.moduleGraph.getModuleById(resolvedId)
+
+            if (!mod) {
+              continue
+            }
+
+            await ctx.server.reloadModule(mod)
+          }
         }
       }
-
-      return ctx.modules.concat(modulesToReload)
     },
   }
 }
@@ -543,11 +465,11 @@ function getCustomFieldType(
 function getRouteType(file: string): "link" | "page" | null {
   const routeType = file.split("/").pop()
 
-  if (routeType === "link") {
+  if (routeType === "links") {
     return "link"
   }
 
-  if (routeType === "page") {
+  if (routeType === "pages") {
     return "page"
   }
 
@@ -573,4 +495,27 @@ function getVirtualModuleType(url: string): VirtualModuleType | null {
 
 function isVirtualModuleType(type: string): type is VirtualModuleType {
   return ["widgets", "routes", "custom-fields"].includes(type)
+}
+
+function getExtensionFolder(
+  file: string
+): "widgets" | "routes" | "custom-fields" | null {
+  const normalizedPath = file.replace(/\\/g, "/")
+
+  const match = normalizedPath.match(/\/src\/admin\/(\w+)\//)
+  if (!match) {
+    return null
+  }
+
+  const type = match[1]
+  switch (type) {
+    case "widgets":
+      return "widgets"
+    case "routes":
+      return "routes"
+    case "custom-fields":
+      return "custom-fields"
+    default:
+      return null
+  }
 }
