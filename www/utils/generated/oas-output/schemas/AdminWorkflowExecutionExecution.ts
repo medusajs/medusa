@@ -25,24 +25,24 @@
  *           description: The step's ID.
  *         invoke:
  *           type: object
- *           description: The step's invoke.
+ *           description: The state of the step's invokation function.
  *           x-schemaName: WorkflowExecutionFn
  *         definition:
  *           type: object
- *           description: The step's definition.
+ *           description: The step's definition details.
  *           x-schemaName: WorkflowExecutionDefinition
  *         compensate:
  *           type: object
- *           description: The step's compensate.
+ *           description: The state of the step's compensation function.
  *           x-schemaName: WorkflowExecutionFn
  *         depth:
  *           type: number
  *           title: depth
- *           description: The step's depth.
+ *           description: The step's depth in the workflow's execution.
  *         startedAt:
  *           type: number
  *           title: startedAt
- *           description: The step's startedat.
+ *           description: The timestamp the step started executing.
  * 
 */
 
