@@ -5,15 +5,15 @@ import {
   RemoteQueryFunction,
 } from "@medusajs/types"
 import {
-  ContainerRegistrationKeys,
   MikroOrmBaseRepository as BaseRepository,
+  ContainerRegistrationKeys,
   Modules,
 } from "@medusajs/utils"
 import {
   IndexModuleOptions,
   SchemaObjectRepresentation,
-  schemaObjectRepresentationPropertiesToOmit,
   StorageProvider,
+  schemaObjectRepresentationPropertiesToOmit,
 } from "@types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { defaultSchema } from "../utils/default-schema"
@@ -73,6 +73,14 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
     onApplicationStart(this: IndexModuleService) {
       return this.onApplicationStart_()
     },
+  }
+
+  public async refresh() {
+    performance.mark("index-refresh-start")
+    await this.storageProvider_.refresh()
+    performance.mark("index-refresh-end")
+
+    return performance.measure("index-refresh-end", "index-refresh-start")
   }
 
   protected async onApplicationStart_() {

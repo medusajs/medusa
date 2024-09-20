@@ -13,7 +13,7 @@ export const defaultSchema = `
   }
   
   type Price @Listeners(values: ["Pricing.price.created", "Pricing.price.updated", "Pricing.price.deleted"]) {
-    amount: Int
+    amount: Float
     currency_code: String
   } 
 `

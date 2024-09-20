@@ -5,12 +5,12 @@ import {
   Subscriber,
 } from "@medusajs/types"
 import {
+  MikroOrmBaseRepository as BaseRepository,
   ContainerRegistrationKeys,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   MedusaContext,
-  MikroOrmBaseRepository as BaseRepository,
+  isDefined,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
@@ -23,7 +23,7 @@ import {
   SchemaObjectEntityRepresentation,
   SchemaObjectRepresentation,
 } from "@types"
-import { createPartitions, QueryBuilder } from "../utils"
+import { QueryBuilder, createPartitions } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -110,12 +110,14 @@ export class PostgresProvider {
       initalizedNok = reject
     })
 
-    await createPartitions(
+    await this.refresh().then(initalizedOk).catch(initalizedNok)
+  }
+
+  async refresh() {
+    return await createPartitions(
       this.schemaObjectRepresentation_,
       this.manager_.fork()
     )
-      .then(initalizedOk)
-      .catch(initalizedNok)
   }
 
   protected static parseData<

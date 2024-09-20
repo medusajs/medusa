@@ -119,6 +119,8 @@ export interface StorageProvider {
 
   onApplicationStart?(): Promise<void>
 
+  refresh(): Promise<void>
+
   query(...args): unknown
 
   queryAndCount(...args): unknown

@@ -7,7 +7,7 @@ import {
   createAdminUser,
 } from "../../../helpers/create-admin-user"
 
-jest.setTimeout(120000)
+jest.setTimeout(999999999)
 
 process.env.ENABLE_INDEX_MODULE = "true"
 
@@ -150,18 +150,18 @@ medusaIntegrationTestRunner({
         }
       })
 
-      it.skip("should search through the indexed data and return the correct results ordered and filtered [3]", async () => {
-        const payloads = new Array(50).fill(0).map((_, a) => ({
-          title: "Test Giftcard-" + a,
+      it.only("should search through the indexed data and return the correct results ordered and filtered [3]", async () => {
+        const payloads = new Array(10).fill(0).map((_, a) => ({
+          title: "Test Product-" + a,
           is_giftcard: true,
-          description: "test-giftcard-description" + a,
+          description: "test-product-description" + a,
           options: [{ title: "Denominations", values: ["100"] }],
           variants: new Array(10).fill(0).map((_, i) => ({
             title: `Test variant ${i}`,
             sku: `test-variant-${i}${a}`,
             prices: new Array(10).fill(0).map((_, j) => ({
               currency_code: Object.values(defaultCurrencies)[j].code,
-              amount: 10 * j,
+              amount: 100 * j * Math.random(),
             })),
             options: {
               Denominations: "100",
@@ -172,12 +172,33 @@ medusaIntegrationTestRunner({
         let i = 0
         for (const payload of payloads) {
           ++i
-          await api.post("/admin/products", payload, adminHeaders).then(() => {
-            console.log(`Created ${i} products in ${payloads.length} payloads`)
-          })
+          await api
+            .post("/admin/products", payload, adminHeaders)
+            .then(async () => {
+              console.log(
+                `Created ${i} products in ${payloads.length} payloads`
+              )
+            })
         }
 
-        await setTimeout(5000)
+        /*
+        console.log(
+          JSON.stringify(
+            await getContainer()
+              .resolve(Modules.PRODUCT)
+              .baseRepository_.manager_.execute(
+                "SELECT * FROM pg_stat_progress_create_index"
+                // "SELECT * FROM pg_partitioned_table"
+              ),
+            null,
+            2
+          )
+        )
+        */
+
+        const refreshTime = await getContainer()
+          .resolve(Modules.INDEX)
+          .refresh()
 
         const queryArgs = [
           {
@@ -204,7 +225,11 @@ medusaIntegrationTestRunner({
           ...queryArgs
         )
 
-        console.log(perf)
+        console.log({
+          count,
+          refreshTime,
+          perf,
+        })
       })
     })
   },
