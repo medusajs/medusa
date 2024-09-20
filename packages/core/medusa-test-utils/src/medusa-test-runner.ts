@@ -18,8 +18,8 @@ import {
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
 
 const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME ?? ''
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ''
+const DB_USERNAME = process.env.DB_USERNAME ?? ""
+const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -96,6 +96,7 @@ export function medusaIntegrationTestRunner({
   env = {},
   debug = false,
   inApp = false,
+  keepDbState = false,
   testSuite,
 }: {
   moduleName?: string
@@ -106,6 +107,11 @@ export function medusaIntegrationTestRunner({
   schema?: string
   debug?: boolean
   inApp?: boolean
+  /**
+   * Skip teardown and shutdown of the database.
+   * The database will remain the same between tests and will not be dropped after the test suite
+   */
+  keepDbState?: boolean
   testSuite: <TService = unknown>(options: MedusaSuiteOptions<TService>) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -173,13 +179,23 @@ export function medusaIntegrationTestRunner({
       await dbUtils.create(dbName)
       dbUtils.pgConnection_ = await initDb()
     } catch (error) {
+      if (error?.message.includes("already exists") && keepDbState) {
+        console.log("Database already exists, skipping creation")
+      }
       console.error("Error initializing database", error?.message)
       throw error
     }
 
-    console.log(`Migrating database with core migrations and links ${dbName}`)
-    await migrateDatabase(appLoader)
-    await syncLinks(appLoader)
+    try {
+      console.log(`Migrating database with core migrations and links ${dbName}`)
+      await migrateDatabase(appLoader)
+      await syncLinks(appLoader)
+    } catch (error) {
+      if (!keepDbState) {
+        throw error
+      }
+    }
+
     await clearInstances()
 
     let containerRes: MedusaContainer = container
@@ -252,17 +268,21 @@ export function medusaIntegrationTestRunner({
       })
       await medusaAppLoader.runModulesLoader()
     } catch (error) {
-      console.error("Error runner modules loaders", error?.message)
-      throw error
+      if (!keepDbState) {
+        console.error("Error runner modules loaders", error?.message)
+        throw error
+      }
     }
   }
 
   const afterEach_ = async () => {
-    try {
-      await dbUtils.teardown({ schema })
-    } catch (error) {
-      console.error("Error tearing down database:", error?.message)
-      throw error
+    if (!keepDbState) {
+      try {
+        await dbUtils.teardown({ schema })
+      } catch (error) {
+        console.error("Error tearing down database:", error?.message)
+        throw error
+      }
     }
   }
 
@@ -271,7 +291,9 @@ export function medusaIntegrationTestRunner({
     beforeEach(beforeEach_)
     afterEach(afterEach_)
     afterAll(async () => {
-      await dbUtils.shutdown(dbName)
+      if (!keepDbState) {
+        await dbUtils.shutdown(dbName)
+      }
       await shutdown()
     })
 

@@ -1,6 +1,5 @@
 import {
   Entity,
-  Index,
   ManyToOne,
   OptionalProps,
   PrimaryKey,
@@ -20,17 +19,13 @@ type OptionalRelations =
 @Entity({
   tableName: "index_relation",
 })
-@Index({
-  name: "IDX_index_relation_child_id",
-  properties: ["child_id"],
-})
 export class IndexRelation {
   [OptionalProps]: OptionalRelations
 
-  @PrimaryKey({ columnType: "integer", autoincrement: true })
+  @PrimaryKey({ columnType: "bigserial", autoincrement: true })
   id!: string
 
-  // if added as PK, BeforeCreate value isn't set
+  @PrimaryKey({ columnType: "text" })
   @Property({
     columnType: "text",
   })

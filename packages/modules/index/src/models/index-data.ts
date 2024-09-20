@@ -2,7 +2,6 @@ import {
   Cascade,
   Collection,
   Entity,
-  Index,
   ManyToMany,
   OptionalProps,
   PrimaryKey,
@@ -20,16 +19,14 @@ export class IndexData {
   [OptionalProps]: OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
-  @Index({ name: "IDX_index_data_id" })
   id!: string
 
   @PrimaryKey({ columnType: "text" })
-  @Index({ name: "IDX_index_data_name" })
   name: string;
 
   [PrimaryKeyType]?: [string, string]
 
-  @Index({ name: "IDX_index_data_gin", type: "GIN" })
+  /*@Index({ name: "IDX_index_data_gin", type: "GIN" })*/
   @Property({ columnType: "jsonb", default: "{}" })
   data: Record<string, unknown>
 

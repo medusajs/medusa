@@ -12,6 +12,8 @@ jest.setTimeout(999999999)
 process.env.ENABLE_INDEX_MODULE = "true"
 
 medusaIntegrationTestRunner({
+  dbName: "search_test",
+  keepDbState: true,
   testSuite: ({ getContainer, dbConnection, api, dbConfig }) => {
     let indexEngine: IndexTypes.IIndexService
     let appContainer
@@ -26,7 +28,11 @@ medusaIntegrationTestRunner({
     })
 
     beforeEach(async () => {
-      await createAdminUser(dbConnection, adminHeaders, appContainer)
+      await createAdminUser(dbConnection, adminHeaders, appContainer).catch(
+        (err) => {
+          // noop
+        }
+      )
     })
 
     describe("Index engine", () => {
@@ -171,54 +177,72 @@ medusaIntegrationTestRunner({
       })
 
       it.only("should search through the indexed data and return the correct results ordered and filtered [3]", async () => {
-        const payloads = new Array(10).fill(0).map((_, a) => ({
-          title: "Test Product-" + a,
-          is_giftcard: true,
-          description: "test-product-description" + a,
-          options: [{ title: "Denominations", values: ["100"] }],
+        /*const defaultCurrencies = {
+          USD: { code: "USD" },
+          EUR: { code: "EUR" },
+          GBP: { code: "GBP" },
+          AUD: { code: "AUD" },
+          CAD: { code: "CAD" },
+          JPY: { code: "JPY" },
+          CHF: { code: "CHF" },
+          CNY: { code: "CNY" },
+          SEK: { code: "SEK" },
+          NZD: { code: "NZD" },
+        }
+
+        const payloads = new Array(10000).fill(0).map((_, a) => ({
+          title: faker.commerce.productName() + faker.string.uuid(), // Using faker to generate a random product name
+          description:
+            faker.commerce.productDescription() + faker.string.uuid(), // Random product description
+          options: [
+            {
+              title: "Denominations",
+              values: ["000"],
+            },
+          ], // Random denomination
           variants: new Array(10).fill(0).map((_, i) => ({
-            title: `Test variant ${i}`,
-            sku: `test-variant-${i}${a}`,
+            title: `Variant ${faker.commerce.productAdjective()} ${i}`, // Random variant title
+            sku: faker.string.uuid(), // Random SKU using UUID
+            length: faker.number.float({ min: 1, max: 100 }), // Random length between 1 and 100
+            width: faker.number.float({ min: 1, max: 100 }), // Random width between 1 and 100
+            height: faker.number.float({ min: 1, max: 100 }), // Random height between 1 and 100
+            weight: faker.number.float({ min: 1, max: 100 }), // Random weight between 1 and 100
             prices: new Array(10).fill(0).map((_, j) => ({
               currency_code: Object.values(defaultCurrencies)[j].code,
-              amount: 100 * j * Math.random(),
+              amount: Number(
+                faker.commerce.price({ min: 1, max: 1000, dec: 2 })
+              ), // Random price between 1 and 1000 with 2 decimals
             })),
             options: {
-              Denominations: "100",
+              Denominations: "000",
             },
           })),
         }))
 
-        let i = 0
-        for (const payload of payloads) {
-          ++i
-          await api
-            .post("/admin/products", payload, adminHeaders)
-            .then(async () => {
+        const batchSize = 10
+
+        for (let i = 0; i < payloads.length / batchSize - 1; i++) {
+          await promiseAll(
+            new Array(batchSize).fill(0).map((_, j) => {
               console.log(
-                `Created ${i} products in ${payloads.length} payloads`
+                `Creating product ${i * batchSize + j} in ${
+                  payloads.length
+                } payloads`
               )
+              return api
+                .post(
+                  "/admin/products",
+                  payloads[i * batchSize + j],
+                  adminHeaders
+                )
+                .catch((err) => {
+                  console.log(err)
+                })
             })
-        }
-
-        /*
-        console.log(
-          JSON.stringify(
-            await getContainer()
-              .resolve(Modules.PRODUCT)
-              .baseRepository_.manager_.execute(
-                "SELECT * FROM pg_stat_progress_create_index"
-                // "SELECT * FROM pg_partitioned_table"
-              ),
-            null,
-            2
           )
-        )
-        */
+        }*/
 
-        const refreshTime = await getContainer()
-          .resolve(Modules.INDEX)
-          .refresh()
+        await (indexEngine as any).refresh()
 
         const queryArgs = {
           fields: [

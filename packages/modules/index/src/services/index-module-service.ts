@@ -70,10 +70,10 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
 
   public async refresh() {
     performance.mark("index-refresh-start")
-    await this.storageProvider_.refresh()
+    await this.storageProvider_.refresh?.()
     performance.mark("index-refresh-end")
 
-    return performance.measure("index-refresh-end", "index-refresh-start")
+    console.log(performance.measure("index-refresh-end", "index-refresh-start"))
   }
 
   protected async onApplicationStart_() {

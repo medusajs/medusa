@@ -273,9 +273,14 @@ export class PostgresProvider implements IndexTypes.StorageProvider {
       },
     })
 
+
     const sql = qb.buildQuery(hasPagination, !!keepFilteredEntities)
 
+    performance.mark("index-query-start")
     let resultSet = await manager.execute(sql)
+    performance.mark("index-query-end")
+    console.log(performance.measure("index-query-end", "index-query-start"))
+
     const count = hasPagination ? +(resultSet[0]?.count ?? 0) : undefined
 
     if (keepFilteredEntities) {

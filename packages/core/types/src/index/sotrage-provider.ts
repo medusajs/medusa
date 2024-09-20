@@ -24,4 +24,6 @@ export interface StorageProvider {
   consumeEvent(
     schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
   ): Subscriber<any>
+
+  refresh?(): Promise<void>
 }
