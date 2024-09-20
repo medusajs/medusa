@@ -1512,10 +1512,6 @@ class OasKindGenerator extends FunctionKindGenerator {
       case itemType.isClassOrInterface() ||
         itemType.isTypeParameter() ||
         (itemType as ts.Type).flags === ts.TypeFlags.Object:
-        const properties: Record<
-          string,
-          OpenApiSchema | OpenAPIV3.ReferenceObject
-        > = {}
         const requiredProperties: string[] = []
 
         const baseType = itemType.getBaseTypes()?.[0]
@@ -1535,8 +1531,26 @@ class OasKindGenerator extends FunctionKindGenerator {
           required: undefined,
         }
 
+        const properties: Record<
+          string,
+          OpenApiSchema | OpenAPIV3.ReferenceObject
+        > = {}
+        let isAdditionalProperties = false
+
         if (level + 1 <= this.MAX_LEVEL) {
-          itemType.getProperties().forEach((property) => {
+          let itemProperties = itemType.getProperties()
+
+          if (
+            !itemProperties.length &&
+            itemType.aliasTypeArguments?.length === 2 &&
+            itemType.aliasTypeArguments[0].flags === ts.TypeFlags.String
+          ) {
+            // object has dynamic keys, so put the properties under additionalProperties
+            itemProperties = itemType.aliasTypeArguments[1].getProperties()
+            isAdditionalProperties = true
+          }
+
+          itemProperties.forEach((property) => {
             if (
               (allowedChildren && !allowedChildren.includes(property.name)) ||
               (disallowedChildren && disallowedChildren.includes(property.name))
@@ -1624,7 +1638,14 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
 
         if (Object.values(properties).length) {
-          objSchema.properties = properties
+          if (isAdditionalProperties) {
+            objSchema.additionalProperties = {
+              type: "object",
+              properties,
+            }
+          } else {
+            objSchema.properties = properties
+          }
         }
 
         objSchema.required =
@@ -1987,6 +2008,26 @@ class OasKindGenerator extends FunctionKindGenerator {
         oldSchemaObj!.properties = newSchemaObj.properties
       } else if (!newSchemaObj?.properties) {
         delete oldSchemaObj!.properties
+
+        // check if additionalProperties should be updated
+        if (
+          !oldSchemaObj!.additionalProperties &&
+          newSchemaObj.additionalProperties
+        ) {
+          oldSchemaObj!.additionalProperties = newSchemaObj.additionalProperties
+        } else if (!newSchemaObj.additionalProperties) {
+          delete oldSchemaObj!.additionalProperties
+        } else if (
+          typeof oldSchemaObj!.additionalProperties !== "boolean" &&
+          typeof newSchemaObj!.additionalProperties !== "boolean"
+        ) {
+          oldSchemaObj!.additionalProperties =
+            this.updateSchema({
+              oldSchema: oldSchemaObj!.additionalProperties,
+              newSchema: newSchemaObj.additionalProperties,
+              level: level + 1,
+            }) || oldSchemaObj!.additionalProperties
+        }
       } else {
         // update existing properties
         Object.entries(oldSchemaObj!.properties!).forEach(

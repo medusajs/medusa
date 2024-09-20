@@ -238,10 +238,13 @@ ${hint}
 `
       const redoclyConfigPath = path.join(basePath, "redocly", "redocly-config.yaml")
       const originalContent = await readYaml(redoclyConfigPath) as CircularReferenceConfig
-      originalContent.decorators["medusa/circular-patch"].schemas = Object.assign(
-        originalContent.decorators["medusa/circular-patch"].schemas, 
-        recommendation
-      )
+      Object.keys(recommendation).forEach((recKey) => {
+        originalContent.decorators["medusa/circular-patch"].schemas[recKey] = [
+          ...originalContent.decorators["medusa/circular-patch"].schemas[recKey],
+          ...recommendation[recKey]
+        ]
+      })
+
       await writeYaml(redoclyConfigPath, jsonObjectToYamlString(originalContent))
       console.log(`🟡 Added the following unhandled circular references to redocly-config.ts:` + hintMessage)
     }
