@@ -1,7 +1,7 @@
 /**
  * @schema AdminReturnPreviewResponse
  * type: object
- * description: SUMMARY
+ * description: The details of a return and a preview of the order once the return is applied.
  * x-schemaName: AdminReturnPreviewResponse
  * required:
  *   - order_preview

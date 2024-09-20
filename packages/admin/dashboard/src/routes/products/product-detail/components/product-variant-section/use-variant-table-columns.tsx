@@ -67,7 +67,7 @@ const VariantActions = ({
           actions: [
             {
               label: t("actions.edit"),
-              to: `variants/${variant.id}/edit`,
+              to: `edit-variant?variant_id=${variant.id}`,
               icon: <PencilSquare />,
             },
             {
