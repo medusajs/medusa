@@ -8,7 +8,7 @@
  * properties:
  *   steps:
  *     type: object
- *     description: The execution's steps.
+ *     description: The execution's steps. Each object key is a step ID, and the value is the object whose properties are shown below.
  *     required:
  *       - id
  *       - invoke
