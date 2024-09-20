@@ -115,6 +115,7 @@
     "close": "Close",
     "showMore": "Show more",
     "continue": "Continue",
+    "continueWithEmail": "Continue with Email",
     "addReason": "Add Reason",
     "addNote": "Add Note",
     "reset": "Reset",
@@ -2338,8 +2339,8 @@
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
-    "title": "Log in",
-    "hint": "to continue to Medusa"
+    "title": "Welcome to Medusa",
+    "hint": "Sign in to access the account area"
   },
   "invite": {
     "title": "Create your account",
