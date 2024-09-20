@@ -13,10 +13,13 @@ import {
   ProductStatus,
 } from "../common"
 
-export interface AdminProductVariant extends BaseProductVariant {
+export interface AdminProductVariant extends Omit<BaseProductVariant, "product"> {
   prices: AdminPrice[] | null
+  product?: AdminProduct | null
 }
-export interface AdminProductOption extends BaseProductOption {}
+export interface AdminProductOption extends Omit<BaseProductOption, "product"> {
+  product?: AdminProduct
+}
 export interface AdminProductImage extends BaseProductImage {}
 export interface AdminProductOptionValue extends BaseProductOptionValue {}
 export interface AdminProduct

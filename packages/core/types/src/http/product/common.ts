@@ -30,7 +30,7 @@ export interface BaseProduct {
   type?: BaseProductType | null
   type_id: string | null
   tags?: BaseProductTag[] | null
-  variants: BaseProductVariant[] | null
+  variants?: BaseProductVariant[] | null
   options: BaseProductOption[] | null
   images: BaseProductImage[] | null
   discountable: boolean

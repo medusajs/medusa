@@ -1,6 +1,6 @@
 import { AdminCustomer } from "../../customer"
 import { AdminPaymentCollection } from "../../payment/admin"
-import { AdminProductVariant } from "../../product"
+import { AdminProduct, AdminProductVariant } from "../../product"
 import { AdminRegionCountry } from "../../region"
 import { AdminSalesChannel } from "../../sales-channel"
 import {
@@ -22,8 +22,9 @@ export interface AdminOrder extends BaseOrder {
   billing_address?: AdminOrderAddress | null
 }
 
-export interface AdminOrderLineItem extends BaseOrderLineItem {
+export interface AdminOrderLineItem extends Omit<BaseOrderLineItem, "variant" | "product"> {
   variant?: AdminProductVariant
+  product?: AdminProduct
 }
 export interface AdminOrderChange extends BaseOrderChange {}
 
@@ -41,8 +42,8 @@ export interface AdminOrderPreview
   extends Omit<AdminOrder, "items" | "shipping_methods"> {
   return_requested_total: number
   order_change: BaseOrderChange
-  items: (BaseOrderLineItem & { actions?: BaseOrderChangeAction[] })[]
-  shipping_methods: (BaseOrderShippingMethod & {
+  items: (AdminOrderLineItem & { actions?: BaseOrderChangeAction[] })[]
+  shipping_methods: (AdminOrderShippingMethod & {
     actions?: BaseOrderChangeAction[]
   })[]
 }
