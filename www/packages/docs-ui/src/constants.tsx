@@ -22,9 +22,15 @@ export const navDropdownItemsV2: NavigationDropdownItem[] = [
   },
   {
     type: "link",
+    path: `/v2/resources/commerce-modules`,
+    icon: NavigationDropdownResourcesIcon,
+    title: "Commerce Modules",
+  },
+  {
+    type: "link",
     path: `/v2/resources`,
     icon: NavigationDropdownResourcesIcon,
-    title: "Learning Resources",
+    title: "Development Resources",
   },
   {
     type: "link",
