@@ -1,14 +1,8 @@
 import { isObject, isString } from "@medusajs/utils"
+import { IndexTypes } from "@medusajs/types"
 import { GraphQLList } from "graphql"
 import { Knex } from "knex"
-import {
-  OrderBy,
-  QueryFormat,
-  QueryOptions,
-  SchemaObjectRepresentation,
-  SchemaPropertiesMap,
-  Select,
-} from "../types"
+import { OrderBy, QueryFormat, QueryOptions, Select } from "@types"
 
 export const OPERATOR_MAP = {
   $eq: "=",
@@ -29,10 +23,10 @@ export class QueryBuilder {
   private readonly knex: Knex
   private readonly selector: QueryFormat
   private readonly options?: QueryOptions
-  private readonly schema: SchemaObjectRepresentation
+  private readonly schema: IndexTypes.SchemaObjectRepresentation
 
   constructor(args: {
-    schema: SchemaObjectRepresentation
+    schema: IndexTypes.SchemaObjectRepresentation
     entityMap: Record<string, any>
     knex: Knex
     selector: QueryFormat
@@ -50,7 +44,7 @@ export class QueryBuilder {
     return Object.keys(structure ?? {}).filter((key) => key !== "entity")
   }
 
-  private getEntity(path): SchemaPropertiesMap[0] {
+  private getEntity(path): IndexTypes.SchemaPropertiesMap[0] {
     if (!this.schema._schemaPropertiesMap[path]) {
       throw new Error(`Could not find entity for path: ${path}`)
     }

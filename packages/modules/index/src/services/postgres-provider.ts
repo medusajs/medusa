@@ -12,27 +12,20 @@ import {
   isDefined,
   MedusaContext,
   MikroOrmBaseRepository as BaseRepository,
-  remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
-import {
-  EntityNameModuleConfigMap,
-  IndexModuleOptions,
-  SchemaObjectEntityRepresentation,
-  SchemaObjectRepresentation,
-} from "@types"
 import { createPartitions, QueryBuilder } from "../utils"
 import { flattenObjectKeys } from "../utils/flatten-object-keys"
 import { normalizeFieldsSelection } from "../utils/normalize-fields-selection"
 
 type InjectedDependencies = {
   manager: EntityManager
-  [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
+  [ContainerRegistrationKeys.QUERY]: RemoteQueryFunction
   baseRepository: BaseRepository
 }
 
-export class PostgresProvider {
+export class PostgresProvider implements IndexTypes.StorageProvider {
   #isReady_: Promise<boolean>
 
   protected readonly eventActionToMethodMap_ = {
@@ -44,29 +37,25 @@ export class PostgresProvider {
   }
 
   protected container_: InjectedDependencies
-  protected readonly schemaObjectRepresentation_: SchemaObjectRepresentation
+  protected readonly schemaObjectRepresentation_: IndexTypes.SchemaObjectRepresentation
   protected readonly schemaEntitiesMap_: Record<string, any>
-  protected readonly moduleOptions_: IndexModuleOptions
+  protected readonly moduleOptions_: IndexTypes.IndexModuleOptions
   protected readonly manager_: SqlEntityManager
-  protected readonly remoteQuery_: RemoteQueryFunction
+  protected readonly query_: RemoteQueryFunction
   protected baseRepository_: BaseRepository
 
   constructor(
-    {
-      manager,
-      [ContainerRegistrationKeys.REMOTE_QUERY]: remoteQuery,
-      baseRepository,
-    }: InjectedDependencies,
+    container: InjectedDependencies,
     options: {
-      schemaObjectRepresentation: SchemaObjectRepresentation
+      schemaObjectRepresentation: IndexTypes.SchemaObjectRepresentation
       entityMap: Record<string, any>
     },
-    moduleOptions: IndexModuleOptions
+    moduleOptions: IndexTypes.IndexModuleOptions
   ) {
-    this.manager_ = manager
-    this.remoteQuery_ = remoteQuery
+    this.manager_ = container.manager
+    this.query_ = container.query
     this.moduleOptions_ = moduleOptions
-    this.baseRepository_ = baseRepository
+    this.baseRepository_ = container.baseRepository
 
     this.schemaObjectRepresentation_ = options.schemaObjectRepresentation
     this.schemaEntitiesMap_ = options.entityMap
@@ -123,7 +112,7 @@ export class PostgresProvider {
     TData extends { id: string; [key: string]: unknown }
   >(
     data: TData | TData[],
-    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+    schemaEntityObjectRepresentation: IndexTypes.SchemaObjectEntityRepresentation
   ) {
     const data_ = Array.isArray(data) ? data : [data]
 
@@ -195,11 +184,54 @@ export class PostgresProvider {
     return result
   }
 
+  consumeEvent(
+    schemaEntityObjectRepresentation: IndexTypes.SchemaObjectEntityRepresentation
+  ): Subscriber<{ id: string }> {
+    return async (data: Event) => {
+      await this.#isReady_
+
+      const data_: { id: string }[] = Array.isArray(data.data)
+        ? data.data
+        : [data.data]
+      let ids: string[] = data_.map((d) => d.id)
+      let action = data.name.split(".").pop() || ""
+
+      const parsedMessage = PostgresProvider.parseMessageData(data)
+      if (parsedMessage) {
+        action = parsedMessage.action
+        ids = parsedMessage.ids
+      }
+
+      const { fields, alias } = schemaEntityObjectRepresentation
+      const { data: entityData } = await this.query_.graph({
+        entity: alias,
+        filters: {
+          id: ids,
+        },
+        fields: [...new Set(["id", ...fields])],
+      })
+
+      const argument = {
+        entity: schemaEntityObjectRepresentation.entity,
+        data: entityData,
+        schemaEntityObjectRepresentation,
+      }
+
+      const targetMethod = this.eventActionToMethodMap_[action]
+
+      if (!targetMethod) {
+        return
+      }
+
+      await this[targetMethod](argument)
+    }
+  }
+
   @InjectManager("baseRepository_")
   async query<const TEntry extends string>(
     config: IndexTypes.IndexQueryConfig<TEntry>,
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<IndexTypes.QueryResultSet<TEntry>> {
     await this.#isReady_
 
     const {
@@ -241,159 +273,42 @@ export class PostgresProvider {
 
     const sql = qb.buildQuery(hasPagination, !!keepFilteredEntities)
 
-    let resultset = await manager.execute(sql)
+    let resultSet = await manager.execute(sql)
+    const count = hasPagination ? +(resultSet[0]?.count ?? 0) : undefined
 
     if (keepFilteredEntities) {
       const mainEntity = Object.keys(select)[0]
 
-      const ids = resultset.map((r) => r[`${mainEntity}.id`])
+      const ids = resultSet.map((r) => r[`${mainEntity}.id`])
       if (ids.length) {
-        const selection_ = {
-          fields,
-          joinFilters: joinFilters,
-          filters: {
-            [mainEntity]: {
-              id: ids,
-            },
-          },
-        }
-        return await this.query(selection_, sharedContext)
-      }
-    }
-
-    return qb.buildObjectFromResultset(resultset)
-  }
-
-  @InjectManager("baseRepository_")
-  async queryAndCount<const TEntry extends string>(
-    config: IndexTypes.IndexQueryConfig<TEntry>,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[Record<string, any>[], number, PerformanceEntry]> {
-    await this.#isReady_
-
-    const {
-      keepFilteredEntities,
-      fields = [],
-      filters = {},
-      joinFilters = {},
-    } = config
-    const { take, skip, order: inputOrderBy = {} } = config.pagination ?? {}
-
-    const select = normalizeFieldsSelection(fields)
-    const where = flattenObjectKeys(filters)
-    const joinWhere = flattenObjectKeys(joinFilters)
-    const orderBy = flattenObjectKeys(inputOrderBy)
-
-    const { manager } = sharedContext as { manager: SqlEntityManager }
-    const connection = manager.getConnection()
-    const qb = new QueryBuilder({
-      schema: this.schemaObjectRepresentation_,
-      entityMap: this.schemaEntitiesMap_,
-      knex: connection.getKnex(),
-      selector: {
-        select,
-        where,
-        joinWhere,
-      },
-      options: {
-        skip,
-        take,
-        keepFilteredEntities,
-        orderBy,
-      },
-    })
-
-    const sql = qb.buildQuery(true, !!keepFilteredEntities)
-    performance.mark("index-query-start")
-    let resultset = await connection.execute(sql)
-    performance.mark("index-query-end")
-
-    const performanceMesurements = performance.measure(
-      "index-query-end",
-      "index-query-start"
-    )
-
-    const count = +(resultset[0]?.count ?? 0)
-
-    if (keepFilteredEntities) {
-      const mainEntity = Object.keys(select)[0]
-
-      const ids = resultset.map((r) => r[`${mainEntity}.id`])
-      if (ids.length) {
-        const selection_: Parameters<typeof this.query>[0] = {
-          fields,
-          joinFilters: joinFilters,
-          filters: {
-            [mainEntity]: {
-              id: ids,
-            },
-          },
-        }
-
-        performance.mark("index-query-start")
-        resultset = await this.query(selection_, sharedContext)
-        performance.mark("index-query-end")
-
-        const performanceMesurements = performance.measure(
-          "index-query-end",
-          "index-query-start"
-        )
-
-        return [resultset, count, performanceMesurements]
-      }
-    }
-
-    return [
-      qb.buildObjectFromResultset(resultset),
-      count,
-      performanceMesurements,
-    ]
-  }
-
-  consumeEvent(
-    schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
-  ): Subscriber<{ id: string }> {
-    return async (data: Event) => {
-      await this.#isReady_
-
-      const data_: { id: string }[] = Array.isArray(data.data)
-        ? data.data
-        : [data.data]
-      let ids: string[] = data_.map((d) => d.id)
-      let action = data.name.split(".").pop() || ""
-
-      const parsedMessage = PostgresProvider.parseMessageData(data)
-      if (parsedMessage) {
-        action = parsedMessage.action
-        ids = parsedMessage.ids
-      }
-
-      const { fields, alias } = schemaEntityObjectRepresentation
-      const entityData = await this.remoteQuery_(
-        remoteQueryObjectFromString({
-          entryPoint: alias,
-          variables: {
+        return await this.query<TEntry>(
+          {
+            fields,
+            joinFilters,
             filters: {
-              id: ids,
+              [mainEntity]: {
+                id: ids,
+              },
             },
-          },
-          fields: [...new Set(["id", ...fields])],
-        })
-      )
-
-      const argument = {
-        entity: schemaEntityObjectRepresentation.entity,
-        data: entityData,
-        schemaEntityObjectRepresentation,
+            pagination: undefined,
+            keepFilteredEntities: false,
+          } as IndexTypes.IndexQueryConfig<TEntry>,
+          sharedContext
+        )
       }
+    }
 
-      const targetMethod = this.eventActionToMethodMap_[action]
-
-      if (!targetMethod) {
-        return
-      }
-
-      await this[targetMethod](argument)
+    return {
+      data: qb.buildObjectFromResultset(
+        resultSet
+      ) as IndexTypes.QueryResultSet<TEntry>["data"],
+      metadata: hasPagination
+        ? {
+            count: count!,
+            skip,
+            take,
+          }
+        : undefined,
     }
   }
 
@@ -416,7 +331,7 @@ export class PostgresProvider {
     }: {
       entity: string
       data: TData | TData[]
-      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+      schemaEntityObjectRepresentation: IndexTypes.SchemaObjectEntityRepresentation
     },
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -510,7 +425,7 @@ export class PostgresProvider {
     }: {
       entity: string
       data: TData | TData[]
-      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+      schemaEntityObjectRepresentation: IndexTypes.SchemaObjectEntityRepresentation
     },
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -557,7 +472,7 @@ export class PostgresProvider {
     }: {
       entity: string
       data: TData | TData[]
-      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+      schemaEntityObjectRepresentation: IndexTypes.SchemaObjectEntityRepresentation
     },
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -611,7 +526,7 @@ export class PostgresProvider {
     }: {
       entity: string
       data: TData | TData[]
-      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+      schemaEntityObjectRepresentation: IndexTypes.SchemaObjectEntityRepresentation
     },
     @MedusaContext() sharedContext: Context = {}
   ) {
@@ -639,7 +554,7 @@ export class PostgresProvider {
     const parentEntityName = (
       this.schemaObjectRepresentation_._serviceNameModuleConfigMap[
         parentServiceName
-      ] as EntityNameModuleConfigMap[0]
+      ] as IndexTypes.EntityNameModuleConfigMap[0]
     ).linkableKeys?.[parentPropertyId]
 
     if (!parentEntityName) {
@@ -661,7 +576,7 @@ export class PostgresProvider {
     const childEntityName = (
       this.schemaObjectRepresentation_._serviceNameModuleConfigMap[
         childServiceName
-      ] as EntityNameModuleConfigMap[0]
+      ] as IndexTypes.EntityNameModuleConfigMap[0]
     ).linkableKeys?.[childPropertyId]
 
     if (!childEntityName) {
@@ -732,7 +647,7 @@ export class PostgresProvider {
     }: {
       entity: string
       data: TData | TData[]
-      schemaEntityObjectRepresentation: SchemaObjectEntityRepresentation
+      schemaEntityObjectRepresentation: IndexTypes.SchemaObjectEntityRepresentation
     },
     @MedusaContext() sharedContext: Context = {}
   ) {

@@ -20,3 +20,21 @@ export type IndexQueryConfig<TEntry extends string> = {
   }
   keepFilteredEntities?: boolean
 }
+
+export type QueryFunctionReturnPagination = {
+  skip?: number
+  take?: number
+  count: number
+}
+
+/**
+ * The QueryResultSet presents a typed output for the
+ * result returned by the index search engine, it doesnt narrow down the type
+ * based on the intput fields.
+ */
+export type QueryResultSet<TEntry extends string> = {
+  data: TEntry extends keyof IndexServiceEntryPoints
+    ? IndexServiceEntryPoints[TEntry][]
+    : any[]
+  metadata?: QueryFunctionReturnPagination
+}

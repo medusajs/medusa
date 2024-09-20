@@ -5,16 +5,13 @@ import {
   MedusaModule,
 } from "@medusajs/modules-sdk"
 import {
+  IndexTypes,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
 } from "@medusajs/types"
 import { CommonEvents } from "@medusajs/utils"
-import {
-  SchemaObjectEntityRepresentation,
-  SchemaObjectRepresentation,
-  schemaObjectRepresentationPropertiesToOmit,
-} from "@types"
+import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 import { Kind, ObjectTypeDefinitionNode } from "graphql/index"
 
 export const CustomDirectives = {
@@ -269,7 +266,7 @@ function retrieveLinkModuleAndAlias({
 function getObjectRepresentationRef(
   entityName,
   { objectRepresentationRef }
-): SchemaObjectEntityRepresentation {
+): IndexTypes.SchemaObjectEntityRepresentation {
   return (objectRepresentationRef[entityName] ??= {
     entity: entityName,
     parents: [],
@@ -309,7 +306,7 @@ function processEntity(
   }: {
     entitiesMap: any
     moduleJoinerConfigs: ModuleJoinerConfig[]
-    objectRepresentationRef: SchemaObjectRepresentation
+    objectRepresentationRef: IndexTypes.SchemaObjectRepresentation
   }
 ) {
   /**
@@ -616,8 +613,11 @@ function processEntity(
  *   }
  * }
  */
-function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
-  const aliasMap: SchemaObjectRepresentation["_schemaPropertiesMap"] = {}
+function buildAliasMap(
+  objectRepresentation: IndexTypes.SchemaObjectRepresentation
+) {
+  const aliasMap: IndexTypes.SchemaObjectRepresentation["_schemaPropertiesMap"] =
+    {}
 
   function recursivelyBuildAliasPath(
     current,
@@ -705,7 +705,7 @@ function buildAliasMap(objectRepresentation: SchemaObjectRepresentation) {
  */
 export function buildSchemaObjectRepresentation(
   schema
-): [SchemaObjectRepresentation, Record<string, any>] {
+): [IndexTypes.SchemaObjectRepresentation, Record<string, any>] {
   const moduleJoinerConfigs = MedusaModule.getAllJoinerConfigs()
   const augmentedSchema = CustomDirectives.Listeners.definition + schema
   const executableSchema = makeSchemaExecutable(augmentedSchema)
@@ -713,7 +713,7 @@ export function buildSchemaObjectRepresentation(
 
   const objectRepresentation = {
     _serviceNameModuleConfigMap: {},
-  } as SchemaObjectRepresentation
+  } as IndexTypes.SchemaObjectRepresentation
 
   Object.entries(entitiesMap).forEach(([entityName, entityMapValue]) => {
     if (!entityMapValue.astNode) {
