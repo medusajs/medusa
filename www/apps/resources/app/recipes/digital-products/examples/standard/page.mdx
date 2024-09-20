@@ -1940,7 +1940,7 @@ Create the workflow in the file `src/workflows/fulfill-digital-order/index.ts`:
 
 export const fulfillWorkflowHighlights = [
   ["17", "useRemoteQueryStep", "Retrieve the digital product order's details."],
-  ["36", "sendDigitalOrderNotificationStep", "Send a notification to the customer."]
+  ["33", "sendDigitalOrderNotificationStep", "Send a notification to the customer."]
 ]
 
 ```ts title="src/workflows/fulfill-digital-order/index.ts" highlights={fulfillWorkflowHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
@@ -1966,9 +1966,7 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
         "*",
         "products.*",
         "products.medias.*",
-        "order.*",
-        "order.fulfillments.*",
-        "order.fulfillments.items.*"
+        "order.*"
       ],
       variables: {
         filters: {
