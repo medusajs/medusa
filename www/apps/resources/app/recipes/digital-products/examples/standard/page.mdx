@@ -1819,13 +1819,12 @@ In a later step, you’ll add an API route to allow customers to view and downlo
 
 ## Step 12: Fulfill Digital Order Workflow
 
-In this step, you'll create a workflow that fulfills a digital order. Later, you'll execute this workflow in a subscriber.
+In this step, you'll create a workflow that fulfills a digital order by sending a notification to the customer. Later, you'll execute this workflow in a subscriber.
 
 The workflow has the following steps:
 
 1. Retrieve the digital product order's details. For this, you'll use the `useRemoteQueryStep` imported from `@medusajs/core-flows`.
 2. Send a notification to the customer with the digital products to download.
-3. Create a shipment for the fulfillment to indicate that the item is fulfilled. For this step, you'll use from the `@medusajs/core-flows` package the `createOrderShipmentWorkflow` as a step.
 
 So, you only need to implement the second step.
 
@@ -1940,9 +1939,8 @@ You use the `createNotifications` method of the Notification Module's main servi
 Create the workflow in the file `src/workflows/fulfill-digital-order/index.ts`:
 
 export const fulfillWorkflowHighlights = [
-  ["18", "useRemoteQueryStep", "Retrieve the digital product order's details."],
-  ["27", "sendDigitalOrderNotificationStep", "Send a notification to the customer."],
-  ["41", "createOrderShipmentWorkflow", "Create a shipment for the order's fulfillment to mark as fulfilled."]
+  ["17", "useRemoteQueryStep", "Retrieve the digital product order's details."],
+  ["36", "sendDigitalOrderNotificationStep", "Send a notification to the customer."]
 ]
 
 ```ts title="src/workflows/fulfill-digital-order/index.ts" highlights={fulfillWorkflowHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
@@ -1951,8 +1949,7 @@ import {
   WorkflowResponse
 } from "@medusajs/workflows-sdk"
 import {
-  useRemoteQueryStep,
-  createOrderShipmentWorkflow
+  useRemoteQueryStep
 } from "@medusajs/core-flows"
 import { sendDigitalOrderNotificationStep } from "./steps/send-digital-order-notification"
 
@@ -1986,14 +1983,6 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
       digital_product_order: digitalProductOrder
     })
 
-    createOrderShipmentWorkflow.runAsStep({
-      input: {
-        order_id: digitalProductOrder.order.id,
-        fulfillment_id: digitalProductOrder.order.fulfillments[0].id,
-        items: digitalProductOrder.order.items
-      }
-    })
-
     return new WorkflowResponse(
       digitalProductOrder
     )
@@ -2005,7 +1994,6 @@ In the workflow, you:
 
 1. Retrieve the digital product order's details using the `useRemoteQueryStep` imported from `@medusajs/core-flows`.
 2. Send a notification to the customer with the digital product download links using the `sendDigitalOrderNotificationStep`.
-3. Create a shipment for the order's fulfillment using the `createOrderShipmentWorkflow` imported from `@medusajs/core-flows`. You run it as a step.
 
 ### Configure Notification Module Provider
 
