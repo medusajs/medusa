@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Alert, Button, Heading, Input, Text, toast } from "@medusajs/ui"
+import { Alert, Button, Heading, Hint, Input, Text, toast } from "@medusajs/ui"
 import { AnimatePresence, motion } from "framer-motion"
 import i18n from "i18next"
 import { useState } from "react"
@@ -50,8 +50,8 @@ export const Invite = () => {
   const isValidInvite = invite && validateDecodedInvite(invite)
 
   return (
-    <div className="bg-ui-bg-base relative flex min-h-dvh w-dvw items-center justify-center p-4">
-      <div className="flex w-full max-w-[300px] flex-col items-center">
+    <div className="bg-ui-bg-subtle relative flex min-h-dvh w-dvw items-center justify-center p-4">
+      <div className="flex w-full max-w-[280px] flex-col items-center">
         <LogoBox
           className="mb-4"
           checked={success}
@@ -150,18 +150,14 @@ const LoginLink = () => {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="my-6 h-px w-full border-b border-dotted" />
-      <span className="text-ui-fg-subtle txt-small">
-        <Trans
-          t={t}
-          i18nKey="invite.alreadyHaveAccount"
-          components={[
-            <Link
-              key="login-link"
-              to="/login"
-              className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
-            />,
-          ]}
-        />
+      <span className="txt-small">
+        <Link
+          key="login-link"
+          to="/login"
+          className="text-ui-fg-interactive !text-ui-fg-base font-medium transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
+        >
+          {t("invite.backToLogin")}
+        </Link>
       </span>
     </div>
   )
@@ -250,6 +246,14 @@ const CreateView = ({
     }
   })
 
+  const serverError = form.formState.errors.root?.message
+  const validationError =
+    form.formState.errors.email?.message ||
+    form.formState.errors.password?.message ||
+    form.formState.errors.repeat_password?.message ||
+    form.formState.errors.first_name?.message ||
+    form.formState.errors.last_name?.message
+
   return (
     <div className="flex w-full flex-col items-center">
       <div className="mb-4 flex flex-col items-center">
@@ -260,18 +264,21 @@ const CreateView = ({
       </div>
       <Form {...form}>
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-y-6">
-          <div className="flex flex-col gap-y-4">
+          <div className="flex flex-col gap-y-2">
             <Form.Field
               control={form.control}
               name="email"
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label>{t("fields.email")}</Form.Label>
                     <Form.Control>
-                      <Input autoComplete="off" {...field} />
+                      <Input
+                        autoComplete="off"
+                        {...field}
+                        className="bg-ui-bg-field-component"
+                        placeholder={t("fields.email")}
+                      />
                     </Form.Control>
-                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
@@ -282,11 +289,14 @@ const CreateView = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label>{t("fields.firstName")}</Form.Label>
                     <Form.Control>
-                      <Input autoComplete="given-name" {...field} />
+                      <Input
+                        autoComplete="given-name"
+                        {...field}
+                        className="bg-ui-bg-field-component"
+                        placeholder={t("fields.firstName")}
+                      />
                     </Form.Control>
-                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
@@ -297,11 +307,14 @@ const CreateView = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label>{t("fields.lastName")}</Form.Label>
                     <Form.Control>
-                      <Input autoComplete="family-name" {...field} />
+                      <Input
+                        autoComplete="family-name"
+                        {...field}
+                        className="bg-ui-bg-field-component"
+                        placeholder={t("fields.lastName")}
+                      />
                     </Form.Control>
-                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
@@ -312,15 +325,15 @@ const CreateView = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label>{t("fields.password")}</Form.Label>
                     <Form.Control>
                       <Input
                         autoComplete="new-password"
                         type="password"
                         {...field}
+                        className="bg-ui-bg-field-component"
+                        placeholder={t("fields.password")}
                       />
                     </Form.Control>
-                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
@@ -331,22 +344,33 @@ const CreateView = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label>{t("fields.repeatPassword")}</Form.Label>
                     <Form.Control>
-                      <Input autoComplete="off" type="password" {...field} />
+                      <Input
+                        autoComplete="off"
+                        type="password"
+                        {...field}
+                        className="bg-ui-bg-field-component"
+                        placeholder={t("fields.repeatPassword")}
+                      />
                     </Form.Control>
-                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
             />
-            {form.formState.errors.root && (
+            {validationError && (
+              <div className="text-center mt-6">
+                <Hint className="inline-flex" variant={"error"}>
+                  {validationError}
+                </Hint>
+              </div>
+            )}
+            {serverError && (
               <Alert
+                className="p-2 bg-white items-center"
+                dismissible
                 variant="error"
-                dismissible={false}
-                className="text-balance"
               >
-                {form.formState.errors.root.message}
+                {serverError}
               </Alert>
             )}
           </div>

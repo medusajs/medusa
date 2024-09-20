@@ -547,7 +547,7 @@
       "inventory": {
         "notManaged": "Not managed",
         "manageItems": "Manage inventory items",
-        "notManagedDesc":"Inventory is not managed for this variant. Turn on ‘Manage Inventory’ to track the variant's inventory.",
+        "notManagedDesc": "Inventory is not managed for this variant. Turn on ‘Manage Inventory’ to track the variant's inventory.",
         "manageKit": "Manage inventory kit",
         "navigateToItem": "Go to inventory item",
         "actions": {
@@ -2343,8 +2343,9 @@
     "hint": "Sign in to access the account area"
   },
   "invite": {
-    "title": "Create your account",
-    "hint": "to continue to Medusa",
+    "title": "Welcome to Medusa",
+    "hint": "Create you account below",
+    "backToLogin": "Back to login",
     "createAccount": "Create account",
     "alreadyHaveAccount": "Already have an account? - <0>Log in</0>",
     "emailTooltip": "Your email cannot be changed. If you would like to use another email, a new invite must be sent.",
