@@ -85,8 +85,6 @@
  *     description: Whether to send the customer notifications on the claim's updates.
  *   order:
  *     $ref: "#/components/schemas/BaseOrder"
- *   return:
- *     $ref: "#/components/schemas/BaseReturn"
  *   shipping_methods:
  *     type: array
  *     description: The claim's shipping methods, used to send the new items.
