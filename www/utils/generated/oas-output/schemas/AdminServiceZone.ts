@@ -1,7 +1,7 @@
 /**
  * @schema AdminServiceZone
  * type: object
- * description: The service zone's service zones.
+ * description: The shipping option's service zone.
  * x-schemaName: AdminServiceZone
  * required:
  *   - id

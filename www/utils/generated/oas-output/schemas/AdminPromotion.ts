@@ -14,6 +14,7 @@
  *     type: string
  *     title: code
  *     description: The promotion's code.
+ *     example: OFF50
  *   type:
  *     type: string
  *     description: The promotion's type.
@@ -23,7 +24,7 @@
  *   is_automatic:
  *     type: boolean
  *     title: is_automatic
- *     description: The promotion's is automatic.
+ *     description: Whether the promotion is applied on a cart automatically if it matches the promotion's rules.
  *   application_method:
  *     $ref: "#/components/schemas/BaseApplicationMethod"
  *   rules:
@@ -34,7 +35,7 @@
  *   campaign_id:
  *     type: string
  *     title: campaign_id
- *     description: The promotion's campaign id.
+ *     description: The ID of the campaign this promotion belongs to.
  *   campaign:
  *     $ref: "#/components/schemas/AdminCampaign"
  * 

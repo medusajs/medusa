@@ -1,7 +1,7 @@
 /**
  * @schema AdminShippingOptionDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the shipping option's deletion.
  * x-schemaName: AdminShippingOptionDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Shipping Option was deleted.
+ *     description: Whether the shipping option was deleted.
  * 
 */
 
