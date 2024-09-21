@@ -6657,14 +6657,14 @@
 			]
 		},
 		{
-			"id": 35455,
+			"id": 35456,
 			"name": "gqlGetFieldsAndRelations",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 35456,
+					"id": 35457,
 					"name": "gqlGetFieldsAndRelations",
 					"variant": "signature",
 					"kind": 4096,
@@ -6679,7 +6679,7 @@
 					},
 					"parameters": [
 						{
-							"id": 35457,
+							"id": 35458,
 							"name": "schemaTypeMap",
 							"variant": "param",
 							"kind": 32768,
@@ -6687,21 +6687,21 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 35458,
+									"id": 35459,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"indexSignatures": [
 										{
-											"id": 35459,
+											"id": 35460,
 											"name": "__index",
 											"variant": "signature",
 											"kind": 8192,
 											"flags": {},
 											"parameters": [
 												{
-													"id": 35460,
+													"id": 35461,
 													"name": "key",
 													"variant": "param",
 													"kind": 32768,
@@ -6727,7 +6727,7 @@
 							}
 						},
 						{
-							"id": 35461,
+							"id": 35462,
 							"name": "typeName",
 							"variant": "param",
 							"kind": 32768,
@@ -6738,7 +6738,7 @@
 							}
 						},
 						{
-							"id": 35462,
+							"id": 35463,
 							"name": "relations",
 							"variant": "param",
 							"kind": 32768,
@@ -6818,6 +6818,17 @@
 												"type": "intrinsic",
 												"name": "string"
 											}
+										},
+										{
+											"id": 35455,
+											"name": "filename",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "intrinsic",
+												"name": "string"
+											}
 										}
 									],
 									"groups": [
@@ -6825,7 +6836,8 @@
 											"title": "Properties",
 											"children": [
 												35453,
-												35454
+												35454,
+												35455
 											]
 										}
 									]
@@ -7030,7 +7042,7 @@
 				35098,
 				35257,
 				35435,
-				35455,
+				35456,
 				35449,
 				35441
 			]
@@ -8627,8 +8639,8 @@
 			"qualifiedName": "__type.outputDir"
 		},
 		"35455": {
-			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-get-fields-and-relations.ts",
-			"qualifiedName": "gqlGetFieldsAndRelations"
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-schema-to-types.ts",
+			"qualifiedName": "__type.filename"
 		},
 		"35456": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-get-fields-and-relations.ts",
@@ -8636,21 +8648,25 @@
 		},
 		"35457": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-get-fields-and-relations.ts",
-			"qualifiedName": "schemaTypeMap"
+			"qualifiedName": "gqlGetFieldsAndRelations"
 		},
 		"35458": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-get-fields-and-relations.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "schemaTypeMap"
 		},
 		"35459": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-get-fields-and-relations.ts",
+			"qualifiedName": "__type"
+		},
+		"35460": {
+			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-get-fields-and-relations.ts",
 			"qualifiedName": "__type.__index"
 		},
-		"35461": {
+		"35462": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-get-fields-and-relations.ts",
 			"qualifiedName": "typeName"
 		},
-		"35462": {
+		"35463": {
 			"sourceFileName": "../../../../packages/core/modules-sdk/src/utils/gql-get-fields-and-relations.ts",
 			"qualifiedName": "relations"
 		}
