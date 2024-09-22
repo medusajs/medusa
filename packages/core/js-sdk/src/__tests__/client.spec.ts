@@ -29,7 +29,6 @@ const server = setupServer(
     }
   }),
   http.get(`${baseUrl}/replaced-header`, ({ request, params, cookies }) => {
-    request.headers
     if (request.headers.get("Content-Type") === "application/xml") {
       return HttpResponse.json({
         test: "test",

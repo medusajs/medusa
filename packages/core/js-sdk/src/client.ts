@@ -43,14 +43,28 @@ const normalizeRequest = (
   if (body && headers.get("content-type")?.includes("application/json")) {
     body = JSON.stringify(body)
   }
-
-  return {
+  
+  let returnData = {
     ...init,
-    headers,
     // TODO: Setting this to "include" poses some security risks, as it will send cookies to any domain. We should consider making this configurable.
     credentials: config.auth?.type === "session" ? "include" : "omit",
     ...(body ? { body: body as RequestInit["body"] } : {}),
-  } as RequestInit
+  } as RequestInit;
+  
+  // Normalize headers to lowercase
+  if(returnData.headers) {
+    for (const [key, value] of Object.entries(returnData.headers)) {
+      headers.set(key, value);
+    }
+  }
+
+  returnData.headers = {};
+  
+  for(const [key, value] of headers.entries()) {
+    returnData.headers[key] = value;
+  }
+
+  return returnData;
 }
 
 const normalizeResponse = async (resp: Response, reqHeaders: Headers) => {
@@ -291,8 +305,6 @@ export class Client {
         return this.token
       }
     }
-
-    return
   }
 
   protected getTokenStorageInfo_ = () => {
