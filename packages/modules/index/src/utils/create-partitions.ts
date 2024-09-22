@@ -1,11 +1,9 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  SchemaObjectRepresentation,
-  schemaObjectRepresentationPropertiesToOmit,
-} from "../types"
+import { schemaObjectRepresentationPropertiesToOmit } from "@types"
+import { IndexTypes } from "@medusajs/types"
 
 export async function createPartitions(
-  schemaObjectRepresentation: SchemaObjectRepresentation,
+  schemaObjectRepresentation: IndexTypes.SchemaObjectRepresentation,
   manager: SqlEntityManager
 ): Promise<void> {
   const activeSchema = manager.config.get("schema")

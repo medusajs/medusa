@@ -58,25 +58,35 @@ medusaIntegrationTestRunner({
         // Timeout to allow indexing to finish
         await setTimeout(2000)
 
-        const [results, count] = await indexEngine.queryAndCount(
-          {
-            select: {
-              product: {
-                variants: {
-                  prices: true,
+        const { data: results } = await indexEngine.query<"product">({
+          fields: [
+            "product.*",
+            "product.variants.*",
+            "product.variants.prices.*",
+          ],
+          filters: {
+            product: {
+              variants: {
+                prices: {
+                  amount: { $gt: 50 },
                 },
               },
             },
-            where: {
-              "product.variants.prices.amount": { $gt: 50 },
+          },
+          pagination: {
+            order: {
+              product: {
+                variants: {
+                  prices: {
+                    amount: "DESC",
+                  },
+                },
+              },
             },
           },
-          {
-            orderBy: [{ "product.variants.prices.amount": "DESC" }],
-          }
-        )
+        })
 
-        expect(count).toBe(1)
+        expect(results.length).toBe(1)
 
         const variants = results[0].variants
 
@@ -118,26 +128,36 @@ medusaIntegrationTestRunner({
         // Timeout to allow indexing to finish
         await setTimeout(2000)
 
-        const [results, count] = await indexEngine.queryAndCount(
-          {
-            select: {
-              product: {
-                variants: {
-                  prices: true,
+        const { data: results } = await indexEngine.query<"product">({
+          fields: [
+            "product.*",
+            "product.variants.*",
+            "product.variants.prices.*",
+          ],
+          filters: {
+            product: {
+              variants: {
+                prices: {
+                  amount: { $gt: 50 },
+                  currency_code: { $eq: "AUD" },
                 },
               },
             },
-            where: {
-              "product.variants.prices.amount": { $gt: 50 },
-              "product.variants.prices.currency_code": { $eq: "AUD" },
+          },
+          pagination: {
+            order: {
+              product: {
+                variants: {
+                  prices: {
+                    amount: "DESC",
+                  },
+                },
+              },
             },
           },
-          {
-            orderBy: [{ "product.variants.prices.amount": "DESC" }],
-          }
-        )
+        })
 
-        expect(count).toBe(1)
+        expect(results.length).toBe(1)
 
         const variants = results[0].variants
 
@@ -179,32 +199,40 @@ medusaIntegrationTestRunner({
 
         await setTimeout(5000)
 
-        const queryArgs = [
-          {
-            select: {
-              product: {
-                variants: {
-                  prices: true,
+        const queryArgs = {
+          fields: [
+            "product.*",
+            "product.variants.*",
+            "product.variants.prices.*",
+          ],
+          filters: {
+            product: {
+              variants: {
+                prices: {
+                  amount: { $gt: 50 },
+                  currency_code: { $eq: "AUD" },
                 },
               },
             },
-            where: {
-              "product.variants.prices.amount": { $gt: 50 },
-              "product.variants.prices.currency_code": { $eq: "AUD" },
+          },
+          pagination: {
+            order: {
+              product: {
+                variants: {
+                  prices: {
+                    amount: "DESC",
+                  },
+                },
+              },
             },
           },
-          {
-            orderBy: [{ "product.variants.prices.amount": "DESC" }],
-          },
-        ]
+        }
 
-        await indexEngine.queryAndCount(...queryArgs)
+        await indexEngine.query<"product">(queryArgs)
 
-        const [results, count, perf] = await indexEngine.queryAndCount(
-          ...queryArgs
+        const { data: results, metadata } = await indexEngine.query<"product">(
+          queryArgs
         )
-
-        console.log(perf)
       })
     })
   },
