@@ -41,6 +41,10 @@ export type InteractiveSidebarItem =
   | SidebarItemCategory
   | SidebarItemSubCategory
 
+export type SidebarItemLinkWithParent = SidebarItemLink & {
+  parentItem?: InteractiveSidebarItem
+}
+
 export type SidebarItem = InteractiveSidebarItem | SidebarItemSeparator
 
 export type SidebarSectionItems = {
