@@ -21,7 +21,7 @@ import {
   ProductStatus,
   PromotionRuleOperator,
   PromotionType,
-  RuleOperator,
+  RuleOperator
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
@@ -2387,6 +2387,67 @@ medusaIntegrationTestRunner({
           expect(error.response.data).toEqual({
             type: "invalid_data",
             message: `Cart ${cart.id} is already completed.`,
+          })
+        })
+
+        it("should return order when cart is already completed", async () => {
+          const cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                email: "tony@stark-industries.com",
+                shipping_address: {
+                  address_1: "test address 1",
+                  address_2: "test address 2",
+                  city: "ny",
+                  country_code: "us",
+                  province: "ny",
+                  postal_code: "94016",
+                },
+                sales_channel_id: salesChannel.id,
+                items: [{ quantity: 1, variant_id: product.variants[0].id }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(
+              `/store/payment-collections`,
+              {
+                cart_id: cart.id,
+              },
+              storeHeaders
+            )
+          ).data.payment_collection
+
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+
+          await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
+
+          const cartRefetch = (
+            await api.get(`/store/carts/${cart.id}`, storeHeaders)
+          ).data.cart
+
+          expect(cartRefetch.completed_at).toBeTruthy()
+
+          const order = await api.post(
+            `/store/carts/${cart.id}/complete`,
+            {},
+            storeHeaders
+          )
+
+          expect(order.status).toEqual(200)
+          expect(order.data).toEqual({
+            type: "order",
+            order: expect.objectContaining({
+              id: expect.any(String),
+            }),
           })
         })
 

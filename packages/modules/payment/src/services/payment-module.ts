@@ -27,6 +27,7 @@ import {
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
   UpsertPaymentCollectionDTO,
+  WebhookActionResult,
 } from "@medusajs/types"
 import {
   BigNumber,
@@ -425,20 +426,19 @@ export default class PaymentModuleService
           "amount",
           "raw_amount",
           "currency_code",
+          "authorized_at",
           "payment_collection_id",
         ],
+        relations: ["payment", "payment_collection"],
       },
       sharedContext
     )
 
     // this method needs to be idempotent
-    if (session.authorized_at) {
-      const payment = await this.paymentService_.retrieve(
-        { session_id: session.id },
-        { relations: ["payment_collection"] },
-        sharedContext
-      )
-      return await this.baseRepository_.serialize(payment, { populate: true })
+    if (session.payment && session.authorized_at) {
+      return await this.baseRepository_.serialize(session.payment, {
+        populate: true,
+      })
     }
 
     let { data, status } = await this.paymentProviderService_.authorizePayment(
@@ -852,7 +852,7 @@ export default class PaymentModuleService
   async processEvent(
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
-  ): Promise<void> {
+  ): Promise<WebhookActionResult> {
     const providerId = `pp_${eventData.provider}`
 
     const event = await this.paymentProviderService_.getWebhookActionAndData(
@@ -861,7 +861,11 @@ export default class PaymentModuleService
     )
 
     if (event.action === PaymentActions.NOT_SUPPORTED) {
-      return
+      return event
+    }
+
+    if (!event.data) {
+      return event
     }
 
     switch (event.action) {
@@ -888,6 +892,8 @@ export default class PaymentModuleService
           sharedContext
         )
     }
+
+    return event
   }
 
   @InjectManager()

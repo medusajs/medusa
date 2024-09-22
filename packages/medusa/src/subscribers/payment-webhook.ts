@@ -1,5 +1,6 @@
+import { onPaymentProcessedWorkflow } from "@medusajs/core-flows"
 import { IPaymentModuleService, ProviderWebhookPayload } from "@medusajs/types"
-import { Modules, PaymentWebhookEvents } from "@medusajs/utils"
+import { Modules, PaymentActions, PaymentWebhookEvents } from "@medusajs/utils"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 
 type SerializedBuffer = {
@@ -24,7 +25,15 @@ export default async function paymentWebhookhandler({
       (input.payload.rawData as unknown as SerializedBuffer).data
     )
   }
-  await paymentService.processEvent(input)
+
+  // We process the event separately from the workflow. The state of the workflow should not interfere with the payment event processing.
+  const processedEvent = await paymentService.processEvent(input)
+
+  if (processedEvent.action !== PaymentActions.NOT_SUPPORTED) {
+    onPaymentProcessedWorkflow(container).run({
+      input: processedEvent,
+    })
+  }
 }
 
 export const config: SubscriberConfig = {

@@ -31,6 +31,7 @@ import {
   UpdateRefundReasonDTO,
   UpsertPaymentCollectionDTO,
 } from "./mutations"
+import { WebhookActionResult } from "./provider"
 
 /**
  * The main service interface for the Payment Module.
@@ -1076,7 +1077,7 @@ export interface IPaymentModuleService extends IModuleService {
    * })
    * ```
    */
-  processEvent(data: ProviderWebhookPayload): Promise<void>
+  processEvent(data: ProviderWebhookPayload): Promise<WebhookActionResult>
 }
 
 /**

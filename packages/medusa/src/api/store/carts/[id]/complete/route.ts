@@ -1,11 +1,10 @@
 import { completeCartWorkflow } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
+import { HttpTypes } from "@medusajs/types"
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
-import { refetchOrder } from "../../../orders/helpers"
 import { refetchCart } from "../../helpers"
 import { defaultStoreCartFields } from "../../query-config"
-import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
   req: MedusaRequest,
@@ -18,6 +17,8 @@ export const POST = async (
     context: { transactionId: cart_id },
     throwOnError: false,
   })
+
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   // When an error occurs on the workflow, its potentially got to with cart validations, payments
   // or inventory checks. Return the cart here along with errors for the consumer to take more action
@@ -58,14 +59,14 @@ export const POST = async (
     })
   }
 
-  const order = await refetchOrder(
-    result.id,
-    req.scope,
-    req.remoteQueryConfig.fields
-  )
+  const { data } = await query.graph({
+    entity: "order",
+    fields: req.remoteQueryConfig.fields,
+    filters: { id: result.id },
+  })
 
   res.status(200).json({
     type: "order",
-    order,
+    order: data[0],
   })
 }
