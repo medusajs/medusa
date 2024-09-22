@@ -51,7 +51,6 @@ const normalizeRequest = (
     ...(body ? { body: body as RequestInit["body"] } : {}),
   } as RequestInit;
   
-  // Normalize headers to lowercase
   if(returnData.headers) {
     for (const [key, value] of Object.entries(returnData.headers)) {
       headers.set(key, value);
