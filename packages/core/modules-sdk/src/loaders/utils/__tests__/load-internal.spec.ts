@@ -61,7 +61,7 @@ describe("load internal - load resources", () => {
 
       const generatedJoinerConfig = (
         resources.moduleService.prototype as IModuleService
-      ).__joinerConfig()
+      ).__joinerConfig?.()!
 
       expect(generatedJoinerConfig).toEqual(
         expect.objectContaining({
@@ -141,7 +141,7 @@ describe("load internal - load resources", () => {
 
       const generatedJoinerConfig = (
         resources.moduleService.prototype as IModuleService
-      ).__joinerConfig()
+      ).__joinerConfig?.()!
 
       expect(generatedJoinerConfig).toEqual(
         expect.objectContaining({
@@ -221,7 +221,7 @@ describe("load internal - load resources", () => {
 
       const generatedJoinerConfig = (
         resources.moduleService.prototype as IModuleService
-      ).__joinerConfig()
+      ).__joinerConfig?.()!
 
       expect(generatedJoinerConfig).toEqual({
         serviceName: "module-without-joiner-config",
@@ -296,7 +296,7 @@ describe("load internal - load resources", () => {
 
       const generatedJoinerConfig = (
         resources.moduleService.prototype as IModuleService
-      ).__joinerConfig()
+      ).__joinerConfig?.()!
 
       expect(generatedJoinerConfig).toEqual({
         serviceName: "module-service",
