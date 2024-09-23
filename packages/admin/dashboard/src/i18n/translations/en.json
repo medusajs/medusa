@@ -779,6 +779,7 @@
         "noRecordsMessage": "This customer doesn't belong to any group."
       },
       "add": {
+        "success": "Customer added to: {{groups}}.",
         "list": {
           "noRecordsMessage": "Please create a customer group first."
         }
