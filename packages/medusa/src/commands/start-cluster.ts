@@ -4,7 +4,7 @@ import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 import os from "os"
 
-import { logger } from "@medusajs/framework"
+import { logger } from "@medusajs/framework/logger"
 import { GracefulShutdownServer, isPresent } from "@medusajs/utils"
 import loaders from "../loaders"
 

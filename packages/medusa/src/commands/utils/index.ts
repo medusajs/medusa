@@ -1,4 +1,4 @@
-import { logger } from "@medusajs/framework"
+import { logger } from "@medusajs/framework/logger"
 import { MedusaContainer } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 

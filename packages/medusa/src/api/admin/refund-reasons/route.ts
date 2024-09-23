@@ -1,5 +1,8 @@
 import { createRefundReasonsWorkflow } from "@medusajs/core-flows"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
 import {
   AdminCreateRefundReason,
   HttpTypes,

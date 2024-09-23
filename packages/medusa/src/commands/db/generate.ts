@@ -1,6 +1,8 @@
 import { join } from "path"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
-import { LinkLoader, logger, MedusaAppLoader } from "@medusajs/framework"
+import { LinkLoader } from "@medusajs/framework/links"
+import { logger } from "@medusajs/framework/logger"
+import { MedusaAppLoader } from "@medusajs/framework"
 
 import { ensureDbExists } from "../utils"
 import { initializeContainer } from "../../loaders"

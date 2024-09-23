@@ -2,7 +2,7 @@ import loaders from "../loaders"
 import express from "express"
 import path from "path"
 import { existsSync } from "fs"
-import { logger } from "@medusajs/framework"
+import { logger } from "@medusajs/framework/logger"
 import { ExecArgs } from "@medusajs/types"
 
 type Options = {

@@ -5,7 +5,8 @@ import { scheduleJob } from "node-schedule"
 
 import { GracefulShutdownServer } from "@medusajs/utils"
 import http, { IncomingMessage, ServerResponse } from "http"
-import { gqlSchemaToTypes, logger } from "@medusajs/framework"
+import { logger } from "@medusajs/framework/logger"
+import { gqlSchemaToTypes } from "@medusajs/framework"
 
 import loaders from "../loaders"
 

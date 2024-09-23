@@ -7,20 +7,17 @@ import requestIp from "request-ip"
 import { v4 } from "uuid"
 import adminLoader from "./admin"
 import apiLoader from "./api"
-import {
-  configLoader,
-  container,
-  expressLoader,
-  featureFlagsLoader,
-  GraphQLSchema,
-  JobLoader,
-  LinkLoader,
-  logger,
-  MedusaAppLoader,
-  pgConnectionLoader,
-  SubscriberLoader,
-  WorkflowLoader,
-} from "@medusajs/framework"
+import { configLoader } from "@medusajs/framework/config"
+import { container } from "@medusajs/framework/"
+import { expressLoader } from "@medusajs/framework/http"
+import { JobLoader } from "@medusajs/framework/jobs"
+import { LinkLoader } from "@medusajs/framework/links"
+import { logger } from "@medusajs/framework/logger"
+import { pgConnectionLoader } from "@medusajs/framework/database"
+import { SubscriberLoader } from "@medusajs/framework/subscribers"
+import { WorkflowLoader } from "@medusajs/framework/workflows"
+import { featureFlagsLoader } from "@medusajs/framework/feature-flags"
+import { GraphQLSchema, MedusaAppLoader } from "@medusajs/framework"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 
 type Options = {

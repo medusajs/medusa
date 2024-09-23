@@ -1,4 +1,4 @@
-import { logger } from "@medusajs/framework"
+import { logger } from "@medusajs/framework/logger"
 import { Modules } from "@medusajs/utils"
 import express from "express"
 import { track } from "medusa-telemetry"

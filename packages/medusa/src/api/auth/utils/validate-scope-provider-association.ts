@@ -2,7 +2,7 @@ import {
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework"
+} from "@medusajs/framework/http"
 import { ConfigModule } from "@medusajs/types"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 

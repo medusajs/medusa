@@ -1,5 +1,7 @@
 import { snakeCase } from "lodash"
-import { Query, RoutesLoader, Tracer } from "@medusajs/framework"
+import { Query } from "@medusajs/framework"
+import { RoutesLoader } from "@medusajs/framework/http"
+import { Tracer } from "@medusajs/framework/telemetry"
 import type { SpanExporter } from "@opentelemetry/sdk-trace-node"
 import type { Instrumentation } from "@opentelemetry/instrumentation"
 import { TransactionOrchestrator } from "@medusajs/orchestration"
