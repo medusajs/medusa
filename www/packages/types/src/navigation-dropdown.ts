@@ -14,3 +14,7 @@ export type NavigationDropdownItem =
   | {
       type: "divider"
     }
+
+export type BreadcrumbOptions = {
+  showCategories?: boolean
+}

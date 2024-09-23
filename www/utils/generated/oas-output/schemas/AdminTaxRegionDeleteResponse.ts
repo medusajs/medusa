@@ -1,7 +1,7 @@
 /**
  * @schema AdminTaxRegionDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the tax region deletion.
  * x-schemaName: AdminTaxRegionDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Tax Region was deleted.
+ *     description: Whether the tax region was deleted.
  * 
 */
 
