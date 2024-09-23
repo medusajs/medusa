@@ -60,7 +60,7 @@ export const PriceListCustomerGroupRuleForm = ({
   })
   const { customer_groups, count, isLoading, isError, error } =
     useCustomerGroups(
-      { ...searchParams, fields: "customers.id" },
+      { ...searchParams, fields: "id,name,customers.id" },
       {
         placeholderData: keepPreviousData,
       }
