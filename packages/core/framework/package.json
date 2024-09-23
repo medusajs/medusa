@@ -37,8 +37,7 @@
     "watch": "tsc --watch ",
     "watch:test": "tsc --watch",
     "build": "rimraf dist && tsc --build",
-    "test": "jest --runInBand --bail --passWithNoTests --forceExit",
-    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
+    "test": "jest --runInBand --bail --passWithNoTests --forceExit"
   },
   "devDependencies": {
     "@medusajs/orchestration": "^0.5.7",
