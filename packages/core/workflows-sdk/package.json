@@ -3,20 +3,25 @@
   "version": "0.1.6",
   "description": "Set of workflows tooling for Medusa",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/workflows"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20.0.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "author": "Medusa",
   "license": "MIT",

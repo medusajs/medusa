@@ -24,6 +24,7 @@ const workflow = createWorkflow(
   "sub-workflow",
   function (input: WorkflowData<{ outsideWorkflowData: string }>) {
     step1()
+    step2({ filters: { id: [] } })
     const somethingHook = createHook("something", { id: "1" })
     step3()
     return new WorkflowResponse({ id: 1 }, { hooks: [somethingHook] })
