@@ -3,7 +3,7 @@ import {
   createWorkflow,
   StepResponse,
 } from "@medusajs/workflows-sdk"
-import { when } from "@medusajs/workflows-sdk/src/utils/composer"
+import { when } from "@medusajs/workflows-sdk/composer"
 
 const step_1 = createStep(
   "step_1",
