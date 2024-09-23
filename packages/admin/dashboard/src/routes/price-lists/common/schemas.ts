@@ -14,7 +14,7 @@ export const PriceListRulesSchema = z.object({
 })
 
 const PriceListCreateCurrencyPriceSchema = z.object({
-  amount: z.string().optional(),
+  amount: z.string().or(z.number()).optional(),
 })
 
 export type PriceListCreateCurrencyPrice = z.infer<
@@ -22,7 +22,7 @@ export type PriceListCreateCurrencyPrice = z.infer<
 >
 
 const PriceListCreateRegionPriceSchema = z.object({
-  amount: z.string().optional(),
+  amount: z.string().or(z.number()).optional(),
 })
 
 export type PriceListCreateRegionPriceSchema = z.infer<
