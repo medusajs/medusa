@@ -44,6 +44,23 @@ type ExtraOptions = {
 
 type DefineLinkInputSource = InputSource | InputOptions | CombinedSource
 
+type ReadOnlyOptions = {
+  isList?: boolean
+  shortcut:
+    | {
+        property: string
+        path: string
+        isList?: boolean
+        forwardArguments?: string | string[]
+      }
+    | {
+        property: string
+        path: string
+        isList?: boolean
+        forwardArguments?: string | string[]
+      }[]
+}
+
 type ModuleLinkableKeyConfig = {
   module: string
   entity?: string
@@ -53,9 +70,7 @@ type ModuleLinkableKeyConfig = {
   deleteCascade?: boolean
   primaryKey: string
   alias: string
-  shortcuts?: {
-    [key: string]: string | { path: string; isList?: boolean }
-  }
+  shortcut?: ReadOnlyOptions["shortcut"]
 }
 
 function isInputOptions(input: any): input is InputOptions {
@@ -68,6 +83,30 @@ function isInputSource(input: any): input is InputSource {
 
 function isToJSON(input: any): input is InputToJson {
   return isObject(input) && input?.["toJSON"]
+}
+
+function buildFieldAlias(fieldAliases?: ReadOnlyOptions["shortcut"]) {
+  if (!fieldAliases) {
+    return
+  }
+
+  const fieldAlias = {}
+
+  const shortcuts = Array.isArray(fieldAliases) ? fieldAliases : [fieldAliases]
+  for (const sc of shortcuts) {
+    const fwArgs = sc.forwardArguments
+      ? Array.isArray(sc.forwardArguments)
+        ? sc.forwardArguments
+        : [sc.forwardArguments]
+      : []
+    fieldAlias[sc.property] = {
+      path: sc.path,
+      isList: !!sc.isList,
+      forwardArgumentsOnPath: fwArgs,
+    }
+  }
+
+  return fieldAlias
 }
 
 function prepareServiceConfig(input: DefineLinkInputSource) {
@@ -130,7 +169,12 @@ export function defineLink(
   const serviceAObj = prepareServiceConfig(leftService)
   const serviceBObj = prepareServiceConfig(rightService)
 
-  const output = { [DefineLinkSymbol]: true, serviceName: "", entryPoint: "" }
+  const output = {
+    [DefineLinkSymbol]: true,
+    serviceName: "",
+    entity: "",
+    entryPoint: "",
+  }
 
   const register = function (
     modules: ModuleJoinerConfig[]
@@ -276,6 +320,9 @@ ${serviceBObj.module}: {
     )
 
     output.entryPoint = aliasA + "_" + aliasB
+    output.entity = toPascalCase(
+      ["Link", serviceAObj.module, aliasA, serviceBObj.module, aliasB].join("_")
+    )
 
     const linkDefinition: ModuleJoinerConfig = {
       serviceName: output.serviceName,
@@ -284,15 +331,7 @@ ${serviceBObj.module}: {
         {
           name: [output.entryPoint],
           args: {
-            entity: toPascalCase(
-              [
-                "Link",
-                serviceAObj.module,
-                aliasA,
-                serviceBObj.module,
-                aliasB,
-              ].join("_")
-            ),
+            entity: output.entity,
           },
         },
       ],
@@ -324,15 +363,15 @@ ${serviceBObj.module}: {
       extends: [
         {
           serviceName: serviceAObj.module,
-          fieldAlias: {
-            [serviceBObj.isList ? pluralize(aliasB) : aliasB]: {
-              path: aliasB + "_link." + aliasB,
-              isList: serviceBObj.isList,
-              forwardArgumentsOnPath: [aliasB + "_link." + aliasB],
-            },
-          },
+          fieldAlias: buildFieldAlias({
+            property: serviceBObj.isList ? pluralize(aliasB) : aliasB,
+            path: aliasB + "_link." + aliasB,
+            isList: serviceBObj.isList,
+            forwardArguments: [aliasB + "_link." + aliasB],
+          }),
           relationship: {
             serviceName: output.serviceName,
+            entity: output.entity,
             primaryKey: serviceAObj.key,
             foreignKey: serviceAPrimaryKey,
             alias: aliasB + "_link",
@@ -341,15 +380,15 @@ ${serviceBObj.module}: {
         },
         {
           serviceName: serviceBObj.module,
-          fieldAlias: {
-            [serviceAObj.isList ? pluralize(aliasA) : aliasA]: {
-              path: aliasA + "_link." + aliasA,
-              isList: serviceAObj.isList,
-              forwardArgumentsOnPath: [aliasA + "_link." + aliasA],
-            },
-          },
+          fieldAlias: buildFieldAlias({
+            property: serviceAObj.isList ? pluralize(aliasA) : aliasA,
+            path: aliasA + "_link." + aliasA,
+            isList: serviceAObj.isList,
+            forwardArguments: [aliasA + "_link." + aliasA],
+          }),
           relationship: {
             serviceName: output.serviceName,
+            entity: output.entity,
             primaryKey: serviceBObj.key,
             foreignKey: serviceBPrimaryKey,
             alias: aliasA + "_link",
@@ -374,4 +413,75 @@ ${serviceBObj.module}: {
   global.MedusaModule.setCustomLink(register)
 
   return output
+}
+
+/**
+ * Generate a ModuleJoinerConfig for the read-only link definition on the fly.
+ *
+ * @param leftService
+ * @param rightService
+ * @param readOnlyLinkOptions
+ */
+export function defineReadOnlyLink(
+  leftService: DefineLinkInputSource,
+  property: string,
+  foreignKey: string,
+  rightService: DefineLinkInputSource,
+  readOnlyLinkOptions?: ReadOnlyOptions
+): void {
+  const register = function (
+    modules: ModuleJoinerConfig[]
+  ): ModuleJoinerConfig {
+    const serviceAObj = prepareServiceConfig(leftService)
+    const serviceBObj = prepareServiceConfig(rightService)
+
+    const serviceAInfo = modules.find(
+      (mod) => mod.serviceName === serviceAObj.module
+    )!
+    const serviceBInfo = modules.find(
+      (mod) => mod.serviceName === serviceBObj.module
+    )!
+
+    if (!serviceAInfo) {
+      throw new Error(`Service ${serviceAObj.module} was not found. If this is your module, make sure you set isQueryable to true in medusa-config.js:
+        
+${serviceAObj.module}: {
+  // ...
+  definition: {
+    isQueryable: true
+  }
+}`)
+    }
+    if (!serviceBInfo) {
+      throw new Error(`Service ${serviceBObj.module} was not found. If this is your module, make sure you set isQueryable to true in medusa-config.js:
+        
+${serviceBObj.module}: {
+  // ...
+  definition: {
+    isQueryable: true
+  }
+}`)
+    }
+
+    return {
+      isLink: true,
+      isReadOnlyLink: true,
+      extends: [
+        {
+          serviceName: serviceAObj.module,
+          fieldAlias: buildFieldAlias(readOnlyLinkOptions?.shortcut),
+          relationship: {
+            serviceName: serviceBObj.module,
+            entity: serviceBObj.entity,
+            primaryKey: serviceBObj.key,
+            foreignKey,
+            alias: property,
+            isList: readOnlyLinkOptions?.isList ?? serviceAObj.isList,
+          },
+        },
+      ],
+    }
+  }
+
+  global.MedusaModule.setCustomLink(register)
 }
