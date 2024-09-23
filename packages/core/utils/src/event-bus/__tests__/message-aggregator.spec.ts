@@ -8,8 +8,7 @@ describe("MessageAggregator", function () {
   it("should group messages by any given group of keys", function () {
     const aggregator = new MessageAggregator()
     aggregator.save({
-      // @ts-expect-error
-      eventName: "ProductVariant.created",
+      name: "ProductVariant.created",
       metadata: {
         source: "Product",
         action: "created",
@@ -19,8 +18,7 @@ describe("MessageAggregator", function () {
       data: { id: 999 },
     })
     aggregator.save({
-      // @ts-expect-error
-      eventName: "Product.created",
+      name: "Product.created",
       metadata: {
         source: "Product",
         action: "created",
@@ -30,8 +28,7 @@ describe("MessageAggregator", function () {
       data: { id: 1 },
     })
     aggregator.save({
-      // @ts-expect-error
-      eventName: "ProductVariant.created",
+      name: "ProductVariant.created",
       metadata: {
         source: "Product",
         action: "created",
@@ -41,8 +38,7 @@ describe("MessageAggregator", function () {
       data: { id: 222 },
     })
     aggregator.save({
-      // @ts-expect-error
-      eventName: "ProductType.detached",
+      name: "ProductType.detached",
       metadata: {
         source: "Product",
         action: "detached",
@@ -52,8 +48,7 @@ describe("MessageAggregator", function () {
       data: { id: 333 },
     })
     aggregator.save({
-      // @ts-expect-error
-      eventName: "ProductVariant.updated",
+      name: "ProductVariant.updated",
       metadata: {
         source: "Product",
         action: "updated",
@@ -64,7 +59,7 @@ describe("MessageAggregator", function () {
     })
 
     const format = {
-      groupBy: ["eventName", "metadata.object", "metadata.action"],
+      groupBy: ["name", "metadata.object", "metadata.action"],
       sortBy: {
         "metadata.object": ["ProductType", "ProductVariant", "Product"],
         "data.id": "asc",
@@ -79,7 +74,7 @@ describe("MessageAggregator", function () {
 
     expect(allGroups[0]).toEqual([
       {
-        eventName: "ProductType.detached",
+        name: "ProductType.detached",
         metadata: {
           source: "Product",
           action: "detached",
@@ -92,7 +87,7 @@ describe("MessageAggregator", function () {
 
     expect(allGroups[1]).toEqual([
       {
-        eventName: "ProductVariant.updated",
+        name: "ProductVariant.updated",
         metadata: {
           source: "Product",
           action: "updated",
@@ -105,7 +100,7 @@ describe("MessageAggregator", function () {
 
     expect(allGroups[2]).toEqual([
       {
-        eventName: "ProductVariant.created",
+        name: "ProductVariant.created",
         metadata: {
           source: "Product",
           action: "created",
@@ -115,7 +110,7 @@ describe("MessageAggregator", function () {
         data: { id: 222 },
       },
       {
-        eventName: "ProductVariant.created",
+        name: "ProductVariant.created",
         metadata: {
           source: "Product",
           action: "created",
@@ -128,7 +123,7 @@ describe("MessageAggregator", function () {
 
     expect(allGroups[3]).toEqual([
       {
-        eventName: "Product.created",
+        name: "Product.created",
         metadata: {
           source: "Product",
           action: "created",
