@@ -6,17 +6,23 @@ export const metadata = {
 
 In this chapter, you’ll learn how to set a timeout for workflows and steps.
 
-## Configure Workflow Timeout
+## What is a Workflow Timeout?
 
 By default, a workflow doesn’t have a timeout. It continues execution until it’s finished or an error occurs.
 
-You can configure a workflow’s timeout to indicate how long the workflow can run. Once the specified time is passed and the workflow is still running, the workflow is considered failed and an error is thrown.
+You can configure a workflow’s timeout to indicate how long the workflow can execute. If a workflow's execution time passes the configured timeout, it is failed and an error is thrown.
 
-<Note>
+### Timeout Doesn't Stop Step Execution
 
-Timeout doesn't stop the execution of a running step. The timeout only affects the status of the workflow and its result.
+Configuring a timeout doesn't stop the execution of a step in progress. The timeout only affects the status of the workflow and its result.
 
-</Note>
+---
+
+## Configure Workflow Timeout
+
+The `createWorkflow` function can accept a configuration object instead of the workflow’s name.
+
+In the configuration object, you pass a `timeout` property, whose value is a number indicating the timeout in seconds.
 
 For example:
 
@@ -49,7 +55,7 @@ export default myWorkflow
 
 ```
 
-The `createWorkflow` function can accept a configuration object instead of the workflow’s name. In the configuration object, you pass a `timeout` property, whose value is a number indicating the timeout in seconds.
+This workflow's executions fail if they run longer than two seconds.
 
 <Note title="Tip">
 
@@ -61,13 +67,15 @@ A workflow’s timeout error is returned in the `errors` property of the workflo
 
 ## Configure Step Timeout
 
-Alternatively, you can configure timeout for a step rather than the entire workflow.
+Alternatively, you can configure the timeout for a step rather than the entire workflow.
 
 <Note>
 
 As mentioned in the previous section, the timeout doesn't stop the execution of the step. It only affects the step's status and output.
 
 </Note>
+
+The step’s configuration object accepts a `timeout` property, whose value is a number indicating the timeout in seconds.
 
 For example:
 
@@ -83,7 +91,7 @@ const step1 = createStep(
 )
 ```
 
-The step’s configuration object accepts a `timeout` property, whose value is a number indicating the timeout in seconds.
+This step's executions fail if they run longer than two seconds.
 
 <Note title="Tip">
 
