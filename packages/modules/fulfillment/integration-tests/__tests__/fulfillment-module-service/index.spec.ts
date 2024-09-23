@@ -383,13 +383,7 @@ moduleIntegrationTestRunner({
          */
 
         await service.restoreFulfillmentSets([fulfillmentSets[0].id])
-        const restoredFulfillmentSets = await list(
-          service,
-          {},
-          {
-            withDeleted: true,
-          }
-        )
+        const restoredFulfillmentSets = await list(service, {})
         expectSoftDeleted(restoredFulfillmentSets)
       })
     }),
