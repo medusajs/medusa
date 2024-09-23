@@ -2,7 +2,6 @@
 
 import { objectFromStringPath } from "./object-from-string-path"
 
-
 type Order = {
   [key: string]: "ASC" | "DESC" | Order
 }
@@ -42,7 +41,7 @@ function buildRelationsOrSelect(collection: string[]): Selects | Relations {
  * }
  * @param orderBy
  */
-export function buildOrder<T>(orderBy: { [k: string]: "ASC" | "DESC" }): Order {
+export function buildOrder(orderBy: { [k: string]: "ASC" | "DESC" }): Order {
   const output: Order = {}
 
   const orderKeys = Object.keys(orderBy)
