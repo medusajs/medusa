@@ -19,7 +19,6 @@
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
