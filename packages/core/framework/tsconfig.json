@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "target": "ESNext",
+    "lib": ["ES2021"],
+    "target": "ES2021",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declarationMap": true,

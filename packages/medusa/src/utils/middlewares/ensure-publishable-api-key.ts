@@ -2,7 +2,7 @@ import {
   MedusaNextFunction,
   MedusaResponse,
   MedusaStoreRequest,
-} from "@medusajs/framework/hhtp"
+} from "@medusajs/framework/http"
 import {
   ApiKeyType,
   isPresent,

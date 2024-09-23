@@ -1,29 +1,35 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "es2019"],
-    "target": "es2022",
+    "lib": ["ES2021"],
+    "target": "ES2021",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declarationMap": true,
     "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true // to use ES5 specific tooling
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "paths": {
+    },
   },
-  "include": ["./**/*"],
+  "include": ["**/*"],
   "exclude": [
-    "./dist/**/*",
+    "dist",
     "./**/helpers",
     "./**/__snapshots__",
     "node_modules"
   ]
 }
+

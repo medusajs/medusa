@@ -18,8 +18,8 @@ import {
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
 
 const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME ?? ''
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ''
+const DB_USERNAME = process.env.DB_USERNAME ?? ""
+const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -218,7 +218,7 @@ export function medusaIntegrationTestRunner({
       await syncLinks(appLoader)
     }
 
-    const axios = (await import("axios")).default.default
+    const { default: axios } = (await import("axios")) as any
 
     const cancelTokenSource = axios.CancelToken.source()
 

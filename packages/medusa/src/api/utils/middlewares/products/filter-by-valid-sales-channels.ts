@@ -1,4 +1,4 @@
-import { MedusaStoreRequest } from "@medusajs/framework/htp"
+import { MedusaStoreRequest } from "@medusajs/framework/http"
 import { arrayDifference, MedusaError } from "@medusajs/utils"
 import { NextFunction } from "express"
 

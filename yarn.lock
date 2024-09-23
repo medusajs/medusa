@@ -25177,7 +25177,7 @@ __metadata:
     pg-god: ^1.0.12
     randomatic: ^3.1.1
     rimraf: ^3.0.2
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@medusajs/medusa": "*"
   peerDependenciesMeta:

@@ -1,24 +1,32 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6", "es2019"],
-    "target": "es2022",
+    "lib": ["ES2021"],
+    "target": "ES2021",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declarationMap": true,
     "declaration": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "resolvePackageJsonExports": true,
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "downlevelIteration": true
+    "baseUrl": ".",
+    "resolveJsonModule": true,
   },
   "include": ["src"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }

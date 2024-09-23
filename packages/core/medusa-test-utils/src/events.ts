@@ -12,10 +12,9 @@ export const waitSubscribersExecution = (
 
   // If there are no existing listeners, resolve once the event happens. Otherwise, wrap the existing subscribers in a promise and resolve once they are done.
   if (!eventEmitter.listeners(eventName).length) {
-    let ok, nok
-    const promise = new Promise((resolve, reject) => {
+    let ok
+    const promise = new Promise((resolve) => {
       ok = resolve
-      nok = reject
     })
 
     subscriberPromises.push(promise)
