@@ -141,7 +141,7 @@ export class PricingRepository
             this.orWhere("pl.rules_count", "=", 0)
           })
 
-          this.orWhere(function () {
+          this.andWhere(function () {
             this.andWhere(function () {
               for (const [key, value] of Object.entries(context)) {
                 this.orWhere({
