@@ -25,6 +25,11 @@
   ],
   "author": "Medusa",
   "license": "MIT",
+  "scripts": {
+    "build": "rimraf dist && tsc --build",
+    "test": "jest --runInBand --bail --forceExit",
+    "watch": "tsc --build --watch"
+  },
   "devDependencies": {
     "@medusajs/types": "^1.11.16",
     "cross-env": "^5.2.1",
@@ -45,10 +50,5 @@
   "peerDependencies": {
     "@mikro-orm/core": "5.9.7",
     "awilix": "^8.0.1"
-  },
-  "scripts": {
-    "build": "rimraf dist && tsc --build",
-    "test": "jest --runInBand --bail --forceExit",
-    "watch": "tsc --build --watch"
   }
 }

@@ -178,12 +178,12 @@ describe("toRemoteQuery", () => {
           id: "prod_01J742X0QPFW3R2ZFRTRC34FS8",
         },
         context: {
-          product_translation: langContext,
+          translation: langContext,
           categories: {
-            category_translation: langContext,
+            translation: langContext,
           },
           variants: {
-            variant_translation: langContext,
+            translation: langContext,
           },
         },
       },
@@ -198,7 +198,7 @@ describe("toRemoteQuery", () => {
             id: "prod_01J742X0QPFW3R2ZFRTRC34FS8",
           },
         },
-        product_translation: {
+        translation: {
           __args: {
             context: {
               context: {
@@ -209,7 +209,7 @@ describe("toRemoteQuery", () => {
           __fields: ["*"],
         },
         categories: {
-          category_translation: {
+          translation: {
             __args: {
               context: {
                 context: {
@@ -222,7 +222,7 @@ describe("toRemoteQuery", () => {
           __fields: ["*"],
         },
         variants: {
-          variant_translation: {
+          translation: {
             __args: {
               context: {
                 context: {
