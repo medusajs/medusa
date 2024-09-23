@@ -35,7 +35,7 @@ export default function NotFound() {
             icon: BookOpen,
           },
           {
-            title: "Learning Resources",
+            title: "Development Resources",
             href: "!resources!",
             icon: AcademicCapSolid,
           },

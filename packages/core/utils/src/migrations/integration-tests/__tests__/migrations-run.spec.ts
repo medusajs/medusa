@@ -70,7 +70,7 @@ describe.skip("Run migrations", () => {
     const results = await migrations.run()
 
     const orm = await MikroORM.init(config)
-    const usersTableExists = await orm.em.getKnex().schema.hasTable("user")
+    const usersTableExists = await orm.em["getKnex"]().schema.hasTable("user")
     await orm.close()
 
     expect(results).toHaveLength(1)
@@ -168,7 +168,7 @@ describe.skip("Run migrations", () => {
     expect(migrations.run()).rejects.toThrow(/.*Migration.*/)
 
     const orm = await MikroORM.init(config)
-    const usersTableExists = await orm.em.getKnex().schema.hasTable("user")
+    const usersTableExists = await orm.em["getKnex"]().schema.hasTable("user")
 
     await orm.close()
 

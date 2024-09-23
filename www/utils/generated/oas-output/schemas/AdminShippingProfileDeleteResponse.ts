@@ -1,7 +1,7 @@
 /**
  * @schema AdminShippingProfileDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the shipping profile's deletion.
  * x-schemaName: AdminShippingProfileDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Shipping Profile was deleted.
+ *     description: Whether the shipping profile was deleted.
  * 
 */
 
