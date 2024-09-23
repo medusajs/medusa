@@ -8,6 +8,7 @@ describe("MessageAggregator", function () {
   it("should group messages by any given group of keys", function () {
     const aggregator = new MessageAggregator()
     aggregator.save({
+      // @ts-expect-error
       eventName: "ProductVariant.created",
       metadata: {
         source: "Product",
@@ -18,6 +19,7 @@ describe("MessageAggregator", function () {
       data: { id: 999 },
     })
     aggregator.save({
+      // @ts-expect-error
       eventName: "Product.created",
       metadata: {
         source: "Product",
@@ -28,6 +30,7 @@ describe("MessageAggregator", function () {
       data: { id: 1 },
     })
     aggregator.save({
+      // @ts-expect-error
       eventName: "ProductVariant.created",
       metadata: {
         source: "Product",
@@ -38,6 +41,7 @@ describe("MessageAggregator", function () {
       data: { id: 222 },
     })
     aggregator.save({
+      // @ts-expect-error
       eventName: "ProductType.detached",
       metadata: {
         source: "Product",
@@ -48,6 +52,7 @@ describe("MessageAggregator", function () {
       data: { id: 333 },
     })
     aggregator.save({
+      // @ts-expect-error
       eventName: "ProductVariant.updated",
       metadata: {
         source: "Product",

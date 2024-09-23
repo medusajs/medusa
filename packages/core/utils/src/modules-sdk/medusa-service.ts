@@ -525,7 +525,7 @@ export function MedusaService<
     buildMethodNamesFromModel(name, config as TModels[keyof TModels]),
   ])
 
-  for (let [modelName, model, modelMethods] of modelsMethods) {
+  for (let [modelName, _, modelMethods] of modelsMethods) {
     Object.entries(modelMethods).forEach(([method, methodName]) => {
       buildAndAssignMethodImpl(
         AbstractModuleService_.prototype,
