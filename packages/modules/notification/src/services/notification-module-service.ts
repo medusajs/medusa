@@ -121,7 +121,7 @@ export default class NotificationModuleService
           {
             idempotency_key: idempotencyKeys,
           },
-          { take: null },
+          {},
           context
         )
 

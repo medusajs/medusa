@@ -4,7 +4,7 @@ import {
   MedusaError,
   Modules,
 } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export type FulfillmentProviderValidationWorkflowInput = {
   id?: string
@@ -36,7 +36,6 @@ export const validateFulfillmentProvidersStep = createStep(
       },
       {
         select: ["id", "service_zone_id", "provider_id"],
-        take: null,
       }
     )
 

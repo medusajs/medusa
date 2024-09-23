@@ -42,7 +42,7 @@ export const getPromotionCodesToApply = createStep(
       (
         await promotionService.listPromotions(
           { code: adjustmentCodes },
-          { select: ["code"], take: null }
+          { select: ["code"] }
         )
       ).map((p) => p.code!)
     )

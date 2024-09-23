@@ -1,5 +1,5 @@
 import { DAL, FindConfig } from "@medusajs/types"
-import { deduplicate, isDefined, isObject } from "../common"
+import { deduplicate, isObject } from "../common"
 
 import { SoftDeletableFilterKey } from "../dal/mikro-orm/mikro-orm-soft-deletable-filter"
 
@@ -17,18 +17,6 @@ export function buildQuery<T = any, TDto = any>(
   const where: DAL.FilterQuery<T> = {}
   const filterFlags: FilterFlags = {}
   buildWhere(filters, where, filterFlags)
-
-  const primaryKeyFieldArray = isDefined(config.primaryKeyFields)
-    ? !Array.isArray(config.primaryKeyFields)
-      ? [config.primaryKeyFields]
-      : config.primaryKeyFields
-    : ["id"]
-
-  const whereHasPrimaryKeyFields = primaryKeyFieldArray.some(
-    (pkField) => !!where[pkField]
-  )
-
-  const defaultLimit = whereHasPrimaryKeyFields ? undefined : 15
 
   delete config.primaryKeyFields
 

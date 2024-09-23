@@ -293,7 +293,7 @@ export default class PricingModuleService
     // We use the price rules to get the right preferences for the price
     const priceRulesForPrices = await this.priceRuleService_.list(
       { price_id: priceIds },
-      { take: null }
+      {}
     )
 
     const priceRulesPriceMap = groupBy(priceRulesForPrices, "price_id")
@@ -948,7 +948,7 @@ export default class PricingModuleService
   ) {
     const priceSets = await this.listPriceSets(
       { id: input.map((d) => d.priceSetId) },
-      { take: null, relations: ["prices", "prices.price_rules"] },
+      { relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
 
@@ -1203,7 +1203,7 @@ export default class PricingModuleService
   ): Promise<Price[]> {
     const priceLists = await this.listPriceLists(
       { id: data.map((p) => p.price_list_id) },
-      { take: null, relations: ["prices", "prices.price_rules"] },
+      { relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
 
@@ -1259,7 +1259,7 @@ export default class PricingModuleService
   ): Promise<Price[]> {
     const priceLists = await this.listPriceLists(
       { id: data.map((p) => p.price_list_id) },
-      { take: null, relations: ["prices", "prices.price_rules"] },
+      { relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
 
