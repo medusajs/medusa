@@ -4,6 +4,7 @@ import {
   WorkflowManager,
   WorkflowScheduler,
 } from "@medusajs/orchestration"
+import { IEventBusModuleService } from "@medusajs/types"
 import {
   Modules,
   composeMessage,
@@ -138,14 +139,14 @@ describe("Workflow composer", function () {
         return { inputs: [input], obj: "return from 1" }
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 2",
         }
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 3",
@@ -223,14 +224,14 @@ describe("Workflow composer", function () {
         return { inputs: [input], obj: "return from 1" }
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 2",
         }
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 3",
@@ -331,14 +332,14 @@ describe("Workflow composer", function () {
         return { inputs: [input], obj: "return from 1" }
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 2",
         }
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 3",
@@ -441,14 +442,14 @@ describe("Workflow composer", function () {
         return { inputs: [input], obj: "return from 1" }
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 2",
         }
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 3",
@@ -557,14 +558,14 @@ describe("Workflow composer", function () {
           return { inputs: [input], obj: "return from 1" }
         })
       const mockStep2Fn = jest.fn().mockImplementation(function (...inputs) {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 2",
         }
       })
       const mockStep3Fn = jest.fn().mockImplementation(function (...inputs) {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 3",
@@ -651,21 +652,21 @@ describe("Workflow composer", function () {
         return { inputs: [input], obj: "return from 1" }
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 2",
         }
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 3",
         }
       })
       const mockStep4Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 4",
@@ -1001,14 +1002,14 @@ describe("Workflow composer", function () {
         return new StepResponse({ inputs: [input], obj: "return from 1" })
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 2",
         })
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 3",
@@ -1093,6 +1094,7 @@ describe("Workflow composer", function () {
         if (!input) {
           return StepResponse.skip()
         }
+        return new StepResponse({ obj: "return from 2" })
       })
       const mockStep3Fn = jest.fn().mockImplementation((inputs) => {
         return new StepResponse({
@@ -1140,7 +1142,7 @@ describe("Workflow composer", function () {
           obj: "return from 1",
         },
         two: {
-          __type: "Symbol(WorkflowWorkflowData)",
+          obj: "return from 2",
         },
         input: "none",
       })
@@ -1151,7 +1153,7 @@ describe("Workflow composer", function () {
             obj: "return from 1",
           },
           two: {
-            __type: "Symbol(WorkflowWorkflowData)",
+            obj: "return from 2",
           },
           input: "none",
         },
@@ -1164,14 +1166,14 @@ describe("Workflow composer", function () {
         return new StepResponse({ inputs: [input], obj: "return from 1" })
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 2",
         })
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 3",
@@ -1272,14 +1274,14 @@ describe("Workflow composer", function () {
         return new StepResponse({ inputs: [input], obj: "return from 1" })
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 2",
         })
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 3",
@@ -1382,14 +1384,14 @@ describe("Workflow composer", function () {
         return new StepResponse({ inputs: [input], obj: "return from 1" })
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 2",
         })
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 3",
@@ -1498,14 +1500,14 @@ describe("Workflow composer", function () {
           return new StepResponse({ inputs: [input], obj: "return from 1" })
         })
       const mockStep2Fn = jest.fn().mockImplementation(function (...inputs) {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 2",
         })
       })
       const mockStep3Fn = jest.fn().mockImplementation(function (...inputs) {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 3",
@@ -1592,21 +1594,21 @@ describe("Workflow composer", function () {
         return new StepResponse({ inputs: [input], obj: "return from 1" })
       })
       const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 2",
         })
       })
       const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return new StepResponse({
           inputs,
           obj: "return from 3",
         })
       })
       const mockStep4Fn = jest.fn().mockImplementation((...inputs) => {
-        const context = inputs.pop()
+        inputs.pop()
         return {
           inputs,
           obj: "return from 4",
@@ -2147,7 +2149,12 @@ describe("Workflow composer", function () {
     expect(mockStep1Fn).toHaveBeenCalledTimes(1)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
 
-    const eventBusMock = container.resolve(Modules.EVENT_BUS)
+    const eventBusMock = container.resolve<
+      IEventBusModuleService & {
+        emit: jest.Mock<any, any, any>
+        releaseGroupedEvents: jest.Mock<any, any, any>
+      }
+    >(Modules.EVENT_BUS)
     expect(eventBusMock.emit).toHaveBeenCalledTimes(1)
     expect(eventBusMock.emit.mock.calls[0][0]).toEqual("event1")
 
