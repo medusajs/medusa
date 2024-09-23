@@ -1,5 +1,6 @@
+import faker from "@faker-js/faker"
 import { IndexTypes } from "@medusajs/types"
-import { defaultCurrencies, Modules } from "@medusajs/utils"
+import { defaultCurrencies, Modules, promiseAll } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout } from "timers/promises"
 import {
@@ -176,8 +177,8 @@ medusaIntegrationTestRunner({
         }
       })
 
-      it.only("should search through the indexed data and return the correct results ordered and filtered [3]", async () => {
-        /*const defaultCurrencies = {
+      it.skip("should populate the database with fake products", async () => {
+        const defaultCurrencies = {
           USD: { code: "USD" },
           EUR: { code: "EUR" },
           GBP: { code: "GBP" },
@@ -190,10 +191,11 @@ medusaIntegrationTestRunner({
           NZD: { code: "NZD" },
         }
 
-        const payloads = new Array(10000).fill(0).map((_, a) => ({
-          title: faker.commerce.productName() + faker.string.uuid(), // Using faker to generate a random product name
+        const QUANTITY = 10000
+        const payloads = new Array(QUANTITY).fill(0).map((_, a) => ({
+          title: faker.commerce.productName() + faker.datatype.uuid(), // Using faker to generate a random product name
           description:
-            faker.commerce.productDescription() + faker.string.uuid(), // Random product description
+            faker.commerce.productDescription() + faker.datatype.uuid(), // Random product description
           options: [
             {
               title: "Denominations",
@@ -202,16 +204,15 @@ medusaIntegrationTestRunner({
           ], // Random denomination
           variants: new Array(10).fill(0).map((_, i) => ({
             title: `Variant ${faker.commerce.productAdjective()} ${i}`, // Random variant title
-            sku: faker.string.uuid(), // Random SKU using UUID
-            length: faker.number.float({ min: 1, max: 100 }), // Random length between 1 and 100
-            width: faker.number.float({ min: 1, max: 100 }), // Random width between 1 and 100
-            height: faker.number.float({ min: 1, max: 100 }), // Random height between 1 and 100
-            weight: faker.number.float({ min: 1, max: 100 }), // Random weight between 1 and 100
+            sku: faker.datatype.uuid(), // Random SKU using UUID
+            length: faker.datatype.float({ min: 1, max: 100 }), // Random length between 1 and 100
+            width: faker.datatype.float({ min: 1, max: 100 }), // Random width between 1 and 100
+            height: faker.datatype.float({ min: 1, max: 100 }), // Random height between 1 and 100
+            weight: faker.datatype.float({ min: 1, max: 100 }), // Random weight between 1 and 100
+            material: faker.commerce.productMaterial(), // Random material
             prices: new Array(10).fill(0).map((_, j) => ({
               currency_code: Object.values(defaultCurrencies)[j].code,
-              amount: Number(
-                faker.commerce.price({ min: 1, max: 1000, dec: 2 })
-              ), // Random price between 1 and 1000 with 2 decimals
+              amount: faker.datatype.float({ min: 1.99, max: 1999.99 }),
             })),
             options: {
               Denominations: "000",
@@ -219,9 +220,9 @@ medusaIntegrationTestRunner({
           })),
         }))
 
-        const batchSize = 10
+        const batchSize = 5
 
-        for (let i = 0; i < payloads.length / batchSize - 1; i++) {
+        for (let i = 0; i < payloads.length / batchSize; i++) {
           await promiseAll(
             new Array(batchSize).fill(0).map((_, j) => {
               console.log(
@@ -236,11 +237,11 @@ medusaIntegrationTestRunner({
                   adminHeaders
                 )
                 .catch((err) => {
-                  console.log(err)
+                  console.log(err.message)
                 })
             })
           )
-        }*/
+        }
 
         await (indexEngine as any).refresh()
 
@@ -254,8 +255,8 @@ medusaIntegrationTestRunner({
             product: {
               variants: {
                 prices: {
-                  amount: { $gt: 50 },
-                  currency_code: { $eq: "AUD" },
+                  amount: { $gt: 2000 },
+                  currency_code: { $eq: "EUR" },
                 },
               },
             },
@@ -284,6 +285,45 @@ medusaIntegrationTestRunner({
           refreshTime,
           perf,
         })*/
+      })
+
+      it.only("should query the database using the index engine", async () => {
+        const queryArgs = {
+          fields: [
+            "product.*",
+            "product.variants.*",
+            "product.variants.prices.*",
+          ],
+          filters: {
+            product: {
+              variants: {
+                prices: {
+                  amount: { $gt: 500 },
+                  currency_code: { $eq: "EUR" },
+                },
+              },
+            },
+          },
+          pagination: {
+            order: {
+              product: {
+                variants: {
+                  prices: {
+                    amount: "DESC",
+                  },
+                },
+              },
+            },
+          },
+        }
+
+        await indexEngine.query<"product">(queryArgs)
+
+        const { data: results, metadata } = await indexEngine.query<"product">(
+          queryArgs
+        )
+
+        console.log(metadata)
       })
     })
   },

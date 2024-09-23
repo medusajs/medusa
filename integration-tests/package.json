@@ -12,8 +12,5 @@
   "devDependencies": {
     "dotenv": "^10.0.0"
   },
-  "dependencies": {
-    "@faker-js/faker": "^5.5.3",
-    "testcontainers": "^8.10.1"
-  }
+  "dependencies": {}
 }

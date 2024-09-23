@@ -12,6 +12,7 @@ export const defaultSchema = `
     product_id: String
     sku: String
     title: String
+    material: String
     length: Float
     width: Float
     height: Float
