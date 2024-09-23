@@ -5,7 +5,7 @@ import { generatedSidebar } from "../generated/sidebar.mjs"
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export const config: DocsConfig = {
-  titleSuffix: "Medusa Learning Resources",
+  titleSuffix: "Medusa Development Resources",
   baseUrl,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   sidebar: {

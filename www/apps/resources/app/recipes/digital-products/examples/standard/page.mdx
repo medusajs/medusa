@@ -1817,79 +1817,80 @@ In a later step, you’ll add an API route to allow customers to view and downlo
 
 ---
 
-## Step 12: Handle the Digital Product Order Event
+## Step 12: Fulfill Digital Order Workflow
 
-In this step, you'll create a subscriber that listens to the `digital_product_order.created` event and sends a customer an email with the digital products they purchased.
+In this step, you'll create a workflow that fulfills a digital order by sending a notification to the customer. Later, you'll execute this workflow in a subscriber.
 
-Create the file `digital-product/src/subscribers/handle-digital-order.ts` with the following content:
+The workflow has the following steps:
 
-export const subscriberHighlight = [
-  ["20", "notificationModuleService", "Resolve the Notification Module's service to use it later to send a notification."],
-  ["22", "fileModuleService", "Resolve the File Module's service to use it later to retrieve a media's URL."],
-  ["26", "query", "Run the query to retrieve the digital product order."]
-]
+1. Retrieve the digital product order's details. For this, you'll use the `useRemoteQueryStep` imported from `@medusajs/core-flows`.
+2. Send a notification to the customer with the digital products to download.
 
-```ts title="digital-product/src/subscribers/handle-digital-order.ts" highlights={subscriberHighlight} collapsibleLines="1-14" expandMoreLabel="Show Imports"
-import type {
-  SubscriberArgs,
-  SubscriberConfig,
-} from "@medusajs/medusa"
-import { 
-  INotificationModuleService,
-  IFileModuleService,
-} from "@medusajs/types"
-import { 
-  Modules,
-  ContainerRegistrationKeys,
-} from "@medusajs/utils"
-import { MediaType } from "../modules/digital-product/types"
+So, you only need to implement the second step.
 
-async function digitalProductOrderCreatedHandler({
-  event: { data },
-  container,
-}: SubscriberArgs<{ id: string }>) {
-  const query = container.resolve(ContainerRegistrationKeys.QUERY)
-  const notificationModuleService: INotificationModuleService = container
-    .resolve(Modules.NOTIFICATION)
-  const fileModuleService: IFileModuleService = container.resolve(
-    Modules.FILE
-  )
+### Add Types
 
-  const { data: [digitalProductOrder] } = await query.graph({
-    entity: "digital_product_order",
-    fields: [
-      "*",
-      "products.*",
-      "products.medias.*",
-      "order.*",
-    ],
-    filters: {
-      id: data.id,
-    },
-  })
+Before creating the step, add to `src/modules/digital-product/types/index.ts` the following:
 
-  // TODO format and send notification
-}
+```ts
+import { OrderDTO } from "@medusajs/types"
 
-export default digitalProductOrderCreatedHandler
+// ...
 
-export const config: SubscriberConfig = {
-  event: "digital_product_order.created",
+export type DigitalProductOrderData = {
+  id: string
+  status: OrderStatus
+  products?: DigitalProductData[]
+  order?: OrderDTO
 }
 ```
 
-This adds a subscriber that listens to the `digital_product_order.created` event. For now, it just resolves dependencies and retrieves the digital product order.
+This adds a type for a digital product order, which you'll use next.
 
-Next, replace the `TODO` with the following:
+### Create sendDigitalOrderNotificationStep
 
-export const subscriber2Highlights = [
-  ["1", "notificationData", "Format the data to be sent as a notification payload."],
-  ["10", "retrieveFile", "Retrieve the media's URL using the File Module's service."],
-  ["22", "createNotifications", "Send the notification to the customer."],
-  ["24", `"digital-order-template"`, "Replace with a real template ID."]
-]
+To create the step, create the file `src/workflows/fulfill-digital-order/steps/send-digital-order-notification.ts` with the following content:
 
-```ts highlights={subscriber2Highlights}
+```ts title="src/workflows/fulfill-digital-order/steps/send-digital-order-notification.ts" collapsibleLines="1-11" expandMoreLabel="Show Imports"
+import {
+  createStep,
+  StepResponse
+} from "@medusajs/workflows-sdk"
+import { 
+  INotificationModuleService,
+  IFileModuleService
+} from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { DigitalProductOrderData, MediaType } from "../../../modules/digital-product/types"
+
+type SendDigitalOrderNotificationStepInput = {
+  digital_product_order: DigitalProductOrderData
+}
+
+export const sendDigitalOrderNotificationStep = createStep(
+  "send-digital-order-notification",
+  async ({ 
+    digital_product_order: digitalProductOrder 
+  }: SendDigitalOrderNotificationStepInput, 
+  { container }) => {
+    const notificationModuleService: INotificationModuleService = container
+    .resolve(ModuleRegistrationName.NOTIFICATION)
+    const fileModuleService: IFileModuleService = container.resolve(
+      ModuleRegistrationName.FILE
+    )
+
+    // TODO assemble notification
+  }
+)
+```
+
+This creates the `sendDigitalOrderNotificationStep` step that receives a digital product order as an input.
+
+In the step, so far you resolve the main services of the Notification and File Modules.
+
+Replace the `TODO` with the following:
+
+```ts title="src/workflows/fulfill-digital-order/steps/send-digital-order-notification.ts"
 const notificationData = await Promise.all(
   digitalProductOrder.products.map(async (product) => {
     const medias = []
@@ -1906,44 +1907,169 @@ const notificationData = await Promise.all(
 
     return {
       name: product.name,
-      medias,
+      medias
     }
   })
 )
 
-await notificationModuleService.createNotifications({
+// TODO send notification
+```
+
+In this snippet, you put together the data to send in the notification. You loop over the digital products in the order and retrieve the URL of their main files using the File Module.
+
+Finally, replace the new `TODO` with the following:
+
+```ts title="src/workflows/fulfill-digital-order/steps/send-digital-order-notification.ts"
+const notification = await notificationModuleService.createNotifications({
   to: digitalProductOrder.order.email,
   template: "digital-order-template",
   channel: "email",
   data: {
-    products: notificationData,
-  },
+    products: notificationData
+  }
 })
+
+return new StepResponse(notification)
 ```
 
-First, you format the data payload to send in the notification by retrieving the URLs of the purchased products' main medias. You use the File Module's service to retrieve the media URLs.
+You use the `createNotifications` method of the Notification Module's main service to send an email using the installed provider.
 
-Then, you use the Notification Module's service to send the notification as an email.
+### Create Workflow
 
-<Note title="Tip">
+Create the workflow in the file `src/workflows/fulfill-digital-order/index.ts`:
 
-Replace the `digital-order-template` with a real template ID from your third-party notification service.
+export const fulfillWorkflowHighlights = [
+  ["17", "useRemoteQueryStep", "Retrieve the digital product order's details."],
+  ["33", "sendDigitalOrderNotificationStep", "Send a notification to the customer."]
+]
 
-</Note>
+```ts title="src/workflows/fulfill-digital-order/index.ts" highlights={fulfillWorkflowHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
+import {
+  createWorkflow,
+  WorkflowResponse
+} from "@medusajs/workflows-sdk"
+import {
+  useRemoteQueryStep
+} from "@medusajs/core-flows"
+import { sendDigitalOrderNotificationStep } from "./steps/send-digital-order-notification"
+
+type FulfillDigitalOrderWorkflowInput = {
+  id: string
+}
+
+export const fulfillDigitalOrderWorkflow = createWorkflow(
+  "fulfill-digital-order",
+  ({ id }: FulfillDigitalOrderWorkflowInput) => {
+    const digitalProductOrder = useRemoteQueryStep({
+      entry_point: "digital_product_order",
+      fields: [
+        "*",
+        "products.*",
+        "products.medias.*",
+        "order.*"
+      ],
+      variables: {
+        filters: {
+          id,
+        },
+      },
+      list: false,
+      throw_if_key_not_found: true
+    })
+
+    sendDigitalOrderNotificationStep({
+      digital_product_order: digitalProductOrder
+    })
+
+    return new WorkflowResponse(
+      digitalProductOrder
+    )
+  }
+)
+```
+
+In the workflow, you:
+
+1. Retrieve the digital product order's details using the `useRemoteQueryStep` imported from `@medusajs/core-flows`.
+2. Send a notification to the customer with the digital product download links using the `sendDigitalOrderNotificationStep`.
+
+### Configure Notification Module Provider
+
+In the `sendDigitalOrderNotificationStep`, you use a notification provider configured for the `email` channel to send the notification.
+
+Check out the [Integrations page](../../../../integrations/page.mdx) to find Notification Module Providers.
+
+For testing purposes, add to `medusa-config.js` the following to use the Local Notification Module Provider:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  modules: {
+    // ...
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/notification",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/notification-local",
+            id: "local",
+            options: {
+              name: "Local Notification Provider",
+              channels: ["email"],
+            },
+          },
+        ],
+      },
+    },
+  }
+})
+
+```
+
+---
+
+## Step 13: Handle the Digital Product Order Event
+
+In this step, you'll create a subscriber that listens to the `digital_product_order.created` event and executes the workflow from the above step.
+
+Create the file `src/subscribers/handle-digital-order.ts` with the following content:
+
+```ts title="src/subscribers/handle-digital-order.ts" collapsibleLines="1-8" expandMoreLabel="Show Imports"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/medusa"
+import { 
+  fulfillDigitalOrderWorkflow
+} from "../workflows/fulfill-digital-order"
+
+async function digitalProductOrderCreatedHandler({
+  event: { data },
+  container,
+}: SubscriberArgs<{ id: string }>) {
+  await fulfillDigitalOrderWorkflow(container).run({
+    input: {
+      id: data.id
+    }
+  })
+}
+
+export default digitalProductOrderCreatedHandler
+
+export const config: SubscriberConfig = {
+  event: "digital_product_order.created",
+}
+```
+
+This adds a subscriber that listens to the `digital_product_order.created` event. It executes the `fulfillDigitalOrderWorkflow` to send the customer an email and mark the order's fulfillment as fulfilled.
 
 ### Test Subscriber Out
 
 To test out the subscriber, place an order with digital products. This triggers the `digital_product_order.created` event which executes the subscriber.
 
-<Note title="Tip">
-
-Check out the [integrations page](../../../../integrations/page.mdx) to find notification and file modules.
-
-</Note>
-
 ---
 
-## Step 13: Create Store API Routes
+## Step 14: Create Store API Routes
 
 In this step, you’ll create three store API routes:
 
@@ -2172,7 +2298,7 @@ You’ll test out these API routes in the next step.
 
 ---
 
-## Step 14: Customize Next.js Starter
+## Step 15: Customize Next.js Starter
 
 In this section, you’ll customize the [Next.js Starter storefront](../../../../nextjs-starter/page.mdx) to:
 
