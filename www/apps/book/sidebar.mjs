@@ -487,8 +487,16 @@ export const sidebar = numberSidebarItems(
     },
     {
       type: "link",
-      path: "/architectural-modules",
+      path: "/architecture/architectural-modules",
       title: "Architectural Modules",
+      chapterTitle: "Architecture",
+      children: [
+        {
+          type: "link",
+          path: "/architecture/overview",
+          title: "Architecture Overview",
+        },
+      ],
     },
     {
       type: "link",
