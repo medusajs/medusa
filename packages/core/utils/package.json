@@ -26,13 +26,13 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
+    "@swc/jest": "^0.2.36",
     "@types/express": "^4.17.21",
     "cross-env": "^5.2.1",
     "expect-type": "^0.20.0",
     "express": "^4.21.0",
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
-    "ts-jest": "^29.2.5",
     "typescript": "^5.6.2"
   },
   "dependencies": {
