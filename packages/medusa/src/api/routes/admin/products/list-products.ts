@@ -9,7 +9,7 @@ import {
 import { listProducts } from "../../../../utils"
 
 import { IInventoryService } from "@medusajs/types"
-import { MedusaV2Flag } from "@medusajs/utils"
+import { MedusaV2Flag, SalesChannelFeatureFlag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { Product } from "../../../../models"
 import { PricedProduct } from "../../../../types/pricing"
@@ -305,7 +305,11 @@ export default async (req, res) => {
   // We only set availability if variants are requested
   const shouldSetAvailability = relations?.includes("variants")
 
-  if (inventoryService && shouldSetAvailability) {
+  if (
+    inventoryService &&
+    shouldSetAvailability &&
+    featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
+  ) {
     const [salesChannelsIds] = await salesChannelService.listAndCount(
       {},
       { select: ["id"] }

@@ -196,7 +196,13 @@ The region a cart is associated with determines the currency the cart uses, the 
 
 Notice that in the previous code snippets, you set the cart’s ID in the local storage. This is helpful to persist the customer’s cart even when they leave the website and come back later.
 
-You can retrieve the cart at any given point using its ID with the following code snippet:
+You can retrieve the cart at any given point using its ID:
+
+:::note
+
+For Medusa React, since you have the [CartProvider](../../../medusa-react/overview.mdx#cartprovider) high in your component tree as explained in the Prerequisites section, you use the `useCart` hook to retrieve the cart.
+
+:::
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>

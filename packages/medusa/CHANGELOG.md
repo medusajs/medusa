@@ -1,5 +1,37 @@
 # Change Log
 
+## 1.20.10
+
+### Patch Changes
+
+- [`e144887637`](https://github.com/medusajs/medusa/commit/e144887637774f99f0843d334a2f93f6c9df3f7c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset for @medusajs/medusa
+
+- Updated dependencies [[`74885620a8`](https://github.com/medusajs/medusa/commit/74885620a8e2fdb255053d5dc3c05ab139074b31)]:
+  - @medusajs/utils@1.11.11
+
+## 1.20.9
+
+### Patch Changes
+
+- [`363bcc65b5`](https://github.com/medusajs/medusa/commit/363bcc65b5cd21d8941be954b91868fcdefd3890) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix: Correctly pass cart_id to price calculation
+
+## 1.20.8
+
+### Patch Changes
+
+- [`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset
+
+- Updated dependencies [[`52520d9080`](https://github.com/medusajs/medusa/commit/52520d90800e473e89254c4a424d5dffc6edfc30)]:
+  - @medusajs/workflows-sdk@0.1.8
+  - @medusajs/utils@1.11.10
+  - @medusajs/core-flows@0.0.10
+  - @medusajs/link-modules@0.2.12
+  - @medusajs/medusa-cli@1.3.23
+  - medusa-core-utils@1.2.3
+  - medusa-telemetry@0.0.18
+  - @medusajs/modules-sdk@1.12.12
+  - @medusajs/orchestration@0.5.8
+
 ## 1.20.7
 
 ### Patch Changes

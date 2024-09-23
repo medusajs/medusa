@@ -69,6 +69,7 @@ const columns: ColumnDef<WidgetPayment>[] = [
             {formatAmount({
               amount: row.original.amount,
               region: row.original.region,
+              includeTaxes: false
             })}{" "}
           </p>
         </div>

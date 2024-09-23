@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/fulfillment-manual",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Manual fulfillment for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -29,7 +29,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.7",
+    "@medusajs/utils": "^1.11.10",
     "body-parser": "^1.19.0",
     "express": "^4.17.1"
   },

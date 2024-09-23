@@ -26,13 +26,12 @@ export const Tooltip = ({
   const elementId = useId()
 
   return (
-    <>
+    <span className={clsx(className, "notranslate")} translate="no">
       <span
         id={elementId}
         data-tooltip-content={text}
         data-tooltip-html={html}
         data-tooltip-id={elementId}
-        className={className}
       >
         {children}
       </span>
@@ -54,6 +53,6 @@ export const Tooltip = ({
       >
         {tooltipChildren}
       </ReactTooltip>
-    </>
+    </span>
   )
 }

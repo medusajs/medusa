@@ -48,13 +48,13 @@ export const getDefaultCategoryValues = (t: TFunction, category?: ProductCategor
       ),
     },
     is_active: {
-      value: category?.is_active ? (category?.is_active ? CategoryStatus.Active : CategoryStatus.Inactive) : CategoryStatus.Active,
+      value: category?.is_active ? CategoryStatus.Active : CategoryStatus.Inactive,
       label: category?.is_active
-        ? t("modals-active", "Public") as string
+        ? t("modals-active", "Active") as string
         : t("modals-inactive", "Inactive") as string,
     },
     is_public: {
-      value: category?.is_internal ? (category?.is_internal ? CategoryVisibility.Private : CategoryVisibility.Public) : CategoryVisibility.Public,
+      value: category?.is_internal ? CategoryVisibility.Private : CategoryVisibility.Public,
       label: category?.is_internal
         ? t("modals-private", "Private") as string
         : t("modals-public", "Public") as string,
