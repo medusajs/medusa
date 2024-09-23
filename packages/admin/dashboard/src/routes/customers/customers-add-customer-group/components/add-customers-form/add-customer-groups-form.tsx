@@ -126,6 +126,16 @@ export const AddCustomerGroupsForm = ({
 
       await Promise.all(promises)
 
+      toast.success(t("general.success"), {
+        description: t("customers.groups.add.success", {
+          groups: data.customer_group_ids
+            .map((id) => customer_groups?.find((g) => g.id === id))
+            .filter(Boolean)
+            .map((cg) => cg.name),
+        }),
+        dismissLabel: t("actions.close"),
+      })
+
       await queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
       })
