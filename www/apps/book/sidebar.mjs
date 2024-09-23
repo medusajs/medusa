@@ -235,6 +235,11 @@ export const sidebar = numberSidebarItems(
               path: "/advanced-development/api-routes/cors",
               title: "Handling CORS",
             },
+            {
+              type: "link",
+              path: "/advanced-development/api-routes/additional-data",
+              title: "Additional Data",
+            },
           ],
         },
         {
@@ -367,18 +372,24 @@ export const sidebar = numberSidebarItems(
           ],
         },
         {
-          type: "sub-category",
+          type: "link",
+          path: "/advanced-development/workflows",
           title: "Workflows",
           children: [
             {
               type: "link",
-              path: "/advanced-development/workflows/constructor-constraints",
-              title: "Constraints",
+              path: "/advanced-development/workflows/variable-manipulation",
+              title: "Variable Manipulation",
             },
             {
               type: "link",
               path: "/advanced-development/workflows/conditions",
-              title: "Conditions in Workflows",
+              title: "Using Conditions",
+            },
+            {
+              type: "link",
+              path: "/advanced-development/workflows/constructor-constraints",
+              title: "Constructor Constraints",
             },
             {
               type: "link",
@@ -424,11 +435,6 @@ export const sidebar = numberSidebarItems(
               type: "link",
               path: "/advanced-development/workflows/execute-another-workflow",
               title: "Execute Another Workflow",
-            },
-            {
-              type: "link",
-              path: "/advanced-development/workflows/advanced-example",
-              title: "Example: Advanced Workflow",
             },
           ],
         },
