@@ -51,6 +51,9 @@ export const MainNavProvider = ({ children }: MainNavProviderProps) => {
       navItems={navigationDropdownItems}
       reportIssueLink={reportLink}
       editDate={editDate}
+      breadcrumbOptions={{
+        showCategories: false,
+      }}
     >
       {children}
     </UiMainNavProvider>
