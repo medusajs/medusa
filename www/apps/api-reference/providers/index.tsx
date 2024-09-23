@@ -3,6 +3,7 @@
 import {
   AnalyticsProvider,
   ColorModeProvider,
+  LayoutProvider,
   MobileProvider,
   ModalProvider,
   PageLoadingProvider,
@@ -23,23 +24,25 @@ const Providers = ({ children }: ProvidersProps) => {
   return (
     <AnalyticsProvider writeKey={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}>
       <SiteConfigProvider config={config}>
-        <PageLoadingProvider>
-          <ModalProvider>
-            <ColorModeProvider>
-              <BaseSpecsProvider>
-                <ScrollControllerProvider scrollableSelector="#main">
-                  <SidebarProvider>
-                    <MainNavProvider>
-                      <SearchProvider>
-                        <MobileProvider>{children}</MobileProvider>
-                      </SearchProvider>
-                    </MainNavProvider>
-                  </SidebarProvider>
-                </ScrollControllerProvider>
-              </BaseSpecsProvider>
-            </ColorModeProvider>
-          </ModalProvider>
-        </PageLoadingProvider>
+        <LayoutProvider>
+          <PageLoadingProvider>
+            <ModalProvider>
+              <ColorModeProvider>
+                <BaseSpecsProvider>
+                  <ScrollControllerProvider scrollableSelector="#main">
+                    <SidebarProvider>
+                      <MainNavProvider>
+                        <SearchProvider>
+                          <MobileProvider>{children}</MobileProvider>
+                        </SearchProvider>
+                      </MainNavProvider>
+                    </SidebarProvider>
+                  </ScrollControllerProvider>
+                </BaseSpecsProvider>
+              </ColorModeProvider>
+            </ModalProvider>
+          </PageLoadingProvider>
+        </LayoutProvider>
       </SiteConfigProvider>
     </AnalyticsProvider>
   )

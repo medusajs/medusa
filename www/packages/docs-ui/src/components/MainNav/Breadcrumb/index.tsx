@@ -1,13 +1,20 @@
 "use client"
 
 import React, { useMemo } from "react"
-import { Button, CurrentItemsState, useMainNav, useSidebar } from "../../.."
+import {
+  Button,
+  CurrentItemsState,
+  useLayout,
+  useMainNav,
+  useSidebar,
+} from "../../.."
 import clsx from "clsx"
 import Link from "next/link"
 import { SidebarItemLink } from "types"
 
 export const MainNavBreadcrumbs = () => {
   const { currentItems, getActiveItem } = useSidebar()
+  const { showSidebar } = useLayout()
   const {
     activeItem: mainNavActiveItem,
     breadcrumbOptions: { showCategories },
@@ -57,6 +64,10 @@ export const MainNavBreadcrumbs = () => {
 
   const breadcrumbItems = useMemo(() => {
     const tempBreadcrumbItems: Map<string, string> = new Map()
+    if (!showSidebar) {
+      return tempBreadcrumbItems
+    }
+
     if (currentItems) {
       getBreadcrumbsOfItem(currentItems).forEach((value, key) =>
         tempBreadcrumbItems.set(key, value)
@@ -83,7 +94,7 @@ export const MainNavBreadcrumbs = () => {
     }
 
     return tempBreadcrumbItems
-  }, [currentItems, getActiveItem])
+  }, [currentItems, getActiveItem, showSidebar])
 
   return (
     <div

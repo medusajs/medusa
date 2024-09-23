@@ -50,12 +50,3 @@ export default function numberSidebarItems(sidebarItems, numbering = [1]) {
 
   return numberedItems
 }
-
-function padNumber(number) {
-  number = number.toString()
-  if (number.length < 2) {
-    number = `0` + number
-  }
-
-  return number
-}

@@ -3,7 +3,7 @@
 import React, { useEffect } from "react"
 import { useSidebar } from "../providers/Sidebar"
 import clsx from "clsx"
-import { Bannerv2, MainNav, useIsBrowser } from ".."
+import { Bannerv2, MainNav, useIsBrowser, useLayout } from ".."
 
 export type MainContentLayoutProps = {
   mainWrapperClasses?: string
@@ -18,17 +18,19 @@ export const MainContentLayout = ({
 }: MainContentLayoutProps) => {
   const isBrowser = useIsBrowser()
   const { desktopSidebarOpen } = useSidebar()
+  const { showSidebar } = useLayout()
 
   useEffect(() => {
-    if (!isBrowser) {
+    if (!isBrowser || !showSidebar) {
       return
     }
+    const mainContentElm = document.getElementById("mainContent")
     if (desktopSidebarOpen) {
-      document.body.classList.add("lg:grid-cols-[221px_1fr]")
+      mainContentElm?.classList.add("lg:grid-cols-[221px_1fr]")
     } else {
-      document.body.classList.remove("lg:grid-cols-[221px_1fr]")
+      mainContentElm?.classList.remove("lg:grid-cols-[221px_1fr]")
     }
-  }, [desktopSidebarOpen, isBrowser])
+  }, [desktopSidebarOpen, isBrowser, showSidebar])
 
   return (
     <div

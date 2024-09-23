@@ -1,3 +1,4 @@
+import { LayoutOptions } from "./layout.js"
 import { SidebarSectionItems } from "./sidebar.js"
 
 export declare type DocsConfig = {
@@ -7,4 +8,8 @@ export declare type DocsConfig = {
   sidebar: SidebarSectionItems
   filesBasePath?: string
   useNextLinks?: boolean
+  layoutOptions?: {
+    route: string | RegExp
+    options: LayoutOptions
+  }[]
 }

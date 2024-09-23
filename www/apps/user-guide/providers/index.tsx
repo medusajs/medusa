@@ -4,6 +4,7 @@ import {
   AnalyticsProvider,
   ColorModeProvider,
   HooksLoader,
+  LayoutProvider,
   LearningPathProvider,
   MobileProvider,
   ModalProvider,
@@ -25,33 +26,35 @@ const Providers = ({ children }: ProvidersProps) => {
   return (
     <AnalyticsProvider writeKey={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}>
       <SiteConfigProvider config={config}>
-        <MobileProvider>
-          <ColorModeProvider>
-            <ModalProvider>
-              <LearningPathProvider>
-                <NotificationProvider>
-                  <ScrollControllerProvider scrollableSelector="#main">
-                    <SidebarProvider>
-                      <PaginationProvider>
-                        <MainNavProvider>
-                          <SearchProvider>
-                            <HooksLoader
-                              options={{
-                                pageScrollManager: true,
-                              }}
-                            >
-                              {children}
-                            </HooksLoader>
-                          </SearchProvider>
-                        </MainNavProvider>
-                      </PaginationProvider>
-                    </SidebarProvider>
-                  </ScrollControllerProvider>
-                </NotificationProvider>
-              </LearningPathProvider>
-            </ModalProvider>
-          </ColorModeProvider>
-        </MobileProvider>
+        <LayoutProvider>
+          <MobileProvider>
+            <ColorModeProvider>
+              <ModalProvider>
+                <LearningPathProvider>
+                  <NotificationProvider>
+                    <ScrollControllerProvider scrollableSelector="#main">
+                      <SidebarProvider>
+                        <PaginationProvider>
+                          <MainNavProvider>
+                            <SearchProvider>
+                              <HooksLoader
+                                options={{
+                                  pageScrollManager: true,
+                                }}
+                              >
+                                {children}
+                              </HooksLoader>
+                            </SearchProvider>
+                          </MainNavProvider>
+                        </PaginationProvider>
+                      </SidebarProvider>
+                    </ScrollControllerProvider>
+                  </NotificationProvider>
+                </LearningPathProvider>
+              </ModalProvider>
+            </ColorModeProvider>
+          </MobileProvider>
+        </LayoutProvider>
       </SiteConfigProvider>
     </AnalyticsProvider>
   )

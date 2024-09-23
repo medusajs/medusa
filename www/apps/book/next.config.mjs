@@ -139,6 +139,51 @@ const nextConfig = {
         destination: "/more-resources/cheatsheet",
         permanent: true,
       },
+      {
+        source: "/advanced-development/:path*",
+        destination: "/learn/advanced-development/:path*",
+        permanent: true,
+      },
+      {
+        source: "/architectural-modules/:path*",
+        destination: "/learn/architectural-modules/:path*",
+        permanent: true,
+      },
+      {
+        source: "/basics/:path*",
+        destination: "/learn/basics/:path*",
+        permanent: true,
+      },
+      {
+        source: "/customization/:path*",
+        destination: "/learn/customization/:path*",
+        permanent: true,
+      },
+      {
+        source: "/debugging-and-testing/:path*",
+        destination: "/learn/debugging-and-testing/:path*",
+        permanent: true,
+      },
+      {
+        source: "/deployment/:path*",
+        destination: "/learn/deployment/:path*",
+        permanent: true,
+      },
+      {
+        source: "/first-customizations/:path*",
+        destination: "/learn/first-customizations/:path*",
+        permanent: true,
+      },
+      {
+        source: "/more-resources/:path*",
+        destination: "/learn/more-resources/:path*",
+        permanent: true,
+      },
+      {
+        source: "/storefront-development/:path*",
+        destination: "/learn/storefront-development/:path*",
+        permanent: true,
+      },
     ]
   },
 }

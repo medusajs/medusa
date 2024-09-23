@@ -7,6 +7,7 @@ import {
   AnalyticsProvider,
   ScrollControllerProvider,
   SiteConfigProvider,
+  LayoutProvider,
 } from "docs-ui"
 import SearchProvider from "./search"
 import SidebarProvider from "./sidebar"
@@ -21,19 +22,21 @@ const Providers = ({ children }: ProvidersProps) => {
   return (
     <AnalyticsProvider writeKey={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}>
       <SiteConfigProvider config={siteConfig}>
-        <MobileProvider>
-          <ColorModeProvider>
-            <ModalProvider>
-              <ScrollControllerProvider scrollableSelector="#main">
-                <SidebarProvider>
-                  <MainNavProvider>
-                    <SearchProvider>{children}</SearchProvider>
-                  </MainNavProvider>
-                </SidebarProvider>
-              </ScrollControllerProvider>
-            </ModalProvider>
-          </ColorModeProvider>
-        </MobileProvider>
+        <LayoutProvider>
+          <MobileProvider>
+            <ColorModeProvider>
+              <ModalProvider>
+                <ScrollControllerProvider scrollableSelector="#main">
+                  <SidebarProvider>
+                    <MainNavProvider>
+                      <SearchProvider>{children}</SearchProvider>
+                    </MainNavProvider>
+                  </SidebarProvider>
+                </ScrollControllerProvider>
+              </ModalProvider>
+            </ColorModeProvider>
+          </MobileProvider>
+        </LayoutProvider>
       </SiteConfigProvider>
     </AnalyticsProvider>
   )

@@ -8,4 +8,12 @@ export const config: DocsConfig = {
   baseUrl,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   sidebar: sidebarConfig(baseUrl),
+  layoutOptions: [
+    {
+      route: "/",
+      options: {
+        showSidebar: false,
+      },
+    },
+  ],
 }

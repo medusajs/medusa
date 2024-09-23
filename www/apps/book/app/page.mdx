@@ -1,108 +1,126 @@
-import { CheckCircleSolid, BuildingStorefront, BuildingsSolid, ComputerDesktop, FlyingBox } from "@medusajs/icons"
+import { Card, CardList } from "docs-ui"
+import { 
+  BoltSolid, 
+  TagSolid,
+  ShoppingCartSolid,
+  CheckCircleSolid,
+  CurrencyDollarSolid,
+  UsersSolid,
+  BuildingStorefront,
+  CreditCardSolid,
+  ShoppingBag,
+  PhotoSolid
+} from "@medusajs/icons"
 import { config } from "@/config"
-import { Prerequisites } from "docs-ui"
 
 export const metadata = {
-  title: `${pageNumber} Introduction - ${config.titleSuffix}`,
+  title: `Medusa v2 Docs - ${config.titleSuffix}`,
 }
 
-# {pageNumber} Introduction
+# Medusa v2 Docs
 
-Medusa is a digital commerce platform with a built-in framework for customizations and integrations.
+Learn how to create sophisticated commerce applications with Medusa v2.
 
-Medusa's framework includes two types of tools:
-
-1. Modules that provide commerce functionalities, such as Product, Order, and Cart modules.
-2. Customization tools to build your business features, such as custom data models, business logic, flows, and endpoints.
-
-With these tools, you save time you would spend with other platforms on maintaining and setting up your customizations. Instead, you rapidly build important features for your business.
-
---- 
-
-## Get started
-
-<Prerequisites items={[
-  {
-    text: "Node.js v20+",
-    link: "https://nodejs.org/en/download"
-  },
-  {
-    text: "Git CLI tool",
-    link: "https://git-scm.com/downloads"
-  },
-  {
-    text: "PostgreSQL",
-    link: "https://www.postgresql.org/download/"
-  }
-]} />
-
-Create your first Medusa store by running the following command:
-
-```bash
-npx create-medusa-app@preview
-```
+<Card 
+  icon={BoltSolid}
+  title="Get Started"
+  text="Start learning Medusa and create your first application."
+  href="/learn"
+/>
 
 ---
 
-## Who is Medusa for
+## Recipes
 
-Medusa is for ambitious businesses and developers that are limited by traditional ecommerce solutions:
+Learn how to use Medusa for a variety of use cases, such as marketplaces, digital products, and more.
 
-- You want rich commerce features that are customizable and flexible enough to support your business use case as if you built them from scratch.
-- You want your custom requirements built as an integral part of the commerce application’s features and architecture, rather than hacked into it.
-- You want to customize your commerce flows by integrating external services without data inconsistency and irregularity.
-
-<CardList items={[
-  {
-    title: "Use Case: D2C",
-    text: "How Matt Sleeps built a unique D2C experience with Medusa",
-    href: "https://medusajs.com/blog/matt-sleeps/",
-    icon: FlyingBox,
-  },
-  {
-    title: "Use Case: OMS",
-    text: "How Makro Pro Built an OMS with Medusa",
-    href: "https://medusajs.com/blog/makro-pro/",
-    icon: CheckCircleSolid,
-  },
-  {
-    title: "Use Case: Marketplace",
-    text: "How Foraged built a custom marketplace with Medusa",
-    href: "https://medusajs.com/blog/foraged/",
-    icon: BuildingStorefront,
-  },
-  {
-    title: "Use Case: POS",
-    text: "How Tekla built a global webshop and a POS system with Medusa",
-    href: "https://medusajs.com/blog/tekla-pos/",
-    icon: ComputerDesktop,
-  },
-  {
-    title: "Use Case: B2B",
-    text: "How Visionary built B2B commerce with Medusa",
-    href: "https://medusajs.com/blog/visionary/",
-    icon: BuildingsSolid,
-  },
-  {
-    title: "Use Case: Platform",
-    text: "How Catalog built a B2B platform for SMBs with Medusa",
-    href: "https://medusajs.com/blog/catalog/",
-    icon: BuildingsSolid,
-  }
-]} itemsPerRow={2} />
+<CardList
+  items={[
+    {
+      title: "Marketplace",
+      href: "!resources!/recipes/marketplace/examples/vendors",
+      text: "Build a marketplace with vendors.",
+      icon: BuildingStorefront
+    },
+    {
+      title: "Restaurant-Delivery",
+      href: "!resources!/recipes/marketplace/examples/restaurant-delivery",
+      text: "Implement a commerce application inspired by Uber Eats",
+      icon: ShoppingBag
+    },
+    {
+      title: "Digital Products",
+      href: "!resources!/recipes/digital-products/examples/standard",
+      text: "Create an ecommerce store that sells downloadable products.",
+      icon: PhotoSolid
+    },
+    {
+      title: "Subscriptions",
+      href: "!resources!/recipes/subscriptions/examples/standard",
+      text: "Accept subscription-based payment.",
+      icon: CreditCardSolid
+    }
+  ]}
+/>
 
 ---
 
-## Who is this documentation for
+## Commerce Modules
 
-This documentation is for TypeScript or JavaScript developers looking to master Medusa and build their commerce applications. By following this documentation, you’ll learn about Medusa’s concepts, from basic to advanced, with easy-to-follow examples to assist you along the way.
+Browse Medusa's commerce modules and their features.
 
-By the end of this documentation, you’ll be an expert Medusa developer, leading teams using Medusa from the development till production.
+<CardList
+  items={[
+    {
+      title: "Product Module",
+      href: "!resources!/commerce-modules/product",
+      icon: TagSolid
+    },
+    {
+      title: "Cart",
+      href: "!resources!/commerce-modules/cart",
+      icon: ShoppingCartSolid
+    },
+    {
+      title: "Order",
+      href: "!resources!/commerce-modules/order",
+      icon: CheckCircleSolid
+    },
+    {
+      title: "Pricing",
+      href: "!resources!/commerce-modules/pricing",
+      icon: CurrencyDollarSolid
+    },
+    {
+      title: "Customers",
+      href: "!resources!/commerce-modules/customer",
+      icon: UsersSolid
+    },
+    {
+      type: "filler",
+      text: "Find more modules for your commerce application.",
+      href: "/commerce-modules"
+    }
+  ]}
+/>
 
-### How to use the documentation
+---
 
-The documentation for Medusa v2 is split into the following sections:
+## Guides
 
-1. The main documentation, which is the one you're currently viewing. It's highly recommended to follow all the chapters in this documentation before jumping into other documentation sections.
-2. The [Development Resources documentation](!resources!) provides guides and resources useful during your development, such as tools, API references, recipes, step-by-step guides and examples, and more.
-3. The [Store](!api!/store) and [Admin](!api!/admin) API references provide a reference to the Medusa application's endpoints and instructions related to authentication, parameter types, and more.
+<CardList
+  items={[
+    {
+      title: "Customize Medusa",
+      href: "/customization"
+    },
+    {
+      title: "Storefront Development",
+      href: "!resources!/storefront-development"
+    },
+    {
+      title: "Integrations",
+      href: "!resources!/integrations"
+    },
+  ]}
+/>

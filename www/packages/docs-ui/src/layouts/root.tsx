@@ -1,13 +1,13 @@
 import React from "react"
 import clsx from "clsx"
-import { Sidebar, SidebarProps } from "@/components"
-import { MobileNavigation } from "../components/MobileNavigation"
-import { Toc } from "../components/Toc"
-import { MainContentLayout, MainContentLayoutProps } from "./main-content"
+import { SidebarProps } from "@/components"
+import { MainContentLayoutProps } from "./main-content"
+import { RootLayoutContent } from "./root-content"
 
 export type RootLayoutProps = {
   ProvidersComponent: React.FC<{ children: React.ReactNode }>
   showToc?: boolean
+  showSidebar?: boolean
   sidebarProps?: SidebarProps
   htmlClassName?: string
   bodyClassName?: string
@@ -18,11 +18,9 @@ export type RootLayoutProps = {
 
 export const RootLayout = ({
   ProvidersComponent,
-  sidebarProps,
   htmlClassName,
   bodyClassName,
-  showToc = true,
-  ...mainProps
+  ...props
 }: RootLayoutProps) => {
   return (
     <html lang="en" className={clsx("h-full w-full", htmlClassName)}>
@@ -31,18 +29,11 @@ export const RootLayout = ({
         className={clsx(
           "bg-medusa-bg-subtle font-base text-medium w-full",
           "text-medusa-fg-subtle",
-          "h-screen overflow-hidden",
-          "grid grid-cols-1 lg:mx-auto lg:grid-cols-[221px_1fr]",
           bodyClassName
         )}
       >
         <ProvidersComponent>
-          <MobileNavigation />
-          <Sidebar {...sidebarProps} />
-          <div className={clsx("relative", "h-screen", "flex")}>
-            <MainContentLayout {...mainProps} />
-            {showToc && <Toc />}
-          </div>
+          <RootLayoutContent {...props} />
         </ProvidersComponent>
       </body>
     </html>

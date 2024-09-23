@@ -1,6 +1,7 @@
 export * from "./AiAssistant"
 export * from "./Analytics"
 export * from "./ColorMode"
+export * from "./Layout"
 export * from "./LearningPath"
 export * from "./MainNav"
 export * from "./Mobile"
