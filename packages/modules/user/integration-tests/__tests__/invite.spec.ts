@@ -223,6 +223,29 @@ moduleIntegrationTestRunner<IUserModuleService>({
           )
         })
 
+        it("should throw if there is an existing user with the invite email", async () => {
+          let error
+          await service.createUsers([
+            {
+              email: "existing@email.com",
+            },
+          ])
+
+          try {
+            await service.createInvites([
+              {
+                email: "existing@email.com",
+              },
+            ])
+          } catch (e) {
+            error = e
+          }
+
+          expect(error.message).toBe(
+            `User account for following email(s) already exist: existing@email.com`
+          )
+        })
+
         it("should emit invite created events", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
           await service.createInvites(defaultInviteData)
