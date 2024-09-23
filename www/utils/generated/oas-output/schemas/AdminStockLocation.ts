@@ -1,7 +1,7 @@
 /**
  * @schema AdminStockLocation
  * type: object
- * description: The parent's location.
+ * description: The stock location's details.
  * x-schemaName: AdminStockLocation
  * required:
  *   - id
@@ -19,22 +19,22 @@
  *   address_id:
  *     type: string
  *     title: address_id
- *     description: The location's address id.
+ *     description: The ID of the associated address.
  *   address:
  *     $ref: "#/components/schemas/AdminStockLocationAddress"
  *   sales_channels:
  *     type: array
- *     description: The location's sales channels.
+ *     description: The sales channels associated with the location.
  *     items:
  *       $ref: "#/components/schemas/AdminSalesChannel"
  *   fulfillment_providers:
  *     type: array
- *     description: The location's fulfillment providers.
+ *     description: The fulfillment providers associated with the location.
  *     items:
  *       $ref: "#/components/schemas/AdminFulfillmentProvider"
  *   fulfillment_sets:
  *     type: array
- *     description: The location's fulfillment sets.
+ *     description: The fulfillment sets associated with the location.
  *     items:
  *       $ref: "#/components/schemas/AdminFulfillmentSet"
  * 
