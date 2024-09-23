@@ -51,7 +51,10 @@ import { TypeList } from "docs-ui"
 - [MedusaAppMigrateGenerate](page.mdx#medusaappmigrategenerate)
 - [MedusaAppGetLinksExecutionPlanner](page.mdx#medusaappgetlinksexecutionplanner)
 - [createQuery](page.mdx#createquery)
+- [cleanGraphQLSchema](page.mdx#cleangraphqlschema)
+- [gqlGetFieldsAndRelations](page.mdx#gqlgetfieldsandrelations)
 - [gqlSchemaToTypes](page.mdx#gqlschematotypes)
+- [graphqlSchemaToFields](page.mdx#graphqlschematofields)
 
 ___
 
@@ -63,7 +66,7 @@ ___
 
 #### Properties
 
-<TypeList types={[{"name":"Auth","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/auth\"","expandable":false,"children":[]},{"name":"Cache","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/cache-inmemory\"","expandable":false,"children":[]},{"name":"Cart","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/cart\"","expandable":false,"children":[]},{"name":"Customer","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/customer\"","expandable":false,"children":[]},{"name":"EventBus","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/event-bus-local\"","expandable":false,"children":[]},{"name":"Inventory","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/inventory-next\"","expandable":false,"children":[]},{"name":"LinkModules","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/link-modules\"","expandable":false,"children":[]},{"name":"Payment","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/payment\"","expandable":false,"children":[]},{"name":"Pricing","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/pricing\"","expandable":false,"children":[]},{"name":"Product","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/product\"","expandable":false,"children":[]},{"name":"Promotion","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/promotion\"","expandable":false,"children":[]},{"name":"SalesChannel","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/sales-channel\"","expandable":false,"children":[]},{"name":"Fulfillment","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/fulfillment\"","expandable":false,"children":[]},{"name":"StockLocation","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/stock-location-next\"","expandable":false,"children":[]},{"name":"Tax","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/tax\"","expandable":false,"children":[]},{"name":"User","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/user\"","expandable":false,"children":[]},{"name":"Workflows","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/workflow-engine-inmemory\"","expandable":false,"children":[]},{"name":"Region","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/region\"","expandable":false,"children":[]},{"name":"Order","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/order\"","expandable":false,"children":[]},{"name":"ApiKey","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/api-key\"","expandable":false,"children":[]},{"name":"Store","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/store\"","expandable":false,"children":[]},{"name":"Currency","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/currency\"","expandable":false,"children":[]},{"name":"File","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/file\"","expandable":false,"children":[]},{"name":"Notification","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/notification\"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="MODULE_PACKAGE_NAMES"/>
+<TypeList types={[{"name":"Auth","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/auth\"","expandable":false,"children":[]},{"name":"Cache","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/cache-inmemory\"","expandable":false,"children":[]},{"name":"Cart","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/cart\"","expandable":false,"children":[]},{"name":"Customer","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/customer\"","expandable":false,"children":[]},{"name":"EventBus","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/event-bus-local\"","expandable":false,"children":[]},{"name":"Inventory","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/inventory-next\"","expandable":false,"children":[]},{"name":"LinkModules","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/link-modules\"","expandable":false,"children":[]},{"name":"Payment","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/payment\"","expandable":false,"children":[]},{"name":"Pricing","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/pricing\"","expandable":false,"children":[]},{"name":"Product","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/product\"","expandable":false,"children":[]},{"name":"Promotion","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/promotion\"","expandable":false,"children":[]},{"name":"SalesChannel","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/sales-channel\"","expandable":false,"children":[]},{"name":"Fulfillment","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/fulfillment\"","expandable":false,"children":[]},{"name":"StockLocation","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/stock-location-next\"","expandable":false,"children":[]},{"name":"Tax","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/tax\"","expandable":false,"children":[]},{"name":"User","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/user\"","expandable":false,"children":[]},{"name":"Workflows","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/workflow-engine-inmemory\"","expandable":false,"children":[]},{"name":"Region","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/region\"","expandable":false,"children":[]},{"name":"Order","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/order\"","expandable":false,"children":[]},{"name":"ApiKey","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/api-key\"","expandable":false,"children":[]},{"name":"Store","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/store\"","expandable":false,"children":[]},{"name":"Currency","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/currency\"","expandable":false,"children":[]},{"name":"File","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/file\"","expandable":false,"children":[]},{"name":"Notification","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/notification\"","expandable":false,"children":[]},{"name":"Index","type":"`string`","description":"","optional":false,"defaultValue":"\"@medusajs/index\"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="MODULE_PACKAGE_NAMES"/>
 
 ### ModulesDefinition
 
@@ -203,12 +206,98 @@ API wrapper around the remoteQuery with backward compatibility support
 
 <TypeList types={[{"name":"Omit","type":"Omit&#60;[RemoteQueryFunction](../../types/ModulesSdkTypes/types/types.ModulesSdkTypes.RemoteQueryFunction/page.mdx), symbol&#62;","optional":false,"defaultValue":"","description":"API wrapper around the remoteQuery with backward compatibility support","expandable":false,"children":[{"name":"RemoteQueryFunction","type":"[RemoteQueryFunction](../../types/ModulesSdkTypes/types/types.ModulesSdkTypes.RemoteQueryFunction/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"graph","type":"[QueryGraphFunction](../../types/ModulesSdkTypes/types/types.ModulesSdkTypes.QueryGraphFunction/page.mdx)","description":"Graph function uses the remoteQuery under the hood and\nreturns a result set","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"gql","type":"(`query`: `string`, `variables?`: `Record<string, unknown>`, `options?`: [RemoteJoinerOptions](../../types/interfaces/types.RemoteJoinerOptions/page.mdx)) => Promise&#60;any&#62;","description":"Query wrapper to provide specific GraphQL like API around remoteQuery.query","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"symbol","type":"`symbol`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createQuery"/>
 
+### cleanGraphQLSchema
+
+#### Parameters
+
+<TypeList types={[{"name":"schema","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cleanGraphQLSchema"/>
+
+#### Returns
+
+<TypeList types={[{"name":"schema","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"notFound","type":"`Record<string, Record&#60;string, string&#62;>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cleanGraphQLSchema"/>
+
+<TypeList types={[{"name":"schema","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"notFound","type":"`Record<string, Record&#60;string, string&#62;>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="cleanGraphQLSchema"/>
+
+### gqlGetFieldsAndRelations
+
+Generate a list of fields and fields relations for a given type with the requested relations
+
+#### Parameters
+
+<TypeList types={[{"name":"schemaTypeMap","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"typeName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="gqlGetFieldsAndRelations"/>
+
+#### Returns
+
+<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"Generate a list of fields and fields relations for a given type with the requested relations","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="gqlGetFieldsAndRelations"/>
+
 ### gqlSchemaToTypes
 
 #### Parameters
 
-<TypeList types={[{"name":"__namedParameters","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"schema","type":"`GraphQLSchema`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"outputDir","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="gqlSchemaToTypes"/>
+<TypeList types={[{"name":"__namedParameters","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"schema","type":"`GraphQLSchema`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"outputDir","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"filename","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="gqlSchemaToTypes"/>
 
 #### Returns
 
 <TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="gqlSchemaToTypes"/>
+
+### graphqlSchemaToFields
+
+From graphql schema get all the fields for the requested type and relations
+
+#### Example
+
+```ts
+const userModule = `
+type User {
+  id: ID!
+  name: String!
+  blabla: WHATEVER
+}
+
+type Post {
+  author: User!
+}
+`
+
+const postModule = `
+type Post {
+  id: ID!
+  title: String!
+  date: String
+}
+
+type User {
+  posts: [Post!]!
+}
+
+type WHATEVER {
+  random_field: String
+  post: Post
+}
+`
+
+const mergedSchema = mergeTypeDefs([userModule, postModule])
+const schema = makeExecutableSchema({
+  typeDefs: mergedSchema,
+})
+
+const fields = graphqlSchemaToFields(types, "User", ["posts"])
+
+console.log(fields)
+
+// [
+//   "id",
+//   "name",
+//   "posts.id",
+//   "posts.title",
+//   "posts.date",
+// ]
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"schemaTypeMap","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"typeName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="graphqlSchemaToFields"/>
+
+#### Returns
+
+<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"From graphql schema get all the fields for the requested type and relations","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="graphqlSchemaToFields"/>

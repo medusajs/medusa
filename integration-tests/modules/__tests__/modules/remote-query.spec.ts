@@ -170,7 +170,7 @@ medusaIntegrationTestRunner({
             }
           )
         ).rejects.toThrow(
-          "Payment id not found: pp_system_default_non_existent"
+          "PaymentProvider id not found: pp_system_default_non_existent"
         )
 
         // everything is fine

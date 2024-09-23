@@ -6,9 +6,11 @@ export const metadata = {
 
 In this chapter, you’ll learn about the types of properties in a data model’s schema.
 
+These types are available as methods on the `model` utility imported from `@medusajs/utils`.
+
 ## id
 
-The `id` method defines an automatically generated string ID property.
+The `id` method defines an automatically generated string ID property. The generated ID is a unique string that has a mix of letters and numbers.
 
 For example:
 
@@ -194,3 +196,9 @@ const MyCustom = model.define("my_custom", {
 
 export default MyCustom
 ```
+
+---
+
+## Properties Reference
+
+Refer to the [Data Model API reference](https://docs.medusajs.com/v2/resources/references/data-model) for a full reference of the properties.

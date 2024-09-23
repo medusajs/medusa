@@ -175,6 +175,30 @@ export default async function () {
       })
 
       // collect schemas
+      oas.parameters?.forEach((parameter) => {
+        if (oasSchemaHelper.isRefObject(parameter)) {
+          referencedSchemas.add(
+            oasSchemaHelper.normalizeSchemaName(parameter.$ref)
+          )
+
+          return
+        }
+
+        if (!parameter.schema) {
+          return
+        }
+
+        if (oasSchemaHelper.isRefObject(parameter.schema)) {
+          referencedSchemas.add(
+            oasSchemaHelper.normalizeSchemaName(parameter.schema.$ref)
+          )
+
+          return
+        }
+
+        testAndFindReferenceSchema(parameter.schema)
+      })
+
       if (oas.requestBody) {
         if (oasSchemaHelper.isRefObject(oas.requestBody)) {
           referencedSchemas.add(

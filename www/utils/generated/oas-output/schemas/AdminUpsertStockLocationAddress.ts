@@ -1,7 +1,7 @@
 /**
  * @schema AdminUpsertStockLocationAddress
  * type: object
- * description: The stock location's address.
+ * description: The details of the stock location address to create.
  * x-schemaName: AdminUpsertStockLocationAddress
  * required:
  *   - address_1
@@ -10,11 +10,11 @@
  *   address_1:
  *     type: string
  *     title: address_1
- *     description: The address's address 1.
+ *     description: The address's first line.
  *   address_2:
  *     type: string
  *     title: address_2
- *     description: The address's address 2.
+ *     description: The address's second line.
  *   company:
  *     type: string
  *     title: company
@@ -23,6 +23,7 @@
  *     type: string
  *     title: country_code
  *     description: The address's country code.
+ *     example: usd
  *   city:
  *     type: string
  *     title: city

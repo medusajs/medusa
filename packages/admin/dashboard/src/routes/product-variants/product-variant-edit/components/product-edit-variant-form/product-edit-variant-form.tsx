@@ -112,7 +112,7 @@ export const ProductEditVariantForm = ({
       },
       {
         onSuccess: () => {
-          handleSuccess()
+          handleSuccess("../")
         },
         onError: (error) => {
           toast.error(error.message)

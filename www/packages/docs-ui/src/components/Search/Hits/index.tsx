@@ -97,7 +97,7 @@ export const SearchHits = ({
   setNoResults,
   checkInternalPattern,
 }: SearchHitsProps) => {
-  const { hits } = useHits<HitType>()
+  const { items: hits } = useHits<HitType>()
   const { status } = useInstantSearch()
   const { setIsOpen } = useSearch()
 
