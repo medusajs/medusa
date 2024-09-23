@@ -165,19 +165,6 @@ export const AddCustomerGroupsForm = ({
                 {form.formState.errors.customer_group_ids.message}
               </Hint>
             )}
-            <RouteFocusModal.Close asChild>
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button
-              type="submit"
-              variant="primary"
-              size="small"
-              isLoading={isPending}
-            >
-              {t("actions.save")}
-            </Button>
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="size-full overflow-hidden">
@@ -197,6 +184,21 @@ export const AddCustomerGroupsForm = ({
             }}
           />
         </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <RouteFocusModal.Close asChild>
+            <Button variant="secondary" size="small">
+              {t("actions.cancel")}
+            </Button>
+          </RouteFocusModal.Close>
+          <Button
+            type="submit"
+            variant="primary"
+            size="small"
+            isLoading={isPending}
+          >
+            {t("actions.save")}
+          </Button>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )
