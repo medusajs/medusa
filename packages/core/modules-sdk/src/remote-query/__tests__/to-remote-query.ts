@@ -107,7 +107,6 @@ describe("toRemoteQuery", () => {
           "description",
           "variants.title",
           "variants.calculated_price",
-          "variants.options.*",
         ],
         filters: {
           variants: {
@@ -150,9 +149,6 @@ describe("toRemoteQuery", () => {
             },
           },
           __fields: ["title", "calculated_price"],
-          options: {
-            __fields: ["*"],
-          },
         },
       },
     })
@@ -172,11 +168,11 @@ describe("toRemoteQuery", () => {
           "id",
           "title",
           "description",
-          "product_translation.*",
+          "translation.*",
           "categories.*",
-          "categories.category_translation.*",
+          "categories.translation.*",
           "variants.*",
-          "variants.variant_translation.*",
+          "variants.translation.*",
         ],
         filters: {
           id: "prod_01J742X0QPFW3R2ZFRTRC34FS8",

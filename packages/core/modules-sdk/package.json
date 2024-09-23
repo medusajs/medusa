@@ -3,19 +3,25 @@
   "version": "1.12.11",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
+  "export": {
+    ".": "./dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/modules-sdk"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__fixtures__",
+    "!dist/**/__mock__"
   ],
   "author": "Medusa",
   "license": "MIT",
@@ -24,7 +30,7 @@
     "cross-env": "^5.2.1",
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
     "@graphql-codegen/cli": "^5.0.2",
