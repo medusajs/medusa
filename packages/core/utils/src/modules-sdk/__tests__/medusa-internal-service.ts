@@ -67,6 +67,7 @@ describe("Internal Module Service Factory", () => {
 
       const instance = new compositeIMedusaInternalService(containerMock)
 
+      // @ts-expect-error
       const err = await instance.retrieve().catch((e) => e)
       expect(err.message).toBe("compositeModel - id, name must be defined")
     })

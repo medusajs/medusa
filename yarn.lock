@@ -5921,9 +5921,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@^0.0.1, @medusajs/framework@workspace:packages/framework/framework":
+"@medusajs/framework@^0.0.1, @medusajs/framework@workspace:packages/core/framework":
   version: 0.0.0-use.local
-  resolution: "@medusajs/framework@workspace:packages/framework/framework"
+  resolution: "@medusajs/framework@workspace:packages/core/framework"
   dependencies:
     "@medusajs/medusa-cli": ^1.3.22
     "@medusajs/modules-sdk": ^1.12.11
@@ -5941,13 +5941,14 @@ __metadata:
     express-session: ^1.17.3
     ioredis: ^5.4.1
     ioredis-mock: 8.4.0
+    jest: ^29.7.0
     jsonwebtoken: ^9.0.2
     medusa-telemetry: ^0.0.17
     morgan: ^1.9.1
     rimraf: ^3.0.2
     supertest: ^4.0.2
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
     vite: ^5.2.11
     zod: 3.22.4
   peerDependencies:
@@ -6328,7 +6329,7 @@ __metadata:
     graphql: ^16.6.0
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     awilix: ^8.0.1
   languageName: unknown
@@ -6744,22 +6745,22 @@ __metadata:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
-    "@types/express": ^4.17.17
+    "@swc/jest": ^0.2.36
+    "@types/express": ^4.17.21
     awilix: ^8.0.1
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
     dotenv: ^16.4.5
     dotenv-expand: ^11.0.6
-    expect-type: ^0.19.0
-    express: ^4.18.2
+    expect-type: ^0.20.0
+    express: ^4.21.0
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
-    pg: ^8.12.0
-    pg-connection-string: ^2.6.4
+    pg: ^8.13.0
+    pg-connection-string: ^2.7.0
     pluralize: ^8.0.0
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
@@ -6824,10 +6825,12 @@ __metadata:
     "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
+    "@swc/jest": ^0.2.36
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    ts-jest: ^29.2.5
+    typescript: ^5.6.2
   peerDependencies:
     awilix: ^8.0.1
     ulid: ^2.3.0
@@ -13643,7 +13646,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*, @types/express@npm:^4.17.17, @types/express@npm:^4.7.0":
+"@types/express@npm:*, @types/express@npm:^4.17.17, @types/express@npm:^4.17.21, @types/express@npm:^4.7.0":
   version: 4.17.21
   resolution: "@types/express@npm:4.17.21"
   dependencies:
@@ -16146,7 +16149,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bs-logger@npm:0.x":
+"bs-logger@npm:0.x, bs-logger@npm:^0.2.6":
   version: 0.2.6
   resolution: "bs-logger@npm:0.2.6"
   dependencies:
@@ -18814,7 +18817,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ejs@npm:^3.1.8":
+"ejs@npm:^3.1.10, ejs@npm:^3.1.8":
   version: 3.1.10
   resolution: "ejs@npm:3.1.10"
   dependencies:
@@ -20003,13 +20006,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expect-type@npm:^0.19.0":
-  version: 0.19.0
-  resolution: "expect-type@npm:0.19.0"
-  checksum: 0a7305021c3e37bf024ce01f0a141de109435ac4225457c35fbd649a0d8cdc19b9078185fd9aaa9ebb136a88c5065d27a60883ab0f961ddc281c11851ed18097
-  languageName: node
-  linkType: hard
-
 "expect-type@npm:^0.20.0":
   version: 0.20.0
   resolution: "expect-type@npm:0.20.0"
@@ -20166,6 +20162,45 @@ __metadata:
     utils-merge: 1.0.1
     vary: ~1.1.2
   checksum: 626e440e9feffa3f82ebce5e7dc0ad7a74fa96079994f30048cce450f4855a258abbcabf021f691aeb72154867f0d28440a8498c62888805faf667a829fb65aa
+  languageName: node
+  linkType: hard
+
+"express@npm:^4.21.0":
+  version: 4.21.0
+  resolution: "express@npm:4.21.0"
+  dependencies:
+    accepts: ~1.3.8
+    array-flatten: 1.1.1
+    body-parser: 1.20.3
+    content-disposition: 0.5.4
+    content-type: ~1.0.4
+    cookie: 0.6.0
+    cookie-signature: 1.0.6
+    debug: 2.6.9
+    depd: 2.0.0
+    encodeurl: ~2.0.0
+    escape-html: ~1.0.3
+    etag: ~1.8.1
+    finalhandler: 1.3.1
+    fresh: 0.5.2
+    http-errors: 2.0.0
+    merge-descriptors: 1.0.3
+    methods: ~1.1.2
+    on-finished: 2.4.1
+    parseurl: ~1.3.3
+    path-to-regexp: 0.1.10
+    proxy-addr: ~2.0.7
+    qs: 6.13.0
+    range-parser: ~1.2.1
+    safe-buffer: 5.2.1
+    send: 0.19.0
+    serve-static: 1.16.2
+    setprototypeof: 1.2.0
+    statuses: 2.0.1
+    type-is: ~1.6.18
+    utils-merge: 1.0.1
+    vary: ~1.1.2
+  checksum: 4cf7ca328f3fdeb720f30ccb2ea7708bfa7d345f9cc460b64a82bf1b2c91e5b5852ba15a9a11b2a165d6089acf83457fc477dc904d59cd71ed34c7a91762c6cc
   languageName: node
   linkType: hard
 
@@ -20523,6 +20558,21 @@ __metadata:
     statuses: 2.0.1
     unpipe: ~1.0.0
   checksum: 64b7e5ff2ad1fcb14931cd012651631b721ce657da24aedb5650ddde9378bf8e95daa451da43398123f5de161a81e79ff5affe4f9f2a6d2df4a813d6d3e254b7
+  languageName: node
+  linkType: hard
+
+"finalhandler@npm:1.3.1":
+  version: 1.3.1
+  resolution: "finalhandler@npm:1.3.1"
+  dependencies:
+    debug: 2.6.9
+    encodeurl: ~2.0.0
+    escape-html: ~1.0.3
+    on-finished: 2.4.1
+    parseurl: ~1.3.3
+    statuses: 2.0.1
+    unpipe: ~1.0.0
+  checksum: d38035831865a49b5610206a3a9a9aae4e8523cbbcd01175d0480ffbf1278c47f11d89be3ca7f617ae6d94f29cf797546a4619cd84dd109009ef33f12f69019f
   languageName: node
   linkType: hard
 
@@ -24872,7 +24922,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-error@npm:1.x, make-error@npm:^1.1.1":
+"make-error@npm:1.x, make-error@npm:^1.1.1, make-error@npm:^1.3.6":
   version: 1.3.6
   resolution: "make-error@npm:1.3.6"
   checksum: 171e458d86854c6b3fc46610cfacf0b45149ba043782558c6875d9f42f222124384ad0b468c92e996d815a8a2003817a710c0a160e49c1c394626f76fa45396f
@@ -27057,10 +27107,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-connection-string@npm:^2.6.2, pg-connection-string@npm:^2.6.4":
+"pg-connection-string@npm:^2.6.2":
   version: 2.6.4
   resolution: "pg-connection-string@npm:2.6.4"
   checksum: 0d0b617df0fc6507bf6a94bdcd56c7a305788a1402d69bff9773350947c8f525d6d8136128065370749a3325e99658ae40fbdcce620fb8e60126181f0591a6a6
+  languageName: node
+  linkType: hard
+
+"pg-connection-string@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "pg-connection-string@npm:2.7.0"
+  checksum: 50a1496a1c858f9495d78a2c7a66d93ef3602e718aff2953bb5738f3ea616d7f727f32fc20513c9bed127650cd14c1ddc7b458396f4000e689d4b64c65c5c51e
   languageName: node
   linkType: hard
 
@@ -30139,6 +30196,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"semver@npm:^7.6.3":
+  version: 7.6.3
+  resolution: "semver@npm:7.6.3"
+  bin:
+    semver: bin/semver.js
+  checksum: 88f33e148b210c153873cb08cfe1e281d518aaa9a666d4d148add6560db5cd3c582f3a08ccb91f38d5f379ead256da9931234ed122057f40bb5766e65e58adaf
+  languageName: node
+  linkType: hard
+
 "semver@npm:~7.0.0":
   version: 7.0.0
   resolution: "semver@npm:7.0.0"
@@ -30275,6 +30341,18 @@ __metadata:
     parseurl: ~1.3.3
     send: 0.18.0
   checksum: d7a5beca08cc55f92998d8b87c111dd842d642404231c90c11f504f9650935da4599c13256747b0a988442a59851343271fe8e1946e03e92cd79c447b5f3ae01
+  languageName: node
+  linkType: hard
+
+"serve-static@npm:1.16.2":
+  version: 1.16.2
+  resolution: "serve-static@npm:1.16.2"
+  dependencies:
+    encodeurl: ~2.0.0
+    escape-html: ~1.0.3
+    parseurl: ~1.3.3
+    send: 0.19.0
+  checksum: 528fff6f5e12d0c5a391229ad893910709bc51b5705962b09404a1d813857578149b8815f35d3ee5752f44cd378d0f31669d4b1d7e2d11f41e08283d5134bd1f
   languageName: node
   linkType: hard
 
@@ -32064,6 +32142,43 @@ __metadata:
   bin:
     ts-jest: cli.js
   checksum: c2f51f0241f89d127d41392decbcb83b5dfd5e57ab9d50220aa7b7e2f9b3f3b07ccdbba33311284df1c41941879e4ddfad44b15a9d0da4b74bd1b98702b729df
+  languageName: node
+  linkType: hard
+
+"ts-jest@npm:^29.2.5":
+  version: 29.2.5
+  resolution: "ts-jest@npm:29.2.5"
+  dependencies:
+    bs-logger: ^0.2.6
+    ejs: ^3.1.10
+    fast-json-stable-stringify: ^2.1.0
+    jest-util: ^29.0.0
+    json5: ^2.2.3
+    lodash.memoize: ^4.1.2
+    make-error: ^1.3.6
+    semver: ^7.6.3
+    yargs-parser: ^21.1.1
+  peerDependencies:
+    "@babel/core": ">=7.0.0-beta.0 <8"
+    "@jest/transform": ^29.0.0
+    "@jest/types": ^29.0.0
+    babel-jest: ^29.0.0
+    jest: ^29.0.0
+    typescript: ">=4.3 <6"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@jest/transform":
+      optional: true
+    "@jest/types":
+      optional: true
+    babel-jest:
+      optional: true
+    esbuild:
+      optional: true
+  bin:
+    ts-jest: cli.js
+  checksum: acb62d168faec073e64b20873b583974ba8acecdb94681164eb346cef82ade8fb481c5b979363e01a97ce4dd1e793baf64d9efd90720bc941ad7fc1c3d6f3f68
   languageName: node
   linkType: hard
 
