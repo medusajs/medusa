@@ -8,6 +8,8 @@
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": false,

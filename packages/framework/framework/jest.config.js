@@ -1,5 +1,4 @@
 module.exports = {
-  moduleNameMapper: {},
   transform: {
     "^.+\\.[jt]s$": [
       "@swc/jest",
@@ -7,11 +6,12 @@ module.exports = {
         jsc: {
           parser: { syntax: "typescript", decorators: true },
           transform: { decoratorMetadata: true },
+          target: "ES2021",
         },
       },
     ],
   },
+  testPathIgnorePatterns: [`dist/`, `node_modules/`],
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],
-  modulePathIgnorePatterns: ["dist/"],
 }
