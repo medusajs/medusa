@@ -21,7 +21,7 @@
     "dist",
     "!dist/**/__tests__",
     "!dist/**/__fixtures__",
-    "!dist/**/__mock__"
+    "!dist/**/__mocks__"
   ],
   "author": "Medusa",
   "license": "MIT",
