@@ -4,7 +4,8 @@
   "description": "Set of workflows tooling for Medusa",
   "main": "dist/index.js",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./composer:": "./dist/utils/composer/index.js"
   },
   "repository": {
     "type": "git",
