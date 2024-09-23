@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductOption
  * type: object
- * description: The product's product option.
+ * description: The product option's details.
  * x-schemaName: AdminProductOption
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   product_id:
  *     type: string
  *     title: product_id
- *     description: The product option's product id.
+ *     description: The ID of the product this option belongs to.
  *   values:
  *     type: array
  *     description: The product option's values.
@@ -28,22 +28,22 @@
  *       $ref: "#/components/schemas/BaseProductOptionValue"
  *   metadata:
  *     type: object
- *     description: The product option's metadata.
+ *     description: The product option's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The product option's created at.
+ *     description: The date the product option was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The product option's updated at.
+ *     description: The date the product option was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The product option's deleted at.
+ *     description: The date the product option was deleted.
  * 
 */
 

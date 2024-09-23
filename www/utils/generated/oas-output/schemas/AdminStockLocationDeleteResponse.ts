@@ -1,7 +1,7 @@
 /**
  * @schema AdminStockLocationDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the stock location's deletion.
  * x-schemaName: AdminStockLocationDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Stock Location was deleted.
+ *     description: Whether the stock location was deleted.
  * 
 */
 

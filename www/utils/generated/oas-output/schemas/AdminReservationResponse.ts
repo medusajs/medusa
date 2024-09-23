@@ -1,7 +1,7 @@
 /**
  * @schema AdminReservationResponse
  * type: object
- * description: SUMMARY
+ * description: The reservation's details.
  * x-schemaName: AdminReservationResponse
  * required:
  *   - reservation

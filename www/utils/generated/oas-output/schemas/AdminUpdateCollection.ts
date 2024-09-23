@@ -1,7 +1,7 @@
 /**
  * @schema AdminUpdateCollection
  * type: object
- * description: SUMMARY
+ * description: The details to update in a collection.
  * x-schemaName: AdminUpdateCollection
  * properties:
  *   title:
@@ -14,7 +14,7 @@
  *     description: The collection's handle.
  *   metadata:
  *     type: object
- *     description: The collection's metadata.
+ *     description: The collection's metadata, can hold custom key-value pairs.
  * 
 */
 
