@@ -852,7 +852,7 @@ export default class PaymentModuleService
   async processEvent(
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
-  ): Promise<WebhookActionResult> {
+  ): Promise<WebhookActionResult | void> {
     const providerId = `pp_${eventData.provider}`
 
     const event = await this.paymentProviderService_.getWebhookActionAndData(
@@ -861,11 +861,11 @@ export default class PaymentModuleService
     )
 
     if (event.action === PaymentActions.NOT_SUPPORTED) {
-      return event
+      return
     }
 
     if (!event.data) {
-      return event
+      return
     }
 
     switch (event.action) {
