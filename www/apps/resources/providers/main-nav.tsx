@@ -23,10 +23,14 @@ export const MainNavProvider = ({ children }: MainNavProviderProps) => {
     () =>
       getNavDropdownItems({
         basePath: config.baseUrl,
-        activePath: basePathUrl(),
+        activePath: basePathUrl(
+          pathname.startsWith("/commerce-modules")
+            ? "/commerce-modules"
+            : undefined
+        ),
         version: "v2",
       }),
-    []
+    [pathname]
   )
 
   const reportLink = useMemo(

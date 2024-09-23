@@ -59,9 +59,12 @@ export const PriceListCustomerGroupRuleForm = ({
     prefix: PREFIX,
   })
   const { customer_groups, count, isLoading, isError, error } =
-    useCustomerGroups(searchParams, {
-      placeholderData: keepPreviousData,
-    })
+    useCustomerGroups(
+      { ...searchParams, fields: "customers.id" },
+      {
+        placeholderData: keepPreviousData,
+      }
+    )
 
   const updater: OnChangeFn<RowSelectionState> = (value) => {
     const state = typeof value === "function" ? value(rowSelection) : value

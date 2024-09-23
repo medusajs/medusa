@@ -1,0 +1,11 @@
+import { TypeList } from "docs-ui"
+
+# IndexFilters
+
+ **IndexFilters**: Lim extends `number` ? TEntry extends keyof IndexEntryPointsLevel ? [TypeOnly](../../../types/types.TypeOnly/page.mdx)&#60;IndexEntryPointsLevel[TEntry]&#62; extends infer V[] ? [Prettify](../../../CommonTypes/types/types.CommonTypes.Prettify/page.mdx)&#60;[OmitNever](../../../types/types.OmitNever/page.mdx)&#60;[ExtractFiltersOperators](../../../types/types.ExtractFiltersOperators/page.mdx)&#60;V, Lim, [TEntry, ...Exclusion]&#62;&#62;&#62; : [Prettify](../../../CommonTypes/types/types.CommonTypes.Prettify/page.mdx)&#60;[OmitNever](../../../types/types.OmitNever/page.mdx)&#60;[ExtractFiltersOperators](../../../types/types.ExtractFiltersOperators/page.mdx)&#60;IndexEntryPointsLevel[TEntry], Lim, [TEntry, ...Exclusion]&#62;&#62;&#62; : `Record<string, any>` : `never`
+
+Extract all available filters from an index entry point deeply
+
+## Type Parameters
+
+<TypeList types={[{"name":"TEntry","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"IndexEntryPointsLevel","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"Exclusion","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"Lim","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="IndexFilters"/>
