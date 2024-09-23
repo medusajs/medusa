@@ -10,9 +10,16 @@ In this chapter, you’ll learn what a long-running workflow is and how to confi
 
 ## What is a Long-Running Workflow?
 
-By default, when you execute a workflow, you wait until the workflow finishes execution. Once you receive the workflow’s output, the rest of the code is executed.
+When you execute a workflow, you wait until the workflow finishes execution to receive the output.
 
 A long-running workflow is a workflow that continues its execution in the background. You don’t receive its output immediately. Instead, you subscribe to the workflow execution to listen to status changes and receive its result once the execution is finished.
+
+### Why use Long-Running Workflows?
+
+Long-running workflows are useful if:
+
+- A task takes too long. For example, you're importing data from a CSV file.
+- The workflow's steps wait for an external action to finish before resuming execution. For example, before you import the data from the CSV file, you wait until the import is confirmed by the user.
 
 ---
 
@@ -71,9 +78,9 @@ So, when you execute the `hello-world` workflow, it continues its execution in t
 
 ## Change Step Status
 
-Once the workflow's execution reaches an async step, it'll wait in the background for the step to succeed or fail before it moves to the rest of the steps.
+Once the workflow's execution reaches an async step, it'll wait in the background for the step to succeed or fail before it moves to the next step.
 
-To change fail or succeed a step, use the workflow engine's main service that is registered in the Medusa Container under the `Modules.WORKFLOW_ENGINE` (or `workflowsModuleService`) key.
+To fail or succeed a step, use the Workflow Engine Module's main service that is registered in the Medusa Container under the `Modules.WORKFLOW_ENGINE` (or `workflowsModuleService`) key.
 
 ### Retrieve Transaction ID
 
@@ -90,7 +97,9 @@ const { transaction } = await myWorkflow(req.scope)
 
 ### Change Step Status to Successful
 
-For example, the following workflow step (used in a different workflow) resolves the workflow engine's main service and sets `step-2` of the previous workflow as successful:
+The Workflow Engine Module's main service has a `setStepSuccess` method to set a step's status to successful. If you use it on a workflow execution's async step, the workflow continues execution to the next step.
+
+For example, consider the following step:
 
 export const successStatusHighlights = [
   ["17", "transactionId", "Receive the workflow execution's transaction ID as an input to the step."],
@@ -141,9 +150,7 @@ export const setStepSuccessStep = createStep(
 );
 ```
 
-You use this step in another workflow that changes the long-running workflow's status.
-
-After change the async step's status to successful, the workflow execution continues to the next step.
+In this step (which you use in a workflow other than the long-running workflow), you resolve the Workflow Engine Module's main service and set `step-2` of the previous workflow as successful.
 
 The `setStepSuccess` method of the workflow engine's main service accepts as a parameter an object having the following properties:
 
@@ -206,7 +213,9 @@ The `setStepSuccess` method of the workflow engine's main service accepts as a p
 
 ### Change Step Status to Failed
 
-The workflow engine's main service also has a `setStepFailure` method that changes a step's status to failed. It accepts the same parameter as `setStepSuccess`.
+The Workflow Engine Module's main service also has a `setStepFailure` method that changes a step's status to failed. It accepts the same parameter as `setStepSuccess`.
+
+After changing the async step's status to failed, the workflow execution fails and the compensation functions of previous steps are executed.
 
 For example:
 
@@ -259,15 +268,13 @@ export const setStepFailureStep = createStep(
 );
 ```
 
-You use this step in another workflow that changes the long-running workflow's status.
-
-After change the async step's status to failed, the workflow execution fails and the compensation functions of previous steps are executed.
+You use this step in another workflow that changes the status of an async step in a long-running workflow's execution to failed.
 
 ---
 
 ## Access Long-Running Workflow Status and Result
 
-To access the status and result of a long-running workflow, use the workflow engine's main service' `subscribe` and `unsubscribe` methods.
+To access the status and result of a long-running workflow execution, use the `subscribe` and `unsubscribe` methods of the Workflow Engine Module's main service.
 
 For example:
 
@@ -319,9 +326,11 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
 }
 ```
 
-In the above example, you execute the long-running workflow `hello-world`. You then resolve the workflow engine from the Medusa container and use its `subscribe` method to listen to changes in the workflow execution’s status.
+In the above example, you execute the long-running workflow `hello-world` and resolve the Workflow Engine Module's main service from the Medusa container.
 
-The `subscribe` method accepts an object having three properties:
+### subscribe Method
+
+The main service's `subscribe` method allows you to listen to changes in the workflow execution’s status. It accepts an object having three properties:
 
 <TypeList
   types={[
@@ -337,15 +346,33 @@ The `subscribe` method accepts an object having three properties:
         "The ID of the workflow exection's transaction. The transaction's details are returned in the response of the workflow execution.",
     },
     {
-      name: "subscriber",
+      name: "subscriberId",
       type: "`string`",
       description:
-        "The function executed when the workflow execution's status changes.  The function receives a data object. It has an `eventType` property, which you use to check the status of the workflow execution.",
+        "The ID of the subscriber.",
+    },
+    {
+      name: "subscriber",
+      type: "`(data: { eventType: string, result?: any }) => Promise<void>`",
+      description:
+        "The function executed when the workflow execution's status changes. The function receives a data object. It has an `eventType` property, which you use to check the status of the workflow execution.",
     },
   ]}
   sectionTitle="Access Long-Running Workflow Status and Result"
 />
 
-Once the workflow execution finishes, the subscriber function is executed with the `eventType` of the received parameter set to `onFinish`. The workflow’s output is set in the `result` property of the parameter.
+If the value of `eventType` in the `subscriber` function's first parameter is `onFinish`, the workflow finished executing. The first parameter then also has a `result` property holding the workflow's output.
+
+### unsubscribe Method
 
 You can unsubscribe from the workflow using the workflow engine's `unsubscribe` method, which requires the same object parameter as the `subscribe` method.
+
+However, instead of the `subscriber` property, it requires a `subscriberOrId` property whose value is the same `subscriberId` passed to the `subscribe` method.
+
+---
+
+## Example: Restaurant-Delivery Recipe
+
+To find a full example of a long-running workflow, refer to the [restaurant-delivery recipe](!resources!/recipes/marketplace/examples/restaurant-delivery).
+
+In the recipe, you use a long-running workflow that moves an order from placed to completed. The workflow waits for the restaurant to accept the order, the driver to pick up the order, and other external actions.

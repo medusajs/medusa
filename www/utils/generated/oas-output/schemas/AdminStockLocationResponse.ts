@@ -1,7 +1,7 @@
 /**
  * @schema AdminStockLocationResponse
  * type: object
- * description: SUMMARY
+ * description: The stock location's details.
  * x-schemaName: AdminStockLocationResponse
  * required:
  *   - stock_location
