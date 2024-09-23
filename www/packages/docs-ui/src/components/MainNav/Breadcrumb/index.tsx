@@ -1,13 +1,17 @@
 "use client"
 
 import React, { useMemo } from "react"
-import { Button, CurrentItemsState, useSidebar } from "../../.."
+import { Button, CurrentItemsState, useMainNav, useSidebar } from "../../.."
 import clsx from "clsx"
 import Link from "next/link"
 import { SidebarItemLink } from "types"
 
 export const MainNavBreadcrumbs = () => {
   const { currentItems, getActiveItem } = useSidebar()
+  const {
+    activeItem: mainNavActiveItem,
+    breadcrumbOptions: { showCategories },
+  } = useMainNav()
 
   const getLinkPath = (item?: SidebarItemLink): string | undefined => {
     if (!item) {
@@ -27,14 +31,26 @@ export const MainNavBreadcrumbs = () => {
     const parentPath =
       item.parentItem?.type === "link"
         ? getLinkPath(item.parentItem)
+        : (item.parentItem?.type === "category" && showCategories) ||
+          item.parentItem?.type === "sub-category"
+        ? "#"
         : undefined
     const firstItemPath =
-      item.default[0].type === "link" ? getLinkPath(item.default[0]) : undefined
+      item.default[0].type === "link"
+        ? getLinkPath(item.default[0])
+        : (item.default[0].type === "category" && showCategories) ||
+          item.default[0].type === "sub-category"
+        ? "#"
+        : undefined
 
-    tempBreadcrumbItems.set(
-      parentPath || firstItemPath || "/",
-      item.parentItem?.childSidebarTitle || item.parentItem?.title || ""
-    )
+    const breadcrumbPath = parentPath || firstItemPath || "/"
+
+    if (!mainNavActiveItem?.path.endsWith(breadcrumbPath)) {
+      tempBreadcrumbItems.set(
+        breadcrumbPath,
+        item.parentItem?.childSidebarTitle || item.parentItem?.title || ""
+      )
+    }
 
     return tempBreadcrumbItems
   }
@@ -48,10 +64,21 @@ export const MainNavBreadcrumbs = () => {
     }
 
     const activeItem = getActiveItem()
-    if (activeItem) {
+    if (activeItem && !mainNavActiveItem?.path.endsWith(activeItem.path)) {
+      if (
+        activeItem.parentItem &&
+        (activeItem.parentItem.type !== "category" || showCategories)
+      ) {
+        tempBreadcrumbItems.set(
+          activeItem.parentItem.type === "link"
+            ? getLinkPath(activeItem.parentItem) || "#"
+            : "#",
+          activeItem.parentItem.title || ""
+        )
+      }
       tempBreadcrumbItems.set(
         getLinkPath(activeItem) || "/",
-        activeItem?.title || ""
+        activeItem.title || ""
       )
     }
 
@@ -70,9 +97,17 @@ export const MainNavBreadcrumbs = () => {
           <span>/</span>
           <Button
             variant="transparent-clear"
-            className="px-docs_0.5 py-docs_0.25"
+            className={clsx(
+              "px-docs_0.5 py-docs_0.25",
+              link === "#" && "hover:!bg-transparent hover:cursor-default"
+            )}
           >
-            <Link href={link}>{title}</Link>
+            <Link
+              href={link}
+              className={clsx(link === "#" && "hover:cursor-default")}
+            >
+              {title}
+            </Link>
           </Button>
         </React.Fragment>
       ))}

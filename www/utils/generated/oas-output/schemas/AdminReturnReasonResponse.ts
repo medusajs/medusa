@@ -1,7 +1,7 @@
 /**
  * @schema AdminReturnReasonResponse
  * type: object
- * description: SUMMARY
+ * description: The return reason's details.
  * x-schemaName: AdminReturnReasonResponse
  * required:
  *   - return_reason

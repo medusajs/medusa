@@ -1,3 +1,5 @@
+import { ReturnStatus } from "../../order"
+
 export interface BaseReturnItem {
   id: string
   quantity: number
@@ -13,7 +15,7 @@ export interface BaseReturnItem {
 export interface BaseReturn {
   id: string
   order_id: string
-  status?: string
+  status?: ReturnStatus
   exchange_id?: string
   location_id?: string
   claim_id?: string

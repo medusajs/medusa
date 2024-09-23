@@ -20,6 +20,7 @@ import {
   SidebarItemLink,
   InteractiveSidebarItem,
   SidebarItemCategory,
+  SidebarItemLinkWithParent,
 } from "types"
 
 export type CurrentItemsState = SidebarSectionItems & {
@@ -34,7 +35,7 @@ export type SidebarContextType = {
   items: SidebarSectionItems
   currentItems: CurrentItemsState | undefined
   activePath: string | null
-  getActiveItem: () => SidebarItemLink | undefined
+  getActiveItem: () => SidebarItemLinkWithParent | undefined
   setActivePath: (path: string | null) => void
   isLinkActive: (item: SidebarItem, checkChildren?: boolean) => boolean
   isChildrenActive: (item: SidebarItemCategory) => boolean
@@ -100,8 +101,8 @@ const findItem = (
   section: SidebarItem[],
   item: Partial<SidebarItem>,
   checkChildren = true
-): SidebarItemLink | undefined => {
-  let foundItem: SidebarItemLink | undefined
+): SidebarItemLinkWithParent | undefined => {
+  let foundItem: SidebarItemLinkWithParent | undefined
   section.some((i) => {
     if (i.type === "separator") {
       return false
@@ -110,6 +111,9 @@ const findItem = (
       foundItem = i
     } else if (checkChildren && i.children) {
       foundItem = findItem(i.children, item)
+      if (foundItem && !foundItem.parentItem) {
+        foundItem.parentItem = i
+      }
     }
 
     return foundItem !== undefined

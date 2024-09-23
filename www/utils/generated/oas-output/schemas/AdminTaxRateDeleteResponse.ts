@@ -1,7 +1,7 @@
 /**
  * @schema AdminTaxRateDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the tax rate deletion.
  * x-schemaName: AdminTaxRateDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Tax Rate was deleted.
+ *     description: Whether the tax rate was deleted.
  * 
 */
 

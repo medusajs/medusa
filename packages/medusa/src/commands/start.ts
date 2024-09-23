@@ -64,6 +64,7 @@ async function start({ port, directory, types }) {
         const outputDirGeneratedTypes = path.join(directory, ".medusa")
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
+          filename: "remote-query-entry-points",
           schema: gqlSchema,
         })
         logger.info("Geneated modules types")

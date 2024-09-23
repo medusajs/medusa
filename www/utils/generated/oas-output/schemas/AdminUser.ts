@@ -34,25 +34,25 @@
  *   avatar_url:
  *     type: string
  *     title: avatar_url
- *     description: The user's avatar url.
+ *     description: The URL of the user's avatar.
  *   metadata:
  *     type: object
- *     description: The user's metadata.
+ *     description: The user's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The user's created at.
+ *     description: The date the user was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The user's updated at.
+ *     description: The date the user was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The user's deleted at.
+ *     description: The date the user was deleted.
  * 
 */
 

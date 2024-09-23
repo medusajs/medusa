@@ -1,7 +1,7 @@
 /**
  * @schema AdminPromotionRule
  * type: object
- * description: The updated's details.
+ * description: The promotion rule's details.
  * x-schemaName: AdminPromotionRule
  * required:
  *   - id
@@ -10,15 +10,16 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The updated's ID.
+ *     description: The promotion rule's ID.
  *   description:
  *     type: string
  *     title: description
- *     description: The updated's description.
+ *     description: The promotion rule's description.
  *   attribute:
  *     type: string
  *     title: attribute
- *     description: The updated's attribute.
+ *     description: The promotion rule's attribute.
+ *     example: customer_group_id
  *   operator:
  *     type: string
  *     description: The updated's operator.
@@ -33,6 +34,8 @@
  *   values:
  *     type: array
  *     description: The updated's values.
+ *     example:
+ *       - "cusgroup_123"
  *     items:
  *       $ref: "#/components/schemas/BasePromotionRuleValue"
  * 
