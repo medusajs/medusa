@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "exports": {
     ".": "./dist/index.js",
@@ -34,11 +37,10 @@
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
-    "watch": "tsc --watch -p ./tsconfig.build.json",
-    "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "build": "rimraf dist && tsc -p ./tsconfig.spec.json --noEmit && tsc -p ./tsconfig.build.json && tsc-alias -p ./tsconfig.build.json",
-    "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
-    "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
+    "watch": "tsc --watch ",
+    "watch:test": "tsc --watch",
+    "build": "rimraf dist && tsc --build",
+    "test": "jest --runInBand --bail --passWithNoTests --forceExit"
   },
   "devDependencies": {
     "@medusajs/orchestration": "^0.5.7",
@@ -46,10 +48,11 @@
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^8.5.9",
     "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
     "rimraf": "^3.0.2",
     "supertest": "^4.0.2",
     "tsc-alias": "^1.8.6",
-    "typescript": "^5.1.6",
+    "typescript": "^5.6.2",
     "vite": "^5.2.11"
   },
   "dependencies": {
