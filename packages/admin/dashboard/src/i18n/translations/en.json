@@ -612,6 +612,7 @@
     "subtitle": "Organize products into collections.",
     "createCollection": "Create Collection",
     "createCollectionHint": "Create a new collection to organize your products.",
+    "createSuccess": "Collection created successfully.",
     "editCollection": "Edit Collection",
     "handleTooltip": "The handle is used to reference the collection in your storefront. If not specified, the handle will be generated from the collection title.",
     "deleteWarning": "You are about to delete the collection {{title}}. This action cannot be undone.",
