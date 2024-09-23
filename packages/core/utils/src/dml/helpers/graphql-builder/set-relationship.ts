@@ -11,10 +11,6 @@ import { HasOne } from "../../relations/has-one"
 import { ManyToMany as DmlManyToMany } from "../../relations/many-to-many"
 import { parseEntityName } from "../entity-builder/parse-entity-name"
 
-type Context = {
-  MANY_TO_MANY_TRACKED_RELATIONS: Record<string, boolean>
-}
-
 function defineRelationships(
   modelName: string,
   relationship: RelationshipMetadata,

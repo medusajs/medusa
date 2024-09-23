@@ -74,7 +74,7 @@ export class MedusaAppLoader {
       }
     )
 
-    const configModules = { ...modulesConfig } ?? {}
+    const configModules = { ...modulesConfig }
 
     for (const defaultModule of defaultModules as ModuleDefinition[]) {
       configModules[defaultModule.key] ??=

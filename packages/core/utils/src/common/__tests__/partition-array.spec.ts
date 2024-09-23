@@ -1,4 +1,4 @@
-import { partitionArray } from "../../../dist"
+import { partitionArray } from "../../index"
 
 describe("partitionArray", function () {
   it("should split array according to predicate", function () {
