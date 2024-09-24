@@ -12,6 +12,7 @@ export * from "./shipping-method-adjustment"
 export * from "./shipping-method-tax-line"
 export * from "./transaction"
 export * from "./utils"
+export * from "./return-reason"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger

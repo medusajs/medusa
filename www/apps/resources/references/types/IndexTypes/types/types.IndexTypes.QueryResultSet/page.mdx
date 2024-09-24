@@ -1,0 +1,17 @@
+import { TypeList } from "docs-ui"
+
+# QueryResultSet
+
+ **QueryResultSet**: `Object`
+
+The QueryResultSet presents a typed output for the
+result returned by the index search engine, it doesnt narrow down the type
+based on the intput fields.
+
+## Type Parameters
+
+<TypeList types={[{"name":"TEntry","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="QueryResultSet"/>
+
+## Properties
+
+<TypeList types={[{"name":"data","type":"TEntry extends keyof [IndexServiceEntryPoints](../../interfaces/types.IndexTypes.IndexServiceEntryPoints/page.mdx) ? [IndexServiceEntryPoints](../../interfaces/types.IndexTypes.IndexServiceEntryPoints/page.mdx)[TEntry][] : `any`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"[QueryFunctionReturnPagination](../types.IndexTypes.QueryFunctionReturnPagination/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"count","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="QueryResultSet"/>

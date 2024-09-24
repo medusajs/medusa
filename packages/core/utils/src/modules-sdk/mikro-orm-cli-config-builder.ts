@@ -1,12 +1,12 @@
-import { MikroORMOptions } from "@mikro-orm/core/utils/Configuration"
 import { DmlEntity, toMikroOrmEntities } from "../dml"
 import { CustomTsMigrationGenerator } from "../dal"
 import type {
   AnyEntity,
   EntityClass,
+  EntitySchema,
+  MikroORMOptions,
   EntityClassGroup,
-} from "@mikro-orm/core/typings"
-import type { EntitySchema } from "@mikro-orm/core/metadata/EntitySchema"
+} from "@mikro-orm/core"
 import { kebabCase } from "../common"
 
 type Options = Partial<Omit<MikroORMOptions, "entities" | "entitiesTs">> & {

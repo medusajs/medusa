@@ -1,4 +1,4 @@
-import { Logger } from "@medusajs/types"
+import { Logger } from "@medusajs/framework/types"
 import { RedisOptions } from "ioredis"
 
 export type InitializeModuleInjectableDependencies = {

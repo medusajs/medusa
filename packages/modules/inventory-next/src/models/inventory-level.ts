@@ -114,18 +114,18 @@ export class InventoryLevel {
   available_quantity: BigNumber | number | null = null
 
   @BeforeCreate()
-  private beforeCreate(): void {
+  beforeCreate(): void {
     this.id = generateEntityId(this.id, "ilev")
     this.inventory_item_id ??= this.inventory_item?.id
   }
 
   @OnInit()
-  private onInit(): void {
+  onInit(): void {
     this.id = generateEntityId(this.id, "ilev")
   }
 
   @OnLoad()
-  private onLoad(): void {
+  onLoad(): void {
     if (isDefined(this.stocked_quantity) && isDefined(this.reserved_quantity)) {
       this.available_quantity = new BigNumber(
         MathBN.sub(this.raw_stocked_quantity, this.raw_reserved_quantity)

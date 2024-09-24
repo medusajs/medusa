@@ -27,7 +27,7 @@ export const validateVariantPriceLinksStep = createStep(
     const links = await remoteQuery({
       entryPoint: "product_variant_price_set",
       fields: ["variant_id", "price_set_id"],
-      variables: { variant_id: variantIds, take: null },
+      variables: { variant_id: variantIds },
     })
     const variantPriceSetMap: Record<string, string> = {}
 

@@ -4,17 +4,16 @@ import {
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   RemoteExpandProperty,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
-
-import { RemoteJoinerOptions } from "@medusajs/types"
 import {
-  MedusaError,
   deduplicate,
   extractRelationsFromGQL,
   isDefined,
   isString,
+  MedusaError,
 } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
@@ -146,7 +145,7 @@ export class RemoteJoiner {
   }
 
   constructor(
-    private serviceConfigs: ModuleJoinerConfig[],
+    serviceConfigs: ModuleJoinerConfig[],
     private remoteFetchData: RemoteFetchDataCallback,
     private options: {
       autoCreateServiceNameAlias?: boolean
@@ -158,7 +157,7 @@ export class RemoteJoiner {
       this.entityMap = extractRelationsFromGQL(this.options.entitiesMap)
     }
 
-    this.serviceConfigs = this.buildReferences(
+    this.buildReferences(
       JSON.parse(JSON.stringify(serviceConfigs), (key, value) => {
         if (key === "schema") {
           return
@@ -831,14 +830,8 @@ export class RemoteJoiner {
     implodeMapping: InternalImplodeMapping[]
     options?: RemoteJoinerOptions
   }): Map<string, RemoteExpandProperty> {
-    const {
-      initialService,
-      query,
-      serviceConfig,
-      expands,
-      implodeMapping,
-      options,
-    } = params
+    const { initialService, query, serviceConfig, expands, implodeMapping } =
+      params
 
     const parsedExpands = this.parseProperties({
       initialService,
@@ -1196,34 +1189,32 @@ export class RemoteJoiner {
       throw new Error(`Service "${queryObj.service}" was not found.`)
     }
 
-    let pkName = serviceConfig.primaryKeys[0]
-    const primaryKeyArg = queryObj.args?.find((arg) => {
-      const inc = serviceConfig.primaryKeys.includes(arg.name)
-      if (inc) {
-        pkName = arg.name
-      }
-      return inc
+    const { primaryKeyArg, otherArgs, pkName } = gerPrimaryKeysAndOtherFilters({
+      serviceConfig,
+      queryObj,
     })
-    const otherArgs = queryObj.args?.filter(
-      (arg) => !serviceConfig.primaryKeys.includes(arg.name)
-    )
 
     const implodeMapping: InternalImplodeMapping[] = []
-    const parsedExpands = this.parseExpands({
+    const parseExpandsConfig: Parameters<typeof this.parseExpands>[0] = {
       initialService: {
         property: "",
         parent: "",
         serviceConfig,
         entity: serviceConfig.entity,
         fields: queryObj.fields,
-        args: otherArgs,
       },
       query: queryObj,
       serviceConfig,
       expands: queryObj.expands!,
       implodeMapping,
       options,
-    })
+    }
+
+    if (otherArgs) {
+      parseExpandsConfig.initialService.args = otherArgs
+    }
+
+    const parsedExpands = this.parseExpands(parseExpandsConfig)
 
     const root = parsedExpands.get(BASE_PATH)!
 
@@ -1244,5 +1235,51 @@ export class RemoteJoiner {
     })
 
     return response.data
+  }
+}
+
+function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
+  primaryKeyArg: { name: string; value: any } | undefined
+  otherArgs: { name: string; value: any }[] | undefined
+  pkName: string
+} {
+  let pkName = serviceConfig.primaryKeys[0]
+  let primaryKeyArg = queryObj.args?.find((arg) => {
+    const include = serviceConfig.primaryKeys.includes(arg.name)
+    if (include) {
+      pkName = arg.name
+    }
+    return include
+  })
+
+  let otherArgs = queryObj.args?.filter(
+    (arg) => !serviceConfig.primaryKeys.includes(arg.name)
+  )
+
+  const filters =
+    queryObj.args?.find((arg) => arg.name === "filters")?.value ?? {}
+
+  if (!primaryKeyArg) {
+    const primaryKeyFilter = Object.keys(filters).find((key) => {
+      return serviceConfig.primaryKeys.includes(key)
+    })
+
+    if (primaryKeyFilter) {
+      pkName = primaryKeyFilter
+      primaryKeyArg = {
+        name: primaryKeyFilter,
+        value: filters[primaryKeyFilter],
+      }
+
+      delete filters[primaryKeyFilter]
+    }
+  }
+
+  otherArgs = otherArgs?.length ? otherArgs : undefined
+
+  return {
+    primaryKeyArg,
+    otherArgs,
+    pkName,
   }
 }

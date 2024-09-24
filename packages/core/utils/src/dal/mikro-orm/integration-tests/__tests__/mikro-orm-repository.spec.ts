@@ -18,23 +18,9 @@ import { dropDatabase } from "pg-god"
 import { MikroOrmBigNumberProperty } from "../../big-number-field"
 import BigNumber from "bignumber.js"
 import { BigNumberRawValue } from "@medusajs/types"
+import { getDatabaseURL, pgGodCredentials } from "../__fixtures__/database"
 
-const DB_HOST = process.env.DB_HOST ?? "localhost"
-const DB_USERNAME = process.env.DB_USERNAME ?? ""
-const DB_PASSWORD = process.env.DB_PASSWORD
-const DB_NAME = "mikroorm-integration-1"
-
-const pgGodCredentials = {
-  user: DB_USERNAME,
-  password: DB_PASSWORD,
-  host: DB_HOST,
-}
-
-export function getDatabaseURL(): string {
-  return `postgres://${DB_USERNAME}${
-    DB_PASSWORD ? `:${DB_PASSWORD}` : ""
-  }@${DB_HOST}/${DB_NAME}`
-}
+const dbName = "mikroorm-integration-1"
 
 jest.setTimeout(300000)
 @Entity()
@@ -153,13 +139,13 @@ describe("mikroOrmRepository", () => {
 
   beforeEach(async () => {
     await dropDatabase(
-      { databaseName: DB_NAME, errorIfNonExist: false },
+      { databaseName: dbName, errorIfNonExist: false },
       pgGodCredentials
     )
 
     orm = await MikroORM.init({
       entities: [Entity1, Entity2],
-      clientUrl: getDatabaseURL(),
+      clientUrl: getDatabaseURL(dbName),
       type: "postgresql",
     })
 
@@ -180,8 +166,7 @@ describe("mikroOrmRepository", () => {
     it("should successfully create a flat entity", async () => {
       const entity1 = { id: "1", title: "en1", amount: 100 }
 
-      const { entities: resp, performedActions } =
-        await manager1().upsertWithReplace([entity1])
+      const { performedActions } = await manager1().upsertWithReplace([entity1])
 
       expect(performedActions).toEqual({
         created: {

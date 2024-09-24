@@ -34,10 +34,6 @@ type UnionToArray<T, A extends unknown[] = []> = IsUnion<T> extends true
   ? UnionToArray<Exclude<T, PopUnion<T>>, [PopUnion<T>, ...A]>
   : [T, ...A]
 
-type Reverse<T extends unknown[], R extends unknown[] = []> = ReturnType<
-  T extends [infer F, ...infer L] ? () => Reverse<L, [F, ...R]> : () => R
->
-
 /**
  * End of utils
  */

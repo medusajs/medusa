@@ -76,6 +76,11 @@ export interface FulfillmentDTO {
   shipping_option: ShippingOptionDTO | null
 
   /**
+   * Flag to indidcate whether shipping is required
+   */
+  requires_shipping: boolean
+
+  /**
    * The associated fulfillment provider.
    */
   provider: FulfillmentProviderDTO
