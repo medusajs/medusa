@@ -16,7 +16,7 @@ import {
   isString,
   MedusaContext,
   TransactionState,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   FlowRunOptions,
   MedusaWorkflow,
