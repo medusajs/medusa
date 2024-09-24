@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__fixtures__",
+    "!dist/**/__mocks__"
   ],
   "engines": {
     "node": ">=20"

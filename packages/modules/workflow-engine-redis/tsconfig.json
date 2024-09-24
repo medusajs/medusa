@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
-    "lib": ["es2021"],
-    "target": "es2021",
-    "outDir": "./dist",
+    "lib": ["ES2021"],
+    "target": "ES2021",
+    "outDir": "dist",
     "esModuleInterop": true,
-    "declarationMap": true,
     "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "declarationMap": true,
+    "noUnusedLocals": true,
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "noImplicitReturns": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
-    "downlevelIteration": true, // to use ES5 specific tooling
-    "baseUrl": ".",
-    "resolveJsonModule": true,
     "paths": {
       "@models": ["./src/models"],
       "@services": ["./src/services"],
@@ -30,9 +30,6 @@
   "include": ["src"],
   "exclude": [
     "dist",
-    "./src/**/__tests__",
-    "./src/**/__mocks__",
-    "./src/**/__fixtures__",
     "node_modules"
   ]
 }
