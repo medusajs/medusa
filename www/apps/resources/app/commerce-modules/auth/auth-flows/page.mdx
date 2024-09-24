@@ -8,7 +8,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn how to use the Auth Module's main service's methods to implement an authentication flow.
+In this document, you'll learn how to use the Auth Module's main service's methods to implement authentication flows and reset a user's password.
 
 ## Authentication Methods
 
@@ -149,3 +149,32 @@ if (success) {
 If the returned `success` property is `true`, the authentication with the third-party provider was successful.
 
 ![Diagram showcasing the second part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711375123/Medusa%20Resources/third-party-auth-2_kmjxju.jpg)
+
+---
+
+## Reset Password
+
+To update a user's password or other authentication details, use the `updateProvider` method of the Auth Module's main service. It calls the `update` method of the specified authentication provider.
+
+For example:
+
+```ts
+const { success } = await authModuleService.update(
+  "emailpass",
+  // passed to the auth provider
+  {
+    email: "user@example.com",
+    password: "supersecret"
+  }
+)
+
+if (success) {
+  // password reset successfully
+}
+```
+
+The method accepts as a first parameter the ID of the provider, and as a second parameter the data necessary to reset the password.
+
+In the example above, you use the `emailpass` provider, so you have to pass an object having an `email` and `password` properties.
+
+If the returned `success` property is `true`, the password has reset successfully.

@@ -44,6 +44,18 @@
  * responses:
  *   "200":
  *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           required:
+ *             - success
+ *           description: Details on the reset password's status.
+ *           properties:
+ *             success:
+ *               type: boolean
+ *               title: success
+ *               description: Whether the password was reset successfully.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

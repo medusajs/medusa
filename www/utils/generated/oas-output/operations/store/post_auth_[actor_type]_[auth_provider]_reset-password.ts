@@ -1,9 +1,13 @@
 /**
  * @oas [post] /auth/customer/{auth_provider}/reset-password
  * operationId: PostActor_typeAuth_providerResetPassword
- * summary: Get Reset Password Token for Customer
- * x-sidebar-summary: Get Reset Password Token
- * description: Generate a reset password token for a customer. Use that token to update the customer's password using the Reset Password API route.
+ * summary: Generate Reset Password Token for Customer
+ * x-sidebar-summary: Generate Reset Password Token
+ * description: >
+ *   Generate a reset password token for a customer. This API route emits the `auth.password_reset` event, passing it the token as a payload. You can listen to that event and send the user a notification. The notification should have a URL that accepts a `token` query parameter.
+ * 
+ * 
+ *    Use the generated token to update the user's password using the Reset Password API route.
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider
@@ -33,7 +37,7 @@
  * tags:
  *   - Auth
  * responses:
- *   "200":
+ *   "201":
  *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
