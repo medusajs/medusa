@@ -1241,46 +1241,41 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
   let primaryKeyArg = queryObj.args?.find((arg) => {
     return serviceConfig.primaryKeys.includes(arg.name)
   })
-  if (!primaryKeyArg) {
-    const filters = (primaryKeyArg = queryObj.args?.find(
-      (arg) => arg.name === "filters"
-    )?.value)
-    if (filters) {
-      const primaryKeyFilter = Object.keys(filters).find((key) => {
-        return serviceConfig.primaryKeys.includes(key)
-      })
-
-      if (primaryKeyFilter) {
-        primaryKeyArg = {
-          name: primaryKeyFilter,
-          value: filters[primaryKeyFilter],
-        }
-      }
-    }
-  }
 
   let otherArgs = queryObj.args?.filter(
     (arg) => !serviceConfig.primaryKeys.includes(arg.name)
   )
 
-  if (!otherArgs) {
-    const filters = (primaryKeyArg = queryObj.args?.find(
-      (arg) => arg.name === "filters"
-    )?.value)
-    if (filters) {
-      otherArgs = Object.keys(filters).filter((key) => {
-        return !serviceConfig.primaryKeys.includes(key)
-      })
+  let filtersMap: Map<string, any> = new Map<string, any>()
 
-      if (otherArgs.length) {
-        otherArgs = otherArgs.map((key) => {
-          return {
-            name: key,
-            value: filters[key],
-          }
-        })
+  if (!otherArgs || !primaryKeyArg) {
+    const filters =
+      queryObj.args?.find((arg) => arg.name === "filters")?.value ?? {}
+    filtersMap = new Map(Object.entries(filters))
+  }
+
+  if (!primaryKeyArg) {
+    const primaryKeyFilter = serviceConfig.primaryKeys.find((key) => {
+      return filtersMap.has(key)
+    })
+    if (primaryKeyFilter) {
+      primaryKeyArg = {
+        name: primaryKeyFilter,
+        value: filtersMap.get(primaryKeyFilter),
       }
     }
+  }
+
+  if (!otherArgs) {
+    const filters = Object.fromEntries(filtersMap)
+    otherArgs = Object.keys(filters).filter((key) => {
+      return !serviceConfig.primaryKeys.includes(key)
+    }).map((key) => {
+      return {
+        name: key,
+        value: filters[key],
+      }
+    })
   }
 
   return {
