@@ -52,7 +52,6 @@ async function injectHtmlMiddleware(
     }
 
     const templateFilePath = findTemplateFilePath(req.path, server.config.root)
-    console.log("templateFilePath", templateFilePath)
     if (!templateFilePath) {
       return next()
     }
@@ -77,6 +76,10 @@ export async function develop(options: BundlerOptions) {
     const developConfig: InlineConfig = {
       mode: "development",
       logLevel: "info",
+      appType: "spa",
+      server: {
+        middlewareMode: true,
+      },
     }
 
     const mergedConfig = vite.mergeConfig(viteConfig, developConfig)

@@ -18,7 +18,6 @@ import { Avatar, DropdownMenu, Text, clx } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import { useTranslation } from "react-i18next"
 
-import { settingsRouteRegex } from "../../../extensions/routes/utils"
 import { useStore } from "../../../hooks/api/store"
 import { Divider } from "../../common/divider"
 import { Skeleton } from "../../common/skeleton"
@@ -26,9 +25,9 @@ import { NavItem, NavItemProps } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import routes from "virtual:medusa/routes/links"
 import { useLogout } from "../../../hooks/api"
 import { queryClient } from "../../../lib/query-client"
+import { useExtensions } from "../../../providers/extensions-provider/use-extensions"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 
@@ -297,14 +296,11 @@ const CoreRouteSection = () => {
 
 const ExtensionRouteSection = () => {
   const { t } = useTranslation()
+  const { getMenuItems } = useExtensions()
 
-  const links = routes.links
+  const menuItems = getMenuItems("coreExtensions")
 
-  const extensionLinks = links
-    .filter((link) => !settingsRouteRegex.test(link.path))
-    .sort((a, b) => a.label.localeCompare(b.label))
-
-  if (!extensionLinks.length) {
+  if (!menuItems.length) {
     return null
   }
 
@@ -330,13 +326,13 @@ const ExtensionRouteSection = () => {
           </div>
           <Collapsible.Content>
             <nav className="flex flex-col gap-y-0.5 py-1 pb-4">
-              {extensionLinks.map((link) => {
+              {menuItems.map((item, i) => {
                 return (
                   <NavItem
-                    key={link.path}
-                    to={link.path}
-                    label={link.label}
-                    icon={link.icon ? <link.icon /> : <SquaresPlus />}
+                    key={i}
+                    to={item.to}
+                    label={item.label}
+                    icon={item.icon ? item.icon : <SquaresPlus />}
                     type="extension"
                   />
                 )

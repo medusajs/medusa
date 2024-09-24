@@ -1,9 +1,10 @@
-import App from "@medusajs/dashboard"
-import React from "react"
-import { createRoot } from "react-dom/client"
+import { render } from "@medusajs/dashboard";
+import "./index.css";
 
-import "./index.css"
+render(
+    document.getElementById("medusa"),
+)
 
-const container = document.getElementById("root")
-const root = createRoot(container!)
-root.render(<App />)
+if (import.meta.hot) {
+    import.meta.hot.accept()
+}

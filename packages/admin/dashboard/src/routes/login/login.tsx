@@ -37,34 +37,32 @@ export const Login = () => {
   const { mutateAsync, isPending } = useSignInWithEmailPassword()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         email,
         password,
-      })
+      },
+      {
+        onError: (error) => {
+          if (isFetchError(error)) {
+            if (error.status === 401) {
+              form.setError("email", {
+                type: "manual",
+                message: error.message,
+              })
+            }
+          }
 
-      navigate(from, { replace: true })
-    } catch (error) {
-      if (isFetchError(error)) {
-        if (error.status === 401) {
-          form.setError("email", {
+          form.setError("root.serverError", {
             type: "manual",
+            message: error.message,
           })
-
-          form.setError("password", {
-            type: "manual",
-            message: t("errors.invalidCredentials"),
-          })
-
-          return
-        }
+        },
+        onSuccess: () => {
+          navigate(from, { replace: true })
+        },
       }
-
-      form.setError("root.serverError", {
-        type: "manual",
-        message: t("errors.serverError"),
-      })
-    }
+    )
   })
 
   const serverError = form.formState.errors?.root?.serverError?.message

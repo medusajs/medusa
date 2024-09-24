@@ -13,10 +13,7 @@ import { ProductVariantSection } from "./components/product-variant-section"
 import { PRODUCT_DETAIL_FIELDS } from "./constants"
 import { productLoader } from "./loader"
 
-import after from "virtual:medusa/widgets/product/details/after"
-import before from "virtual:medusa/widgets/product/details/before"
-import sideAfter from "virtual:medusa/widgets/product/details/side/after"
-import sideBefore from "virtual:medusa/widgets/product/details/side/before"
+import { useExtensions } from "../../../providers/extensions-provider/use-extensions"
 
 export const ProductDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -31,6 +28,13 @@ export const ProductDetail = () => {
       initialData: initialData,
     }
   )
+
+  const { getWidgets } = useExtensions()
+
+  const after = getWidgets("product.details.after")
+  const before = getWidgets("product.details.before")
+  const sideAfter = getWidgets("product.details.side.after")
+  const sideBefore = getWidgets("product.details.side.before")
 
   if (isLoading || !product) {
     return (
@@ -50,10 +54,18 @@ export const ProductDetail = () => {
   return (
     <TwoColumnPage
       widgets={{
-        after,
-        before,
-        sideAfter,
-        sideBefore,
+        after: {
+          widgets: after.map((w) => ({ Component: w })),
+        },
+        before: {
+          widgets: before.map((w) => ({ Component: w })),
+        },
+        sideAfter: {
+          widgets: sideAfter.map((w) => ({ Component: w })),
+        },
+        sideBefore: {
+          widgets: sideBefore.map((w) => ({ Component: w })),
+        },
       }}
       showJSON
       showMetadata

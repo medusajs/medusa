@@ -128,8 +128,8 @@ export async function generateCustomFieldLinkEntrypoint(
   const validatedFields = (
     await Promise.all(
       files.map(async (file) => {
-        const isValid = await validateCustomFieldLink(file, linkPath)
-        return isValid ? file : null
+        const result = await validateCustomFieldLink(file, linkPath)
+        return result.valid ? file : null
       })
     )
   ).filter(Boolean) as string[]
@@ -154,7 +154,12 @@ export async function generateCustomFieldLinkEntrypoint(
     links: [${validatedFields
       .map((_, index) => `CustomFieldLinkExt${index}.link`)
       .join(", ")}],
-  }`
+  }
+  
+  if (import.meta.hot) {
+    import.meta.hot.accept()
+  }
+  `
 
   const code = `${importString}\n${exportString}`
 

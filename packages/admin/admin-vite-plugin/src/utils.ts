@@ -20,6 +20,7 @@ import {
   isVariableDeclarator,
   ObjectMethod,
   ObjectProperty,
+  ParseResult,
   SpreadElement,
   traverse,
   type ExportDefaultDeclaration,
@@ -304,4 +305,16 @@ export function getCustomFieldConfigParams(
     model,
     zone,
   }
+}
+
+export async function hasDefaultExport(
+  ast: ParseResult<File>
+): Promise<boolean> {
+  let hasDefaultExport = false
+  traverse(ast, {
+    ExportDefaultDeclaration() {
+      hasDefaultExport = true
+    },
+  })
+  return hasDefaultExport
 }

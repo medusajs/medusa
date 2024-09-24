@@ -199,7 +199,12 @@ export async function generateCustomFieldFormConfigEntrypoint(
     })
     .join(", ")}
   ],
-}`
+}
+  
+if (import.meta.hot) {
+  import.meta.hot.accept()
+}
+`
 
   const code = `${importString}\n${exportString}`
 

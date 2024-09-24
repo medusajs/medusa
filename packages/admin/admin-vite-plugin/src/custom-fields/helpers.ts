@@ -101,5 +101,6 @@ export function getModel(
     return { model: null, valid: false }
   }
 
+  console.log("model", model, modelValue)
   return { model: modelValue, valid: true }
 }

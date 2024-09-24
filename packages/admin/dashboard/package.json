@@ -14,14 +14,16 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/app.mjs",
-      "require": "./dist/app.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./css": {
-      "import": "./dist/app.css",
-      "require": "./dist/app.css"
-    }
+      "import": "./dist/index.css",
+      "require": "./dist/index.css"
+    },
+    "./root": "./",
+    "./package.json": "./package.json"
   },
   "repository": {
     "type": "git",
@@ -29,8 +31,10 @@
     "directory": "packages/admin/dashboard"
   },
   "files": [
-    "dist",
-    "package.json"
+    "package.json",
+    "src",
+    "index.html",
+    "dist"
   ],
   "dependencies": {
     "@ariakit/react": "^0.4.1",
@@ -38,6 +42,7 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "3.4.2",
+    "@medusajs/admin-shared": "0.0.1",
     "@medusajs/icons": "1.2.1",
     "@medusajs/js-sdk": "0.0.1",
     "@medusajs/ui": "3.0.0",

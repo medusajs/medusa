@@ -211,34 +211,66 @@ export async function generateCustomFieldFormFieldEntrypoint(
     })
     .join("\n")
 
-  const exportString = `export default {
+  const code = `
+${importString}
+
+function formatFields(forms) {
+  return forms.map(form => 
+    Object.fromEntries(
+      Object.entries(form.fields || {}).map(([fieldName, fieldConfig]) => {
+        return [
+          fieldName,
+          {
+            type: fieldConfig.validation,
+            label: fieldConfig.label,
+            description: fieldConfig.description,
+            placeholder: fieldConfig.placeholder,
+            component: fieldConfig.component,
+          }
+        ]
+      })
+    )
+  )
+}
+
+let fields = {
   sections: [${validatedForms
     .map(({ indexes }, formIndex) => {
-      return `...((CustomFieldFormFieldExt${formIndex}.forms || [])
-        .filter((_, i) => ${JSON.stringify(indexes)}.includes(i))
-        .map(form => 
-          Object.fromEntries(
-            Object.entries(form.fields || {}).map(([fieldName, fieldConfig]) => {
-              return [
-                fieldName,
-                {
-                  type: fieldConfig.validation,
-                  label: fieldConfig.label,
-                  description: fieldConfig.description,
-                  placeholder: fieldConfig.placeholder,
-                  component: fieldConfig.component,
-                }
-              ]
-            })
-          )
-        )
-      )`
+      return `...formatFields((CustomFieldFormFieldExt${formIndex}.forms || [])
+        .filter((_, i) => ${JSON.stringify(indexes)}.includes(i)))`
     })
     .join(", ")}
   ],
-}`
+}
 
-  const code = `${importString}\n${exportString}`
+export default fields
+
+if (import.meta.hot) {
+  import.meta.hot.accept((newModule) => {
+    if (newModule) {
+      // Re-import the CustomFieldFormFieldExt modules
+      ${validatedForms
+        .map(({ src }, index) => {
+          return `import("${convertToImportPath(src)}").then(module => {
+            CustomFieldFormFieldExt${index} = module.default
+            updateFields()
+          })`
+        })
+        .join("\n")}
+    }
+  })
+}
+
+function updateFields() {
+  fields.sections = [${validatedForms
+    .map(({ indexes }, formIndex) => {
+      return `...formatFields((CustomFieldFormFieldExt${formIndex}.forms || [])
+        .filter((_, i) => ${JSON.stringify(indexes)}.includes(i)))`
+    })
+    .join(", ")}
+  ]
+}
+`
 
   return {
     module: generateModule(code),

@@ -11,7 +11,6 @@ export async function getViteConfig(
   const { searchForWorkspaceRoot, mergeConfig } = await import("vite")
   const { default: react } = await import("@vitejs/plugin-react")
   const { default: medusa } = await import("@medusajs/admin-vite-plugin")
-  const { default: inspect } = await import("vite-plugin-inspect")
 
   const getPort = await import("get-port")
   const hmrPort = await getPort.default()
@@ -29,8 +28,8 @@ export async function getViteConfig(
       outDir: path.resolve(process.cwd(), options.outDir),
     },
     optimizeDeps: {
-      include: ["@medusajs/dashboard", "react-dom/client"],
-      exclude: VIRTUAL_MODULES,
+      include: ["react-dom/client", "@medusajs/ui", "@medusajs/dashboard"],
+      exclude: [...VIRTUAL_MODULES, "virtual:medusa/extensions"],
     },
     define: {
       __BASE__: JSON.stringify(options.path),
@@ -44,7 +43,6 @@ export async function getViteConfig(
       hmr: {
         port: hmrPort,
       },
-      middlewareMode: true,
     },
     css: {
       postcss: {
@@ -56,7 +54,6 @@ export async function getViteConfig(
       },
     },
     plugins: [
-      inspect(),
       react(),
       medusa({
         sources: options.sources,

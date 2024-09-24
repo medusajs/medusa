@@ -41,7 +41,8 @@
     "@medusajs/admin-shared": "0.0.1",
     "chokidar": "3.5.3",
     "fdir": "6.1.1",
-    "magic-string": "0.30.5"
+    "magic-string": "0.30.5",
+    "outdent": "^0.8.0"
   },
   "packageManager": "yarn@3.2.1"
 }

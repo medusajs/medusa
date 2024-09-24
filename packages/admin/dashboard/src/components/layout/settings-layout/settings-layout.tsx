@@ -5,12 +5,11 @@ import { Fragment, useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
-import { settingsRouteRegex } from "../../../extensions/routes/utils"
 import { Divider } from "../../common/divider"
 import { NavItem, NavItemProps } from "../nav-item"
 import { Shell } from "../shell"
 
-import routes from "virtual:medusa/routes/links"
+import { useExtensions } from "../../../providers/extensions-provider/use-extensions"
 import { UserMenu } from "../user-menu"
 
 export const SettingsLayout = () => {
@@ -103,21 +102,6 @@ const useMyAccountRoutes = (): NavItemProps[] => {
   )
 }
 
-const useExtensionRoutes = (): NavItemProps[] => {
-  const links = routes.links
-
-  return useMemo(() => {
-    const settingsLinks = links.filter((link) =>
-      settingsRouteRegex.test(link.path)
-    )
-
-    return settingsLinks.map((link) => ({
-      label: link.label,
-      to: link.path,
-    }))
-  }, [links])
-}
-
 /**
  * Ensure that the `from` prop is not another settings route, to avoid
  * the user getting stuck in a navigation loop.
@@ -131,10 +115,12 @@ const getSafeFromValue = (from: string) => {
 }
 
 const SettingsSidebar = () => {
+  const { getMenuItems } = useExtensions()
+
   const routes = useSettingRoutes()
   const developerRoutes = useDeveloperRoutes()
-  const extensionRoutes = useExtensionRoutes()
   const myAccountRoutes = useMyAccountRoutes()
+  const extensionRoutes = getMenuItems("settingsExtensions")
 
   const { t } = useTranslation()
 
