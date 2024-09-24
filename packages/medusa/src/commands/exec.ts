@@ -4,6 +4,7 @@ import path from "path"
 import { existsSync } from "fs"
 import { logger } from "@medusajs/framework"
 import { ExecArgs } from "@medusajs/types"
+import { dynamicImport } from "@medusajs/utils"
 
 type Options = {
   file: string
@@ -22,7 +23,7 @@ export default async function exec({ file, args }: Options) {
       throw new Error(`File ${filePath} doesn't exist.`)
     }
 
-    const scriptToExec = (await import(path.resolve(filePath))).default
+    const scriptToExec = (await dynamicImport(path.resolve(filePath))).default
 
     if (!scriptToExec || typeof scriptToExec !== "function") {
       throw new Error(`File doesn't default export a function to execute.`)

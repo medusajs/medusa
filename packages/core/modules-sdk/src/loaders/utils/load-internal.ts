@@ -11,11 +11,12 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  DmlEntity,
-  MedusaModuleType,
-  ModulesSdkUtils,
   createMedusaContainer,
   defineJoinerConfig,
+  DmlEntity,
+  dynamicImport,
+  MedusaModuleType,
+  ModulesSdkUtils,
   resolveExports,
   toMikroOrmEntities,
 } from "@medusajs/utils"
@@ -66,7 +67,7 @@ export async function loadInternalModule(
       // If we want to benefit from the auto load mechanism, even if the module exports is provided, we need to ask for the module path
       loadedModule = resolution.moduleExports
     } else {
-      loadedModule = resolveExports(await import(modulePath))
+      loadedModule = await dynamicImport(modulePath)
       loadedModule = (loadedModule as any).default
     }
   } catch (error) {
@@ -196,7 +197,8 @@ export async function loadModuleMigrations(
   let loadedModule: ModuleExports
   try {
     loadedModule =
-      moduleExports ?? (await import(resolution.resolutionPath as string))
+      moduleExports ??
+      (await dynamicImport(resolution.resolutionPath as string))
 
     let runMigrations = loadedModule.runMigrations
     let revertMigration = loadedModule.revertMigration

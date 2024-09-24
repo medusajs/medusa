@@ -1,12 +1,12 @@
 import {
   ContainerRegistrationKeys,
+  dynamicImport,
   FlagRouter,
   isDefined,
   isObject,
   isString,
   isTruthy,
   objectFromStringPath,
-  resolveExports,
 } from "@medusajs/utils"
 import { trackFeatureFlag } from "medusa-telemetry"
 import { join, normalize } from "path"
@@ -113,9 +113,7 @@ export async function featureFlagsLoader(
           return
         }
 
-        const fileExports = resolveExports(
-          await import(join(flagDir, file.name))
-        )
+        const fileExports = await dynamicImport(join(flagDir, file.name))
         const featureFlag = fileExports.default
 
         if (!featureFlag) {

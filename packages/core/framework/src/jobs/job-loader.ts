@@ -1,10 +1,10 @@
 import type { SchedulerOptions } from "@medusajs/orchestration"
 import { MedusaContainer } from "@medusajs/types"
 import {
+  dynamicImport,
   isObject,
   MedusaError,
   promiseAll,
-  resolveExports,
 } from "@medusajs/utils"
 import {
   createStep,
@@ -155,7 +155,7 @@ export class JobLoader {
           fileEntries.map(async (entry) => {
             const fullPath = join(entry.path, entry.name)
 
-            const module_ = resolveExports(await import(fullPath))
+            const module_ = await dynamicImport(fullPath)
 
             const input = {
               config: module_.config,
