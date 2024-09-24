@@ -59,7 +59,7 @@ type AuthRequests = {
 class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
-  private MAX_LEVEL = 5
+  private MAX_LEVEL = 7
   readonly REQUEST_TYPE_NAMES = [
     "MedusaRequest",
     "RequestWithContext",
@@ -489,7 +489,6 @@ class OasKindGenerator extends FunctionKindGenerator {
       oldSchema: existingRequestBodySchema,
       newSchema: requestSchema,
     })
-    console.log(existingRequestBodySchema, requestSchema, updatedRequestSchema)
 
     if (
       !updatedRequestSchema ||
