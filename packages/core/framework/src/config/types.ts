@@ -4,6 +4,7 @@ import {
 } from "@medusajs/types"
 
 import type { RedisOptions } from "ioredis"
+// @ts-expect-error
 import type { InlineConfig } from "vite"
 
 /**

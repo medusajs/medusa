@@ -39,7 +39,7 @@ export class LocalFileService extends AbstractFileProviderService {
     const parsedFilename = path.parse(file.filename)
     const baseDir =
       file.access === "public" ? this.uploadDir_ : this.privateUploadDir_
-    const dir = await this.ensureDirExists(baseDir, parsedFilename.dir)
+    await this.ensureDirExists(baseDir, parsedFilename.dir)
 
     const fileKey = path.join(
       parsedFilename.dir,
