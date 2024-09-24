@@ -6142,7 +6142,7 @@ __metadata:
     rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
-    typescript: ^5.3.3
+    typescript: ^5.6.2
     winston: ^3.8.2
     yargs: ^15.3.1
   peerDependencies:
