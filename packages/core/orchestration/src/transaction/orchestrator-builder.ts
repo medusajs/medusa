@@ -294,7 +294,6 @@ export class OrchestratorBuilder {
   }
 
   pruneAction(action: string) {
-    const actionStep = this.findOrThrowStepByAction(action)
     const parentStep = this.findParentStepByAction(action, this.steps)!
 
     if (Array.isArray(parentStep.next)) {

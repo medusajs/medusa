@@ -180,8 +180,7 @@ describe("mikroOrmRepository", () => {
     it("should successfully create a flat entity", async () => {
       const entity1 = { id: "1", title: "en1", amount: 100 }
 
-      const { entities: resp, performedActions } =
-        await manager1().upsertWithReplace([entity1])
+      const { performedActions } = await manager1().upsertWithReplace([entity1])
 
       expect(performedActions).toEqual({
         created: {
