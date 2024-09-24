@@ -27,12 +27,13 @@ export async function createPartitions(
       CREATE INDEX IF NOT EXISTS IDX_index_data_${cName}_id ON ${activeSchema}cat_${cName} ("name");
       `
     )
-    .map((key) => {
-      const pName = key.toLowerCase()
-      const part: string[] = []
+
+    for (const parent of schemaObjectRepresentation[key].parents) {
+      const pKey = `${parent.ref.entity}-${key}`
+      const pName = `${parent.ref.entity}${key}`.toLowerCase()
       part.push(
         `
-        CREATE TABLE IF NOT EXISTS ${activeSchema}cat_pivot_${pName} PARTITION OF ${activeSchema}index_relation FOR VALUES IN ('${key}');
+        CREATE TABLE IF NOT EXISTS ${activeSchema}cat_pivot_${pName} PARTITION OF ${activeSchema}index_relation FOR VALUES IN ('${pKey}');
         CREATE INDEX IF NOT EXISTS IDX_index_relation_${pName}_pivot_parent_id_child_id ON ${activeSchema}cat_pivot_${pName} ("pivot", "parent_id", "child_id");
         CREATE INDEX IF NOT EXISTS IDX_index_relation_${pName}_pivot_child_id_parent_id ON ${activeSchema}cat_pivot_${pName} ("pivot", "child_id", "parent_id");
         `
