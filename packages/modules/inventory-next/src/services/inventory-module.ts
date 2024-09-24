@@ -1045,7 +1045,7 @@ export default class InventoryModuleService
   ): Promise<InventoryTypes.InventoryLevelDTO> {
     const [inventoryLevel] = await this.listInventoryLevels(
       { inventory_item_id: inventoryItemId, location_id: locationId },
-      { take: null },
+      {},
       context
     )
 

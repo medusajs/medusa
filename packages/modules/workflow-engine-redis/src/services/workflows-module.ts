@@ -4,7 +4,7 @@ import {
   InternalModuleDeclaration,
   ModulesSdkTypes,
   WorkflowsSdkTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   InjectSharedContext,
   MedusaContext,
@@ -13,7 +13,7 @@ import {
 import type {
   ReturnWorkflow,
   UnwrapWorkflowInputDataType,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { WorkflowExecution } from "@models"
 import { WorkflowOrchestratorService } from "@services"
 

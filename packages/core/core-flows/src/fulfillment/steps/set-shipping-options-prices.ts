@@ -36,7 +36,6 @@ async function getCurrentShippingOptionPrices(
     service: LINKS.ShippingOptionPriceSet,
     variables: {
       filters: { shipping_option_id: shippingOptionIds },
-      take: null,
     },
     fields: ["shipping_option_id", "price_set_id", "price_set.prices.*"],
   } as any)) as {
