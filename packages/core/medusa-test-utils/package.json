@@ -17,7 +17,10 @@
     "test": "jest --passWithNoTests src"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "author": "Medusa",
   "license": "MIT",
