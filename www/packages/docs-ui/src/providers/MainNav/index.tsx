@@ -1,13 +1,18 @@
 "use client"
 
 import React, { createContext, useContext, useMemo } from "react"
-import { NavigationDropdownItem } from "types"
+import {
+  BreadcrumbOptions,
+  NavigationDropdownItem,
+  NavigationDropdownItemLink,
+} from "types"
 
 export type MainNavContext = {
   navItems: NavigationDropdownItem[]
-  activeItem?: NavigationDropdownItem
+  activeItem?: NavigationDropdownItemLink
   reportIssueLink: string
   editDate?: string
+  breadcrumbOptions: BreadcrumbOptions
 }
 
 const MainNavContext = createContext<MainNavContext | null>(null)
@@ -16,6 +21,7 @@ export type MainNavProviderProps = {
   navItems: NavigationDropdownItem[]
   reportIssueLink: string
   editDate?: string
+  breadcrumbOptions?: BreadcrumbOptions
   children?: React.ReactNode
 }
 
@@ -24,9 +30,15 @@ export const MainNavProvider = ({
   reportIssueLink,
   children,
   editDate,
+  breadcrumbOptions = {
+    showCategories: true,
+  },
 }: MainNavProviderProps) => {
   const activeItem = useMemo(
-    () => navItems.find((item) => item.type === "link" && item.isActive),
+    () =>
+      navItems.find(
+        (item) => item.type === "link" && item.isActive
+      ) as NavigationDropdownItemLink,
     [navItems]
   )
 
@@ -37,6 +49,7 @@ export const MainNavProvider = ({
         activeItem,
         reportIssueLink,
         editDate,
+        breadcrumbOptions,
       }}
     >
       {children}

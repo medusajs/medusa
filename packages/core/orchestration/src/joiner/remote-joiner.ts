@@ -4,17 +4,16 @@ import {
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   RemoteExpandProperty,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
-
-import { RemoteJoinerOptions } from "@medusajs/types"
 import {
-  MedusaError,
   deduplicate,
   extractRelationsFromGQL,
   isDefined,
   isString,
+  MedusaError,
 } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
@@ -146,7 +145,7 @@ export class RemoteJoiner {
   }
 
   constructor(
-    private serviceConfigs: ModuleJoinerConfig[],
+    serviceConfigs: ModuleJoinerConfig[],
     private remoteFetchData: RemoteFetchDataCallback,
     private options: {
       autoCreateServiceNameAlias?: boolean
@@ -158,7 +157,7 @@ export class RemoteJoiner {
       this.entityMap = extractRelationsFromGQL(this.options.entitiesMap)
     }
 
-    this.serviceConfigs = this.buildReferences(
+    this.buildReferences(
       JSON.parse(JSON.stringify(serviceConfigs), (key, value) => {
         if (key === "schema") {
           return
@@ -831,14 +830,8 @@ export class RemoteJoiner {
     implodeMapping: InternalImplodeMapping[]
     options?: RemoteJoinerOptions
   }): Map<string, RemoteExpandProperty> {
-    const {
-      initialService,
-      query,
-      serviceConfig,
-      expands,
-      implodeMapping,
-      options,
-    } = params
+    const { initialService, query, serviceConfig, expands, implodeMapping } =
+      params
 
     const parsedExpands = this.parseProperties({
       initialService,

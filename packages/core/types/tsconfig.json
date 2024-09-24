@@ -10,6 +10,8 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noUnusedLocals": true,
+    "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,

@@ -18,8 +18,8 @@ import {
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
 
 const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME ?? ''
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ''
+const DB_USERNAME = process.env.DB_USERNAME ?? ""
+const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -179,7 +179,7 @@ export function medusaIntegrationTestRunner({
 
     console.log(`Migrating database with core migrations and links ${dbName}`)
     await migrateDatabase(appLoader)
-    await syncLinks(appLoader)
+    await syncLinks(appLoader, cwd, container)
     await clearInstances()
 
     let containerRes: MedusaContainer = container
@@ -215,7 +215,7 @@ export function medusaIntegrationTestRunner({
     if (inApp) {
       console.log(`Migrating database with core migrations and links ${dbName}`)
       await migrateDatabase(appLoader)
-      await syncLinks(appLoader)
+      await syncLinks(appLoader, cwd, containerRes)
     }
 
     const axios = (await import("axios")).default.default
