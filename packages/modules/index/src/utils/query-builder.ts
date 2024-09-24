@@ -116,9 +116,7 @@ export class QueryBuilder {
     const isList = graphqlType.endsWith("[]")
     graphqlType = graphqlType.replace("[]", "")
 
-    return (
-      (graphqlToPostgresTypeMap[graphqlType] ?? "") + (isList ? "[]" : "") ?? ""
-    )
+    return (graphqlToPostgresTypeMap[graphqlType] ?? "") + (isList ? "[]" : "")
   }
 
   private parseWhere(

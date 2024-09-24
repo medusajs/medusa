@@ -1,6 +1,11 @@
 import type { SchedulerOptions } from "@medusajs/orchestration"
 import { MedusaContainer } from "@medusajs/types"
-import { isObject, MedusaError, promiseAll } from "@medusajs/utils"
+import {
+  dynamicImport,
+  isObject,
+  MedusaError,
+  promiseAll,
+} from "@medusajs/utils"
 import {
   createStep,
   createWorkflow,
@@ -150,11 +155,11 @@ export class JobLoader {
           fileEntries.map(async (entry) => {
             const fullPath = join(entry.path, entry.name)
 
-            const module_ = await import(fullPath)
+            const module_ = await dynamicImport(fullPath)
 
             const input = {
               config: module_.config,
-              handler: module_.default,
+              handler: module_.default.default,
             }
 
             this.validateConfig(input.config)

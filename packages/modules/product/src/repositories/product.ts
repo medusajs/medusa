@@ -4,8 +4,6 @@ import { Context, DAL } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { DALUtils } from "@medusajs/utils"
 
-import { UpdateProductInput } from "../types"
-
 // eslint-disable-next-line max-len
 export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Product>(
   Product
