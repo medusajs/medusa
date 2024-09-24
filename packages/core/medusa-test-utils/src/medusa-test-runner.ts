@@ -3,7 +3,6 @@ import { ContainerLike, MedusaContainer } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-  dynamicImport,
 } from "@medusajs/framework/utils"
 import { asValue } from "awilix"
 import { dbTestUtilFactory, getDatabaseURL } from "./database"
@@ -166,7 +165,7 @@ export function medusaIntegrationTestRunner({
       await syncLinks(appLoader, cwd, containerRes)
     }
 
-    const { default: axios } = await dynamicImport("axios")
+    const { default: axios } = (await import("axios")) as any
 
     const cancelTokenSource = axios.CancelToken.source()
 
