@@ -70,7 +70,7 @@ export default class AuthModuleService
     sharedContext?: Context
   ): Promise<AuthTypes.AuthIdentityDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createAuthIdentities(
     data: AuthTypes.CreateAuthIdentityDTO[] | AuthTypes.CreateAuthIdentityDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -100,7 +100,7 @@ export default class AuthModuleService
     sharedContext?: Context
   ): Promise<AuthTypes.AuthIdentityDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateAuthIdentities(
     data: AuthTypes.UpdateAuthIdentityDTO | AuthTypes.UpdateAuthIdentityDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -145,7 +145,7 @@ export default class AuthModuleService
     sharedContext?: Context
   ): Promise<AuthTypes.ProviderIdentityDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createProviderIdentities(
     data:
       | AuthTypes.CreateProviderIdentityDTO[]
@@ -173,7 +173,7 @@ export default class AuthModuleService
     sharedContext?: Context
   ): Promise<AuthTypes.ProviderIdentityDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateProviderIdentities(
     data:
       | AuthTypes.UpdateProviderIdentityDTO

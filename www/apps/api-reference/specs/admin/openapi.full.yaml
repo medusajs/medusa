@@ -1530,7 +1530,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/api-keys' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Api Keys
       responses:
@@ -1602,7 +1602,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/api-keys' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "title": "{value}",
@@ -1668,7 +1668,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/api-keys/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Api Keys
       responses:
@@ -1732,7 +1732,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/api-keys/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "title": "{value}"
@@ -1781,7 +1781,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/api-keys/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Api Keys
       responses:
@@ -1867,7 +1867,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/api-keys/{id}/revoke' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Api Keys
       responses:
@@ -1950,7 +1950,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/api-keys/{id}/sales-channels' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Api Keys
       responses:
@@ -2029,7 +2029,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/campaigns' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Campaigns
       responses:
@@ -2192,7 +2192,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/campaigns' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Gunner",
@@ -2261,7 +2261,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/campaigns/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Campaigns
       responses:
@@ -2384,7 +2384,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/campaigns/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "description": "{value}",
@@ -2435,7 +2435,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/campaigns/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Campaigns
       responses:
@@ -2537,7 +2537,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/campaigns/{id}/promotions' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Campaigns
       responses:
@@ -3379,7 +3379,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/claims' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -3437,7 +3437,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "type": "{value}",
@@ -3504,7 +3504,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/claims/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -3553,7 +3553,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/cancel' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -3620,7 +3620,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/claim-items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -3695,7 +3695,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/claim-items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -3765,7 +3765,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/claims/{id}/claim-items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -3817,7 +3817,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/inbound/items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -3877,7 +3877,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/inbound/items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -3929,7 +3929,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/claims/{id}/inbound/items/{action_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/claims/{id}/inbound/items/{action_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Claims
       responses:
@@ -3981,7 +3981,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/inbound/shipping-method' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "shipping_option_id": "{value}"
@@ -4061,7 +4061,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/inbound/shipping-method/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -4113,7 +4113,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/claims/{id}/inbound/shipping-method/{action_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/claims/{id}/inbound/shipping-method/{action_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Claims
       responses:
@@ -4181,7 +4181,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/outbound/items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -4257,7 +4257,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/outbound/items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -4325,7 +4325,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/claims/{id}/outbound/items/{action_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/claims/{id}/outbound/items/{action_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Claims
       responses:
@@ -4393,7 +4393,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/outbound/shipping-method' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "shipping_option_id": "{value}"
@@ -4473,7 +4473,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/outbound/shipping-method/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -4541,7 +4541,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/claims/{id}/outbound/shipping-method/{action_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/claims/{id}/outbound/shipping-method/{action_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Claims
       responses:
@@ -4603,7 +4603,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/claims/{id}/request' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -4651,7 +4651,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/claims/{id}/request' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Claims
       responses:
@@ -5493,7 +5493,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/collections' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Collections
       responses:
@@ -5551,7 +5551,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/collections' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "title": "{value}",
@@ -5617,7 +5617,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/collections/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Collections
       responses:
@@ -5681,7 +5681,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/collections/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "metadata": {}
@@ -5729,7 +5729,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/collections/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Collections
       responses:
@@ -5812,7 +5812,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/collections/{id}/products' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Collections
       responses:
@@ -5933,7 +5933,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/currencies' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Currencies
       responses:
@@ -5993,7 +5993,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/currencies/{code}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Currencies
       responses:
@@ -6849,7 +6849,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/customer-groups' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customer Groups
       responses:
@@ -6936,7 +6936,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/customer-groups' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Solon",
@@ -7002,7 +7002,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/customer-groups/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customer Groups
       responses:
@@ -7066,7 +7066,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/customer-groups/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Corbin",
@@ -7116,7 +7116,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/customer-groups/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customer Groups
       responses:
@@ -7217,7 +7217,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/customer-groups/{id}/customers' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customer Groups
       responses:
@@ -10580,7 +10580,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/customers' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customers
       responses:
@@ -10705,7 +10705,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/customers' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "email": "Tomas.Toy16@yahoo.com",
@@ -10775,7 +10775,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/customers/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customers
       responses:
@@ -10880,7 +10880,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/customers/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "email": "Daren_Rodriguez-Rutherford93@gmail.com",
@@ -10933,7 +10933,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/customers/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customers
       responses:
@@ -11134,7 +11134,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/customers/{id}/addresses' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customers
       responses:
@@ -11306,7 +11306,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/customers/{id}/addresses' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "address_name": "{value}",
@@ -11388,7 +11388,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/customers/{id}/addresses/{address_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Customers
       responses:
@@ -11537,7 +11537,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/customers/{id}/addresses/{address_id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "address_name": "{value}",
@@ -11616,7 +11616,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/customers/{id}/addresses/{address_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/customers/{id}/addresses/{address_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Customers
       responses:
@@ -13120,7 +13120,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/draft-orders' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Draft Orders
       responses:
@@ -13491,7 +13491,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/draft-orders' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "sales_channel_id": "{value}",
@@ -13553,7 +13553,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/draft-orders/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Draft Orders
       responses:
@@ -14394,7 +14394,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/exchanges' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -14478,7 +14478,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "order_id": "{value}",
@@ -14544,7 +14544,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/exchanges/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -14593,7 +14593,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/cancel' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -14644,7 +14644,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/inbound/items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -14704,7 +14704,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/inbound/items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -14772,7 +14772,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/exchanges/{id}/inbound/items/{action_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/exchanges/{id}/inbound/items/{action_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Exchanges
       responses:
@@ -14823,7 +14823,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/inbound/shipping-method' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "shipping_option_id": "{value}"
@@ -14903,7 +14903,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/inbound/shipping-method/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -14955,7 +14955,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/exchanges/{id}/inbound/shipping-method/{action_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/exchanges/{id}/inbound/shipping-method/{action_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Exchanges
       responses:
@@ -15021,7 +15021,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/outbound/items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -15097,7 +15097,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/outbound/items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -15165,7 +15165,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/exchanges/{id}/outbound/items/{action_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/exchanges/{id}/outbound/items/{action_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Exchanges
       responses:
@@ -15232,7 +15232,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/outbound/shipping-method' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "shipping_option_id": "{value}"
@@ -15312,7 +15312,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/outbound/shipping-method/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -15380,7 +15380,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/exchanges/{id}/outbound/shipping-method/{action_id}''\ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/exchanges/{id}/outbound/shipping-method/{action_id}''\ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Exchanges
       responses:
@@ -15441,7 +15441,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/exchanges/{id}/request' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -15489,7 +15489,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/exchanges/{id}/request' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Exchanges
       responses:
@@ -15612,7 +15612,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/fulfillment-providers' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Fulfillment Providers
       responses:
@@ -15656,7 +15656,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/fulfillment-sets/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Fulfillment Sets
       responses:
@@ -15841,7 +15841,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/fulfillment-sets/{id}/service-zones' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Layla"
@@ -15913,7 +15913,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Fulfillment Sets
       responses:
@@ -16116,7 +16116,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Elvis"
@@ -16169,7 +16169,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Fulfillment Sets
       responses:
@@ -16229,7 +16229,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/fulfillments' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "location_id": "{value}",
@@ -16337,7 +16337,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/fulfillments/{id}/cancel' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Fulfillments
       responses:
@@ -16404,7 +16404,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/fulfillments/{id}/shipment' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "labels": [
@@ -16828,7 +16828,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/inventory-items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Inventory Items
       responses:
@@ -16915,7 +16915,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/inventory-items' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "sku": "{value}",
@@ -16992,7 +16992,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/inventory-items/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Inventory Items
       responses:
@@ -17113,7 +17113,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/inventory-items/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "sku": "{value}",
@@ -17173,7 +17173,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/inventory-items/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Inventory Items
       responses:
@@ -17309,7 +17309,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/inventory-items/{id}/location-levels' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Inventory Items
       responses:
@@ -17419,7 +17419,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "location_id": "{value}"
@@ -17519,7 +17519,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Inventory Items
       responses:
@@ -17609,7 +17609,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Inventory Items
       responses:
@@ -17677,7 +17677,7 @@ paths:
       x-codeSamples:
         - lang: Shell
           label: cURL
-          source: 'curl -X DELETE ''{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}'' \ -H ''x-medusa-access-token: {api_token}'''
+          source: 'curl -X DELETE ''{backend_url}/admin/inventory-items/{id}/location-levels/{location_id}'' \ -H ''Authorization: Bearer {access_token}'''
       tags:
         - Inventory Items
       responses:
@@ -18668,7 +18668,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/notifications' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Notifications
       responses:
@@ -18728,7 +18728,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/notifications/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Notifications
       responses:
@@ -18770,7 +18770,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/order-edits' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "order_id": "{value}",
@@ -18820,7 +18820,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/order-edits/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Order Edits
       responses:
@@ -18884,7 +18884,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/order-edits/{id}/confirm' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Order Edits
       responses:
@@ -18935,7 +18935,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/order-edits/{id}/items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Order Edits
       responses:
@@ -18992,7 +18992,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/order-edits/{id}/items/item/{item_id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "quantity": 7564330046324736
@@ -19056,7 +19056,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/order-edits/{id}/items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Order Edits
       responses:
@@ -19110,7 +19110,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/order-edits/{id}/items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Order Edits
       responses:
@@ -19155,7 +19155,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/order-edits/{id}/request' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Order Edits
       responses:
@@ -19206,7 +19206,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/order-edits/{id}/shipping-method' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "shipping_option_id": "{value}"
@@ -19270,7 +19270,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/order-edits/{id}/shipping-method/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Order Edits
       responses:
@@ -19324,7 +19324,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/order-edits/{id}/shipping-method/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Order Edits
       responses:
@@ -19983,7 +19983,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/orders' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -20073,7 +20073,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/orders/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -20133,7 +20133,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -20202,7 +20202,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}/archive' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "order_id": "{value}"
@@ -20275,7 +20275,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}/cancel' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -20350,7 +20350,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/orders/{id}/changes' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -20420,7 +20420,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}/complete' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "order_id": "{value}"
@@ -20534,7 +20534,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}/fulfillments' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "items": [
@@ -20631,7 +20631,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}/fulfillments/{fulfillment_id}/cancel' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -20765,7 +20765,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/orders/{id}/fulfillments/{fulfillment_id}/shipments' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "items": [
@@ -20820,7 +20820,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/orders/{id}/preview' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Orders
       responses:
@@ -20892,7 +20892,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/payment-collections' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "order_id": "{value}"
@@ -20941,7 +20941,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/payment-collections/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Payment Collections
       responses:
@@ -21016,7 +21016,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/payment-collections/{id}/mark-as-paid' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "order_id": "{value}"
@@ -21510,7 +21510,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/payments' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Payments
       responses:
@@ -21657,7 +21657,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/payments/payment-providers' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Payments
       responses:
@@ -21746,7 +21746,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/payments/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Payments
       responses:
@@ -21817,7 +21817,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/payments/{id}/capture' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Payments
       responses:
@@ -21897,7 +21897,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/payments/{id}/refund' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Payments
       responses:
@@ -22280,7 +22280,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/price-lists' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Lists
       responses:
@@ -22338,7 +22338,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/price-lists' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "title": "{value}",
@@ -22406,7 +22406,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/price-lists/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Lists
       responses:
@@ -22470,7 +22470,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/price-lists/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "description": "{value}",
@@ -22520,7 +22520,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/price-lists/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Lists
       responses:
@@ -22655,7 +22655,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/price-lists/{id}/prices/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Lists
       responses:
@@ -22721,7 +22721,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/price-lists/{id}/products' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Lists
       responses:
@@ -22870,7 +22870,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/price-preferences' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Preferences
       responses:
@@ -22928,7 +22928,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/price-preferences' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Preferences
       responses:
@@ -22989,7 +22989,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/price-preferences/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Preferences
       responses:
@@ -23053,7 +23053,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/price-preferences/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Preferences
       responses:
@@ -23097,7 +23097,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/price-preferences/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Price Preferences
       responses:
@@ -23661,7 +23661,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/product-categories' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Categories
       responses:
@@ -23719,7 +23719,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/product-categories' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Vesta",
@@ -23802,7 +23802,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/product-categories/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Categories
       responses:
@@ -23899,7 +23899,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/product-categories/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "parent_category_id": "{value}",
@@ -23948,7 +23948,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/product-categories/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Categories
       responses:
@@ -24031,7 +24031,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/product-categories/{id}/products' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Categories
       responses:
@@ -24521,7 +24521,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/product-tags' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Tags
       responses:
@@ -24579,7 +24579,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/product-tags' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "value": "{value}",
@@ -24645,7 +24645,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/product-tags/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Tags
       responses:
@@ -24718,7 +24718,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/product-tags/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "metadata": {}
@@ -24766,7 +24766,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/product-tags/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Tags
       responses:
@@ -25256,7 +25256,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/product-types' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Types
       responses:
@@ -25314,7 +25314,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/product-types' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "value": "{value}",
@@ -25380,7 +25380,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/product-types/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Types
       responses:
@@ -25453,7 +25453,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/product-types/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "metadata": {}
@@ -25501,7 +25501,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/product-types/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Types
       responses:
@@ -25995,7 +25995,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/product-variants' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Product Variants
       responses:
@@ -26638,7 +26638,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/products' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -26733,7 +26733,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "title": "{value}"
@@ -26797,7 +26797,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -26856,7 +26856,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/export' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -26899,7 +26899,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/import' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -26944,7 +26944,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/import/{transaction_id}/confirm' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -26999,7 +26999,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/products/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -27071,7 +27071,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -27115,7 +27115,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/products/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -27257,7 +27257,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/products/{id}/options' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -27359,7 +27359,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}/options' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "title": "{value}",
@@ -27434,7 +27434,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/products/{id}/options/{option_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -27513,7 +27513,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}/options/{option_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -27583,7 +27583,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/products/{id}/options/{option_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -28084,7 +28084,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/products/{id}/variants' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -28186,7 +28186,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}/variants' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "title": "{value}",
@@ -28258,7 +28258,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}/variants/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -28375,7 +28375,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}/variants/inventory-items/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -28443,7 +28443,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/products/{id}/variants/{variant_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -28522,7 +28522,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}/variants/{variant_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -28589,7 +28589,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/products/{id}/variants/{variant_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -28662,7 +28662,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}/variants/{variant_id}/inventory-items' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "required_quantity": 7390879820021760,
@@ -28746,7 +28746,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/products/{id}/variants/{variant_id}/inventory-items/{inventory_item_id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "required_quantity": 5324804697620480
@@ -28823,7 +28823,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/products/{id}/variants/{variant_id}/inventory-items/{inventory_item_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Products
       responses:
@@ -29332,7 +29332,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/promotions' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -29701,7 +29701,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/promotions' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "code": "{value}",
@@ -29797,7 +29797,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/promotions/rule-attribute-options/{rule_type}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -29909,7 +29909,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/promotions/rule-value-options/{rule_type}/{rule_attribute_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -29978,7 +29978,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/promotions/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -30132,7 +30132,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/promotions/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "campaign_id": "{value}"
@@ -30180,7 +30180,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/promotions/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -30366,7 +30366,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/promotions/{id}/buy-rules/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -30573,7 +30573,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/promotions/{id}/rules/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -30780,7 +30780,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/promotions/{id}/target-rules/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -30896,7 +30896,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/promotions/{id}/{rule_type}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Promotions
       responses:
@@ -31025,7 +31025,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/refund-reasons' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Refund Reasons
       responses:
@@ -31112,7 +31112,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/refund-reasons' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "label": "{value}",
@@ -31178,7 +31178,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/refund-reasons/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Refund Reasons
       responses:
@@ -31252,7 +31252,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/refund-reasons/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "description": "{value}"
@@ -31300,7 +31300,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/refund-reasons/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Refund Reasons
       responses:
@@ -31823,7 +31823,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/regions' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Regions
       responses:
@@ -31910,7 +31910,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/regions' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Heloise",
@@ -31977,7 +31977,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/regions/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Regions
       responses:
@@ -32076,7 +32076,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/regions/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "metadata": {}
@@ -32124,7 +32124,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/regions/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Regions
       responses:
@@ -32688,7 +32688,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/reservations' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Reservations
       responses:
@@ -32775,7 +32775,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/reservations' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "line_item_id": "{value}",
@@ -32845,7 +32845,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/reservations/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Reservations
       responses:
@@ -32926,7 +32926,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/reservations/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "description": "{value}",
@@ -32975,7 +32975,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/reservations/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Reservations
       responses:
@@ -33528,7 +33528,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/return-reasons' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Return Reasons
       responses:
@@ -33586,7 +33586,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/return-reasons' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "value": "{value}",
@@ -33652,7 +33652,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/return-reasons/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Return Reasons
       responses:
@@ -33716,7 +33716,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/return-reasons/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Return Reasons
       responses:
@@ -33760,7 +33760,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/return-reasons/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Return Reasons
       responses:
@@ -34419,7 +34419,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/returns' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -34506,7 +34506,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "order_id": "{value}",
@@ -34585,7 +34585,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/returns/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -34649,7 +34649,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "metadata": {}
@@ -34698,7 +34698,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/cancel' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -34770,7 +34770,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/dismiss-items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -34846,7 +34846,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/dismiss-items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -34916,7 +34916,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/returns/{id}/dismiss-items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -34982,7 +34982,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/receive' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "return_id": "{value}",
@@ -35039,7 +35039,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/returns/{id}/receive' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35125,7 +35125,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/receive-items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35201,7 +35201,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/receive-items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35271,7 +35271,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/returns/{id}/receive-items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35338,7 +35338,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/receive/confirm' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35405,7 +35405,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/request' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35449,7 +35449,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/returns/{id}/request' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35535,7 +35535,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/request-items' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35611,7 +35611,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/request-items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35681,7 +35681,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/returns/{id}/request-items/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35748,7 +35748,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/shipping-method' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "shipping_option_id": "{value}"
@@ -35828,7 +35828,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/returns/{id}/shipping-method/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -35898,7 +35898,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/returns/{id}/shipping-method/{action_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Returns
       responses:
@@ -36432,7 +36432,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/sales-channels' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Sales Channels
       responses:
@@ -36519,7 +36519,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/sales-channels' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Linnea",
@@ -36586,7 +36586,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/sales-channels/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Sales Channels
       responses:
@@ -36650,7 +36650,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/sales-channels/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "description": "{value}",
@@ -36699,7 +36699,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/sales-channels/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Sales Channels
       responses:
@@ -36782,7 +36782,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/sales-channels/{id}/products' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Sales Channels
       responses:
@@ -37326,7 +37326,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/shipping-options' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Options
       responses:
@@ -37413,7 +37413,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/shipping-options' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Julie",
@@ -37658,7 +37658,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/shipping-options/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Options
       responses:
@@ -37702,7 +37702,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/shipping-options/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Options
       responses:
@@ -37865,7 +37865,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/shipping-options/{id}/rules/batch' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Options
       responses:
@@ -38397,7 +38397,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/shipping-profiles' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Profiles
       responses:
@@ -38484,7 +38484,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/shipping-profiles' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Percy",
@@ -38551,7 +38551,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/shipping-profiles/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Profiles
       responses:
@@ -38628,7 +38628,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/shipping-profiles/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "metadata": {}
@@ -38676,7 +38676,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/shipping-profiles/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Shipping Profiles
       responses:
@@ -39194,7 +39194,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/stock-locations' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Stock Locations
       responses:
@@ -39252,7 +39252,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/stock-locations' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Maryam",
@@ -39319,7 +39319,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/stock-locations/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Stock Locations
       responses:
@@ -39383,7 +39383,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/stock-locations/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "address_id": "{value}",
@@ -39432,7 +39432,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/stock-locations/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Stock Locations
       responses:
@@ -39515,7 +39515,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/stock-locations/{id}/fulfillment-providers' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Stock Locations
       responses:
@@ -39595,7 +39595,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/stock-locations/{id}/fulfillment-sets' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Helene",
@@ -39683,7 +39683,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/stock-locations/{id}/sales-channels' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Stock Locations
       responses:
@@ -39816,7 +39816,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/stores' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Stores
       responses:
@@ -39876,7 +39876,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/stores/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Stores
       responses:
@@ -39940,7 +39940,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/stores/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Melvina",
@@ -40510,7 +40510,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/tax-rates' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Tax Rates
       responses:
@@ -40597,7 +40597,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/tax-rates' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "name": "Kaylin",
@@ -40664,7 +40664,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/tax-rates/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Tax Rates
       responses:
@@ -40728,7 +40728,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/tax-rates/{id}' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "metadata": {}
@@ -40776,7 +40776,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/tax-rates/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Tax Rates
       responses:
@@ -40843,7 +40843,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/tax-rates/{id}/rules' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "reference": "{value}",
@@ -40916,7 +40916,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/tax-rates/{id}/rules/{rule_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Tax Rates
       responses:
@@ -41956,7 +41956,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/tax-regions' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Tax Regions
       responses:
@@ -42043,7 +42043,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/tax-regions' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "country_code": "{value}",
@@ -42111,7 +42111,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/tax-regions/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Tax Regions
       responses:
@@ -42154,7 +42154,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/tax-regions/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Tax Regions
       responses:
@@ -42224,7 +42224,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/uploads' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Uploads
       responses:
@@ -42285,7 +42285,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/uploads/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Uploads
       responses:
@@ -42328,7 +42328,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/admin/uploads/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Uploads
       responses:
@@ -43136,7 +43136,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/workflows-executions' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Workflows Executions
       responses:
@@ -43225,7 +43225,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/workflows-executions/{id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Workflows Executions
       responses:
@@ -43274,7 +43274,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/workflows-executions/{workflow_id}/run' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Workflows Executions
       responses:
@@ -43343,7 +43343,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/workflows-executions/{workflow_id}/steps/failure' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "transaction_id": "{value}",
@@ -43406,7 +43406,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/admin/workflows-executions/{workflow_id}/steps/success' \
-            -H 'x-medusa-access-token: {api_token}' \
+            -H 'Authorization: Bearer {access_token}' \
             -H 'Content-Type: application/json' \
             --data-raw '{
               "transaction_id": "{value}",
@@ -43466,7 +43466,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/workflows-executions/{workflow_id}/subscribe' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Workflows Executions
       responses:
@@ -43537,7 +43537,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/workflows-executions/{workflow_id}/{transaction_id}' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Workflows Executions
       responses:
@@ -43596,7 +43596,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/admin/workflows-executions/{workflow_id}/{transaction_id}/{step_id}/subscribe' \
-            -H 'x-medusa-access-token: {api_token}'
+            -H 'Authorization: Bearer {access_token}'
       tags:
         - Workflows Executions
       responses:
@@ -49063,7 +49063,7 @@ components:
           $ref: '#/components/schemas/AdminSalesChannel'
     AdminOrderPreviewResponse:
       type: object
-      description: SUMMARY
+      description: The preview of an order.
       x-schemaName: AdminOrderPreviewResponse
       required:
         - order
@@ -49072,7 +49072,7 @@ components:
           $ref: '#/components/schemas/AdminOrderPreview'
     AdminOrderResponse:
       type: object
-      description: SUMMARY
+      description: An order's details.
       x-schemaName: AdminOrderResponse
       required:
         - order
@@ -49081,7 +49081,7 @@ components:
           $ref: '#/components/schemas/AdminOrder'
     AdminOrderReturnResponse:
       type: object
-      description: SUMMARY
+      description: The order return details.
       x-schemaName: AdminOrderReturnResponse
       required:
         - order
@@ -49106,29 +49106,13 @@ components:
           title: id
           description: The payment's ID.
         amount:
-          oneOf:
-            - type: string
-              title: amount
-              description: The payment's amount.
-            - type: number
-              title: amount
-              description: The payment's amount.
-            - type: string
-              title: amount
-              description: The payment's amount.
-            - $ref: '#/components/schemas/IBigNumber'
+          type: number
+          title: amount
+          description: The payment's amount.
         authorized_amount:
-          oneOf:
-            - type: string
-              title: authorized_amount
-              description: The payment's authorized amount.
-            - type: number
-              title: authorized_amount
-              description: The payment's authorized amount.
-            - type: string
-              title: authorized_amount
-              description: The payment's authorized amount.
-            - $ref: '#/components/schemas/IBigNumber'
+          type: number
+          title: authorized_amount
+          description: The amount authorized of the payment.
         currency_code:
           type: string
           title: currency_code
@@ -49136,86 +49120,64 @@ components:
         provider_id:
           type: string
           title: provider_id
-          description: The payment's provider id.
+          description: The ID of the payment provider used to process this payment.
         cart_id:
           type: string
           title: cart_id
-          description: The payment's cart id.
+          description: The ID of the associated cart.
         order_id:
           type: string
           title: order_id
-          description: The payment's order id.
+          description: The ID of the associated order.
         order_edit_id:
           type: string
           title: order_edit_id
-          description: The payment's order edit id.
+          description: The ID of the associated order edit.
         customer_id:
           type: string
           title: customer_id
-          description: The payment's customer id.
+          description: ID of the associated customer.
         data:
           type: object
-          description: The payment's data.
+          description: The payment's data, useful for processing by the payment provider.
+          externalDocs:
+            url: https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment#whats-a-payment
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The payment's created at.
+          description: The date the payment was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The payment's updated at.
+          description: The date the payment was updated.
         captured_at:
-          oneOf:
-            - type: string
-              title: captured_at
-              description: The payment's captured at.
-            - type: string
-              title: captured_at
-              description: The payment's captured at.
-              format: date-time
+          type: string
+          format: date-time
+          title: captured_at
+          description: The date the payment was captured.
         canceled_at:
-          oneOf:
-            - type: string
-              title: canceled_at
-              description: The payment's canceled at.
-            - type: string
-              title: canceled_at
-              description: The payment's canceled at.
-              format: date-time
+          type: string
+          format: date-time
+          title: canceled_at
+          description: The date the payment was canceled.
         captured_amount:
-          oneOf:
-            - type: string
-              title: captured_amount
-              description: The payment's captured amount.
-            - type: number
-              title: captured_amount
-              description: The payment's captured amount.
-            - type: string
-              title: captured_amount
-              description: The payment's captured amount.
-            - $ref: '#/components/schemas/IBigNumber'
+          type: number
+          title: captured_amount
+          description: The captured amount of the payment.
         refunded_amount:
-          oneOf:
-            - type: string
-              title: refunded_amount
-              description: The payment's refunded amount.
-            - type: number
-              title: refunded_amount
-              description: The payment's refunded amount.
-            - type: string
-              title: refunded_amount
-              description: The payment's refunded amount.
-            - $ref: '#/components/schemas/IBigNumber'
+          type: number
+          title: captured_amount
+          description: The refunded amount of the payment.
         captures:
           type: array
-          description: The payment's captures.
+          description: The details of payment captures.
           items:
             $ref: '#/components/schemas/BaseCapture'
         refunds:
           type: array
-          description: The payment's refunds.
+          description: The details of payment refunds.
           items:
             $ref: '#/components/schemas/BaseRefund'
         payment_collection:
@@ -49224,7 +49186,7 @@ components:
           $ref: '#/components/schemas/BasePaymentSession'
     AdminPaymentCollection:
       type: object
-      description: The payment collection's payment collections.
+      description: The payment collection's details.
       x-schemaName: AdminPaymentCollection
       required:
         - id
@@ -49245,77 +49207,41 @@ components:
         region_id:
           type: string
           title: region_id
-          description: The payment collection's region id.
+          description: The ID of the region this payment collection is associated with.
         amount:
-          oneOf:
-            - type: string
-              title: amount
-              description: The payment collection's amount.
-            - type: number
-              title: amount
-              description: The payment collection's amount.
-            - type: string
-              title: amount
-              description: The payment collection's amount.
-            - $ref: '#/components/schemas/IBigNumber'
+          type: number
+          title: amount
+          description: The total amount to be paid.
         authorized_amount:
-          oneOf:
-            - type: string
-              title: authorized_amount
-              description: The payment collection's authorized amount.
-            - type: number
-              title: authorized_amount
-              description: The payment collection's authorized amount.
-            - type: string
-              title: authorized_amount
-              description: The payment collection's authorized amount.
-            - $ref: '#/components/schemas/IBigNumber'
+          type: number
+          title: authorized_amount
+          description: The total authorized amount of the collection's payments.
         captured_amount:
-          oneOf:
-            - type: string
-              title: captured_amount
-              description: The payment collection's captured amount.
-            - type: number
-              title: captured_amount
-              description: The payment collection's captured amount.
-            - type: string
-              title: captured_amount
-              description: The payment collection's captured amount.
-            - $ref: '#/components/schemas/IBigNumber'
+          type: number
+          title: captured_amount
+          description: The total captured amount of the collection's payments.
         refunded_amount:
-          oneOf:
-            - type: string
-              title: refunded_amount
-              description: The payment collection's refunded amount.
-            - type: number
-              title: refunded_amount
-              description: The payment collection's refunded amount.
-            - type: string
-              title: refunded_amount
-              description: The payment collection's refunded amount.
-            - $ref: '#/components/schemas/IBigNumber'
+          type: number
+          title: refunded_amount
+          description: The total refunded amount of the collection's payments.
         completed_at:
-          oneOf:
-            - type: string
-              title: completed_at
-              description: The payment collection's completed at.
-            - type: string
-              title: completed_at
-              description: The payment collection's completed at.
-              format: date-time
+          type: string
+          format: date-time
+          title: completed_at
+          description: The date the payment collection was completed.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The payment collection's created at.
+          description: The date the payment collection was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The payment collection's updated at.
+          description: The date the payment collection was updated.
         metadata:
           type: object
-          description: The payment collection's metadata.
+          description: The payment collection's metadata, can hold custom key-value pairs.
         status:
           type: string
           description: The payment collection's status.
@@ -49327,7 +49253,7 @@ components:
             - partially_authorized
         payment_providers:
           type: array
-          description: The payment collection's payment providers.
+          description: The payment provider used to process the collection's payments and sessions.
           items:
             $ref: '#/components/schemas/BasePaymentProvider'
         payment_sessions:
@@ -49342,7 +49268,7 @@ components:
             $ref: '#/components/schemas/BasePayment'
     AdminPaymentCollectionResponse:
       type: object
-      description: SUMMARY
+      description: The payment collection's details.
       x-schemaName: AdminPaymentCollectionResponse
       required:
         - payment_collection
@@ -49351,11 +49277,23 @@ components:
           $ref: '#/components/schemas/AdminPaymentCollection'
     AdminPaymentProvider:
       type: object
-      description: The payment provider's payment providers.
+      description: The payment provider's details.
       x-schemaName: AdminPaymentProvider
+      required:
+        - is_enabled
+        - id
+      properties:
+        id:
+          type: string
+          title: id
+          description: The payment provider's ID.
+        is_enabled:
+          type: boolean
+          title: is_enabled
+          description: Whether the payment provider is enabled.
     AdminPaymentResponse:
       type: object
-      description: SUMMARY
+      description: The payment's details.
       x-schemaName: AdminPaymentResponse
       required:
         - payment
@@ -49364,42 +49302,42 @@ components:
           $ref: '#/components/schemas/AdminPayment'
     AdminPostCancelClaimReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of canceling a claim.
       x-schemaName: AdminPostCancelClaimReqSchema
       properties:
         no_notification:
           type: boolean
           title: no_notification
-          description: The claim's no notification.
+          description: Whether to send the customer a notification about the claim's cancelation.
     AdminPostCancelExchangeReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of canceling an exchange.
       x-schemaName: AdminPostCancelExchangeReqSchema
       properties:
         no_notification:
           type: boolean
           title: no_notification
-          description: The exchange's no notification.
+          description: Whether to send a notification to the customer about the exchange's cancelation.
     AdminPostCancelReturnReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of canceling a return.
       x-schemaName: AdminPostCancelReturnReqSchema
       properties:
         no_notification:
           type: boolean
           title: no_notification
-          description: The return's no notification.
+          description: Whether to send the customer a notification about the return's cancelation.
     AdminPostClaimItemsReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of the order items to add to the claim.
       x-schemaName: AdminPostClaimItemsReqSchema
       properties:
         items:
           type: array
-          description: The claim's items.
+          description: The item's details.
           items:
             type: object
-            description: The item's items.
+            description: An item's details.
             required:
               - id
               - quantity
@@ -49407,14 +49345,14 @@ components:
               id:
                 type: string
                 title: id
-                description: The item's ID.
+                description: The ID of the order's item.
               quantity:
                 type: number
                 title: quantity
-                description: The item's quantity.
+                description: The quantity of the order's item to add to the claim.
               reason:
                 type: string
-                description: The item's reason.
+                description: The reason the item is claimed.
                 enum:
                   - missing_item
                   - wrong_item
@@ -49427,18 +49365,18 @@ components:
               internal_note:
                 type: string
                 title: internal_note
-                description: The item's internal note.
+                description: A note that's only viewed by admin users.
     AdminPostClaimsAddItemsReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of the outbound items to add to the claim.
       x-schemaName: AdminPostClaimsAddItemsReqSchema
       properties:
         items:
           type: array
-          description: The claim's items.
+          description: The outbound item's details.
           items:
             type: object
-            description: The item's items.
+            description: An item's details.
             required:
               - variant_id
               - quantity
@@ -49446,11 +49384,11 @@ components:
               variant_id:
                 type: string
                 title: variant_id
-                description: The item's variant id.
+                description: The ID of the associated product variant.
               quantity:
                 type: number
                 title: quantity
-                description: The item's quantity.
+                description: The quantity to send to the customer.
               unit_price:
                 type: number
                 title: unit_price
@@ -49458,46 +49396,46 @@ components:
               internal_note:
                 type: string
                 title: internal_note
-                description: The item's internal note.
+                description: A note viewed only by admin users.
               metadata:
                 type: object
-                description: The item's metadata.
+                description: The item's metadata, can hold custom key-value pairs.
     AdminPostClaimsItemsActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details to update in the item.
       x-schemaName: AdminPostClaimsItemsActionReqSchema
       properties:
         quantity:
           type: number
           title: quantity
-          description: The claim's quantity.
+          description: The item's quantity.
         reason_id:
           type: string
           title: reason_id
-          description: The claim's reason id.
+          description: The ID of the return reason associated with the item.
         internal_note:
           type: string
           title: internal_note
-          description: The claim's internal note.
+          description: A note that's only viewed by admin users.
     AdminPostClaimsShippingActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details to update in the shipping method.
       x-schemaName: AdminPostClaimsShippingActionReqSchema
       properties:
         custom_amount:
           type: number
           title: custom_amount
-          description: The claim's custom amount.
+          description: The shipping method's custom amount.
         internal_note:
           type: string
           title: internal_note
-          description: The claim's internal note.
+          description: A note only viewed by admin users.
         metadata:
           type: object
-          description: The claim's metadata.
+          description: The claim's metadata, can hold custom key-value pairs.
     AdminPostClaimsShippingReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of the shipping method used to ship outbound items.
       x-schemaName: AdminPostClaimsShippingReqSchema
       required:
         - shipping_option_id
@@ -49505,33 +49443,33 @@ components:
         shipping_option_id:
           type: string
           title: shipping_option_id
-          description: The claim's shipping option id.
+          description: The ID of the associated shipping option.
         custom_amount:
           type: number
           title: custom_amount
-          description: The claim's custom amount.
+          description: Set a custom price for the shipping method.
         description:
           type: string
           title: description
-          description: The claim's description.
+          description: The shipping method's description.
         internal_note:
           type: string
           title: internal_note
-          description: The claim's internal note.
+          description: A note only viewed by admin users.
         metadata:
           type: object
-          description: The claim's metadata.
+          description: The claim's metadata, can hold custom key-value pairs.
     AdminPostExchangesAddItemsReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of outbound items.
       x-schemaName: AdminPostExchangesAddItemsReqSchema
       properties:
         items:
           type: array
-          description: The exchange's items.
+          description: The details of outbound items.
           items:
             type: object
-            description: The item's items.
+            description: An item's details.
             required:
               - variant_id
               - quantity
@@ -49539,7 +49477,7 @@ components:
               variant_id:
                 type: string
                 title: variant_id
-                description: The item's variant id.
+                description: The ID of the associated product variant.
               quantity:
                 type: number
                 title: quantity
@@ -49551,58 +49489,58 @@ components:
               internal_note:
                 type: string
                 title: internal_note
-                description: The item's internal note.
+                description: A note viewed only by admin users.
               allow_backorder:
                 type: boolean
                 title: allow_backorder
-                description: The item's allow backorder.
+                description: Whether the item can be added even if it's not in stock.
               metadata:
                 type: object
-                description: The item's metadata.
+                description: The item's metadata, can hold custom key-value pairs.
     AdminPostExchangesItemsActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details to update in an outbound item.
       x-schemaName: AdminPostExchangesItemsActionReqSchema
       properties:
         quantity:
           type: number
           title: quantity
-          description: The exchange's quantity.
+          description: The item's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The exchange's internal note.
+          description: A note only viewed by admin users.
     AdminPostExchangesRequestItemsReturnActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details to update in an inbound (returned) item.
       x-schemaName: AdminPostExchangesRequestItemsReturnActionReqSchema
       properties:
         quantity:
           type: number
           title: quantity
-          description: The exchange's quantity.
+          description: The item's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The exchange's internal note.
+          description: A note viewed only by admin users.
         reason_id:
           type: string
           title: reason_id
-          description: The exchange's reason id.
+          description: The ID of the associated return reason.
         metadata:
           type: object
-          description: The exchange's metadata.
+          description: The exchange's metadata, can hold custom key-value pairs.
     AdminPostExchangesReturnRequestItemsReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of the inbound (return) items.
       x-schemaName: AdminPostExchangesReturnRequestItemsReqSchema
       properties:
         items:
           type: array
-          description: The exchange's items.
+          description: The details of the inbound (return) items.
           items:
             type: object
-            description: The item's items.
+            description: An item's details.
             required:
               - id
               - quantity
@@ -49610,7 +49548,7 @@ components:
               id:
                 type: string
                 title: id
-                description: The item's ID.
+                description: The ID of the order's item.
               quantity:
                 type: number
                 title: quantity
@@ -49622,33 +49560,33 @@ components:
               internal_note:
                 type: string
                 title: internal_note
-                description: The item's internal note.
+                description: A note viewed only by admin users.
               reason_id:
                 type: string
                 title: reason_id
-                description: The item's reason id.
+                description: The ID of the return reason to associate with the item.
               metadata:
                 type: object
-                description: The item's metadata.
+                description: The item's metadata, can hold custom key-value pairs.
     AdminPostExchangesShippingActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of the shipping method to update.
       x-schemaName: AdminPostExchangesShippingActionReqSchema
       properties:
         custom_amount:
           type: number
           title: custom_amount
-          description: The exchange's custom amount.
+          description: The shipping method's custom amount.
         internal_note:
           type: string
           title: internal_note
-          description: The exchange's internal note.
+          description: A note viewed by admin users only.
         metadata:
           type: object
-          description: The exchange's metadata.
+          description: The exchange's metadata, can hold custom key-value pairs.
     AdminPostExchangesShippingReqSchema:
       type: object
-      description: SUMMARY
+      description: The outbound shipping method's details.
       x-schemaName: AdminPostExchangesShippingReqSchema
       required:
         - shipping_option_id
@@ -49656,25 +49594,25 @@ components:
         shipping_option_id:
           type: string
           title: shipping_option_id
-          description: The exchange's shipping option id.
+          description: The ID of the associated shipping option.
         custom_amount:
           type: number
           title: custom_amount
-          description: The exchange's custom amount.
+          description: Set a custom amount for the shipping method.
         description:
           type: string
           title: description
-          description: The exchange's description.
+          description: The shipping method's description.
         internal_note:
           type: string
           title: internal_note
-          description: The exchange's internal note.
+          description: A note viewed by admin users only.
         metadata:
           type: object
-          description: The exchange's metadata.
+          description: The exchange's metadata, can hold custom key-value pairs.
     AdminPostOrderClaimsReqSchema:
       type: object
-      description: SUMMARY
+      description: The claim's details.
       x-schemaName: AdminPostOrderClaimsReqSchema
       required:
         - type
@@ -49689,7 +49627,7 @@ components:
         order_id:
           type: string
           title: order_id
-          description: The claim's order id.
+          description: The ID of the order the claim is created for.
         description:
           type: string
           title: description
@@ -49697,25 +49635,25 @@ components:
         internal_note:
           type: string
           title: internal_note
-          description: The claim's internal note.
+          description: A note viewed only by admin users.
         reason_id:
           type: string
           title: reason_id
-          description: The claim's reason id.
+          description: The ID of the associated return reason.
         metadata:
           type: object
-          description: The claim's metadata.
+          description: The claim's metadata, can hold custom key-value pairs.
     AdminPostOrderEditsAddItemsReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of items to be edited.
       x-schemaName: AdminPostOrderEditsAddItemsReqSchema
       properties:
         items:
           type: array
-          description: The order edit's items.
+          description: The details of items to be edited.
           items:
             type: object
-            description: The item's items.
+            description: An item's details.
             required:
               - variant_id
               - quantity
@@ -49723,7 +49661,7 @@ components:
               variant_id:
                 type: string
                 title: variant_id
-                description: The item's variant id.
+                description: The ID of the associated product variant.
               quantity:
                 type: number
                 title: quantity
@@ -49735,30 +49673,30 @@ components:
               internal_note:
                 type: string
                 title: internal_note
-                description: The item's internal note.
+                description: A note viewed only by admin users.
               allow_backorder:
                 type: boolean
                 title: allow_backorder
-                description: The item's allow backorder.
+                description: Whether the item can be added even if there's no available invenotory quantity of the variant.
               metadata:
                 type: object
-                description: The item's metadata.
+                description: The item's metadata, can hold custom key-value pairs.
     AdminPostOrderEditsItemsActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details to update in the item.
       x-schemaName: AdminPostOrderEditsItemsActionReqSchema
       properties:
         quantity:
           type: number
           title: quantity
-          description: The order edit's quantity.
+          description: The item's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The order edit's internal note.
+          description: A note viewed only by admin users.
     AdminPostOrderEditsReqSchema:
       type: object
-      description: SUMMARY
+      description: The order edit's details.
       x-schemaName: AdminPostOrderEditsReqSchema
       required:
         - order_id
@@ -49766,7 +49704,7 @@ components:
         order_id:
           type: string
           title: order_id
-          description: The order edit's order id.
+          description: The ID of the order this edit is for.
         description:
           type: string
           title: description
@@ -49774,29 +49712,29 @@ components:
         internal_note:
           type: string
           title: internal_note
-          description: The order edit's internal note.
+          description: A note viewed only by admin users.
         metadata:
           type: object
-          description: The order edit's metadata.
+          description: The order edit's metadata, can hold custom key-value pairs.
     AdminPostOrderEditsShippingActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The shipping method's details.
       x-schemaName: AdminPostOrderEditsShippingActionReqSchema
       properties:
         custom_amount:
           type: number
           title: custom_amount
-          description: The order edit's custom amount.
+          description: Set a custom price for the shipping method.
         internal_note:
           type: string
           title: internal_note
-          description: The order edit's internal note.
+          description: A note viewed only by admin users.
         metadata:
           type: object
-          description: The order edit's metadata.
+          description: The order edit's metadata, can hold custom key-value pairs.
     AdminPostOrderEditsShippingReqSchema:
       type: object
-      description: SUMMARY
+      description: The shipping method's details.
       x-schemaName: AdminPostOrderEditsShippingReqSchema
       required:
         - shipping_option_id
@@ -49804,25 +49742,25 @@ components:
         shipping_option_id:
           type: string
           title: shipping_option_id
-          description: The order edit's shipping option id.
+          description: The ID of the associated shipping option.
         custom_amount:
           type: number
           title: custom_amount
-          description: The order edit's custom amount.
+          description: Set a custom price for the shipping method.
         description:
           type: string
           title: description
-          description: The order edit's description.
+          description: The shipping method's description.
         internal_note:
           type: string
           title: internal_note
-          description: The order edit's internal note.
+          description: A note viewed only by admin users.
         metadata:
           type: object
-          description: The order edit's metadata.
+          description: The shipping method's metadata, can hold custom key-value pairs.
     AdminPostOrderEditsUpdateItemQuantityReqSchema:
       type: object
-      description: SUMMARY
+      description: The order item's details to update.
       x-schemaName: AdminPostOrderEditsUpdateItemQuantityReqSchema
       required:
         - quantity
@@ -49830,14 +49768,14 @@ components:
         quantity:
           type: number
           title: quantity
-          description: The order edit's quantity.
+          description: The item's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The order edit's internal note.
+          description: A note viewed only by admin users.
     AdminPostOrderExchangesReqSchema:
       type: object
-      description: SUMMARY
+      description: The exchange's details.
       x-schemaName: AdminPostOrderExchangesReqSchema
       required:
         - order_id
@@ -49845,7 +49783,7 @@ components:
         order_id:
           type: string
           title: order_id
-          description: The exchange's order id.
+          description: The ID of the order this exchange is created for.
         description:
           type: string
           title: description
@@ -49853,72 +49791,72 @@ components:
         internal_note:
           type: string
           title: internal_note
-          description: The exchange's internal note.
+          description: A note viewed only by admin users.
         metadata:
           type: object
-          description: The exchange's metadata.
+          description: The exchange's metadata, can hold custom key-value pairs.
     AdminPostReceiveReturnsReqSchema:
       type: object
-      description: SUMMARY
+      description: The return receival details.
       x-schemaName: AdminPostReceiveReturnsReqSchema
       properties:
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: A note viewed only by admin users.
         description:
           type: string
           title: description
           description: The return's description.
         metadata:
           type: object
-          description: The return's metadata.
+          description: The return's metadata, can hold custom key-value pairs.
     AdminPostReturnsConfirmRequestReqSchema:
       type: object
-      description: SUMMARY
+      description: The confirmation's details.
       x-schemaName: AdminPostReturnsConfirmRequestReqSchema
       properties:
         no_notification:
           type: boolean
           title: no_notification
-          description: The return's no notification.
+          description: Whether to send the customer a notification about the confirmation.
     AdminPostReturnsDismissItemsActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details to update of the damaged item.
       x-schemaName: AdminPostReturnsDismissItemsActionReqSchema
       properties:
         quantity:
           type: number
           title: quantity
-          description: The return's quantity.
+          description: The item's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: A note viewed only by admin users.
     AdminPostReturnsReceiveItemsActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details of the received item.
       x-schemaName: AdminPostReturnsReceiveItemsActionReqSchema
       properties:
         quantity:
           type: number
           title: quantity
-          description: The return's quantity.
+          description: The item's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: A note viewed only by admin users.
     AdminPostReturnsReceiveItemsReqSchema:
       type: object
-      description: SUMMARY
+      description: The items details.
       x-schemaName: AdminPostReturnsReceiveItemsReqSchema
       properties:
         items:
           type: array
-          description: The return's items.
+          description: The items details.
           items:
             type: object
-            description: The item's items.
+            description: An item's details.
             required:
               - id
               - quantity
@@ -49926,7 +49864,7 @@ components:
               id:
                 type: string
                 title: id
-                description: The item's ID.
+                description: The ID of the item in the order.
               quantity:
                 type: number
                 title: quantity
@@ -49938,10 +49876,10 @@ components:
               internal_note:
                 type: string
                 title: internal_note
-                description: The item's internal note.
+                description: A note viewed only by admin users.
     AdminPostReturnsReqSchema:
       type: object
-      description: SUMMARY
+      description: The return's details.
       x-schemaName: AdminPostReturnsReqSchema
       required:
         - order_id
@@ -49949,11 +49887,11 @@ components:
         order_id:
           type: string
           title: order_id
-          description: The return's order id.
+          description: The ID of the order the return belongs to.
         location_id:
           type: string
           title: location_id
-          description: The return's location id.
+          description: The ID of the location the items are returned to.
         description:
           type: string
           title: description
@@ -49961,45 +49899,45 @@ components:
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: A note viewed only by admin users.
         no_notification:
           type: boolean
           title: no_notification
-          description: The return's no notification.
+          description: Whether to send the customer a notification about the created return.
         metadata:
           type: object
-          description: The return's metadata.
+          description: The return's metadata, can hold custom key-value pairs.
     AdminPostReturnsRequestItemsActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The details to update in the item.
       x-schemaName: AdminPostReturnsRequestItemsActionReqSchema
       properties:
         quantity:
           type: number
           title: quantity
-          description: The claim's quantity.
+          description: The item's quantity.
         internal_note:
           type: string
           title: internal_note
-          description: The claim's internal note.
+          description: A note viewed only by admin users.
         reason_id:
           type: string
           title: reason_id
-          description: The claim's reason id.
+          description: The ID of the associated return reason.
         metadata:
           type: object
-          description: The claim's metadata.
+          description: The claim's metadata, can hold custom key-value pairs.
     AdminPostReturnsRequestItemsReqSchema:
       type: object
-      description: SUMMARY
+      description: The items' details.
       x-schemaName: AdminPostReturnsRequestItemsReqSchema
       properties:
         items:
           type: array
-          description: The claim's items.
+          description: The items' details.
           items:
             type: object
-            description: The item's items.
+            description: An item's details.
             required:
               - id
               - quantity
@@ -50019,49 +49957,49 @@ components:
               internal_note:
                 type: string
                 title: internal_note
-                description: The item's internal note.
+                description: A note viewed only by admin users.
               reason_id:
                 type: string
                 title: reason_id
-                description: The item's reason id.
+                description: The ID of the associated return reason.
               metadata:
                 type: object
-                description: The item's metadata.
+                description: The item's metadata, can hold custom key-value pairs.
     AdminPostReturnsReturnReqSchema:
       type: object
-      description: SUMMARY
+      description: The return's details.
       x-schemaName: AdminPostReturnsReturnReqSchema
       properties:
         location_id:
           type: string
           title: location_id
-          description: The return's location id.
+          description: The ID of the location to return items to.
         no_notification:
           type: boolean
           title: no_notification
-          description: The return's no notification.
+          description: Whether the customer should receive notifications about updates to the return.
         metadata:
           type: object
-          description: The return's metadata.
+          description: The return's metadata, can hold custom key-value pairs.
     AdminPostReturnsShippingActionReqSchema:
       type: object
-      description: SUMMARY
+      description: The shipping method's details.
       x-schemaName: AdminPostReturnsShippingActionReqSchema
       properties:
         custom_amount:
           type: number
           title: custom_amount
-          description: The return's custom amount.
+          description: Set a custom price for the shipping method.
         internal_note:
           type: string
           title: internal_note
-          description: The return's internal note.
+          description: A note viewed only by admin users.
         metadata:
           type: object
-          description: The return's metadata.
+          description: The return's metadata, can hold custom key-value pairs.
     AdminPostReturnsShippingReqSchema:
       type: object
-      description: SUMMARY
+      description: The shipping method's details.
       x-schemaName: AdminPostReturnsShippingReqSchema
       required:
         - shipping_option_id
@@ -50069,25 +50007,25 @@ components:
         shipping_option_id:
           type: string
           title: shipping_option_id
-          description: The exchange's shipping option id.
+          description: The ID of the associated shipping option.
         custom_amount:
           type: number
           title: custom_amount
-          description: The exchange's custom amount.
+          description: Set the price of the shipping method.
         description:
           type: string
           title: description
-          description: The exchange's description.
+          description: The shipping method's description.
         internal_note:
           type: string
           title: internal_note
-          description: The exchange's internal note.
+          description: A note viewed only by admin users.
         metadata:
           type: object
-          description: The exchange's metadata.
+          description: The exchange's metadata, can hold custom key-value pairs.
     AdminPrice:
       type: object
-      description: The price's prices.
+      description: The price's details.
       x-schemaName: AdminPrice
       required:
         - id
@@ -50114,6 +50052,7 @@ components:
           type: string
           title: currency_code
           description: The price's currency code.
+          example: usd
         amount:
           type: number
           title: amount
@@ -50124,30 +50063,30 @@ components:
         min_quantity:
           type: number
           title: min_quantity
-          description: The price's min quantity.
+          description: The minimum quantity that must be available in the cart for the price to be applied.
         max_quantity:
           type: number
           title: max_quantity
-          description: The price's max quantity.
+          description: The maximum quantity allowed to be available in the cart for the price to be applied.
         price_set_id:
           type: string
           title: price_set_id
-          description: The price's price set id.
+          description: The ID of the associated price set.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The price's created at.
+          description: The date the price was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The price's updated at.
+          description: The date the price was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The price's deleted at.
+          description: The date the price was deleted.
     AdminPriceList:
       type: object
       description: The price list's details.
@@ -50184,11 +50123,11 @@ components:
         starts_at:
           type: string
           title: starts_at
-          description: The price list's starts at.
+          description: The date the price list starts.
         ends_at:
           type: string
           title: ends_at
-          description: The price list's ends at.
+          description: The date the price list ends.
         status:
           type: string
           description: The price list's status.
@@ -50210,20 +50149,20 @@ components:
           type: string
           format: date-time
           title: created_at
-          description: The price list's created at.
+          description: The date the price list was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The price list's updated at.
+          description: The date the price list was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The price list's deleted at.
+          description: The date the price list was deleted.
     AdminPriceListBatchResponse:
       type: object
-      description: SUMMARY
+      description: The details of the created, updated, and deleted prices in a price list.
       x-schemaName: AdminPriceListBatchResponse
       required:
         - created
@@ -50232,17 +50171,17 @@ components:
       properties:
         created:
           type: array
-          description: The price list's created.
+          description: The created prices.
           items:
             $ref: '#/components/schemas/AdminPrice'
         updated:
           type: array
-          description: The price list's updated.
+          description: The updated prices.
           items:
             $ref: '#/components/schemas/AdminPrice'
         deleted:
           type: object
-          description: SUMMARY
+          description: The details of the deleted prices.
           required:
             - ids
             - object
@@ -50250,22 +50189,23 @@ components:
           properties:
             ids:
               type: array
-              description: The deleted's ids.
+              description: The IDs of the deleted prices.
               items:
                 type: string
                 title: ids
-                description: The id's ids.
+                description: A price's ID.
             object:
               type: string
               title: object
-              description: SUMMARY
+              description: The name of the deleted object.
+              default: price
             deleted:
               type: boolean
               title: deleted
-              description: SUMMARY
+              description: Whether the prices were deleted.
     AdminPriceListDeleteResponse:
       type: object
-      description: SUMMARY
+      description: The details of the deleted price list.
       x-schemaName: AdminPriceListDeleteResponse
       required:
         - id
@@ -50284,10 +50224,10 @@ components:
         deleted:
           type: boolean
           title: deleted
-          description: Whether the Price List was deleted.
+          description: Whether the price list was deleted.
     AdminPriceListListResponse:
       type: object
-      description: SUMMARY
+      description: The paginated list of price lists.
       x-schemaName: AdminPriceListListResponse
       required:
         - limit
@@ -50298,23 +50238,23 @@ components:
         limit:
           type: number
           title: limit
-          description: The price list's limit.
+          description: The maximum number of items returned.
         offset:
           type: number
           title: offset
-          description: The price list's offset.
+          description: The number of items skipped before retrieving the returned items.
         count:
           type: number
           title: count
-          description: The price list's count.
+          description: The total number of items.
         price_lists:
           type: array
-          description: The price list's price lists.
+          description: The list of price lists.
           items:
             $ref: '#/components/schemas/AdminPriceList'
     AdminPriceListPrice:
       type: object
-      description: The price's prices.
+      description: The details of a price list's price.
       x-schemaName: AdminPriceListPrice
       required:
         - variant_id
@@ -50334,7 +50274,7 @@ components:
         variant_id:
           type: string
           title: variant_id
-          description: The price's variant id.
+          description: The ID of the product variant this price list is for.
         rules:
           type: object
           description: The price's rules.
@@ -50350,6 +50290,7 @@ components:
           type: string
           title: currency_code
           description: The price's currency code.
+          example: usd
         amount:
           type: number
           title: amount
@@ -50360,33 +50301,33 @@ components:
         min_quantity:
           type: number
           title: min_quantity
-          description: The price's min quantity.
+          description: The minimum quantity that must be available in the cart for the price to be applied.
         max_quantity:
           type: number
           title: max_quantity
-          description: The price's max quantity.
+          description: The maximum quantity allowed to be available in the cart for the price to be applied.
         price_set_id:
           type: string
           title: price_set_id
-          description: The price's price set id.
+          description: The ID of the price set this price belongs to.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The price's created at.
+          description: The date the price was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The price's updated at.
+          description: The date the price was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The price's deleted at.
+          description: The date the price was deleted.
     AdminPriceListResponse:
       type: object
-      description: SUMMARY
+      description: The price list's details.
       x-schemaName: AdminPriceListResponse
       required:
         - price_list
@@ -50414,32 +50355,34 @@ components:
           type: string
           title: attribute
           description: The price preference's attribute.
+          example: region_id
         value:
           type: string
           title: value
           description: The price preference's value.
+          example: reg_123
         is_tax_inclusive:
           type: boolean
           title: is_tax_inclusive
-          description: The price preference's is tax inclusive.
+          description: Whether prices matching this preference include taxes.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The price preference's created at.
+          description: The date the price preference was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The price preference's updated at.
+          description: The date the price preference was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The price preference's deleted at.
+          description: The date the price preference was deleted.
     AdminPricePreferenceDeleteResponse:
       type: object
-      description: SUMMARY
+      description: The details of the deleted price preference.
       x-schemaName: AdminPricePreferenceDeleteResponse
       required:
         - id
@@ -50458,10 +50401,10 @@ components:
         deleted:
           type: boolean
           title: deleted
-          description: Whether the Price Preference was deleted.
+          description: Whether the price preference was deleted.
     AdminPricePreferenceListResponse:
       type: object
-      description: SUMMARY
+      description: The paginated list of price preferences.
       x-schemaName: AdminPricePreferenceListResponse
       required:
         - limit
@@ -50472,23 +50415,23 @@ components:
         limit:
           type: number
           title: limit
-          description: The price preference's limit.
+          description: The maximum number of items returned.
         offset:
           type: number
           title: offset
-          description: The price preference's offset.
+          description: The number of items skipped before retrieving the returned items.
         count:
           type: number
           title: count
-          description: The price preference's count.
+          description: The total count of items.
         price_preferences:
           type: array
-          description: The price preference's price preferences.
+          description: The list of price preferences.
           items:
             $ref: '#/components/schemas/AdminPricePreference'
     AdminPricePreferenceResponse:
       type: object
-      description: SUMMARY
+      description: The price preference's details.
       x-schemaName: AdminPricePreferenceResponse
       required:
         - price_preference
@@ -50497,7 +50440,7 @@ components:
           $ref: '#/components/schemas/AdminPricePreference'
     AdminProduct:
       type: object
-      description: The product's parent.
+      description: The product's details.
       x-schemaName: AdminProduct
       required:
         - type
@@ -50531,37 +50474,37 @@ components:
           $ref: '#/components/schemas/AdminCollection'
         categories:
           type: array
-          description: The parent's categories.
+          description: The product's categories.
           items:
             $ref: '#/components/schemas/AdminProductCategory'
         sales_channels:
           type: array
-          description: The parent's sales channels.
+          description: The sales channels that the product is available in.
           items:
             $ref: '#/components/schemas/AdminSalesChannel'
         variants:
           type: array
-          description: The parent's variants.
+          description: The product's variants.
           items:
             $ref: '#/components/schemas/AdminProductVariant'
         type:
           $ref: '#/components/schemas/AdminProductType'
         tags:
           type: array
-          description: The parent's tags.
+          description: The product's tags.
           items:
             $ref: '#/components/schemas/AdminProductTag'
         length:
           type: number
           title: length
-          description: The parent's length.
+          description: The product's length.
         title:
           type: string
           title: title
-          description: The parent's title.
+          description: The product's title.
         status:
           type: string
-          description: The parent's status.
+          description: The product's status.
           enum:
             - draft
             - proposed
@@ -50569,103 +50512,103 @@ components:
             - rejected
         options:
           type: array
-          description: The parent's options.
+          description: The product's options.
           items:
             $ref: '#/components/schemas/BaseProductOption'
         description:
           type: string
           title: description
-          description: The parent's description.
+          description: The product's description.
         id:
           type: string
           title: id
-          description: The parent's ID.
+          description: The product's ID.
         metadata:
           type: object
-          description: The parent's metadata.
+          description: The product's metadata, can hold custom key-value pairs.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The parent's created at.
+          description: The date the product was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The parent's updated at.
+          description: The date the product was updated.
         handle:
           type: string
           title: handle
-          description: The parent's handle.
+          description: The product's unique handle.
         subtitle:
           type: string
           title: subtitle
-          description: The parent's subtitle.
+          description: The product's subtitle.
         is_giftcard:
           type: boolean
           title: is_giftcard
-          description: The parent's is giftcard.
+          description: Whether the product is a gift card.
         thumbnail:
           type: string
           title: thumbnail
-          description: The parent's thumbnail.
+          description: The product's thumbnail.
         width:
           type: number
           title: width
-          description: The parent's width.
+          description: The product's width.
         weight:
           type: number
           title: weight
-          description: The parent's weight.
+          description: The product's weight.
         height:
           type: number
           title: height
-          description: The parent's height.
+          description: The product's height.
         origin_country:
           type: string
           title: origin_country
-          description: The parent's origin country.
+          description: The product's origin country.
         hs_code:
           type: string
           title: hs_code
-          description: The parent's hs code.
+          description: The product's HS code.
         mid_code:
           type: string
           title: mid_code
-          description: The parent's mid code.
+          description: The product's MID code.
         material:
           type: string
           title: material
-          description: The parent's material.
+          description: The product's material.
         collection_id:
           type: string
           title: collection_id
-          description: The parent's collection id.
+          description: The ID of the collection that the product belongs to.
         type_id:
           type: string
           title: type_id
-          description: The parent's type id.
+          description: The ID of the product's type.
         images:
           type: array
-          description: The parent's images.
+          description: The product's images.
           items:
             $ref: '#/components/schemas/BaseProductImage'
         discountable:
           type: boolean
           title: discountable
-          description: The parent's discountable.
+          description: Whether discounts can be applied on the product.
         external_id:
           type: string
           title: external_id
-          description: The parent's external id.
+          description: The ID of a product in an external system, such as an ERP or CMS.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The parent's deleted at.
+          description: The date the product was deleted.
     AdminProductCategory:
       type: object
-      description: The category's categories.
+      description: The product category's details.
       x-schemaName: AdminProductCategory
       required:
         - category_children
@@ -50684,7 +50627,7 @@ components:
       properties:
         category_children:
           type: array
-          description: The category's category children.
+          description: The category's children.
           items:
             type: object
         parent_category:
@@ -50708,45 +50651,45 @@ components:
           description: The category's ID.
         metadata:
           type: object
-          description: The category's metadata.
+          description: The category's metadata, can hold custom key-value pairs.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The category's created at.
+          description: The date the category was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The category's updated at.
+          description: The date the category was updated.
         handle:
           type: string
           title: handle
-          description: The category's handle.
+          description: The category's unique handle.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The category's deleted at.
+          description: The date the category was deleted.
         is_active:
           type: boolean
           title: is_active
-          description: The category's is active.
+          description: Whether the category is active. If disabled, the category isn't shown in the storefront.
         is_internal:
           type: boolean
           title: is_internal
-          description: The category's is internal.
+          description: Whether the category is internal. If enabled, the category is only seen by admin users.
         rank:
           type: number
           title: rank
-          description: The category's rank.
+          description: The category's rank among sibling categories.
         parent_category_id:
           type: string
           title: parent_category_id
-          description: The category's parent category id.
+          description: The ID of the category's parent.
     AdminProductCategoryDeleteResponse:
       type: object
-      description: SUMMARY
+      description: The details of deleting the category.
       x-schemaName: AdminProductCategoryDeleteResponse
       required:
         - id
@@ -50765,10 +50708,10 @@ components:
         deleted:
           type: boolean
           title: deleted
-          description: Whether the Product Category was deleted.
+          description: Whether the product category was deleted.
     AdminProductCategoryListResponse:
       type: object
-      description: SUMMARY
+      description: The paginated list of product categories.
       x-schemaName: AdminProductCategoryListResponse
       required:
         - limit
@@ -50779,23 +50722,23 @@ components:
         limit:
           type: number
           title: limit
-          description: The product category's limit.
+          description: The maximum number of items returned.
         offset:
           type: number
           title: offset
-          description: The product category's offset.
+          description: The number of items skipped before retrieving the returned items.
         count:
           type: number
           title: count
-          description: The product category's count.
+          description: The total number of items.
         product_categories:
           type: array
-          description: The product category's product categories.
+          description: The list of product categories.
           items:
             $ref: '#/components/schemas/AdminProductCategory'
     AdminProductCategoryResponse:
       type: object
-      description: SUMMARY
+      description: The product category's details.
       x-schemaName: AdminProductCategoryResponse
       required:
         - product_category
@@ -50804,7 +50747,7 @@ components:
           $ref: '#/components/schemas/AdminProductCategory'
     AdminProductDeleteResponse:
       type: object
-      description: SUMMARY
+      description: The details of the product deletion.
       x-schemaName: AdminProductDeleteResponse
       required:
         - id
@@ -50823,7 +50766,7 @@ components:
         deleted:
           type: boolean
           title: deleted
-          description: Whether the Product was deleted.
+          description: Whether the product was deleted.
     AdminProductOption:
       type: object
       description: The product's product option.

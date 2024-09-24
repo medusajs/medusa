@@ -1,4 +1,8 @@
-import { MedusaContainer, RemoteExpandProperty } from "@medusajs/types"
+import {
+  IModuleService,
+  MedusaContainer,
+  RemoteExpandProperty,
+} from "@medusajs/types"
 import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { remoteJoinerData } from "../../__fixtures__/joiner/data"
 import { serviceConfigs, serviceMock } from "../../__mocks__/joiner/mock_data"
@@ -51,7 +55,7 @@ const fetchServiceDataCallback = jest.fn(
       ? lowerCaseFirst(serviceConfig.serviceName) + "Service"
       : serviceConfig.serviceName
 
-    const service = container.resolve(moduleRegistryName)
+    const service: IModuleService = container.resolve(moduleRegistryName)
     const methodName = relationship?.inverse
       ? `getBy${toPascalCase(pkField)}`
       : "list"

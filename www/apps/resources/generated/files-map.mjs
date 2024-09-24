@@ -15364,6 +15364,70 @@ export const filesMap = [
     "pathname": "/references/types/HttpTypes/types/types.HttpTypes.TransactionStepStatus"
   },
   {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/interfaces/types.IndexTypes.IIndexService/page.mdx",
+    "pathname": "/references/types/IndexTypes/interfaces/types.IndexTypes.IIndexService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/interfaces/types.IndexTypes.IndexModuleOptions/page.mdx",
+    "pathname": "/references/types/IndexTypes/interfaces/types.IndexTypes.IndexModuleOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/interfaces/types.IndexTypes.IndexServiceEntryPoints/page.mdx",
+    "pathname": "/references/types/IndexTypes/interfaces/types.IndexTypes.IndexServiceEntryPoints"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/interfaces/types.IndexTypes.StorageProvider/page.mdx",
+    "pathname": "/references/types/IndexTypes/interfaces/types.IndexTypes.StorageProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.EntityNameModuleConfigMap/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.EntityNameModuleConfigMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.IndexFilters/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.IndexFilters"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.IndexOrderBy/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.IndexOrderBy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.IndexQueryConfig/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.IndexQueryConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.ObjectToIndexFields/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.ObjectToIndexFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.OperatorMap/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.OrderBy/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.OrderBy"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.QueryFunctionReturnPagination/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.QueryFunctionReturnPagination"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.QueryResultSet/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.QueryResultSet"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.SchemaObjectEntityRepresentation/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.SchemaObjectEntityRepresentation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.SchemaObjectRepresentation/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.SchemaObjectRepresentation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/IndexTypes/types/types.IndexTypes.SchemaPropertiesMap/page.mdx",
+    "pathname": "/references/types/IndexTypes/types/types.IndexTypes.SchemaPropertiesMap"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.BulkUpdateInventoryLevelInput/page.mdx",
     "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.BulkUpdateInventoryLevelInput"
   },
@@ -16092,6 +16156,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.FixtureEntryPoints"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.FixtureEntryPoints-1/page.mdx",
+    "pathname": "/references/types/interfaces/types.FixtureEntryPoints-1"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.GetUploadedFileType/page.mdx",
     "pathname": "/references/types/interfaces/types.GetUploadedFileType"
   },
@@ -16260,6 +16328,10 @@ export const filesMap = [
     "pathname": "/references/types/types/types.CleanupObject"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.CleanupObject-1/page.mdx",
+    "pathname": "/references/types/types/types.CleanupObject-1"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.CreateProductVariantWorkflowInputDTO/page.mdx",
     "pathname": "/references/types/types/types.CreateProductVariantWorkflowInputDTO"
   },
@@ -16270,6 +16342,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.Depth/page.mdx",
     "pathname": "/references/types/types/types.Depth"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.Depth-1/page.mdx",
+    "pathname": "/references/types/types/types.Depth-1"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.Dictionary/page.mdx",
@@ -16292,12 +16368,24 @@ export const filesMap = [
     "pathname": "/references/types/types/types.ExcludedProps-1"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.ExcludedProps-2/page.mdx",
+    "pathname": "/references/types/types/types.ExcludedProps-2"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.ExpandScalar/page.mdx",
     "pathname": "/references/types/types/types.ExpandScalar"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ExtractFiltersOperators/page.mdx",
     "pathname": "/references/types/types/types.ExtractFiltersOperators"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.ExtractFiltersOperators-1/page.mdx",
+    "pathname": "/references/types/types/types.ExtractFiltersOperators-1"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.ExtractOrderByOperators/page.mdx",
+    "pathname": "/references/types/types/types.ExtractOrderByOperators"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.FilterValue/page.mdx",
@@ -16416,6 +16504,10 @@ export const filesMap = [
     "pathname": "/references/types/types/types.Maybe"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.Maybe-1/page.mdx",
+    "pathname": "/references/types/types/types.Maybe-1"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.ModuleDeclaration/page.mdx",
     "pathname": "/references/types/types/types.ModuleDeclaration"
   },
@@ -16426,6 +16518,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.OmitNever/page.mdx",
     "pathname": "/references/types/types/types.OmitNever"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.OmitNever-1/page.mdx",
+    "pathname": "/references/types/types/types.OmitNever-1"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.Order/page.mdx",
@@ -16448,12 +16544,20 @@ export const filesMap = [
     "pathname": "/references/types/types/types.PrevLimit"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.Price/page.mdx",
+    "pathname": "/references/types/types/types.Price"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.Primary/page.mdx",
     "pathname": "/references/types/types/types.Primary"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.Product/page.mdx",
     "pathname": "/references/types/types/types.Product"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.Product-1/page.mdx",
+    "pathname": "/references/types/types/types.Product-1"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ProductCategory/page.mdx",
@@ -16464,12 +16568,20 @@ export const filesMap = [
     "pathname": "/references/types/types/types.ProductVariant"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.ProductVariant-1/page.mdx",
+    "pathname": "/references/types/types/types.ProductVariant-1"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.Query/page.mdx",
     "pathname": "/references/types/types/types.Query"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.RawBigNumberPrefix/page.mdx",
     "pathname": "/references/types/types/types.RawBigNumberPrefix"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.RawBigNumberPrefix-1/page.mdx",
+    "pathname": "/references/types/types/types.RawBigNumberPrefix-1"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.ReadonlyPrimary/page.mdx",
@@ -16496,6 +16608,10 @@ export const filesMap = [
     "pathname": "/references/types/types/types.Scalars"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.Scalars-1/page.mdx",
+    "pathname": "/references/types/types/types.Scalars-1"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.Separator/page.mdx",
     "pathname": "/references/types/types/types.Separator"
   },
@@ -16518,6 +16634,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.TypeOnly-1/page.mdx",
     "pathname": "/references/types/types/types.TypeOnly-1"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.TypeOnly-2/page.mdx",
+    "pathname": "/references/types/types/types.TypeOnly-2"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.UpdateFulfillmentShippingOptionRulesWorkflowDTO/page.mdx",
@@ -16574,6 +16694,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types.HttpTypes/page.mdx",
     "pathname": "/references/types/types.HttpTypes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types.IndexTypes/page.mdx",
+    "pathname": "/references/types/types.IndexTypes"
   },
   {
     "filePath": "/www/apps/resources/references/types/types.InventoryTypes/page.mdx",

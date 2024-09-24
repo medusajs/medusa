@@ -2,7 +2,7 @@ import { TypeList } from "docs-ui"
 
 # OmitNever
 
- **OmitNever**: &#123; [K in keyof T as T[K] extends never ? never : K]: T[K] &#125;
+ **OmitNever**: &#123; [K in keyof T as TypeOnly&#60;T[K]&#62; extends never ? never : K]: T[K] &#125;
 
 ## Type Parameters
 

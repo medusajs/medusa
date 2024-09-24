@@ -51,6 +51,16 @@ export type Product = {
   sales_channels_link?: Array<LinkProductSalesChannel>
   sales_channels?: Array<SalesChannel>
   metadata?: Maybe<Scalars["JSON"]["output"]>
+  translation?: Maybe<ProductTranslation>
+  categories?: Array<ProductCategory>
+}
+
+export type ProductTranslation = {
+  __typename?: "ProductTranslation"
+  id: Scalars["ID"]["output"]
+  title: Scalars["String"]["output"]
+  description: Scalars["String"]["output"]
+  product?: Maybe<Product>
 }
 
 export type ProductVariant = {
@@ -60,6 +70,16 @@ export type ProductVariant = {
   title: Scalars["String"]["output"]
   sku: Scalars["String"]["output"]
   product?: Maybe<Product>
+  calculated_price?: Maybe<Scalars["JSON"]["output"]>
+  translation?: Maybe<ProductVariantTranslation>
+}
+
+export type ProductVariantTranslation = {
+  __typename?: "ProductVariantTranslation"
+  id: Scalars["ID"]["output"]
+  title: Scalars["String"]["output"]
+  description: Scalars["String"]["output"]
+  variant?: Maybe<ProductVariant>
 }
 
 export type ProductCategory = {
@@ -67,6 +87,15 @@ export type ProductCategory = {
   id: Scalars["ID"]["output"]
   handle: Scalars["String"]["output"]
   title?: Maybe<Scalars["String"]["output"]>
+  translation?: Maybe<ProductCategoryTranslation>
+}
+
+export type ProductCategoryTranslation = {
+  __typename?: "ProductCategoryTranslation"
+  id: Scalars["ID"]["output"]
+  title: Scalars["String"]["output"]
+  description: Scalars["String"]["output"]
+  category?: Maybe<ProductCategory>
 }
 
 export type SalesChannel = {

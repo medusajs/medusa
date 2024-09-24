@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     default: config.titleSuffix || "",
   },
   description:
-    "Explore Medusa's recipes, API references, configurations, and more.",
+    "Explore Medusa's recipes, API references, configurations, storefront guides, and more.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
   ),

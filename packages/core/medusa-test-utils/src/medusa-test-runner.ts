@@ -1,24 +1,25 @@
-import { asValue } from "awilix"
+import { MedusaAppOutput } from "@medusajs/modules-sdk"
 import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
 } from "@medusajs/utils"
+import { asValue } from "awilix"
 import { createDatabase, dropDatabase } from "pg-god"
 import { getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
+import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
+import { configLoaderOverride } from "./medusa-test-runner-utils/config"
 import {
   initDb,
   migrateDatabase,
   syncLinks,
 } from "./medusa-test-runner-utils/use-db"
-import { configLoaderOverride } from "./medusa-test-runner-utils/config"
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
-import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
 
 const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME
-const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_USERNAME = process.env.DB_USERNAME ?? ""
+const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -26,11 +27,14 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
-const dbTestUtilFactory = (): any => ({
+export const dbTestUtilFactory = (): any => ({
   pgConnection_: null,
 
   create: async function (dbName: string) {
-    await createDatabase({ databaseName: dbName }, pgGodCredentials)
+    await createDatabase(
+      { databaseName: dbName, errorIfExist: false },
+      pgGodCredentials
+    )
   },
 
   teardown: async function ({ schema }: { schema?: string } = {}) {
@@ -80,11 +84,14 @@ export interface MedusaSuiteOptions<TService = unknown> {
     schema: string
     clientUrl: string
   }
+  getMedusaApp: () => MedusaAppOutput
 }
 
 export function medusaIntegrationTestRunner({
   moduleName,
   dbName,
+  medusaConfigFile,
+  loadApplication,
   schema = "public",
   env = {},
   debug = false,
@@ -94,6 +101,8 @@ export function medusaIntegrationTestRunner({
   moduleName?: string
   env?: Record<string, any>
   dbName?: string
+  medusaConfigFile?: string
+  loadApplication?: boolean
   schema?: string
   debug?: boolean
   inApp?: boolean
@@ -110,12 +119,13 @@ export function medusaIntegrationTestRunner({
     debug,
   }
 
-  const cwd = process.cwd()
+  const cwd = medusaConfigFile ?? process.cwd()
 
   let shutdown = async () => void 0
   const dbUtils = dbTestUtilFactory()
   let globalContainer: ContainerLike
   let apiUtils: any
+  let loadedApplication: any
 
   let options = {
     api: new Proxy(
@@ -134,6 +144,7 @@ export function medusaIntegrationTestRunner({
         },
       }
     ),
+    getMedusaApp: () => loadedApplication,
     getContainer: () => globalContainer,
     dbConfig: {
       dbName,
@@ -168,12 +179,16 @@ export function medusaIntegrationTestRunner({
 
     console.log(`Migrating database with core migrations and links ${dbName}`)
     await migrateDatabase(appLoader)
-    await syncLinks(appLoader)
+    await syncLinks(appLoader, cwd, container)
     await clearInstances()
 
     let containerRes: MedusaContainer = container
     let serverShutdownRes: () => any
     let portRes: number
+
+    if (loadApplication) {
+      loadedApplication = await appLoader.load()
+    }
 
     try {
       const {
@@ -200,7 +215,7 @@ export function medusaIntegrationTestRunner({
     if (inApp) {
       console.log(`Migrating database with core migrations and links ${dbName}`)
       await migrateDatabase(appLoader)
-      await syncLinks(appLoader)
+      await syncLinks(appLoader, cwd, containerRes)
     }
 
     const axios = (await import("axios")).default.default

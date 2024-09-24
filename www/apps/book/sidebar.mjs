@@ -85,6 +85,107 @@ export const sidebar = numberSidebarItems(
     },
     {
       type: "link",
+      path: "/customization",
+      title: "Custom Development",
+      chapterTitle: "Customization",
+      children: [
+        {
+          type: "link",
+          title: "Build Custom Features",
+          path: "/customization/custom-features",
+          children: [
+            {
+              type: "link",
+              title: "Brand Module",
+              path: "/customization/custom-features/module",
+            },
+            {
+              type: "link",
+              title: "Create Brand Workflow",
+              path: "/customization/custom-features/workflow",
+            },
+            {
+              type: "link",
+              title: "Create Brand API Route",
+              path: "/customization/custom-features/api-route",
+            },
+          ],
+        },
+        {
+          type: "link",
+          title: "Extend Models",
+          path: "/customization/extend-models",
+          children: [
+            {
+              type: "link",
+              title: "Define Link",
+              path: "/customization/extend-models/define-link",
+            },
+            {
+              type: "link",
+              title: "Create Links Between Records",
+              path: "/customization/extend-models/create-links",
+            },
+            {
+              type: "link",
+              title: "Extend Route",
+              path: "/customization/extend-models/extend-create-product",
+            },
+            {
+              type: "link",
+              title: "Query Linked Records",
+              path: "/customization/extend-models/query-linked-records",
+            },
+          ],
+        },
+        {
+          type: "link",
+          title: "Customize Admin",
+          path: "/customization/customize-admin",
+          children: [
+            {
+              type: "link",
+              title: "Add Widgets",
+              path: "/customization/customize-admin/widget",
+            },
+            {
+              type: "link",
+              title: "Add UI Route",
+              path: "/customization/customize-admin/route",
+            },
+          ],
+        },
+        {
+          type: "link",
+          title: "Integrate Systems",
+          path: "/customization/integrate-systems",
+          children: [
+            {
+              type: "link",
+              title: "Integrate with Service",
+              path: "/customization/integrate-systems/service",
+            },
+            {
+              type: "link",
+              title: "Handle Event",
+              path: "/customization/integrate-systems/handle-event",
+            },
+            {
+              type: "link",
+              title: "Schedule Task",
+              path: "/customization/integrate-systems/schedule-task",
+            },
+          ],
+        },
+        {
+          type: "link",
+          title: "Next Steps",
+          path: "/customization/next-steps",
+        },
+      ],
+    },
+    {
+      type: "link",
       path: "/advanced-development",
       title: "Advanced Development",
       chapterTitle: "Advanced",
@@ -133,6 +234,11 @@ export const sidebar = numberSidebarItems(
               type: "link",
               path: "/advanced-development/api-routes/cors",
               title: "Handling CORS",
+            },
+            {
+              type: "link",
+              path: "/advanced-development/api-routes/additional-data",
+              title: "Additional Data",
             },
           ],
         },
@@ -225,7 +331,7 @@ export const sidebar = numberSidebarItems(
             {
               type: "link",
               path: "/advanced-development/data-models/index",
-              title: "Index",
+              title: "Define Index",
             },
             {
               type: "link",
@@ -266,18 +372,24 @@ export const sidebar = numberSidebarItems(
           ],
         },
         {
-          type: "sub-category",
+          type: "link",
+          path: "/advanced-development/workflows",
           title: "Workflows",
           children: [
             {
               type: "link",
-              path: "/advanced-development/workflows/constructor-constraints",
-              title: "Constraints",
+              path: "/advanced-development/workflows/variable-manipulation",
+              title: "Variable Manipulation",
             },
             {
               type: "link",
               path: "/advanced-development/workflows/conditions",
-              title: "Conditions in Workflows",
+              title: "Using Conditions",
+            },
+            {
+              type: "link",
+              path: "/advanced-development/workflows/constructor-constraints",
+              title: "Constructor Constraints",
             },
             {
               type: "link",
@@ -323,11 +435,6 @@ export const sidebar = numberSidebarItems(
               type: "link",
               path: "/advanced-development/workflows/execute-another-workflow",
               title: "Execute Another Workflow",
-            },
-            {
-              type: "link",
-              path: "/advanced-development/workflows/advanced-example",
-              title: "Example: Advanced Workflow",
             },
           ],
         },
@@ -418,7 +525,7 @@ export const sidebar = numberSidebarItems(
           children: [
             {
               type: "link",
-              path: "/debugging-and-testing/testing-tools/unit-tests/module-example",
+              path: "/debugging-and-testing/testing-tools/modules-tests/module-example",
               title: "Example",
             },
           ],
@@ -444,11 +551,18 @@ export const sidebar = numberSidebarItems(
       type: "link",
       path: "/more-resources",
       title: "More Resources",
-    },
-    {
-      type: "link",
-      path: "/cheatsheet",
-      title: "Cheat Sheet",
+      children: [
+        {
+          type: "link",
+          path: "/more-resources/cheatsheet",
+          title: "Cheat Sheet",
+        },
+        {
+          type: "link",
+          path: "/more-resources/examples",
+          title: "Examples",
+        },
+      ],
     },
   ])
 )
