@@ -1,28 +1,3 @@
 {
-  "compilerOptions": {
-    "lib": ["es2021"],
-    "target": "es2021",
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "declarationMap": true,
-    "declaration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
-    "noImplicitReturns": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitThis": true,
-    "allowJs": true,
-    "skipLibCheck": true
-  },
-  "include": ["src"],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "extends": "../../../_tsconfig.base.json"
 }

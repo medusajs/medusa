@@ -145,12 +145,12 @@ export class InventoryItem {
   stocked_quantity: number
 
   @BeforeCreate()
-  private beforeCreate(): void {
+  beforeCreate(): void {
     this.id = generateEntityId(this.id, "iitem")
   }
 
   @OnInit()
-  private onInit(): void {
+  onInit(): void {
     this.id = generateEntityId(this.id, "iitem")
   }
 }
