@@ -20,17 +20,16 @@ type InputSource = {
   primaryKey: string
 }
 
-type ReadOnlyInputSource =
-  | {
-      serviceName: string
-      entity?: string
-      primaryKey: string
-    }
-  | {
-      serviceName: string
-      entity?: string
-      alias?: string
-    }
+type ReadOnlyInputSource = {
+  linkable:
+    | CombinedSource
+    | InputSource
+    | {
+        serviceName: string
+        entity?: string
+      }
+  field?: string
+}
 
 type InputToJson = {
   toJSON: () => InputSource
@@ -40,6 +39,7 @@ type CombinedSource = Record<any, any> & InputToJson
 
 type InputOptions = {
   linkable: CombinedSource | InputSource
+  field?: string
   isList?: boolean
   deleteCascade?: boolean
 }
@@ -135,7 +135,7 @@ function prepareServiceConfig(
     serviceConfig = {
       key: source.linkable,
       alias: source.alias ?? camelToSnakeCase(source.field ?? ""),
-      field: source.field,
+      field: input.field ?? source.field,
       primaryKey: source.primaryKey,
       isList: false,
       deleteCascade: false,
@@ -150,7 +150,7 @@ function prepareServiceConfig(
     serviceConfig = {
       key: source.linkable,
       alias: source.alias ?? camelToSnakeCase(source.field ?? ""),
-      field: source.field,
+      field: input.field ?? source.field,
       primaryKey: source.primaryKey,
       isList: input.isList ?? false,
       deleteCascade: input.deleteCascade ?? false,
