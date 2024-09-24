@@ -12,6 +12,9 @@ import {
   RecursiveEntity1,
   RecursiveEntity2,
 } from "../__fixtures__/utils"
+import { TestDatabaseUtils } from "medusa-test-utils"
+
+const dbUtils = TestDatabaseUtils.dbTestUtilFactory()
 
 jest.mock("@mikro-orm/core", () => ({
   ...jest.requireActual("@mikro-orm/core"),
@@ -24,11 +27,14 @@ jest.mock("@mikro-orm/core", () => ({
   })),
 }))
 
+const dbName = "utils-tests"
+
 describe("mikroOrmUpdateDeletedAtRecursively", () => {
   describe("using circular cascading", () => {
     let orm!: MikroORM
 
     beforeEach(async () => {
+      dbUtils.create(dbName)
       orm = await MikroORM.init({
         entities: [
           Entity1,
@@ -41,13 +47,14 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
           DeepRecursiveEntity4,
           InternalCircularDependencyEntity1,
         ],
-        dbName: "test",
+        dbName,
         type: "postgresql",
       })
     })
 
     afterEach(async () => {
       await orm.close()
+      dbUtils.shutdown(dbName)
     })
 
     it("should successfully mark the entities deleted_at recursively", async () => {
