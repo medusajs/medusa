@@ -1,4 +1,4 @@
-import ConfigStore from "configstore"
+const ConfigStore = require("configstore")
 import reporter from "../reporter"
 
 const config = new ConfigStore(`medusa`, {}, { globalConfigPath: true })

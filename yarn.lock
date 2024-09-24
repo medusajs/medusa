@@ -6114,7 +6114,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/cli/medusa-cli"
   dependencies:
-    "@medusajs/utils": ^1.11.9
+    "@medusajs/framework": ^0.0.1
     "@swc/core": ^1.5.29
     "@swc/jest": ^0.2.36
     "@types/yargs": ^15.0.15
