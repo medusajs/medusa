@@ -76,6 +76,7 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "CurrencyCurrencyRegionRegionLink",
+                entity: "LinkCurrencyCurrencyRegionRegion",
                 primaryKey: "currency_code",
                 foreignKey: "code",
                 alias: "region_link",
@@ -93,6 +94,7 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "CurrencyCurrencyRegionRegionLink",
+                entity: "LinkCurrencyCurrencyRegionRegion",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "currency_link",
@@ -171,6 +173,7 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "ProductProductVariantRegionRegionLink",
+                entity: "LinkProductProductVariantRegionRegion",
                 primaryKey: "product_variant_id",
                 foreignKey: "id",
                 alias: "region_link",
@@ -190,6 +193,7 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "ProductProductVariantRegionRegionLink",
+                entity: "LinkProductProductVariantRegionRegion",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "product_variant_link",
@@ -271,6 +275,7 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "CurrencyCurrencyRegionRegionLink",
+                entity: "LinkCurrencyCurrencyRegionRegion",
                 primaryKey: "currency_code",
                 foreignKey: "code",
                 alias: "region_link",
@@ -288,6 +293,7 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "CurrencyCurrencyRegionRegionLink",
+                entity: "LinkCurrencyCurrencyRegionRegion",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "currency_link",
@@ -365,6 +371,7 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "CurrencyCurrencyRegionRegionLink",
+                entity: "LinkCurrencyCurrencyRegionRegion",
                 primaryKey: "currency_code",
                 foreignKey: "code",
                 alias: "region_link",
@@ -382,6 +389,7 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "CurrencyCurrencyRegionRegionLink",
+                entity: "LinkCurrencyCurrencyRegionRegion",
                 primaryKey: "region_id",
                 foreignKey: "id",
                 alias: "currency_link",
