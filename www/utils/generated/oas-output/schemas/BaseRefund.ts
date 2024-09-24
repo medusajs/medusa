@@ -21,8 +21,6 @@
  *     type: string
  *     title: refund_reason_id
  *     description: The ID of the refund reason.
- *   refund_reason:
- *     $ref: "#/components/schemas/RefundReason"
  *   note:
  *     type: string
  *     title: note
