@@ -1251,7 +1251,6 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
       })
 
       if (primaryKeyFilter) {
-        console.log(primaryKeyFilter, filters)
         primaryKeyArg = {
           name: primaryKeyFilter,
           value: filters[primaryKeyFilter],
