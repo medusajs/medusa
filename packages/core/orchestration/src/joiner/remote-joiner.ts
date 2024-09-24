@@ -1243,10 +1243,8 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
   otherArgs: { name: string; value: any }[] | undefined
   pkName: string
 } {
-  const args = (queryObj.args ?? []).filter((arg) => arg.name !== "filters")
-
   let pkName = serviceConfig.primaryKeys[0]
-  let primaryKeyArg = args.find((arg) => {
+  let primaryKeyArg = queryObj.args?.find((arg) => {
     const include = serviceConfig.primaryKeys.includes(arg.name)
     if (include) {
       pkName = arg.name
@@ -1254,46 +1252,30 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
     return include
   })
 
-  let otherArgs = args.filter(
+  let otherArgs = queryObj.args?.filter(
     (arg) => !serviceConfig.primaryKeys.includes(arg.name)
   )
-  otherArgs = otherArgs.length ? otherArgs : undefined
 
-  let filtersMap: Map<string, any> = new Map<string, any>()
-
-  if (!otherArgs || !primaryKeyArg) {
-    const filters =
-      queryObj.args?.find((arg) => arg.name === "filters")?.value ?? {}
-    filtersMap = new Map(Object.entries(filters))
-  }
+  const filters =
+    queryObj.args?.find((arg) => arg.name === "filters")?.value ?? {}
 
   if (!primaryKeyArg) {
-    const primaryKeyFilter = serviceConfig.primaryKeys.find((key) => {
-      return filtersMap.has(key)
+    const primaryKeyFilter = Object.keys(filters).find((key) => {
+      return serviceConfig.primaryKeys.includes(key)
     })
+
     if (primaryKeyFilter) {
       pkName = primaryKeyFilter
       primaryKeyArg = {
         name: primaryKeyFilter,
-        value: filtersMap.get(primaryKeyFilter),
+        value: filters[primaryKeyFilter],
       }
     }
+
+    delete filters[primaryKeyFilter]
   }
 
-  if (!otherArgs) {
-    const filters = Object.fromEntries(filtersMap)
-    otherArgs = Object.keys(filters)
-      .filter((key) => {
-        return !serviceConfig.primaryKeys.includes(key)
-      })
-      .map((key) => {
-        return {
-          name: key,
-          value: filters[key],
-        }
-      })
-    otherArgs = otherArgs.length ? otherArgs : undefined
-  }
+  otherArgs = otherArgs.length ? otherArgs : undefined
 
   return {
     primaryKeyArg,
