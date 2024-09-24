@@ -16,6 +16,7 @@ import {
   ModulesSdkUtils,
   createMedusaContainer,
   defineJoinerConfig,
+  resolveExports,
   toMikroOrmEntities,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
@@ -66,7 +67,7 @@ export async function loadInternalModule(
       loadedModule = resolution.moduleExports
     } else {
       loadedModule = await import(modulePath)
-      loadedModule = (loadedModule as any).default
+      loadedModule = (loadedModule as any).default.default
     }
   } catch (error) {
     if (
@@ -263,7 +264,7 @@ async function importAllFromDir(path: string) {
   return (
     await Promise.all(filesToLoad.map((filePath) => import(filePath)))
   ).flatMap((value) => {
-    return Object.values(value)
+    return Object.values(resolveExports(value))
   })
 }
 
@@ -284,7 +285,9 @@ export async function loadResources(
     }
 
     const [moduleService, services, models, repositories] = await Promise.all([
-      import(modulePath).then((moduleExports) => moduleExports.default.service),
+      import(modulePath).then((moduleExports) => {
+        return resolveExports(moduleExports).default.service
+      }),
       importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail
       ),

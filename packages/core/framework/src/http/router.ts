@@ -1,4 +1,9 @@
-import { parseCorsOrigins, promiseAll, wrapHandler } from "@medusajs/utils"
+import {
+  parseCorsOrigins,
+  promiseAll,
+  resolveExports,
+  wrapHandler,
+} from "@medusajs/utils"
 import cors from "cors"
 import {
   type Express,
@@ -487,7 +492,9 @@ class ApiRoutesLoader {
     const absolutePath = join(this.#sourceDir, middlewareFilePath)
 
     await import(absolutePath).then((import_) => {
-      const middlewaresConfig = import_.default as MiddlewaresConfig | undefined
+      const middlewaresConfig = resolveExports(import_).default as
+        | MiddlewaresConfig
+        | undefined
 
       if (!middlewaresConfig) {
         log({

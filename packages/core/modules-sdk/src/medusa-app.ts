@@ -25,6 +25,7 @@ import {
   isObject,
   isString,
   promiseAll,
+  resolveExports,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
@@ -297,7 +298,7 @@ async function MedusaApp_({
 
   const modules: MedusaModuleConfig =
     modulesConfig ??
-    (
+    resolveExports(
       await import(
         modulesConfigPath ??
           process.cwd() + (modulesConfigFileName ?? "/modules-config")
