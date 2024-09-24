@@ -8,10 +8,10 @@ import {
   Platform,
   Reference,
   ReferenceType,
+  SerializeOptions,
   SerializationContext,
   Utils,
 } from "@mikro-orm/core"
-import { SerializeOptions } from "@mikro-orm/core/serialization/EntitySerializer"
 
 function isVisible<T extends object>(
   meta: EntityMetadata<T>,
