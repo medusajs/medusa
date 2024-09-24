@@ -232,19 +232,24 @@ medusaIntegrationTestRunner({
       })
 
       it(`should perform cross module query and apply filters correctly to the correct modules [1]`, async () => {
-        const { data } = await query.graph({
-          entity: "product",
-          fields: ["id", "title", "variants.*", "variants.prices.amount"],
-          filters: {
-            variants: {
-              prices: {
-                amount: {
-                  $gt: 100,
+        const { data } = await query.graph(
+          {
+            entity: "product",
+            fields: ["id", "title", "variants.*", "variants.prices.amount"],
+            filters: {
+              variants: {
+                prices: {
+                  amount: {
+                    $gt: 100,
+                  },
                 },
               },
             },
           },
-        })
+          {
+            throwIfKeyNotFound: true,
+          }
+        )
 
         expect(data).toEqual([
           expect.objectContaining({

@@ -1190,16 +1190,10 @@ export class RemoteJoiner {
     }
 
     let pkName = serviceConfig.primaryKeys[0]
-    const primaryKeyArg = queryObj.args?.find((arg) => {
-      const inc = serviceConfig.primaryKeys.includes(arg.name)
-      if (inc) {
-        pkName = arg.name
-      }
-      return inc
+    const { primaryKeyArg, otherArgs } = gerPrimaryKeysAndOtherFilters({
+      serviceConfig,
+      queryObj,
     })
-    const otherArgs = queryObj.args?.filter(
-      (arg) => !serviceConfig.primaryKeys.includes(arg.name)
-    )
 
     const implodeMapping: InternalImplodeMapping[] = []
     const parsedExpands = this.parseExpands({
@@ -1237,5 +1231,61 @@ export class RemoteJoiner {
     })
 
     return response.data
+  }
+}
+
+function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
+  primaryKeyArg: { name: string; value: any } | undefined
+  otherArgs: { name: string; value: any }[] | undefined
+} {
+  let primaryKeyArg = queryObj.args?.find((arg) => {
+    return serviceConfig.primaryKeys.includes(arg.name)
+  })
+  if (!primaryKeyArg) {
+    const filters = (primaryKeyArg = queryObj.args?.find(
+      (arg) => arg.name === "filters"
+    )?.value)
+    if (filters) {
+      const primaryKeyFilter = Object.keys(filters).find((key) => {
+        return serviceConfig.primaryKeys.includes(key)
+      })
+
+      if (primaryKeyFilter) {
+        console.log(primaryKeyFilter, filters)
+        primaryKeyArg = {
+          name: primaryKeyFilter,
+          value: filters[primaryKeyFilter],
+        }
+      }
+    }
+  }
+
+  let otherArgs = queryObj.args?.filter(
+    (arg) => !serviceConfig.primaryKeys.includes(arg.name)
+  )
+
+  if (!otherArgs) {
+    const filters = (primaryKeyArg = queryObj.args?.find(
+      (arg) => arg.name === "filters"
+    )?.value)
+    if (filters) {
+      otherArgs = Object.keys(filters).filter((key) => {
+        return !serviceConfig.primaryKeys.includes(key)
+      })
+
+      if (otherArgs.length) {
+        otherArgs = otherArgs.map((key) => {
+          return {
+            name: key,
+            value: filters[key],
+          }
+        })
+      }
+    }
+  }
+
+  return {
+    primaryKeyArg,
+    otherArgs,
   }
 }
