@@ -6227,7 +6227,7 @@ __metadata:
     rimraf: ^5.0.1
     slugify: ^1.6.6
     supertest: ^4.0.2
-    typescript: ^5.3.3
+    typescript: ^5.6.2
     uuid: ^9.0.0
     zod: 3.22.4
   peerDependencies:
@@ -6235,7 +6235,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@*, @medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
+"@medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
@@ -25156,8 +25156,6 @@ __metadata:
   resolution: "medusa-test-utils@workspace:packages/core/medusa-test-utils"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    "@medusajs/modules-sdk": "*"
-    "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7

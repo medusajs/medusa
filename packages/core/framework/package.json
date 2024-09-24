@@ -26,7 +26,8 @@
     "./types": "./dist/types/index.js",
     "./orchestration": "./dist/orchestration/index.js",
     "./workflows-sdk": "./dist/workflows-sdk/index.js",
-    "./workflows-sdk/composer": "./dist/workflows-sdk/composer.js"
+    "./workflows-sdk/composer": "./dist/workflows-sdk/composer.js",
+    "./modules-sdk": "./dist/modules-sdk/index.js"
   },
   "engines": {
     "node": ">=20"

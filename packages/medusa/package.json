@@ -46,7 +46,7 @@
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
     "supertest": "^4.0.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",

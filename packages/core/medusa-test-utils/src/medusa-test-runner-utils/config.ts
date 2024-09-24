@@ -1,4 +1,4 @@
-import { getConfigFile } from "@medusajs/utils"
+import { getConfigFile } from "@medusajs/framework/utils"
 
 export async function configLoaderOverride(
   entryDirectory: string,

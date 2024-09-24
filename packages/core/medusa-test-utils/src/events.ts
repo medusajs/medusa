@@ -1,4 +1,4 @@
-import { IEventBusModuleService } from "@medusajs/types"
+import { IEventBusModuleService } from "@medusajs/framework/types"
 import { EventEmitter } from "events"
 
 // Allows you to wait for all subscribers to execute for a given event. Only works with the local event bus.
