@@ -1,8 +1,8 @@
-import { isObject, isString } from "@medusajs/utils"
 import { IndexTypes } from "@medusajs/types"
+import { camelToSnakeCase, isObject, isString } from "@medusajs/utils"
+import { OrderBy, QueryFormat, QueryOptions, Select } from "@types"
 import { GraphQLList } from "graphql"
 import { Knex } from "knex"
-import { OrderBy, QueryFormat, QueryOptions, Select } from "@types"
 
 export const OPERATOR_MAP = {
   $eq: "=",
@@ -265,7 +265,7 @@ export class QueryBuilder {
     const entities = this.getEntity(currentAliasPath)
 
     const mainEntity = entities.ref.entity
-    const mainAlias = mainEntity.toLowerCase() + level
+    const mainAlias = camelToSnakeCase(mainEntity).toLowerCase() + level
 
     const allEntities: any[] = []
     if (!entities.shortCutOf) {
@@ -292,11 +292,17 @@ export class QueryBuilder {
         )
 
         const alias =
-          intermediateEntity.ref.entity.toLowerCase() + level + "_" + x
+          camelToSnakeCase(intermediateEntity.ref.entity).toLowerCase() +
+          level +
+          "_" +
+          x
+
         const parAlias =
           parentIntermediateEntity.ref.entity === parentEntity
             ? parentAlias
-            : parentIntermediateEntity.ref.entity.toLowerCase() +
+            : camelToSnakeCase(
+                parentIntermediateEntity.ref.entity
+              ).toLowerCase() +
               level +
               "_" +
               (x + 1)
@@ -315,6 +321,7 @@ export class QueryBuilder {
     }
 
     let queryParts: string[] = []
+
     for (const join of allEntities) {
       const { alias, entity, parEntity, parAlias } = join
 
@@ -323,6 +330,7 @@ export class QueryBuilder {
       if (level > 0) {
         const subQuery = this.knex.queryBuilder()
         const knex = this.knex
+
         subQuery
           .select(`${alias}.id`, `${alias}.data`)
           .from("index_data AS " + alias)
@@ -444,6 +452,7 @@ export class QueryBuilder {
     const queryBuilder = this.knex.queryBuilder()
 
     const structure = this.structure
+
     const filter = this.selector.where ?? {}
 
     const { orderBy: order, skip, take } = this.options ?? {}
@@ -455,7 +464,7 @@ export class QueryBuilder {
     const rootKey = this.getStructureKeys(structure)[0]
     const rootStructure = structure[rootKey] as Select
     const entity = this.getEntity(rootKey).ref.entity
-    const rootEntity = entity.toLowerCase()
+    const rootEntity = camelToSnakeCase(entity).toLowerCase()
     const aliasMapping: { [path: string]: string } = {}
 
     const joinParts = this.buildQueryParts(
@@ -499,8 +508,11 @@ export class QueryBuilder {
       const attr = path.join(".")
       const alias = aliasMapping[attr]
       const direction = orderBy[aliasPath]
+      const castType = this.getPostgresCastType(attr, [field])
 
-      queryBuilder.orderByRaw(`${alias}.data->>'${field}' ${direction}`)
+      queryBuilder.orderByRaw(`(${alias}.data->>?)${castType} ${direction}`, [
+        field,
+      ])
     }
 
     let sql = `WITH data AS (${queryBuilder.toQuery()})
@@ -517,6 +529,8 @@ export class QueryBuilder {
           AND offset_ <= ${skip_ + take_}
       `
     }
+
+    // console.log(sql)
 
     return sql
   }

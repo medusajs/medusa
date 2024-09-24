@@ -13,8 +13,6 @@ jest.setTimeout(999999999)
 process.env.ENABLE_INDEX_MODULE = "true"
 
 medusaIntegrationTestRunner({
-  dbName: "search_test",
-  keepDbState: true,
   testSuite: ({ getContainer, dbConnection, api, dbConfig }) => {
     let indexEngine: IndexTypes.IIndexService
     let appContainer
@@ -177,6 +175,59 @@ medusaIntegrationTestRunner({
         }
       })
 
+      it("should search through the indexed data and return the correct results ordered and filtered [3]", async () => {
+        const payload = {
+          title: "Test Giftcard",
+          is_giftcard: true,
+          description: "test-giftcard-description",
+          options: [{ title: "Denominations", values: ["100"] }],
+          variants: new Array(10).fill(0).map((_, i) => ({
+            title: `Test variant ${i}`,
+            sku: `test-variant-${i}`,
+            prices: [
+              {
+                currency_code: Object.values(defaultCurrencies)[0].code,
+                amount: 10 * (i + 1),
+              },
+            ],
+            options: {
+              Denominations: "100",
+            },
+          })),
+        }
+
+        await api
+          .post("/admin/products", payload, adminHeaders)
+          .catch((err) => {
+            console.log(err)
+          })
+
+        // Timeout to allow indexing to finish
+        await setTimeout(2000)
+
+        const { data: results } = await indexEngine.query<"product">({
+          fields: ["product_variant.*", "product_variant.prices.*"],
+          filters: {
+            product_variant: {
+              prices: {
+                amount: { $gt: 50 },
+              },
+            },
+          },
+          pagination: {
+            order: {
+              product_variant: {
+                prices: {
+                  amount: "DESC",
+                },
+              },
+            },
+          },
+        })
+
+        expect(results.length).toBe(5)
+      })
+
       it.skip("should populate the database with fake products", async () => {
         const defaultCurrencies = {
           USD: { code: "USD" },
@@ -191,7 +242,7 @@ medusaIntegrationTestRunner({
           NZD: { code: "NZD" },
         }
 
-        const QUANTITY = 10000
+        const QUANTITY = 2
         const payloads = new Array(QUANTITY).fill(0).map((_, a) => ({
           title: faker.commerce.productName() + faker.datatype.uuid(), // Using faker to generate a random product name
           description:
@@ -202,7 +253,7 @@ medusaIntegrationTestRunner({
               values: ["000"],
             },
           ], // Random denomination
-          variants: new Array(10).fill(0).map((_, i) => ({
+          variants: new Array(3).fill(0).map((_, i) => ({
             title: `Variant ${faker.commerce.productAdjective()} ${i}`, // Random variant title
             sku: faker.datatype.uuid(), // Random SKU using UUID
             length: faker.datatype.float({ min: 1, max: 100 }), // Random length between 1 and 100
@@ -222,9 +273,13 @@ medusaIntegrationTestRunner({
 
         const batchSize = 5
 
-        for (let i = 0; i < payloads.length / batchSize; i++) {
+        for (let i = 0; i < Math.ceil(payloads.length / batchSize); i++) {
           await promiseAll(
             new Array(batchSize).fill(0).map((_, j) => {
+              if (i * batchSize + j >= payloads.length) {
+                return
+              }
+
               console.log(
                 `Creating product ${i * batchSize + j} in ${
                   payloads.length
@@ -243,19 +298,15 @@ medusaIntegrationTestRunner({
           )
         }
 
-        await (indexEngine as any).refresh()
+        //await (indexEngine as any).refresh()
 
         const queryArgs = {
-          fields: [
-            "product.*",
-            "product.variants.*",
-            "product.variants.prices.*",
-          ],
+          fields: ["product.*", "product.variants.prices.*"],
           filters: {
             product: {
               variants: {
                 prices: {
-                  amount: { $gt: 2000 },
+                  //amount: { $gt: 50 },
                   currency_code: { $eq: "EUR" },
                 },
               },
@@ -280,14 +331,39 @@ medusaIntegrationTestRunner({
           queryArgs
         )
 
-        /*console.log({
-          count,
-          refreshTime,
-          perf,
-        })*/
+        console.log(JSON.stringify(results, null, 2))
+
+        const queryVariantArgs = {
+          fields: ["product_variant.prices.*"],
+          filters: {
+            product_variant: {
+              prices: {
+                //amount: { $gt: 50 },
+                currency_code: { $eq: "EUR" },
+              },
+            },
+          },
+          pagination: {
+            order: {
+              product_variant: {
+                prices: {
+                  amount: "DESC",
+                },
+              },
+            },
+          },
+        }
+
+        console.log(
+          JSON.stringify(
+            await indexEngine.query<"product_variants">(queryVariantArgs),
+            null,
+            2
+          )
+        )
       })
 
-      it.only("should query the database using the index engine", async () => {
+      it.skip("should query the database using the index engine", async () => {
         const queryArgs = {
           fields: [
             "product.*",
@@ -298,7 +374,7 @@ medusaIntegrationTestRunner({
             product: {
               variants: {
                 prices: {
-                  amount: { $gt: 500 },
+                  // amount: { $gt: 500 },
                   currency_code: { $eq: "EUR" },
                 },
               },
@@ -323,7 +399,7 @@ medusaIntegrationTestRunner({
           queryArgs
         )
 
-        console.log(metadata)
+        console.log(results)
       })
     })
   },

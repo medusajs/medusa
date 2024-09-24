@@ -622,18 +622,17 @@ function buildAliasMap(
   function recursivelyBuildAliasPath(
     current,
     alias = "",
-    aliases: { alias: string; shortCutOf?: string }[] = []
+    aliases: { alias: string; shortCutOf?: string }[] = [],
+    shortCutOf: string | undefined = undefined
   ): { alias: string; shortCutOf?: string }[] {
     if (current.parents?.length) {
       for (const parentEntity of current.parents) {
-        /**
-         * Here we build the alias from child to parent to get it as parent to child
-         */
-
         const _aliases = recursivelyBuildAliasPath(
           parentEntity.ref,
-          `${parentEntity.targetProp}${alias ? "." + alias : ""}`
-        ).map((alias) => ({ alias: alias.alias }))
+          `${parentEntity.targetProp}${alias ? "." + alias : ""}`,
+          [],
+          shortCutOf
+        )
 
         aliases.push(..._aliases)
 
@@ -642,29 +641,25 @@ function buildAliasMap(
          * and we want to get the alias path as it would be in the schema provided
          * and it become the short cut path of the full path above
          */
-
         if (parentEntity.inSchemaRef) {
-          const shortCutOf = _aliases.map((a) => a.alias)[0]
+          const shortCutAlias = _aliases[0].alias
+
           const _aliasesShortCut = recursivelyBuildAliasPath(
             parentEntity.inSchemaRef,
-            `${parentEntity.targetProp}${alias ? "." + alias : ""}`
-          ).map((alias_) => {
-            return {
-              alias: alias_.alias,
-              // It has to be the same entry point
-              shortCutOf:
-                shortCutOf.split(".")[0] === alias_.alias.split(".")[0]
-                  ? shortCutOf
-                  : undefined,
-            }
-          })
+            `${parentEntity.targetProp}${alias ? "." + alias : ""}`,
+            [],
+            shortCutAlias
+          )
 
           aliases.push(..._aliasesShortCut)
         }
       }
     }
 
-    aliases.push({ alias: current.alias + (alias ? "." + alias : "") })
+    aliases.push({
+      alias: current.alias + (alias ? "." + alias : ""),
+      shortCutOf,
+    })
 
     return aliases
   }
