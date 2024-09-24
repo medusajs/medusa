@@ -1,4 +1,4 @@
-import { createStep, createWorkflow } from "@medusajs/workflows-sdk"
+import { createStep, createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { setTimeout } from "timers/promises"
 
 export const workflowEventGroupIdStep1Mock = jest.fn(async (input) => {
