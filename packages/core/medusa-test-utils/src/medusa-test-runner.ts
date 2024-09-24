@@ -16,7 +16,7 @@ import {
 } from "./medusa-test-runner-utils/use-db"
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
 
-export interface MedusaSuiteOptions<TService = unknown> {
+export interface MedusaSuiteOptions {
   dbConnection: any // knex instance
   getContainer: () => MedusaContainer
   api: any
@@ -52,7 +52,7 @@ export function medusaIntegrationTestRunner({
   schema?: string
   debug?: boolean
   inApp?: boolean
-  testSuite: <TService = unknown>(options: MedusaSuiteOptions<TService>) => void
+  testSuite: (options: MedusaSuiteOptions) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   moduleName = moduleName ?? Math.random().toString(36).substring(7)
