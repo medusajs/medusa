@@ -1,4 +1,4 @@
-import { mikroOrmUpdateDeletedAtRecursively } from "../utils"
+import { mikroOrmUpdateDeletedAtRecursively } from "../../utils"
 import { MikroORM } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
@@ -12,12 +12,10 @@ import {
   RecursiveEntity1,
   RecursiveEntity2,
 } from "../__fixtures__/utils"
-import {
-  DB_NAME,
-  getDatabaseURL,
-  pgGodCredentials,
-} from "../__fixtures__/database"
 import { dropDatabase } from "pg-god"
+import { getDatabaseURL, pgGodCredentials } from "../__fixtures__/database"
+
+const dbName = "mikroorm-utils-integration-1"
 
 jest.mock("@mikro-orm/core", () => ({
   ...jest.requireActual("@mikro-orm/core"),
@@ -36,7 +34,7 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
 
     beforeEach(async () => {
       await dropDatabase(
-        { databaseName: DB_NAME, errorIfNonExist: false },
+        { databaseName: dbName, errorIfNonExist: false },
         pgGodCredentials
       )
 
@@ -52,7 +50,7 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
           DeepRecursiveEntity4,
           InternalCircularDependencyEntity1,
         ],
-        clientUrl: getDatabaseURL(),
+        clientUrl: getDatabaseURL(dbName),
         type: "postgresql",
       })
 

@@ -1,7 +1,6 @@
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
-export const DB_NAME = "utils-tests"
+const DB_PASSWORD = process.env.DB_PASSWORD
 
 export const pgGodCredentials = {
   user: DB_USERNAME,
@@ -9,8 +8,8 @@ export const pgGodCredentials = {
   host: DB_HOST,
 }
 
-export function getDatabaseURL(): string {
+export function getDatabaseURL(dbName): string {
   return `postgres://${DB_USERNAME}${
     DB_PASSWORD ? `:${DB_PASSWORD}` : ""
-  }@${DB_HOST}/${DB_NAME}`
+  }@${DB_HOST}/${dbName}`
 }
