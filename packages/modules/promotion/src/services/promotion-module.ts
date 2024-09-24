@@ -138,7 +138,6 @@ export default class PromotionModuleService
       { code: promotionCodes },
       {
         relations: ["campaign", "campaign.budget"],
-        take: null,
       },
       sharedContext
     )
@@ -245,7 +244,6 @@ export default class PromotionModuleService
       },
       {
         relations: ["campaign", "campaign.budget"],
-        take: null,
       },
       sharedContext
     )
@@ -352,7 +350,7 @@ export default class PromotionModuleService
       ? []
       : await this.listPromotions(
           { is_automatic: true },
-          { select: ["code"], take: null },
+          { select: ["code"] },
           sharedContext
         )
 
@@ -410,7 +408,6 @@ export default class PromotionModuleService
           "campaign",
           "campaign.budget",
         ],
-        take: null,
       }
     )
 
@@ -564,7 +561,6 @@ export default class PromotionModuleService
           "campaign",
           "campaign.budget",
         ],
-        take: null,
       },
       sharedContext
     )
@@ -830,7 +826,6 @@ export default class PromotionModuleService
           "campaign",
           "campaign.budget",
         ],
-        take: null,
       },
       sharedContext
     )
@@ -1275,7 +1270,6 @@ export default class PromotionModuleService
       { id: createdCampaigns.map((p) => p!.id) },
       {
         relations: ["budget", "promotions"],
-        take: null,
       },
       sharedContext
     )
@@ -1385,7 +1379,6 @@ export default class PromotionModuleService
       { id: updatedCampaigns.map((p) => p!.id) },
       {
         relations: ["budget", "promotions"],
-        take: null,
       },
       sharedContext
     )
@@ -1405,7 +1398,7 @@ export default class PromotionModuleService
 
     const existingCampaigns = await this.listCampaigns(
       { id: campaignIds },
-      { relations: ["budget"], take: null },
+      { relations: ["budget"] },
       sharedContext
     )
 
@@ -1489,7 +1482,7 @@ export default class PromotionModuleService
     const campaign = await this.campaignService_.retrieve(id, {}, sharedContext)
     const promotionsToAdd = await this.promotionService_.list(
       { id: promotionIds, campaign_id: null },
-      { take: null, relations: ["application_method"] },
+      { relations: ["application_method"] },
       sharedContext
     )
 
@@ -1552,7 +1545,7 @@ export default class PromotionModuleService
     await this.campaignService_.retrieve(id, {}, sharedContext)
     const promotionsToRemove = await this.promotionService_.list(
       { id: promotionIds },
-      { take: null },
+      {},
       sharedContext
     )
 

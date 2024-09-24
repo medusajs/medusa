@@ -272,9 +272,7 @@ export function MedusaInternalService<
         if (input_.selector) {
           const entitiesToUpdate = await this.list(
             input_.selector,
-            {
-              take: null,
-            },
+            {},
             sharedContext
           )
           // Create a pair of entity and data to update
@@ -303,7 +301,7 @@ export function MedusaInternalService<
       if (keySelectorForDataOnly.$or.length) {
         const entitiesToUpdate = await this.list(
           keySelectorForDataOnly,
-          { take: null },
+          {},
           sharedContext
         )
 
