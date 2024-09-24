@@ -1,4 +1,7 @@
 import type { MedusaAppLoader } from "@medusajs/framework"
+import { join } from "path"
+import { MedusaContainer } from "@medusajs/types"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 /**
  * Initiates the database connection
@@ -29,8 +32,14 @@ export async function migrateDatabase(appLoader: MedusaAppLoader) {
 /**
  * Syncs links with the databse
  */
-export async function syncLinks(appLoader: MedusaAppLoader) {
+export async function syncLinks(
+  appLoader: MedusaAppLoader,
+  directory: string,
+  container: MedusaContainer
+) {
   try {
+    await loadCustomLinks(directory, container)
+
     const planner = await appLoader.getLinksExecutionPlanner()
     const actionPlan = await planner.createPlan()
     actionPlan.forEach((action) => {
@@ -41,4 +50,23 @@ export async function syncLinks(appLoader: MedusaAppLoader) {
     console.error("Something went wrong while syncing links")
     throw err
   }
+}
+
+async function loadCustomLinks(directory: string, container: MedusaContainer) {
+  // TODO: move to framework once settle down
+  const { getResolvedPlugins } = await import(
+    // @ts-expect-error
+    "@medusajs/medusa/dist/loaders/helpers/resolve-plugins"
+  )
+
+  const configModule = container.resolve(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
+  const plugins = getResolvedPlugins(directory, configModule, true) || []
+  const linksSourcePaths = plugins.map((plugin) =>
+    join(plugin.resolve, "links")
+  )
+
+  const { LinkLoader } = await import("@medusajs/framework")
+  await new LinkLoader(linksSourcePaths).load()
 }
