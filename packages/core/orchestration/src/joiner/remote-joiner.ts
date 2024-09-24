@@ -1275,7 +1275,7 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
     }
   }
 
-  otherArgs = otherArgs.length ? otherArgs : undefined
+  otherArgs = otherArgs?.length ? otherArgs : undefined
 
   return {
     primaryKeyArg,
