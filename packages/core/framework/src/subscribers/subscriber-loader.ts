@@ -1,5 +1,11 @@
 import { Event, IEventBusModuleService, Subscriber } from "@medusajs/types"
-import { Modules, kebabCase, promiseAll } from "@medusajs/utils"
+import {
+  dynamicImport,
+  kebabCase,
+  Modules,
+  promiseAll,
+  resolveExports,
+} from "@medusajs/utils"
 import { access, readdir } from "fs/promises"
 import { join, parse } from "path"
 
@@ -115,7 +121,8 @@ export class SubscriberLoader {
   }
 
   private async createDescriptor(absolutePath: string) {
-    return await import(absolutePath).then((module_) => {
+    return await dynamicImport(absolutePath).then((module_) => {
+      module_ = resolveExports(module_)
       const isValid = this.validateSubscriber(module_, absolutePath)
 
       if (!isValid) {

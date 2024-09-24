@@ -4,6 +4,7 @@ import { EOL } from "os"
 import { resolve } from "path"
 import { mikroOrmCreateConnection } from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
+import { dynamicImport } from "../../common"
 
 /**
  * Utility function to build a seed script that will insert the seed data.
@@ -42,12 +43,14 @@ export function buildSeedScript({
     const logger_ = (logger ?? console) as unknown as Logger
 
     logger_.info(`Loading seed data from ${path}...`)
-    const dataSeed = await import(resolve(process.cwd(), path)).catch((e) => {
-      logger_.error(
-        `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following productCategoriesData, productsData, variantsData.${EOL}${e}`
-      )
-      throw e
-    })
+    const dataSeed = await dynamicImport(resolve(process.cwd(), path)).catch(
+      (e) => {
+        logger_.error(
+          `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following productCategoriesData, productsData, variantsData.${EOL}${e}`
+        )
+        throw e
+      }
+    )
 
     const dbData = loadDatabaseConfig(moduleName, options)!
     const entities = Object.values(models) as unknown as EntitySchema[]

@@ -64,6 +64,7 @@ import {
 import {
   CreateOrderChangeDTO,
   CreateOrderItemDTO,
+  UpdateReturnReasonDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodDTO,
@@ -73,7 +74,6 @@ import {
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderShippingMethodTaxLineDTO,
 } from "@types"
-import { UpdateReturnReasonDTO } from "src/types/return-reason"
 import { joinerConfig } from "../joiner-config"
 import {
   applyChangesToOrder,
