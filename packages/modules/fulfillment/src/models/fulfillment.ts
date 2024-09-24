@@ -135,6 +135,9 @@ export default class Fulfillment {
   })
   delivery_address!: Rel<FulfillmentAddress>
 
+  @Property({ columnType: "boolean", default: true })
+  requires_shipping: boolean = true
+
   @OneToMany(() => FulfillmentItem, (item) => item.fulfillment, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
