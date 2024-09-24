@@ -1244,12 +1244,14 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
   otherArgs: { name: string; value: any }[] | undefined
   pkName: string
 } {
+  const args = (queryObj.args ?? []).filter((arg) => arg.name !== "filters")
+
   let pkName = serviceConfig.primaryKeys[0]
-  let primaryKeyArg = queryObj.args?.find((arg) => {
+  let primaryKeyArg = args.find((arg) => {
     return serviceConfig.primaryKeys.includes(arg.name)
   })
 
-  let otherArgs = queryObj.args?.filter(
+  let otherArgs = args.filter(
     (arg) => !serviceConfig.primaryKeys.includes(arg.name)
   )
 
