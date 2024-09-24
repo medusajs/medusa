@@ -3997,7 +3997,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-typescript@npm:^7.13.0, @babel/plugin-transform-typescript@npm:^7.18.6, @babel/plugin-transform-typescript@npm:^7.22.5":
+"@babel/plugin-transform-typescript@npm:^7.18.6, @babel/plugin-transform-typescript@npm:^7.22.5":
   version: 7.22.5
   resolution: "@babel/plugin-transform-typescript@npm:7.22.5"
   dependencies:
@@ -39446,12 +39446,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-plugin-restock-notification@workspace:packages/medusa-plugin-restock-notification"
   dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/plugin-transform-typescript": ^7.13.0
-    "@babel/preset-typescript": ^7.12.7
     "@medusajs/medusa": ^1.20.8
-    babel-preset-medusa-package: ^1.1.20
     body-parser: ^1.19.0
     cors: ^2.8.5
     cross-env: ^5.2.1
@@ -39461,7 +39456,9 @@ __metadata:
     medusa-interfaces: ^1.3.10
     medusa-test-utils: ^1.1.45
     pg: ^8.5.1
+    rimraf: ^5.0.1
     typeorm: ^0.3.16
+    typescript: ^4.9.5
     ulid: ^2.3.0
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
