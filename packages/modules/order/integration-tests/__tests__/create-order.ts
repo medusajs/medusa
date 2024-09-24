@@ -384,7 +384,6 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           {
             select: ["id"],
             relations: ["items"],
-            ,
           }
         )
         expect(orders.length).toEqual(1)
@@ -398,7 +397,6 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           {
             select: ["items.quantity"],
             relations: ["items"],
-            ,
           }
         )
         expect(orders2.length).toEqual(0)
@@ -414,7 +412,6 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           {
             select: ["id"],
             relations: ["items.detail"],
-            ,
           }
         )
         expect(orders3.length).toEqual(1)
@@ -430,7 +427,6 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           {
             select: ["id"],
             relations: ["items.detail"],
-            ,
           }
         )
         expect(orders4.length).toEqual(0)
