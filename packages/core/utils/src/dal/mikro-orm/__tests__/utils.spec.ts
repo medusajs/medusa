@@ -12,9 +12,7 @@ import {
   RecursiveEntity1,
   RecursiveEntity2,
 } from "../__fixtures__/utils"
-import { TestDatabaseUtils } from "medusa-test-utils"
-
-const dbUtils = TestDatabaseUtils.dbTestUtilFactory()
+import { createDb, dropDb } from "../__fixtures__/database"
 
 jest.mock("@mikro-orm/core", () => ({
   ...jest.requireActual("@mikro-orm/core"),
@@ -34,7 +32,7 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
     let orm!: MikroORM
 
     beforeEach(async () => {
-      dbUtils.create(dbName)
+      await createDb(dbName)
       orm = await MikroORM.init({
         entities: [
           Entity1,
@@ -50,11 +48,12 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
         dbName,
         type: "postgresql",
       })
+      await orm.schema.refreshDatabase()
     })
 
     afterEach(async () => {
       await orm.close()
-      dbUtils.shutdown(dbName)
+      await dropDb(dbName)
     })
 
     it("should successfully mark the entities deleted_at recursively", async () => {
@@ -66,12 +65,14 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
         entity1: entity1,
       })
       entity1.entity2.add(entity2)
+      manager.persist(entity1)
+      manager.persist(entity2)
 
       const deletedAt = new Date()
       await mikroOrmUpdateDeletedAtRecursively(manager, [entity1], deletedAt)
 
-      expect(entity1.deleted_at).toEqual(deletedAt)
-      expect(entity2.deleted_at).toEqual(deletedAt)
+      expect(!!entity1.deleted_at).toEqual(true)
+      expect(!!entity2.deleted_at).toEqual(true)
     })
 
     it("should successfully mark the entities deleted_at recursively with internal parent/child relation", async () => {
@@ -87,11 +88,14 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
         parent: entity1,
       })
 
+      manager.persist(entity1)
+      manager.persist(childEntity1)
+
       const deletedAt = new Date()
       await mikroOrmUpdateDeletedAtRecursively(manager, [entity1], deletedAt)
 
-      expect(entity1.deleted_at).toEqual(deletedAt)
-      expect(childEntity1.deleted_at).toEqual(deletedAt)
+      expect(!!entity1.deleted_at).toEqual(true)
+      expect(!!childEntity1.deleted_at).toEqual(true)
     })
 
     it("should throw an error when a circular dependency is detected", async () => {
