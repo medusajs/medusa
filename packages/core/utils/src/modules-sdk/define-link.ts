@@ -7,6 +7,7 @@ export const DefineLinkSymbol = Symbol.for("DefineLink")
 export interface DefineLinkExport {
   [DefineLinkSymbol]: boolean
   serviceName: string
+  entity?: string
   entryPoint: string
 }
 
@@ -19,11 +20,17 @@ type InputSource = {
   primaryKey: string
 }
 
-type ReadOnlyInputSource = {
-  serviceName: string
-  entity?: string
-  primaryKey?: string
-}
+type ReadOnlyInputSource =
+  | {
+      serviceName: string
+      entity?: string
+      primaryKey: string
+    }
+  | {
+      serviceName: string
+      entity?: string
+      alias?: string
+    }
 
 type InputToJson = {
   toJSON: () => InputSource
@@ -37,6 +44,13 @@ type InputOptions = {
   deleteCascade?: boolean
 }
 
+type Shortcut = {
+  property: string
+  path: string
+  isList?: boolean
+  forwardArguments?: string | string[]
+}
+
 type ExtraOptions = {
   pk?: {
     [key: string]: string
@@ -46,6 +60,13 @@ type ExtraOptions = {
     idPrefix?: string
     extraColumns?: LinkModulesExtraFields
   }
+  readOnly?: boolean
+}
+
+type ReadOnlyExtraOptions = {
+  readOnly: true
+  isList?: boolean
+  shortcut?: Shortcut | Shortcut[]
 }
 
 type DefineLinkInputSource = InputSource | InputOptions | CombinedSource
@@ -54,23 +75,6 @@ type DefineReadOnlyLinkInputSource =
   | ReadOnlyInputSource
   | InputOptions
   | CombinedSource
-
-type ReadOnlyOptions = {
-  isList?: boolean
-  shortcut:
-    | {
-        property: string
-        path: string
-        isList?: boolean
-        forwardArguments?: string | string[]
-      }
-    | {
-        property: string
-        path: string
-        isList?: boolean
-        forwardArguments?: string | string[]
-      }[]
-}
 
 type ModuleLinkableKeyConfig = {
   module: string
@@ -81,7 +85,7 @@ type ModuleLinkableKeyConfig = {
   deleteCascade?: boolean
   primaryKey: string
   alias: string
-  shortcut?: ReadOnlyOptions["shortcut"]
+  shortcut?: Shortcut | Shortcut[]
 }
 
 function isInputOptions(input: any): input is InputOptions {
@@ -96,7 +100,7 @@ function isToJSON(input: any): input is InputToJson {
   return isObject(input) && input?.["toJSON"]
 }
 
-function buildFieldAlias(fieldAliases?: ReadOnlyOptions["shortcut"]) {
+function buildFieldAlias(fieldAliases?: Shortcut | Shortcut[]) {
   if (!fieldAliases) {
     return
   }
@@ -175,12 +179,20 @@ function prepareServiceConfig(
  * @param linkServiceOptions
  */
 export function defineLink(
-  leftService: DefineLinkInputSource,
-  rightService: DefineLinkInputSource,
-  linkServiceOptions?: ExtraOptions
+  leftService: DefineLinkInputSource | DefineReadOnlyLinkInputSource,
+  rightService: DefineLinkInputSource | DefineReadOnlyLinkInputSource,
+  linkServiceOptions?: ExtraOptions | ReadOnlyExtraOptions
 ): DefineLinkExport {
   const serviceAObj = prepareServiceConfig(leftService)
   const serviceBObj = prepareServiceConfig(rightService)
+
+  if (linkServiceOptions?.readOnly) {
+    return defineReadOnlyLink(
+      serviceAObj,
+      serviceBObj,
+      linkServiceOptions as ReadOnlyExtraOptions
+    ) as unknown as DefineLinkExport
+  }
 
   const output = {
     [DefineLinkSymbol]: true,
@@ -428,26 +440,14 @@ ${serviceBObj.module}: {
   return output
 }
 
-/**
- * Generate a ModuleJoinerConfig for the read-only link definition on the fly.
- *
- * @param leftService
- * @param rightService
- * @param readOnlyLinkOptions
- */
-export function defineReadOnlyLink(
-  leftService: DefineReadOnlyLinkInputSource,
-  property: string,
-  foreignKey: string,
-  rightService: DefineReadOnlyLinkInputSource,
-  readOnlyLinkOptions?: ReadOnlyOptions
+function defineReadOnlyLink(
+  serviceAObj: ModuleLinkableKeyConfig,
+  serviceBObj: ModuleLinkableKeyConfig,
+  readOnlyLinkOptions?: ReadOnlyExtraOptions
 ): void {
   const register = function (
     modules: ModuleJoinerConfig[]
   ): ModuleJoinerConfig {
-    const serviceAObj = prepareServiceConfig(leftService)
-    const serviceBObj = prepareServiceConfig(rightService)
-
     const serviceAInfo = modules.find(
       (mod) => mod.serviceName === serviceAObj.module
     )!
@@ -487,8 +487,8 @@ ${serviceBObj.module}: {
             serviceName: serviceBObj.module,
             entity: serviceBObj.entity,
             primaryKey: serviceBObj.primaryKey,
-            foreignKey,
-            alias: property,
+            foreignKey: serviceAObj.field,
+            alias: serviceBObj.alias,
             isList: readOnlyLinkOptions?.isList ?? serviceAObj.isList,
           },
         },
