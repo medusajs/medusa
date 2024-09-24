@@ -1252,6 +1252,7 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
   let otherArgs = args.filter(
     (arg) => !serviceConfig.primaryKeys.includes(arg.name)
   )
+  otherArgs = otherArgs.length ? otherArgs : undefined
 
   let filtersMap: Map<string, any> = new Map<string, any>()
 
