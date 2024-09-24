@@ -1,10 +1,10 @@
 import {
-  StepResponse,
-  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
-} from "@medusajs/workflows-sdk"
+  StepResponse,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { setTimeout } from "timers/promises"
 
 const step_1_background = createStep(

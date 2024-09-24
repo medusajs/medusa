@@ -6769,10 +6769,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
   dependencies:
-    "@medusajs/orchestration": ^0.5.7
+    "@medusajs/framework": ^0.0.1
     "@medusajs/types": ^1.11.16
-    "@medusajs/utils": ^1.11.9
-    "@medusajs/workflows-sdk": ^0.1.6
     "@mikro-orm/cli": 5.9.7
     cron-parser: ^4.9.0
     cross-env: ^5.2.1
@@ -6794,10 +6792,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis"
   dependencies:
-    "@medusajs/orchestration": ^0.5.7
-    "@medusajs/types": ^1.11.16
-    "@medusajs/utils": ^1.11.9
-    "@medusajs/workflows-sdk": ^0.1.6
+    "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
     bullmq: 5.13.0
     cross-env: ^5.2.1
