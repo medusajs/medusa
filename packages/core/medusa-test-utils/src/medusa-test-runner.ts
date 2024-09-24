@@ -3,18 +3,19 @@ import { ContainerLike, MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  dynamicImport,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { dbTestUtilFactory, getDatabaseURL } from "./database"
-import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
-import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
-import { configLoaderOverride } from "./medusa-test-runner-utils/config"
 import {
+  applyEnvVarsToProcess,
+  clearInstances,
+  configLoaderOverride,
   initDb,
   migrateDatabase,
+  startApp,
   syncLinks,
-} from "./medusa-test-runner-utils/use-db"
-import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
+} from "./medusa-test-runner-utils"
 
 export interface MedusaSuiteOptions {
   dbConnection: any // knex instance
@@ -165,7 +166,7 @@ export function medusaIntegrationTestRunner({
       await syncLinks(appLoader, cwd, containerRes)
     }
 
-    const { default: axios } = (await import("axios")) as any
+    const { default: axios } = await dynamicImport("axios")
 
     const cancelTokenSource = axios.CancelToken.source()
 

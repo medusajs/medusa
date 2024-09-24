@@ -13,13 +13,22 @@
   },
   "files": [
     "dist",
-    "oas"
+    "oas",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "engines": {
     "node": ">=16"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",
+  "scripts": {
+    "watch": "tsc --build --watch",
+    "build": "rimraf dist && tsc --build",
+    "serve": "node dist/app.js",
+    "test": "jest --silent --bail --maxWorkers=50% --forceExit"
+  },
   "devDependencies": {
     "@medusajs/types": "^1.11.16",
     "@opentelemetry/instrumentation": "^0.53.0",
@@ -39,15 +48,6 @@
     "supertest": "^4.0.2",
     "typescript": "^5.3.3"
   },
-  "scripts": {
-    "watch": "tsc --build --watch",
-    "build": "rimraf dist && tsc --build",
-    "serve": "node dist/app.js",
-    "test": "jest --silent --bail --maxWorkers=50% --forceExit"
-  },
-  "peerDependencies": {
-    "awilix": "^8.0.1"
-  },
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",
     "@inquirer/input": "^2.2.9",
@@ -55,8 +55,6 @@
     "@medusajs/core-flows": "^0.0.9",
     "@medusajs/framework": "^0.0.1",
     "@medusajs/link-modules": "^0.2.11",
-    "@medusajs/utils": "^1.11.9",
-    "@medusajs/workflows-sdk": "^0.1.6",
     "@swc/core": "1.5.7",
     "@swc/helpers": "^0.5.11",
     "body-parser": "^1.19.0",
@@ -79,6 +77,9 @@
     "slugify": "^1.6.6",
     "uuid": "^9.0.0",
     "zod": "3.22.4"
+  },
+  "peerDependencies": {
+    "awilix": "^8.0.1"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
 }

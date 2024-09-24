@@ -24,7 +24,7 @@ import { clearProject } from "../util/clear-project"
 import {
   getNodeVersion,
   MIN_SUPPORTED_NODE_VERSION,
-} from "@medusajs/framework/utils"
+} from "@medusajs/utils"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
