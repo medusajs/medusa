@@ -1,11 +1,9 @@
 /**
- * @oas [post] /auth/user/{auth_provider}/register
- * operationId: PostActor_typeAuth_provider_register
- * summary: Retrieve Registration JWT Token
- * description: This API route retrieves a registration JWT token of a user that hasn't been registered yet. The token is used in the header of requests that create a user, such as the Accept Invite API route.
- * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#1-basic-authentication-flow
- *   description: Learn about the basic authentication flow.
+ * @oas [post] /auth/customer/{auth_provider}/update
+ * operationId: PostActor_typeAuth_providerUpdate
+ * summary: Reset a Customer's Password
+ * x-sidebar-summary: Reset Password
+ * description: Reset a customer's password. Generate the reset password token first using the Get Reset Password Token API route.
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider
@@ -15,24 +13,30 @@
  *     schema:
  *       type: string
  *       example: "emailpass"
+ *   - name: token
+ *     in: query
+ *     description: The reset password token received using the Get Reset Password API route.
+ *     required: true
+ *     schema:
+ *       type: string
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
  *         type: object
  *         title: input
- *         description: The input data necessary for authentication. For example, for email-pass authentication, pass `email` and `password` properties.
+ *         description: The input data necessary for authentication with the specified auth provider. For example, for email-pass authentication, pass `email` and `password` properties.
  *         example:
- *           email: "admin@medusa-test.com"
+ *           email: "customer@gmail.com"
  *           password: "supersecret"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source:  |-
- *       curl -X POST '{backend_url}/auth/user/emailpass/register' \
+ *       curl -X POST '{backend_url}/auth/customer/emailpass/update?token=123' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "email": "admin@medusa-test.com",
+ *         "email": "customer@gmail.com",
  *         "password": "supersecret"
  *       }'
  * tags:
@@ -40,10 +44,6 @@
  * responses:
  *   "200":
  *     description: OK
- *     content:
- *       application/json:
- *         schema:
- *           $ref: "#/components/schemas/AuthResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

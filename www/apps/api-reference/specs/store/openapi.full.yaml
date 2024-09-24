@@ -319,6 +319,114 @@ paths:
           $ref: '#/components/responses/invalid_request_error'
         '500':
           $ref: '#/components/responses/500_error'
+  /auth/customer/{auth_provider}/reset-password:
+    post:
+      operationId: PostActor_typeAuth_providerResetPassword
+      summary: Get Reset Password Token for Customer
+      x-sidebar-summary: Get Reset Password Token
+      description: Generate a reset password token for a customer. Use that token to update the customer's password using the Reset Password API route.
+      x-authenticated: false
+      parameters:
+        - name: auth_provider
+          in: path
+          description: The provider used for authentication.
+          required: true
+          schema:
+            type: string
+            example: emailpass
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: identifier
+              description: The customer's identifier for the selected auth provider. For example, for the `emailpass` auth provider, the value is the customer's email.
+              example: customer@gmail.com
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/auth/customer/emailpass/reset-password' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "identifier": "customer@gmail.com"
+            }'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: generateResetPasswordTokenWorkflow
+  /auth/customer/{auth_provider}/update:
+    post:
+      operationId: PostActor_typeAuth_providerUpdate
+      summary: Reset a Customer's Password
+      x-sidebar-summary: Reset Password
+      description: Reset a customer's password. Generate the reset password token first using the Get Reset Password Token API route.
+      x-authenticated: false
+      parameters:
+        - name: auth_provider
+          in: path
+          description: The provider used for authentication.
+          required: true
+          schema:
+            type: string
+            example: emailpass
+        - name: token
+          in: query
+          description: The reset password token received using the Get Reset Password API route.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: input
+              description: The input data necessary for authentication with the specified auth provider. For example, for email-pass authentication, pass `email` and `password` properties.
+              example:
+                email: customer@gmail.com
+                password: supersecret
+      x-codeSamples:
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/auth/customer/emailpass/update?token=123' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "email": "customer@gmail.com",
+              "password": "supersecret"
+            }'
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /auth/session:
     post:
       operationId: PostSession
