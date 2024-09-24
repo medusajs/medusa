@@ -1195,21 +1195,26 @@ export class RemoteJoiner {
     })
 
     const implodeMapping: InternalImplodeMapping[] = []
-    const parsedExpands = this.parseExpands({
+    const parseExpandsConfig: Parameters<typeof this.parseExpands>[0] = {
       initialService: {
         property: "",
         parent: "",
         serviceConfig,
         entity: serviceConfig.entity,
         fields: queryObj.fields,
-        args: otherArgs,
       },
       query: queryObj,
       serviceConfig,
       expands: queryObj.expands!,
       implodeMapping,
       options,
-    })
+    }
+
+    if (otherArgs) {
+      parseExpandsConfig.initialService.args = otherArgs
+    }
+
+    const parsedExpands = this.parseExpands(parseExpandsConfig)
 
     const root = parsedExpands.get(BASE_PATH)!
 
