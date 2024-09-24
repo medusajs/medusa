@@ -13,6 +13,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "noImplicitReturns": true,
+    "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,

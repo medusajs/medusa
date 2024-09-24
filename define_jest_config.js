@@ -19,6 +19,7 @@ module.exports = function defineJestConfig(config) {
         },
       ],
     },
+    modulePathIgnorePatterns: [`dist/`],
     testPathIgnorePatterns: [`dist/`, `node_modules/`],
     testEnvironment: `node`,
     moduleFileExtensions: [`js`, `ts`],

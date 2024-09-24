@@ -66,8 +66,8 @@ export async function loadInternalModule(
       // If we want to benefit from the auto load mechanism, even if the module exports is provided, we need to ask for the module path
       loadedModule = resolution.moduleExports
     } else {
-      loadedModule = await import(modulePath)
-      loadedModule = (loadedModule as any).default.default
+      loadedModule = resolveExports(await import(modulePath))
+      loadedModule = (loadedModule as any).default
     }
   } catch (error) {
     if (
