@@ -1,8 +1,7 @@
-import { createDatabase, dropDatabase } from "pg-god"
-
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
 const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
+export const DB_NAME = "utils-tests"
 
 export const pgGodCredentials = {
   user: DB_USERNAME,
@@ -10,16 +9,8 @@ export const pgGodCredentials = {
   host: DB_HOST,
 }
 
-export async function createDb(dbName: string) {
-  await createDatabase(
-    { databaseName: dbName, errorIfExist: false },
-    pgGodCredentials
-  )
-}
-
-export async function dropDb(dbName: string) {
-  await dropDatabase(
-    { databaseName: dbName, errorIfNonExist: false },
-    pgGodCredentials
-  )
+export function getDatabaseURL(): string {
+  return `postgres://${DB_USERNAME}${
+    DB_PASSWORD ? `:${DB_PASSWORD}` : ""
+  }@${DB_HOST}/${DB_NAME}`
 }

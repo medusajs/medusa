@@ -1,5 +1,5 @@
 import { mikroOrmUpdateDeletedAtRecursively } from "../utils"
-import { MetadataStorage, MikroORM } from "@mikro-orm/core"
+import { MikroORM } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   DeepRecursiveEntity1,
@@ -12,7 +12,12 @@ import {
   RecursiveEntity1,
   RecursiveEntity2,
 } from "../__fixtures__/utils"
-import { createDb, dropDb, pgGodCredentials } from "../__fixtures__/database"
+import {
+  DB_NAME,
+  getDatabaseURL,
+  pgGodCredentials,
+} from "../__fixtures__/database"
+import { dropDatabase } from "pg-god"
 
 jest.mock("@mikro-orm/core", () => ({
   ...jest.requireActual("@mikro-orm/core"),
@@ -25,16 +30,15 @@ jest.mock("@mikro-orm/core", () => ({
   })),
 }))
 
-const dbName = "utils-tests"
-
 describe("mikroOrmUpdateDeletedAtRecursively", () => {
   describe("using circular cascading", () => {
     let orm!: MikroORM
 
     beforeEach(async () => {
-      MetadataStorage.clear()
-
-      await createDb(dbName)
+      await dropDatabase(
+        { databaseName: DB_NAME, errorIfNonExist: false },
+        pgGodCredentials
+      )
 
       orm = await MikroORM.init({
         entities: [
@@ -48,18 +52,19 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
           DeepRecursiveEntity4,
           InternalCircularDependencyEntity1,
         ],
-        dbName,
-        host: pgGodCredentials.host,
-        user: pgGodCredentials.user,
-        password: pgGodCredentials.password,
+        clientUrl: getDatabaseURL(),
         type: "postgresql",
       })
-      await orm.schema.refreshDatabase()
+
+      const generator = orm.getSchemaGenerator()
+      await generator.ensureDatabase()
+      await generator.createSchema()
     })
 
     afterEach(async () => {
-      await orm.close()
-      await dropDb(dbName)
+      const generator = orm.getSchemaGenerator()
+      await generator.dropSchema()
+      await orm.close(true)
     })
 
     it("should successfully mark the entities deleted_at recursively", async () => {
