@@ -43,6 +43,15 @@ const taxRegionIdIndexStatement = createPsqlIndexStatementHelper({
   where: "deleted_at IS NULL",
 })
 
+const uniqueTaxRateCodeName = "IDX_tax_rate_code"
+const uniqueTaxRateCodeStatement = createPsqlIndexStatementHelper({
+  name: uniqueTaxRateCodeName,
+  tableName: TABLE_NAME,
+  columns: "code",
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
 @singleDefaultRegionIndexStatement.MikroORMIndex()
 @Entity({ tableName: TABLE_NAME })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -55,9 +64,10 @@ export default class TaxRate {
   @Property({ columnType: "real", nullable: true })
   rate: number | null = null
 
+  @uniqueTaxRateCodeStatement.MikroORMIndex()
   @Searchable()
-  @Property({ columnType: "text", nullable: true })
-  code: string | null = null
+  @Property({ columnType: "text" })
+  code: string
 
   @Searchable()
   @Property({ columnType: "text" })

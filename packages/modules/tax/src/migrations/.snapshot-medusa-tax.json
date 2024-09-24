@@ -246,7 +246,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "float"
         },
         "code": {
@@ -255,7 +255,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "name": {
@@ -350,6 +350,16 @@
       "name": "tax_rate",
       "schema": "public",
       "indexes": [
+        {
+          "keyName": "IDX_tax_rate_code",
+          "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_rate_code\" ON \"tax_rate\" (code)"
+        },
         {
           "keyName": "IDX_tax_rate_tax_region_id",
           "columnNames": [
