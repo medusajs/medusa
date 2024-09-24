@@ -141,10 +141,13 @@ describe("Order Return - Actions", function () {
     expect(toJson).toEqual([
       {
         id: "1",
+        order_id: "1",
         quantity: 1,
         unit_price: 10,
         detail: {
+          order_id: "1",
           quantity: 1,
+          delivered_quantity: 1,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
           return_requested_quantity: 0,
@@ -155,11 +158,14 @@ describe("Order Return - Actions", function () {
       },
       {
         id: "2",
+        order_id: "1",
         quantity: 2,
         unit_price: 100,
         detail: {
+          order_id: "1",
           quantity: 2,
           shipped_quantity: 1,
+          delivered_quantity: 1,
           fulfilled_quantity: 1,
           return_requested_quantity: "1",
           return_received_quantity: 0,
@@ -169,11 +175,14 @@ describe("Order Return - Actions", function () {
       },
       {
         id: "3",
+        order_id: "1",
         quantity: 3,
         unit_price: 20,
         detail: {
           quantity: 3,
+          order_id: "1",
           shipped_quantity: 3,
+          delivered_quantity: 1,
           fulfilled_quantity: 3,
           return_requested_quantity: "2",
           return_received_quantity: 0,
@@ -272,10 +281,13 @@ describe("Order Return - Actions", function () {
     expect(toJsonReceived).toEqual([
       {
         id: "1",
+        order_id: "1",
         quantity: 1,
         unit_price: 10,
         detail: {
           quantity: 1,
+          order_id: "1",
+          delivered_quantity: 1,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
           return_requested_quantity: 0,
@@ -286,10 +298,13 @@ describe("Order Return - Actions", function () {
       },
       {
         id: "2",
+        order_id: "1",
         quantity: 2,
         unit_price: 100,
         detail: {
           quantity: 2,
+          order_id: "1",
+          delivered_quantity: 1,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
           return_requested_quantity: "1",
@@ -300,10 +315,13 @@ describe("Order Return - Actions", function () {
       },
       {
         id: "3",
+        order_id: "1",
         quantity: 3,
         unit_price: 20,
         detail: {
           quantity: 3,
+          order_id: "1",
+          delivered_quantity: 1,
           shipped_quantity: 3,
           fulfilled_quantity: 3,
           return_requested_quantity: "0",
