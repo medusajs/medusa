@@ -38,7 +38,6 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  PaymentActions,
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
@@ -849,51 +848,16 @@ export default class PaymentModuleService
   }
 
   @InjectManager()
-  async processEvent(
+  async getWebhookActionAndData(
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
-  ): Promise<WebhookActionResult | void> {
+  ): Promise<WebhookActionResult> {
     const providerId = `pp_${eventData.provider}`
 
-    const event = await this.paymentProviderService_.getWebhookActionAndData(
+    return await this.paymentProviderService_.getWebhookActionAndData(
       providerId,
       eventData.payload
     )
-
-    if (event.action === PaymentActions.NOT_SUPPORTED) {
-      return
-    }
-
-    if (!event.data) {
-      return
-    }
-
-    switch (event.action) {
-      case PaymentActions.SUCCESSFUL: {
-        const [payment] = await this.listPayments(
-          {
-            payment_session_id: event.data.session_id,
-          },
-          {},
-          sharedContext
-        )
-        if (payment && !payment.captured_at) {
-          await this.capturePayment(
-            { payment_id: payment.id, amount: event.data.amount },
-            sharedContext
-          )
-        }
-        break
-      }
-      case PaymentActions.AUTHORIZED:
-        await this.authorizePaymentSession(
-          event.data.session_id,
-          {},
-          sharedContext
-        )
-    }
-
-    return event
   }
 
   @InjectManager()

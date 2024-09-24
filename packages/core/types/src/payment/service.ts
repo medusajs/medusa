@@ -1056,7 +1056,7 @@ export interface IPaymentModuleService extends IModuleService {
   /* ********** HOOKS ********** */
 
   /**
-   * This method handles a webhook event with the associated payment provider.
+   * This method retrieves webhook event data with the associated payment provider.
    *
    * Learn more about handling webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)
    *
@@ -1067,7 +1067,7 @@ export interface IPaymentModuleService extends IModuleService {
    * In the following example, `req` is an instance of `MedusaRequest`:
    *
    * ```ts
-   * await paymentModuleService.processEvent({
+   * const dataAndAction = await paymentModuleService.getWebhookActionAndData({
    *   provider: "stripe",
    *   payload: {
    *     data: req.body,
@@ -1077,7 +1077,7 @@ export interface IPaymentModuleService extends IModuleService {
    * })
    * ```
    */
-  processEvent(data: ProviderWebhookPayload): Promise<WebhookActionResult | void>
+  getWebhookActionAndData(data: ProviderWebhookPayload): Promise<WebhookActionResult>
 }
 
 /**
