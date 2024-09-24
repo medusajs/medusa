@@ -4,7 +4,7 @@ const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
 const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
 
-const pgGodCredentials = {
+export const pgGodCredentials = {
   user: DB_USERNAME,
   password: DB_PASSWORD,
   host: DB_HOST,

@@ -12,7 +12,7 @@ import {
   RecursiveEntity1,
   RecursiveEntity2,
 } from "../__fixtures__/utils"
-import { createDb, dropDb } from "../__fixtures__/database"
+import { createDb, dropDb, pgGodCredentials } from "../__fixtures__/database"
 
 jest.mock("@mikro-orm/core", () => ({
   ...jest.requireActual("@mikro-orm/core"),
@@ -46,6 +46,9 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
           InternalCircularDependencyEntity1,
         ],
         dbName,
+        host: pgGodCredentials.host,
+        user: pgGodCredentials.user,
+        password: pgGodCredentials.password,
         type: "postgresql",
       })
       await orm.schema.refreshDatabase()
