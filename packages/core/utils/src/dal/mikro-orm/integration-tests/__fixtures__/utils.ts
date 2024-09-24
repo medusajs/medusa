@@ -7,7 +7,7 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import { Searchable } from "../decorators/searchable"
+import { Searchable } from "../../decorators/searchable"
 
 // Circular dependency one level
 @Entity()

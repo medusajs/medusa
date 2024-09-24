@@ -14,8 +14,7 @@ import {
 import { EntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
 import { asValue } from "awilix"
-import { dbTestUtilFactory } from "medusa-test-utils"
-import { initDb } from "medusa-test-utils/dist/medusa-test-runner-utils/use-db"
+import { TestDatabaseUtils, initDb } from "medusa-test-utils"
 import path from "path"
 import { EventBusServiceMock } from "../__fixtures__"
 import { dbName } from "../__fixtures__/medusa-config"
@@ -25,7 +24,7 @@ const queryMock = jest.fn().mockReturnValue({
   graph: jest.fn(),
 })
 
-const dbUtils = dbTestUtilFactory()
+const dbUtils = TestDatabaseUtils.dbTestUtilFactory()
 
 jest.setTimeout(300000)
 
