@@ -22,15 +22,16 @@ import { OrderCreateFulfillmentItem } from "./order-create-fulfillment-item"
 
 type OrderCreateFulfillmentFormProps = {
   order: AdminOrder
+  requiresShipping: boolean
 }
 
 export function OrderCreateFulfillmentForm({
   order,
+  requiresShipping,
 }: OrderCreateFulfillmentFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [searchParams] = useSearchParams()
-  const requiresShipping = searchParams.get("requires_shipping")
 
   const { mutateAsync: createOrderFulfillment, isPending: isMutating } =
     useCreateOrderFulfillment(order.id)
@@ -38,7 +39,7 @@ export function OrderCreateFulfillmentForm({
   const [fulfillableItems, setFulfillableItems] = useState(() =>
     (order.items || []).filter(
       (item) =>
-        item.requires_shipping.toString() === requiresShipping &&
+        item.requires_shipping === requiresShipping &&
         getFulfillableQuantity(item) > 0
     )
   )
@@ -93,7 +94,7 @@ export function OrderCreateFulfillmentForm({
 
   const fulfilledQuantityArray = (order.items || []).map(
     (item) =>
-      item.requires_shipping.toString() === requiresShipping &&
+      item.requires_shipping === requiresShipping &&
       item.detail.fulfilled_quantity
   )
 
@@ -101,7 +102,7 @@ export function OrderCreateFulfillmentForm({
     const itemsToFulfill =
       order?.items?.filter(
         (item) =>
-          item.requires_shipping.toString() === requiresShipping &&
+          item.requires_shipping === requiresShipping &&
           getFulfillableQuantity(item) > 0
       ) || []
 
