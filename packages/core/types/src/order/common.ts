@@ -25,6 +25,8 @@ export type ChangeActionType =
   | "WRITE_OFF_ITEM"
   | "REINSTATE_ITEM"
 
+export type OrderChangeStatus = "confirmed" | "declined" | "requested" | "pending" | "canceled"
+
 /**
  * @interface
  *
@@ -1801,7 +1803,7 @@ export interface OrderChangeDTO {
   /**
    * The status of the order change
    */
-  status: string
+  status: OrderChangeStatus
 
   /**
    * The requested by of the order change

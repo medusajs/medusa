@@ -1,9 +1,12 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
+import { ChangeActionType, OrderChangeStatus } from "../../order"
 import { BigNumberValue } from "../../totals"
 import { BaseClaim } from "../claim/common"
 import { FindParams } from "../common"
+import { BaseExchange } from "../exchange/common"
 import { BasePaymentCollection } from "../payment/common"
 import { BaseProduct, BaseProductVariant } from "../product/common"
+import { BaseReturn } from "../return/common"
 
 export interface BaseOrderSummary {
   total: number
@@ -188,39 +191,6 @@ export interface BaseOrderShippingDetail {
   updated_at: Date
 }
 
-export interface BaseOrderChange {
-  id: string
-  order_id: string
-  actions: BaseOrderChangeAction[]
-  status: string
-  requested_by: string | null
-  requested_at: Date | string | null
-  confirmed_by: string | null
-  confirmed_at: Date | string | null
-  declined_by: string | null
-  declined_reason: string | null
-  metadata: Record<string, unknown> | null
-  declined_at: Date | string | null
-  canceled_by: string | null
-  canceled_at: Date | string | null
-  created_at: Date | string
-  updated_at: Date | string
-}
-
-export interface BaseOrderChangeAction {
-  id: string
-  order_change_id: string | null
-  order_change: BaseOrderChange | null
-  order_id: string | null
-  reference: string
-  reference_id: string
-  action: string
-  details: Record<string, unknown> | null
-  internal_note: string | null
-  created_at: Date | string
-  updated_at: Date | string
-}
-
 export interface BaseOrderTransaction {
   id: string
   order_id: string
@@ -378,14 +348,14 @@ export interface BaseOrderChange {
    *
    * @expandable
    */
-  return_order: any
+  return_order: BaseReturn
 
   /**
    * The associated exchange order
    *
    * @expandable
    */
-  exchange: any
+  exchange: BaseExchange
 
   /**
    * The associated claim order
@@ -404,7 +374,7 @@ export interface BaseOrderChange {
   /**
    * The status of the order change
    */
-  status: string
+  status: OrderChangeStatus
 
   /**
    * The requested by of the order change
@@ -414,7 +384,7 @@ export interface BaseOrderChange {
   /**
    * When the order change was requested
    */
-  requested_at: Date | string | null
+  requested_at: Date | null
 
   /**
    * The confirmed by of the order change
@@ -424,7 +394,7 @@ export interface BaseOrderChange {
   /**
    * When the order change was confirmed
    */
-  confirmed_at: Date | string | null
+  confirmed_at: Date | null
 
   /**
    * The declined by of the order change
@@ -444,7 +414,7 @@ export interface BaseOrderChange {
   /**
    * When the order change was declined
    */
-  declined_at: Date | string | null
+  declined_at: Date | null
 
   /**
    * The canceled by of the order change
@@ -454,7 +424,7 @@ export interface BaseOrderChange {
   /**
    * When the order change was canceled
    */
-  canceled_at: Date | string | null
+  canceled_at: Date | null
 
   /**
    * When the order change was created
@@ -518,7 +488,7 @@ export interface BaseOrderChangeAction {
   /**
    * The reference of the order change action
    */
-  reference: string
+  reference: "claim" | "exchange" | "return" | "order_shipping_method"
 
   /**
    * The ID of the reference
@@ -528,7 +498,7 @@ export interface BaseOrderChangeAction {
   /**
    * The action of the order change action
    */
-  action: string
+  action: ChangeActionType
 
   /**
    * The details of the order change action
