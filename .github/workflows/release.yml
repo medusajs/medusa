@@ -38,3 +38,32 @@ jobs:
         uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post failure to Slack channel
+        if: failure()
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: "releases"
+          payload: |
+            {
+              "blocks":[
+                {
+                  "type": "header",
+                  "text":  {
+                    "type": "plain_text",
+                    "text": "Failed to release! ⛔"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ github.event.release.html_url }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_RELEASE }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
