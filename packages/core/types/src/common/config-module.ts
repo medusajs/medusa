@@ -4,6 +4,7 @@ import {
 } from "../modules-sdk"
 
 import type { RedisOptions } from "ioredis"
+// @ts-ignore
 import type { InlineConfig } from "vite"
 
 /**
