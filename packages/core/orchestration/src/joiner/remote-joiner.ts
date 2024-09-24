@@ -1189,16 +1189,10 @@ export class RemoteJoiner {
       throw new Error(`Service "${queryObj.service}" was not found.`)
     }
 
-    let pkName = serviceConfig.primaryKeys[0]
-    const {
-      primaryKeyArg,
-      otherArgs,
-      pkName: primaryKeyName,
-    } = gerPrimaryKeysAndOtherFilters({
+    const { primaryKeyArg, otherArgs, pkName } = gerPrimaryKeysAndOtherFilters({
       serviceConfig,
       queryObj,
     })
-    pkName = primaryKeyName
 
     const implodeMapping: InternalImplodeMapping[] = []
     const parsedExpands = this.parseExpands({
@@ -1248,7 +1242,11 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
 
   let pkName = serviceConfig.primaryKeys[0]
   let primaryKeyArg = args.find((arg) => {
-    return serviceConfig.primaryKeys.includes(arg.name)
+    const include = serviceConfig.primaryKeys.includes(arg.name)
+    if (include) {
+      pkName = arg.name
+    }
+    return include
   })
 
   let otherArgs = args.filter(
