@@ -8,12 +8,12 @@ import { accessSync } from "fs"
 import * as path from "path"
 import { dirname, join, normalize } from "path"
 import {
-  MapToConfig,
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
   isObject,
   lowerCaseFirst,
+  MapToConfig,
   pluralize,
   toCamelCase,
   upperCaseFirst,
@@ -176,7 +176,6 @@ export function defineJoinerConfig(
         return (Object.values(entityLinkConfig as any) as any[])
           .filter((linkableConfig) => isObject(linkableConfig))
           .map((linkableConfig) => {
-            // @ts-ignore
             return linkableConfig.primaryKey
           })
       })
