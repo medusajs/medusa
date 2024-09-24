@@ -26,7 +26,8 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
+    "resolve:aliases": "tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && tsc-alias -p tsconfig.resolved.json && rimraf tsconfig.resolved.json",
+    "build": "rimraf dist && tsc --build && npm run resolve:aliases",
     "test": "jest --runInBand --passWithNoTests --bail --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
