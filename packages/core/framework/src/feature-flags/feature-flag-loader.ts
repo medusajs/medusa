@@ -1,5 +1,6 @@
 import {
   ContainerRegistrationKeys,
+  dynamicImport,
   FlagRouter,
   isDefined,
   isObject,
@@ -112,7 +113,7 @@ export async function featureFlagsLoader(
           return
         }
 
-        const fileExports = await import(join(flagDir, file.name))
+        const fileExports = await dynamicImport(join(flagDir, file.name))
         const featureFlag = fileExports.default
 
         if (!featureFlag) {

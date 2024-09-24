@@ -288,7 +288,7 @@ export class RedisDistributedTransactionStorage
 
   async scheduleTransactionTimeout(
     transaction: DistributedTransactionType,
-    timestamp: number,
+    _: number,
     interval: number
   ): Promise<void> {
     await this.queue.add(

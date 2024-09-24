@@ -16,13 +16,13 @@ import {
   ReferenceType,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import { FindOptions as MikroOptions } from "@mikro-orm/core/drivers/IDatabaseDriver"
 import {
   EntityClass,
   EntityName,
   EntityProperty,
+  FindOptions as MikroOptions,
   FilterQuery as MikroFilterQuery,
-} from "@mikro-orm/core/typings"
+} from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   MedusaError,

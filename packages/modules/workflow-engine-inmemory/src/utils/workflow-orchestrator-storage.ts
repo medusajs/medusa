@@ -289,7 +289,7 @@ export class InMemoryDistributedTransactionStorage
   }
 
   async removeAll(): Promise<void> {
-    for (const [key, job] of this.scheduled) {
+    for (const [key] of this.scheduled) {
       await this.remove(key)
     }
   }

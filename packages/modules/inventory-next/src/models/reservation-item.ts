@@ -111,12 +111,12 @@ export class ReservationItem {
   inventory_item: Rel<InventoryItem>
 
   @BeforeCreate()
-  private beforeCreate(): void {
+  beforeCreate(): void {
     this.id = generateEntityId(this.id, "resitem")
   }
 
   @OnInit()
-  private onInit(): void {
+  onInit(): void {
     this.id = generateEntityId(this.id, "resitem")
   }
 }

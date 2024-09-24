@@ -1,5 +1,7 @@
 {
+  "extends": "../../../_tsconfig.base.json",
   "compilerOptions": {
+<<<<<<< HEAD
     "lib": ["ES2021"],
     "target": "ES2021",
     "outDir": "dist",
@@ -20,16 +22,23 @@
     "noImplicitThis": true,
     "allowJs": true,
     "skipLibCheck": true,
+=======
+>>>>>>> develop
     "paths": {
       "@models": ["./src/models"],
       "@services": ["./src/services"],
       "@repositories": ["./src/repositories"],
-      "@types": ["./src/types"]
+      "@types": ["./src/types"],
+      "@utils": ["./src/utils"]
     }
+<<<<<<< HEAD
   },
   "include": ["src"],
   "exclude": [
     "dist",
     "node_modules"
   ]
+=======
+  }
+>>>>>>> develop
 }

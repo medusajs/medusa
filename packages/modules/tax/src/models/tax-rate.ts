@@ -42,6 +42,11 @@ const taxRegionIdIndexStatement = createPsqlIndexStatementHelper({
   columns: "tax_region_id",
   where: "deleted_at IS NULL",
 })
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
+  tableName: TABLE_NAME,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
 
 @singleDefaultRegionIndexStatement.MikroORMIndex()
 @Entity({ tableName: TABLE_NAME })
@@ -107,11 +112,7 @@ export default class TaxRate {
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    tableName: TABLE_NAME,
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @deletedAtIndexStatement.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

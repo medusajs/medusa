@@ -5582,7 +5582,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -5600,7 +5600,7 @@ __metadata:
     jest: ^29.7.0
     rimraf: ^5.0.1
     scrypt-kdf: ^2.0.1
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -5615,7 +5615,7 @@ __metadata:
     jest: ^29.7.0
     msw: ^2.3.0
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -5631,7 +5631,7 @@ __metadata:
     jsonwebtoken: ^9.0.2
     msw: ^2.3.0
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -5651,7 +5651,7 @@ __metadata:
     scrypt-kdf: ^2.0.1
     simple-oauth2: ^5.0.0
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -5670,7 +5670,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -5685,7 +5685,7 @@ __metadata:
     ioredis: ^5.4.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     awilix: ^8.0.1
   languageName: unknown
@@ -5704,7 +5704,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -5747,7 +5747,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -5769,7 +5769,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -5842,7 +5842,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     ulid: ^2.3.0
   languageName: unknown
@@ -5861,7 +5861,7 @@ __metadata:
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     awilix: ^8.0.1
   languageName: unknown
@@ -5875,7 +5875,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -5890,7 +5890,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   peerDependencies:
     ulid: ^2.3.0
   languageName: unknown
@@ -5912,7 +5912,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -5966,7 +5966,7 @@ __metadata:
     express: ^4.17.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -5985,7 +5985,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6041,7 +6041,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6063,7 +6063,7 @@ __metadata:
     rimraf: ^5.0.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6101,7 +6101,7 @@ __metadata:
     rimraf: ^5.0.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.5.0
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6268,7 +6268,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -6283,7 +6283,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -6301,7 +6301,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6348,7 +6348,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6370,7 +6370,7 @@ __metadata:
     jest: ^29.7.0
     rimraf: ^5.0.1
     stripe: latest
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   peerDependencies:
     awilix: ^8.0.1
   languageName: unknown
@@ -6391,7 +6391,7 @@ __metadata:
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6415,7 +6415,7 @@ __metadata:
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6439,7 +6439,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6462,7 +6462,7 @@ __metadata:
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6484,7 +6484,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6506,7 +6506,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6528,7 +6528,7 @@ __metadata:
     rimraf: ^5.0.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6550,7 +6550,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6573,7 +6573,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6728,7 +6728,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6781,7 +6781,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -6804,7 +6804,7 @@ __metadata:
     rimraf: ^3.0.2
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/migrations": 5.9.7
@@ -32788,16 +32788,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.5.0":
-  version: 5.5.3
-  resolution: "typescript@npm:5.5.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: f52c71ccbc7080b034b9d3b72051d563601a4815bf3e39ded188e6ce60813f75dbedf11ad15dd4d32a12996a9ed8c7155b46c93a9b9c9bad1049766fe614bbdd
-  languageName: node
-  linkType: hard
-
 "typescript@npm:^5.6.2":
   version: 5.6.2
   resolution: "typescript@npm:5.6.2"
@@ -32855,16 +32845,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 9cf4c053893bcf327d101b6c024a55baf05430dc30263f9adb1bf354aeffc11306fe1f23ba2f9a0209674359f16219b5b7d229e923477b94831d07d5a33a4217
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^5.5.0#~builtin<compat/typescript>":
-  version: 5.5.3
-  resolution: "typescript@patch:typescript@npm%3A5.5.3#~builtin<compat/typescript>::version=5.5.3&hash=7ad353"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 5a437c416251334deeaf29897157032311f3f126547cfdc4b133768b606cb0e62bcee733bb97cf74c42fe7268801aea1392d8e40988cdef112e9546eba4c03c5
   languageName: node
   linkType: hard
 
