@@ -4,14 +4,18 @@ import { calculateOrderChange } from "../../../../utils"
 
 describe("Order Exchange - Actions", function () {
   const originalOrder = {
+    id: "1",
     items: [
       {
         id: "1",
         quantity: 1,
         unit_price: 10,
+        order_id: "1",
 
         detail: {
           quantity: 1,
+          order_id: "1",
+          delivered_quantity: 1,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
           return_requested_quantity: 0,
@@ -24,9 +28,12 @@ describe("Order Exchange - Actions", function () {
         id: "2",
         quantity: 2,
         unit_price: 100,
+        order_id: "1",
 
         detail: {
           quantity: 2,
+          order_id: "1",
+          delivered_quantity: 1,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
           return_requested_quantity: 0,
@@ -39,9 +46,12 @@ describe("Order Exchange - Actions", function () {
         id: "3",
         quantity: 3,
         unit_price: 20,
+        order_id: "1",
 
         detail: {
           quantity: 3,
+          order_id: "1",
+          delivered_quantity: 1,
           shipped_quantity: 3,
           fulfilled_quantity: 3,
           return_requested_quantity: 0,
@@ -55,6 +65,7 @@ describe("Order Exchange - Actions", function () {
       {
         id: "ship_123",
         amount: 0,
+        order_id: "1",
       },
     ],
     total: 270,
@@ -91,7 +102,6 @@ describe("Order Exchange - Actions", function () {
     ] as OrderChangeEvent[]
 
     const changes = calculateOrderChange({
-      // @ts-expect-error "Types are off"
       order: originalOrder,
       actions: actions,
       options: {

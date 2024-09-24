@@ -4,14 +4,18 @@ import { calculateOrderChange } from "../../../../utils"
 
 describe("Order Return - Actions", function () {
   const originalOrder = {
+    id: "1",
     items: [
       {
         id: "1",
         quantity: 1,
         unit_price: 10,
+        order_id: "1",
 
         detail: {
+          order_id: "1",
           quantity: 1,
+          delivered_quantity: 1,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
           return_requested_quantity: 0,
@@ -24,9 +28,12 @@ describe("Order Return - Actions", function () {
         id: "2",
         quantity: 2,
         unit_price: 100,
+        order_id: "1",
 
         detail: {
+          order_id: "1",
           quantity: 2,
+          delivered_quantity: 1,
           shipped_quantity: 1,
           fulfilled_quantity: 1,
           return_requested_quantity: 0,
@@ -39,9 +46,12 @@ describe("Order Return - Actions", function () {
         id: "3",
         quantity: 3,
         unit_price: 20,
+        order_id: "1",
 
         detail: {
+          order_id: "1",
           quantity: 3,
+          delivered_quantity: 1,
           shipped_quantity: 3,
           fulfilled_quantity: 3,
           return_requested_quantity: 0,
@@ -54,7 +64,8 @@ describe("Order Return - Actions", function () {
     shipping_methods: [
       {
         id: "ship_123",
-        price: 0,
+        amount: 0,
+        order_id: "1",
       },
     ],
     total: 270,
@@ -75,7 +86,6 @@ describe("Order Return - Actions", function () {
     expect(() => {
       actions[0].details!.quantity = 2
       calculateOrderChange({
-        // @ts-expect-error "Types are off"
         order: originalOrder,
         actions,
       })
@@ -86,7 +96,6 @@ describe("Order Return - Actions", function () {
     expect(() => {
       actions[0].details!.reference_id = undefined
       calculateOrderChange({
-        // @ts-expect-error "Types are off"
         order: originalOrder,
         actions,
       })
@@ -95,7 +104,6 @@ describe("Order Return - Actions", function () {
     expect(() => {
       actions[0].details!.reference_id = "333"
       calculateOrderChange({
-        // @ts-expect-error "Types are off"
         order: originalOrder,
         actions,
       })
@@ -125,7 +133,6 @@ describe("Order Return - Actions", function () {
     ] as OrderChangeEvent[]
 
     const changes = calculateOrderChange({
-      // @ts-expect-error "Types are off"
       order: originalOrder,
       actions,
     })
@@ -183,7 +190,6 @@ describe("Order Return - Actions", function () {
 
     expect(() => {
       calculateOrderChange({
-        // @ts-expect-error "Types are off"
         order: modifiedOrder,
         actions: [
           {
@@ -201,7 +207,6 @@ describe("Order Return - Actions", function () {
 
     expect(() => {
       calculateOrderChange({
-        // @ts-expect-error "Types are off"
         order: modifiedOrder,
         actions: [
           {
@@ -219,7 +224,6 @@ describe("Order Return - Actions", function () {
 
     expect(() => {
       calculateOrderChange({
-        // @ts-expect-error "Types are off"
         order: modifiedOrder,
         actions: [
           {
@@ -243,7 +247,6 @@ describe("Order Return - Actions", function () {
     )
 
     const receivedChanges = calculateOrderChange({
-      // @ts-expect-error "Types are off"
       order: modifiedOrder,
       actions: [
         {
