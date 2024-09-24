@@ -9,7 +9,11 @@ import {
   TransactionStep,
 } from "@medusajs/framework/orchestration"
 import { Logger, ModulesSdkTypes } from "@medusajs/framework/types"
-import { MedusaError, promiseAll, TransactionState } from "@medusajs/utils"
+import {
+  MedusaError,
+  promiseAll,
+  TransactionState,
+} from "@medusajs/framework/utils"
 import { WorkflowOrchestratorService } from "@services"
 import { Queue, Worker } from "bullmq"
 import Redis from "ioredis"
