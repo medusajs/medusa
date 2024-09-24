@@ -489,6 +489,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       oldSchema: existingRequestBodySchema,
       newSchema: requestSchema,
     })
+    console.log(existingRequestBodySchema, requestSchema, updatedRequestSchema)
 
     if (
       !updatedRequestSchema ||
@@ -1979,7 +1980,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
-    } else if (!newSchemaObj) {
+    } else if (!newSchemaObj || !Object.keys(newSchemaObj)) {
       return undefined
     }
 
