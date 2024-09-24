@@ -1,6 +1,7 @@
 import {
   OrderChangeDTO,
   OrderDTO,
+  OrderLineItemDTO,
   OrderWorkflow,
   ReturnDTO,
 } from "@medusajs/types"
@@ -37,6 +38,37 @@ export function throwIfItemsDoesNotExistsInOrder({
       `Items with ids ${diff.join(", ")} does not exist in order with id ${
         order.id
       }.`
+    )
+  }
+}
+
+export function throwIfItemsAreNotGroupedByShippingRequirement({
+  order,
+  inputItems,
+}: {
+  order: Pick<OrderDTO, "id" | "items">
+  inputItems: OrderWorkflow.CreateOrderFulfillmentWorkflowInput["items"]
+}) {
+  const itemsWithShipping: string[] = []
+  const itemsWithoutShipping: string[] = []
+  const orderItemsMap = new Map<string, OrderLineItemDTO>(
+    (order.items || []).map((item) => [item.id, item])
+  )
+
+  for (const inputItem of inputItems) {
+    const orderItem = orderItemsMap.get(inputItem.id)!
+
+    if (orderItem.requires_shipping) {
+      itemsWithShipping.push(orderItem.id)
+    } else {
+      itemsWithoutShipping.push(orderItem.id)
+    }
+  }
+
+  if (itemsWithShipping.length && itemsWithoutShipping.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Fulfillment can only be created entirely with items with shipping or items without shipping. Split this request into 2 fulfillments.`
     )
   }
 }

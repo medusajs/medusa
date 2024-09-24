@@ -1,12 +1,12 @@
 {
-	"id": 41506,
+	"id": 41445,
 	"name": "workflows",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 41618,
+			"id": 41557,
 			"name": "Hook",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -21,7 +21,7 @@
 			},
 			"typeParameters": [
 				{
-					"id": 41623,
+					"id": 41562,
 					"name": "Name",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -32,7 +32,7 @@
 					}
 				},
 				{
-					"id": 41624,
+					"id": 41563,
 					"name": "Input",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -42,14 +42,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 41619,
+					"id": 41558,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 41620,
+							"id": 41559,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 1024,
@@ -70,21 +70,21 @@
 							}
 						},
 						{
-							"id": 41621,
+							"id": 41560,
 							"name": "name",
 							"variant": "declaration",
 							"kind": 1024,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 41623,
+								"target": 41562,
 								"name": "Name",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
 							}
 						},
 						{
-							"id": 41622,
+							"id": 41561,
 							"name": " input",
 							"variant": "declaration",
 							"kind": 1024,
@@ -99,7 +99,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 41624,
+								"target": 41563,
 								"name": "Input",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -110,9 +110,9 @@
 						{
 							"title": "Properties",
 							"children": [
-								41620,
-								41621,
-								41622
+								41559,
+								41560,
+								41561
 							]
 						}
 					]
@@ -120,14 +120,14 @@
 			}
 		},
 		{
-			"id": 41612,
+			"id": 41551,
 			"name": "createHook",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 41613,
+					"id": 41552,
 					"name": "createHook",
 					"variant": "signature",
 					"kind": 4096,
@@ -162,7 +162,7 @@
 					},
 					"typeParameters": [
 						{
-							"id": 41614,
+							"id": 41553,
 							"name": "Name",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -173,7 +173,7 @@
 							}
 						},
 						{
-							"id": 41615,
+							"id": 41554,
 							"name": "TInvokeInput",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -182,7 +182,7 @@
 					],
 					"parameters": [
 						{
-							"id": 41616,
+							"id": 41555,
 							"name": "name",
 							"variant": "param",
 							"kind": 32768,
@@ -197,14 +197,14 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 41614,
+								"target": 41553,
 								"name": "Name",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
 							}
 						},
 						{
-							"id": 41617,
+							"id": 41556,
 							"name": "input",
 							"variant": "param",
 							"kind": 32768,
@@ -219,7 +219,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 41615,
+								"target": 41554,
 								"name": "TInvokeInput",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -228,18 +228,18 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 41618,
+						"target": 41557,
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 41614,
+								"target": 41553,
 								"name": "Name",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
 							},
 							{
 								"type": "reference",
-								"target": 41615,
+								"target": 41554,
 								"name": "TInvokeInput",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -252,7 +252,7 @@
 			]
 		},
 		{
-			"id": 41524,
+			"id": 41463,
 			"name": "InvokeFn",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -267,7 +267,7 @@
 			},
 			"typeParameters": [
 				{
-					"id": 41529,
+					"id": 41468,
 					"name": "TInput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -282,7 +282,7 @@
 					}
 				},
 				{
-					"id": 41530,
+					"id": 41469,
 					"name": "TOutput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -297,7 +297,7 @@
 					}
 				},
 				{
-					"id": 41531,
+					"id": 41470,
 					"name": "TCompensateInput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -315,14 +315,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 41525,
+					"id": 41464,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 41526,
+							"id": 41465,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
@@ -351,28 +351,28 @@
 							},
 							"parameters": [
 								{
-									"id": 41527,
+									"id": 41466,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 41529,
+										"target": 41468,
 										"name": "TInput",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
 									}
 								},
 								{
-									"id": 41528,
+									"id": 41467,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 41760,
+										"target": 41699,
 										"name": "StepExecutionContext",
 										"package": "@medusajs/workflows-sdk"
 									}
@@ -387,11 +387,11 @@
 									},
 									{
 										"type": "reference",
-										"target": 41567,
+										"target": 41506,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 41530,
+												"target": 41469,
 												"name": "TOutput",
 												"package": "@medusajs/workflows-sdk",
 												"refersToTypeParameter": true
@@ -400,7 +400,7 @@
 												"type": "conditional",
 												"checkType": {
 													"type": "reference",
-													"target": 41531,
+													"target": 41470,
 													"name": "TCompensateInput",
 													"package": "@medusajs/workflows-sdk",
 													"refersToTypeParameter": true
@@ -411,14 +411,14 @@
 												},
 												"trueType": {
 													"type": "reference",
-													"target": 41530,
+													"target": 41469,
 													"name": "TOutput",
 													"package": "@medusajs/workflows-sdk",
 													"refersToTypeParameter": true
 												},
 												"falseType": {
 													"type": "reference",
-													"target": 41531,
+													"target": 41470,
 													"name": "TCompensateInput",
 													"package": "@medusajs/workflows-sdk",
 													"refersToTypeParameter": true
@@ -444,11 +444,11 @@
 													},
 													{
 														"type": "reference",
-														"target": 41567,
+														"target": 41506,
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": 41530,
+																"target": 41469,
 																"name": "TOutput",
 																"package": "@medusajs/workflows-sdk",
 																"refersToTypeParameter": true
@@ -457,7 +457,7 @@
 																"type": "conditional",
 																"checkType": {
 																	"type": "reference",
-																	"target": 41531,
+																	"target": 41470,
 																	"name": "TCompensateInput",
 																	"package": "@medusajs/workflows-sdk",
 																	"refersToTypeParameter": true
@@ -468,14 +468,14 @@
 																},
 																"trueType": {
 																	"type": "reference",
-																	"target": 41530,
+																	"target": 41469,
 																	"name": "TOutput",
 																	"package": "@medusajs/workflows-sdk",
 																	"refersToTypeParameter": true
 																},
 																"falseType": {
 																	"type": "reference",
-																	"target": 41531,
+																	"target": 41470,
 																	"name": "TCompensateInput",
 																	"package": "@medusajs/workflows-sdk",
 																	"refersToTypeParameter": true
@@ -499,7 +499,7 @@
 			}
 		},
 		{
-			"id": 41532,
+			"id": 41471,
 			"name": "CompensateFn",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -514,7 +514,7 @@
 			},
 			"typeParameters": [
 				{
-					"id": 41537,
+					"id": 41476,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -532,14 +532,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 41533,
+					"id": 41472,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 41534,
+							"id": 41473,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
@@ -560,7 +560,7 @@
 							},
 							"parameters": [
 								{
-									"id": 41535,
+									"id": 41474,
 									"name": "input",
 									"variant": "param",
 									"kind": 32768,
@@ -570,7 +570,7 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 41537,
+												"target": 41476,
 												"name": "T",
 												"package": "@medusajs/workflows-sdk",
 												"refersToTypeParameter": true
@@ -583,14 +583,14 @@
 									}
 								},
 								{
-									"id": 41536,
+									"id": 41475,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 41760,
+										"target": 41699,
 										"name": "StepExecutionContext",
 										"package": "@medusajs/workflows-sdk"
 									}
@@ -626,7 +626,7 @@
 			}
 		},
 		{
-			"id": 41538,
+			"id": 41477,
 			"name": "LocalStepConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -637,14 +637,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 41539,
+							"id": 41478,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 41540,
+									"id": 41479,
 									"name": "name",
 									"variant": "declaration",
 									"kind": 1024,
@@ -661,7 +661,7 @@
 								{
 									"title": "Properties",
 									"children": [
-										41540
+										41479
 									]
 								}
 							]
@@ -708,14 +708,14 @@
 			}
 		},
 		{
-			"id": 41541,
+			"id": 41480,
 			"name": "ApplyStepOptions",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 41542,
+					"id": 41481,
 					"name": "stepName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -726,7 +726,7 @@
 					}
 				},
 				{
-					"id": 41543,
+					"id": 41482,
 					"name": "stepConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -744,7 +744,7 @@
 					}
 				},
 				{
-					"id": 41544,
+					"id": 41483,
 					"name": "input",
 					"variant": "declaration",
 					"kind": 1024,
@@ -753,7 +753,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 41547,
+						"target": 41486,
 						"name": "TStepInputs",
 						"package": "@medusajs/workflows-sdk",
 						"qualifiedName": "ApplyStepOptions.TStepInputs",
@@ -761,18 +761,18 @@
 					}
 				},
 				{
-					"id": 41545,
+					"id": 41484,
 					"name": "invokeFn",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 41524,
+						"target": 41463,
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 41548,
+								"target": 41487,
 								"name": "TInvokeInput",
 								"package": "@medusajs/workflows-sdk",
 								"qualifiedName": "ApplyStepOptions.TInvokeInput",
@@ -780,7 +780,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 41549,
+								"target": 41488,
 								"name": "TInvokeResultOutput",
 								"package": "@medusajs/workflows-sdk",
 								"qualifiedName": "ApplyStepOptions.TInvokeResultOutput",
@@ -788,7 +788,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 41550,
+								"target": 41489,
 								"name": "TInvokeResultCompensateInput",
 								"package": "@medusajs/workflows-sdk",
 								"qualifiedName": "ApplyStepOptions.TInvokeResultCompensateInput",
@@ -800,7 +800,7 @@
 					}
 				},
 				{
-					"id": 41546,
+					"id": 41485,
 					"name": "compensateFn",
 					"variant": "declaration",
 					"kind": 1024,
@@ -809,11 +809,11 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 41532,
+						"target": 41471,
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 41550,
+								"target": 41489,
 								"name": "TInvokeResultCompensateInput",
 								"package": "@medusajs/workflows-sdk",
 								"qualifiedName": "ApplyStepOptions.TInvokeResultCompensateInput",
@@ -829,17 +829,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						41542,
-						41543,
-						41544,
-						41545,
-						41546
+						41481,
+						41482,
+						41483,
+						41484,
+						41485
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 41547,
+					"id": 41486,
 					"name": "TStepInputs",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -852,7 +852,7 @@
 							"operator": "keyof",
 							"target": {
 								"type": "reference",
-								"target": 41548,
+								"target": 41487,
 								"name": "TInvokeInput",
 								"package": "@medusajs/workflows-sdk",
 								"qualifiedName": "ApplyStepOptions.TInvokeInput",
@@ -861,7 +861,7 @@
 						},
 						"templateType": {
 							"type": "reference",
-							"target": 41720,
+							"target": 41659,
 							"typeArguments": [
 								{
 									"type": "indexedAccess",
@@ -877,7 +877,7 @@
 									},
 									"objectType": {
 										"type": "reference",
-										"target": 41548,
+										"target": 41487,
 										"name": "TInvokeInput",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "ApplyStepOptions.TInvokeInput",
@@ -891,21 +891,21 @@
 					}
 				},
 				{
-					"id": 41548,
+					"id": 41487,
 					"name": "TInvokeInput",
 					"variant": "typeParam",
 					"kind": 131072,
 					"flags": {}
 				},
 				{
-					"id": 41549,
+					"id": 41488,
 					"name": "TInvokeResultOutput",
 					"variant": "typeParam",
 					"kind": 131072,
 					"flags": {}
 				},
 				{
-					"id": 41550,
+					"id": 41489,
 					"name": "TInvokeResultCompensateInput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -914,14 +914,14 @@
 			]
 		},
 		{
-			"id": 41514,
+			"id": 41453,
 			"name": "createStep",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 41515,
+					"id": 41454,
 					"name": "createStep",
 					"variant": "signature",
 					"kind": 4096,
@@ -936,7 +936,7 @@
 								"kind": "inline-tag",
 								"tag": "@link",
 								"text": "StepFunction",
-								"target": 41695,
+								"target": 41634,
 								"tsLinkText": ""
 							},
 							{
@@ -947,7 +947,7 @@
 								"kind": "inline-tag",
 								"tag": "@link",
 								"text": "createWorkflow",
-								"target": 41551
+								"target": 41490
 							},
 							{
 								"kind": "text",
@@ -977,7 +977,7 @@
 					},
 					"typeParameters": [
 						{
-							"id": 41516,
+							"id": 41455,
 							"name": "TInvokeInput",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -992,7 +992,7 @@
 							}
 						},
 						{
-							"id": 41517,
+							"id": 41456,
 							"name": "TInvokeResultOutput",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -1007,7 +1007,7 @@
 							}
 						},
 						{
-							"id": 41518,
+							"id": 41457,
 							"name": "TInvokeResultCompensateInput",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -1024,7 +1024,7 @@
 					],
 					"parameters": [
 						{
-							"id": 41519,
+							"id": 41458,
 							"name": "nameOrConfig",
 							"variant": "param",
 							"kind": 32768,
@@ -1050,14 +1050,14 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 41520,
+													"id": 41459,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 41521,
+															"id": 41460,
 															"name": "name",
 															"variant": "declaration",
 															"kind": 1024,
@@ -1072,7 +1072,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																41521
+																41460
 															]
 														}
 													]
@@ -1121,7 +1121,7 @@
 							}
 						},
 						{
-							"id": 41522,
+							"id": 41461,
 							"name": "invokeFn",
 							"variant": "param",
 							"kind": 32768,
@@ -1136,7 +1136,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "StepResponse",
-										"target": 41567,
+										"target": 41506,
 										"tsLinkText": ""
 									},
 									{
@@ -1147,7 +1147,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "StepResponse",
-										"target": 41567,
+										"target": 41506,
 										"tsLinkText": ""
 									},
 									{
@@ -1158,25 +1158,25 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 41524,
+								"target": 41463,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 41516,
+										"target": 41455,
 										"name": "TInvokeInput",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
 									},
 									{
 										"type": "reference",
-										"target": 41517,
+										"target": 41456,
 										"name": "TInvokeResultOutput",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
 									},
 									{
 										"type": "reference",
-										"target": 41518,
+										"target": 41457,
 										"name": "TInvokeResultCompensateInput",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
@@ -1187,7 +1187,7 @@
 							}
 						},
 						{
-							"id": 41523,
+							"id": 41462,
 							"name": "compensateFn",
 							"variant": "param",
 							"kind": 32768,
@@ -1204,7 +1204,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "StepResponse",
-										"target": 41567,
+										"target": 41506,
 										"tsLinkText": ""
 									},
 									{
@@ -1231,11 +1231,11 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 41532,
+								"target": 41471,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 41518,
+										"target": 41457,
 										"name": "TInvokeResultCompensateInput",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
@@ -1248,18 +1248,18 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 41695,
+						"target": 41634,
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 41516,
+								"target": 41455,
 								"name": "TInvokeInput",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
 							},
 							{
 								"type": "reference",
-								"target": 41517,
+								"target": 41456,
 								"name": "TInvokeResultOutput",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -1272,14 +1272,14 @@
 			]
 		},
 		{
-			"id": 41551,
+			"id": 41490,
 			"name": "createWorkflow",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 41552,
+					"id": 41491,
 					"name": "createWorkflow",
 					"variant": "signature",
 					"kind": 4096,
@@ -1294,7 +1294,7 @@
 								"kind": "inline-tag",
 								"tag": "@link",
 								"text": "createStep",
-								"target": 41514,
+								"target": 41453,
 								"tsLinkText": ""
 							},
 							{
@@ -1305,7 +1305,7 @@
 								"kind": "inline-tag",
 								"tag": "@link",
 								"text": "ReturnWorkflow",
-								"target": 41780,
+								"target": 41719,
 								"tsLinkText": ""
 							},
 							{
@@ -1352,7 +1352,7 @@
 					},
 					"typeParameters": [
 						{
-							"id": 41553,
+							"id": 41492,
 							"name": "TData",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -1367,7 +1367,7 @@
 							}
 						},
 						{
-							"id": 41554,
+							"id": 41493,
 							"name": "TResult",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -1382,7 +1382,7 @@
 							}
 						},
 						{
-							"id": 41555,
+							"id": 41494,
 							"name": "THooks",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -1406,7 +1406,7 @@
 					],
 					"parameters": [
 						{
-							"id": 41556,
+							"id": 41495,
 							"name": "nameOrConfig",
 							"variant": "param",
 							"kind": 32768,
@@ -1432,14 +1432,14 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 41557,
+													"id": 41496,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 41558,
+															"id": 41497,
 															"name": "name",
 															"variant": "declaration",
 															"kind": 1024,
@@ -1454,7 +1454,7 @@
 														{
 															"title": "Properties",
 															"children": [
-																41558
+																41497
 															]
 														}
 													]
@@ -1475,7 +1475,7 @@
 							}
 						},
 						{
-							"id": 41559,
+							"id": 41498,
 							"name": "composer",
 							"variant": "param",
 							"kind": 32768,
@@ -1498,7 +1498,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "ReturnWorkflow",
-										"target": 41780,
+										"target": 41719,
 										"tsLinkText": ""
 									},
 									{
@@ -1509,7 +1509,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "transform",
-										"target": 41629
+										"target": 41568
 									},
 									{
 										"kind": "text",
@@ -1520,32 +1520,32 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 41560,
+									"id": 41499,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 41561,
+											"id": 41500,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"parameters": [
 												{
-													"id": 41562,
+													"id": 41501,
 													"name": "input",
 													"variant": "param",
 													"kind": 32768,
 													"flags": {},
 													"type": {
 														"type": "reference",
-														"target": 41720,
+														"target": 41659,
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": 41553,
+																"target": 41492,
 																"name": "TData",
 																"package": "@medusajs/workflows-sdk",
 																"refersToTypeParameter": true
@@ -1565,18 +1565,18 @@
 													},
 													{
 														"type": "reference",
-														"target": 41596,
+														"target": 41535,
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": 41554,
+																"target": 41493,
 																"name": "TResult",
 																"package": "@medusajs/workflows-sdk",
 																"refersToTypeParameter": true
 															},
 															{
 																"type": "reference",
-																"target": 41555,
+																"target": 41494,
 																"name": "THooks",
 																"package": "@medusajs/workflows-sdk",
 																"refersToTypeParameter": true
@@ -1595,25 +1595,25 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 41780,
+						"target": 41719,
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 41553,
+								"target": 41492,
 								"name": "TData",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
 							},
 							{
 								"type": "reference",
-								"target": 41554,
+								"target": 41493,
 								"name": "TResult",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
 							},
 							{
 								"type": "reference",
-								"target": 41555,
+								"target": 41494,
 								"name": "THooks",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -1626,7 +1626,7 @@
 			]
 		},
 		{
-			"id": 41567,
+			"id": 41506,
 			"name": "StepResponse",
 			"variant": "declaration",
 			"kind": 128,
@@ -1649,14 +1649,14 @@
 			},
 			"children": [
 				{
-					"id": 41573,
+					"id": 41512,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 41574,
+							"id": 41513,
 							"name": "new StepResponse",
 							"variant": "signature",
 							"kind": 16384,
@@ -1671,7 +1671,7 @@
 							},
 							"typeParameters": [
 								{
-									"id": 41575,
+									"id": 41514,
 									"name": "TOutput",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -1686,7 +1686,7 @@
 									}
 								},
 								{
-									"id": 41576,
+									"id": 41515,
 									"name": "TCompensateInput",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -1717,7 +1717,7 @@
 									},
 									"default": {
 										"type": "reference",
-										"target": 41575,
+										"target": 41514,
 										"name": "TOutput",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "StepResponse.TOutput",
@@ -1727,7 +1727,7 @@
 							],
 							"parameters": [
 								{
-									"id": 41577,
+									"id": 41516,
 									"name": "output",
 									"variant": "param",
 									"kind": 32768,
@@ -1744,7 +1744,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 41575,
+										"target": 41514,
 										"name": "TOutput",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "StepResponse.TOutput",
@@ -1752,7 +1752,7 @@
 									}
 								},
 								{
-									"id": 41578,
+									"id": 41517,
 									"name": "compensateInput",
 									"variant": "param",
 									"kind": 32768,
@@ -1777,7 +1777,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 41576,
+										"target": 41515,
 										"name": "TCompensateInput",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "StepResponse.TCompensateInput",
@@ -1787,11 +1787,11 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 41567,
+								"target": 41506,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 41575,
+										"target": 41514,
 										"name": "TOutput",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "StepResponse.TOutput",
@@ -1799,7 +1799,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 41576,
+										"target": 41515,
 										"name": "TCompensateInput",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "StepResponse.TCompensateInput",
@@ -1813,7 +1813,7 @@
 					]
 				},
 				{
-					"id": 41568,
+					"id": 41507,
 					"name": "permanentFailure",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1822,7 +1822,7 @@
 					},
 					"signatures": [
 						{
-							"id": 41569,
+							"id": 41508,
 							"name": "permanentFailure",
 							"variant": "signature",
 							"kind": 4096,
@@ -1848,7 +1848,7 @@
 							},
 							"parameters": [
 								{
-									"id": 41570,
+									"id": 41509,
 									"name": "message",
 									"variant": "param",
 									"kind": 32768,
@@ -1876,7 +1876,7 @@
 					]
 				},
 				{
-					"id": 41571,
+					"id": 41510,
 					"name": "skip",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1885,7 +1885,7 @@
 					},
 					"signatures": [
 						{
-							"id": 41572,
+							"id": 41511,
 							"name": "skip",
 							"variant": "signature",
 							"kind": 4096,
@@ -1907,20 +1907,20 @@
 				{
 					"title": "Constructors",
 					"children": [
-						41573
+						41512
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						41568,
-						41571
+						41507,
+						41510
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 41594,
+					"id": 41533,
 					"name": "TOutput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -1935,7 +1935,7 @@
 					}
 				},
 				{
-					"id": 41595,
+					"id": 41534,
 					"name": "TCompensateInput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -1966,7 +1966,7 @@
 					},
 					"default": {
 						"type": "reference",
-						"target": 41575,
+						"target": 41514,
 						"name": "TOutput",
 						"package": "@medusajs/workflows-sdk",
 						"qualifiedName": "StepResponse.TOutput",
@@ -1976,7 +1976,7 @@
 			]
 		},
 		{
-			"id": 41596,
+			"id": 41535,
 			"name": "WorkflowResponse",
 			"variant": "declaration",
 			"kind": 128,
@@ -1991,7 +1991,7 @@
 			},
 			"children": [
 				{
-					"id": 41605,
+					"id": 41544,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2003,28 +2003,28 @@
 					"defaultValue": "OrchestrationUtils.SymbolMedusaWorkflowResponse"
 				},
 				{
-					"id": 41597,
+					"id": 41536,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 41598,
+							"id": 41537,
 							"name": "new WorkflowResponse",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"typeParameters": [
 								{
-									"id": 41599,
+									"id": 41538,
 									"name": "TResult",
 									"variant": "typeParam",
 									"kind": 131072,
 									"flags": {}
 								},
 								{
-									"id": 41600,
+									"id": 41539,
 									"name": "THooks",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -2036,7 +2036,7 @@
 							],
 							"parameters": [
 								{
-									"id": 41601,
+									"id": 41540,
 									"name": "$result",
 									"variant": "param",
 									"kind": 32768,
@@ -2046,11 +2046,11 @@
 										"types": [
 											{
 												"type": "reference",
-												"target": 41720,
+												"target": 41659,
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 41599,
+														"target": 41538,
 														"name": "TResult",
 														"package": "@medusajs/workflows-sdk",
 														"qualifiedName": "WorkflowResponse.TResult",
@@ -2097,7 +2097,7 @@
 															},
 															"objectType": {
 																"type": "reference",
-																"target": 41599,
+																"target": 41538,
 																"name": "TResult",
 																"package": "@medusajs/workflows-sdk",
 																"qualifiedName": "WorkflowResponse.TResult",
@@ -2106,7 +2106,7 @@
 														},
 														{
 															"type": "reference",
-															"target": 41715,
+															"target": 41654,
 															"typeArguments": [
 																{
 																	"type": "indexedAccess",
@@ -2122,7 +2122,7 @@
 																	},
 																	"objectType": {
 																		"type": "reference",
-																		"target": 41599,
+																		"target": 41538,
 																		"name": "TResult",
 																		"package": "@medusajs/workflows-sdk",
 																		"qualifiedName": "WorkflowResponse.TResult",
@@ -2135,7 +2135,7 @@
 														},
 														{
 															"type": "reference",
-															"target": 41720,
+															"target": 41659,
 															"typeArguments": [
 																{
 																	"type": "indexedAccess",
@@ -2151,7 +2151,7 @@
 																	},
 																	"objectType": {
 																		"type": "reference",
-																		"target": 41599,
+																		"target": 41538,
 																		"name": "TResult",
 																		"package": "@medusajs/workflows-sdk",
 																		"qualifiedName": "WorkflowResponse.TResult",
@@ -2169,7 +2169,7 @@
 									}
 								},
 								{
-									"id": 41602,
+									"id": 41541,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -2179,21 +2179,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 41603,
+											"id": 41542,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 41604,
+													"id": 41543,
 													"name": "hooks",
 													"variant": "declaration",
 													"kind": 1024,
 													"flags": {},
 													"type": {
 														"type": "reference",
-														"target": 41600,
+														"target": 41539,
 														"name": "THooks",
 														"package": "@medusajs/workflows-sdk",
 														"qualifiedName": "WorkflowResponse.THooks",
@@ -2205,7 +2205,7 @@
 												{
 													"title": "Properties",
 													"children": [
-														41604
+														41543
 													]
 												}
 											]
@@ -2215,11 +2215,11 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 41596,
+								"target": 41535,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 41599,
+										"target": 41538,
 										"name": "TResult",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "WorkflowResponse.TResult",
@@ -2227,7 +2227,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 41600,
+										"target": 41539,
 										"name": "THooks",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "WorkflowResponse.THooks",
@@ -2241,7 +2241,7 @@
 					]
 				},
 				{
-					"id": 41606,
+					"id": 41545,
 					"name": "$result",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2253,11 +2253,11 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 41720,
+								"target": 41659,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 41599,
+										"target": 41538,
 										"name": "TResult",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "WorkflowResponse.TResult",
@@ -2304,7 +2304,7 @@
 											},
 											"objectType": {
 												"type": "reference",
-												"target": 41599,
+												"target": 41538,
 												"name": "TResult",
 												"package": "@medusajs/workflows-sdk",
 												"qualifiedName": "WorkflowResponse.TResult",
@@ -2313,7 +2313,7 @@
 										},
 										{
 											"type": "reference",
-											"target": 41715,
+											"target": 41654,
 											"typeArguments": [
 												{
 													"type": "indexedAccess",
@@ -2329,7 +2329,7 @@
 													},
 													"objectType": {
 														"type": "reference",
-														"target": 41599,
+														"target": 41538,
 														"name": "TResult",
 														"package": "@medusajs/workflows-sdk",
 														"qualifiedName": "WorkflowResponse.TResult",
@@ -2342,7 +2342,7 @@
 										},
 										{
 											"type": "reference",
-											"target": 41720,
+											"target": 41659,
 											"typeArguments": [
 												{
 													"type": "indexedAccess",
@@ -2358,7 +2358,7 @@
 													},
 													"objectType": {
 														"type": "reference",
-														"target": 41599,
+														"target": 41538,
 														"name": "TResult",
 														"package": "@medusajs/workflows-sdk",
 														"qualifiedName": "WorkflowResponse.TResult",
@@ -2376,7 +2376,7 @@
 					}
 				},
 				{
-					"id": 41607,
+					"id": 41546,
 					"name": "options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2387,21 +2387,21 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 41608,
+							"id": 41547,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 41609,
+									"id": 41548,
 									"name": "hooks",
 									"variant": "declaration",
 									"kind": 1024,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 41600,
+										"target": 41539,
 										"name": "THooks",
 										"package": "@medusajs/workflows-sdk",
 										"qualifiedName": "WorkflowResponse.THooks",
@@ -2413,7 +2413,7 @@
 								{
 									"title": "Properties",
 									"children": [
-										41609
+										41548
 									]
 								}
 							]
@@ -2425,28 +2425,28 @@
 				{
 					"title": "Constructors",
 					"children": [
-						41597
+						41536
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						41605,
-						41606,
-						41607
+						41544,
+						41545,
+						41546
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 41610,
+					"id": 41549,
 					"name": "TResult",
 					"variant": "typeParam",
 					"kind": 131072,
 					"flags": {}
 				},
 				{
-					"id": 41611,
+					"id": 41550,
 					"name": "THooks",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2458,14 +2458,14 @@
 			]
 		},
 		{
-			"id": 41625,
+			"id": 41564,
 			"name": "parallelize",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 41626,
+					"id": 41565,
 					"name": "parallelize",
 					"variant": "signature",
 					"kind": 4096,
@@ -2500,7 +2500,7 @@
 					},
 					"typeParameters": [
 						{
-							"id": 41627,
+							"id": 41566,
 							"name": "TResult",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -2517,7 +2517,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 41720,
+									"target": 41659,
 									"name": "WorkflowData",
 									"package": "@medusajs/workflows-sdk"
 								}
@@ -2526,7 +2526,7 @@
 					],
 					"parameters": [
 						{
-							"id": 41628,
+							"id": 41567,
 							"name": "steps",
 							"variant": "param",
 							"kind": 32768,
@@ -2535,7 +2535,7 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 41627,
+								"target": 41566,
 								"name": "TResult",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -2544,7 +2544,7 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 41627,
+						"target": 41566,
 						"name": "TResult",
 						"package": "@medusajs/workflows-sdk",
 						"refersToTypeParameter": true
@@ -2553,14 +2553,14 @@
 			]
 		},
 		{
-			"id": 41629,
+			"id": 41568,
 			"name": "transform",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 41630,
+					"id": 41569,
 					"name": "transform",
 					"variant": "signature",
 					"kind": 4096,
@@ -2575,7 +2575,7 @@
 								"kind": "inline-tag",
 								"tag": "@link",
 								"text": "createWorkflow",
-								"target": 41551
+								"target": 41490
 							},
 							{
 								"kind": "text",
@@ -2621,7 +2621,7 @@
 					},
 					"typeParameters": [
 						{
-							"id": 41631,
+							"id": 41570,
 							"name": "T",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -2635,7 +2635,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 41720,
+										"target": 41659,
 										"name": "WorkflowData",
 										"package": "@medusajs/workflows-sdk"
 									}
@@ -2643,7 +2643,7 @@
 							}
 						},
 						{
-							"id": 41632,
+							"id": 41571,
 							"name": "RFinal",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -2652,7 +2652,7 @@
 					],
 					"parameters": [
 						{
-							"id": 41633,
+							"id": 41572,
 							"name": "values",
 							"variant": "param",
 							"kind": 32768,
@@ -2667,14 +2667,14 @@
 							},
 							"type": {
 								"type": "reference",
-								"target": 41631,
+								"target": 41570,
 								"name": "T",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
 							}
 						},
 						{
-							"id": 41634,
+							"id": 41573,
 							"name": "func",
 							"variant": "param",
 							"kind": 32768,
@@ -2709,14 +2709,14 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 41631,
+												"target": 41570,
 												"name": "T",
 												"package": "@medusajs/workflows-sdk",
 												"refersToTypeParameter": true
 											},
 											{
 												"type": "reference",
-												"target": 41632,
+												"target": 41571,
 												"name": "RFinal",
 												"package": "@medusajs/workflows-sdk",
 												"refersToTypeParameter": true
@@ -2731,11 +2731,11 @@
 					],
 					"type": {
 						"type": "reference",
-						"target": 41720,
+						"target": 41659,
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 41632,
+								"target": 41571,
 								"name": "RFinal",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -2748,14 +2748,14 @@
 			]
 		},
 		{
-			"id": 41686,
+			"id": 41625,
 			"name": "StepFunctionResult",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"typeParameters": [
 				{
-					"id": 41690,
+					"id": 41629,
 					"name": "TOutput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2785,28 +2785,28 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 41687,
+					"id": 41626,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 41688,
+							"id": 41627,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 41689,
+									"id": 41628,
 									"name": "this",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
 									"type": {
 										"type": "reference",
-										"target": 41728,
+										"target": 41667,
 										"name": "CreateWorkflowComposerContext",
 										"package": "@medusajs/workflows-sdk"
 									}
@@ -2814,11 +2814,11 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 41720,
+								"target": 41659,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 41690,
+										"target": 41629,
 										"name": "TOutput",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
@@ -2833,7 +2833,7 @@
 			}
 		},
 		{
-			"id": 41691,
+			"id": 41630,
 			"name": "HookHandler",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2841,21 +2841,21 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 41692,
+					"id": 41631,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 41693,
+							"id": 41632,
 							"name": "__type",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 41694,
+									"id": 41633,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -2901,7 +2901,7 @@
 			}
 		},
 		{
-			"id": 41695,
+			"id": 41634,
 			"name": "StepFunction",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -2916,7 +2916,7 @@
 			},
 			"typeParameters": [
 				{
-					"id": 41713,
+					"id": 41652,
 					"name": "TInput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2931,7 +2931,7 @@
 					}
 				},
 				{
-					"id": 41714,
+					"id": 41653,
 					"name": "TOutput",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -2964,7 +2964,7 @@
 							"typeArguments": [
 								{
 									"type": "reference",
-									"target": 41713,
+									"target": 41652,
 									"name": "TInput",
 									"package": "@medusajs/workflows-sdk",
 									"refersToTypeParameter": true
@@ -2979,14 +2979,14 @@
 						"trueType": {
 							"type": "reflection",
 							"declaration": {
-								"id": 41696,
+								"id": 41635,
 								"name": "__type",
 								"variant": "declaration",
 								"kind": 65536,
 								"flags": {},
 								"signatures": [
 									{
-										"id": 41697,
+										"id": 41636,
 										"name": "__type",
 										"variant": "signature",
 										"kind": 4096,
@@ -2998,7 +2998,7 @@
 													"type": "conditional",
 													"checkType": {
 														"type": "reference",
-														"target": 41714,
+														"target": 41653,
 														"name": "TOutput",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
@@ -3033,7 +3033,7 @@
 																},
 																{
 																	"type": "reference",
-																	"target": 41720,
+																	"target": 41659,
 																	"typeArguments": [
 																		{
 																			"type": "reference",
@@ -3056,7 +3056,7 @@
 														"type": "conditional",
 														"checkType": {
 															"type": "reference",
-															"target": 41714,
+															"target": 41653,
 															"name": "TOutput",
 															"package": "@medusajs/workflows-sdk",
 															"refersToTypeParameter": true
@@ -3102,7 +3102,7 @@
 																		},
 																		"objectType": {
 																			"type": "reference",
-																			"target": 41714,
+																			"target": 41653,
 																			"typeArguments": [
 																				{
 																					"type": "unknown",
@@ -3116,7 +3116,7 @@
 																	},
 																	{
 																		"type": "reference",
-																		"target": 41720,
+																		"target": 41659,
 																		"typeArguments": [
 																			{
 																				"type": "indexedAccess",
@@ -3141,18 +3141,18 @@
 															"types": [
 																{
 																	"type": "reference",
-																	"target": 41714,
+																	"target": 41653,
 																	"name": "TOutput",
 																	"package": "@medusajs/workflows-sdk",
 																	"refersToTypeParameter": true
 																},
 																{
 																	"type": "reference",
-																	"target": 41715,
+																	"target": 41654,
 																	"typeArguments": [
 																		{
 																			"type": "reference",
-																			"target": 41714,
+																			"target": 41653,
 																			"name": "TOutput",
 																			"package": "@medusajs/workflows-sdk",
 																			"refersToTypeParameter": true
@@ -3167,18 +3167,18 @@
 												},
 												{
 													"type": "reference",
-													"target": 41714,
+													"target": 41653,
 													"name": "TOutput",
 													"package": "@medusajs/workflows-sdk",
 													"refersToTypeParameter": true
 												},
 												{
 													"type": "reference",
-													"target": 41715,
+													"target": 41654,
 													"typeArguments": [
 														{
 															"type": "reference",
-															"target": 41714,
+															"target": 41653,
 															"name": "TOutput",
 															"package": "@medusajs/workflows-sdk",
 															"refersToTypeParameter": true
@@ -3190,28 +3190,28 @@
 												{
 													"type": "reflection",
 													"declaration": {
-														"id": 41698,
+														"id": 41637,
 														"name": "__type",
 														"variant": "declaration",
 														"kind": 65536,
 														"flags": {},
 														"children": [
 															{
-																"id": 41699,
+																"id": 41638,
 																"name": "config",
 																"variant": "declaration",
 																"kind": 2048,
 																"flags": {},
 																"signatures": [
 																	{
-																		"id": 41700,
+																		"id": 41639,
 																		"name": "config",
 																		"variant": "signature",
 																		"kind": 4096,
 																		"flags": {},
 																		"parameters": [
 																			{
-																				"id": 41701,
+																				"id": 41640,
 																				"name": "config",
 																				"variant": "param",
 																				"kind": 32768,
@@ -3222,14 +3222,14 @@
 																						{
 																							"type": "reflection",
 																							"declaration": {
-																								"id": 41702,
+																								"id": 41641,
 																								"name": "__type",
 																								"variant": "declaration",
 																								"kind": 65536,
 																								"flags": {},
 																								"children": [
 																									{
-																										"id": 41703,
+																										"id": 41642,
 																										"name": "name",
 																										"variant": "declaration",
 																										"kind": 1024,
@@ -3246,7 +3246,7 @@
 																									{
 																										"title": "Properties",
 																										"children": [
-																											41703
+																											41642
 																										]
 																									}
 																								]
@@ -3295,11 +3295,11 @@
 																		],
 																		"type": {
 																			"type": "reference",
-																			"target": 41720,
+																			"target": 41659,
 																			"typeArguments": [
 																				{
 																					"type": "reference",
-																					"target": 41714,
+																					"target": 41653,
 																					"name": "TOutput",
 																					"package": "@medusajs/workflows-sdk",
 																					"refersToTypeParameter": true
@@ -3316,7 +3316,7 @@
 															{
 																"title": "Methods",
 																"children": [
-																	41699
+																	41638
 																]
 															}
 														]
@@ -3331,7 +3331,7 @@
 													"typeArguments": [
 														{
 															"type": "reference",
-															"target": 41714,
+															"target": 41653,
 															"name": "TOutput",
 															"package": "@medusajs/workflows-sdk",
 															"refersToTypeParameter": true
@@ -3349,21 +3349,21 @@
 						"falseType": {
 							"type": "reflection",
 							"declaration": {
-								"id": 41704,
+								"id": 41643,
 								"name": "__type",
 								"variant": "declaration",
 								"kind": 65536,
 								"flags": {},
 								"signatures": [
 									{
-										"id": 41705,
+										"id": 41644,
 										"name": "__type",
 										"variant": "signature",
 										"kind": 4096,
 										"flags": {},
 										"parameters": [
 											{
-												"id": 41706,
+												"id": 41645,
 												"name": "input",
 												"variant": "param",
 												"kind": 32768,
@@ -3373,18 +3373,18 @@
 													"types": [
 														{
 															"type": "reference",
-															"target": 41713,
+															"target": 41652,
 															"name": "TInput",
 															"package": "@medusajs/workflows-sdk",
 															"refersToTypeParameter": true
 														},
 														{
 															"type": "reference",
-															"target": 41720,
+															"target": 41659,
 															"typeArguments": [
 																{
 																	"type": "reference",
-																	"target": 41713,
+																	"target": 41652,
 																	"name": "TInput",
 																	"package": "@medusajs/workflows-sdk",
 																	"refersToTypeParameter": true
@@ -3404,7 +3404,7 @@
 													"type": "conditional",
 													"checkType": {
 														"type": "reference",
-														"target": 41714,
+														"target": 41653,
 														"name": "TOutput",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
@@ -3439,7 +3439,7 @@
 																},
 																{
 																	"type": "reference",
-																	"target": 41720,
+																	"target": 41659,
 																	"typeArguments": [
 																		{
 																			"type": "reference",
@@ -3462,7 +3462,7 @@
 														"type": "conditional",
 														"checkType": {
 															"type": "reference",
-															"target": 41714,
+															"target": 41653,
 															"name": "TOutput",
 															"package": "@medusajs/workflows-sdk",
 															"refersToTypeParameter": true
@@ -3508,7 +3508,7 @@
 																		},
 																		"objectType": {
 																			"type": "reference",
-																			"target": 41714,
+																			"target": 41653,
 																			"typeArguments": [
 																				{
 																					"type": "unknown",
@@ -3522,7 +3522,7 @@
 																	},
 																	{
 																		"type": "reference",
-																		"target": 41720,
+																		"target": 41659,
 																		"typeArguments": [
 																			{
 																				"type": "indexedAccess",
@@ -3547,18 +3547,18 @@
 															"types": [
 																{
 																	"type": "reference",
-																	"target": 41714,
+																	"target": 41653,
 																	"name": "TOutput",
 																	"package": "@medusajs/workflows-sdk",
 																	"refersToTypeParameter": true
 																},
 																{
 																	"type": "reference",
-																	"target": 41715,
+																	"target": 41654,
 																	"typeArguments": [
 																		{
 																			"type": "reference",
-																			"target": 41714,
+																			"target": 41653,
 																			"name": "TOutput",
 																			"package": "@medusajs/workflows-sdk",
 																			"refersToTypeParameter": true
@@ -3573,18 +3573,18 @@
 												},
 												{
 													"type": "reference",
-													"target": 41714,
+													"target": 41653,
 													"name": "TOutput",
 													"package": "@medusajs/workflows-sdk",
 													"refersToTypeParameter": true
 												},
 												{
 													"type": "reference",
-													"target": 41715,
+													"target": 41654,
 													"typeArguments": [
 														{
 															"type": "reference",
-															"target": 41714,
+															"target": 41653,
 															"name": "TOutput",
 															"package": "@medusajs/workflows-sdk",
 															"refersToTypeParameter": true
@@ -3596,28 +3596,28 @@
 												{
 													"type": "reflection",
 													"declaration": {
-														"id": 41707,
+														"id": 41646,
 														"name": "__type",
 														"variant": "declaration",
 														"kind": 65536,
 														"flags": {},
 														"children": [
 															{
-																"id": 41708,
+																"id": 41647,
 																"name": "config",
 																"variant": "declaration",
 																"kind": 2048,
 																"flags": {},
 																"signatures": [
 																	{
-																		"id": 41709,
+																		"id": 41648,
 																		"name": "config",
 																		"variant": "signature",
 																		"kind": 4096,
 																		"flags": {},
 																		"parameters": [
 																			{
-																				"id": 41710,
+																				"id": 41649,
 																				"name": "config",
 																				"variant": "param",
 																				"kind": 32768,
@@ -3628,14 +3628,14 @@
 																						{
 																							"type": "reflection",
 																							"declaration": {
-																								"id": 41711,
+																								"id": 41650,
 																								"name": "__type",
 																								"variant": "declaration",
 																								"kind": 65536,
 																								"flags": {},
 																								"children": [
 																									{
-																										"id": 41712,
+																										"id": 41651,
 																										"name": "name",
 																										"variant": "declaration",
 																										"kind": 1024,
@@ -3652,7 +3652,7 @@
 																									{
 																										"title": "Properties",
 																										"children": [
-																											41712
+																											41651
 																										]
 																									}
 																								]
@@ -3701,11 +3701,11 @@
 																		],
 																		"type": {
 																			"type": "reference",
-																			"target": 41720,
+																			"target": 41659,
 																			"typeArguments": [
 																				{
 																					"type": "reference",
-																					"target": 41714,
+																					"target": 41653,
 																					"name": "TOutput",
 																					"package": "@medusajs/workflows-sdk",
 																					"refersToTypeParameter": true
@@ -3722,7 +3722,7 @@
 															{
 																"title": "Methods",
 																"children": [
-																	41708
+																	41647
 																]
 															}
 														]
@@ -3737,7 +3737,7 @@
 													"typeArguments": [
 														{
 															"type": "reference",
-															"target": 41714,
+															"target": 41653,
 															"name": "TOutput",
 															"package": "@medusajs/workflows-sdk",
 															"refersToTypeParameter": true
@@ -3755,11 +3755,11 @@
 					},
 					{
 						"type": "reference",
-						"target": 41715,
+						"target": 41654,
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 41714,
+								"target": 41653,
 								"name": "TOutput",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -3772,14 +3772,14 @@
 			}
 		},
 		{
-			"id": 41715,
+			"id": 41654,
 			"name": "WorkflowDataProperties",
 			"variant": "declaration",
 			"kind": 2097152,
 			"flags": {},
 			"typeParameters": [
 				{
-					"id": 41719,
+					"id": 41658,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -3793,14 +3793,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 41716,
+					"id": 41655,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 41717,
+							"id": 41656,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3811,7 +3811,7 @@
 							}
 						},
 						{
-							"id": 41718,
+							"id": 41657,
 							"name": "__step__",
 							"variant": "declaration",
 							"kind": 1024,
@@ -3826,8 +3826,8 @@
 						{
 							"title": "Properties",
 							"children": [
-								41717,
-								41718
+								41656,
+								41657
 							]
 						}
 					]
@@ -3835,7 +3835,7 @@
 			}
 		},
 		{
-			"id": 41720,
+			"id": 41659,
 			"name": "WorkflowData",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -3850,7 +3850,7 @@
 			},
 			"typeParameters": [
 				{
-					"id": 41727,
+					"id": 41666,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -3876,7 +3876,7 @@
 						"type": "conditional",
 						"checkType": {
 							"type": "reference",
-							"target": 41727,
+							"target": 41666,
 							"name": "T",
 							"package": "@medusajs/workflows-sdk",
 							"refersToTypeParameter": true
@@ -3905,7 +3905,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 41720,
+										"target": 41659,
 										"typeArguments": [
 											{
 												"type": "reference",
@@ -3928,7 +3928,7 @@
 							"type": "conditional",
 							"checkType": {
 								"type": "reference",
-								"target": 41727,
+								"target": 41666,
 								"name": "T",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -3945,7 +3945,7 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": 41727,
+										"target": 41666,
 										"name": "T",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
@@ -3968,7 +3968,7 @@
 											},
 											"objectType": {
 												"type": "reference",
-												"target": 41727,
+												"target": 41666,
 												"name": "T",
 												"package": "@medusajs/workflows-sdk",
 												"refersToTypeParameter": true
@@ -3976,7 +3976,7 @@
 										},
 										{
 											"type": "reference",
-											"target": 41720,
+											"target": 41659,
 											"typeArguments": [
 												{
 													"type": "indexedAccess",
@@ -3992,7 +3992,7 @@
 													},
 													"objectType": {
 														"type": "reference",
-														"target": 41727,
+														"target": 41666,
 														"name": "T",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
@@ -4010,18 +4010,18 @@
 								"types": [
 									{
 										"type": "reference",
-										"target": 41727,
+										"target": 41666,
 										"name": "T",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
 									},
 									{
 										"type": "reference",
-										"target": 41715,
+										"target": 41654,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 41727,
+												"target": 41666,
 												"name": "T",
 												"package": "@medusajs/workflows-sdk",
 												"refersToTypeParameter": true
@@ -4036,18 +4036,18 @@
 					},
 					{
 						"type": "reference",
-						"target": 41727,
+						"target": 41666,
 						"name": "T",
 						"package": "@medusajs/workflows-sdk",
 						"refersToTypeParameter": true
 					},
 					{
 						"type": "reference",
-						"target": 41715,
+						"target": 41654,
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 41727,
+								"target": 41666,
 								"name": "T",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
@@ -4059,28 +4059,28 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 41721,
+							"id": 41660,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 41722,
+									"id": 41661,
 									"name": "config",
 									"variant": "declaration",
 									"kind": 2048,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 41723,
+											"id": 41662,
 											"name": "config",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"parameters": [
 												{
-													"id": 41724,
+													"id": 41663,
 													"name": "config",
 													"variant": "param",
 													"kind": 32768,
@@ -4091,14 +4091,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 41725,
+																	"id": 41664,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 41726,
+																			"id": 41665,
 																			"name": "name",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -4115,7 +4115,7 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				41726
+																				41665
 																			]
 																		}
 																	]
@@ -4164,11 +4164,11 @@
 											],
 											"type": {
 												"type": "reference",
-												"target": 41720,
+												"target": 41659,
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 41727,
+														"target": 41666,
 														"name": "T",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
@@ -4185,7 +4185,7 @@
 								{
 									"title": "Methods",
 									"children": [
-										41722
+										41661
 									]
 								}
 							]
@@ -4195,7 +4195,7 @@
 			}
 		},
 		{
-			"id": 41728,
+			"id": 41667,
 			"name": "CreateWorkflowComposerContext",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -4203,14 +4203,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 41729,
+					"id": 41668,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 41730,
+							"id": 41669,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4221,7 +4221,7 @@
 							}
 						},
 						{
-							"id": 41731,
+							"id": 41670,
 							"name": "hooks_",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4229,14 +4229,14 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 41732,
+									"id": 41671,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 41733,
+											"id": 41672,
 											"name": "declared",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4250,7 +4250,7 @@
 											}
 										},
 										{
-											"id": 41734,
+											"id": 41673,
 											"name": "registered",
 											"variant": "declaration",
 											"kind": 1024,
@@ -4268,8 +4268,8 @@
 										{
 											"title": "Properties",
 											"children": [
-												41733,
-												41734
+												41672,
+												41673
 											]
 										}
 									]
@@ -4277,7 +4277,7 @@
 							}
 						},
 						{
-							"id": 41735,
+							"id": 41674,
 							"name": "hooksCallback_",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4295,7 +4295,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 41691,
+										"target": 41630,
 										"name": "HookHandler",
 										"package": "@medusajs/workflows-sdk"
 									}
@@ -4305,7 +4305,7 @@
 							}
 						},
 						{
-							"id": 41736,
+							"id": 41675,
 							"name": "workflowId",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4316,7 +4316,7 @@
 							}
 						},
 						{
-							"id": 41737,
+							"id": 41676,
 							"name": "flow",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4332,7 +4332,7 @@
 							}
 						},
 						{
-							"id": 41738,
+							"id": 41677,
 							"name": "isAsync",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4343,7 +4343,7 @@
 							}
 						},
 						{
-							"id": 41739,
+							"id": 41678,
 							"name": "handlers",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4359,7 +4359,7 @@
 							}
 						},
 						{
-							"id": 41740,
+							"id": 41679,
 							"name": "stepBinder",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4367,21 +4367,21 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 41741,
+									"id": 41680,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 41742,
+											"id": 41681,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"typeParameters": [
 												{
-													"id": 41744,
+													"id": 41683,
 													"name": "TOutput",
 													"variant": "typeParam",
 													"kind": 131072,
@@ -4394,14 +4394,14 @@
 											],
 											"parameters": [
 												{
-													"id": 41743,
+													"id": 41682,
 													"name": "fn",
 													"variant": "param",
 													"kind": 32768,
 													"flags": {},
 													"type": {
 														"type": "reference",
-														"target": 41686,
+														"target": 41625,
 														"name": "StepFunctionResult",
 														"package": "@medusajs/workflows-sdk"
 													}
@@ -4409,11 +4409,11 @@
 											],
 											"type": {
 												"type": "reference",
-												"target": 41720,
+												"target": 41659,
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 41744,
+														"target": 41683,
 														"name": "TOutput",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
@@ -4428,7 +4428,7 @@
 							}
 						},
 						{
-							"id": 41745,
+							"id": 41684,
 							"name": "hookBinder",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4436,21 +4436,21 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 41746,
+									"id": 41685,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 41747,
+											"id": 41686,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"parameters": [
 												{
-													"id": 41748,
+													"id": 41687,
 													"name": "name",
 													"variant": "param",
 													"kind": 32768,
@@ -4461,7 +4461,7 @@
 													}
 												},
 												{
-													"id": 41749,
+													"id": 41688,
 													"name": "fn",
 													"variant": "param",
 													"kind": 32768,
@@ -4469,21 +4469,21 @@
 													"type": {
 														"type": "reflection",
 														"declaration": {
-															"id": 41750,
+															"id": 41689,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
 															"flags": {},
 															"signatures": [
 																{
-																	"id": 41751,
+																	"id": 41690,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
 																	"flags": {},
 																	"type": {
 																		"type": "reference",
-																		"target": 41691,
+																		"target": 41630,
 																		"name": "HookHandler",
 																		"package": "@medusajs/workflows-sdk"
 																	}
@@ -4503,7 +4503,7 @@
 							}
 						},
 						{
-							"id": 41752,
+							"id": 41691,
 							"name": "parallelizeBinder",
 							"variant": "declaration",
 							"kind": 1024,
@@ -4511,21 +4511,21 @@
 							"type": {
 								"type": "reflection",
 								"declaration": {
-									"id": 41753,
+									"id": 41692,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"signatures": [
 										{
-											"id": 41754,
+											"id": 41693,
 											"name": "__type",
 											"variant": "signature",
 											"kind": 4096,
 											"flags": {},
 											"typeParameters": [
 												{
-													"id": 41759,
+													"id": 41698,
 													"name": "TOutput",
 													"variant": "typeParam",
 													"kind": 131072,
@@ -4534,7 +4534,7 @@
 														"type": "array",
 														"elementType": {
 															"type": "reference",
-															"target": 41720,
+															"target": 41659,
 															"name": "WorkflowData",
 															"package": "@medusajs/workflows-sdk"
 														}
@@ -4543,7 +4543,7 @@
 														"type": "array",
 														"elementType": {
 															"type": "reference",
-															"target": 41720,
+															"target": 41659,
 															"name": "WorkflowData",
 															"package": "@medusajs/workflows-sdk"
 														}
@@ -4552,7 +4552,7 @@
 											],
 											"parameters": [
 												{
-													"id": 41755,
+													"id": 41694,
 													"name": "fn",
 													"variant": "param",
 													"kind": 32768,
@@ -4560,28 +4560,28 @@
 													"type": {
 														"type": "reflection",
 														"declaration": {
-															"id": 41756,
+															"id": 41695,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
 															"flags": {},
 															"signatures": [
 																{
-																	"id": 41757,
+																	"id": 41696,
 																	"name": "__type",
 																	"variant": "signature",
 																	"kind": 4096,
 																	"flags": {},
 																	"parameters": [
 																		{
-																			"id": 41758,
+																			"id": 41697,
 																			"name": "this",
 																			"variant": "param",
 																			"kind": 32768,
 																			"flags": {},
 																			"type": {
 																				"type": "reference",
-																				"target": 41728,
+																				"target": 41667,
 																				"name": "CreateWorkflowComposerContext",
 																				"package": "@medusajs/workflows-sdk"
 																			}
@@ -4589,7 +4589,7 @@
 																	],
 																	"type": {
 																		"type": "reference",
-																		"target": 41759,
+																		"target": 41698,
 																		"name": "TOutput",
 																		"package": "@medusajs/workflows-sdk",
 																		"refersToTypeParameter": true
@@ -4602,7 +4602,7 @@
 											],
 											"type": {
 												"type": "reference",
-												"target": 41759,
+												"target": 41698,
 												"name": "TOutput",
 												"package": "@medusajs/workflows-sdk",
 												"refersToTypeParameter": true
@@ -4617,16 +4617,16 @@
 						{
 							"title": "Properties",
 							"children": [
-								41730,
-								41731,
-								41735,
-								41736,
-								41737,
-								41738,
-								41739,
-								41740,
-								41745,
-								41752
+								41669,
+								41670,
+								41674,
+								41675,
+								41676,
+								41677,
+								41678,
+								41679,
+								41684,
+								41691
 							]
 						}
 					]
@@ -4634,7 +4634,7 @@
 			}
 		},
 		{
-			"id": 41760,
+			"id": 41699,
 			"name": "StepExecutionContext",
 			"variant": "declaration",
 			"kind": 256,
@@ -4649,7 +4649,7 @@
 			},
 			"children": [
 				{
-					"id": 41761,
+					"id": 41700,
 					"name": "workflowId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4668,7 +4668,7 @@
 					}
 				},
 				{
-					"id": 41762,
+					"id": 41701,
 					"name": "attempt",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4687,7 +4687,7 @@
 					}
 				},
 				{
-					"id": 41763,
+					"id": 41702,
 					"name": "idempotencyKey",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4706,7 +4706,7 @@
 					}
 				},
 				{
-					"id": 41764,
+					"id": 41703,
 					"name": "parentStepIdempotencyKey",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4727,7 +4727,7 @@
 					}
 				},
 				{
-					"id": 41765,
+					"id": 41704,
 					"name": "stepName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4746,7 +4746,7 @@
 					}
 				},
 				{
-					"id": 41766,
+					"id": 41705,
 					"name": "action",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4774,7 +4774,7 @@
 					}
 				},
 				{
-					"id": 41767,
+					"id": 41706,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4798,7 +4798,7 @@
 					}
 				},
 				{
-					"id": 41768,
+					"id": 41707,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4822,7 +4822,7 @@
 					}
 				},
 				{
-					"id": 41769,
+					"id": 41708,
 					"name": "context",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4847,7 +4847,7 @@
 					}
 				},
 				{
-					"id": 41770,
+					"id": 41709,
 					"name": "eventGroupId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4868,7 +4868,7 @@
 					}
 				},
 				{
-					"id": 41771,
+					"id": 41710,
 					"name": "transactionId",
 					"variant": "declaration",
 					"kind": 1024,
@@ -4893,23 +4893,23 @@
 				{
 					"title": "Properties",
 					"children": [
-						41761,
-						41762,
-						41763,
-						41764,
-						41765,
-						41766,
-						41767,
-						41768,
-						41769,
-						41770,
-						41771
+						41700,
+						41701,
+						41702,
+						41703,
+						41704,
+						41705,
+						41706,
+						41707,
+						41708,
+						41709,
+						41710
 					]
 				}
 			]
 		},
 		{
-			"id": 41772,
+			"id": 41711,
 			"name": "WorkflowTransactionContext",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -4919,7 +4919,7 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 41760,
+						"target": 41699,
 						"name": "StepExecutionContext",
 						"package": "@medusajs/workflows-sdk"
 					},
@@ -4936,14 +4936,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 41773,
+							"id": 41712,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 41774,
+									"id": 41713,
 									"name": "invoke",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4951,21 +4951,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 41775,
+											"id": 41714,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"indexSignatures": [
 												{
-													"id": 41776,
+													"id": 41715,
 													"name": "__index",
 													"variant": "signature",
 													"kind": 8192,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 41777,
+															"id": 41716,
 															"name": "key",
 															"variant": "param",
 															"kind": 32768,
@@ -4979,14 +4979,14 @@
 													"type": {
 														"type": "reflection",
 														"declaration": {
-															"id": 41778,
+															"id": 41717,
 															"name": "__type",
 															"variant": "declaration",
 															"kind": 65536,
 															"flags": {},
 															"children": [
 																{
-																	"id": 41779,
+																	"id": 41718,
 																	"name": "output",
 																	"variant": "declaration",
 																	"kind": 1024,
@@ -5001,7 +5001,7 @@
 																{
 																	"title": "Properties",
 																	"children": [
-																		41779
+																		41718
 																	]
 																}
 															]
@@ -5017,7 +5017,7 @@
 								{
 									"title": "Properties",
 									"children": [
-										41774
+										41713
 									]
 								}
 							]
@@ -5027,7 +5027,7 @@
 			}
 		},
 		{
-			"id": 41780,
+			"id": 41719,
 			"name": "ReturnWorkflow",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -5042,7 +5042,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "createWorkflow",
-						"target": 41551
+						"target": 41490
 					},
 					{
 						"kind": "text",
@@ -5083,21 +5083,21 @@
 			},
 			"typeParameters": [
 				{
-					"id": 41810,
+					"id": 41749,
 					"name": "TData",
 					"variant": "typeParam",
 					"kind": 131072,
 					"flags": {}
 				},
 				{
-					"id": 41811,
+					"id": 41750,
 					"name": "TResult",
 					"variant": "typeParam",
 					"kind": 131072,
 					"flags": {}
 				},
 				{
-					"id": 41812,
+					"id": 41751,
 					"name": "THooks",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -5117,21 +5117,21 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 41781,
+							"id": 41720,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"signatures": [
 								{
-									"id": 41782,
+									"id": 41721,
 									"name": "__type",
 									"variant": "signature",
 									"kind": 4096,
 									"flags": {},
 									"typeParameters": [
 										{
-											"id": 41783,
+											"id": 41722,
 											"name": "TDataOverride",
 											"variant": "typeParam",
 											"kind": 131072,
@@ -5142,7 +5142,7 @@
 											}
 										},
 										{
-											"id": 41784,
+											"id": 41723,
 											"name": "TResultOverride",
 											"variant": "typeParam",
 											"kind": 131072,
@@ -5155,7 +5155,7 @@
 									],
 									"parameters": [
 										{
-											"id": 41785,
+											"id": 41724,
 											"name": "container",
 											"variant": "param",
 											"kind": 32768,
@@ -5179,14 +5179,14 @@
 														"elementType": {
 															"type": "reflection",
 															"declaration": {
-																"id": 41786,
+																"id": 41725,
 																"name": "__type",
 																"variant": "declaration",
 																"kind": 65536,
 																"flags": {},
 																"children": [
 																	{
-																		"id": 41787,
+																		"id": 41726,
 																		"name": "__joinerConfig",
 																		"variant": "declaration",
 																		"kind": 1024,
@@ -5202,7 +5202,7 @@
 																		}
 																	},
 																	{
-																		"id": 41788,
+																		"id": 41727,
 																		"name": "__definition",
 																		"variant": "declaration",
 																		"kind": 1024,
@@ -5222,8 +5222,8 @@
 																	{
 																		"title": "Properties",
 																		"children": [
-																			41787,
-																			41788
+																			41726,
+																			41727
 																		]
 																	}
 																]
@@ -5287,28 +5287,28 @@
 												"typeArguments": [
 													{
 														"type": "reference",
-														"target": 41810,
+														"target": 41749,
 														"name": "TData",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
 													},
 													{
 														"type": "reference",
-														"target": 41811,
+														"target": 41750,
 														"name": "TResult",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
 													},
 													{
 														"type": "reference",
-														"target": 41783,
+														"target": 41722,
 														"name": "TDataOverride",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
 													},
 													{
 														"type": "reference",
-														"target": 41784,
+														"target": 41723,
 														"name": "TResultOverride",
 														"package": "@medusajs/workflows-sdk",
 														"refersToTypeParameter": true
@@ -5326,14 +5326,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 41789,
+							"id": 41728,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 41790,
+									"id": 41729,
 									"name": "runAsStep",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5349,14 +5349,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 41791,
+											"id": 41730,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 41792,
+													"id": 41731,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
@@ -5377,7 +5377,7 @@
 													},
 													"parameters": [
 														{
-															"id": 41793,
+															"id": 41732,
 															"name": "{\n    input,\n  }",
 															"variant": "param",
 															"kind": 32768,
@@ -5385,14 +5385,14 @@
 															"type": {
 																"type": "reflection",
 																"declaration": {
-																	"id": 41794,
+																	"id": 41733,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 41795,
+																			"id": 41734,
 																			"name": "input",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -5410,18 +5410,18 @@
 																				"types": [
 																					{
 																						"type": "reference",
-																						"target": 41810,
+																						"target": 41749,
 																						"name": "TData",
 																						"package": "@medusajs/workflows-sdk",
 																						"refersToTypeParameter": true
 																					},
 																					{
 																						"type": "reference",
-																						"target": 41720,
+																						"target": 41659,
 																						"typeArguments": [
 																							{
 																								"type": "reference",
-																								"target": 41810,
+																								"target": 41749,
 																								"name": "TData",
 																								"package": "@medusajs/workflows-sdk",
 																								"refersToTypeParameter": true
@@ -5438,7 +5438,7 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				41795
+																				41734
 																			]
 																		}
 																	]
@@ -5455,18 +5455,18 @@
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": 41695,
+																"target": 41634,
 																"typeArguments": [
 																	{
 																		"type": "reference",
-																		"target": 41810,
+																		"target": 41749,
 																		"name": "TData",
 																		"package": "@medusajs/workflows-sdk",
 																		"refersToTypeParameter": true
 																	},
 																	{
 																		"type": "reference",
-																		"target": 41811,
+																		"target": 41750,
 																		"name": "TResult",
 																		"package": "@medusajs/workflows-sdk",
 																		"refersToTypeParameter": true
@@ -5485,7 +5485,7 @@
 									}
 								},
 								{
-									"id": 41796,
+									"id": 41735,
 									"name": "run",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5501,14 +5501,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 41797,
+											"id": 41736,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 41798,
+													"id": 41737,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
@@ -5529,7 +5529,7 @@
 													},
 													"typeParameters": [
 														{
-															"id": 41800,
+															"id": 41739,
 															"name": "TDataOverride",
 															"variant": "typeParam",
 															"kind": 131072,
@@ -5540,7 +5540,7 @@
 															}
 														},
 														{
-															"id": 41801,
+															"id": 41740,
 															"name": "TResultOverride",
 															"variant": "typeParam",
 															"kind": 131072,
@@ -5553,7 +5553,7 @@
 													],
 													"parameters": [
 														{
-															"id": 41799,
+															"id": 41738,
 															"name": "args",
 															"variant": "param",
 															"kind": 32768,
@@ -5590,28 +5590,28 @@
 																			"typeArguments": [
 																				{
 																					"type": "reference",
-																					"target": 41810,
+																					"target": 41749,
 																					"name": "TData",
 																					"package": "@medusajs/workflows-sdk",
 																					"refersToTypeParameter": true
 																				},
 																				{
 																					"type": "reference",
-																					"target": 41811,
+																					"target": 41750,
 																					"name": "TResult",
 																					"package": "@medusajs/workflows-sdk",
 																					"refersToTypeParameter": true
 																				},
 																				{
 																					"type": "reference",
-																					"target": 41800,
+																					"target": 41739,
 																					"name": "TDataOverride",
 																					"package": "@medusajs/workflows-sdk",
 																					"refersToTypeParameter": true
 																				},
 																				{
 																					"type": "reference",
-																					"target": 41801,
+																					"target": 41740,
 																					"name": "TResultOverride",
 																					"package": "@medusajs/workflows-sdk",
 																					"refersToTypeParameter": true
@@ -5649,28 +5649,28 @@
 																	"typeArguments": [
 																		{
 																			"type": "reference",
-																			"target": 41810,
+																			"target": 41749,
 																			"name": "TData",
 																			"package": "@medusajs/workflows-sdk",
 																			"refersToTypeParameter": true
 																		},
 																		{
 																			"type": "reference",
-																			"target": 41811,
+																			"target": 41750,
 																			"name": "TResult",
 																			"package": "@medusajs/workflows-sdk",
 																			"refersToTypeParameter": true
 																		},
 																		{
 																			"type": "reference",
-																			"target": 41800,
+																			"target": 41739,
 																			"name": "TDataOverride",
 																			"package": "@medusajs/workflows-sdk",
 																			"refersToTypeParameter": true
 																		},
 																		{
 																			"type": "reference",
-																			"target": 41801,
+																			"target": 41740,
 																			"name": "TResultOverride",
 																			"package": "@medusajs/workflows-sdk",
 																			"refersToTypeParameter": true
@@ -5690,7 +5690,7 @@
 									}
 								},
 								{
-									"id": 41802,
+									"id": 41741,
 									"name": "getName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5706,14 +5706,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 41803,
+											"id": 41742,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 41804,
+													"id": 41743,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
@@ -5728,7 +5728,7 @@
 									}
 								},
 								{
-									"id": 41805,
+									"id": 41744,
 									"name": "config",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5744,21 +5744,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 41806,
+											"id": 41745,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 41807,
+													"id": 41746,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 41808,
+															"id": 41747,
 															"name": "config",
 															"variant": "param",
 															"kind": 32768,
@@ -5784,7 +5784,7 @@
 									}
 								},
 								{
-									"id": 41809,
+									"id": 41748,
 									"name": "hooks",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5806,7 +5806,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 41812,
+												"target": 41751,
 												"name": "THooks",
 												"package": "@medusajs/workflows-sdk",
 												"refersToTypeParameter": true
@@ -5821,11 +5821,11 @@
 								{
 									"title": "Properties",
 									"children": [
-										41790,
-										41796,
-										41802,
-										41805,
-										41809
+										41729,
+										41735,
+										41741,
+										41744,
+										41748
 									]
 								}
 							]
@@ -5835,7 +5835,7 @@
 			}
 		},
 		{
-			"id": 41813,
+			"id": 41752,
 			"name": "UnwrapWorkflowInputDataType",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -5861,14 +5861,14 @@
 			},
 			"typeParameters": [
 				{
-					"id": 41814,
+					"id": 41753,
 					"name": "T",
 					"variant": "typeParam",
 					"kind": 131072,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 41780,
+						"target": 41719,
 						"typeArguments": [
 							{
 								"type": "intrinsic",
@@ -5892,14 +5892,14 @@
 				"type": "conditional",
 				"checkType": {
 					"type": "reference",
-					"target": 41814,
+					"target": 41753,
 					"name": "T",
 					"package": "@medusajs/workflows-sdk",
 					"refersToTypeParameter": true
 				},
 				"extendsType": {
 					"type": "reference",
-					"target": 41780,
+					"target": 41719,
 					"typeArguments": [
 						{
 							"type": "inferred",
@@ -5934,21 +5934,21 @@
 			}
 		},
 		{
-			"id": 41815,
+			"id": 41754,
 			"name": "when",
 			"variant": "declaration",
 			"kind": 64,
 			"flags": {},
 			"signatures": [
 				{
-					"id": 41816,
+					"id": 41755,
 					"name": "when",
 					"variant": "signature",
 					"kind": 4096,
 					"flags": {},
 					"typeParameters": [
 						{
-							"id": 41817,
+							"id": 41756,
 							"name": "T",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -5962,7 +5962,7 @@
 									},
 									{
 										"type": "reference",
-										"target": 41720,
+										"target": 41659,
 										"name": "WorkflowData",
 										"package": "@medusajs/workflows-sdk"
 									}
@@ -5970,7 +5970,7 @@
 							}
 						},
 						{
-							"id": 41818,
+							"id": 41757,
 							"name": "Then",
 							"variant": "typeParam",
 							"kind": 131072,
@@ -5988,21 +5988,21 @@
 					],
 					"parameters": [
 						{
-							"id": 41819,
+							"id": 41758,
 							"name": "values",
 							"variant": "param",
 							"kind": 32768,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 41817,
+								"target": 41756,
 								"name": "T",
 								"package": "@medusajs/workflows-sdk",
 								"refersToTypeParameter": true
 							}
 						},
 						{
-							"id": 41820,
+							"id": 41759,
 							"name": "condition",
 							"variant": "param",
 							"kind": 32768,
@@ -6016,7 +6016,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 41817,
+										"target": 41756,
 										"name": "T",
 										"package": "@medusajs/workflows-sdk",
 										"refersToTypeParameter": true
@@ -6030,14 +6030,14 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 41821,
+							"id": 41760,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 41822,
+									"id": 41761,
 									"name": "then",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6057,7 +6057,7 @@
 								{
 									"title": "Properties",
 									"children": [
-										41822
+										41761
 									]
 								}
 							]
@@ -6071,484 +6071,728 @@
 		{
 			"title": "Classes",
 			"children": [
-				41567,
-				41596
+				41506,
+				41535
 			]
 		},
 		{
 			"title": "Interfaces",
 			"children": [
-				41541,
-				41760
+				41480,
+				41699
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				41618,
-				41524,
-				41532,
-				41538,
-				41686,
-				41691,
-				41695,
-				41715,
-				41720,
-				41728,
-				41772,
-				41780,
-				41813
+				41557,
+				41463,
+				41471,
+				41477,
+				41625,
+				41630,
+				41634,
+				41654,
+				41659,
+				41667,
+				41711,
+				41719,
+				41752
 			]
 		},
 		{
 			"title": "Functions",
 			"children": [
-				41612,
-				41514,
 				41551,
-				41625,
-				41629,
-				41815
+				41453,
+				41490,
+				41564,
+				41568,
+				41754
 			]
 		}
 	],
 	"packageName": "@medusajs/workflows-sdk",
 	"symbolIdMap": {
-		"41506": {
+		"41445": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/index.ts",
 			"qualifiedName": ""
 		},
-		"41514": {
+		"41453": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "createStep"
 		},
-		"41515": {
+		"41454": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "createStep"
 		},
-		"41516": {
+		"41455": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "TInvokeInput"
 		},
-		"41517": {
+		"41456": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "TInvokeResultOutput"
 		},
-		"41518": {
+		"41457": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "TInvokeResultCompensateInput"
 		},
-		"41519": {
+		"41458": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "nameOrConfig"
 		},
-		"41520": {
+		"41459": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "__type"
 		},
-		"41521": {
+		"41460": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "__type.name"
 		},
-		"41522": {
+		"41461": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "invokeFn"
 		},
-		"41523": {
+		"41462": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "compensateFn"
 		},
-		"41524": {
+		"41463": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "InvokeFn"
 		},
-		"41525": {
+		"41464": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "__type"
 		},
-		"41526": {
+		"41465": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "__type"
 		},
-		"41527": {
+		"41466": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "input"
 		},
-		"41528": {
+		"41467": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "context"
 		},
-		"41529": {
+		"41468": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "TInput"
 		},
-		"41530": {
+		"41469": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "TOutput"
 		},
-		"41531": {
+		"41470": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "TCompensateInput"
 		},
-		"41532": {
+		"41471": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "CompensateFn"
 		},
-		"41533": {
+		"41472": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "__type"
 		},
-		"41534": {
+		"41473": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "__type"
 		},
-		"41535": {
+		"41474": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "input"
 		},
-		"41536": {
+		"41475": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "context"
 		},
-		"41537": {
+		"41476": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "T"
 		},
-		"41538": {
+		"41477": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "LocalStepConfig"
 		},
-		"41539": {
+		"41478": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "__type"
 		},
-		"41540": {
+		"41479": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "__type.name"
 		},
-		"41541": {
+		"41480": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions"
 		},
-		"41542": {
+		"41481": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.stepName"
 		},
-		"41543": {
+		"41482": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.stepConfig"
 		},
-		"41544": {
+		"41483": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.input"
 		},
-		"41545": {
+		"41484": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.invokeFn"
 		},
-		"41546": {
+		"41485": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.compensateFn"
 		},
-		"41547": {
+		"41486": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.TStepInputs"
 		},
-		"41548": {
+		"41487": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.TInvokeInput"
 		},
-		"41549": {
+		"41488": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.TInvokeResultOutput"
 		},
-		"41550": {
+		"41489": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-step.ts",
 			"qualifiedName": "ApplyStepOptions.TInvokeResultCompensateInput"
 		},
-		"41551": {
+		"41490": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "createWorkflow"
 		},
-		"41552": {
+		"41491": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "createWorkflow"
 		},
-		"41553": {
+		"41492": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "TData"
 		},
-		"41554": {
+		"41493": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "TResult"
 		},
-		"41555": {
+		"41494": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "THooks"
 		},
-		"41556": {
+		"41495": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "nameOrConfig"
 		},
-		"41557": {
+		"41496": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "__type"
 		},
-		"41558": {
+		"41497": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "__type.name"
 		},
-		"41559": {
+		"41498": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "composer"
 		},
-		"41560": {
+		"41499": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "__type"
 		},
-		"41561": {
+		"41500": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "__type"
 		},
-		"41562": {
+		"41501": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-workflow.ts",
 			"qualifiedName": "input"
 		},
-		"41567": {
+		"41506": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse"
 		},
-		"41568": {
+		"41507": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.permanentFailure"
 		},
-		"41569": {
+		"41508": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.permanentFailure"
 		},
-		"41570": {
+		"41509": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "message"
 		},
-		"41571": {
+		"41510": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.skip"
 		},
-		"41572": {
+		"41511": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.skip"
 		},
-		"41573": {
+		"41512": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.__constructor"
 		},
-		"41574": {
+		"41513": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse"
 		},
-		"41575": {
+		"41514": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.TOutput"
 		},
-		"41576": {
+		"41515": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.TCompensateInput"
 		},
-		"41577": {
+		"41516": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "output"
 		},
-		"41578": {
+		"41517": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "compensateInput"
 		},
-		"41594": {
+		"41533": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.TOutput"
 		},
-		"41595": {
+		"41534": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/step-response.ts",
 			"qualifiedName": "StepResponse.TCompensateInput"
 		},
-		"41596": {
+		"41535": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse"
 		},
-		"41597": {
+		"41536": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse.__constructor"
 		},
-		"41598": {
+		"41537": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse"
 		},
-		"41599": {
+		"41538": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse.TResult"
 		},
-		"41600": {
+		"41539": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse.THooks"
 		},
-		"41601": {
+		"41540": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "$result"
 		},
-		"41602": {
+		"41541": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "options"
 		},
-		"41603": {
+		"41542": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "__type"
 		},
-		"41604": {
+		"41543": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "__type.hooks"
 		},
-		"41605": {
+		"41544": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse.__type"
 		},
-		"41606": {
+		"41545": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse.$result"
 		},
-		"41607": {
+		"41546": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse.options"
 		},
-		"41608": {
+		"41547": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "__type"
 		},
-		"41609": {
+		"41548": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "__type.hooks"
 		},
-		"41610": {
+		"41549": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse.TResult"
 		},
-		"41611": {
+		"41550": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/helpers/workflow-response.ts",
 			"qualifiedName": "WorkflowResponse.THooks"
 		},
-		"41612": {
+		"41551": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "createHook"
 		},
-		"41613": {
+		"41552": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "createHook"
 		},
-		"41614": {
+		"41553": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "Name"
 		},
-		"41615": {
+		"41554": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "TInvokeInput"
 		},
-		"41616": {
+		"41555": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "name"
 		},
-		"41617": {
+		"41556": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "input"
 		},
-		"41618": {
+		"41557": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "Hook"
 		},
-		"41619": {
+		"41558": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "__type"
 		},
-		"41620": {
+		"41559": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "__type.__type"
 		},
-		"41621": {
+		"41560": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "__type.name"
 		},
-		"41622": {
+		"41561": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "__type. input"
 		},
-		"41623": {
+		"41562": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "Name"
 		},
-		"41624": {
+		"41563": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/create-hook.ts",
 			"qualifiedName": "Input"
 		},
-		"41625": {
+		"41564": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/parallelize.ts",
 			"qualifiedName": "parallelize"
 		},
-		"41626": {
+		"41565": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/parallelize.ts",
 			"qualifiedName": "parallelize"
 		},
-		"41627": {
+		"41566": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/parallelize.ts",
 			"qualifiedName": "TResult"
 		},
-		"41628": {
+		"41567": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/parallelize.ts",
 			"qualifiedName": "steps"
 		},
-		"41629": {
+		"41568": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/transform.ts",
 			"qualifiedName": "transform"
 		},
-		"41630": {
+		"41569": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/transform.ts",
 			"qualifiedName": "transform"
 		},
-		"41631": {
+		"41570": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/transform.ts",
 			"qualifiedName": "T"
 		},
-		"41632": {
+		"41571": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/transform.ts",
 			"qualifiedName": "RFinal"
 		},
-		"41633": {
+		"41572": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/transform.ts",
 			"qualifiedName": "values"
 		},
-		"41634": {
+		"41573": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/transform.ts",
 			"qualifiedName": "func"
 		},
-		"41686": {
+		"41625": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "StepFunctionResult"
 		},
-		"41687": {
+		"41626": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "__type"
 		},
-		"41688": {
+		"41627": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "__type"
 		},
-		"41689": {
+		"41628": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "this"
 		},
-		"41690": {
+		"41629": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "TOutput"
 		},
-		"41691": {
+		"41630": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "HookHandler"
+		},
+		"41631": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41632": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41633": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "args"
+		},
+		"41634": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "StepFunction"
+		},
+		"41635": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41636": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41637": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41638": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.config"
+		},
+		"41639": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.config"
+		},
+		"41640": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "config"
+		},
+		"41641": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41642": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.name"
+		},
+		"41643": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41644": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41645": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "input"
+		},
+		"41646": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41647": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.config"
+		},
+		"41648": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.config"
+		},
+		"41649": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "config"
+		},
+		"41650": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41651": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.name"
+		},
+		"41652": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "TInput"
+		},
+		"41653": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "TOutput"
+		},
+		"41654": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "WorkflowDataProperties"
+		},
+		"41655": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41656": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.__type"
+		},
+		"41657": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.__step__"
+		},
+		"41658": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "T"
+		},
+		"41659": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "WorkflowData"
+		},
+		"41660": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41661": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.config"
+		},
+		"41662": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.config"
+		},
+		"41663": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "config"
+		},
+		"41664": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41665": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.name"
+		},
+		"41666": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "T"
+		},
+		"41667": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "CreateWorkflowComposerContext"
+		},
+		"41668": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41669": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.__type"
+		},
+		"41670": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.hooks_"
+		},
+		"41671": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41672": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.declared"
+		},
+		"41673": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.registered"
+		},
+		"41674": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.hooksCallback_"
+		},
+		"41675": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.workflowId"
+		},
+		"41676": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.flow"
+		},
+		"41677": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.isAsync"
+		},
+		"41678": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.handlers"
+		},
+		"41679": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.stepBinder"
+		},
+		"41680": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41681": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41682": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "fn"
+		},
+		"41683": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "TOutput"
+		},
+		"41684": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.hookBinder"
+		},
+		"41685": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41686": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41687": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "name"
+		},
+		"41688": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "fn"
+		},
+		"41689": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41690": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type"
+		},
+		"41691": {
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"qualifiedName": "__type.parallelizeBinder"
 		},
 		"41692": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
@@ -6560,11 +6804,11 @@
 		},
 		"41694": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "args"
+			"qualifiedName": "fn"
 		},
 		"41695": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepFunction"
+			"qualifiedName": "__type"
 		},
 		"41696": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
@@ -6572,99 +6816,95 @@
 		},
 		"41697": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "this"
 		},
 		"41698": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "TOutput"
 		},
 		"41699": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.config"
+			"qualifiedName": "StepExecutionContext"
 		},
 		"41700": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.config"
+			"qualifiedName": "StepExecutionContext.workflowId"
 		},
 		"41701": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "StepExecutionContext.attempt"
 		},
 		"41702": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "StepExecutionContext.idempotencyKey"
 		},
 		"41703": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.name"
+			"qualifiedName": "StepExecutionContext.parentStepIdempotencyKey"
 		},
 		"41704": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "StepExecutionContext.stepName"
 		},
 		"41705": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "StepExecutionContext.action"
 		},
 		"41706": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "input"
+			"qualifiedName": "StepExecutionContext.container"
 		},
 		"41707": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "StepExecutionContext.metadata"
 		},
 		"41708": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.config"
+			"qualifiedName": "StepExecutionContext.context"
 		},
 		"41709": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.config"
+			"qualifiedName": "StepExecutionContext.eventGroupId"
 		},
 		"41710": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "StepExecutionContext.transactionId"
 		},
 		"41711": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "WorkflowTransactionContext"
 		},
 		"41712": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.name"
+			"qualifiedName": "__type"
 		},
 		"41713": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TInput"
+			"qualifiedName": "__type.invoke"
 		},
 		"41714": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TOutput"
+			"qualifiedName": "__type"
 		},
 		"41715": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "WorkflowDataProperties"
-		},
-		"41716": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.__index"
 		},
 		"41717": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.__type"
+			"qualifiedName": "__type"
 		},
 		"41718": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.__step__"
+			"qualifiedName": "__type.output"
 		},
 		"41719": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "T"
+			"qualifiedName": "ReturnWorkflow"
 		},
 		"41720": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "WorkflowData"
+			"qualifiedName": "__type"
 		},
 		"41721": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
@@ -6672,83 +6912,79 @@
 		},
 		"41722": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.config"
+			"qualifiedName": "TDataOverride"
 		},
 		"41723": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.config"
+			"qualifiedName": "TResultOverride"
 		},
 		"41724": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "config"
+			"qualifiedName": "container"
 		},
 		"41725": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "__type"
 		},
 		"41726": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.name"
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.__joinerConfig"
 		},
 		"41727": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "T"
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.__definition"
 		},
 		"41728": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "CreateWorkflowComposerContext"
+			"qualifiedName": "__type"
 		},
 		"41729": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.runAsStep"
 		},
 		"41730": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.__type"
+			"qualifiedName": "__type"
 		},
 		"41731": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.hooks_"
-		},
-		"41732": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
 			"qualifiedName": "__type"
 		},
 		"41733": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.declared"
+			"qualifiedName": "__type"
 		},
 		"41734": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.registered"
+			"qualifiedName": "__type.input"
 		},
 		"41735": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.hooksCallback_"
+			"qualifiedName": "__type.run"
 		},
 		"41736": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.workflowId"
+			"qualifiedName": "__type"
 		},
 		"41737": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.flow"
+			"qualifiedName": "__type"
 		},
 		"41738": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.isAsync"
+			"qualifiedName": "args"
 		},
 		"41739": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.handlers"
+			"qualifiedName": "TDataOverride"
 		},
 		"41740": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.stepBinder"
+			"qualifiedName": "TResultOverride"
 		},
 		"41741": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.getName"
 		},
 		"41742": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
@@ -6756,15 +6992,15 @@
 		},
 		"41743": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "fn"
+			"qualifiedName": "__type"
 		},
 		"41744": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TOutput"
+			"qualifiedName": "__type.config"
 		},
 		"41745": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.hookBinder"
+			"qualifiedName": "__type"
 		},
 		"41746": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
@@ -6772,297 +7008,61 @@
 		},
 		"41747": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "config"
 		},
 		"41748": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "name"
+			"qualifiedName": "__type.hooks"
 		},
 		"41749": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "fn"
+			"qualifiedName": "TData"
 		},
 		"41750": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "TResult"
 		},
 		"41751": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "THooks"
 		},
 		"41752": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.parallelizeBinder"
+			"qualifiedName": "UnwrapWorkflowInputDataType"
 		},
 		"41753": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "T"
 		},
 		"41754": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
+			"qualifiedName": "when"
 		},
 		"41755": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "fn"
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
+			"qualifiedName": "when"
 		},
 		"41756": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
+			"qualifiedName": "T"
 		},
 		"41757": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41758": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "this"
-		},
-		"41759": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TOutput"
-		},
-		"41760": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext"
-		},
-		"41761": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.workflowId"
-		},
-		"41762": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.attempt"
-		},
-		"41763": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.idempotencyKey"
-		},
-		"41764": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.parentStepIdempotencyKey"
-		},
-		"41765": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.stepName"
-		},
-		"41766": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.action"
-		},
-		"41767": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.container"
-		},
-		"41768": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.metadata"
-		},
-		"41769": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.context"
-		},
-		"41770": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.eventGroupId"
-		},
-		"41771": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "StepExecutionContext.transactionId"
-		},
-		"41772": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "WorkflowTransactionContext"
-		},
-		"41773": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41774": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.invoke"
-		},
-		"41775": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41776": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.__index"
-		},
-		"41778": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41779": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.output"
-		},
-		"41780": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "ReturnWorkflow"
-		},
-		"41781": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41782": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41783": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TDataOverride"
-		},
-		"41784": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TResultOverride"
-		},
-		"41785": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "container"
-		},
-		"41786": {
-			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"41787": {
-			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.__joinerConfig"
-		},
-		"41788": {
-			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.__definition"
-		},
-		"41789": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41790": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.runAsStep"
-		},
-		"41791": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41792": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41794": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41795": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.input"
-		},
-		"41796": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.run"
-		},
-		"41797": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41798": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41799": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "args"
-		},
-		"41800": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TDataOverride"
-		},
-		"41801": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TResultOverride"
-		},
-		"41802": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.getName"
-		},
-		"41803": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41804": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41805": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.config"
-		},
-		"41806": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41807": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type"
-		},
-		"41808": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "config"
-		},
-		"41809": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "__type.hooks"
-		},
-		"41810": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TData"
-		},
-		"41811": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "TResult"
-		},
-		"41812": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "THooks"
-		},
-		"41813": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "UnwrapWorkflowInputDataType"
-		},
-		"41814": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/type.ts",
-			"qualifiedName": "T"
-		},
-		"41815": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
-			"qualifiedName": "when"
-		},
-		"41816": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
-			"qualifiedName": "when"
-		},
-		"41817": {
-			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
-			"qualifiedName": "T"
-		},
-		"41818": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
 			"qualifiedName": "Then"
 		},
-		"41819": {
+		"41758": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
 			"qualifiedName": "values"
 		},
-		"41820": {
+		"41759": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
 			"qualifiedName": "condition"
 		},
-		"41821": {
+		"41760": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
 			"qualifiedName": "__type"
 		},
-		"41822": {
+		"41761": {
 			"sourceFileName": "../../../../packages/core/workflows-sdk/src/utils/composer/when.ts",
 			"qualifiedName": "__type.then"
 		}
@@ -7072,7 +7072,7 @@
 			"1": "../../../../packages/core/workflows-sdk/src/utils/composer/index.ts"
 		},
 		"reflections": {
-			"1": 41506
+			"1": 41445
 		}
 	}
 }
