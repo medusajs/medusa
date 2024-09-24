@@ -53,7 +53,6 @@ import {
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "@utils"
-import { EligibleItem } from "src/utils/compute-actions"
 import { joinerConfig } from "../joiner-config"
 import { CreatePromotionRuleValueDTO } from "../types/promotion-rule-value"
 
@@ -338,9 +337,15 @@ export default class PromotionModuleService
     >()
     const methodIdPromoValueMap = new Map<string, number>()
     // Keeps a map of all elgible items in the buy section and its eligible quantity
-    const eligibleBuyItemMap = new Map<string, EligibleItem[]>()
+    const eligibleBuyItemMap = new Map<
+      string,
+      ComputeActionUtils.EligibleItem[]
+    >()
     // Keeps a map of all elgible items in the target section and its eligible quantity
-    const eligibleTargetItemMap = new Map<string, EligibleItem[]>()
+    const eligibleTargetItemMap = new Map<
+      string,
+      ComputeActionUtils.EligibleItem[]
+    >()
     const automaticPromotions = preventAutoPromotions
       ? []
       : await this.listPromotions(

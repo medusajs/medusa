@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "repository": {
     "type": "git",
@@ -24,7 +27,8 @@
     "watch": "tsc --build --watch",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
+    "resolve:aliases": "tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && tsc-alias -p tsconfig.resolved.json && rimraf tsconfig.resolved.json",
+    "build": "rimraf dist && tsc --build && npm run resolve:aliases",
     "test": "jest --passWithNoTests --runInBand --bail --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts"
   },
@@ -37,7 +41,7 @@
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.6",
-    "typescript": "^5.5.0"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.11",

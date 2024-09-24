@@ -109,6 +109,7 @@ export function medusaIntegrationTestRunner({
     const { logger, container, MedusaAppLoader } = await import(
       "@medusajs/framework"
     )
+
     const appLoader = new MedusaAppLoader()
     container.register({
       [ContainerRegistrationKeys.LOGGER]: asValue(logger),

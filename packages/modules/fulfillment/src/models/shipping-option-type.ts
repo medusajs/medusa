@@ -26,12 +26,6 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
-const ShippingOptionIdIndex = createPsqlIndexStatementHelper({
-  tableName: "shipping_option_type",
-  columns: "shipping_option_id",
-  where: "deleted_at IS NULL",
-})
-
 @Entity()
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingOptionType {
