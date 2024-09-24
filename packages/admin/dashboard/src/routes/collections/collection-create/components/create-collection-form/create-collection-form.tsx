@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Text } from "@medusajs/ui"
+import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -35,6 +35,10 @@ export const CreateCollectionForm = () => {
     await mutateAsync(data, {
       onSuccess: ({ collection }) => {
         handleSuccess(`/collections/${collection.id}`)
+        toast.success(t("general.success"), {
+          description: t("collections.createSuccess"),
+          dismissLabel: t("actions.close"),
+        })
       },
     })
   })
