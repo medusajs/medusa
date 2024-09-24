@@ -3,7 +3,7 @@ import {
   container,
   logger,
   MedusaAppLoader,
-} from "@medusajs/framework/framework"
+} from "@medusajs/framework"
 import { MedusaAppOutput, MedusaModule } from "@medusajs/framework/modules-sdk"
 import { EventBusTypes, IndexTypes } from "@medusajs/framework/types"
 import {
