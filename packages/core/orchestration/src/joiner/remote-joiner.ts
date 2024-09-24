@@ -1190,10 +1190,15 @@ export class RemoteJoiner {
     }
 
     let pkName = serviceConfig.primaryKeys[0]
-    const { primaryKeyArg, otherArgs } = gerPrimaryKeysAndOtherFilters({
+    const {
+      primaryKeyArg,
+      otherArgs,
+      pkName: primaryKeyName,
+    } = gerPrimaryKeysAndOtherFilters({
       serviceConfig,
       queryObj,
     })
+    pkName = primaryKeyName
 
     const implodeMapping: InternalImplodeMapping[] = []
     const parsedExpands = this.parseExpands({
@@ -1237,7 +1242,9 @@ export class RemoteJoiner {
 function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
   primaryKeyArg: { name: string; value: any } | undefined
   otherArgs: { name: string; value: any }[] | undefined
+  pkName: string
 } {
+  let pkName = serviceConfig.primaryKeys[0]
   let primaryKeyArg = queryObj.args?.find((arg) => {
     return serviceConfig.primaryKeys.includes(arg.name)
   })
@@ -1259,6 +1266,7 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
       return filtersMap.has(key)
     })
     if (primaryKeyFilter) {
+      pkName = primaryKeyFilter
       primaryKeyArg = {
         name: primaryKeyFilter,
         value: filtersMap.get(primaryKeyFilter),
@@ -1268,18 +1276,22 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
 
   if (!otherArgs) {
     const filters = Object.fromEntries(filtersMap)
-    otherArgs = Object.keys(filters).filter((key) => {
-      return !serviceConfig.primaryKeys.includes(key)
-    }).map((key) => {
-      return {
-        name: key,
-        value: filters[key],
-      }
-    })
+    otherArgs = Object.keys(filters)
+      .filter((key) => {
+        return !serviceConfig.primaryKeys.includes(key)
+      })
+      .map((key) => {
+        return {
+          name: key,
+          value: filters[key],
+        }
+      })
+    otherArgs = otherArgs.length ? otherArgs : undefined
   }
 
   return {
     primaryKeyArg,
     otherArgs,
+    pkName,
   }
 }
