@@ -3,14 +3,14 @@ import {
   container,
   logger,
   MedusaAppLoader,
-} from "@medusajs/framework"
-import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
-import { EventBusTypes, IndexTypes } from "@medusajs/types"
+} from "@medusajs/framework/framework"
+import { MedusaAppOutput, MedusaModule } from "@medusajs/framework/modules-sdk"
+import { EventBusTypes, IndexTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   Modules,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
 import { asValue } from "awilix"

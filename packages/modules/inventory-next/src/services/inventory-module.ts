@@ -2,6 +2,7 @@ import {
   BigNumberInput,
   Context,
   DAL,
+  IInventoryService,
   InternalModuleDeclaration,
   InventoryTypes,
   ModuleJoinerConfig,
@@ -9,8 +10,7 @@ import {
   ReservationItemDTO,
   RestoreReturn,
   SoftDeleteReturn,
-} from "@medusajs/types"
-import { IInventoryService } from "@medusajs/types/dist/inventory"
+} from "@medusajs/framework/types"
 import {
   arrayDifference,
   BigNumber,
@@ -26,7 +26,7 @@ import {
   MedusaError,
   MedusaService,
   partitionArray,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
 import { joinerConfig } from "../joiner-config"
 import InventoryLevelService from "./inventory-level"

@@ -1,5 +1,5 @@
-import { IAuthModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { IAuthModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createAuthIdentities } from "../../__fixtures__/auth-identity"
 
