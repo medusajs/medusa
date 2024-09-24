@@ -1,7 +1,9 @@
-import { ModuleServiceInitializeOptions } from "@medusajs/types"
+import { Filter as MikroORMFilter } from "@mikro-orm/core"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
+import { ModuleServiceInitializeOptions } from "@medusajs/types"
 import { isString } from "../../common"
-import { FilterDef } from "@mikro-orm/core/typings"
+
+type FilterDef = Parameters<typeof MikroORMFilter>[0]
 
 export class CustomTsMigrationGenerator extends TSMigrationGenerator {
   createStatement(sql: string, padLeft: number): string {

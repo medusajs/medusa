@@ -91,6 +91,7 @@ describe("Order Exchange - Actions", function () {
     ] as OrderChangeEvent[]
 
     const changes = calculateOrderChange({
+      // @ts-expect-error "Types are off"
       order: originalOrder,
       actions: actions,
       options: {
