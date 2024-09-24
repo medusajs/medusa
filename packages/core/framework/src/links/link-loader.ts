@@ -1,4 +1,4 @@
-import { promiseAll } from "@medusajs/utils"
+import { dynamicImport, promiseAll } from "@medusajs/utils"
 import { logger } from "../logger"
 import { access, readdir } from "fs/promises"
 import { join } from "path"
@@ -59,7 +59,7 @@ export class LinkLoader {
         return await promiseAll(
           fileEntries.map(async (entry) => {
             const fullPath = join(entry.path, entry.name)
-            return await import(fullPath)
+            return await dynamicImport(fullPath)
           })
         )
       })

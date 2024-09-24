@@ -11,11 +11,13 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  DmlEntity,
-  MedusaModuleType,
-  ModulesSdkUtils,
   createMedusaContainer,
   defineJoinerConfig,
+  DmlEntity,
+  dynamicImport,
+  MedusaModuleType,
+  ModulesSdkUtils,
+  resolveExports,
   toMikroOrmEntities,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
@@ -65,7 +67,7 @@ export async function loadInternalModule(
       // If we want to benefit from the auto load mechanism, even if the module exports is provided, we need to ask for the module path
       loadedModule = resolution.moduleExports
     } else {
-      loadedModule = await import(modulePath)
+      loadedModule = await dynamicImport(modulePath)
       loadedModule = (loadedModule as any).default
     }
   } catch (error) {
@@ -195,7 +197,8 @@ export async function loadModuleMigrations(
   let loadedModule: ModuleExports
   try {
     loadedModule =
-      moduleExports ?? (await import(resolution.resolutionPath as string))
+      moduleExports ??
+      (await dynamicImport(resolution.resolutionPath as string))
 
     let runMigrations = loadedModule.runMigrations
     let revertMigration = loadedModule.revertMigration
@@ -263,7 +266,7 @@ async function importAllFromDir(path: string) {
   return (
     await Promise.all(filesToLoad.map((filePath) => import(filePath)))
   ).flatMap((value) => {
-    return Object.values(value)
+    return Object.values(resolveExports(value))
   })
 }
 
@@ -284,7 +287,9 @@ export async function loadResources(
     }
 
     const [moduleService, services, models, repositories] = await Promise.all([
-      import(modulePath).then((moduleExports) => moduleExports.default.service),
+      import(modulePath).then((moduleExports) => {
+        return resolveExports(moduleExports).default.service
+      }),
       importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail
       ),

@@ -126,6 +126,16 @@ export const AddCustomerGroupsForm = ({
 
       await Promise.all(promises)
 
+      toast.success(t("general.success"), {
+        description: t("customers.groups.add.success", {
+          groups: data.customer_group_ids
+            .map((id) => customer_groups?.find((g) => g.id === id))
+            .filter(Boolean)
+            .map((cg) => cg.name),
+        }),
+        dismissLabel: t("actions.close"),
+      })
+
       await queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
       })
@@ -155,19 +165,6 @@ export const AddCustomerGroupsForm = ({
                 {form.formState.errors.customer_group_ids.message}
               </Hint>
             )}
-            <RouteFocusModal.Close asChild>
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button
-              type="submit"
-              variant="primary"
-              size="small"
-              isLoading={isPending}
-            >
-              {t("actions.save")}
-            </Button>
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="size-full overflow-hidden">
@@ -187,6 +184,21 @@ export const AddCustomerGroupsForm = ({
             }}
           />
         </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <RouteFocusModal.Close asChild>
+            <Button variant="secondary" size="small">
+              {t("actions.cancel")}
+            </Button>
+          </RouteFocusModal.Close>
+          <Button
+            type="submit"
+            variant="primary"
+            size="small"
+            isLoading={isPending}
+          >
+            {t("actions.save")}
+          </Button>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )

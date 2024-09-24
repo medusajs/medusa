@@ -23,7 +23,7 @@ export interface AdminOrder extends Omit<BaseOrder, "items"> {
   customer?: AdminCustomer
   shipping_address?: AdminOrderAddress | null
   billing_address?: AdminOrderAddress | null
-  items: AdminOrderLineItem[] | null
+  items: AdminOrderLineItem[]
 }
 
 export interface AdminOrderLineItem extends BaseOrderLineItem {

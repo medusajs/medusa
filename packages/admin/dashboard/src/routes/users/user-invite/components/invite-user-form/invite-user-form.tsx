@@ -75,6 +75,7 @@ export const InviteUserForm = () => {
     enablePagination: true,
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,
+    prefix: PREFIX,
   })
 
   const { mutateAsync, isPending } = useCreateInvite()
@@ -162,7 +163,6 @@ export const InviteUserForm = () => {
                     columns={columns}
                     count={count}
                     pageSize={PAGE_SIZE}
-                    prefix={PREFIX}
                     pagination
                     search="autofocus"
                     isLoading={isLoading}
