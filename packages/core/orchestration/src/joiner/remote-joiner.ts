@@ -1270,9 +1270,9 @@ function gerPrimaryKeysAndOtherFilters({ serviceConfig, queryObj }): {
         name: primaryKeyFilter,
         value: filters[primaryKeyFilter],
       }
-    }
 
-    delete filters[primaryKeyFilter]
+      delete filters[primaryKeyFilter]
+    }
   }
 
   otherArgs = otherArgs.length ? otherArgs : undefined
