@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.0.6
+
+### Patch Changes
+
+- [#9271](https://github.com/medusajs/medusa/pull/9271) [`ea8f33acb1`](https://github.com/medusajs/medusa/commit/ea8f33acb1d641e1b9f823f97c6a166178749427) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Convert plugin to use tsc
+
 ## 7.0.5
 
 ### Patch Changes
