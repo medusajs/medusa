@@ -1,29 +1,6 @@
 {
   "extends": "../../../_tsconfig.base.json",
   "compilerOptions": {
-<<<<<<< HEAD
-    "lib": ["ES2021"],
-    "target": "ES2021",
-    "outDir": "dist",
-    "esModuleInterop": true,
-    "declaration": true,
-    "declarationMap": true,
-    "noUnusedLocals": true,
-    "module": "Node16",
-    "moduleResolution": "Node16",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "sourceMap": true,
-    "noImplicitReturns": true,
-    "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitThis": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-=======
->>>>>>> develop
     "paths": {
       "@models": ["./src/models"],
       "@services": ["./src/services"],
@@ -31,14 +8,5 @@
       "@types": ["./src/types"],
       "@utils": ["./src/utils"]
     }
-<<<<<<< HEAD
-  },
-  "include": ["src"],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
-=======
   }
->>>>>>> develop
 }
