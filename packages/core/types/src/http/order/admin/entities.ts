@@ -20,6 +20,7 @@ export interface AdminOrder extends BaseOrder {
   customer?: AdminCustomer
   shipping_address?: AdminOrderAddress | null
   billing_address?: AdminOrderAddress | null
+  items: AdminOrderLineItem[]
 }
 
 export interface AdminOrderLineItem extends BaseOrderLineItem {

@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
+    "noUnusedLocals": true,
     "declarationMap": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -12,19 +13,16 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true,
-    "downlevelIteration": true
+    "skipLibCheck": true
   },
   "include": ["src"],
   "exclude": [
     "dist",
-    "./src/**/__tests__",
-    "./src/**/__mocks__",
-    "./src/**/__fixtures__",
     "node_modules"
   ]
 }
