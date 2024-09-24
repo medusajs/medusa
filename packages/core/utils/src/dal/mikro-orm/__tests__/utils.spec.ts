@@ -1,5 +1,5 @@
 import { mikroOrmUpdateDeletedAtRecursively } from "../utils"
-import { MikroORM } from "@mikro-orm/core"
+import { MetadataStorage, MikroORM } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   DeepRecursiveEntity1,
@@ -32,7 +32,10 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
     let orm!: MikroORM
 
     beforeEach(async () => {
+      MetadataStorage.clear()
+
       await createDb(dbName)
+
       orm = await MikroORM.init({
         entities: [
           Entity1,
