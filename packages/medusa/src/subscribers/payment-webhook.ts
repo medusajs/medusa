@@ -44,11 +44,9 @@ export default async function paymentWebhookhandler({
   })
 
   // We process the intended side effects of payment processing separately.
-  if (processedEvent) {
-    await onPaymentProcessedWorkflow(container).run({
-      input: processedEvent,
-    })
-  }
+  await onPaymentProcessedWorkflow(container).run({
+    input: processedEvent,
+  })
 }
 
 export const config: SubscriberConfig = {

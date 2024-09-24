@@ -298,6 +298,19 @@ export default class UserModuleService
     data: UserTypes.CreateInviteDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Invite[]> {
+    const alreadyExistingUsers = await this.listUsers({
+      email: data.map((d) => d.email),
+    })
+
+    if (alreadyExistingUsers.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `User account for following email(s) already exist: ${alreadyExistingUsers
+          .map((u) => u.email)
+          .join(", ")}`
+      )
+    }
+
     const toCreate = data.map((invite) => {
       return {
         ...invite,
