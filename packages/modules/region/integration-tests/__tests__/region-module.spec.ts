@@ -43,7 +43,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
       })
 
       it("should create countries on application start", async () => {
-        const countries = await service.listCountries({}, { take: null })
+        const countries = await service.listCountries({}, {})
         expect(countries.length).toEqual(250)
       })
 

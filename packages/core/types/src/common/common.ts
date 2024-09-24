@@ -307,7 +307,7 @@ export type RawRounding = {
  * @ignore
  */
 export type QueryConfig<TEntity extends BaseEntity> = {
-  deafults?: (keyof TEntity | string)[]
+  defaults?: (keyof TEntity | string)[]
   allowed?: (keyof TEntity | string)[]
   defaultLimit?: number
   isList?: boolean
@@ -316,5 +316,7 @@ export type QueryConfig<TEntity extends BaseEntity> = {
 export type TransformObjectMethodToAsync<T extends object> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R
     ? (...args: A) => Promise<Awaited<R>>
-    : T[K] extends object ? TransformObjectMethodToAsync<T[K]> : T[K];
+    : T[K] extends object
+    ? TransformObjectMethodToAsync<T[K]>
+    : T[K]
 }

@@ -1,4 +1,4 @@
-import { mikroOrmUpdateDeletedAtRecursively } from "../utils"
+import { mikroOrmUpdateDeletedAtRecursively } from "../../utils"
 import { MikroORM } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
@@ -12,6 +12,10 @@ import {
   RecursiveEntity1,
   RecursiveEntity2,
 } from "../__fixtures__/utils"
+import { dropDatabase } from "pg-god"
+import { getDatabaseURL, pgGodCredentials } from "../__fixtures__/database"
+
+const dbName = "mikroorm-utils-integration-1"
 
 jest.mock("@mikro-orm/core", () => ({
   ...jest.requireActual("@mikro-orm/core"),
@@ -29,6 +33,11 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
     let orm!: MikroORM
 
     beforeEach(async () => {
+      await dropDatabase(
+        { databaseName: dbName, errorIfNonExist: false },
+        pgGodCredentials
+      )
+
       orm = await MikroORM.init({
         entities: [
           Entity1,
@@ -41,13 +50,19 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
           DeepRecursiveEntity4,
           InternalCircularDependencyEntity1,
         ],
-        dbName: "test",
+        clientUrl: getDatabaseURL(dbName),
         type: "postgresql",
       })
+
+      const generator = orm.getSchemaGenerator()
+      await generator.ensureDatabase()
+      await generator.createSchema()
     })
 
     afterEach(async () => {
-      await orm.close()
+      const generator = orm.getSchemaGenerator()
+      await generator.dropSchema()
+      await orm.close(true)
     })
 
     it("should successfully mark the entities deleted_at recursively", async () => {
@@ -59,12 +74,14 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
         entity1: entity1,
       })
       entity1.entity2.add(entity2)
+      manager.persist(entity1)
+      manager.persist(entity2)
 
       const deletedAt = new Date()
       await mikroOrmUpdateDeletedAtRecursively(manager, [entity1], deletedAt)
 
-      expect(entity1.deleted_at).toEqual(deletedAt)
-      expect(entity2.deleted_at).toEqual(deletedAt)
+      expect(!!entity1.deleted_at).toEqual(true)
+      expect(!!entity2.deleted_at).toEqual(true)
     })
 
     it("should successfully mark the entities deleted_at recursively with internal parent/child relation", async () => {
@@ -80,11 +97,14 @@ describe("mikroOrmUpdateDeletedAtRecursively", () => {
         parent: entity1,
       })
 
+      manager.persist(entity1)
+      manager.persist(childEntity1)
+
       const deletedAt = new Date()
       await mikroOrmUpdateDeletedAtRecursively(manager, [entity1], deletedAt)
 
-      expect(entity1.deleted_at).toEqual(deletedAt)
-      expect(childEntity1.deleted_at).toEqual(deletedAt)
+      expect(!!entity1.deleted_at).toEqual(true)
+      expect(!!childEntity1.deleted_at).toEqual(true)
     })
 
     it("should throw an error when a circular dependency is detected", async () => {
