@@ -184,9 +184,9 @@ export interface BaseOrderShippingDetail {
   id: string
   shipping_method_id: string
   shipping_method: BaseOrderShippingMethod
-  claim_id: string
-  exchange_id: string
-  return_id: string
+  claim_id?: string
+  exchange_id?: string
+  return_id?: string
   created_at: Date
   updated_at: Date
 }
@@ -196,7 +196,7 @@ export interface BaseOrderTransaction {
   order_id: string
   amount: number
   currency_code: string
-  reference: string
+  reference: "capture" | "refund"
   reference_id: string
   metadata: Record<string, unknown> | null
   created_at: Date | string

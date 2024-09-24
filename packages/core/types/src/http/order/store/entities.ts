@@ -1,4 +1,7 @@
+import { StoreCustomer } from "../../customer"
 import { StorePaymentCollection } from "../../payment"
+import { StoreProduct, StoreProductVariant } from "../../product"
+import { StoreRegionCountry } from "../../region"
 import {
   BaseOrder,
   BaseOrderAddress,
@@ -7,15 +10,21 @@ import {
   BaseOrderShippingMethod,
 } from "../common"
 
-export interface StoreOrder extends BaseOrder {
+export interface StoreOrder extends Omit<BaseOrder, "items"> {
   shipping_address?: StoreOrderAddress | null
   billing_address?: StoreOrderAddress | null
   items: StoreOrderLineItem[] | null
   shipping_methods: StoreOrderShippingMethod[] | null
   payment_collections?: StorePaymentCollection[]
   fulfillments?: StoreOrderFulfillment[]
+  customer?: StoreCustomer
 }
-export interface StoreOrderLineItem extends BaseOrderLineItem {}
-export interface StoreOrderAddress extends BaseOrderAddress {}
+export interface StoreOrderLineItem extends Omit<BaseOrderLineItem, "product" | "variant"> {
+  variant?: StoreProductVariant
+  product?: StoreProduct
+}
+export interface StoreOrderAddress extends BaseOrderAddress {
+  country?: StoreRegionCountry
+}
 export interface StoreOrderShippingMethod extends BaseOrderShippingMethod {}
 export interface StoreOrderFulfillment extends BaseOrderFulfillment {}
