@@ -1,5 +1,6 @@
-import { OrderDTO, OrderPreviewDTO } from "../../../order"
+import { OrderDTO } from "../../../order"
 import { DeleteResponse, PaginatedResponse } from "../../common"
+import { AdminOrderPreview } from "../../order"
 import { AdminReturn } from "../../return"
 import { AdminExchange } from "./entities"
 
@@ -17,7 +18,7 @@ export interface AdminExchangeOrderResponse {
 }
 
 export interface AdminExchangePreviewResponse {
-  order_preview: OrderPreviewDTO
+  order_preview: AdminOrderPreview
   exchange: AdminExchange
 }
 
@@ -27,7 +28,7 @@ export interface AdminExchangeRequestResponse
 }
 
 export interface AdminExchangeReturnResponse {
-  order_preview: OrderPreviewDTO
+  order_preview: AdminOrderPreview
   return: AdminReturn
 }
 

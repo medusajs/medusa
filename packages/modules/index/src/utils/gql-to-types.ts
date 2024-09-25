@@ -17,6 +17,7 @@ export async function gqlSchemaToTypes(schema: string) {
   await ModulesSdkGqlSchemaToTypes({
     schema: executableSchema,
     filename,
+    interfaceName: "IndexServiceEntryPoints",
     outputDir: dir,
     joinerConfigs: MedusaModule.getAllJoinerConfigs(),
   })
