@@ -34,12 +34,16 @@
   "devDependencies": {
     "awilix": "^8.0.1",
     "bignumber.js": "^9.1.2",
-    "cross-env": "^5.2.1",
     "expect-type": "^0.20.0",
     "ioredis": "^5.4.1",
     "rimraf": "^5.0.1",
     "typescript": "^5.6.2",
-    "vite": "^5.2.11",
-    "winston": "^3.8.2"
+    "vite": "^5.2.11"
+  },
+  "peerDependencies": {
+    "awilix": "^8.0.1",
+    "bignumber.js": "^9.1.2",
+    "ioredis": "^5.4.1",
+    "vite": "^5.2.11"
   }
 }
