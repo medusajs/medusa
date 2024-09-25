@@ -44,7 +44,6 @@
     "@graphql-tools/schema": "^10.0.0",
     "@medusajs/orchestration": "^0.5.7",
     "@medusajs/utils": "^1.11.9",
-    "graphql": "^16.6.0",
     "resolve-cwd": "^3.0.0"
   },
   "peerDependencies": {
