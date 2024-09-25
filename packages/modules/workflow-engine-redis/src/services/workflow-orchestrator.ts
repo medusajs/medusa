@@ -5,25 +5,24 @@ import {
   TransactionHandlerType,
   TransactionStep,
   WorkflowScheduler,
-} from "@medusajs/orchestration"
+} from "@medusajs/framework/orchestration"
 import {
   ContainerLike,
   Context,
-  Logger,
   MedusaContainer,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   InjectSharedContext,
+  isString,
   MedusaContext,
   TransactionState,
-  isString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   FlowRunOptions,
   MedusaWorkflow,
-  ReturnWorkflow,
   resolveValue,
-} from "@medusajs/workflows-sdk"
+  ReturnWorkflow,
+} from "@medusajs/framework/workflows-sdk"
 import Redis from "ioredis"
 import { ulid } from "ulid"
 import type { RedisDistributedTransactionStorage } from "../utils"
@@ -92,7 +91,6 @@ export class WorkflowOrchestratorService {
   protected container_: MedusaContainer
   private subscribers: Subscribers = new Map()
   private activeStepsCount: number = 0
-  private logger: Logger
 
   protected redisDistributedTransactionStorage_: RedisDistributedTransactionStorage
 
@@ -101,7 +99,6 @@ export class WorkflowOrchestratorService {
     redisDistributedTransactionStorage,
     redisPublisher,
     redisSubscriber,
-    logger,
     sharedContainer,
   }: {
     dataLoaderOnly: boolean
@@ -109,13 +106,11 @@ export class WorkflowOrchestratorService {
     workflowOrchestratorService: WorkflowOrchestratorService
     redisPublisher: Redis
     redisSubscriber: Redis
-    logger: Logger
     sharedContainer: MedusaContainer
   }) {
     this.container_ = sharedContainer
     this.redisPublisher = redisPublisher
     this.redisSubscriber = redisSubscriber
-    this.logger = logger
 
     redisDistributedTransactionStorage.setWorkflowOrchestratorService(this)
 
@@ -263,7 +258,7 @@ export class WorkflowOrchestratorService {
     options?: WorkflowOrchestratorRunOptions<undefined>,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<DistributedTransactionType> {
-    let { context, container } = options ?? {}
+    let { context } = options ?? {}
 
     if (!workflowId) {
       throw new Error("Workflow ID is required")

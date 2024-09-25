@@ -357,7 +357,6 @@ describe("RemoteJoiner", () => {
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
-      args: [],
       fields: ["id", "name", "email"],
       options: { id: ["1"] },
     })
@@ -379,7 +378,6 @@ describe("RemoteJoiner", () => {
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
-      args: [],
       fields: ["id"],
       options: { id: ["1"] },
     })
@@ -432,7 +430,6 @@ describe("RemoteJoiner", () => {
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
-      args: [],
       fields: ["username", "email"],
       options: { id: ["1"] },
     })
@@ -464,7 +461,6 @@ describe("RemoteJoiner", () => {
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
-      args: [],
       fields: ["username", "email", "products"],
       expands: {
         products: {

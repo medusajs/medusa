@@ -18,17 +18,18 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  dynamicImport,
+  GraphQLUtils,
+  isObject,
+  isString,
   MedusaError,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  isObject,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
-import { GraphQLSchema } from "graphql/type"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
@@ -36,9 +37,8 @@ import {
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { RemoteQuery, createQuery } from "./remote-query"
+import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
-import { cleanGraphQLSchema } from "./utils"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -171,7 +171,7 @@ async function initializeLinks({
 }) {
   try {
     const { initialize, getMigrationPlanner } =
-      moduleExports ?? (await import(LinkModulePackage))
+      moduleExports ?? (await dynamicImport(LinkModulePackage))
 
     const linkResolution = await initialize(
       config,
@@ -203,7 +203,7 @@ function cleanAndMergeSchema(loadedSchema) {
     scalar DateTime
     scalar JSON
   `
-  const { schema: cleanedSchema, notFound } = cleanGraphQLSchema(
+  const { schema: cleanedSchema, notFound } = GraphQLUtils.cleanGraphQLSchema(
     defaultMedusaSchema + loadedSchema
   )
   const mergedSchema = mergeTypeDefs(cleanedSchema)
@@ -231,7 +231,7 @@ export type MedusaAppOutput = {
   link: RemoteLink | undefined
   query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
-  gqlSchema?: GraphQLSchema
+  gqlSchema?: GraphQLUtils.GraphQLSchema
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
   revertMigrations: RevertMigrationFn
@@ -298,9 +298,9 @@ async function MedusaApp_({
   const modules: MedusaModuleConfig =
     modulesConfig ??
     (
-      await import(
-        modulesConfigPath ??
-          process.cwd() + (modulesConfigFileName ?? "/modules-config")
+      await dynamicImport(
+        await (modulesConfigPath ??
+          process.cwd() + (modulesConfigFileName ?? "/modules-config"))
       )
     ).default
 

@@ -16,19 +16,16 @@ export const updatePricePreferencesAsArrayStep = createStep(
     const service = container.resolve<IPricingModuleService>(Modules.PRICING)
 
     const prevData = await service.listPricePreferences({
-      $or: input.map(
-        (entry) => {
-          if (!entry.attribute || !entry.value) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              "Attribute and value must be provided when updating price preferences"
-            )
-          }
+      $or: input.map((entry) => {
+        if (!entry.attribute || !entry.value) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Attribute and value must be provided when updating price preferences"
+          )
+        }
 
-          return { attribute: entry.attribute, value: entry.value }
-        },
-        { take: null }
-      ),
+        return { attribute: entry.attribute, value: entry.value }
+      }, {}),
     })
 
     const toUpsert = input.map((entry) => {

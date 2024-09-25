@@ -8,12 +8,12 @@ import { accessSync } from "fs"
 import * as path from "path"
 import { dirname, join, normalize } from "path"
 import {
-  MapToConfig,
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
   isObject,
   lowerCaseFirst,
+  MapToConfig,
   pluralize,
   toCamelCase,
   upperCaseFirst,

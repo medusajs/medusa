@@ -1,5 +1,6 @@
 import { MedusaContainer, ModuleProvider } from "@medusajs/types"
 import {
+  dynamicImport,
   isString,
   lowerCaseFirst,
   normalizeImportPathWithSource,
@@ -44,7 +45,7 @@ export async function loadModuleProvider(
 
     if (isString(provider.resolve)) {
       const normalizedPath = normalizeImportPathWithSource(provider.resolve)
-      loadedProvider = await import(normalizedPath)
+      loadedProvider = await dynamicImport(normalizedPath)
     }
   } catch (error) {
     throw new Error(

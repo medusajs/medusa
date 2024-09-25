@@ -350,7 +350,7 @@ const CreateView = ({
             )}
             {serverError && (
               <Alert
-                className="p-2 bg-white items-center"
+                className="p-2 bg-ui-bg-base items-center"
                 dismissible
                 variant="error"
               >
