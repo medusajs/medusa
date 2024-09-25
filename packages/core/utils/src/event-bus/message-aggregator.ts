@@ -58,7 +58,9 @@ export class MessageAggregator implements IMessageAggregator {
       this.messages.sort((a, b) => this.compareMessages(a, b, sortBy))
     }
 
-    let messages: { [group: string]: Message[] } = { default: this.messages }
+    let messages: { [group: string]: Message[] } = {
+      default: [...this.messages],
+    }
 
     if (groupBy) {
       messages = this.messages.reduce<{
