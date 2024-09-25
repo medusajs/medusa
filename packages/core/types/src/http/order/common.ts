@@ -1,6 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { ChangeActionType, OrderChangeStatus } from "../../order"
-import { BigNumberValue } from "../../totals"
 import { BaseClaim } from "../claim/common"
 import { FindParams } from "../common"
 import { BaseExchange } from "../exchange/common"
@@ -99,15 +98,15 @@ export interface BaseOrderShippingMethod {
   metadata: Record<string, unknown> | null
   tax_lines?: BaseOrderShippingMethodTaxLine[]
   adjustments?: BaseOrderShippingMethodAdjustment[]
-  original_total: BigNumberValue
-  original_subtotal: BigNumberValue
-  original_tax_total: BigNumberValue
-  total: BigNumberValue
+  original_total: number
+  original_subtotal: number
+  original_tax_total: number
+  total: number
   detail?: BaseOrderShippingDetail
-  subtotal: BigNumberValue
-  tax_total: BigNumberValue
-  discount_total: BigNumberValue
-  discount_tax_total: BigNumberValue
+  subtotal: number
+  tax_total: number
+  discount_total: number
+  discount_tax_total: number
   created_at: Date | string
   updated_at: Date | string
 }

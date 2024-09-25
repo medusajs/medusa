@@ -33,8 +33,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.9",
-    "graphql": "^16.6.0"
+    "@medusajs/utils": "^1.11.9"
   },
   "peerDependencies": {
     "awilix": "^8.0.1"
