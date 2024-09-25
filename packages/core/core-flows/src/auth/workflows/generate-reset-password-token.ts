@@ -12,7 +12,12 @@ import { emitEventStep, useRemoteQueryStep } from "../../common"
 
 export const generateResetPasswordTokenWorkflow = createWorkflow(
   "generate-reset-password-token",
-  (input: { entityId: string; provider: string; secret: string }) => {
+  (input: {
+    entityId: string
+    actorType: string
+    provider: string
+    secret: string
+  }) => {
     const providerIdentities = useRemoteQueryStep({
       entry_point: "provider_identity",
       fields: ["auth_identity_id", "provider_metadata"],
@@ -53,7 +58,7 @@ export const generateResetPasswordTokenWorkflow = createWorkflow(
 
     emitEventStep({
       eventName: AuthWorkflowEvents.PASSWORD_RESET,
-      data: { entity_id: input.entityId, token },
+      data: { entity_id: input.entityId, actorType: input.actorType, token },
     })
 
     return new WorkflowResponse(token)
