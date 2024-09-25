@@ -6739,17 +6739,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/core/utils"
   dependencies:
+    "@graphql-codegen/core": ^4.0.2
+    "@graphql-codegen/typescript": ^4.0.9
     "@graphql-tools/merge": ^9.0.7
     "@graphql-tools/schema": ^10.0.6
     "@medusajs/types": ^1.11.16
     "@mikro-orm/core": 5.9.7
+    "@mikro-orm/knex": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     "@swc/jest": ^0.2.36
     "@types/express": ^4.17.21
     awilix: ^8.0.1
     bignumber.js: ^9.1.2
-    cross-env: ^5.2.1
     dotenv: ^16.4.5
     dotenv-expand: ^11.0.6
     expect-type: ^0.20.0
@@ -6759,6 +6761,7 @@ __metadata:
     jsonwebtoken: ^9.0.2
     pg: ^8.13.0
     pg-connection-string: ^2.7.0
+    pg-god: ^1.0.12
     pluralize: ^8.0.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
