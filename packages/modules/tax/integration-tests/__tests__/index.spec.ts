@@ -72,6 +72,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -90,6 +91,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -99,6 +101,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -125,6 +128,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -135,6 +139,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -161,6 +166,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -171,6 +177,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -181,6 +188,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -215,6 +223,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -224,6 +233,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
             default_tax_rate: {
               name: "Test Rate",
               rate: 0.2,
+              code: "TEST",
             },
           })
           .catch((e) => e)
@@ -240,6 +250,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST",
           },
         })
 
@@ -250,6 +261,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
             default_tax_rate: {
               name: "Test Rate",
               rate: 0.2,
+              code: "TEST",
             },
           })
           .catch((e) => e)
@@ -265,6 +277,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST-CODE",
           },
         })
 
@@ -301,7 +314,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
             tax_region_id: region.id,
             rate: 2,
             name: "Test Rate",
-            code: null,
+            code: "TEST-CODE",
             is_default: true,
           }),
         ])
@@ -313,6 +326,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
               tax_region_id: region.id,
               rate: 2,
               name: "Test Rate",
+              code: "TEST-CODE",
               is_default: true,
             }),
             expect.objectContaining({
@@ -332,6 +346,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST-CODE",
           },
         })
 
@@ -1036,6 +1051,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           default_tax_rate: {
             name: "Test Rate",
             rate: 0.2,
+            code: "TEST-CODE",
           },
         })
 
