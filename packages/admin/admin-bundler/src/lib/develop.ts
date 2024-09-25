@@ -75,7 +75,7 @@ export async function develop(options: BundlerOptions) {
 
     const developConfig: InlineConfig = {
       mode: "development",
-      logLevel: "info",
+      logLevel: "error",
       appType: "spa",
       server: {
         middlewareMode: true,

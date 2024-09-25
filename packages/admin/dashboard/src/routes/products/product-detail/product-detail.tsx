@@ -13,7 +13,7 @@ import { ProductVariantSection } from "./components/product-variant-section"
 import { PRODUCT_DETAIL_FIELDS } from "./constants"
 import { productLoader } from "./loader"
 
-import { useExtensions } from "../../../providers/extensions-provider/use-extensions"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 
 export const ProductDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -29,7 +29,7 @@ export const ProductDetail = () => {
     }
   )
 
-  const { getWidgets } = useExtensions()
+  const { getWidgets } = useMedusaApp()
 
   const after = getWidgets("product.details.after")
   const before = getWidgets("product.details.before")

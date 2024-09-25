@@ -1,14 +1,18 @@
 import { createRoot } from "react-dom/client"
-import App from "./app"
+import { MedusaApp } from "./medusa-app"
+import { DashboardExtensionConfig } from "./providers/medusa-app-provider/types"
 
-export async function render(mountNode: HTMLElement | null) {
+export async function render(
+  mountNode: HTMLElement | null,
+  ctx: {
+    config: DashboardExtensionConfig
+  }
+) {
   if (!mountNode) {
     throw new Error("Mount node not found")
   }
 
-  createRoot(mountNode).render(<App />)
+  const app = new MedusaApp({ config: ctx.config })
 
-  if (import.meta.hot) {
-    import.meta.hot.accept()
-  }
+  createRoot(mountNode).render(app.render())
 }

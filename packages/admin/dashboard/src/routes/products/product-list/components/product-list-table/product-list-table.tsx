@@ -19,8 +19,6 @@ import { useProductTableQuery } from "../../../../../hooks/table/query/use-produ
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
 
-import virtual from "../../test/fake-virtual-module"
-
 const PAGE_SIZE = 20
 
 export const ProductListTable = () => {
@@ -60,11 +58,6 @@ export const ProductListTable = () => {
 
   return (
     <Container className="divide-y p-0">
-      <div>
-        {virtual.configs.map((c, i) => {
-          return <div key={i}>{c.label}</div>
-        })}
-      </div>
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
         <div className="flex items-center justify-center gap-x-2">

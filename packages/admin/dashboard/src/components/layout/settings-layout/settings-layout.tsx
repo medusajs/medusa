@@ -9,7 +9,7 @@ import { Divider } from "../../common/divider"
 import { NavItem, NavItemProps } from "../nav-item"
 import { Shell } from "../shell"
 
-import { useExtensions } from "../../../providers/extensions-provider/use-extensions"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { UserMenu } from "../user-menu"
 
 export const SettingsLayout = () => {
@@ -115,12 +115,12 @@ const getSafeFromValue = (from: string) => {
 }
 
 const SettingsSidebar = () => {
-  const { getMenuItems } = useExtensions()
+  const { getMenu } = useMedusaApp()
 
   const routes = useSettingRoutes()
   const developerRoutes = useDeveloperRoutes()
   const myAccountRoutes = useMyAccountRoutes()
-  const extensionRoutes = getMenuItems("settingsExtensions")
+  const extensionRoutes = getMenu("settingsExtensions")
 
   const { t } = useTranslation()
 

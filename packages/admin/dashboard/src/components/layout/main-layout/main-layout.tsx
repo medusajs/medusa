@@ -27,7 +27,7 @@ import { Shell } from "../../layout/shell"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useLogout } from "../../../hooks/api"
 import { queryClient } from "../../../lib/query-client"
-import { useExtensions } from "../../../providers/extensions-provider/use-extensions"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 
@@ -296,9 +296,9 @@ const CoreRouteSection = () => {
 
 const ExtensionRouteSection = () => {
   const { t } = useTranslation()
-  const { getMenuItems } = useExtensions()
+  const { getMenu } = useMedusaApp()
 
-  const menuItems = getMenuItems("coreExtensions")
+  const menuItems = getMenu("coreExtensions")
 
   if (!menuItems.length) {
     return null

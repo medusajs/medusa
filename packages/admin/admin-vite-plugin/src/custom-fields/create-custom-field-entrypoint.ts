@@ -23,6 +23,7 @@ import {
   isObjectExpression,
   isObjectProperty,
   isStringLiteral,
+  isTemplateLiteral,
   NodePath,
   ObjectExpression,
   ObjectProperty,
@@ -247,9 +248,7 @@ async function parseFile(
   try {
     ast = parse(content, getParserOptions(file))
   } catch (e) {
-    logger.error(
-      `An error occurred while parsing ${file}. If the file has a valid custom field config, it will not be included in the generated entrypoint. See the below error for more details:\n${e}`
-    )
+    logger.error(`An error occurred while parsing the file`, { file, error: e })
     return null
   }
 
@@ -277,9 +276,10 @@ async function parseFile(
       },
     })
   } catch (err) {
-    logger.error(
-      `An error occurred while traversing ${file}. If the file has a valid custom field config, it will not be included in the generated entrypoint. See the below error for more details:\n${err}`
-    )
+    logger.error(`An error occurred while traversing the file.`, {
+      file,
+      error: err,
+    })
     return null
   }
 
@@ -330,14 +330,16 @@ function getFields(
 
     if (!zoneProperty) {
       logger.warn(
-        `The 'zone' property is missing from the ${j} entry in the 'forms' property in ${file}. The 'zone' property is required to load a custom field form.`
+        `'zone' property is missing from the ${j} index of the 'forms' property. The 'zone' property is required to load a custom field form.`,
+        { file }
       )
       return
     }
 
     if (!isStringLiteral(zoneProperty.value)) {
       logger.warn(
-        `The 'zone' property in the ${j} entry in the 'forms' property in ${file} is not a string literal. The 'zone' property must be a string literal, e.g. 'general' or 'attributes'.`
+        `'zone' property at the ${j} index of the 'forms' property is not a string literal. The 'zone' property must be a string literal, e.g. 'general' or 'attributes'.`,
+        { file }
       )
       return
     }
@@ -351,7 +353,8 @@ function getFields(
     if (tabProperty) {
       if (!isStringLiteral(tabProperty.value)) {
         logger.warn(
-          `The 'tab' property in the ${j} entry in the 'forms' property in ${file} is not a string literal. The 'tab' property must be a string literal, e.g. 'general' or 'attributes'.`
+          `'tab' property at the ${j} index of the 'forms' property is not a string literal. The 'tab' property must be a string literal, e.g. 'general' or 'attributes'.`,
+          { file }
         )
         return
       }
@@ -361,7 +364,8 @@ function getFields(
 
     if (tab && !isValidCustomFieldFormTab(tab)) {
       logger.warn(
-        `The 'tab' property in the ${j} entry in the 'forms' property in ${file} is not a valid custom field form tab for the ${model} model. Received: ${tab}.`
+        `'tab' property at the ${j} index of the 'forms' property is not a valid custom field form tab for the '${model}' model. Received: ${tab}.`,
+        { file }
       )
       return
     }
@@ -374,7 +378,8 @@ function getFields(
       !isValidCustomFieldFormFieldPath(fullPath)
     ) {
       logger.warn(
-        `The 'zone' and 'tab' properties in the ${j} entry in the 'forms' property in ${file} are not a valid custom field form zone and tab for the ${model} model. Received: zone: ${zone}, tab: ${tab}.`
+        `'zone' and 'tab' properties at the ${j} index of the 'forms' property are not a valid for the '${model}' model. Received: { zone: ${zone}, tab: ${tab} }.`,
+        { file }
       )
       return
     }
@@ -385,7 +390,8 @@ function getFields(
 
     if (!fieldsObject) {
       logger.warn(
-        `The 'fields' property is missing from the ${j} entry in the 'forms' property in ${file}. The 'fields' property is required to load a custom field form.`
+        `The 'fields' property is missing at the ${j} index of the 'forms' property. The 'fields' property is required to load a custom field form.`,
+        { file }
       )
       return
     }
@@ -394,7 +400,8 @@ function getFields(
 
     if (!isObjectExpression(fieldsObject.value)) {
       logger.warn(
-        `The 'fields' property in the ${j} entry in the 'forms' property in ${file} is malformed. The 'fields' property must be an object.`
+        `The 'fields' property at the ${j} index of the 'forms' property is malformed. The 'fields' property must be an object.`,
+        { file }
       )
       return
     }
@@ -408,7 +415,8 @@ function getFields(
 
       if (!isObjectExpression(field.value)) {
         logger.warn(
-          `The '${name}' property in the 'fields' property in the ${j} entry in the 'forms' property in ${file} is malformed. The property must be an object.`
+          `'${name}' property in the 'fields' property at the ${j} index of the 'forms' property in ${file} is malformed. The property must be an object.`,
+          { file }
         )
         return
       }
@@ -527,14 +535,24 @@ function getConfigs(
 
     if (!zoneProperty) {
       logger.warn(
-        `The 'zone' property is missing from the ${j} entry in the 'forms' property in ${file}. The 'zone' property is required to load a custom field form.`
+        `'zone' property is missing from the ${j} index of the 'forms' property.`,
+        { file }
+      )
+      return
+    }
+
+    if (isTemplateLiteral(zoneProperty.value)) {
+      logger.warn(
+        `'zone' property at the ${j} index of the 'forms' property cannot be a template literal (e.g. \`general\`).`,
+        { file }
       )
       return
     }
 
     if (!isStringLiteral(zoneProperty.value)) {
       logger.warn(
-        `The 'zone' property in the ${j} entry in the 'forms' property in ${file} is not a string literal. The 'zone' property must be a string literal, e.g. 'general' or 'attributes'.`
+        `'zone' property at the ${j} index of the 'forms' property is not a string literal (e.g. 'general' or 'attributes').`,
+        { file }
       )
       return
     }
@@ -547,7 +565,7 @@ function getConfigs(
       !isValidCustomFieldFormConfigPath(fullPath)
     ) {
       logger.warn(
-        `The 'zone' property in the ${j} entry in the 'forms' property in ${file} is not a valid custom field form zone for the ${model} model. Received: ${zone}.`
+        `'zone' property at the ${j} index of the 'forms' property is not a valid custom field form zone for the '${model}' model. Received: ${zone}.`
       )
       return
     }
@@ -558,7 +576,8 @@ function getConfigs(
 
     if (!fieldsObject) {
       logger.warn(
-        `The 'fields' property is missing from the ${j} entry in the 'forms' property in ${file}. The 'fields' property is required to load a custom field form.`
+        `'fields' property is missing from the ${j} entry in the 'forms' property in ${file}.`,
+        { file }
       )
       return
     }
@@ -567,7 +586,8 @@ function getConfigs(
 
     if (!isObjectExpression(fieldsObject.value)) {
       logger.warn(
-        `The 'fields' property in the ${j} entry in the 'forms' property in ${file} is malformed. The 'fields' property must be an object.`
+        `'fields' property at the ${j} index of the 'forms' property is malformed. The 'fields' property must be an object.`,
+        { file }
       )
       return
     }
@@ -581,7 +601,8 @@ function getConfigs(
 
       if (!isObjectExpression(field.value)) {
         logger.warn(
-          `The '${name}' property in the 'fields' property in the ${j} entry in the 'forms' property in ${file} is malformed. The property must be an object.`
+          `'${name}' property in the 'fields' property at the ${j} index of the 'forms' property is malformed. The property must be an object.`,
+          { file }
         )
         return
       }
@@ -593,7 +614,8 @@ function getConfigs(
 
       if (!defaultValueProperty) {
         logger.warn(
-          `The 'defaultValue' property is missing from the ${j} entry in the 'forms' property in ${file}. The 'defaultValue' property is required.`
+          `'defaultValue' property is missing at the ${j} index of the 'forms' property in ${file}.`,
+          { file }
         )
         return
       }
@@ -605,7 +627,8 @@ function getConfigs(
 
       if (!validationProperty) {
         logger.warn(
-          `The 'validation' property is missing from the ${j} entry in the 'forms' property in ${file}. The 'validation' property is required.`
+          `'validation' property is missing at the ${j} index of the 'forms' property in ${file}.`,
+          { file }
         )
         return
       }
@@ -665,7 +688,8 @@ function getDisplays(
 
   if (!isArrayExpression(displayProperty.value)) {
     logger.warn(
-      `The 'display' property in ${file} is malformed. The 'display' property must be an array of objects.`
+      `'display' is not an array. The 'display' property must be an array of objects.`,
+      { file }
     )
     return null
   }
@@ -683,14 +707,16 @@ function getDisplays(
 
     if (!zoneProperty) {
       logger.warn(
-        `The 'zone' property is missing from the ${j} entry in the 'display' property in ${file}. The 'zone' property is required to load a custom field display.`
+        `'zone' property is missing at the ${j} index of the 'display' property.`,
+        { file }
       )
       return
     }
 
     if (!isStringLiteral(zoneProperty.value)) {
       logger.warn(
-        `The 'zone' property in the ${j} entry in the 'display' property in ${file} is not a string literal. The 'zone' property must be a string literal, e.g. 'general' or 'attributes'.`
+        `'zone' property at index ${j} in the 'display' property is not a string literal. 'zone' must be a string literal, e.g. 'general' or 'attributes'.`,
+        { file }
       )
       return
     }
@@ -703,7 +729,8 @@ function getDisplays(
       !isValidCustomFieldDisplayPath(fullPath)
     ) {
       logger.warn(
-        `The 'display' property in the ${j} entry in the 'display' property in ${file} is not a valid custom field display zone for the ${model} model. Received: ${zone}.`
+        `'zone' is invalid at index ${j} in the 'display' property. Received: ${zone}.`,
+        { file }
       )
       return
     }
@@ -714,7 +741,8 @@ function getDisplays(
 
     if (!componentProperty) {
       logger.warn(
-        `The 'component' property is missing from the ${j} entry in the 'display' property in ${file}. The 'component' property is required to load a custom field display.`
+        `'component' property is missing at index ${j} in the 'display' property.`,
+        { file }
       )
       return
     }
@@ -756,9 +784,7 @@ function getLink(
   ) as ObjectProperty | undefined
 
   if (!linkProperty) {
-    logger.warn(
-      `The 'link' property is missing from the custom field config for ${file}. The 'link' property is required to load the custom field config.`
-    )
+    logger.warn(`'link' is missing.`, { file })
     return null
   }
 
@@ -787,9 +813,18 @@ function getModel(
     return null
   }
 
+  if (isTemplateLiteral(modelProperty.value)) {
+    logger.warn(
+      `'model' property cannot be a template literal (e.g. \`product\`).`,
+      { file }
+    )
+    return null
+  }
+
   if (!isStringLiteral(modelProperty.value)) {
     logger.warn(
-      `Invalid model found for ${file}. 'model' is required to load the custom field config. Please ensure that the 'model' property is a string literal, e.g. 'product' or 'customer'. Importing a model from a different package is not supported, and neither is using a variable or template literal.`
+      `'model' is invalid. The 'model' property must be a string literal, e.g. 'product' or 'customer'.`,
+      { file }
     )
     return null
   }
@@ -798,7 +833,8 @@ function getModel(
 
   if (!isValidCustomFieldModel(model)) {
     logger.warn(
-      `Invalid model found for ${file}, received: ${model}. 'model' is required to load the custom field config. Please ensure that the 'model' property is set to a valid custom field model, e.g. 'product' or 'customer'.`
+      `'model' is invalid, received: ${model}. The 'model' property must be set to a valid model, e.g. 'product' or 'customer'.`,
+      { file }
     )
     return null
   }
@@ -850,7 +886,8 @@ function getFormsArgument(
 
   if (!isArrayExpression(formProperty.value)) {
     logger.warn(
-      `The 'forms' property in ${file} is malformed. The 'forms' property must be an array of objects.`
+      `The 'forms' property is malformed. The 'forms' property must be an array of objects.`,
+      { file }
     )
     return null
   }

@@ -3,13 +3,13 @@ import { ComponentType, createContext } from "react"
 import { NavItemProps } from "../../components/layout/nav-item"
 import { MenuItemPath } from "../../medusa-app"
 
-type ExtensionsContextValue = {
+type MedusaAppContextValue = {
   api: {
     getWidgets: (zone: InjectionZone) => ComponentType[]
-    getMenuItems: (path: MenuItemPath) => NavItemProps[]
+    getMenu: (path: MenuItemPath) => NavItemProps[]
   }
 }
 
-export const ExtensionsContext = createContext<ExtensionsContextValue | null>(
+export const MedusaAppContext = createContext<MedusaAppContextValue | null>(
   null
 )

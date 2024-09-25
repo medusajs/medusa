@@ -1,8 +1,9 @@
 import { InjectionZone } from "@medusajs/admin-shared"
+import { ComponentType } from "react"
 import { LoaderFunctionArgs } from "react-router-dom"
 
 export type RouteExtension = {
-  Component: React.ComponentType
+  Component: ComponentType
   loader?: (args: LoaderFunctionArgs) => Promise<any>
   path: string
 }
@@ -10,11 +11,11 @@ export type RouteExtension = {
 export type MenuItemExtension = {
   label: string
   path: string
-  icon?: React.ComponentType
+  icon?: ComponentType
 }
 
 export type WidgetExtension = {
-  Component: React.ComponentType
+  Component: ComponentType
   zone: InjectionZone[]
 }
 

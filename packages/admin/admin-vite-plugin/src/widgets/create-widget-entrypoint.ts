@@ -1,7 +1,16 @@
 import { InjectionZone, isValidInjectionZone } from "@medusajs/admin-shared"
 import fs from "fs/promises"
 import outdent from "outdent"
-import { File, ObjectProperty, parse, ParseResult, traverse } from "../babel"
+import {
+  File,
+  isArrayExpression,
+  isStringLiteral,
+  isTemplateLiteral,
+  ObjectProperty,
+  parse,
+  ParseResult,
+  traverse,
+} from "../babel"
 import { logger } from "../logger"
 import {
   crawl,
@@ -81,9 +90,10 @@ async function parseFile(
   try {
     ast = parse(code, getParserOptions(file))
   } catch (e) {
-    logger.error(
-      `An error occurred while parsing ${file}. The file will be ignored. See the below error for more details:\n${e}`
-    )
+    logger.error(`An error occurred while parsing the file.`, {
+      file,
+      error: e,
+    })
     return null
   }
 
@@ -92,9 +102,10 @@ async function parseFile(
   try {
     fileHasDefaultExport = await hasDefaultExport(ast)
   } catch (e) {
-    logger.error(
-      `An error occurred while checking for a default export in ${file}. The file will be ignored. See the below error for more details:\n${e}`
-    )
+    logger.error(`An error occurred while checking for a default export.`, {
+      file,
+      error: e,
+    })
     return null
   }
 
@@ -105,18 +116,17 @@ async function parseFile(
   let zone: InjectionZone[] | null
 
   try {
-    zone = await getWidgetZone(ast)
+    zone = await getWidgetZone(ast, file)
   } catch (e) {
-    logger.error(
-      `An error occurred while traversing ${file}. The file will be ignored. See the below error for more details:\n${e}`
-    )
+    logger.error(`An error occurred while traversing the file.`, {
+      file,
+      error: e,
+    })
     return null
   }
 
   if (!zone) {
-    logger.warn(
-      `The 'zone' property is missing from the widget config for ${file}. The 'zone' property is required to load the widget config.`
-    )
+    logger.warn(`'zone' property is missing from the widget config.`, { file })
     return null
   }
 
@@ -151,7 +161,8 @@ function generateWidget(zone: InjectionZone[], index: number): Widget {
 }
 
 async function getWidgetZone(
-  ast: ParseResult<File>
+  ast: ParseResult<File>,
+  file: string
 ): Promise<InjectionZone[] | null> {
   const zones: string[] = []
 
@@ -170,16 +181,27 @@ async function getWidgetZone(
       ) as ObjectProperty | undefined
 
       if (!zoneProperty) {
+        logger.warn(`'zone' property is missing from the widget config.`, {
+          file,
+        })
         return
       }
 
-      if (zoneProperty.value.type === "StringLiteral") {
+      if (isTemplateLiteral(zoneProperty.value)) {
+        logger.warn(
+          `'zone' property cannot be a template literal (e.g. \`product.details.after\`).`,
+          { file }
+        )
+        return
+      }
+
+      if (isStringLiteral(zoneProperty.value)) {
         zones.push(zoneProperty.value.value)
-      } else if (zoneProperty.value.type === "ArrayExpression") {
+      } else if (isArrayExpression(zoneProperty.value)) {
         const values: string[] = []
 
         for (const element of zoneProperty.value.elements) {
-          if (element && element.type === "StringLiteral") {
+          if (isStringLiteral(element)) {
             values.push(element.value)
           }
         }

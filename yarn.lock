@@ -5582,6 +5582,7 @@ __metadata:
     fdir: 6.1.1
     magic-string: 0.30.5
     outdent: ^0.8.0
+    picocolors: ^1.1.0
     tsup: 8.0.1
     typescript: 5.3.3
     vite: ^5.2.11
@@ -27284,7 +27285,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picocolors@npm:^1.0.1":
+"picocolors@npm:^1.0.1, picocolors@npm:^1.1.0":
   version: 1.1.0
   resolution: "picocolors@npm:1.1.0"
   checksum: 86946f6032148801ef09c051c6fb13b5cf942eaf147e30ea79edb91dd32d700934edebe782a1078ff859fb2b816792e97ef4dab03d7f0b804f6b01a0df35e023

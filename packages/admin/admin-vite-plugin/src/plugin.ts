@@ -12,7 +12,6 @@ import outdent from "outdent"
 import path from "path"
 import type * as Vite from "vite"
 import { createCustomFieldEntrypoint } from "./custom-fields/create-custom-field-entrypoint"
-import { setLogger } from "./logger"
 import { createRouteEntrypoint } from "./routes/create-route-entrypoint"
 import { MedusaVitePlugin } from "./types"
 import { generateModule } from "./utils"
@@ -39,8 +38,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     name: "@medusajs/admin-vite-plugin",
     enforce: "pre",
     configureServer(_server) {
-      setLogger(_server.config.logger)
-
       watcher = _server.watcher
       watcher?.add(Array.from(_sources))
 
