@@ -2,7 +2,7 @@ import {
   BigNumberInput,
   CreateOrderAdjustmentDTO,
   CreateOrderLineItemTaxLineDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   prepareAdjustmentsData,
   prepareTaxLinesData,

@@ -1,11 +1,15 @@
-import { OrderChangeDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
+import {
+  OrderChangeDTO,
+  OrderDTO,
+  OrderWorkflow,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { createOrderChangeStep, createReturnsStep } from "../../steps"
 import { throwIfOrderIsCancelled } from "../../utils/order-validation"

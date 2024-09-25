@@ -1,9 +1,9 @@
-import { PricingWorkflow } from "@medusajs/types"
+import { PricingWorkflow } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createPricePreferencesStep } from "../steps"
 
 export const createPricePreferencesWorkflowId = "create-price-preferences"
@@ -12,7 +12,9 @@ export const createPricePreferencesWorkflowId = "create-price-preferences"
  */
 export const createPricePreferencesWorkflow = createWorkflow(
   createPricePreferencesWorkflowId,
-  (input: WorkflowData<PricingWorkflow.CreatePricePreferencesWorkflowInput[]>) => {
+  (
+    input: WorkflowData<PricingWorkflow.CreatePricePreferencesWorkflowInput[]>
+  ) => {
     return new WorkflowResponse(createPricePreferencesStep(input))
   }
 )

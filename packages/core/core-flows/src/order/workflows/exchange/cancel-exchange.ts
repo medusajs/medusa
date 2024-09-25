@@ -2,8 +2,8 @@ import {
   FulfillmentDTO,
   OrderExchangeDTO,
   OrderWorkflow,
-} from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
@@ -11,7 +11,7 @@ import {
   parallelize,
   transform,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { deleteReservationsByLineItemsStep } from "../../../reservation/steps/delete-reservations-by-line-items"
 import { cancelOrderExchangeStep } from "../../steps"

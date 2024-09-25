@@ -8,9 +8,9 @@ import {
   TaxableItemDTO,
   TaxableShippingDTO,
   TaxCalculationContext,
-} from "@medusajs/types"
-import { MedusaError, Modules } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export interface GetOrderItemTaxLinesStepInput {
   order: OrderWorkflowDTO

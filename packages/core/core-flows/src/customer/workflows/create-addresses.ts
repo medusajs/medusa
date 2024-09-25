@@ -1,4 +1,7 @@
-import { AdditionalData, CreateCustomerAddressDTO } from "@medusajs/types"
+import {
+  AdditionalData,
+  CreateCustomerAddressDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -6,14 +9,16 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   createCustomerAddressesStep,
   maybeUnsetDefaultBillingAddressesStep,
   maybeUnsetDefaultShippingAddressesStep,
 } from "../steps"
 
-export type CreateCustomerAddressesWorkflowInput = { addresses: CreateCustomerAddressDTO[] } & AdditionalData
+export type CreateCustomerAddressesWorkflowInput = {
+  addresses: CreateCustomerAddressDTO[]
+} & AdditionalData
 
 export const createCustomerAddressesWorkflowId = "create-customer-addresses"
 /**

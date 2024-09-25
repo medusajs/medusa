@@ -1,9 +1,9 @@
-import { CreateTaxRateDTO, TaxRateDTO } from "@medusajs/types"
+import { CreateTaxRateDTO, TaxRateDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createTaxRatesStep } from "../steps"
 
 export const createTaxRatesWorkflowId = "create-tax-rates"

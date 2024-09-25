@@ -1,6 +1,9 @@
-import { CancelOrderClaimDTO, IOrderModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  CancelOrderClaimDTO,
+  IOrderModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const cancelOrderClaimStepId = "cancel-order-claim"
 /**
