@@ -45,5 +45,10 @@
     "bignumber.js": "^9.1.2",
     "ioredis": "^5.4.1",
     "vite": "^5.2.11"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
   }
 }
