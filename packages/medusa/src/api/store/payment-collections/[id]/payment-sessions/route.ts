@@ -37,5 +37,7 @@ export const POST = async (
     req.remoteQueryConfig.fields
   )
 
-  res.status(200).json({ payment_collection: paymentCollection })
+  res.status(200).json({
+    payment_collection: paymentCollection as HttpTypes.StorePaymentCollection,
+  })
 }
