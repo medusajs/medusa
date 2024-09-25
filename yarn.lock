@@ -6176,6 +6176,9 @@ __metadata:
     bignumber.js: ^9.1.2
     ioredis: ^5.4.1
     vite: ^5.2.11
+  peerDependenciesMeta:
+    vite:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -24455,8 +24458,12 @@ __metadata:
     typescript: ^5.6.2
   peerDependencies:
     "@medusajs/framework": ^0.0.1
+    "@medusajs/medusa": ^1.20.5
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.1
+  peerDependenciesMeta:
+    "@medusajs/medusa":
+      optional: true
   languageName: unknown
   linkType: soft
 

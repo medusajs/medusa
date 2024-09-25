@@ -43,8 +43,8 @@
     "randomatic": "^3.1.1"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.20.5",
     "@medusajs/framework": "^0.0.1",
+    "@medusajs/medusa": "^1.20.5",
     "@mikro-orm/postgresql": "5.9.7",
     "awilix": "^8.0.1"
   },
