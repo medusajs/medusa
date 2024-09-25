@@ -1,3 +1,6 @@
-import { BaseReturn } from "../common";
+import { BaseReturn, BaseReturnItem } from "../common";
 
-export interface StoreReturn extends BaseReturn {}
+export interface StoreReturn extends BaseReturn {
+  items: StoreReturnItem[]
+}
+export interface StoreReturnItem extends BaseReturnItem {}

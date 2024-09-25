@@ -24,7 +24,7 @@ export const POST = async (
   })
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
   })
 }
 
@@ -44,6 +44,6 @@ export const DELETE = async (
   })
 
   res.json({
-    order_preview: orderPreview,
+    order_preview: orderPreview as unknown as HttpTypes.AdminOrderPreview,
   })
 }
