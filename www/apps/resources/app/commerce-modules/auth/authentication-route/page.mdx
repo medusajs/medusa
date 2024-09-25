@@ -8,7 +8,7 @@ In this document, you'll learn about the authentication routes and how to use th
 
 <Note>
 
-These routes are added by Medusa's application layer, not the Auth Module.
+These routes are added by Medusa's HTTP layer, not the Auth Module.
 
 </Note>
 
@@ -246,13 +246,19 @@ Use that token in the header of subsequent requests to send authenticated reques
 
 To reset a user's password:
 
-1. Generate a token using the [Get Reset Password Token API route](#get-reset-password-token-route).
+1. Generate a token using the [Generate Reset Password Token API route](#generate-reset-password-token-route).
     - The API route emits the `auth.password_reset` event, passing the token in the payload.
-    - You can create a subscriber that listens to the event and send a notification to the user. The notification should have a URL that accepts the token as a query parameter.
+    - You can create a subscriber, as seen in [this guide](../reset-password/page.mdx), that listens to the event and send a notification to the user.
 2. Pass the token to the [Reset Password API route](#reset-password-route) to reset the password.
-    - The URL in the user's notification can direct them to a frontend URL, which sends a request to the Reset Password API route.
+    - The URL in the user's notification should direct them to a frontend URL, which sends a request to this route.
 
-### Get Reset Password Token Route
+<Note title="Example">
+
+[Storefront Development: How to Reset a Customer's Password.](../../../storefront-development/customers/reset-password/page.mdx)
+
+</Note>
+
+### Generate Reset Password Token Route
 
 The Medusa application defines an API route at `/auth/{actor_type}/{auth_provider}/reset-password` that emits the `auth.password_reset` event, passing the token in the payload.
 
@@ -266,7 +272,7 @@ curl -X POST http://localhost:9000/auth/{actor_type}/{providers}/reset-password
 
 <Note>
 
-This API route is useful for providers like `emailpass` that store a user's password and use it for logging them in.
+This API route is useful for providers like `emailpass` that store a user's password and use it for authentication.
 
 </Note>
 
@@ -315,7 +321,7 @@ Its path parameters are:
 
 #### Query Parameters
 
-The route accepts a `token` query parameter, which is the token generated using the [Get Reset Password Token route](#get-reset-password-token-route).
+The route accepts a `token` query parameter, which is the token generated using the [Generate Reset Password Token route](#generate-reset-password-token-route).
 
 ### Request Body Parameters
 

@@ -278,6 +278,14 @@ export const generatedSidebar = [
                 "path": "/commerce-modules/auth/create-actor-type",
                 "title": "Create an Actor Type",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/commerce-modules/auth/reset-password",
+                "title": "Handle Password Reset Event",
+                "children": []
               }
             ]
           },
@@ -8453,6 +8461,14 @@ export const generatedSidebar = [
             "type": "link",
             "path": "/storefront-development/customers/third-party-login",
             "title": "Third-Party (Social) Login",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "path": "/storefront-development/customers/reset-password",
+            "title": "Reset Password",
             "children": []
           },
           {

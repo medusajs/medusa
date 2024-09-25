@@ -630,7 +630,7 @@ In the file `src/api/restaurants/route.ts` add the following API route:
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { 
   ContainerRegistrationKeys, 
-  QueryContext
+  QueryContext,
 } from "@medusajs/utils"
 
 // ...
@@ -662,7 +662,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         variants: {
           calculated_price: QueryContext({
             currency_code,
-          })
+          }),
         },
       },
     },

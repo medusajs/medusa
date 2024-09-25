@@ -1791,5 +1791,7 @@ export const generatedEditDates = {
   "references/medusa/types/medusa.MedusaRequestHandler-1/page.mdx": "2024-09-24T00:11:41.190Z",
   "references/medusa/types/medusa.MedusaRequestHandler/page.mdx": "2024-09-24T00:11:41.155Z",
   "references/medusa/types/medusa.SubscriberArgs/page.mdx": "2024-09-24T00:11:41.195Z",
-  "references/workflows/types/workflows.ReturnWorkflow/page.mdx": "2024-09-24T00:12:12.649Z"
+  "references/workflows/types/workflows.ReturnWorkflow/page.mdx": "2024-09-24T00:12:12.649Z",
+  "app/commerce-modules/auth/reset-password/page.mdx": "2024-09-25T09:36:26.592Z",
+  "app/storefront-development/customers/reset-password/page.mdx": "2024-09-25T10:21:46.647Z"
 }

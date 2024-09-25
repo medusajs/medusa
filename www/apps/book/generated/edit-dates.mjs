@@ -103,7 +103,6 @@ export const generatedEditDates = {
   "app/customization/integrate-systems/service/page.mdx": "2024-09-12T12:39:12.831Z",
   "app/customization/next-steps/page.mdx": "2024-09-12T10:50:04.873Z",
   "app/customization/page.mdx": "2024-09-12T11:16:18.504Z",
-  "app/debugging-and-testing/instrumentation/page.mdx": "2024-09-17T08:53:15.910Z",
   "app/more-resources/cheatsheet/page.mdx": "2024-07-11T16:11:26.480Z",
-  "app/more-resources/examples/page.mdx": "2024-09-19T10:30:30.398Z"
+  "app/more-resources/examples/page.mdx": "2024-09-25T10:56:24.516Z"
 }

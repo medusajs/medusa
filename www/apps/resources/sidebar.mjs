@@ -138,6 +138,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/commerce-modules/auth/create-actor-type",
                 title: "Create an Actor Type",
               },
+              {
+                type: "link",
+                path: "/commerce-modules/auth/reset-password",
+                title: "Handle Password Reset Event",
+              },
             ],
           },
           {
@@ -2021,6 +2026,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "link",
             path: "/storefront-development/customers/third-party-login",
             title: "Third-Party (Social) Login",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/reset-password",
+            title: "Reset Password",
           },
           {
             type: "link",
