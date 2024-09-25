@@ -8,9 +8,14 @@ In this chapter, you'll learn about the architectural layers in Medusa.
 
 ## HTTP, Workflow, and Module Layers
 
-Medusa's server is headless. So, clients, such as storefronts or admin dashboards, send HTTP requests to Medusa's API routes to consume commerce features.
+Medusa is a headless commerce platform. So, storefronts, admin dashboards, and other clients consume Medusa's functionalities through its API routes.
 
-The API routes use workflows, powered by Medusa's workflows SDK, to perform functionalities implemented in commerce and architectural modules.
+In a common Medusa application, requests go through four layers in the stack. In order of entry, those are:
+
+1. API Routes (HTTP): Our API Routes are the typical entry point.
+2. Workflows: API Routes consume workflows that hold the opinionated business logic of your application.
+3. Modules: Workflows use domain-specific modules for resource management.
+3. Data store: Modules query the underlying datastore, which is a PostgreSQL database in common cases.
 
 ![Diagram illustrating the HTTP layer](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175296/Medusa%20Book/http-layer_sroafr.jpg)
 
@@ -35,8 +40,6 @@ You also create custom third-party integrations through a custom module.
 ### Commerce Modules
 
 Commerce modules integrate third-party services relevant for commerce or user-facing features. For example, you integrate Stripe through a payment module provider.
-
-These integrations are used when an HTTP request is sent, or as a result of a scheduled action or an emitted event.
 
 ![Diagram illustrating the commerce modules integration to third-party services](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175357/Medusa%20Book/service-commerce_qcbdsl.jpg)
 

@@ -141,7 +141,7 @@ const nextConfig = {
       },
       {
         source: "/architectural-modules",
-        destination: "/architecture/architectural-modules",
+        destination: "/advanced-development/architecture/architectural-modules",
         permanent: true,
       },
     ]

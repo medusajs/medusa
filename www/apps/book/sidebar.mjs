@@ -192,6 +192,19 @@ export const sidebar = numberSidebarItems(
       children: [
         {
           type: "link",
+          path: "/advanced-development/architecture/architectural-modules",
+          title: "Architectural Modules",
+          chapterTitle: "Architecture",
+          children: [
+            {
+              type: "link",
+              path: "/advanced-development/architecture/overview",
+              title: "Architecture Overview",
+            },
+          ],
+        },
+        {
+          type: "link",
           title: "API Routes",
           path: "/advanced-development/api-routes",
           children: [
@@ -482,19 +495,6 @@ export const sidebar = numberSidebarItems(
           type: "link",
           path: "/storefront-development/nextjs-starter",
           title: "Next.js Starter",
-        },
-      ],
-    },
-    {
-      type: "link",
-      path: "/architecture/architectural-modules",
-      title: "Architectural Modules",
-      chapterTitle: "Architecture",
-      children: [
-        {
-          type: "link",
-          path: "/architecture/overview",
-          title: "Architecture Overview",
         },
       ],
     },
