@@ -28,7 +28,10 @@ interface Entity {
   directives?: { [field: string]: Directive[] }
 }
 
-class GraphQLParser {
+/**
+ * Remote joiner graphql parser
+ */
+export class GraphQLParser {
   private ast: DocumentNode
 
   constructor(input: string, private variables: Record<string, unknown> = {}) {
@@ -190,5 +193,3 @@ class GraphQLParser {
     return remoteJoinConfig
   }
 }
-
-export default GraphQLParser
