@@ -1,18 +1,13 @@
 import { makeExecutableSchema } from "@graphql-tools/schema"
-import {
-  cleanGraphQLSchema,
-  gqlGetFieldsAndRelations,
-  MedusaModule,
-} from "@medusajs/modules-sdk"
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   IndexTypes,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
 } from "@medusajs/types"
-import { CommonEvents } from "@medusajs/utils"
+import { CommonEvents, GraphQLUtils } from "@medusajs/utils"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
-import { Kind, ObjectTypeDefinitionNode } from "graphql/index"
 
 export const CustomDirectives = {
   Listeners: {
@@ -25,7 +20,7 @@ export const CustomDirectives = {
 }
 
 export function makeSchemaExecutable(inputSchema: string) {
-  const { schema: cleanedSchema } = cleanGraphQLSchema(inputSchema)
+  const { schema: cleanedSchema } = GraphQLUtils.cleanGraphQLSchema(inputSchema)
 
   return makeExecutableSchema({ typeDefs: cleanedSchema })
 }
@@ -330,7 +325,7 @@ function processEntity(
   )
 
   currentObjectRepresentationRef.fields =
-    gqlGetFieldsAndRelations(entitiesMap, entityName) ?? []
+    GraphQLUtils.gqlGetFieldsAndRelations(entitiesMap, entityName) ?? []
 
   /**
    * Retrieve the module and alias for the current entity.
@@ -372,14 +367,16 @@ function processEntity(
   const schemaParentEntity = Object.values(entitiesMap).filter((value: any) => {
     return (
       value.astNode &&
-      (value.astNode as ObjectTypeDefinitionNode).fields?.some((field: any) => {
-        let currentType = field.type
-        while (currentType.type) {
-          currentType = currentType.type
-        }
+      (value.astNode as GraphQLUtils.ObjectTypeDefinitionNode).fields?.some(
+        (field: any) => {
+          let currentType = field.type
+          while (currentType.type) {
+            currentType = currentType.type
+          }
 
-        return currentType.name?.value === entityName
-      })
+          return currentType.name?.value === entityName
+        }
+      )
     )
   })
 
@@ -410,7 +407,7 @@ function processEntity(
     })
 
     const isEntityListInParent =
-      entityFieldInParent.type.kind === Kind.LIST_TYPE
+      entityFieldInParent.type.kind === GraphQLUtils.Kind.LIST_TYPE
     const entityTargetPropertyNameInParent = entityFieldInParent.name.value
 
     /**
