@@ -2,11 +2,7 @@ import {
   deleteReturnReasonsWorkflow,
   updateReturnReasonsWorkflow,
 } from "@medusajs/core-flows"
-import {
-  AdminReturnReasonResponse,
-  HttpTypes,
-  UpdateOrderReturnReasonDTO,
-} from "@medusajs/types"
+import { AdminReturnReasonResponse, HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
@@ -40,7 +36,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<UpdateOrderReturnReasonDTO>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateReturnReason>,
   res: MedusaResponse<AdminReturnReasonResponse>
 ) => {
   const workflow = updateReturnReasonsWorkflow(req.scope)

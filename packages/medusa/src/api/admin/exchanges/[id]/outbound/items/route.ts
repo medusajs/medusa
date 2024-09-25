@@ -37,7 +37,7 @@ export const POST = async (
   const [orderExchange] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
     exchange: orderExchange,
   })
 }
