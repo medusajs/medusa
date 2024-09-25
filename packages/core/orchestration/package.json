@@ -35,7 +35,7 @@
   "dependencies": {
     "@medusajs/types": "^1.11.16",
     "@medusajs/utils": "^1.11.9",
-    "graphql": "^16.6.0"
+    "graphql": "^16.9.0"
   },
   "peerDependencies": {
     "awilix": "^8.0.1"
