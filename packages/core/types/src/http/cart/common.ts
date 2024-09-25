@@ -1,4 +1,3 @@
-import { BigNumberValue } from "../../totals"
 import { BasePaymentCollection } from "../payment/common"
 import { BaseProduct, BaseProductVariant } from "../product/common"
 import { BaseRegion } from "../region/common"
@@ -94,112 +93,112 @@ export interface BaseCart {
   /**
    * The original item total of the cart.
    */
-  original_item_total: BigNumberValue
+  original_item_total: number
 
   /**
    * The original item subtotal of the cart.
    */
-  original_item_subtotal: BigNumberValue
+  original_item_subtotal: number
 
   /**
    * The original item tax total of the cart.
    */
-  original_item_tax_total: BigNumberValue
+  original_item_tax_total: number
 
   /**
    * The item total of the cart.
    */
-  item_total: BigNumberValue
+  item_total: number
 
   /**
    * The item subtotal of the cart.
    */
-  item_subtotal: BigNumberValue
+  item_subtotal: number
 
   /**
    * The item tax total of the cart.
    */
-  item_tax_total: BigNumberValue
+  item_tax_total: number
 
   /**
    * The original total of the cart.
    */
-  original_total: BigNumberValue
+  original_total: number
 
   /**
    * The original subtotal of the cart.
    */
-  original_subtotal: BigNumberValue
+  original_subtotal: number
 
   /**
    * The original tax total of the cart.
    */
-  original_tax_total: BigNumberValue
+  original_tax_total: number
 
   /**
    * The total of the cart.
    */
-  total: BigNumberValue
+  total: number
 
   /**
    * The subtotal of the cart. (Excluding taxes)
    */
-  subtotal: BigNumberValue
+  subtotal: number
 
   /**
    * The tax total of the cart.
    */
-  tax_total: BigNumberValue
+  tax_total: number
 
   /**
    * The discount total of the cart.
    */
-  discount_total: BigNumberValue
+  discount_total: number
 
   /**
    * The discount tax total of the cart.
    */
-  discount_tax_total: BigNumberValue
+  discount_tax_total: number
 
   /**
    * The gift card total of the cart.
    */
-  gift_card_total: BigNumberValue
+  gift_card_total: number
 
   /**
    * The gift card tax total of the cart.
    */
-  gift_card_tax_total: BigNumberValue
+  gift_card_tax_total: number
 
   /**
    * The shipping total of the cart.
    */
-  shipping_total: BigNumberValue
+  shipping_total: number
 
   /**
    * The shipping subtotal of the cart.
    */
-  shipping_subtotal: BigNumberValue
+  shipping_subtotal: number
 
   /**
    * The shipping tax total of the cart.
    */
-  shipping_tax_total: BigNumberValue
+  shipping_tax_total: number
 
   /**
    * The original shipping total of the cart.
    */
-  original_shipping_total: BigNumberValue
+  original_shipping_total: number
 
   /**
    * The original shipping subtotal of the cart.
    */
-  original_shipping_subtotal: BigNumberValue
+  original_shipping_subtotal: number
 
   /**
    * The original shipping tax total of the cart.
    */
-  original_shipping_tax_total: BigNumberValue
+  original_shipping_tax_total: number
 }
 
 export interface BaseCartAddress {
@@ -306,7 +305,7 @@ export interface BaseCartShippingMethod {
   /**
    * The price of the shipping method.
    */
-  amount: BigNumberValue
+  amount: number
 
   /**
    * Whether the shipping method price is tax inclusive.
@@ -355,42 +354,42 @@ export interface BaseCartShippingMethod {
   /**
    * The original total of the cart shipping method.
    */
-  original_total: BigNumberValue
+  original_total: number
 
   /**
    * The original subtotal of the cart shipping method.
    */
-  original_subtotal: BigNumberValue
+  original_subtotal: number
 
   /**
    * The original tax total of the cart shipping method.
    */
-  original_tax_total: BigNumberValue
+  original_tax_total: number
 
   /**
    * The total of the cart shipping method.
    */
-  total: BigNumberValue
+  total: number
 
   /**
    * The subtotal of the cart shipping method.
    */
-  subtotal: BigNumberValue
+  subtotal: number
 
   /**
    * The tax total of the cart shipping method.
    */
-  tax_total: BigNumberValue
+  tax_total: number
 
   /**
    * The discount total of the cart shipping method.
    */
-  discount_total: BigNumberValue
+  discount_total: number
 
   /**
    * The discount tax total of the cart shipping method.
    */
-  discount_tax_total: BigNumberValue
+  discount_tax_total: number
 }
 
 /**
@@ -420,7 +419,7 @@ export interface BaseCartLineItem extends BaseCartLineItemTotals {
   /**
    * The line item's quantity in the cart.
    */
-  quantity: BigNumberValue
+  quantity: number
 
   /**
    * The associated product with the line item.
@@ -514,12 +513,12 @@ export interface BaseCartLineItem extends BaseCartLineItemTotals {
   /**
    * The calculated price of the line item.
    */
-  compare_at_unit_price?: BigNumberValue
+  compare_at_unit_price?: number
 
   /**
    * The unit price of the item.
    */
-  unit_price: BigNumberValue
+  unit_price: number
 
   /**
    * The associated tax lines.
@@ -575,57 +574,57 @@ export interface BaseCartLineItemTotals {
   /**
    * The original total of the cart line item.
    */
-  original_total: BigNumberValue
+  original_total: number
 
   /**
    * The original subtotal of the cart line item.
    */
-  original_subtotal: BigNumberValue
+  original_subtotal: number
 
   /**
    * The original tax total of the cart line item.
    */
-  original_tax_total: BigNumberValue
+  original_tax_total: number
 
   /**
    * The item total of the cart line item.
    */
-  item_total: BigNumberValue
+  item_total: number
 
   /**
    * The item subtotal of the cart line item.
    */
-  item_subtotal: BigNumberValue
+  item_subtotal: number
 
   /**
    * The item tax total of the cart line item.
    */
-  item_tax_total: BigNumberValue
+  item_tax_total: number
 
   /**
    * The total of the cart line item.
    */
-  total: BigNumberValue
+  total: number
 
   /**
    * The subtotal of the cart line item.
    */
-  subtotal: BigNumberValue
+  subtotal: number
 
   /**
    * The tax total of the cart line item.
    */
-  tax_total: BigNumberValue
+  tax_total: number
 
   /**
    * The discount total of the cart line item.
    */
-  discount_total: BigNumberValue
+  discount_total: number
 
   /**
    * The discount tax total of the cart line item.
    */
-  discount_tax_total: BigNumberValue
+  discount_tax_total: number
 }
 
 /**
@@ -646,7 +645,7 @@ export interface BaseAdjustmentLine {
   /**
    * The amount to adjust the original amount with.
    */
-  amount: BigNumberValue
+  amount: number
 
   /**
    * The ID of the associated cart.
@@ -773,12 +772,12 @@ export interface BaseShippingMethodTaxLine extends BaseTaxLine {
   /**
    * The total tax relative to the shipping method.
    */
-  total: BigNumberValue
+  total: number
 
   /**
    * The subtotal tax relative to the shipping method.
    */
-  subtotal: BigNumberValue
+  subtotal: number
 }
 
 /**
@@ -798,10 +797,10 @@ export interface BaseLineItemTaxLine extends BaseTaxLine {
   /**
    * The total tax relative to the item.
    */
-  total: BigNumberValue
+  total: number
 
   /**
    * The subtotal tax relative to the item.
    */
-  subtotal: BigNumberValue
+  subtotal: number
 }
