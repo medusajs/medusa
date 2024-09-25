@@ -44,6 +44,7 @@
     "bignumber.js": "^9.1.2",
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",
+    "graphql": "^16.9.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.0",
     "pg-connection-string": "^2.7.0",
