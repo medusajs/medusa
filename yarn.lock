@@ -22173,7 +22173,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
     pg: ^8.11.3
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -22209,7 +22209,7 @@ __metadata:
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
     pg: ^8.11.3
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -22245,7 +22245,7 @@ __metadata:
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
     pg: ^8.11.3
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
