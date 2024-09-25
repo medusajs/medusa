@@ -16,10 +16,13 @@
   },
   "files": [
     "dist",
-    "cli.js"
+    "cli.js",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "scripts": {
     "test": "jest --passWithNoTests src",
@@ -32,14 +35,12 @@
     "@swc/core": "^1.5.29",
     "@swc/jest": "^0.2.36",
     "@types/yargs": "^15.0.15",
-    "cross-env": "^5.2.1",
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.9",
-    "axios": "^0.21.4",
+    "@medusajs/utils": "1.11.9",
     "chalk": "^4.0.0",
     "configstore": "5.0.1",
     "dotenv": "^16.4.5",
@@ -52,19 +53,15 @@
     "is-valid-path": "^0.1.1",
     "meant": "^1.0.3",
     "medusa-telemetry": "^0.0.17",
-    "open": "^8.0.6",
     "ora": "^5.4.1",
     "pg": "^8.11.3",
     "pg-god": "^1.0.12",
     "prompts": "^2.4.2",
     "resolve-cwd": "^3.0.0",
-    "semver": "^7.3.8",
     "stack-trace": "^0.0.10",
+    "ulid": "^2.3.0",
     "winston": "^3.8.2",
     "yargs": "^15.3.1"
-  },
-  "peerDependencies": {
-    "ulid": "^2.3.0"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
 }
