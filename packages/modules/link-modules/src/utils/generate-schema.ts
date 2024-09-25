@@ -83,7 +83,7 @@ export function generateGraphQLSchema(
           ? extend.relationship.isList
           : config.isList ?? extend.relationship.isList
 
-        const pathSegments = path.split(",").reverse()
+        // const pathSegments = path.split(",").reverse()
 
         /*const relationshipMarkerIndex = pathSegments.findIndex((segment) => {
           return !!joinerConfig.relationships!.find(

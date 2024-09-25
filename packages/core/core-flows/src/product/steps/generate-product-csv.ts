@@ -71,7 +71,7 @@ export const generateProductCsvStep = createStep(
 
     const regions = await regionService.listRegions(
       {},
-      { select: ["id", "name", "currency_code"], take: null }
+      { select: ["id", "name", "currency_code"] }
     )
 
     const normalizedData = normalizeForExport(products, { regions })

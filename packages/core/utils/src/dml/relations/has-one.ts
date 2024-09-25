@@ -1,5 +1,5 @@
 import { BaseRelationship } from "./base"
-import { NullableModifier } from "./nullable"
+import { RelationNullableModifier } from "./nullable"
 
 /**
  * HasOne relationship defines a relationship between two entities
@@ -22,6 +22,6 @@ export class HasOne<T> extends BaseRelationship<T> {
    * Apply nullable modifier on the schema
    */
   nullable() {
-    return new NullableModifier<T, HasOne<T>>(this)
+    return new RelationNullableModifier<T, HasOne<T>>(this)
   }
 }
