@@ -5546,18 +5546,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/index@workspace:packages/modules/index"
   dependencies:
+    "@medusajs/framework": ^0.0.1
     "@medusajs/types": ^1.11.16
-    "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
     "@mikro-orm/core": 5.9.7
+    "@mikro-orm/knex": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.1

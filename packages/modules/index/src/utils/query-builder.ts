@@ -1,7 +1,7 @@
-import { isObject, isString } from "@medusajs/utils"
-import { IndexTypes } from "@medusajs/types"
+import { isObject, isString } from "@medusajs/framework/utils"
+import { IndexTypes } from "@medusajs/framework/types"
 import { GraphQLList } from "graphql"
-import { Knex } from "knex"
+import { Knex } from "@mikro-orm/knex"
 import { OrderBy, QueryFormat, QueryOptions, Select } from "@types"
 
 export const OPERATOR_MAP = {

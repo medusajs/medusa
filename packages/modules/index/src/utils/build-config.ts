@@ -3,14 +3,14 @@ import {
   cleanGraphQLSchema,
   gqlGetFieldsAndRelations,
   MedusaModule,
-} from "@medusajs/modules-sdk"
+} from "@medusajs/framework/modules-sdk"
 import {
   IndexTypes,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
-} from "@medusajs/types"
-import { CommonEvents } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { CommonEvents } from "@medusajs/framework/utils"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 import { Kind, ObjectTypeDefinitionNode } from "graphql/index"
 
