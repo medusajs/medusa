@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "description": "SDK for the Medusa API",
   "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js"
+    "import": "./dist/esm/index.js",
+    "require": "./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -37,7 +40,7 @@
     "qs": "^6.12.1"
   },
   "scripts": {
-    "build": "rimraf dist && tsc --build",
+    "build": "rimraf dist && tsc -p tsconfig.json && tsc -p tsconfig.esm.json",
     "test": "jest --passWithNoTests --runInBand --bail --forceExit",
     "watch": "tsc --build --watch"
   }
