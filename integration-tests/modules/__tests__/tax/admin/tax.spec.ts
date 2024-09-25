@@ -235,21 +235,25 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail to create a tax rate without a code", async () => {
-        const errResponse = await api.post(
-          `/admin/tax-regions`,
-          {
-            country_code: "us",
-            default_tax_rate: {
-              rate: 2,
-              name: "default rate",
+        const errResponse = await api
+          .post(
+            `/admin/tax-regions`,
+            {
+              country_code: "us",
+              default_tax_rate: {
+                rate: 2,
+                name: "default rate",
+              },
             },
-          },
-          adminHeaders
-        ).catch(e => e)
+            adminHeaders
+          )
+          .catch((e) => e)
 
         expect(errResponse.response.status).toEqual(400)
         expect(errResponse.response.data).toEqual({
-          type: "invalid_data"
+          message:
+            "Invalid request: Field 'default_tax_rate, code' is required",
+          type: "invalid_data",
         })
       })
 
