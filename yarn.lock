@@ -5620,13 +5620,12 @@ __metadata:
   resolution: "@medusajs/js-sdk@workspace:packages/core/js-sdk"
   dependencies:
     "@medusajs/types": ^1.11.16
-    cross-env: ^5.2.1
     fetch-event-stream: ^0.1.5
     jest: ^29.7.0
     msw: ^2.3.0
     qs: ^6.12.1
     rimraf: ^5.0.1
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
