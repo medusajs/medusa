@@ -5668,6 +5668,7 @@ __metadata:
     fs-exists-cached: ^1.0.0
     fs-extra: ^10.0.0
     glob: ^7.1.6
+    graphql: ^16.9.0
     hosted-git-info: ^4.0.2
     inquirer: ^8.0.0
     is-valid-path: ^0.1.1
