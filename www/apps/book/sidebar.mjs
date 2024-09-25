@@ -192,14 +192,13 @@ export const sidebar = numberSidebarItems(
       children: [
         {
           type: "link",
-          path: "/advanced-development/architecture/architectural-modules",
-          title: "Architectural Modules",
-          chapterTitle: "Architecture",
+          title: "Architecture",
+          path: "/advanced-development/architecture/overview",
           children: [
             {
               type: "link",
-              path: "/advanced-development/architecture/overview",
-              title: "Architecture Overview",
+              path: "/advanced-development/architecture/architectural-modules",
+              title: "Architectural Modules",
             },
           ],
         },
