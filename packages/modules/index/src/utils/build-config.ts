@@ -316,8 +316,6 @@ function setDefaultEvents(
       )}.${event}`
     )
   }
-
-  console.log(currentObjectRepresentationRef.events)
 }
 
 function processEntity(
