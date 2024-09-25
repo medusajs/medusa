@@ -13,7 +13,7 @@
  *   have an `actor_id` property, then you must register the customer using the Create Customer API route passing the token in the request's Authorization header.
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/storefront-development/customers/third-party-login
- *   description: Storefront development: Implement third-party (social) login.
+ *   description: "Storefront development: Implement third-party (social) login."
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider

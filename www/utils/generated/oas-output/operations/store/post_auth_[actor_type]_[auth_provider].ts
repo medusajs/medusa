@@ -10,7 +10,7 @@
  *   specified URL in your storefront to continue authentication with the third-party service.
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/storefront-development/customers/login#1-using-a-jwt-token
- *   description: Storefront development: How to login as a customer
+ *   description: "Storefront development: How to login as a customer"
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider
