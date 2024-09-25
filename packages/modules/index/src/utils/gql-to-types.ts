@@ -1,13 +1,14 @@
-import { join } from "path"
-import { CustomDirectives, makeSchemaExecutable } from "./build-config"
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
-  MedusaModule,
-} from "@medusajs/modules-sdk"
-import { FileSystem, gqlSchemaToTypes as ModulesSdkGqlSchemaToTypes, } from "@medusajs/utils"
+  FileSystem,
+  gqlSchemaToTypes as ModulesSdkGqlSchemaToTypes,
+} from "@medusajs/utils"
+import { join } from "path"
 import * as process from "process"
+import { CustomDirectives, makeSchemaExecutable } from "./build-config"
 
 export async function gqlSchemaToTypes(schema: string) {
-  const augmentedSchema = CustomDirectives.Listeners.definition + schema
+  const augmentedSchema = CustomDirectives.Events.definition + schema
   const executableSchema = makeSchemaExecutable(augmentedSchema)
   const filename = "index-service-entry-points"
   const filenameWithExt = filename + ".d.ts"

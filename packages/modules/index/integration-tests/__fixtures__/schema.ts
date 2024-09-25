@@ -1,5 +1,5 @@
 export const schema = `
-  type Product @Listeners(values: ["product.created", "product.updated", "product.deleted"]) {
+  type Product @Events {
     id: String
     title: String
     deep: InternalNested
@@ -15,14 +15,14 @@ export const schema = `
     b: Int
   }
   
-  type ProductVariant @Listeners(values: ["variant.created", "variant.updated", "variant.deleted"]) {
+  type ProductVariant @Events {
     id: String
     product_id: String
     sku: String
     prices: [Price]
   }
   
-  type Price @Listeners(values: ["price.created", "price.updated", "price.deleted"]) {
+  type Price @Events {
     amount: Int
   }
 `

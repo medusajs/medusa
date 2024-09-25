@@ -1,5 +1,5 @@
 export const defaultSchema = `
-  type Product @Listeners(values: ["Product.product.created", "Product.product.updated", "Product.product.deleted"]) {
+  type Product @Events {
     id: String
     title: String
     description: String
@@ -7,7 +7,7 @@ export const defaultSchema = `
     metadata: JSON
   }
   
-  type ProductVariant @Listeners(values: ["Product.product-variant.created", "Product.product-variant.updated", "Product.product-variant.deleted"]) {
+  type ProductVariant @Events {
     id: String
     product_id: String
     sku: String
@@ -21,7 +21,7 @@ export const defaultSchema = `
     metadata: JSON
   }
   
-  type Price @Listeners(values: ["Pricing.price.created", "Pricing.price.updated", "Pricing.price.deleted"]) {
+  type Price @Events {
     amount: Float
     currency_code: String
   } 

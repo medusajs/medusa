@@ -13,7 +13,7 @@ export async function createPartitions(
   const keys = Object.keys(schemaObjectRepresentation).filter(
     (key) =>
       !schemaObjectRepresentationPropertiesToOmit.includes(key) &&
-      schemaObjectRepresentation[key].listeners.length > 0
+      schemaObjectRepresentation[key].events.length > 0
   )
 
   for (const key of keys) {

@@ -6,8 +6,8 @@ import {
   RemoteQueryFunction,
 } from "@medusajs/types"
 import {
-  ContainerRegistrationKeys,
   MikroOrmBaseRepository as BaseRepository,
+  ContainerRegistrationKeys,
   Modules,
 } from "@medusajs/utils"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
@@ -120,7 +120,7 @@ export default class IndexModuleService implements IndexTypes.IIndexService {
 
       ;(
         schemaEntityObjectRepresentation as IndexTypes.SchemaObjectEntityRepresentation
-      ).listeners.forEach((listener) => {
+      ).events.forEach((listener) => {
         this.eventBusModuleService_.subscribe(
           listener,
           this.storageProvider_.consumeEvent(schemaEntityObjectRepresentation)

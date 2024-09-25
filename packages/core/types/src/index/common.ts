@@ -43,10 +43,10 @@ export type SchemaObjectEntityRepresentation = {
   fields: string[]
 
   /**
-   * @Listerners directive is required and all listeners found
+   * @events directive is required and all events found
    * for the type will be stored here
    */
-  listeners: string[]
+  events: string[]
 
   /**
    * The alias for the type/entity retrieved in the corresponding

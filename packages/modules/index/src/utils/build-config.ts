@@ -6,16 +6,21 @@ import {
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
 } from "@medusajs/types"
-import { CommonEvents, GraphQLUtils } from "@medusajs/utils"
+import {
+  CommonEvents,
+  GraphQLUtils,
+  camelToSnakeCase,
+  kebabCase,
+} from "@medusajs/utils"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 
 export const CustomDirectives = {
-  Listeners: {
-    configurationPropertyName: "listeners",
+  Events: {
+    configurationPropertyName: "events",
     isRequired: true,
-    name: "Listeners",
-    directive: "@Listeners",
-    definition: "directive @Listeners (values: [String!]) on OBJECT",
+    name: "Events",
+    directive: "@Events",
+    definition: "directive @Events (values: [String!]) on OBJECT",
   },
 }
 
@@ -266,7 +271,7 @@ function getObjectRepresentationRef(
     entity: entityName,
     parents: [],
     alias: "",
-    listeners: [],
+    events: [],
     moduleConfig: null,
     fields: [],
   })
@@ -286,10 +291,33 @@ function setCustomDirectives(currentObjectRepresentationRef, directives) {
     // Only support array directive value for now
     currentObjectRepresentationRef[
       customDirectiveConfiguration.configurationPropertyName
-    ] = ((directive.arguments[0].value as any)?.values ?? []).map(
+    ] = ((directive?.arguments?.[0]?.value as any)?.values ?? []).map(
       (v) => v.value
     )
   }
+}
+
+function setDefaultEvents(
+  currentEntityModule,
+  entityName,
+  currentObjectRepresentationRef
+) {
+  const defaultEvents = [
+    CommonEvents.CREATED,
+    CommonEvents.UPDATED,
+    CommonEvents.DELETED,
+  ]
+
+  currentObjectRepresentationRef.events ??= []
+  for (const event of defaultEvents) {
+    currentObjectRepresentationRef.events.push(
+      `${currentEntityModule.serviceName}.${kebabCase(
+        camelToSnakeCase(entityName).toLowerCase()
+      )}.${event}`
+    )
+  }
+
+  console.log(currentObjectRepresentationRef.events)
 }
 
 function processEntity(
@@ -338,7 +366,7 @@ function processEntity(
 
   if (
     !currentEntityModule &&
-    currentObjectRepresentationRef.listeners.length > 0
+    currentObjectRepresentationRef.events.length > 0
   ) {
     const example = JSON.stringify({
       alias: [
@@ -354,6 +382,12 @@ function processEntity(
   }
 
   if (currentEntityModule) {
+    setDefaultEvents(
+      currentEntityModule,
+      entityName,
+      currentObjectRepresentationRef
+    )
+
     objectRepresentationRef._serviceNameModuleConfigMap[
       currentEntityModule.serviceName
     ] = currentEntityModule
@@ -484,7 +518,7 @@ function processEntity(
           },
         ]
         linkObjectRepresentationRef.alias = linkModuleMetadata.alias
-        linkObjectRepresentationRef.listeners = [
+        linkObjectRepresentationRef.events = [
           `${linkModuleMetadata.entityName}.${CommonEvents.ATTACHED}`,
           `${linkModuleMetadata.entityName}.${CommonEvents.DETACHED}`,
         ]
@@ -552,7 +586,7 @@ function processEntity(
 
           intermediateEntityObjectRepresentationRef.alias =
             intermediateEntityAlias
-          intermediateEntityObjectRepresentationRef.listeners = [
+          intermediateEntityObjectRepresentationRef.events = [
             intermediateEntityName + "." + CommonEvents.CREATED,
             intermediateEntityName + "." + CommonEvents.UPDATED,
           ]
@@ -699,7 +733,7 @@ export function buildSchemaObjectRepresentation(
   schema
 ): [IndexTypes.SchemaObjectRepresentation, Record<string, any>] {
   const moduleJoinerConfigs = MedusaModule.getAllJoinerConfigs()
-  const augmentedSchema = CustomDirectives.Listeners.definition + schema
+  const augmentedSchema = CustomDirectives.Events.definition + schema
   const executableSchema = makeSchemaExecutable(augmentedSchema)
   const entitiesMap = executableSchema.getTypeMap()
 
