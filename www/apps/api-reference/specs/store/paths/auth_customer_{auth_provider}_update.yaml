@@ -5,6 +5,10 @@ post:
   description: >-
     Reset a customer's password. Generate the reset password token first using
     the Get Reset Password Token API route.
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/customers/reset-password#2-reset-password-page
+    description: 'Storefront development: How to create the reset password page.'
   x-authenticated: false
   parameters:
     - name: auth_provider
@@ -45,6 +49,18 @@ post:
   responses:
     '200':
       description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - success
+            description: Details on the reset password's status.
+            properties:
+              success:
+                type: boolean
+                title: success
+                description: Whether the password was reset successfully.
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
