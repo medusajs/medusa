@@ -1,5 +1,5 @@
 import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
+import { ContainerRegistrationKeys, promiseAll, GraphQLSchema } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { join } from "path"
@@ -17,7 +17,7 @@ import { pgConnectionLoader } from "@medusajs/framework/database"
 import { SubscriberLoader } from "@medusajs/framework/subscribers"
 import { WorkflowLoader } from "@medusajs/framework/workflows"
 import { featureFlagsLoader } from "@medusajs/framework/feature-flags"
-import { GraphQLSchema, MedusaAppLoader } from "@medusajs/framework"
+import { MedusaAppLoader } from "@medusajs/framework"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 
 type Options = {

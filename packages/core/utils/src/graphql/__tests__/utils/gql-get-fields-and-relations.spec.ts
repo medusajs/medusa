@@ -1,6 +1,6 @@
 import { mergeTypeDefs } from "@graphql-tools/merge"
 import { makeExecutableSchema } from "@graphql-tools/schema"
-import { gqlGetFieldsAndRelations } from "../../utils"
+import { gqlGetFieldsAndRelations } from "../../get-fields-and-relations"
 
 const userModule = `
 type User {

@@ -10,12 +10,11 @@ import {
 } from "@medusajs/types"
 import {
   deduplicate,
-  extractRelationsFromGQL,
+  GraphQLUtils,
   isDefined,
   isString,
   MedusaError,
 } from "@medusajs/utils"
-import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
 
@@ -140,7 +139,7 @@ export class RemoteJoiner {
     graphqlQuery: string,
     variables?: Record<string, unknown>
   ): RemoteJoinerQuery {
-    const parser = new GraphQLParser(graphqlQuery, variables)
+    const parser = new GraphQLUtils.GraphQLParser(graphqlQuery, variables)
     return parser.parseQuery()
   }
 
@@ -154,7 +153,9 @@ export class RemoteJoiner {
   ) {
     this.options.autoCreateServiceNameAlias ??= true
     if (this.options.entitiesMap) {
-      this.entityMap = extractRelationsFromGQL(this.options.entitiesMap)
+      this.entityMap = GraphQLUtils.extractRelationsFromGQL(
+        this.options.entitiesMap
+      )
     }
 
     this.buildReferences(
