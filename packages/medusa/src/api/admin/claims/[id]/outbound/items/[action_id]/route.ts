@@ -43,7 +43,7 @@ export const POST = async (
   const [orderClaim] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
     claim: orderClaim,
   })
 }
@@ -77,7 +77,7 @@ export const DELETE = async (
   const [orderClaim] = await remoteQuery(queryObject)
 
   res.json({
-    order_preview: orderPreview,
+    order_preview: orderPreview as unknown as HttpTypes.AdminOrderPreview,
     claim: orderClaim,
   })
 }
