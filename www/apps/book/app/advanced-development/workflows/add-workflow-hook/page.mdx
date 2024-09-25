@@ -6,6 +6,8 @@ export const metadata = {
 
 In this chapter, you'll learn how to expose a hook in your workflow.
 
+## When to Expose a Hook
+
 <Note title="Expose workflow hooks when" type="success">
 
 Your workflow is reusable in other applications, and you allow performing an external action at some point in your workflow.
@@ -17,6 +19,8 @@ Your workflow is reusable in other applications, and you allow performing an ext
 Your workflow isn't reusable by other applications. Use a step that performs what a hook handler would instead.
 
 </Note>
+
+---
 
 ## How to Expose a Hook in a Workflow?
 
@@ -58,7 +62,7 @@ export const myWorkflow = createWorkflow(
 
 The `createHook` function accepts two parameters:
 
-1. The first is a string indicating the hook's name. This is used to add a hook handler later.
+1. The first is a string indicating the hook's name. You use this to consume the hook later.
 2. The second is the input to pass to the hook handler.
 
 The workflow must also pass an object having a `hooks` property as a second parameter to the `WorkflowResponse` constructor. Its value is an array of the workflow's hooks.
@@ -81,4 +85,6 @@ myWorkflow.hooks.productCreated(
 )
 ```
 
-The hook is available on the workflow's `hooks` property using its name `productCreated`. You invoke the hook, passing the handler as a parameter, which is a step function.
+The hook is available on the workflow's `hooks` property using its name `productCreated`.
+
+You invoke the hook, passing a step function (the hook handler) as a parameter.

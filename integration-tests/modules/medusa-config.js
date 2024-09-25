@@ -112,5 +112,10 @@ module.exports = {
         ],
       },
     },
+    [Modules.INDEX]: process.env.ENABLE_INDEX_MODULE
+      ? {
+          resolve: "@medusajs/index",
+        }
+      : false,
   },
 }

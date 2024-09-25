@@ -33,7 +33,9 @@ function EditItem({
 
         <Thumbnail src={item.thumbnail} />
 
-        <span className="txt-small txt-subtile font-medium">{item.title}</span>
+        <span className="txt-small text-ui-fg-subtle font-medium">
+          {item.title}
+        </span>
 
         {item.variant_sku && " · "}
 

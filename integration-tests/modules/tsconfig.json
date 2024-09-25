@@ -19,7 +19,7 @@
     "skipLibCheck": true,
     "downlevelIteration": true // to use ES5 specific tooling
   },
-  "include": ["src"],
+  "include": ["src", "./medusa/**/*"],
   "exclude": [
     "./dist/**/*",
     "__tests__",

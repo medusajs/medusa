@@ -1,6 +1,5 @@
 import {
   BasePaymentCollectionFilters,
-  BasePaymentProviderFilters,
   BasePaymentSessionFilters,
 } from "../common"
 

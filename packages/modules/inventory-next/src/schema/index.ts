@@ -1,7 +1,4 @@
 export default `
-scalar DateTime
-scalar JSON
-
 type InventoryItem {
   id: ID!
   created_at: DateTime!
@@ -21,7 +18,6 @@ type InventoryItem {
   title: String
   thumbnail: String
   metadata: JSON
-  
   inventory_levels: [InventoryLevel]
 }
 
@@ -31,6 +27,7 @@ type InventoryLevel {
   updated_at: DateTime!
   deleted_at: DateTime
   inventory_item_id: String!
+  inventory_item: InventoryItem!
   location_id: String!
   stocked_quantity: Int!
   reserved_quantity: Int!
@@ -45,6 +42,7 @@ type ReservationItem {
   deleted_at: DateTime
   line_item_id: String
   inventory_item_id: String!
+  inventory_item: InventoryItem!
   location_id: String!
   quantity: Int!
   external_id: String

@@ -1,5 +1,5 @@
 import { BaseRelationship } from "./base"
-import { NullableModifier } from "./nullable"
+import { RelationNullableModifier } from "./nullable"
 
 export class BelongsTo<T> extends BaseRelationship<T> {
   type = "belongsTo" as const
@@ -12,6 +12,6 @@ export class BelongsTo<T> extends BaseRelationship<T> {
    * Apply nullable modifier on the schema
    */
   nullable() {
-    return new NullableModifier<T, BelongsTo<T>>(this)
+    return new RelationNullableModifier<T, BelongsTo<T>>(this)
   }
 }

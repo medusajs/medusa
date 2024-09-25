@@ -1,0 +1,201 @@
+import { Details } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Pass Additional Data to Medusa's API Route`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to pass additional data in requests to Medusa's API Route.
+
+## Why Pass Additional Data?
+
+Some of Medusa's API Routes accept an `additional_data` parameter whose type is an object. The API Route passes the `additional_data` to the workflow, which in turn passes it to its hooks.
+
+This is useful when you have a link from your custom module to a commerce module, and you want to perform an additional action when a request is sent to an existing API route.
+
+For example, the [Create Product API Route](!api!/admin#products_postproducts) accepts an `additional_data` parameter. If you have a data model linked to it, you consume the `productsCreated` hook to create a record of the data model using the custom data and link it to the product.
+
+### API Routes Accepting Additional Data
+
+<Details summaryContent="API Routes List">
+
+- Campaigns
+    - [Create Campaign](!api!/admin#campaigns_postcampaigns)
+    - [Update Campaign](!api!/admin#campaigns_postcampaignsid)
+- Cart
+    - [Create Cart](!api!/store#carts_postcarts)
+    - [Update Cart](!api!/store#carts_postcartsid)
+- Customers
+    - [Create Customer](!api!/admin#customers_postcustomers)
+    - [Update Customer](!api!/admin#customers_postcustomersid)
+    - [Create Address](!api!/admin#customers_postcustomersidaddresses)
+    - [Update Address](!api!/admin#customers_postcustomersidaddressesaddress_id)
+- Draft Orders
+    - [Create Draft Order](!api!/admin#draft-orders_postdraftorders)
+- Orders
+    - [Complete Orders](!api!/admin#orders_postordersidcomplete)
+    - [Cancel Order's Fulfillment](!api!/admin#orders_postordersidfulfillmentsfulfillment_idcancel)
+    - [Create Shipment](!api!/admin#orders_postordersidfulfillmentsfulfillment_idshipments)
+    - [Create Fulfillment](!api!/admin#orders_postordersidfulfillments)
+- Products
+    - [Create Product](!api!/admin#products_postproducts)
+    - [Update Product](!api!/admin#products_postproductsid)
+    - [Create Product Variant](!api!/admin#products_postproductsidvariants)
+    - [Update Product Variant](!api!/admin#products_postproductsidvariantsvariant_id)
+    - [Create Product Option](!api!/admin#products_postproductsidoptions)
+    - [Update Product Option](!api!/admin#products_postproductsidoptionsoption_id)
+- Promotions
+    - [Create Promotion](!api!/admin#promotions_postpromotions)
+    - [Update Promotion](!api!/admin#promotions_postpromotionsid)
+
+</Details>
+
+---
+
+## How to Pass Additional Data
+
+### 1. Specify Validation of Additional Data
+
+Before passing custom data in the `additional_data` object parameter, you must specify validation rules for the allowed properties in the object.
+
+To do that, use the middleware route object defined in `src/api/middlewares.ts`.
+
+For example, create the file `src/api/middlewares.ts` with the following content:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/medusa"
+import { z } from "zod"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      method: "POST",
+      matcher: "/admin/products",
+      additionalDataValidator: {
+        brand: z.string().optional()
+      }
+    }
+  ]
+})
+```
+
+The middleware route object accepts an optional parameter `additionalDataValidator` whose value is an object of key-value pairs. The keys indicate the name of accepted properties in the `additional_data` parameter, and the value is [Zod](https://zod.dev/) validation rules of the property.
+
+In this example, you indicate that the `additional_data` parameter accepts a `brand` property whose value is an optional string.
+
+<Note>
+
+Refer to [Zod's documentation](https://zod.dev) for all available validation rules.
+
+</Note>
+
+### 2. Pass the Additional Data in a Request
+
+You can now pass a `brand` property in the `additional_data` parameter of a request to the Create Product API Route.
+
+For example:
+
+```bash
+curl -X POST 'http://localhost:9000/admin/products' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data '{
+    "title": "Product 1",
+    "additional_data": {
+        "brand": "Acme"
+    }
+}'
+```
+
+<Note title="Tip">
+
+Make sure to replace the `{token}` in the authorization header with an admin user's authentication token.
+
+</Note>
+
+In this request, you pass in the `additional_data` parameter a `brand` property and set its value to `Acme`.
+
+The `additional_data` is then passed to hooks in the `createProductsWorkflow` used by the API route.
+
+---
+
+## Use Additional Data in a Hook
+
+<Note>
+
+Learn about workflow hooks in [this guide](../../workflows/workflow-hooks/page.mdx).
+
+</Note>
+
+Step functions consuming the workflow hook can access the `additional_data` in the first parameter.
+
+For example, consider you want to store the data passed in `additional_data` in the product's `metadata` property.
+
+To do that, create the file `src/workflows/hooks/product-created.ts` with the following content:
+
+```ts title="src/workflows/hooks/product-created.ts"
+import { StepResponse } from "@medusajs/workflows-sdk"
+import { createProductsWorkflow } from "@medusajs/core-flows"
+import { Modules } from "@medusajs/utils"
+
+createProductsWorkflow.hooks.productsCreated(
+  async ({ products, additional_data }, { container }) => {
+    if (!additional_data.brand) {
+      return
+    }
+
+    const productModuleService = container.resolve(
+      Modules.PRODUCT
+    )
+
+    await productModuleService.upsertProducts(
+      products.map((product) => ({
+        ...product,
+        metadata: {
+          ...product.metadata,
+          brand: additional_data.brand
+        }
+      }))
+    )
+
+    return new StepResponse(products, {
+      products,
+      additional_data
+    })
+  }
+)
+```
+
+This consumes the `productsCreated` hook, which runs after the products are created.
+
+If `brand` is passed in `additional_data`, you resolve the Product Module's main service and use its `upsertProducts` method to update the products, adding the brand to the `metadata` property.
+
+### Compensation Function
+
+Hooks also accept a compensation function as a second parameter to undo the actions made by the step function.
+
+For example, pass the following second parameter to the `productsCreated` hook:
+
+```ts title="src/workflows/hooks/product-created.ts"
+createProductsWorkflow.hooks.productsCreated(
+  async ({ products, additional_data }, { container }) => {
+    // ...
+  },
+  async ({ products, additional_data }, { container }) => {
+    if (!additional_data.brand) {
+      return
+    }
+
+    const productModuleService = container.resolve(
+      Modules.PRODUCT
+    )
+
+    await productModuleService.upsertProducts(
+      products
+    )
+  }
+)
+```
+
+This updates the product to their original state before adding the brand to their `metadata` property.

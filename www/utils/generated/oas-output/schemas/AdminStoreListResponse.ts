@@ -1,7 +1,7 @@
 /**
  * @schema AdminStoreListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of stores.
  * x-schemaName: AdminStoreListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The store's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The store's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The store's count.
+ *     description: The total number of items.
  *   stores:
  *     type: array
- *     description: The store's stores.
+ *     description: The list of stores.
  *     items:
  *       $ref: "#/components/schemas/AdminStore"
  * 

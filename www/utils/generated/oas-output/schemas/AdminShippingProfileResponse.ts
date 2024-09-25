@@ -1,7 +1,7 @@
 /**
  * @schema AdminShippingProfileResponse
  * type: object
- * description: SUMMARY
+ * description: The shipping profile's details.
  * x-schemaName: AdminShippingProfileResponse
  * required:
  *   - shipping_profile

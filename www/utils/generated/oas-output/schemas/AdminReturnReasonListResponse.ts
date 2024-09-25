@@ -1,7 +1,7 @@
 /**
  * @schema AdminReturnReasonListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of return reasons.
  * x-schemaName: AdminReturnReasonListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The return reason's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The return reason's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The return reason's count.
+ *     description: The total number of items.
  *   return_reasons:
  *     type: array
- *     description: The return reason's return reasons.
+ *     description: The list of return reasons.
  *     items:
  *       $ref: "#/components/schemas/AdminReturnReason"
  * 

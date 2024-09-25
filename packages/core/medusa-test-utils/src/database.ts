@@ -1,4 +1,15 @@
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
+import { createDatabase, dropDatabase } from "pg-god"
+
+const DB_HOST = process.env.DB_HOST ?? "localhost"
+const DB_USERNAME = process.env.DB_USERNAME ?? ""
+const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
+
+const pgGodCredentials = {
+  user: DB_USERNAME,
+  password: DB_PASSWORD,
+  host: DB_HOST,
+}
 
 export function getDatabaseURL(dbName?: string): string {
   const DB_HOST = process.env.DB_HOST ?? "localhost"
@@ -158,3 +169,46 @@ export function getMikroOrmWrapper({
     },
   }
 }
+
+export const dbTestUtilFactory = (): any => ({
+  pgConnection_: null,
+
+  create: async function (dbName: string) {
+    await createDatabase(
+      { databaseName: dbName, errorIfExist: false },
+      pgGodCredentials
+    )
+  },
+
+  teardown: async function ({ schema }: { schema?: string } = {}) {
+    if (!this.pgConnection_) {
+      return
+    }
+
+    const runRawQuery = this.pgConnection_.raw.bind(this.pgConnection_)
+
+    schema ??= "public"
+
+    await runRawQuery(`SET session_replication_role = 'replica';`)
+    const { rows: tableNames } = await runRawQuery(`SELECT table_name
+                                            FROM information_schema.tables
+                                            WHERE table_schema = '${schema}';`)
+
+    for (const { table_name } of tableNames) {
+      await runRawQuery(`DELETE
+                           FROM ${schema}."${table_name}";`)
+    }
+
+    await runRawQuery(`SET session_replication_role = 'origin';`)
+  },
+
+  shutdown: async function (dbName: string) {
+    await this.pgConnection_?.context?.destroy()
+    await this.pgConnection_?.destroy()
+
+    return await dropDatabase(
+      { databaseName: dbName, errorIfNonExist: false },
+      pgGodCredentials
+    )
+  },
+})

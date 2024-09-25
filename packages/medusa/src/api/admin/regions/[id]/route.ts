@@ -35,7 +35,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateRegionType>,
   res: MedusaResponse<HttpTypes.AdminRegionResponse>
 ) => {
-  const existingRegion = refetchRegion(req.params.id, req.scope, ["id"])
+  const existingRegion = await refetchRegion(req.params.id, req.scope, ["id"])
   if (!existingRegion) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,

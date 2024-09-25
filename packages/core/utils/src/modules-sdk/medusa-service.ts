@@ -11,16 +11,16 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
-  MapToConfig,
+  camelToSnakeCase,
   isString,
-  kebabCase,
   lowerCaseFirst,
   mapObjectTo,
+  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
 import { DmlEntity } from "../dml"
-import { InjectManager, MedusaContext } from "./decorators"
+import { EmitEvents, InjectManager, MedusaContext } from "./decorators"
 import { Modules } from "./definition"
 import { buildModelsNameToLinkableKeysMap } from "./joiner-config-builder"
 import {
@@ -31,6 +31,8 @@ import {
   ModelEntries,
   ModelsConfigTemplate,
 } from "./types/medusa-service"
+import { CommonEvents } from "../event-bus"
+import { moduleEventBuilderFactory } from "./event-builder-factory"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -150,13 +152,10 @@ export function MedusaService<
         value: klassPrototype[methodName],
       }
 
+      // The order of the decorators is important, do not change it
       MedusaContext()(klassPrototype, methodName, contextIndex)
-
-      InjectManager("baseRepository_")(
-        klassPrototype,
-        methodName,
-        descriptorMockRef
-      )
+      EmitEvents()(klassPrototype, methodName, descriptorMockRef)
+      InjectManager()(klassPrototype, methodName, descriptorMockRef)
 
       klassPrototype[methodName] = descriptorMockRef.value
     }
@@ -194,6 +193,13 @@ export function MedusaService<
           const models = await service.create(serviceData, sharedContext)
           const response = Array.isArray(data) ? models : models[0]
 
+          klassPrototype.aggregatedEvents.bind(this)({
+            action: CommonEvents.CREATED,
+            object: camelToSnakeCase(modelName).toLowerCase(),
+            data: response,
+            context: sharedContext,
+          })
+
           return await this.baseRepository_.serialize<T | T[]>(response)
         }
 
@@ -210,6 +216,13 @@ export function MedusaService<
           const service = this.__container__[serviceRegistrationName]
           const models = await service.update(serviceData, sharedContext)
           const response = Array.isArray(data) ? models : models[0]
+
+          klassPrototype.aggregatedEvents.bind(this)({
+            action: CommonEvents.UPDATED,
+            object: camelToSnakeCase(modelName).toLowerCase(),
+            data: response,
+            context: sharedContext,
+          })
 
           return await this.baseRepository_.serialize<T | T[]>(response)
         }
@@ -259,22 +272,21 @@ export function MedusaService<
           const primaryKeyValues_ = Array.isArray(primaryKeyValues)
             ? primaryKeyValues
             : [primaryKeyValues]
+
           await this.__container__[serviceRegistrationName].delete(
             primaryKeyValues_,
             sharedContext
           )
 
-          await this.eventBusModuleService_?.emit(
-            primaryKeyValues_.map((primaryKeyValue) => ({
-              name: `${kebabCase(modelName)}.deleted`,
+          primaryKeyValues_.map((primaryKeyValue) =>
+            klassPrototype.aggregatedEvents.bind(this)({
+              action: CommonEvents.DELETED,
+              object: camelToSnakeCase(modelName).toLowerCase(),
               data: isString(primaryKeyValue)
                 ? { id: primaryKeyValue }
                 : primaryKeyValue,
-              metadata: { source: "", action: "", object: "" },
-            })),
-            {
-              internal: true,
-            }
+              context: sharedContext,
+            })
           )
         }
 
@@ -292,24 +304,9 @@ export function MedusaService<
             ? primaryKeyValues
             : [primaryKeyValues]
 
-          const [models, cascadedModelsMap] = await this.__container__[
+          const [, cascadedModelsMap] = await this.__container__[
             serviceRegistrationName
           ].softDelete(primaryKeyValues_, sharedContext)
-
-          const softDeletedModels = await this.baseRepository_.serialize<T[]>(
-            models
-          )
-
-          await this.eventBusModuleService_?.emit(
-            softDeletedModels.map(({ id }) => ({
-              name: `${kebabCase(modelName)}.deleted`,
-              metadata: { source: "", action: "", object: "" },
-              data: { id },
-            })),
-            {
-              internal: true,
-            }
-          )
 
           // Map internal table/column names to their respective external linkable keys
           // eg: product.id = product_id, variant.id = variant_id
@@ -320,6 +317,31 @@ export function MedusaService<
               pick: config.returnLinkableKeys,
             }
           )
+
+          if (mappedCascadedModelsMap) {
+            const joinerConfig = (
+              typeof this.__joinerConfig === "function"
+                ? this.__joinerConfig()
+                : this.__joinerConfig
+            ) as ModuleJoinerConfig
+
+            Object.entries(mappedCascadedModelsMap).forEach(
+              ([linkableKey, ids]) => {
+                const entity = joinerConfig.linkableKeys?.[linkableKey]!
+                if (entity) {
+                  const linkableKeyEntity =
+                    camelToSnakeCase(entity).toLowerCase()
+
+                  klassPrototype.aggregatedEvents.bind(this)({
+                    action: CommonEvents.DELETED,
+                    object: linkableKeyEntity,
+                    data: { id: ids },
+                    context: sharedContext,
+                  })
+                }
+              }
+            )
+          }
 
           return mappedCascadedModelsMap ? mappedCascadedModelsMap : void 0
         }
@@ -338,7 +360,7 @@ export function MedusaService<
             ? primaryKeyValues
             : [primaryKeyValues]
 
-          const [_, cascadedModelsMap] = await this.__container__[
+          const [, cascadedModelsMap] = await this.__container__[
             serviceRegistrationName
           ].restore(primaryKeyValues_, sharedContext)
 
@@ -352,6 +374,30 @@ export function MedusaService<
               pick: config.returnLinkableKeys,
             }
           )
+
+          if (mappedCascadedModelsMap) {
+            const joinerConfig = (
+              typeof this.__joinerConfig === "function"
+                ? this.__joinerConfig()
+                : this.__joinerConfig
+            ) as ModuleJoinerConfig
+
+            Object.entries(mappedCascadedModelsMap).forEach(
+              ([linkableKey, ids]) => {
+                const entity = joinerConfig.linkableKeys?.[linkableKey]!
+                if (entity) {
+                  const linkableKeyEntity =
+                    camelToSnakeCase(entity).toLowerCase()
+                  klassPrototype.aggregatedEvents.bind(this)({
+                    action: CommonEvents.CREATED,
+                    object: linkableKeyEntity,
+                    data: { id: ids },
+                    context: sharedContext,
+                  })
+                }
+              }
+            )
+          }
 
           return mappedCascadedModelsMap ? mappedCascadedModelsMap : void 0
         }
@@ -399,6 +445,50 @@ export function MedusaService<
     }
 
     /**
+     * helper function to aggregate events. Will format the message properly and store in
+     * the message aggregator from the context. The method must be decorated with `@EmitEvents`
+     * @param action
+     * @param object
+     * @param eventName optional, can be inferred from the module joiner config + action + object
+     * @param source optional, can be inferred from the module joiner config
+     * @param data
+     * @param context
+     */
+    protected aggregatedEvents({
+      action,
+      object,
+      eventName,
+      source,
+      data,
+      context,
+    }: {
+      action: string
+      object: string
+      eventName?: string
+      source?: string
+      data: { id: any } | { id: any }[]
+      context: Context
+    }) {
+      const __joinerConfig = (
+        typeof this.__joinerConfig === "function"
+          ? this.__joinerConfig()
+          : this.__joinerConfig
+      ) as ModuleJoinerConfig
+
+      const eventBuilder = moduleEventBuilderFactory({
+        action,
+        object,
+        source: source || __joinerConfig.serviceName!,
+        eventName,
+      })
+
+      eventBuilder({
+        data,
+        sharedContext: context,
+      })
+    }
+
+    /**
      * @internal this method is not meant to be used except by the internal team for now
      * @param groupedEvents
      * @protected
@@ -435,7 +525,7 @@ export function MedusaService<
     buildMethodNamesFromModel(name, config as TModels[keyof TModels]),
   ])
 
-  for (let [modelName, model, modelMethods] of modelsMethods) {
+  for (let [modelName, , modelMethods] of modelsMethods) {
     Object.entries(modelMethods).forEach(([method, methodName]) => {
       buildAndAssignMethodImpl(
         AbstractModuleService_.prototype,

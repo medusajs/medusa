@@ -1,7 +1,7 @@
 /**
  * @schema AdminUserDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the deleted user.
  * x-schemaName: AdminUserDeleteResponse
  * required:
  *   - id
@@ -20,7 +20,7 @@
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the User was deleted.
+ *     description: Whether the user was deleted.
  * 
 */
 

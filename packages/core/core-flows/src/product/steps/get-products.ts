@@ -21,7 +21,7 @@ export const getProductsStep = createStep(
 
     const products = await service.listProducts(
       { id: data.ids },
-      { relations: ["variants"], take: null }
+      { relations: ["variants"] }
     )
     return new StepResponse(products, products)
   }

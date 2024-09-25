@@ -1,7 +1,7 @@
 /**
  * @schema AdminServiceZoneDeleteResponse
  * type: object
- * description: SUMMARY
+ * description: The details of the service zone deletion.
  * x-schemaName: AdminServiceZoneDeleteResponse
  * required:
  *   - id
@@ -11,15 +11,16 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The fulfillment set's ID.
+ *     description: The service zone's ID.
  *   object:
  *     type: string
  *     title: object
  *     description: The name of the deleted object.
+ *     default: "service_zone"
  *   deleted:
  *     type: boolean
  *     title: deleted
- *     description: Whether the Fulfillment Set was deleted.
+ *     description: Whether the service zone was deleted.
  *   parent:
  *     $ref: "#/components/schemas/AdminFulfillmentSet"
  * 

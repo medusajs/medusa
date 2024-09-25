@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "engines": {
     "node": ">=20"
@@ -23,7 +26,8 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "watch:test": "tsc --build tsconfig.spec.json --watch",
-    "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
+    "resolve:aliases": "tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && tsc-alias -p tsconfig.resolved.json && rimraf tsconfig.resolved.json",
+    "build": "rimraf dist && tsc --build && npm run resolve:aliases",
     "test": "jest --runInBand --bail --passWithNoTests --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
@@ -41,7 +45,7 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.6",
-    "typescript": "^5.1.6"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
     "@medusajs/utils": "^1.11.9"

@@ -1,4 +1,4 @@
-import { Module, Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { WorkflowsModuleService } from "@services"
 import { loadUtils } from "./loaders"
 

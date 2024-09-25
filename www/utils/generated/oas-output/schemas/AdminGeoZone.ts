@@ -1,7 +1,7 @@
 /**
  * @schema AdminGeoZone
  * type: object
- * description: The geo zone's details.
+ * description: The geo zone's geo zones.
  * x-schemaName: AdminGeoZone
  * required:
  *   - id
@@ -45,17 +45,17 @@
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The date the geo zone was created.
+ *     description: The geo zone's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The date the geo zone was update.
+ *     description: The geo zone's updated at.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The date the geo zone was deleted.
+ *     description: The geo zone's deleted at.
  * 
 */
 

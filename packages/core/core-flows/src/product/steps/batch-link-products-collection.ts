@@ -1,6 +1,6 @@
 import { IProductModuleService, LinkWorkflowInput } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const batchLinkProductsToCollectionStepId =
   "batch-link-products-to-collection"
@@ -17,7 +17,6 @@ export const batchLinkProductsToCollectionStep = createStep(
     }
 
     const dbCollection = await service.retrieveProductCollection(data.id, {
-      take: null,
       select: ["id", "products.id"],
       relations: ["products"],
     })

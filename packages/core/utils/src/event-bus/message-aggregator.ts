@@ -15,6 +15,10 @@ export class MessageAggregator implements IMessageAggregator {
     this.messages = []
   }
 
+  count(): number {
+    return this.messages.length
+  }
+
   save(msg: Message | Message[]): void {
     if (!msg || (Array.isArray(msg) && msg.length === 0)) {
       return

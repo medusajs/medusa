@@ -53,6 +53,11 @@ export interface CreateFulfillmentDTO {
   shipping_option_id?: string | null
 
   /**
+   * Flag to indicate whether shipping is required
+   */
+  requires_shipping?: boolean
+
+  /**
    * Holds custom data in key-value pairs.
    */
   metadata?: Record<string, unknown> | null

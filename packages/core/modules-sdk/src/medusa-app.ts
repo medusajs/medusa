@@ -18,12 +18,13 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  dynamicImport,
+  isObject,
+  isString,
   MedusaError,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  isObject,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
@@ -36,7 +37,7 @@ import {
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { RemoteQuery, createQuery } from "./remote-query"
+import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 import { cleanGraphQLSchema } from "./utils"
 
@@ -102,6 +103,11 @@ export async function loadModules(
       let declaration: any = {}
       let definition: Partial<ModuleDefinition> | undefined = undefined
 
+      // Skip disabled modules
+      if (mod === false) {
+        return
+      }
+
       if (isObject(mod)) {
         const mod_ = mod as unknown as InternalModuleDeclaration
         path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
@@ -166,7 +172,7 @@ async function initializeLinks({
 }) {
   try {
     const { initialize, getMigrationPlanner } =
-      moduleExports ?? (await import(LinkModulePackage))
+      moduleExports ?? (await dynamicImport(LinkModulePackage))
 
     const linkResolution = await initialize(
       config,
@@ -293,9 +299,9 @@ async function MedusaApp_({
   const modules: MedusaModuleConfig =
     modulesConfig ??
     (
-      await import(
-        modulesConfigPath ??
-          process.cwd() + (modulesConfigFileName ?? "/modules-config")
+      await dynamicImport(
+        await (modulesConfigPath ??
+          process.cwd() + (modulesConfigFileName ?? "/modules-config"))
       )
     ).default
 
