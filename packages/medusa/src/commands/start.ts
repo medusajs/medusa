@@ -3,11 +3,12 @@ import express from "express"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
-import { GracefulShutdownServer } from "@medusajs/utils"
+import { gqlSchemaToTypes, GracefulShutdownServer } from "@medusajs/utils"
 import http, { IncomingMessage, ServerResponse } from "http"
-import { gqlSchemaToTypes, logger } from "@medusajs/framework"
+import { logger } from "@medusajs/framework"
 
 import loaders from "../loaders"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
@@ -66,6 +67,7 @@ async function start({ port, directory, types }) {
           outputDir: outputDirGeneratedTypes,
           filename: "remote-query-entry-points",
           schema: gqlSchema,
+          joinerConfigs: MedusaModule.getAllJoinerConfigs(),
         })
         logger.info("Geneated modules types")
       }

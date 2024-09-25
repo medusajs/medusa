@@ -20,6 +20,7 @@ import {
   ContainerRegistrationKeys,
   createMedusaContainer,
   dynamicImport,
+  GraphQLUtils,
   isObject,
   isString,
   MedusaError,
@@ -29,7 +30,6 @@ import {
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
-import { GraphQLSchema } from "graphql/type"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
@@ -39,7 +39,6 @@ import {
 import { RemoteLink } from "./remote-link"
 import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
-import { cleanGraphQLSchema } from "./utils"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -204,7 +203,7 @@ function cleanAndMergeSchema(loadedSchema) {
     scalar DateTime
     scalar JSON
   `
-  const { schema: cleanedSchema, notFound } = cleanGraphQLSchema(
+  const { schema: cleanedSchema, notFound } = GraphQLUtils.cleanGraphQLSchema(
     defaultMedusaSchema + loadedSchema
   )
   const mergedSchema = mergeTypeDefs(cleanedSchema)
@@ -232,7 +231,7 @@ export type MedusaAppOutput = {
   link: RemoteLink | undefined
   query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
-  gqlSchema?: GraphQLSchema
+  gqlSchema?: GraphQLUtils.GraphQLSchema
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
   revertMigrations: RevertMigrationFn

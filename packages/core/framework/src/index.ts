@@ -13,4 +13,4 @@ export * from "./telemetry"
 
 export const MEDUSA_CLI_PATH = require.resolve("@medusajs/medusa-cli")
 
-export { GraphQLSchema, gqlSchemaToTypes, Query } from "@medusajs/modules-sdk"
+export { Query } from "@medusajs/modules-sdk"
