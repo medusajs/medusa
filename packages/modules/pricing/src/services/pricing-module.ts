@@ -540,7 +540,7 @@ export default class PricingModuleService
               delete price.price_rules
               return price
             }),
-          ...(priceListPrices || [])
+          ...priceListPrices
             .filter((p) => p.price_set_id === priceSet.id)
             .map((price) => ({
               id: price.id,
@@ -549,7 +549,7 @@ export default class PricingModuleService
               price_list_id: price.price_list_id,
             })),
           ,
-        ].filter(Boolean),
+        ],
       }
     })
 
@@ -562,7 +562,7 @@ export default class PricingModuleService
 
     return priceSets.map((ps) => {
       if (ps.prices) {
-        ps.prices = ps.prices.filter((p) => !p.price_list_id) as any
+        ps.prices = (ps.prices as any).filter((p) => !p.price_list_id)
       }
 
       return ps
