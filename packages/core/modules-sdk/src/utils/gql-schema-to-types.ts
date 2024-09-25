@@ -1,8 +1,7 @@
 import { MedusaModule } from "../medusa-module"
 import { FileSystem, toCamelCase } from "@medusajs/utils"
-import { GraphQLSchema } from "graphql/type"
-import { parse, printSchema } from "graphql"
 import { codegen } from "@graphql-codegen/core"
+import { parse, printSchema, type GraphQLSchema } from "graphql"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
 
 function buildEntryPointsTypeMap(
