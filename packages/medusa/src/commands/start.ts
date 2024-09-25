@@ -66,6 +66,7 @@ async function start({ port, directory, types }) {
         await gqlSchemaToTypes({
           outputDir: outputDirGeneratedTypes,
           filename: "remote-query-entry-points",
+          interfaceName: "RemoteQueryEntryPoints",
           schema: gqlSchema,
           joinerConfigs: MedusaModule.getAllJoinerConfigs(),
         })
