@@ -19,7 +19,7 @@ export const groupProductsForBatchStep = createStep(
         // We use the ID to do product updates
         id: data.map((product) => product.id).filter(Boolean) as string[],
       },
-      { take: null, select: ["handle"] }
+      { select: ["handle"] }
     )
     const existingProductsSet = new Set(existingProducts.map((p) => p.id))
 

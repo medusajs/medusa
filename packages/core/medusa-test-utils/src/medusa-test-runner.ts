@@ -5,8 +5,7 @@ import {
   createMedusaContainer,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { createDatabase, dropDatabase } from "pg-god"
-import { getDatabaseURL } from "./database"
+import { dbTestUtilFactory, getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
 import { clearInstances } from "./medusa-test-runner-utils/clear-instances"
 import { configLoaderOverride } from "./medusa-test-runner-utils/config"
@@ -17,60 +16,7 @@ import {
 } from "./medusa-test-runner-utils/use-db"
 import { applyEnvVarsToProcess } from "./medusa-test-runner-utils/utils"
 
-const DB_HOST = process.env.DB_HOST
-const DB_USERNAME = process.env.DB_USERNAME ?? ""
-const DB_PASSWORD = process.env.DB_PASSWORD ?? ""
-
-const pgGodCredentials = {
-  user: DB_USERNAME,
-  password: DB_PASSWORD,
-  host: DB_HOST,
-}
-
-export const dbTestUtilFactory = (): any => ({
-  pgConnection_: null,
-
-  create: async function (dbName: string) {
-    await createDatabase(
-      { databaseName: dbName, errorIfExist: false },
-      pgGodCredentials
-    )
-  },
-
-  teardown: async function ({ schema }: { schema?: string } = {}) {
-    if (!this.pgConnection_) {
-      return
-    }
-
-    const runRawQuery = this.pgConnection_.raw.bind(this.pgConnection_)
-
-    schema ??= "public"
-
-    await runRawQuery(`SET session_replication_role = 'replica';`)
-    const { rows: tableNames } = await runRawQuery(`SELECT table_name
-                                            FROM information_schema.tables
-                                            WHERE table_schema = '${schema}';`)
-
-    for (const { table_name } of tableNames) {
-      await runRawQuery(`DELETE
-                           FROM ${schema}."${table_name}";`)
-    }
-
-    await runRawQuery(`SET session_replication_role = 'origin';`)
-  },
-
-  shutdown: async function (dbName: string) {
-    await this.pgConnection_?.context?.destroy()
-    await this.pgConnection_?.destroy()
-
-    return await dropDatabase(
-      { databaseName: dbName, errorIfNonExist: false },
-      pgGodCredentials
-    )
-  },
-})
-
-export interface MedusaSuiteOptions<TService = unknown> {
+export interface MedusaSuiteOptions {
   dbConnection: any // knex instance
   getContainer: () => MedusaContainer
   api: any
@@ -106,7 +52,7 @@ export function medusaIntegrationTestRunner({
   schema?: string
   debug?: boolean
   inApp?: boolean
-  testSuite: <TService = unknown>(options: MedusaSuiteOptions<TService>) => void
+  testSuite: (options: MedusaSuiteOptions) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   moduleName = moduleName ?? Math.random().toString(36).substring(7)
@@ -163,6 +109,7 @@ export function medusaIntegrationTestRunner({
     const { logger, container, MedusaAppLoader } = await import(
       "@medusajs/framework"
     )
+
     const appLoader = new MedusaAppLoader()
     container.register({
       [ContainerRegistrationKeys.LOGGER]: asValue(logger),

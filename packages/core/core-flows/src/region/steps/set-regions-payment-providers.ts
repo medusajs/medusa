@@ -66,7 +66,6 @@ async function getCurrentRegionPaymentProvidersLinks(
     service: LINKS.RegionPaymentProvider,
     variables: {
       filters: { region_id: regionIds },
-      take: null,
     },
     fields: ["region_id", "payment_provider_id"],
   } as any)) as {
