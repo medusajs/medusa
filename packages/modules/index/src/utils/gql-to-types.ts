@@ -1,10 +1,14 @@
 import { join } from "path"
 import { CustomDirectives, makeSchemaExecutable } from "./build-config"
 import {
-  gqlSchemaToTypes as ModulesSdkGqlSchemaToTypes,
   MedusaModule,
+<<<<<<< HEAD
 } from "@medusajs/framework/modules-sdk"
 import { FileSystem } from "@medusajs/framework/utils"
+=======
+} from "@medusajs/modules-sdk"
+import { FileSystem, gqlSchemaToTypes as ModulesSdkGqlSchemaToTypes, } from "@medusajs/utils"
+>>>>>>> develop
 import * as process from "process"
 
 export async function gqlSchemaToTypes(schema: string) {
@@ -18,6 +22,7 @@ export async function gqlSchemaToTypes(schema: string) {
     schema: executableSchema,
     filename,
     outputDir: dir,
+    joinerConfigs: MedusaModule.getAllJoinerConfigs(),
   })
 
   const fileSystem = new FileSystem(dir)

@@ -7,5 +7,3 @@ export enum MODULE_RESOURCE_TYPE {
   SHARED = "shared",
   ISOLATED = "isolated",
 }
-
-export { GraphQLSchema } from "graphql"

@@ -48,7 +48,6 @@
     "@medusajs/orchestration": "^0.5.7",
     "@medusajs/types": "^1.11.16",
     "@medusajs/utils": "^1.11.9",
-    "graphql": "^16.9.0",
     "resolve-cwd": "^3.0.0"
   },
   "peerDependencies": {

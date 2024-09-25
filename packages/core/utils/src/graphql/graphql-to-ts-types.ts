@@ -1,15 +1,18 @@
-import { MedusaModule } from "../medusa-module"
 import { FileSystem, toCamelCase } from "@medusajs/utils"
 import { codegen } from "@graphql-codegen/core"
 import { parse, printSchema, type GraphQLSchema } from "graphql"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
+import { ModuleJoinerConfig } from "@medusajs/types"
 
-function buildEntryPointsTypeMap(
+function buildEntryPointsTypeMap({
+  schema,
+  joinerConfigs,
+}: {
   schema: string
-): { entryPoint: string; entityType: any }[] {
+  joinerConfigs: ModuleJoinerConfig[]
+}): { entryPoint: string; entityType: any }[] {
   // build map entry point to there type to be merged and used by the remote query
 
-  const joinerConfigs = MedusaModule.getAllJoinerConfigs()
   return joinerConfigs
     .flatMap((config) => {
       const aliases = Array.isArray(config.alias)
@@ -40,15 +43,17 @@ async function generateTypes({
   outputDir,
   filename,
   config,
+  joinerConfigs,
 }: {
   outputDir: string
   filename: string
   config: Parameters<typeof codegen>[0]
+  joinerConfigs: ModuleJoinerConfig[]
 }) {
   const fileSystem = new FileSystem(outputDir)
 
   let output = await codegen(config)
-  const entryPoints = buildEntryPointsTypeMap(output)
+  const entryPoints = buildEntryPointsTypeMap({ schema: output, joinerConfigs })
 
   const interfaceName = toCamelCase(filename)
 
@@ -80,14 +85,17 @@ ${entryPoints
   }
 }
 
+// TODO: rename from gqlSchemaToTypes to grapthqlToTsTypes
 export async function gqlSchemaToTypes({
   schema,
   outputDir,
   filename,
+  joinerConfigs,
 }: {
   schema: GraphQLSchema
   outputDir: string
   filename: string
+  joinerConfigs: ModuleJoinerConfig[]
 }) {
   const config = {
     documents: [],
@@ -113,5 +121,5 @@ export async function gqlSchemaToTypes({
     },
   }
 
-  await generateTypes({ outputDir, filename, config })
+  await generateTypes({ outputDir, filename, config, joinerConfigs })
 }
