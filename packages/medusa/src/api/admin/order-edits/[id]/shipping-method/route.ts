@@ -19,6 +19,6 @@ export const POST = async (
   )
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
   })
 }

@@ -25,6 +25,8 @@ export type ChangeActionType =
   | "WRITE_OFF_ITEM"
   | "REINSTATE_ITEM"
 
+export type OrderChangeStatus = "confirmed" | "declined" | "requested" | "pending" | "canceled"
+
 /**
  * @interface
  *
@@ -1093,12 +1095,12 @@ export interface OrderDTO {
   /**
    * When the order was created.
    */
-  created_at?: string | Date
+  created_at: string | Date
 
   /**
    * When the order was updated.
    */
-  updated_at?: string | Date
+  updated_at: string | Date
 
   /**
    * The original item total of the order.
@@ -1801,7 +1803,7 @@ export interface OrderChangeDTO {
   /**
    * The status of the order change
    */
-  status: string
+  status: OrderChangeStatus
 
   /**
    * The requested by of the order change
@@ -2699,4 +2701,5 @@ export interface OrderPreviewDTO
   shipping_methods: (OrderShippingMethodDTO & {
     actions?: OrderChangeActionDTO[]
   })[]
+  return_requested_total: number
 }
