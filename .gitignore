@@ -24,3 +24,5 @@ build/**
 **/stats
 .favorites.json
 .vscode
+
+**/tsconfig.tsbuildinfo
