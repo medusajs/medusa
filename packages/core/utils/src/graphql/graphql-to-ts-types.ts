@@ -1,9 +1,9 @@
-import { FileSystem, toCamelCase } from "@medusajs/utils"
 import { GraphQLSchema } from "graphql/type"
 import { parse, printSchema } from "graphql"
 import { codegen } from "@graphql-codegen/core"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { toCamelCase, FileSystem } from "../common"
 
 function buildEntryPointsTypeMap({
   schema,
