@@ -5245,11 +5245,19 @@ __metadata:
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
     "@medusajs/framework": ^0.0.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/knex": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
     "@swc/core": ^1.5.29
     "@swc/jest": ^0.2.36
+    awilix: ^8.0.1
+    bignumber.js: ^9.1.2
     cross-env: ^5.2.1
+    ioredis: ^5.4.1
     jest: ^29.7.0
     json-2-csv: ^5.5.4
+    pg: ^8.13.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
   peerDependencies:
@@ -5777,7 +5785,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@*, @medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
+"@medusajs/modules-sdk@^1.12.11, @medusajs/modules-sdk@workspace:^, @medusajs/modules-sdk@workspace:packages/core/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/core/modules-sdk"
   dependencies:
@@ -14999,6 +15007,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"awilix@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "awilix@npm:11.0.0"
+  dependencies:
+    camel-case: ^4.1.2
+    fast-glob: ^3.3.2
+  checksum: b531f561198cba8dddbdbceaa4db38802beb89278f33f28019241644c4a8b0b077002e604f58b94b3a4039349257eab157dd34741d408b8a25073dcf45487bfa
+  languageName: node
+  linkType: hard
+
 "awilix@npm:^8.0.1":
   version: 8.0.1
   resolution: "awilix@npm:8.0.1"
@@ -19692,7 +19710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0":
+"fast-glob@npm:^3.2.12, fast-glob@npm:^3.2.9, fast-glob@npm:^3.3.0, fast-glob@npm:^3.3.2":
   version: 3.3.2
   resolution: "fast-glob@npm:3.3.2"
   dependencies:
@@ -24429,26 +24447,26 @@ __metadata:
   resolution: "medusa-test-utils@workspace:packages/core/medusa-test-utils"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    "@medusajs/modules-sdk": "*"
-    "@medusajs/types": ^1.11.16
-    "@medusajs/utils": ^1.11.9
     "@mikro-orm/core": 5.9.7
+    "@mikro-orm/knex": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
+    awilix: ^11.0.0
     axios: ^0.21.4
-    cross-env: ^5.2.1
+    bignumber.js: ^9.1.2
     express: ^4.18.3
     get-port: ^5.1.0
+    ioredis: ^5.4.1
     jest: ^29.7.0
+    pg: ^8.13.0
     pg-god: ^1.0.12
     randomatic: ^3.1.1
     rimraf: ^3.0.2
-    typescript: ^5.1.6
+    typescript: ^5.6.2
   peerDependencies:
-    "@medusajs/medusa": "*"
-  peerDependenciesMeta:
-    "@medusajs/medusa":
-      optional: true
+    "@medusajs/framework": ^0.0.1
+    "@mikro-orm/postgresql": 5.9.7
+    awilix: ^11.0.0
   languageName: unknown
   linkType: soft
 
