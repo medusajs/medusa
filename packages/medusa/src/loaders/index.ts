@@ -1,5 +1,5 @@
 import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
+import { ContainerRegistrationKeys, promiseAll, GraphQLSchema } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { join } from "path"
@@ -12,7 +12,6 @@ import {
   container,
   expressLoader,
   featureFlagsLoader,
-  GraphQLSchema,
   JobLoader,
   LinkLoader,
   logger,
