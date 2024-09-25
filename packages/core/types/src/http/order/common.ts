@@ -254,7 +254,7 @@ export interface BaseOrder {
   fulfillment_status: FulfillmentStatus
   transactions?: BaseOrderTransaction[]
   summary: BaseOrderSummary
-  metadata: Record<string, unknown> | null
+  metadata?: Record<string, unknown> | null
   created_at: string | Date
   updated_at: string | Date
   original_item_total: number

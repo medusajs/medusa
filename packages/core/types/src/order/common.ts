@@ -1095,12 +1095,12 @@ export interface OrderDTO {
   /**
    * When the order was created.
    */
-  created_at?: string | Date
+  created_at: string | Date
 
   /**
    * When the order was updated.
    */
-  updated_at?: string | Date
+  updated_at: string | Date
 
   /**
    * The original item total of the order.
@@ -2701,4 +2701,5 @@ export interface OrderPreviewDTO
   shipping_methods: (OrderShippingMethodDTO & {
     actions?: OrderChangeActionDTO[]
   })[]
+  return_requested_total: number
 }

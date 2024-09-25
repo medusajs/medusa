@@ -1,5 +1,6 @@
+import { OrderDTO } from "../../../order"
 import { DeleteResponse, PaginatedResponse } from "../../common"
-import { AdminOrder, AdminOrderPreview } from "../../order"
+import { AdminOrderPreview } from "../../order"
 import { AdminReturn } from "../../return"
 import { AdminClaim } from "./entities"
 
@@ -13,7 +14,7 @@ export interface AdminClaimListResponse
   }> {}
 
 export interface AdminClaimOrderResponse {
-  order: AdminOrder
+  order: OrderDTO
   claim: AdminClaim
 }
 
