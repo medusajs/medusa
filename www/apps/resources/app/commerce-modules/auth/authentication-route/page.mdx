@@ -283,13 +283,13 @@ Its path parameters are:
 - `{actor_type}`: the actor type of the user you're authenticating. For example, `customer`.
 - `{provider}`: the auth provider to handle the authentication. For example, `emailpass`.
 
-### Request Body Parameters
+#### Request Body Parameters
 
 This route accepts in the request body an object having the following property:
 
 - `identifier`: The user's identifier in the specified auth provider. For example, for the `emailpass` auth provider, you pass the user's email.
 
-### Response Fields
+#### Response Fields
 
 If the authentication is successful, the request returns a `201` response code.
 

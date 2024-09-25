@@ -4,6 +4,9 @@
  * summary: Set Authentication Session
  * description: Set the cookie session ID of a customer. The customer must be previously authenticated with the `/auth/customer/{provider}` API route first,
  *   as the JWT token is required in the header of the request.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/storefront-development/customers/login#2-using-a-cookie-session
+ *   description: Storefront development: How to login as a customer
  * x-authenticated: true
  * x-codeSamples:
  *   - lang: Shell

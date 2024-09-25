@@ -8,6 +8,9 @@
  * 
  * 
  *    Use the generated token to update the user's password using the Reset Password API route.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#generate-reset-password-token-route
+ *   description: Learn more about this API route.
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider

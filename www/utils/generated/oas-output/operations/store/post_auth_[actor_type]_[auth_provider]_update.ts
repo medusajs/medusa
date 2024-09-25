@@ -4,6 +4,9 @@
  * summary: Reset a Customer's Password
  * x-sidebar-summary: Reset Password
  * description: Reset a customer's password. Generate the reset password token first using the Get Reset Password Token API route.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/storefront-development/customers/reset-password#2-reset-password-page
+ *   description: Storefront development: How to create the reset password page.
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider

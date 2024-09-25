@@ -4,6 +4,9 @@
  * summary: Reset an Admin User's Password
  * x-sidebar-summary: Reset Password
  * description: Reset a user's password. Generate the reset password token first using the Get Reset Password Token API route.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#reset-password-route
+ *   description: Learn more about this API route.
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider
