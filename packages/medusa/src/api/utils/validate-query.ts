@@ -1,4 +1,8 @@
-import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
+import {
+  BaseEntity,
+  QueryConfig,
+  RequestQueryFields,
+} from "@medusajs/framework/types"
 import { NextFunction } from "express"
 import { omit } from "lodash"
 import { z } from "zod"
@@ -9,7 +13,7 @@ import {
   prepareRetrieveQuery,
 } from "../../utils/get-query-config"
 import { zodValidator } from "./zod-helper"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 
 /**
  * Normalize an input query, especially from array like query params to an array type

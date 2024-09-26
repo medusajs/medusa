@@ -1,6 +1,5 @@
-import { GraphQLSchema } from "graphql/type"
-import { parse, printSchema } from "graphql"
 import { codegen } from "@graphql-codegen/core"
+import { parse, printSchema, type GraphQLSchema } from "graphql"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { FileSystem } from "../common"

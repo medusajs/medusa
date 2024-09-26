@@ -5,7 +5,7 @@ import {
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -13,7 +13,7 @@ import {
 import { refetchEntity } from "../../../../../../utils/refetch-entity"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostReturnsRequestItemsActionReqSchemaType } from "../../../../../returns/validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsRequestItemsActionReqSchemaType>,

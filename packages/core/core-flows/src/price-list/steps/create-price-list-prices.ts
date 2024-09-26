@@ -4,9 +4,9 @@ import {
   CreatePriceListPriceWorkflowDTO,
   CreatePriceListPricesWorkflowStepDTO,
   IPricingModuleService,
-} from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createPriceListPricesStepId = "create-price-list-prices"
 /**

@@ -54,7 +54,7 @@
  *         description: The item's quantity.
  *       - $ref: "#/components/schemas/IBigNumber"
  *   product:
- *     $ref: "#/components/schemas/BaseProduct"
+ *     $ref: "#/components/schemas/StoreProduct"
  *   product_id:
  *     type: string
  *     title: product_id
@@ -151,7 +151,7 @@
  *     items:
  *       $ref: "#/components/schemas/BaseLineItemAdjustment"
  *   cart:
- *     $ref: "#/components/schemas/BaseCart"
+ *     $ref: "#/components/schemas/StoreCart"
  *   cart_id:
  *     type: string
  *     title: cart_id

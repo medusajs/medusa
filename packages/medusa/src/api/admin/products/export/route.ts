@@ -2,7 +2,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import { remapKeysForProduct } from "../helpers"
 import { exportProductsWorkflow } from "@medusajs/core-flows"
 

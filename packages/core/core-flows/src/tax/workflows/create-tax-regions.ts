@@ -1,9 +1,9 @@
-import { CreateTaxRegionDTO, TaxRegionDTO } from "@medusajs/types"
+import { CreateTaxRegionDTO, TaxRegionDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createTaxRegionsStep } from "../steps"
 
 export const createTaxRegionsWorkflowId = "create-tax-regions"
@@ -12,7 +12,9 @@ export const createTaxRegionsWorkflowId = "create-tax-regions"
  */
 export const createTaxRegionsWorkflow = createWorkflow(
   createTaxRegionsWorkflowId,
-  (input: WorkflowData<CreateTaxRegionDTO[]>): WorkflowResponse<TaxRegionDTO[]> => {
+  (
+    input: WorkflowData<CreateTaxRegionDTO[]>
+  ): WorkflowResponse<TaxRegionDTO[]> => {
     return new WorkflowResponse(createTaxRegionsStep(input))
   }
 )

@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "@medusajs/framework": "^0.0.1",
-    "@types/simple-oauth2": "^5.0.7",
-    "cross-env": "^5.2.1",
+    "@swc/core": "^1.7.28",
+    "@swc/jest": "^0.2.36",
     "jest": "^29.7.0",
     "msw": "^2.3.0",
     "rimraf": "^5.0.1",

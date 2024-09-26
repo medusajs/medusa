@@ -1,7 +1,9 @@
-import { IPricingModuleService } from "@medusajs/types"
-import { PricingWorkflow } from "@medusajs/types/dist/workflow"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  IPricingModuleService,
+  PricingWorkflow,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createPricePreferencesStepId = "create-price-preferences"
 /**

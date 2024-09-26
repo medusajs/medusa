@@ -4,19 +4,19 @@ import {
   LinkDefinition,
   PricingTypes,
   ProductTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   MedusaError,
   Modules,
   ProductVariantWorkflowEvents,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { createLinksWorkflow } from "../../common/workflows/create-links"
 import { validateInventoryItems } from "../../inventory/steps/validate-inventory-items"

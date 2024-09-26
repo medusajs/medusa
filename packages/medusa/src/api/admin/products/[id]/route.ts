@@ -7,8 +7,8 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import { remapKeysForProduct, remapProductResponse } from "../helpers"
-import { MedusaError } from "@medusajs/utils"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
+import { MedusaError } from "@medusajs/framework/utils"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 import { refetchEntity } from "../../../utils/refetch-entity"
 
 export const GET = async (

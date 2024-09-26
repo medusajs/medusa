@@ -1,9 +1,12 @@
-import { RefundReasonDTO, UpdateRefundReasonDTO } from "@medusajs/types"
+import {
+  RefundReasonDTO,
+  UpdateRefundReasonDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { updateRefundReasonsStep } from "../steps"
 
 export const updateRefundReasonsWorkflowId = "update-refund-reasons"

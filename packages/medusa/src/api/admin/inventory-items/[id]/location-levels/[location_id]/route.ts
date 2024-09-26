@@ -2,14 +2,14 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
 
 import {
   deleteInventoryLevelsWorkflow,
   updateInventoryLevelsWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import { refetchInventoryItem } from "../../../helpers"
 import { AdminUpdateInventoryLocationLevelType } from "../../../validators"
 

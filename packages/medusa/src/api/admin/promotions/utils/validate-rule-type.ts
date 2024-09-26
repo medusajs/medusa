@@ -1,4 +1,4 @@
-import { MedusaError, RuleType } from "@medusajs/utils"
+import { MedusaError, RuleType } from "@medusajs/framework/utils"
 
 const validRuleTypes: string[] = Object.values(RuleType)
 

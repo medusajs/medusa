@@ -3,14 +3,18 @@ import {
   OrderChangeDTO,
   OrderDTO,
   OrderPreviewDTO,
-} from "@medusajs/types"
-import { ChangeActionType, MathBN, OrderChangeStatus } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import {
+  ChangeActionType,
+  MathBN,
+  OrderChangeStatus,
+} from "@medusajs/framework/utils"
 import {
   WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { reserveInventoryStep } from "../../../cart/steps/reserve-inventory"
 import { prepareConfirmInventoryInput } from "../../../cart/utils/prepare-confirm-inventory-input"
 import { useRemoteQueryStep } from "../../../common"
