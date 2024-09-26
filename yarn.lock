@@ -5207,7 +5207,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/core-flows@^0.0.9, @medusajs/core-flows@workspace:packages/core/core-flows":
+"@medusajs/core-flows@^0.0.9, @medusajs/core-flows@workspace:*, @medusajs/core-flows@workspace:^, @medusajs/core-flows@workspace:packages/core/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
@@ -5233,7 +5233,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/currency@workspace:packages/modules/currency":
+"@medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/modules/currency"
   dependencies:
@@ -5427,7 +5427,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@^0.0.1, @medusajs/framework@workspace:packages/core/framework":
+"@medusajs/framework@^0.0.1, @medusajs/framework@workspace:^, @medusajs/framework@workspace:packages/core/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/core/framework"
   dependencies:
@@ -5617,7 +5617,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@^0.2.11, @medusajs/link-modules@workspace:packages/modules/link-modules":
+"@medusajs/link-modules@^0.2.11, @medusajs/link-modules@workspace:^, @medusajs/link-modules@workspace:packages/modules/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/modules/link-modules"
   dependencies:
@@ -5910,7 +5910,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment@workspace:packages/modules/payment":
+"@medusajs/payment@workspace:^, @medusajs/payment@workspace:packages/modules/payment":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment@workspace:packages/modules/payment"
   dependencies:
@@ -21346,6 +21346,7 @@ __metadata:
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/payment": "workspace:^"
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
@@ -21357,10 +21358,7 @@ __metadata:
     "@medusajs/workflow-engine-inmemory": "workspace:*"
     "@swc/core": ^1.4.8
     "@swc/jest": ^0.2.36
-    faker: ^5.5.3
-    form-data: ^4.0.0
     jest: ^29.7.0
-    jest-environment-node: ^29.7.0
     pg: ^8.11.3
     typescript: ^5.6.2
   languageName: unknown
@@ -21373,6 +21371,7 @@ __metadata:
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/core-flows": "workspace:*"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/fulfillment": "workspace:^"
@@ -21393,9 +21392,9 @@ __metadata:
     "@medusajs/workflow-engine-inmemory": "workspace:*"
     "@swc/core": ^1.4.8
     "@swc/jest": ^0.2.36
-    faker: ^5.5.3
+    form-data: ^4.0.0
     jest: ^29.7.0
-    jest-environment-node: ^29.7.0
+    jsonwebtoken: ^9.0.2
     medusa-test-utils: "workspace:*"
     pg: ^8.11.3
     typescript: ^5.6.2
@@ -21409,13 +21408,18 @@ __metadata:
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/core-flows": "workspace:^"
+    "@medusajs/currency": "workspace:^"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
+    "@medusajs/framework": "workspace:^"
     "@medusajs/fulfillment": "workspace:^"
     "@medusajs/fulfillment-manual": "workspace:^"
     "@medusajs/inventory-next": "workspace:^"
+    "@medusajs/link-modules": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/payment": "workspace:^"
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
@@ -21431,9 +21435,10 @@ __metadata:
     "@swc/jest": ^0.2.36
     faker: ^5.5.3
     jest: ^29.7.0
-    jest-environment-node: ^29.7.0
+    jsonwebtoken: ^9.0.2
     medusa-test-utils: "workspace:*"
     pg: ^8.11.3
+    scrypt-kdf: ^2.0.1
     typescript: ^5.6.2
   languageName: unknown
   linkType: soft
