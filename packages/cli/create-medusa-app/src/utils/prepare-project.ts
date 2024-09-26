@@ -246,7 +246,13 @@ export default async ({
 
       const originalContent = fs.readFileSync(nextjsEnvPath, "utf-8")
 
-      fs.appendFileSync(nextjsEnvPath, originalContent.replace("NEXT_PUBLIC_PUBLISHABLE_KEY=", `NEXT_PUBLIC_PUBLISHABLE_KEY=${apiKeys.rows[0].token}`))
+      fs.writeFileSync(
+        nextjsEnvPath, 
+        originalContent.replace(
+          "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_test", 
+          `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${apiKeys.rows[0].token}`
+        )
+      )
     }
   }
 
