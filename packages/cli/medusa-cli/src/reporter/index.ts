@@ -3,8 +3,6 @@ import ora from "ora"
 import stackTrace from "stack-trace"
 import { ulid } from "ulid"
 import winston from "winston"
-
-import * as Transport from "winston-transport"
 import { panicHandler } from "./panic-handler"
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "info"
@@ -12,7 +10,7 @@ const LOG_FILE = process.env.LOG_FILE || ""
 const NODE_ENV = process.env.NODE_ENV || "development"
 const IS_DEV = NODE_ENV.startsWith("dev")
 
-let transports: Transport[] = []
+let transports: winston.transport[] = []
 
 if (!IS_DEV) {
   transports.push(new winston.transports.Console())

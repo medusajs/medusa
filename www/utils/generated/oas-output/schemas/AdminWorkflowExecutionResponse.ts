@@ -1,7 +1,7 @@
 /**
  * @schema AdminWorkflowExecutionResponse
  * type: object
- * description: SUMMARY
+ * description: The workflow execution's details.
  * x-schemaName: AdminWorkflowExecutionResponse
  * required:
  *   - workflow_execution

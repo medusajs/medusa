@@ -2,7 +2,7 @@ import {
   deleteReturnReasonsWorkflow,
   updateRefundReasonsWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes, RefundReasonResponse } from "@medusajs/types"
+import { HttpTypes, RefundReasonResponse } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

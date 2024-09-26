@@ -1,4 +1,4 @@
-import { defineMiddlewares as originalDefineMiddlewares } from "@medusajs/framework"
+import { defineMiddlewares as originalDefineMiddlewares } from "@medusajs/framework/http"
 
 /**
  * A helper function to configure the routes by defining custom middleware,

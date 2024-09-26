@@ -1,8 +1,8 @@
 import { Express } from "express"
 import { join } from "path"
 import qs from "qs"
-import { RoutesLoader } from "@medusajs/framework"
-import { MedusaContainer, PluginDetails } from "@medusajs/types"
+import { RoutesLoader } from "@medusajs/framework/http"
+import { MedusaContainer, PluginDetails } from "@medusajs/framework/types"
 
 type Options = {
   app: Express

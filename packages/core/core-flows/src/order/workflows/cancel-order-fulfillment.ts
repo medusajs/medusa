@@ -4,8 +4,8 @@ import {
   FulfillmentDTO,
   OrderDTO,
   OrderWorkflow,
-} from "@medusajs/types"
-import { MedusaError, Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -14,7 +14,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { cancelFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"

@@ -1,10 +1,10 @@
-import { UserWorkflow } from "@medusajs/types"
-import { UserWorkflowEvents } from "@medusajs/utils"
+import { UserWorkflow } from "@medusajs/framework/types"
+import { UserWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { deleteUsersStep } from "../steps"
 

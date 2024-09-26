@@ -2,7 +2,7 @@ import { batchLinkProductsToCategoryWorkflow } from "@medusajs/core-flows"
 import {
   AdminProductCategoryResponse,
   LinkMethodRequest,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

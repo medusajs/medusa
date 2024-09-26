@@ -1,13 +1,13 @@
 import {
   CreateOrderChangeActionDTO,
   OrderChangeActionDTO,
-} from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createEntitiesStep } from "../../common/steps/create-entities"
 
 export const createOrderChangeActionsWorkflowId = "create-order-change-actions"

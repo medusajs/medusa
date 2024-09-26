@@ -26,13 +26,15 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.11.16",
-    "cross-env": "^5.2.1",
+    "@swc/core": "^1.7.28",
+    "@swc/jest": "^0.2.36",
+    "awilix": "^8.0.1",
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "@medusajs/types": "^1.11.16",
     "@medusajs/utils": "^1.11.9"
   },
   "peerDependencies": {

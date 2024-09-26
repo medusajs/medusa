@@ -2,9 +2,9 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
-import { WorkflowTypes } from "@medusajs/types"
+import { WorkflowTypes } from "@medusajs/framework/types"
 import { updateReservationsStep } from "../steps"
 
 export const updateReservationsWorkflowId = "update-reservations-workflow"

@@ -1,5 +1,5 @@
-import { DeclineOrderChangeDTO } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { DeclineOrderChangeDTO } from "@medusajs/framework/types"
+import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { declineOrderChangeStep } from "../steps"
 
 export const declineOrderChangeWorkflowId = "decline-order-change"

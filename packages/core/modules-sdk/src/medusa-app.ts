@@ -1,5 +1,3 @@
-import { mergeTypeDefs } from "@graphql-tools/merge"
-import { makeExecutableSchema } from "@graphql-tools/schema"
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   ConfigModule,
@@ -18,14 +16,14 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  dynamicImport,
   GraphQLUtils,
+  isObject,
+  isString,
   MedusaError,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  dynamicImport,
-  isObject,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
@@ -37,7 +35,7 @@ import {
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { RemoteQuery, createQuery } from "./remote-query"
+import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
@@ -228,8 +226,11 @@ function cleanAndMergeSchema(loadedSchema) {
   const { schema: cleanedSchema, notFound } = GraphQLUtils.cleanGraphQLSchema(
     defaultMedusaSchema + loadedSchema
   )
-  const mergedSchema = mergeTypeDefs(cleanedSchema)
-  return { schema: makeExecutableSchema({ typeDefs: mergedSchema }), notFound }
+  const mergedSchema = GraphQLUtils.mergeTypeDefs(cleanedSchema)
+  return {
+    schema: GraphQLUtils.makeExecutableSchema({ typeDefs: mergedSchema }),
+    notFound,
+  }
 }
 
 function getLoadedSchema(): string {

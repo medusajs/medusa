@@ -1,6 +1,9 @@
-import { FulfillmentTypes, IFulfillmentModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  FulfillmentTypes,
+  IFulfillmentModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createFulfillmentStepId = "create-fulfillment"
 /**

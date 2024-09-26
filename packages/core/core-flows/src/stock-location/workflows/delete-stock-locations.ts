@@ -1,4 +1,4 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
 
 import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
 import { deleteStockLocationsStep } from "../steps"

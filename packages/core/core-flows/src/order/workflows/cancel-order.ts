@@ -3,8 +3,8 @@ import {
   OrderDTO,
   OrderWorkflow,
   PaymentCollectionDTO,
-} from "@medusajs/types"
-import { MedusaError, deepFlatMap } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError, deepFlatMap } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -13,7 +13,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { cancelPaymentStep } from "../../payment/steps"
 import { deleteReservationsByLineItemsStep } from "../../reservation/steps"
