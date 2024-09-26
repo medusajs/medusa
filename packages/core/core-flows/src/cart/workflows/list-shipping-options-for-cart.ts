@@ -3,6 +3,7 @@ import { deepFlatMap, isPresent, MedusaError } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
+  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -18,16 +19,7 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
   (input: WorkflowData<ListShippingOptionsForCartWorkflowInputDTO>) => {
     const scLocationFulfillmentSets = useRemoteQueryStep({
       entry_point: "sales_channels",
-      fields: [
-        "stock_locations.fulfillment_sets.id",
-        "stock_locations.fulfillment_sets.name",
-        "stock_locations.fulfillment_sets.type",
-        "stock_locations.fulfillment_sets.service_zone_id",
-        "stock_locations.fulfillment_sets.shipping_profile_id",
-        "stock_locations.fulfillment_sets.provider_id",
-        "stock_locations.fulfillment_sets.data",
-        "stock_locations.fulfillment_sets.amount",
-      ],
+      fields: ["stock_locations.fulfillment_sets.id"],
       variables: {
         id: input.sales_channel_id,
       },
@@ -72,12 +64,11 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
         "provider.id",
         "provider.is_enabled",
 
-        "calculated_price.calculated_amount",
-        "calculated_price.is_calculated_price_tax_inclusive",
+        "calculated_price.*",
       ],
       variables: {
         context: {
-          is_return: "false",
+          // is_return: "false",
           enabled_in_store: "true",
         },
         filters: {
@@ -97,11 +88,38 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
       },
     }).config({ name: "shipping-options-query" })
 
+    const pricesIds = transform({ shippingOptions }, ({ shippingOptions }) => {
+      return shippingOptions
+        .map((so) => so.calculated_price?.calculated_price?.id)
+        .filter(Boolean)
+    })
+    const originalPriceQuery = when({ pricesIds }, ({ pricesIds }) => {
+      return pricesIds.length > 0
+    }).then(() => {
+      useRemoteQueryStep({
+        entry_point: "price",
+        fields: ["id", "price_rules.*"],
+        variables: {
+          id: pricesIds,
+        },
+      }).config({ name: "price-set-query" })
+    })
+
     const shippingOptionsWithPrice = transform(
       {
         shippingOptions,
+        originalPriceQuery,
+        pricesIds,
       },
       (data) => {
+        const calcPricesMap = (data.originalPriceQuery ?? ([] as any)).reduce(
+          (acc, calcPrice) => {
+            acc[calcPrice.id] = calcPrice
+            return acc
+          },
+          {}
+        )
+
         const optionsMissingPrices: string[] = []
 
         const options = data.shippingOptions.map((shippingOption) => {
@@ -114,6 +132,9 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
           return {
             ...options,
             amount: calculated_price?.calculated_amount,
+            rules:
+              calcPricesMap[calculated_price?.calculated_price?.id]
+                ?.price_rules ?? [],
             is_tax_inclusive:
               !!calculated_price?.is_calculated_price_tax_inclusive,
           }
