@@ -1,5 +1,5 @@
-import { IUserModuleService } from "@medusajs/types"
-import { Module, Modules, UserEvents } from "@medusajs/utils"
+import { IUserModuleService } from "@medusajs/framework/types"
+import { Module, Modules, UserEvents } from "@medusajs/framework/utils"
 import { UserModuleService } from "@services"
 import {
   MockEventBusService,

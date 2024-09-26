@@ -5,7 +5,7 @@ import {
   IStoreModuleService,
   ModulesSdkTypes,
   StoreTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   getDuplicates,
   InjectManager,
@@ -16,7 +16,7 @@ import {
   MedusaService,
   promiseAll,
   removeUndefined,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import { Store, StoreCurrency } from "@models"
 import { UpdateStoreInput } from "@types"

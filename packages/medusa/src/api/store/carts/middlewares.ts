@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
 import { ensurePublishableKeyAndSalesChannelMatch } from "../../utils/middlewares/common/ensure-pub-key-sales-channel-match"
 import { maybeAttachPublishableKeyScopes } from "../../utils/middlewares/common/maybe-attach-pub-key-scopes"
 import { validateAndTransformBody } from "../../utils/validate-body"

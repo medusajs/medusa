@@ -3,7 +3,7 @@ import {
   MedusaService,
   model,
   Module,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const User = model.define("user", {
   id: model.id().primaryKey(),

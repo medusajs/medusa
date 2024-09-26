@@ -10,7 +10,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 import {
   InjectManager,
@@ -18,7 +18,7 @@ import {
   isString,
   MedusaContext,
   MedusaService,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { EntityManager } from "@mikro-orm/core"
 import {
   Customer,

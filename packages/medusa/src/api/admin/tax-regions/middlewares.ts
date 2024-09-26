@@ -6,7 +6,7 @@ import {
   AdminGetTaxRegionsParams,
 } from "./validators"
 
-import { MiddlewareRoute } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
 import { validateAndTransformBody } from "../../utils/validate-body"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 

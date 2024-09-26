@@ -4,14 +4,14 @@ import {
   OrderDTO,
   OrderPreviewDTO,
   ReturnDTO,
-} from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowResponse,
   createStep,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { previewOrderChangeStep } from "../../steps"
 import { createOrderShippingMethods } from "../../steps/create-order-shipping-methods"

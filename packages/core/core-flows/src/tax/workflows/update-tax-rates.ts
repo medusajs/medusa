@@ -3,8 +3,8 @@ import {
   ITaxModuleService,
   TaxRateDTO,
   UpdateTaxRateDTO,
-} from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import {
   StepResponse,
   WorkflowData,
@@ -12,7 +12,7 @@ import {
   createStep,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   createTaxRateRulesStep,
   deleteTaxRateRulesStep,

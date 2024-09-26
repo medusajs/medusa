@@ -5,7 +5,7 @@ import {
 import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
 
 import { bulkCreateDeleteLevelsWorkflow } from "@medusajs/core-flows"
-import { BatchMethodRequest } from "@medusajs/types"
+import { BatchMethodRequest } from "@medusajs/framework/types"
 
 export const POST = async (
   req: MedusaRequest<

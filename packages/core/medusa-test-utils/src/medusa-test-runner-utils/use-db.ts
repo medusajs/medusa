@@ -1,7 +1,7 @@
 import type { MedusaAppLoader } from "@medusajs/framework"
 import { join } from "path"
-import { MedusaContainer } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { MedusaContainer } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 /**
  * Initiates the database connection

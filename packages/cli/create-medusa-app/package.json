@@ -32,7 +32,6 @@
     "winston": "^3.9.0"
   },
   "devDependencies": {
-    "@medusajs/types": "^1.11.16",
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.12.2",
     "@types/configstore": "^6.0.0",
@@ -52,7 +51,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.6.2"
   },
   "engines": {
     "node": ">=14.16"

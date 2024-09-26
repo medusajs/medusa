@@ -3,7 +3,7 @@ import {
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   BigNumberRawValue,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   BigNumber,
   DALUtils,
@@ -11,7 +11,7 @@ import {
   PromotionUtils,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Collection,

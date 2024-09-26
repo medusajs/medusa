@@ -1,7 +1,7 @@
 import {
   buildPriceListRules,
   buildPriceSetPricesForCore,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { AdminPriceListRemoteQueryDTO } from "../types"
 

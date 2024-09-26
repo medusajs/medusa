@@ -6,14 +6,19 @@ import {
   OrderWorkflow,
   ShippingOptionDTO,
   WithCalculatedPrice,
-} from "@medusajs/types"
-import { MathBN, MedusaError, Modules, isDefined } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import {
+  MathBN,
+  MedusaError,
+  Modules,
+  isDefined,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
 import { createReturnFulfillmentWorkflow } from "../../../fulfillment"
 import { createCompleteReturnStep } from "../../steps/return/create-complete-return"

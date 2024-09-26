@@ -1,3 +1,4 @@
+// @ts-ignore
 import ConfigStore from "configstore"
 import reporter from "../reporter"
 

@@ -6,12 +6,12 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { HttpTypes, MedusaContainer } from "@medusajs/types"
+import { HttpTypes, MedusaContainer } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { refetchCustomer } from "../../../helpers"
 import {
   StoreGetCustomerAddressParamsType,

@@ -1,4 +1,4 @@
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,

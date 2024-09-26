@@ -3,7 +3,7 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchEntities } from "../../utils/refetch-entity"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminNotificationListParams>,

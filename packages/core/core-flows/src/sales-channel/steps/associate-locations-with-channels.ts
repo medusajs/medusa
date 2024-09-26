@@ -1,6 +1,6 @@
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 
 export interface AssociateLocationsWithSalesChannelsStepInput {
   links: {

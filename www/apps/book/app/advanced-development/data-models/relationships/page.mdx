@@ -151,14 +151,14 @@ import { model } from "@medusajs/utils"
 const Order = model.define("order", {
   id: model.id().primaryKey(),
   products: model.manyToMany(() => Product, {
-    mappedBy: "orders"
+    mappedBy: "orders",
   }),
 })
 
 const Product = model.define("product", {
   id: model.id().primaryKey(),
   orders: model.manyToMany(() => Order, {
-    mappedBy: "products"
+    mappedBy: "products",
   }),
 })
 ```

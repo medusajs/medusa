@@ -1,5 +1,5 @@
-import { OrderDetailDTO } from "@medusajs/types"
-import { isDefined, MathBN } from "@medusajs/utils"
+import { OrderDetailDTO } from "@medusajs/framework/types"
+import { isDefined, MathBN } from "@medusajs/framework/utils"
 
 export const getLastPaymentStatus = (order: OrderDetailDTO) => {
   const PaymentStatus = {
@@ -134,11 +134,12 @@ export const getLastFulfillmentStatus = (order: OrderDetailDTO) => {
   // Whenever there are any unfulfilled items in the order, it should be
   // considered partially_[STATUS] where status is picked up from the hierarchy
   // of statuses
-  const hasUnfulfilledItems = (order.items || [])?.filter(
-    (i) =>
-      isDefined(i?.detail?.raw_fulfilled_quantity) &&
-      MathBN.lt(i.detail.raw_fulfilled_quantity, i.raw_quantity)
-  ).length > 0
+  const hasUnfulfilledItems =
+    (order.items || [])?.filter(
+      (i) =>
+        isDefined(i?.detail?.raw_fulfilled_quantity) &&
+        MathBN.lt(i.detail.raw_fulfilled_quantity, i.raw_quantity)
+    ).length > 0
 
   if (fulfillmentStatus[FulfillmentStatus.DELIVERED] > 0) {
     if (

@@ -2,8 +2,8 @@ import {
   FulfillmentDTO,
   OrderDTO,
   RegisterOrderDeliveryDTO,
-} from "@medusajs/types"
-import { FulfillmentEvents, Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { FulfillmentEvents, Modules } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -11,7 +11,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { markFulfillmentAsDeliveredWorkflow } from "../../fulfillment"
 import { registerOrderDeliveryStep } from "../steps/register-delivery"

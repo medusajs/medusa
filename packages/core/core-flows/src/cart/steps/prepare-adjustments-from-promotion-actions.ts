@@ -6,9 +6,9 @@ import {
   PromotionDTO,
   RemoveItemAdjustmentAction,
   RemoveShippingMethodAdjustment,
-} from "@medusajs/types"
-import { ComputedActions, Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { ComputedActions, Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface PrepareAdjustmentsFromPromotionActionsStepInput {
   actions: ComputeActions[]

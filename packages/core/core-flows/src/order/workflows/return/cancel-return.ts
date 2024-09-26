@@ -3,13 +3,13 @@ import {
   OrderWorkflow,
   PaymentCollectionDTO,
   ReturnDTO,
-} from "@medusajs/types"
-import { MathBN, MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MathBN, MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { cancelOrderReturnStep } from "../../steps"
 import { throwIfIsCancelled } from "../../utils/order-validation"

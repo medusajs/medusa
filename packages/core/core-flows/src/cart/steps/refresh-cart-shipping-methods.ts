@@ -2,9 +2,9 @@ import {
   CartDTO,
   ICartModuleService,
   IFulfillmentModuleService,
-} from "@medusajs/types"
-import { Modules, arrayDifference } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { Modules, arrayDifference } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface RefreshCartShippingMethodsStepInput {
   cart: CartDTO

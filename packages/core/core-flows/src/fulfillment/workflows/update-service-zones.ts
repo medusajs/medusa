@@ -1,9 +1,9 @@
-import { FulfillmentWorkflow, ServiceZoneDTO } from "@medusajs/types"
+import { FulfillmentWorkflow, ServiceZoneDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { updateServiceZonesStep } from "../steps/update-service-zones"
 
 export const updateServiceZonesWorkflowId = "update-service-zones-workflow"
