@@ -312,6 +312,11 @@ export const sidebar = numberSidebarItems(
           children: [
             {
               type: "link",
+              path: "/advanced-development/data-models/infer-type",
+              title: "Infer Type",
+            },
+            {
+              type: "link",
               path: "/advanced-development/data-models/property-types",
               title: "Property Types",
             },
