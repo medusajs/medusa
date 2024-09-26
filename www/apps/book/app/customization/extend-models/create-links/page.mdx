@@ -21,8 +21,8 @@ It’s registered in the Medusa container under the `ContainerRegistrationKeys.R
 For example, consider the following step:
 
 export const stepHighlights = [
-  ["14", "resolve", "Resolve the remote link."],
-  ["18", "create", "Create a link between two records."]
+  ["19", "resolve", "Resolve the remote link."],
+  ["23", "create", "Create a link between two records."]
 ]
 
 ```ts highlights={stepHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
@@ -36,9 +36,14 @@ import {
 } from "@medusajs/utils"
 import { BRAND_MODULE } from "../../modules/brand"
 
+type LinkProductToBrandStepInput = {
+  productId: string
+  brandId: string
+}
+
 export const linkProductToBrandStep = createStep(
   "link-product-to-brand",
-  async ({ productId, brandId }, { container }) => {
+  async ({ productId, brandId }: LinkProductToBrandStepInput, { container }) => {
     const remoteLink = container.resolve(
       ContainerRegistrationKeys.REMOTE_LINK
     )

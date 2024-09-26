@@ -862,11 +862,11 @@ This step groups the items by the vendor associated with the product into an obj
 Next, create the fourth step in the file `src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts`:
 
 export const vendorOrder1Highlights = [
-  ["41", "linkDefs", "An array of links to be created."],
-  ["58", "created_orders", "Pass the created orders to the compensation function."]
+  ["42", "linkDefs", "An array of links to be created."],
+  ["59", "created_orders", "Pass the created orders to the compensation function."]
 ]
 
-```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts" highlights={vendorOrder1Highlights} collapsibleLines="1-18" expandMoreLabel="Show Imports"
+```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts" highlights={vendorOrder1Highlights} collapsibleLines="1-19" expandMoreLabel="Show Imports"
 import { 
   createStep,
   StepResponse,
@@ -874,7 +874,8 @@ import {
 import { 
   CartLineItemDTO, 
   OrderDTO,
-  LinkDefinition
+  LinkDefinition,
+  InferTypeOf,
 } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
 import { 
@@ -883,10 +884,10 @@ import {
 } from "@medusajs/core-flows"
 import MarketplaceModuleService from "../../../../modules/marketplace/service"
 import { MARKETPLACE_MODULE } from "../../../../modules/marketplace"
-import { VendorData } from "../../../../modules/marketplace/types"
+import Vendor from "../../../../modules/marketplace/models/vendor"
 
 export type VendorOrder = (OrderDTO & {
-  vendor: VendorData
+  vendor: InferTypeOf<typeof Vendor>
 })
 
 type StepInput = {
