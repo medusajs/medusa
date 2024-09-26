@@ -16845,7 +16845,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-medusa-app@workspace:packages/cli/create-medusa-app"
   dependencies:
-    "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@types/chalk": ^2.2.0
     "@types/commander": ^2.12.2
@@ -16878,7 +16877,7 @@ __metadata:
     prettier: ^2.8.8
     slugify: ^1.6.6
     ts-node: ^10.9.1
-    typescript: ^5.0.4
+    typescript: ^5.6.2
     uuid: ^9.0.0
     validator: ^13.9.0
     wait-on: ^7.0.1
@@ -31743,7 +31742,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.0.4, typescript@npm:^5.1.6, typescript@npm:^5.3.3":
+"typescript@npm:^5.1.6, typescript@npm:^5.3.3":
   version: 5.4.5
   resolution: "typescript@npm:5.4.5"
   bin:
@@ -31803,7 +31802,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.0.4#~builtin<compat/typescript>, typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
   version: 5.4.5
   resolution: "typescript@patch:typescript@npm%3A5.4.5#~builtin<compat/typescript>::version=5.4.5&hash=7ad353"
   bin:
