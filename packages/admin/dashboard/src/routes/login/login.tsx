@@ -136,7 +136,7 @@ export const Login = () => {
               )}
               {serverError && (
                 <Alert
-                  className="items-center bg-white p-2"
+                  className="bg-ui-bg-base items-center p-2"
                   dismissible
                   variant="error"
                 >

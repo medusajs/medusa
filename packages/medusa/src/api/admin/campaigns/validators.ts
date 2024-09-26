@@ -1,4 +1,4 @@
-import { CampaignBudgetType, isPresent } from "@medusajs/utils"
+import { CampaignBudgetType, isPresent } from "@medusajs/framework/utils"
 import { z } from "zod"
 import {
   createFindParams,

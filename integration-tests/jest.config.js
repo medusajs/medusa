@@ -31,8 +31,16 @@ module.exports = {
       "@swc/jest",
       {
         jsc: {
-          parser: { syntax: "typescript", decorators: true },
-          transform: { decoratorMetadata: true },
+          parser: {
+            syntax: "typescript",
+            decorators: true,
+          },
+          transform: {
+            useDefineForClassFields: false,
+            legacyDecorator: true,
+            decoratorMetadata: true,
+          },
+          target: "ES2021",
         },
       },
     ],

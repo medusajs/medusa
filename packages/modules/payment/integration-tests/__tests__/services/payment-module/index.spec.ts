@@ -1,5 +1,5 @@
-import { IPaymentModuleService } from "@medusajs/types"
-import { Module, Modules, promiseAll } from "@medusajs/utils"
+import { IPaymentModuleService } from "@medusajs/framework/types"
+import { Module, Modules, promiseAll } from "@medusajs/framework/utils"
 import { PaymentModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {

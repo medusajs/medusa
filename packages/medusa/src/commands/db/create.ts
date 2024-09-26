@@ -1,14 +1,14 @@
 import slugify from "slugify"
 import { basename } from "path"
 import input from "@inquirer/input"
-import { logger } from "@medusajs/framework"
+import { logger } from "@medusajs/framework/logger"
 import {
+  createClient,
   createDb,
   dbExists,
   EnvEditor,
-  createClient,
   parseConnectionString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 /**
  * A low-level utility to create the database. This util should

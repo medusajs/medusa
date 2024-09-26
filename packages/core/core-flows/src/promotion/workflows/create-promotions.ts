@@ -1,13 +1,15 @@
-import { AdditionalData, CreatePromotionDTO } from "@medusajs/types"
+import { AdditionalData, CreatePromotionDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createPromotionsStep } from "../steps"
 
-export type CreatePromotionsWorkflowInput = { promotionsData: CreatePromotionDTO[] } & AdditionalData
+export type CreatePromotionsWorkflowInput = {
+  promotionsData: CreatePromotionDTO[]
+} & AdditionalData
 
 export const createPromotionsWorkflowId = "create-promotions"
 /**

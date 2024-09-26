@@ -2,15 +2,19 @@ import {
   CartWorkflowDTO,
   OrderDTO,
   UsageComputedActions,
-} from "@medusajs/types"
-import { Modules, OrderStatus, OrderWorkflowEvents } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import {
+  Modules,
+  OrderStatus,
+  OrderWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   createWorkflow,
   parallelize,
   transform,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   createRemoteLinkStep,
   emitEventStep,
@@ -61,28 +65,25 @@ export const completeCartWorkflow = createWorkflow(
       context: { cart_id: cart.id },
     })
 
-    const { variants, items, sales_channel_id } = transform(
-      { cart },
-      (data) => {
-        const allItems: any[] = []
-        const allVariants: any[] = []
+    const { variants, sales_channel_id } = transform({ cart }, (data) => {
+      const allItems: any[] = []
+      const allVariants: any[] = []
 
-        data.cart?.items?.forEach((item) => {
-          allItems.push({
-            id: item.id,
-            variant_id: item.variant_id,
-            quantity: item.quantity,
-          })
-          allVariants.push(item.variant)
+      data.cart?.items?.forEach((item) => {
+        allItems.push({
+          id: item.id,
+          variant_id: item.variant_id,
+          quantity: item.quantity,
         })
+        allVariants.push(item.variant)
+      })
 
-        return {
-          variants: allVariants,
-          items: allItems,
-          sales_channel_id: data.cart.sales_channel_id,
-        }
+      return {
+        variants: allVariants,
+        items: allItems,
+        sales_channel_id: data.cart.sales_channel_id,
       }
-    )
+    })
 
     const finalCart = useRemoteQueryStep({
       entry_point: "cart",

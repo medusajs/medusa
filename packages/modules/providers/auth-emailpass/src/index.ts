@@ -1,4 +1,4 @@
-import { ModuleProviderExports } from "@medusajs/types"
+import { ModuleProviderExports } from "@medusajs/framework/types"
 import { EmailPassAuthService } from "./services/emailpass"
 
 const services = [EmailPassAuthService]

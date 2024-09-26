@@ -8,7 +8,7 @@ import {
   MathBN,
   MedusaError,
   PromotionType,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { Promotion } from "@models"
 import { CreateApplicationMethodDTO, UpdateApplicationMethodDTO } from "@types"
 

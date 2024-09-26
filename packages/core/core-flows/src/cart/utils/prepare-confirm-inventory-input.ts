@@ -1,8 +1,8 @@
 import {
   BigNumberInput,
   ConfirmVariantInventoryWorkflowInputDTO,
-} from "@medusajs/types"
-import { MedusaError, deepFlatMap } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError, deepFlatMap } from "@medusajs/framework/utils"
 
 interface ConfirmInventoryPreparationInput {
   product_variant_inventory_items: {

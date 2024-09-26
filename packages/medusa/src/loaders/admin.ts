@@ -1,5 +1,5 @@
-import { logger } from "@medusajs/framework"
-import { AdminOptions, ConfigModule } from "@medusajs/types"
+import { logger } from "@medusajs/framework/logger"
+import { AdminOptions, ConfigModule } from "@medusajs/framework/types"
 import { Express } from "express"
 import fs from "fs"
 import path from "path"

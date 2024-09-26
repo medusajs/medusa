@@ -1,7 +1,7 @@
 /**
  * @schema CustomerGroupInCustomerFilters
  * type: object
- * description: The customer's groups.
+ * description: Filter by customer groups to get their associated customers.
  * x-schemaName: CustomerGroupInCustomerFilters
  * required:
  *   - id
@@ -14,27 +14,27 @@
  *     oneOf:
  *       - type: string
  *         title: id
- *         description: The group's ID.
+ *         description: Filter by a group's ID.
  *       - type: array
- *         description: The group's ID.
+ *         description: Filter by group IDs.
  *         items:
  *           type: string
  *           title: id
- *           description: The id's ID.
+ *           description: A group's ID.
  *   name:
  *     oneOf:
  *       - type: string
  *         title: name
- *         description: The group's name.
+ *         description: Filter by a group's name.
  *       - type: array
- *         description: The group's name.
+ *         description: Filter by group names.
  *         items:
  *           type: string
  *           title: name
- *           description: The name's details.
+ *           description: A group's name.
  *   created_at:
  *     type: object
- *     description: The group's created at.
+ *     description: Filter by the group's creation date.
  *     properties:
  *       $and:
  *         type: array
@@ -54,7 +54,7 @@
  *             title: $eq
  *             description: Filter by an exact match.
  *           - type: array
- *             description: Filter by an exact match.
+ *             description: Filter by exact matches.
  *             items:
  *               type: string
  *               title: $eq
@@ -149,7 +149,7 @@
  *         description: Filter by whether a value for this parameter exists (not `null`).
  *   updated_at:
  *     type: object
- *     description: The group's updated at.
+ *     description: Filter by the group's update date.
  *     properties:
  *       $and:
  *         type: array
@@ -169,7 +169,7 @@
  *             title: $eq
  *             description: Filter by an exact match.
  *           - type: array
- *             description: Filter by an exact match.
+ *             description: Filter by exact matches.
  *             items:
  *               type: string
  *               title: $eq
@@ -264,7 +264,7 @@
  *         description: Filter by whether a value for this parameter exists (not `null`).
  *   deleted_at:
  *     type: object
- *     description: The group's deleted at.
+ *     description: Filter by the group's deletion date.
  *     properties:
  *       $and:
  *         type: array
@@ -284,7 +284,7 @@
  *             title: $eq
  *             description: Filter by an exact match.
  *           - type: array
- *             description: Filter by an exact match.
+ *             description: Filter by exact matches.
  *             items:
  *               type: string
  *               title: $eq

@@ -1,9 +1,12 @@
 import {
   ICartModuleService,
   UpdateLineItemWithSelectorDTO,
-} from "@medusajs/types"
-import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface UpdateLineItemsStepInput {
   id: string
@@ -17,7 +20,7 @@ export const updateLineItemsStepId = "update-line-items-step"
 export const updateLineItemsStep = createStep(
   updateLineItemsStepId,
   async (input: UpdateLineItemsStepInput, { container }) => {
-    const { id, items = [] } = input
+    const { items = [] } = input
 
     if (!items?.length) {
       return new StepResponse([], [])

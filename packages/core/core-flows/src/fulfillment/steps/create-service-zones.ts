@@ -1,9 +1,9 @@
 import {
   CreateServiceZoneDTO,
   IFulfillmentModuleService,
-} from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createServiceZonesStepId = "create-service-zones"
 /**

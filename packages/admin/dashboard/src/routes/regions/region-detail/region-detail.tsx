@@ -23,7 +23,7 @@ export const RegionDetail = () => {
     error: regionError,
   } = useRegion(
     id!,
-    { fields: "*payment_providers,*countries" },
+    { fields: "*payment_providers,*countries,+automatic_taxes" },
     {
       initialData,
     }

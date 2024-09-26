@@ -1,10 +1,10 @@
-import { ConfirmVariantInventoryWorkflowInputDTO } from "@medusajs/types"
+import { ConfirmVariantInventoryWorkflowInputDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { confirmInventoryStep } from "../steps"
 import { prepareConfirmInventoryInput } from "../utils/prepare-confirm-inventory-input"
 

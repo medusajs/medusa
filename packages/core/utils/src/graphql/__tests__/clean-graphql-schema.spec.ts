@@ -1,4 +1,4 @@
-import { cleanGraphQLSchema } from "../utils/clean-graphql-schema"
+import { cleanGraphQLSchema } from "../clean-graphql"
 
 describe("Clean Graphql Schema", function () {
   it("Should keep the schema intact if all entities are available", function () {

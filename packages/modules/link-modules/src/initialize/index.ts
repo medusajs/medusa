@@ -2,7 +2,7 @@ import {
   MedusaModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-} from "@medusajs/modules-sdk"
+} from "@medusajs/framework/modules-sdk"
 import {
   ExternalModuleDeclaration,
   ILinkModule,
@@ -12,7 +12,7 @@ import {
   ModuleJoinerConfig,
   ModuleServiceInitializeCustomDataLayerOptions,
   ModuleServiceInitializeOptions,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   arrayDifference,
   composeLinkName,
@@ -21,7 +21,7 @@ import {
   Modules,
   simpleHash,
   toPascalCase,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import * as linkDefinitions from "../definitions"
 import { MigrationsExecutionPlanner } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
