@@ -65,6 +65,26 @@ class SchemaFactory {
       description:
         "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
     },
+    File: {
+      type: "object",
+      description: "A File to upload.",
+      externalDocs: {
+        url: "https://developer.mozilla.org/en-US/docs/Web/API/File",
+        description: "Learn more about the File API",
+      },
+    },
+    FileList: {
+      type: "array",
+      description: "list of files to upload.",
+      items: {
+        type: "object",
+        description: "A File to upload.",
+        externalDocs: {
+          url: "https://developer.mozilla.org/en-US/docs/Web/API/File",
+          description: "Learn more about the File API",
+        },
+      },
+    },
   }
   /**
    * Schemas used only for response types.
