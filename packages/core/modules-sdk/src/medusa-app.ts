@@ -112,7 +112,7 @@ export async function loadModules(args: {
 
       // Skip disabled modules
       if (mod === false) {
-        return
+        continue
       }
 
       if (isObject(mod)) {
