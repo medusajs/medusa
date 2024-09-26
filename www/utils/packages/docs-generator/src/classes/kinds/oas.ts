@@ -26,6 +26,7 @@ import FunctionKindGenerator, {
   VariableNode,
 } from "./function.js"
 import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
+import TypesHelper from "../helpers/types.js"
 import {
   isLevelExceeded,
   maybeIncrementLevel,
@@ -93,6 +94,7 @@ class OasKindGenerator extends FunctionKindGenerator {
   protected oasExamplesGenerator: OasExamplesGenerator
   protected oasSchemaHelper: OasSchemaHelper
   protected schemaFactory: SchemaFactory
+  protected typesHelper: TypesHelper
 
   constructor(options: GeneratorOptions) {
     super(options)
@@ -103,6 +105,9 @@ class OasKindGenerator extends FunctionKindGenerator {
     this.tags = new Map()
     this.oasSchemaHelper = new OasSchemaHelper()
     this.schemaFactory = new SchemaFactory()
+    this.typesHelper = new TypesHelper({
+      checker: this.checker,
+    })
     this.init()
 
     this.generatorEventManager.listen(
@@ -1397,18 +1402,18 @@ class OasKindGenerator extends FunctionKindGenerator {
           }
         }
 
-        const oneOfItems = this.removeStringRegExpTypeOverlaps(
-          (itemType as ts.UnionType).types
-        ).map((unionType) =>
-          this.typeToSchema({
-            itemType: unionType,
-            level: maybeIncrementLevel(level, "oneOf"),
-            title,
-            descriptionOptions,
-            saveSchema,
-            ...rest,
-          })
-        )
+        const oneOfItems = this.typesHelper
+          .cleanUpTypes((itemType as ts.UnionType).types)
+          .map((unionType) =>
+            this.typeToSchema({
+              itemType: unionType,
+              level: maybeIncrementLevel(level, "oneOf"),
+              title,
+              descriptionOptions,
+              saveSchema,
+              ...rest,
+            })
+          )
 
         if (oneOfItems.length === 1) {
           return oneOfItems[0]
@@ -1418,18 +1423,18 @@ class OasKindGenerator extends FunctionKindGenerator {
           oneOf: oneOfItems,
         }
       case itemType.isIntersection():
-        const allOfItems = this.removeStringRegExpTypeOverlaps(
-          (itemType as ts.IntersectionType).types
-        ).map((intersectionType) => {
-          return this.typeToSchema({
-            itemType: intersectionType,
-            level: maybeIncrementLevel(level, "allOf"),
-            title,
-            descriptionOptions,
-            saveSchema,
-            ...rest,
+        const allOfItems = this.typesHelper
+          .cleanUpTypes((itemType as ts.IntersectionType).types)
+          .map((intersectionType) => {
+            return this.typeToSchema({
+              itemType: intersectionType,
+              level: maybeIncrementLevel(level, "allOf"),
+              title,
+              descriptionOptions,
+              saveSchema,
+              ...rest,
+            })
           })
-        })
 
         if (allOfItems.length === 1) {
           return allOfItems[0]
@@ -1448,9 +1453,9 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
         const pickedProperties = pickTypeArgs[1].isUnion()
           ? pickTypeArgs[1].types.map((unionType) =>
-              this.getTypeName(unionType)
+              this.typesHelper.getTypeName(unionType)
             )
-          : [this.getTypeName(pickTypeArgs[1])]
+          : [this.typesHelper.getTypeName(pickTypeArgs[1])]
         return this.typeToSchema({
           itemType: pickTypeArgs[0],
           title,
@@ -1470,9 +1475,9 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
         const omitProperties = omitTypeArgs[1].isUnion()
           ? omitTypeArgs[1].types.map((unionType) =>
-              this.getTypeName(unionType)
+              this.typesHelper.getTypeName(unionType)
             )
-          : [this.getTypeName(omitTypeArgs[1])]
+          : [this.typesHelper.getTypeName(omitTypeArgs[1])]
         return this.typeToSchema({
           itemType: omitTypeArgs[0],
           title,
@@ -1581,7 +1586,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             const arrHasParentType =
               rest.context !== "query" &&
               this.checker.isArrayType(propertyType) &&
-              this.areTypesEqual(
+              this.typesHelper.areTypesEqual(
                 itemType,
                 this.checker.getTypeArguments(
                   propertyType as ts.TypeReference
@@ -1589,7 +1594,7 @@ class OasKindGenerator extends FunctionKindGenerator {
               )
             const isParentType =
               rest.context !== "query" &&
-              this.areTypesEqual(itemType, propertyType)
+              this.typesHelper.areTypesEqual(itemType, propertyType)
 
             if (isParentType && objSchema["x-schemaName"]) {
               properties[property.name] = {
@@ -1790,25 +1795,6 @@ class OasKindGenerator extends FunctionKindGenerator {
       case name?.includes("password"):
         return "password"
     }
-  }
-
-  /**
-   * Retrieve the name of a type. This is useful when retrieving allowed/disallowed
-   * properties in an Omit/Pick type.
-   *
-   * @param itemType - The type to retrieve its name.
-   * @returns The type's name.
-   */
-  getTypeName(itemType: ts.Type): string {
-    if (itemType.symbol || itemType.aliasSymbol) {
-      return (itemType.aliasSymbol || itemType.symbol).name
-    }
-
-    if (itemType.isLiteral()) {
-      return itemType.value.toString()
-    }
-
-    return this.checker.typeToString(itemType)
   }
 
   /**
@@ -2298,27 +2284,6 @@ class OasKindGenerator extends FunctionKindGenerator {
     return Object.keys(responseContent).some((responseType) =>
       fnText.includes(responseType)
     )
-  }
-
-  private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
-    return types.filter((itemType) => {
-      // remove overlapping string / regexp types
-      if (this.checker.typeToString(itemType) === "RegExp") {
-        const hasString = types.some((t) => {
-          return (
-            t.flags === ts.TypeFlags.String ||
-            t.flags === ts.TypeFlags.StringLiteral
-          )
-        })
-        return !hasString
-      }
-
-      return true
-    })
-  }
-
-  private areTypesEqual(type1: ts.Type, type2: ts.Type): boolean {
-    return "id" in type1 && "id" in type2 && type1.id === type2.id
   }
 }
 
