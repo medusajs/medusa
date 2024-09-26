@@ -16,7 +16,7 @@ import {
   generateEntityId,
   kebabCase,
   Searchable,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import Product from "./product"
 
 const collectionHandleIndexName = "IDX_collection_handle_unique"

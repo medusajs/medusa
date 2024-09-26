@@ -1,4 +1,4 @@
-import { PromotionRuleDTO } from "@medusajs/types"
+import { PromotionRuleDTO } from "@medusajs/framework/types"
 import { PromotionRule } from "@models"
 
 export interface CreatePromotionRuleValueDTO {

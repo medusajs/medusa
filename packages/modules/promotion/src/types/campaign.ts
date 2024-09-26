@@ -1,4 +1,4 @@
-import { PromotionDTO } from "@medusajs/types"
+import { PromotionDTO } from "@medusajs/framework/types"
 import { Promotion } from "@models"
 
 export interface CreateCampaignDTO {

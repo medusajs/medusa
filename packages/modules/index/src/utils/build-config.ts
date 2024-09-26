@@ -5,7 +5,7 @@ import {
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { CommonEvents, GraphQLUtils } from "@medusajs/framework/utils"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 
