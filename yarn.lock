@@ -4265,36 +4265,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hapi/boom@npm:^10.0.1":
-  version: 10.0.1
-  resolution: "@hapi/boom@npm:10.0.1"
-  dependencies:
-    "@hapi/hoek": ^11.0.2
-  checksum: e4ae8a69bb67c5687320d320a0706ac66e797a659c19fb1c9b909eaefe3b41780e4ecd4382de1297b10c33e9db81f79667324576b9153f57b0cf701293b908d0
-  languageName: node
-  linkType: hard
-
-"@hapi/bourne@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@hapi/bourne@npm:3.0.0"
-  checksum: 2e2df62f6bc6f32b980ba5bbdc09200c93c55c8306399ec0f2781da088a82aab699498c89fe94fec4acf770210f9aee28c75bfc2f04044849ac01b034134e717
-  languageName: node
-  linkType: hard
-
-"@hapi/hoek@npm:^10.0.1":
-  version: 10.0.1
-  resolution: "@hapi/hoek@npm:10.0.1"
-  checksum: 320d5dc7a4070fa29e6344a3af9e44854980c6606848f7b7f59715174880cc09a1fe1e8adf44cf887100bd8d6a8664e9dc415986b30dc91df13455f7114de549
-  languageName: node
-  linkType: hard
-
-"@hapi/hoek@npm:^11.0.2":
-  version: 11.0.4
-  resolution: "@hapi/hoek@npm:11.0.4"
-  checksum: 3c0e487824daaf3af4c29e46fd57b0c5801ce9164fef2417c70e271cd970e13cc542b196f70ba1cfc9ef944eed825fcac261085ab5e2928c6017428bf576b363
-  languageName: node
-  linkType: hard
-
 "@hapi/hoek@npm:^9.0.0, @hapi/hoek@npm:^9.3.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
@@ -4308,17 +4278,6 @@ __metadata:
   dependencies:
     "@hapi/hoek": ^9.0.0
   checksum: b16b06d9357947149e032bdf10151eb71aea8057c79c4046bf32393cb89d0d0f7ca501c40c0f7534a5ceca078de0700d2257ac855c15e59fe4e00bba2f25c86f
-  languageName: node
-  linkType: hard
-
-"@hapi/wreck@npm:^18.0.0":
-  version: 18.1.0
-  resolution: "@hapi/wreck@npm:18.1.0"
-  dependencies:
-    "@hapi/boom": ^10.0.1
-    "@hapi/bourne": ^3.0.0
-    "@hapi/hoek": ^11.0.2
-  checksum: eab85afdf24d0c514abada83ef09e5f3b096348bfba36bb6c7a6f7eebd47ab583e07aa1005be7d638b405e4c55ec82a3697ad0cbe1b2db6bb73fa0e66baffde4
   languageName: node
   linkType: hard
 
@@ -5102,11 +5061,11 @@ __metadata:
   resolution: "@medusajs/api-key@workspace:packages/modules/api-key"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5123,7 +5082,8 @@ __metadata:
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     rimraf: ^5.0.1
     scrypt-kdf: ^2.0.1
@@ -5138,8 +5098,8 @@ __metadata:
   resolution: "@medusajs/auth-github@workspace:packages/modules/providers/auth-github"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    "@types/simple-oauth2": ^5.0.7
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     msw: ^2.3.0
     rimraf: ^5.0.1
@@ -5154,8 +5114,8 @@ __metadata:
   resolution: "@medusajs/auth-google@workspace:packages/modules/providers/auth-google"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    "@types/simple-oauth2": ^5.0.7
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
     msw: ^2.3.0
@@ -5172,13 +5132,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
-    jsonwebtoken: ^9.0.2
     medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
-    scrypt-kdf: ^2.0.1
-    simple-oauth2: ^5.0.0
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5195,7 +5156,8 @@ __metadata:
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
@@ -5209,7 +5171,8 @@ __metadata:
   resolution: "@medusajs/cache-redis@workspace:packages/modules/cache-redis"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     ioredis: ^5.4.1
     jest: ^29.7.0
     rimraf: ^5.0.1
@@ -5225,11 +5188,14 @@ __metadata:
   resolution: "@medusajs/cart@workspace:packages/modules/cart"
   dependencies:
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5250,7 +5216,7 @@ __metadata:
     "@mikro-orm/knex": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
-    "@swc/core": ^1.5.29
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     awilix: ^8.0.1
     bignumber.js: ^9.1.2
@@ -5273,11 +5239,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5295,11 +5264,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5370,13 +5342,14 @@ __metadata:
   resolution: "@medusajs/event-bus-local@workspace:packages/modules/event-bus-local"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
+    ulid: ^2.3.0
   peerDependencies:
     "@medusajs/framework": ^0.0.1
-    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -5385,11 +5358,11 @@ __metadata:
   resolution: "@medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis"
   dependencies:
     "@medusajs/framework": ^0.0.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     bullmq: 5.13.0
-    cross-env: ^5.2.1
     ioredis: ^5.4.1
     jest: ^29.7.0
-    medusa-test-utils: ^1.1.44
     rimraf: ^5.0.1
     typescript: ^5.6.2
   peerDependencies:
@@ -5403,7 +5376,8 @@ __metadata:
   resolution: "@medusajs/file-local-next@workspace:packages/modules/providers/file-local"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
@@ -5419,14 +5393,15 @@ __metadata:
     "@aws-sdk/client-s3": ^3.556.0
     "@aws-sdk/s3-request-presigner": ^3.556.0
     "@medusajs/framework": ^0.0.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     axios: ^1.6.8
-    cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
+    ulid: ^2.3.0
   peerDependencies:
     "@medusajs/framework": ^0.0.1
-    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -5436,20 +5411,18 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
-    faker: ^5.5.3
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.43
-    pg-god: ^1.0.12
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
     "@medusajs/framework": ^0.0.1
-    "@mikro-orm/core": 5.9.7
-    "@mikro-orm/migrations": 5.9.7
-    "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.1
   languageName: unknown
   linkType: soft
@@ -5469,6 +5442,7 @@ __metadata:
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     "@opentelemetry/api": ^1.9.0
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     "@types/express": ^4.17.17
     "@types/jsonwebtoken": ^8.5.9
@@ -5503,14 +5477,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment-manual@workspace:*, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
+"@medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    body-parser: ^1.19.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
@@ -5524,13 +5497,15 @@ __metadata:
   resolution: "@medusajs/fulfillment@workspace:packages/modules/fulfillment"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    "@medusajs/fulfillment-manual": "workspace:*"
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5582,6 +5557,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
@@ -5604,11 +5580,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.43
     rimraf: ^5.0.1
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5639,12 +5618,15 @@ __metadata:
   resolution: "@medusajs/link-modules@workspace:packages/modules/link-modules"
   dependencies:
     "@medusajs/framework": ^0.0.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     cross-env: ^5.2.1
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
-    pg-god: ^1.0.12
     rimraf: ^5.0.1
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5661,7 +5643,7 @@ __metadata:
   resolution: "@medusajs/medusa-cli@workspace:packages/cli/medusa-cli"
   dependencies:
     "@medusajs/utils": 1.11.9
-    "@swc/core": ^1.5.29
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     "@types/yargs": ^15.0.15
     chalk: ^4.0.0
@@ -5746,7 +5728,7 @@ __metadata:
     "@opentelemetry/resources": ^1.26.0
     "@opentelemetry/sdk-node": ^0.53.0
     "@opentelemetry/sdk-trace-node": ^1.26.0
-    "@swc/core": 1.5.7
+    "@swc/core": ^1.7.28
     "@swc/helpers": ^0.5.11
     "@swc/jest": ^0.2.36
     "@types/express": ^4.17.17
@@ -5797,6 +5779,7 @@ __metadata:
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/core": 5.9.7
     "@mikro-orm/knex": 5.9.7
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     awilix: ^8.0.1
     cross-env: ^5.2.1
@@ -5816,7 +5799,8 @@ __metadata:
   resolution: "@medusajs/notification-local@workspace:packages/modules/providers/notification-local"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    cross-env: ^5.2.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
@@ -5831,9 +5815,8 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@sendgrid/mail": ^8.1.3
-    "@swc/core": ^1.5.29
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
-    cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
     typescript: ^5.6.2
@@ -5848,11 +5831,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5879,6 +5865,7 @@ __metadata:
   dependencies:
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     awilix: ^8.0.1
     jest: ^29.7.0
@@ -5895,11 +5882,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5916,13 +5906,11 @@ __metadata:
   resolution: "@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe"
   dependencies:
     "@medusajs/framework": ^0.0.1
-    "@types/stripe": ^8.0.417
-    body-parser: ^1.19.0
-    cross-env: ^5.2.1
-    express: ^4.17.1
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     rimraf: ^5.0.1
-    stripe: latest
+    stripe: ^15.5.0
     typescript: ^5.6.2
   peerDependencies:
     "@medusajs/framework": ^0.0.1
@@ -5936,13 +5924,15 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    bignumber.js: "*"
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
+    bignumber.js: ^9.1.2
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5951,7 +5941,6 @@ __metadata:
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.1
-    bignumber.js: "*"
   languageName: unknown
   linkType: soft
 
@@ -5961,12 +5950,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -5984,13 +5975,15 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     faker: ^5.5.3
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
-    pg-god: ^1.0.12
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6008,12 +6001,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6031,11 +6026,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6053,11 +6051,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6075,11 +6076,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^5.0.1
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6097,11 +6101,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6119,11 +6126,14 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    cross-env: ^5.2.1
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     jest: ^29.7.0
     medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6277,14 +6287,15 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
-    "@swc/core": ^1.5.29
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
-    cross-env: ^5.2.1
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
     medusa-test-utils: ^1.1.43
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6309,6 +6320,7 @@ __metadata:
     "@mikro-orm/knex": 5.9.7
     "@mikro-orm/migrations": 5.9.7
     "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     "@types/express": ^4.17.21
     awilix: ^8.0.1
@@ -6344,14 +6356,18 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     cron-parser: ^4.9.0
-    cross-env: ^5.2.1
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
+    ulid: ^2.3.0
   peerDependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/core": 5.9.7
@@ -6367,13 +6383,16 @@ __metadata:
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/cli": 5.9.7
+    "@mikro-orm/core": 5.9.7
+    "@mikro-orm/migrations": 5.9.7
+    "@mikro-orm/postgresql": 5.9.7
+    "@swc/core": ^1.7.28
+    "@swc/jest": ^0.2.36
     bullmq: 5.13.0
-    cross-env: ^5.2.1
     ioredis: ^5.4.1
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.6.2
   peerDependencies:
@@ -6394,6 +6413,7 @@ __metadata:
     "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     awilix: ^8.0.1
     jest: ^29.7.0
@@ -12342,13 +12362,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-darwin-arm64@npm:1.5.29"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@swc/core-darwin-arm64@npm:1.5.3":
   version: 1.5.3
   resolution: "@swc/core-darwin-arm64@npm:1.5.3"
@@ -12356,17 +12369,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-darwin-arm64@npm:1.5.7"
+"@swc/core-darwin-arm64@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-darwin-arm64@npm:1.7.28"
   conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@swc/core-darwin-x64@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-darwin-x64@npm:1.5.29"
-  conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
@@ -12377,17 +12383,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-x64@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-darwin-x64@npm:1.5.7"
+"@swc/core-darwin-x64@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-darwin-x64@npm:1.7.28"
   conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm-gnueabihf@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.5.29"
-  conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
@@ -12398,17 +12397,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.5.7"
+"@swc/core-linux-arm-gnueabihf@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.7.28"
   conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm64-gnu@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.5.29"
-  conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -12419,17 +12411,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-gnu@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.5.7"
+"@swc/core-linux-arm64-gnu@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.7.28"
   conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm64-musl@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-linux-arm64-musl@npm:1.5.29"
-  conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
@@ -12440,17 +12425,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-arm64-musl@npm:1.5.7"
+"@swc/core-linux-arm64-musl@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-linux-arm64-musl@npm:1.7.28"
   conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-x64-gnu@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-linux-x64-gnu@npm:1.5.29"
-  conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -12461,17 +12439,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-gnu@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-x64-gnu@npm:1.5.7"
+"@swc/core-linux-x64-gnu@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-linux-x64-gnu@npm:1.7.28"
   conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-x64-musl@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-linux-x64-musl@npm:1.5.29"
-  conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
@@ -12482,17 +12453,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-linux-x64-musl@npm:1.5.7"
+"@swc/core-linux-x64-musl@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-linux-x64-musl@npm:1.7.28"
   conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-arm64-msvc@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.5.29"
-  conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -12503,17 +12467,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-arm64-msvc@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.5.7"
+"@swc/core-win32-arm64-msvc@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.7.28"
   conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-ia32-msvc@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.5.29"
-  conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
@@ -12524,17 +12481,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.5.7"
+"@swc/core-win32-ia32-msvc@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.7.28"
   conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-x64-msvc@npm:1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core-win32-x64-msvc@npm:1.5.29"
-  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -12545,56 +12495,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core-win32-x64-msvc@npm:1.5.7"
+"@swc/core-win32-x64-msvc@npm:1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core-win32-x64-msvc@npm:1.7.28"
   conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core@npm:1.5.7":
-  version: 1.5.7
-  resolution: "@swc/core@npm:1.5.7"
-  dependencies:
-    "@swc/core-darwin-arm64": 1.5.7
-    "@swc/core-darwin-x64": 1.5.7
-    "@swc/core-linux-arm-gnueabihf": 1.5.7
-    "@swc/core-linux-arm64-gnu": 1.5.7
-    "@swc/core-linux-arm64-musl": 1.5.7
-    "@swc/core-linux-x64-gnu": 1.5.7
-    "@swc/core-linux-x64-musl": 1.5.7
-    "@swc/core-win32-arm64-msvc": 1.5.7
-    "@swc/core-win32-ia32-msvc": 1.5.7
-    "@swc/core-win32-x64-msvc": 1.5.7
-    "@swc/counter": ^0.1.2
-    "@swc/types": 0.1.7
-  peerDependencies:
-    "@swc/helpers": ^0.5.0
-  dependenciesMeta:
-    "@swc/core-darwin-arm64":
-      optional: true
-    "@swc/core-darwin-x64":
-      optional: true
-    "@swc/core-linux-arm-gnueabihf":
-      optional: true
-    "@swc/core-linux-arm64-gnu":
-      optional: true
-    "@swc/core-linux-arm64-musl":
-      optional: true
-    "@swc/core-linux-x64-gnu":
-      optional: true
-    "@swc/core-linux-x64-musl":
-      optional: true
-    "@swc/core-win32-arm64-msvc":
-      optional: true
-    "@swc/core-win32-ia32-msvc":
-      optional: true
-    "@swc/core-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    "@swc/helpers":
-      optional: true
-  checksum: 83ab96bee5d448e580d8a6c8c1d1fbfdfaf5561f8904140122e49c428c2336790d31e7bdcdf610ce8f20c7f682785263d2ebab7cb56c2dcb5ea46be54eab2c03
   languageName: node
   linkType: hard
 
@@ -12644,22 +12548,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core@npm:^1.5.29":
-  version: 1.5.29
-  resolution: "@swc/core@npm:1.5.29"
+"@swc/core@npm:^1.7.28":
+  version: 1.7.28
+  resolution: "@swc/core@npm:1.7.28"
   dependencies:
-    "@swc/core-darwin-arm64": 1.5.29
-    "@swc/core-darwin-x64": 1.5.29
-    "@swc/core-linux-arm-gnueabihf": 1.5.29
-    "@swc/core-linux-arm64-gnu": 1.5.29
-    "@swc/core-linux-arm64-musl": 1.5.29
-    "@swc/core-linux-x64-gnu": 1.5.29
-    "@swc/core-linux-x64-musl": 1.5.29
-    "@swc/core-win32-arm64-msvc": 1.5.29
-    "@swc/core-win32-ia32-msvc": 1.5.29
-    "@swc/core-win32-x64-msvc": 1.5.29
+    "@swc/core-darwin-arm64": 1.7.28
+    "@swc/core-darwin-x64": 1.7.28
+    "@swc/core-linux-arm-gnueabihf": 1.7.28
+    "@swc/core-linux-arm64-gnu": 1.7.28
+    "@swc/core-linux-arm64-musl": 1.7.28
+    "@swc/core-linux-x64-gnu": 1.7.28
+    "@swc/core-linux-x64-musl": 1.7.28
+    "@swc/core-win32-arm64-msvc": 1.7.28
+    "@swc/core-win32-ia32-msvc": 1.7.28
+    "@swc/core-win32-x64-msvc": 1.7.28
     "@swc/counter": ^0.1.3
-    "@swc/types": ^0.1.8
+    "@swc/types": ^0.1.12
   peerDependencies:
     "@swc/helpers": "*"
   dependenciesMeta:
@@ -12686,7 +12590,7 @@ __metadata:
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: 30fa18e27bb40c86ced2beafcb1d3a19f8e3fff1865096d9373bdb867933c1aac27a6ea919c1368c97a1f159e2cbc30bad09c821416124a757ede27546f9f9ce
+  checksum: e7a5764fe9c476b606b3c68e9bfcb1945a2a1576458176dbd93edd06bd57e3e0837a119c21162904fa2b0c3f5c3a7049d77b52c4f793e0d4f4f345ba959c5456
   languageName: node
   linkType: hard
 
@@ -12719,12 +12623,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/types@npm:0.1.7":
-  version: 0.1.7
-  resolution: "@swc/types@npm:0.1.7"
+"@swc/types@npm:^0.1.12":
+  version: 0.1.12
+  resolution: "@swc/types@npm:0.1.12"
   dependencies:
     "@swc/counter": ^0.1.3
-  checksum: da7c542de0a44b85a98139db03920448e86309d28ad9e9335f91b4025e5f32ae4fbbfdd0f287330fb0de737e7c5ec4f64ade0fc5fffea6c2fd9ac681b1e97bea
+  checksum: f95fea7dee8fc07f8389afbb9578f3d0cd84b429b1d0dbff7fd99b2ef06ed88e96bc33631f36c3bc0505d5a783bee1374acd84b8fc2593001219b6c2caba241b
   languageName: node
   linkType: hard
 
@@ -12734,15 +12638,6 @@ __metadata:
   dependencies:
     "@swc/counter": ^0.1.3
   checksum: 043a0e56d69db8733827ad69db55d0ffbd6976fd24ef629a488e57040067ac84d057a57e08bc5a3db545d44b01d6aa43c22df1152c637af450d366e57cde6e22
-  languageName: node
-  linkType: hard
-
-"@swc/types@npm:^0.1.8":
-  version: 0.1.8
-  resolution: "@swc/types@npm:0.1.8"
-  dependencies:
-    "@swc/counter": ^0.1.3
-  checksum: a3bb7145d8f01d58f93683645ef530c479243f04c2a79a15020e2a1ac69003643bc1cad1075225f3992b2a5e55be43f264eaea88620263d90ada98a4107fb872
   languageName: node
   linkType: hard
 
@@ -13692,13 +13587,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/simple-oauth2@npm:^5.0.7":
-  version: 5.0.7
-  resolution: "@types/simple-oauth2@npm:5.0.7"
-  checksum: 1cfb87b1ee4b58b30e4f9753271ea73282e707553b9b3360755064e4c7b1e96a01cabc5e83d13841369595ea7e451d3d576bea02340b4f17f9e930f54c08a15e
-  languageName: node
-  linkType: hard
-
 "@types/stack-utils@npm:^2.0.0":
   version: 2.0.3
   resolution: "@types/stack-utils@npm:2.0.3"
@@ -13710,15 +13598,6 @@ __metadata:
   version: 2.0.5
   resolution: "@types/statuses@npm:2.0.5"
   checksum: 4dacec0b29483a44be902a022a11a22b339de7a6e7b2059daa4f7add10cb6dbcc28d02d2a416fe9687e48d335906bf983065391836d4e7c847e55ddef4de8fad
-  languageName: node
-  linkType: hard
-
-"@types/stripe@npm:^8.0.417":
-  version: 8.0.417
-  resolution: "@types/stripe@npm:8.0.417"
-  dependencies:
-    stripe: "*"
-  checksum: 97e3a5ad6948a94366d6749328b721a3c9004ba68795e7675efaa74e4b4c51d57c1dfc785747f4221192dabd7a13fb41778e88e080bafd5d3938a50df7f4ef98
   languageName: node
   linkType: hard
 
@@ -15354,7 +15233,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bignumber.js@npm:*, bignumber.js@npm:^9.1.2":
+"bignumber.js@npm:^9.1.2":
   version: 9.1.2
   resolution: "bignumber.js@npm:9.1.2"
   checksum: e17786545433f3110b868725c449fa9625366a6e675cd70eb39b60938d6adbd0158cb4b3ad4f306ce817165d37e63f4aa3098ba4110db1d9a3b9f66abfbaf10d
@@ -22962,7 +22841,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"joi@npm:^17.11.0, joi@npm:^17.6.4":
+"joi@npm:^17.11.0":
   version: 17.13.1
   resolution: "joi@npm:17.13.1"
   dependencies:
@@ -24394,7 +24273,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-dev-cli@workspace:packages/cli/medusa-dev-cli"
   dependencies:
-    "@swc/core": ^1.5.29
+    "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     chokidar: ^3.5.3
     configstore: ^5.0.1
@@ -29801,18 +29680,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simple-oauth2@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "simple-oauth2@npm:5.0.0"
-  dependencies:
-    "@hapi/hoek": ^10.0.1
-    "@hapi/wreck": ^18.0.0
-    debug: ^4.3.4
-    joi: ^17.6.4
-  checksum: 1cb5a4eb9022f656e1bb9a1f43d771dd058d4a4fa181b42d0e1e7ca7b5cfc42e35fad1c722be9bb6fa218398b3b0499010554a7367d2bd85eb9d7634f92546c1
-  languageName: node
-  linkType: hard
-
 "simple-string-table@npm:^1.0.0":
   version: 1.0.0
   resolution: "simple-string-table@npm:1.0.0"
@@ -30572,13 +30439,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:*, stripe@npm:latest":
-  version: 15.5.0
-  resolution: "stripe@npm:15.5.0"
+"stripe@npm:^15.5.0":
+  version: 15.12.0
+  resolution: "stripe@npm:15.12.0"
   dependencies:
     "@types/node": ">=8.1.0"
     qs: ^6.11.0
-  checksum: 69bf0fda79949a9e35a2b73a1353e162d669d853199b56645f479d040bc914e1dfd75e172825ce321191cafed98542ffd7befe4e5fb616ee52e6213138c74604
+  checksum: 95de07b108b98388d2ead2dedc3fc371df55287c9e926385f95890c680d655234ba2832a23e11e283e946d44dac01868eec823ccf878628eb75f5baa67f08175
   languageName: node
   linkType: hard
 
