@@ -24303,9 +24303,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.42, medusa-test-utils@^1.1.43, medusa-test-utils@^1.1.44, medusa-test-utils@workspace:*, medusa-test-utils@workspace:packages/core/medusa-test-utils":
+"medusa-test-utils@^1.1.42, medusa-test-utils@^1.1.43, medusa-test-utils@^1.1.44, medusa-test-utils@workspace:*, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
-  resolution: "medusa-test-utils@workspace:packages/core/medusa-test-utils"
+  resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
     "@medusajs/framework": ^0.0.1
     "@mikro-orm/core": 5.9.7
