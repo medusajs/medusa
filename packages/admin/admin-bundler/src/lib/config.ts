@@ -1,4 +1,3 @@
-import { VIRTUAL_MODULES } from "@medusajs/admin-shared"
 import path from "path"
 import { Config } from "tailwindcss"
 import type { InlineConfig } from "vite"
@@ -30,7 +29,6 @@ export async function getViteConfig(
     optimizeDeps: {
       include: ["react-dom/client", "@medusajs/ui", "@medusajs/dashboard"],
       exclude: [
-        ...VIRTUAL_MODULES,
         "virtual:medusa/config",
         "virtual:medusa/routes",
         "virtual:medusa/links",

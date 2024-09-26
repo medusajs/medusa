@@ -1,39 +1,28 @@
-import {
-  RESOLVED_CUSTOM_FIELD_DISPLAY_MODULES,
-  RESOLVED_CUSTOM_FIELD_FORM_CONFIG_MODULES,
-  RESOLVED_CUSTOM_FIELD_FORM_FIELD_MODULES,
-  RESOLVED_CUSTOM_FIELD_LINK_MODULES,
-  RESOLVED_ROUTE_MODULES,
-  RESOLVED_WIDGET_MODULES,
-  resolveVirtualId,
-  VIRTUAL_MODULES,
-} from "@medusajs/admin-shared"
 import crypto from "node:crypto"
 import path from "path"
 import type * as Vite from "vite"
 import { MedusaVitePlugin } from "./types"
-import { generateModule } from "./utils"
 import {
   generateVirtualConfigModule,
   generateVirtualLinkModule,
   generateVirtualMenuItemModule,
   generateVirtualRouteModule,
 } from "./virtual-modules"
+import {
+  CONFIG_VIRTUAL_MODULE,
+  LINK_VIRTUAL_MODULE,
+  MENU_ITEM_VIRTUAL_MODULE,
+  RESOLVED_CONFIG_VIRTUAL_MODULE,
+  RESOLVED_LINK_VIRTUAL_MODULE,
+  RESOLVED_MENU_ITEM_VIRTUAL_MODULE,
+  RESOLVED_ROUTE_VIRTUAL_MODULE,
+  ROUTE_VIRTUAL_MODULE,
+  VIRTUAL_MODULES,
+  VirtualModule,
+  resolveVirtualId,
+} from "./vmod"
 import { generateWidgetConfigHash } from "./widgets"
 
-const CONFIG_VIRTUAL_MODULE = `virtual:medusa/config`
-const RESOLVED_CONFIG_VIRTUAL_MODULE = `\0${CONFIG_VIRTUAL_MODULE}`
-const LINK_VIRTUAL_MODULE = `virtual:medusa/links`
-const RESOLVED_LINK_VIRTUAL_MODULE = `\0${LINK_VIRTUAL_MODULE}`
-const ROUTE_VIRTUAL_MODULE = `virtual:medusa/routes`
-const RESOLVED_ROUTE_VIRTUAL_MODULE = `\0${ROUTE_VIRTUAL_MODULE}`
-const MENU_ITEM_VIRTUAL_MODULE = `virtual:medusa/menu-items`
-const RESOLVED_MENU_ITEM_VIRTUAL_MODULE = `\0${MENU_ITEM_VIRTUAL_MODULE}`
-type VirtualModule =
-  | typeof CONFIG_VIRTUAL_MODULE
-  | typeof LINK_VIRTUAL_MODULE
-  | typeof ROUTE_VIRTUAL_MODULE
-  | typeof MENU_ITEM_VIRTUAL_MODULE
 export const medusaVitePlugin: MedusaVitePlugin = (options) => {
   const hashMap = new Map<VirtualModule, string>()
   const _sources = new Set<string>(options?.sources ?? [])
@@ -88,7 +77,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
             .update(routeModule.code)
             .digest("hex")
 
-          if (routeHash !== hashMap.get("virtual:medusa/routes")) {
+          if (routeHash !== hashMap.get(ROUTE_VIRTUAL_MODULE)) {
             const routeModule = _server.moduleGraph.getModuleById(
               RESOLVED_ROUTE_VIRTUAL_MODULE
             )
@@ -107,7 +96,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
         if (isFileInWidgets(file)) {
           const widgetConfigHash = await generateWidgetConfigHash(_sources)
 
-          if (widgetConfigHash !== hashMap.get("virtual:medusa/config")) {
+          if (widgetConfigHash !== hashMap.get(CONFIG_VIRTUAL_MODULE)) {
             const mod = _server.moduleGraph.getModuleById(
               RESOLVED_CONFIG_VIRTUAL_MODULE
             )
@@ -154,14 +143,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
       })
     },
     resolveId(id) {
-      if (
-        [
-          ...VIRTUAL_MODULES,
-          CONFIG_VIRTUAL_MODULE,
-          ROUTE_VIRTUAL_MODULE,
-          LINK_VIRTUAL_MODULE,
-        ].includes(id)
-      ) {
+      if (VIRTUAL_MODULES.includes(id as VirtualModule)) {
         return resolveVirtualId(id)
       }
 
@@ -170,7 +152,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     async load(id) {
       if (id === RESOLVED_CONFIG_VIRTUAL_MODULE) {
         const widgetConfigHash = await generateWidgetConfigHash(_sources)
-        hashMap.set("virtual:medusa/config", widgetConfigHash)
+        hashMap.set(CONFIG_VIRTUAL_MODULE, widgetConfigHash)
 
         return await generateVirtualConfigModule(_sources)
       }
@@ -183,7 +165,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
           .update(linkModule.code)
           .digest("hex")
 
-        hashMap.set("virtual:medusa/links", linkHash)
+        hashMap.set(LINK_VIRTUAL_MODULE, linkHash)
 
         return linkModule
       }
@@ -196,7 +178,7 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
           .update(routeModule.code)
           .digest("hex")
 
-        hashMap.set("virtual:medusa/routes", routeHash)
+        hashMap.set(ROUTE_VIRTUAL_MODULE, routeHash)
 
         return routeModule
       }
@@ -209,66 +191,9 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
           .update(menuItemModule.code)
           .digest("hex")
 
-        hashMap.set("virtual:medusa/menu-items", menuItemHash)
+        hashMap.set(MENU_ITEM_VIRTUAL_MODULE, menuItemHash)
 
         return menuItemModule
-      }
-
-      // TODO: Remove all of these
-      if (RESOLVED_CUSTOM_FIELD_DISPLAY_MODULES.includes(id)) {
-        const code = `export default {
-            containers: [],
-        }`
-
-        return generateModule(code)
-      }
-
-      if (RESOLVED_CUSTOM_FIELD_FORM_FIELD_MODULES.includes(id)) {
-        const code = `export default {
-            sections: [],
-        }`
-
-        return generateModule(code)
-      }
-
-      if (RESOLVED_CUSTOM_FIELD_FORM_CONFIG_MODULES.includes(id)) {
-        const code = `export default {
-            configs: [],
-        }`
-
-        return generateModule(code)
-      }
-
-      if (RESOLVED_CUSTOM_FIELD_LINK_MODULES.includes(id)) {
-        const code = `export default {
-            links: [],
-        }`
-
-        return generateModule(code)
-      }
-
-      if (RESOLVED_ROUTE_MODULES.includes(id)) {
-        if (id.includes("link")) {
-          const code = `export default {
-            links: [],
-          }`
-
-          return generateModule(code)
-        }
-
-        const code = `export default {
-          pages: [],
-        }`
-
-        return generateModule(code)
-      }
-
-      if (RESOLVED_WIDGET_MODULES.includes(id)) {
-        const code = `export default {
-          widgets: [],
-        }`
-
-        return generateModule(code)
       }
     },
     async closeBundle() {

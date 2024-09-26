@@ -4,7 +4,6 @@ import {
   CUSTOM_FIELD_FORM_ZONES,
   CUSTOM_FIELD_MODELS,
 } from "./constants"
-import type { CustomerDisplayZone, CustomerFormZone } from "./customer"
 import type {
   ProductDisplayZone,
   ProductFormTab,
@@ -26,12 +25,10 @@ export type CustomFieldImportType = "display" | "field" | "link" | "config"
 
 export interface CustomFieldModelFormMap {
   product: ProductFormZone
-  customer: CustomerFormZone
 }
 
 export interface CustomFieldModelContainerMap {
   product: ProductDisplayZone
-  customer: CustomerDisplayZone
 }
 
 export type CustomFieldModelFormTabsMap = {

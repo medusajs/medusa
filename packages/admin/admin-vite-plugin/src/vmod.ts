@@ -1,0 +1,35 @@
+export function resolveVirtualId(id: string) {
+  return `\0${id}`
+}
+
+export const CONFIG_VIRTUAL_MODULE = `virtual:medusa/config`
+export const RESOLVED_CONFIG_VIRTUAL_MODULE = `\0${CONFIG_VIRTUAL_MODULE}`
+
+export const LINK_VIRTUAL_MODULE = `virtual:medusa/links`
+export const RESOLVED_LINK_VIRTUAL_MODULE = `\0${LINK_VIRTUAL_MODULE}`
+
+export const ROUTE_VIRTUAL_MODULE = `virtual:medusa/routes`
+export const RESOLVED_ROUTE_VIRTUAL_MODULE = `\0${ROUTE_VIRTUAL_MODULE}`
+
+export const MENU_ITEM_VIRTUAL_MODULE = `virtual:medusa/menu-items`
+export const RESOLVED_MENU_ITEM_VIRTUAL_MODULE = `\0${MENU_ITEM_VIRTUAL_MODULE}`
+
+export const VIRTUAL_MODULES = [
+  CONFIG_VIRTUAL_MODULE,
+  LINK_VIRTUAL_MODULE,
+  ROUTE_VIRTUAL_MODULE,
+  MENU_ITEM_VIRTUAL_MODULE,
+] as const
+
+export const RESOLVED_VIRTUAL_MODULES = [
+  RESOLVED_CONFIG_VIRTUAL_MODULE,
+  RESOLVED_LINK_VIRTUAL_MODULE,
+  RESOLVED_ROUTE_VIRTUAL_MODULE,
+  RESOLVED_MENU_ITEM_VIRTUAL_MODULE,
+] as const
+
+export type VirtualModule =
+  | typeof CONFIG_VIRTUAL_MODULE
+  | typeof LINK_VIRTUAL_MODULE
+  | typeof ROUTE_VIRTUAL_MODULE
+  | typeof MENU_ITEM_VIRTUAL_MODULE
