@@ -31,7 +31,8 @@ import { asValue } from "awilix"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
-  MigrationOptions, ModuleBootstrapOptions,
+  MigrationOptions,
+  ModuleBootstrapOptions,
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
@@ -97,10 +98,19 @@ export async function loadModules(args: {
     sharedResourcesConfig,
     migrationOnly = false,
     loaderOnly = false,
-    workerMode = "server" as ModuleBootstrapOptions['workerMode'],
+    workerMode = "server" as ModuleBootstrapOptions["workerMode"],
   } = args
 
   const allModules = {} as any
+
+  const modulesToLoad: {
+    moduleKey: string
+    defaultPath: string
+    declaration: InternalModuleDeclaration | ExternalModuleDeclaration
+    sharedContainer: MedusaContainer
+    moduleDefinition: ModuleDefinition
+    moduleExports?: ModuleExports
+  }[] = []
 
   for (const moduleName of Object.keys(modulesConfig)) {
     const mod = modulesConfig[moduleName]
@@ -143,35 +153,46 @@ export async function loadModules(args: {
         sharedResourcesConfig?.database?.debug
     }
 
-    const loaded = (await MedusaModule.bootstrap({
+    modulesToLoad.push({
       moduleKey: moduleName,
       defaultPath: path,
       declaration,
       sharedContainer,
       moduleDefinition: definition as ModuleDefinition,
       moduleExports,
-      migrationOnly,
-      loaderOnly,
-      workerMode,
-    })) as LoadedModule
+    })
+  }
 
-    if (loaderOnly) {
-      continue
+  const loaded = (await MedusaModule.bootstrapAll(modulesToLoad, {
+    migrationOnly,
+    loaderOnly,
+    workerMode,
+  })) as LoadedModule[]
+
+  if (loaderOnly) {
+    return allModules
+  }
+
+  for (const { moduleKey } of modulesToLoad) {
+    const service = loaded.find((loadedModule) => loadedModule[moduleKey])?.[
+      moduleKey
+    ]
+    if (!service) {
+      throw new Error(`Module ${moduleKey} could not be loaded.`)
     }
 
-    const service = loaded[moduleName]
     sharedContainer.register({
       [service.__definition.key]: asValue(service),
     })
 
-    if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
-      allModules[moduleName] = []
+    if (allModules[moduleKey] && !Array.isArray(allModules[moduleKey])) {
+      allModules[moduleKey] = []
     }
 
-    if (allModules[moduleName]) {
-      ;(allModules[moduleName] as LoadedModule[]).push(loaded[moduleName])
+    if (allModules[moduleKey]) {
+      ;(allModules[moduleKey] as LoadedModule[]).push(service)
     } else {
-      allModules[moduleName] = loaded[moduleName]
+      allModules[moduleKey] = service
     }
   }
 
