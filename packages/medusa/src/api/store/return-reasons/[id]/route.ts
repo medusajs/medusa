@@ -1,10 +1,10 @@
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { StoreReturnReasonParamsType } from "../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: MedusaRequest<StoreReturnReasonParamsType>,

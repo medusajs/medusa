@@ -3,12 +3,12 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
+import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
 import {
   AdminCreatePromotionRuleType,
   AdminUpdatePromotionRuleType,
 } from "../../../validators"
-import { RuleType } from "@medusajs/utils"
+import { RuleType } from "@medusajs/framework/utils"
 import { refetchBatchRules } from "../../../helpers"
 
 export const POST = async (

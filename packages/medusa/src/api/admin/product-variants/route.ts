@@ -1,5 +1,8 @@
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
-import { HttpTypes } from "@medusajs/types"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import { wrapVariantsWithInventoryQuantity } from "../../utils/middlewares"
 import { refetchEntities } from "../../utils/refetch-entity"
 import { remapKeysForVariant, remapVariantResponse } from "../products/helpers"

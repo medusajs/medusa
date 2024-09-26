@@ -4,7 +4,7 @@ import {
 } from "../../../../../types/routing"
 
 import { addOrRemoveCampaignPromotionsWorkflow } from "@medusajs/core-flows"
-import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
+import { HttpTypes, LinkMethodRequest } from "@medusajs/framework/types"
 import { refetchCampaign } from "../../helpers"
 
 export const POST = async (

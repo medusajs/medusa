@@ -4,7 +4,7 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import { refetchFulfillment } from "../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,

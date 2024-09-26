@@ -1,8 +1,8 @@
-import { MedusaContainer } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { AdminPriceListRemoteQueryDTO } from "../types"
 
 export async function listPriceLists({

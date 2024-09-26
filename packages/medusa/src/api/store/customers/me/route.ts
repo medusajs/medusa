@@ -8,9 +8,9 @@ import {
   StoreUpdateCustomerType,
 } from "../validators"
 import { refetchCustomer } from "../helpers"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { updateCustomersWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<StoreGetCustomerParamsType>,

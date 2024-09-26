@@ -9,6 +9,7 @@ import fs from "fs-extra"
 import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
 import sysPath from "path"
+import path from "path"
 import prompts from "prompts"
 import { Pool } from "pg"
 import url from "url"
@@ -21,8 +22,10 @@ import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 import { PanicId } from "../reporter/panic-handler"
 import { clearProject } from "../util/clear-project"
-import path from "path"
-import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
+import {
+  getNodeVersion,
+  MIN_SUPPORTED_NODE_VERSION,
+} from "@medusajs/utils"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
