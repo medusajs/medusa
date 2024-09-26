@@ -119,7 +119,7 @@ export function convertArrayToPrimitive(
 ): any[] {
   switch (type) {
     case "number":
-      return values.map((v) => (v === "" ? v : convertToNumber))
+      return values.map((v) => (v === "" ? v : convertToNumber(v)))
     case "boolean":
       return values.map(convertToBoolean)
     case "text":
