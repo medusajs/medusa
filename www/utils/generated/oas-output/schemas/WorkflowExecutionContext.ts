@@ -13,7 +13,7 @@
  *     properties:
  *       invoke:
  *         type: object
- *         description: The datum's invoke.
+ *         description: The step's invokation details.
  *         required:
  *           - output
  *         additionalProperties:
@@ -21,14 +21,17 @@
  *           properties:
  *             output:
  *               type: object
- *               description: The invoke's output.
+ *               description: The invokation's details.
  *               required:
  *                 - output
  *                 - compensateInput
  *               properties:
- *                 output: {}
- *                 compensateInput: {}
- *       payload: {}
+ *                 output:
+ *                   description: the step's output
+ *                 compensateInput:
+ *                   description: the compensation function's input.
+ *       payload:
+ *         description: the payload of the transaction.
  *     required:
  *       - invoke
  *   compensate:
