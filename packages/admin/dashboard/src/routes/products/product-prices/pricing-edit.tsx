@@ -74,8 +74,11 @@ export const PricingEdit = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     const reqData = values.variants.map((variant, ind) => ({
       id: variants[ind].id,
-      prices: Object.entries(variant.prices || {}).map(
-        ([currencyCodeOrRegionId, value]: any) => {
+      prices: Object.entries(variant.prices || {})
+        .filter(
+          ([_, value]) => value !== "" && typeof value !== "undefined" // deleted cells
+        )
+        .map(([currencyCodeOrRegionId, value]: any) => {
           const regionId = currencyCodeOrRegionId.startsWith("reg_")
             ? currencyCodeOrRegionId
             : undefined
@@ -105,8 +108,7 @@ export const PricingEdit = ({
             amount,
             ...(regionId ? { rules: { region_id: regionId } } : {}),
           }
-        }
-      ),
+        }),
     }))
 
     await mutateAsync(reqData, {
