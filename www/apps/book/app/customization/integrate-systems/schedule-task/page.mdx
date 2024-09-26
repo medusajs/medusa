@@ -73,7 +73,7 @@ export const createBrandsHighlights = [
 ```ts title="src/workflows/sync-brands-from-system/steps/create-brands.ts" highlights={createBrandsHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { InferTypeOf } from "@medusajs/types"
 import BrandModuleService from "../../../modules/brand/service"
@@ -130,7 +130,7 @@ export const updateBrandsHighlights = [
 ```ts title="src/workflows/sync-brands-from-system/steps/update-brands.ts" highlights={updateBrandsHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { InferTypeOf } from "@medusajs/types"
 import BrandModuleService from "../../../modules/brand/service"
@@ -149,7 +149,7 @@ export const updateBrandsStep = createStep(
     )
 
     const prevUpdatedBrands = await brandModuleService.listBrands({
-      id: brands.map((brand) => brand.id)
+      id: brands.map((brand) => brand.id),
     })
 
     const updatedBrands = await brandModuleService.updateBrands(brands)
@@ -180,7 +180,7 @@ Finally, create the workflow in the file `src/workflows/sync-brands-from-system/
 import {
   createWorkflow,
   WorkflowResponse,
-  transform
+  transform,
 } from "@medusajs/workflows-sdk"
 import { InferTypeOf } from "@medusajs/types"
 import { retrieveBrandsFromSystemStep } from "./steps/retrieve-brands-from-system"

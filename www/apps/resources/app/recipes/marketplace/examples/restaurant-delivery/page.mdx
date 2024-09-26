@@ -435,9 +435,9 @@ Before implementing the functionalities, you’ll create type files in the Resta
 Create the file `src/modules/restaurant/types/index.ts` with the following content:
 
 ```ts title="src/modules/restaurant/types/index.ts"
-import { InferTypeOf } from "@medusajs/types";
-import RestaurantModuleService from "../service";
-import { Restaurant } from "../models/restaurant";
+import { InferTypeOf } from "@medusajs/types"
+import RestaurantModuleService from "../service"
+import { Restaurant } from "../models/restaurant"
 
 export type CreateRestaurant = Omit<
   InferTypeOf<typeof Restaurant>, "id" | "admins"
@@ -632,7 +632,7 @@ In the file `src/api/restaurants/route.ts` add the following API route:
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { 
   ContainerRegistrationKeys, 
-  QueryContext
+  QueryContext,
 } from "@medusajs/utils"
 
 // ...
@@ -664,7 +664,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         variants: {
           calculated_price: QueryContext({
             currency_code,
-          })
+          }),
         },
       },
     },
@@ -2261,8 +2261,8 @@ Before implementing the necessary functionalities, add the following types to `s
 
 ```ts title="src/modules/delivery/types/index.ts"
 // other imports...
-import { InferTypeOf } from "@medusajs/types";
-import { Delivery } from "../models/delivery";
+import { InferTypeOf } from "@medusajs/types"
+import { Delivery } from "../models/delivery"
 
 // ...
 

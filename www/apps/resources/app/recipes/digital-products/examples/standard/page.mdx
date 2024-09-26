@@ -1584,12 +1584,12 @@ export const createDpoHighlights = [
 ```ts title="src/workflows/create-digital-product-order/steps/create-digital-product-order.ts" highlights={createDpoHighlights} collapsibleLines="1-14" expandMoreLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { 
   OrderLineItemDTO,
   ProductVariantDTO,
-  InferTypeOf
+  InferTypeOf,
 } from "@medusajs/types"
 import { OrderStatus } from "../../../modules/digital-product/types"
 import DigitalProductModuleService from "../../../modules/digital-product/service"
@@ -1855,11 +1855,11 @@ To create the step, create the file `src/workflows/fulfill-digital-order/steps/s
 ```ts title="src/workflows/fulfill-digital-order/steps/send-digital-order-notification.ts" collapsibleLines="1-11" expandMoreLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { 
   INotificationModuleService,
-  IFileModuleService
+  IFileModuleService,
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { DigitalProductOrder, MediaType } from "../../../modules/digital-product/types"
@@ -1871,7 +1871,7 @@ type SendDigitalOrderNotificationStepInput = {
 export const sendDigitalOrderNotificationStep = createStep(
   "send-digital-order-notification",
   async ({ 
-    digital_product_order: digitalProductOrder 
+    digital_product_order: digitalProductOrder, 
   }: SendDigitalOrderNotificationStepInput, 
   { container }) => {
     const notificationModuleService: INotificationModuleService = container
@@ -1908,7 +1908,7 @@ const notificationData = await Promise.all(
 
     return {
       name: product.name,
-      medias
+      medias,
     }
   })
 )
@@ -1926,8 +1926,8 @@ const notification = await notificationModuleService.createNotifications({
   template: "digital-order-template",
   channel: "email",
   data: {
-    products: notificationData
-  }
+    products: notificationData,
+  },
 })
 
 return new StepResponse(notification)
@@ -1947,10 +1947,10 @@ export const fulfillWorkflowHighlights = [
 ```ts title="src/workflows/fulfill-digital-order/index.ts" highlights={fulfillWorkflowHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
 import {
   createWorkflow,
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
-  useRemoteQueryStep
+  useRemoteQueryStep,
 } from "@medusajs/core-flows"
 import { sendDigitalOrderNotificationStep } from "./steps/send-digital-order-notification"
 
@@ -1967,7 +1967,7 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
         "*",
         "products.*",
         "products.medias.*",
-        "order.*"
+        "order.*",
       ],
       variables: {
         filters: {
@@ -1975,11 +1975,11 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
         },
       },
       list: false,
-      throw_if_key_not_found: true
+      throw_if_key_not_found: true,
     })
 
     sendDigitalOrderNotificationStep({
-      digital_product_order: digitalProductOrder
+      digital_product_order: digitalProductOrder,
     })
 
     return new WorkflowResponse(
@@ -2022,7 +2022,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  }
+  },
 })
 
 ```
@@ -2041,7 +2041,7 @@ import type {
   SubscriberConfig,
 } from "@medusajs/medusa"
 import { 
-  fulfillDigitalOrderWorkflow
+  fulfillDigitalOrderWorkflow,
 } from "../workflows/fulfill-digital-order"
 
 async function digitalProductOrderCreatedHandler({
@@ -2050,8 +2050,8 @@ async function digitalProductOrderCreatedHandler({
 }: SubscriberArgs<{ id: string }>) {
   await fulfillDigitalOrderWorkflow(container).run({
     input: {
-      id: data.id
-    }
+      id: data.id,
+    },
   })
 }
 
