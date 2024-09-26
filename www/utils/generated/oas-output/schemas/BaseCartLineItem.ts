@@ -1,8 +1,8 @@
 /**
- * @schema StoreCartLineItem
+ * @schema BaseCartLineItem
  * type: object
- * description: The item's details.
- * x-schemaName: StoreCartLineItem
+ * description: The tax line's item.
+ * x-schemaName: BaseCartLineItem
  * required:
  *   - id
  *   - title
@@ -40,17 +40,17 @@
  *   thumbnail:
  *     type: string
  *     title: thumbnail
- *     description: The item's thumbnail URL.
+ *     description: The item's thumbnail.
  *   quantity:
  *     type: number
  *     title: quantity
  *     description: The item's quantity.
  *   product:
- *     $ref: "#/components/schemas/StoreProduct"
+ *     $ref: "#/components/schemas/BaseProduct"
  *   product_id:
  *     type: string
  *     title: product_id
- *     description: The ID of the associated product.
+ *     description: The item's product id.
  *   product_title:
  *     type: string
  *     title: product_title
@@ -66,11 +66,11 @@
  *   product_type:
  *     type: string
  *     title: product_type
- *     description: The ID of the associated product's type.
+ *     description: The item's product type.
  *   product_collection:
  *     type: string
  *     title: product_collection
- *     description: The ID of the associated product's collection.
+ *     description: The item's product collection.
  *   product_handle:
  *     type: string
  *     title: product_handle
@@ -80,11 +80,11 @@
  *   variant_id:
  *     type: string
  *     title: variant_id
- *     description: The ID of the associated product variant.
+ *     description: The item's variant id.
  *   variant_sku:
  *     type: string
  *     title: variant_sku
- *     description: The item's variant SKU.
+ *     description: The item's variant sku.
  *   variant_barcode:
  *     type: string
  *     title: variant_barcode
@@ -95,29 +95,27 @@
  *     description: The item's variant title.
  *   variant_option_values:
  *     type: object
- *     description: The associated variant's value for the product's options.
- *     example:
- *       Color: Red
+ *     description: The item's variant option values.
  *   requires_shipping:
  *     type: boolean
  *     title: requires_shipping
- *     description: Whether the item requires shipping.
+ *     description: The item's requires shipping.
  *   is_discountable:
  *     type: boolean
  *     title: is_discountable
- *     description: Whether the item is discountable.
+ *     description: The item's is discountable.
  *   is_tax_inclusive:
  *     type: boolean
  *     title: is_tax_inclusive
- *     description: Whether the item's price includes taxes.
+ *     description: The item's is tax inclusive.
  *   compare_at_unit_price:
  *     type: number
  *     title: compare_at_unit_price
- *     description: The original price of the item before a promotion or sale.
+ *     description: The item's compare at unit price.
  *   unit_price:
  *     type: number
  *     title: unit_price
- *     description: The price of a single quantity of the item.
+ *     description: The item's unit price.
  *   tax_lines:
  *     type: array
  *     description: The item's tax lines.
@@ -129,73 +127,73 @@
  *     items:
  *       $ref: "#/components/schemas/BaseLineItemAdjustment"
  *   cart:
- *     $ref: "#/components/schemas/StoreCart"
+ *     $ref: "#/components/schemas/BaseCart"
  *   cart_id:
  *     type: string
  *     title: cart_id
- *     description: The ID of the cart that the line item belongs to.
+ *     description: The item's cart id.
  *   metadata:
  *     type: object
- *     description: The item's metadata, can hold custom key-value pairs.
+ *     description: The item's metadata.
  *   created_at:
  *     type: string
- *     title: created_at
- *     description: The date the item was created.
  *     format: date-time
+ *     title: created_at
+ *     description: The item's created at.
  *   updated_at:
  *     type: string
- *     title: updated_at
- *     description: The date the item was updated.
  *     format: date-time
+ *     title: updated_at
+ *     description: The item's updated at.
  *   deleted_at:
  *     type: string
- *     title: deleted_at
- *     description: The date the item was deleted.
  *     format: date-time
+ *     title: deleted_at
+ *     description: The item's deleted at.
  *   original_total:
  *     type: number
  *     title: original_total
- *     description: The item's total including taxes, excluding promotions.
+ *     description: The item's original total.
  *   original_subtotal:
  *     type: number
  *     title: original_subtotal
- *     description: The item's total excluding taxes, including promotions.
+ *     description: The item's original subtotal.
  *   original_tax_total:
  *     type: number
  *     title: original_tax_total
- *     description: The total taxes of the item excluding promotions.
+ *     description: The item's original tax total.
  *   item_total:
  *     type: number
- *     title: original_tax_total
- *     description: The item's total including taxes and promotions.
+ *     title: item_total
+ *     description: The item's item total.
  *   item_subtotal:
  *     type: number
  *     title: item_subtotal
- *     description: The item's total excluding taxes, including promotions.
+ *     description: The item's item subtotal.
  *   item_tax_total:
  *     type: number
  *     title: item_tax_total
- *     description: The total taxes of the item including promotions.
+ *     description: The item's item tax total.
  *   total:
  *     type: number
  *     title: total
- *     description: The item's total including taxes and promotions.
+ *     description: The item's total.
  *   subtotal:
  *     type: number
  *     title: subtotal
- *     description: The item's total excluding taxes, including promotions.
+ *     description: The item's subtotal.
  *   tax_total:
  *     type: number
  *     title: tax_total
- *     description: The total taxes of the item including promotions.
+ *     description: The item's tax total.
  *   discount_total:
  *     type: number
  *     title: discount_total
- *     description: The total discount of the item.
+ *     description: The item's discount total.
  *   discount_tax_total:
  *     type: number
  *     title: discount_tax_total
- *     description: The total taxes applied on the discounted amount.
+ *     description: The item's discount tax total.
  * 
 */
 
