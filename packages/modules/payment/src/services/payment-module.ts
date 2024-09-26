@@ -27,7 +27,7 @@ import {
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
   UpsertPaymentCollectionDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   BigNumber,
   InjectManager,
@@ -41,7 +41,7 @@ import {
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   Capture,
   Payment,

@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
