@@ -1,8 +1,8 @@
 /**
- * @schema BaseOrderFulfillment
+ * @schema AdminOrderFulfillment
  * type: object
- * description: The fulfillment's fulfillments.
- * x-schemaName: BaseOrderFulfillment
+ * description: The fulfillment's details.
+ * x-schemaName: AdminOrderFulfillment
  * required:
  *   - id
  *   - location_id
@@ -73,3 +73,4 @@
  *     description: The date the fulfillment was updated.
  * 
 */
+

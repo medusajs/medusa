@@ -1,8 +1,8 @@
 /**
- * @schema BaseOrderLineItem
+ * @schema AdminOrderLineItem
  * type: object
- * description: The item's items.
- * x-schemaName: BaseOrderLineItem
+ * description: The item's details.
+ * x-schemaName: AdminOrderLineItem
  * required:
  *   - id
  *   - title
@@ -215,3 +215,4 @@
  *     description: The total refundable amount of the item's total for a single quantity.
  * 
 */
+

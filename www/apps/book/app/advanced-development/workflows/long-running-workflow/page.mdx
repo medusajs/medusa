@@ -114,11 +114,11 @@ export const successStatusHighlights = [
 import {
   Modules,
   TransactionHandlerType,
-} from "@medusajs/utils";
+} from "@medusajs/utils"
 import { 
   StepResponse, 
-  createStep
-} from "@medusajs/workflows-sdk";
+  createStep,
+} from "@medusajs/workflows-sdk"
 
 type SetStepSuccessStepInput = {
   transactionId: string
@@ -132,7 +132,7 @@ export const setStepSuccessStep = createStep(
   ) {
     const workflowEngineService = container.resolve(
       Modules.WORKFLOW_ENGINE
-    );
+    )
 
     await workflowEngineService.setStepSuccess({
       idempotencyKey: {
@@ -145,9 +145,9 @@ export const setStepSuccessStep = createStep(
       options: {
         container,
       },
-    });
+    })
   }
-);
+)
 ```
 
 In this step (which you use in a workflow other than the long-running workflow), you resolve the Workflow Engine Module's main service and set `step-2` of the previous workflow as successful.
@@ -232,11 +232,11 @@ export const failureStatusHighlights = [
 import {
   Modules,
   TransactionHandlerType,
-} from "@medusajs/utils";
+} from "@medusajs/utils"
 import { 
   StepResponse, 
-  createStep
-} from "@medusajs/workflows-sdk";
+  createStep,
+} from "@medusajs/workflows-sdk"
 
 type SetStepFailureStepInput = {
   transactionId: string
@@ -250,7 +250,7 @@ export const setStepFailureStep = createStep(
   ) {
     const workflowEngineService = container.resolve(
       Modules.WORKFLOW_ENGINE
-    );
+    )
 
     await workflowEngineService.setStepFailure({
       idempotencyKey: {
@@ -263,9 +263,9 @@ export const setStepFailureStep = createStep(
       options: {
         container,
       },
-    });
+    })
   }
-);
+)
 ```
 
 You use this step in another workflow that changes the status of an async step in a long-running workflow's execution to failed.
