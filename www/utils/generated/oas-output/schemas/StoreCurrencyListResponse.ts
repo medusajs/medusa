@@ -1,7 +1,7 @@
 /**
  * @schema StoreCurrencyListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of currencies.
  * x-schemaName: StoreCurrencyListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The currency's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The currency's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The currency's count.
+ *     description: The total count of items.
  *   currencies:
  *     type: array
- *     description: The currency's currencies.
+ *     description: The list of currencies.
  *     items:
  *       $ref: "#/components/schemas/StoreCurrency"
  * 
