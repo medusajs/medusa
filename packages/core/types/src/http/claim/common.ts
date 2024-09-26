@@ -27,7 +27,7 @@ export interface BaseClaim {
   type: OrderClaimType
   order_id: string
   return_id?: string
-  display_id: string
+  display_id: number
   order_version: string
   refund_amount?: number
   created_by?: string
