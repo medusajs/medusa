@@ -156,7 +156,7 @@ export async function loadModules(args: {
     })) as LoadedModule
 
     if (loaderOnly) {
-      return
+      continue
     }
 
     const service = loaded[moduleName]
