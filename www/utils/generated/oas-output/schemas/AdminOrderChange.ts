@@ -1,8 +1,8 @@
 /**
- * @schema BaseOrderChange
+ * @schema AdminOrderChange
  * type: object
  * description: The order preview's order change.
- * x-schemaName: BaseOrderChange
+ * x-schemaName: AdminOrderChange
  * required:
  *   - order
  *   - claim
