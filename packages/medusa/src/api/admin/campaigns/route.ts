@@ -6,7 +6,7 @@ import { createCampaignsWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { AdminCreateCampaignType } from "./validators"
 import { refetchCampaign } from "./helpers"
 import { AdditionalData, HttpTypes } from "@medusajs/types"

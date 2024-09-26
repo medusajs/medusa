@@ -11,7 +11,7 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { refetchCustomer } from "../../../helpers"
 import {
   StoreGetCustomerAddressParamsType,

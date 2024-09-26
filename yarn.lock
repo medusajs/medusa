@@ -5719,6 +5719,7 @@ __metadata:
     "@medusajs/framework": ^0.0.1
     "@medusajs/link-modules": ^0.2.11
     "@medusajs/types": ^1.11.16
+    "@opentelemetry/api": ^1.9.0
     "@opentelemetry/instrumentation": ^0.53.0
     "@opentelemetry/instrumentation-pg": ^0.44.0
     "@opentelemetry/resources": ^1.26.0
@@ -5728,23 +5729,17 @@ __metadata:
     "@swc/helpers": ^0.5.11
     "@swc/jest": ^0.2.36
     "@types/express": ^4.17.17
-    "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
     "@types/lodash": ^4.14.191
     "@types/multer": ^1.4.7
-    body-parser: ^1.19.0
     boxen: ^5.0.1
     chalk: ^4.0.0
     chokidar: ^3.4.2
     compression: ^1.7.4
-    connect-redis: ^5.0.0
-    cookie-parser: ^1.4.6
-    cors: ^2.8.5
-    cross-env: ^5.2.1
     express: ^4.18.2
     fs-exists-cached: ^1.0.0
-    glob: ^7.1.6
     jest: ^29.7.0
+    jsonwebtoken: ^9.0.2
     lodash: ^4.17.21
     medusa-telemetry: ^0.0.17
     multer: ^1.4.5-lts.1
@@ -5753,11 +5748,11 @@ __metadata:
     request-ip: ^3.3.0
     rimraf: ^5.0.1
     slugify: ^1.6.6
-    supertest: ^4.0.2
     typescript: ^5.6.2
     uuid: ^9.0.0
     zod: 3.22.4
   peerDependencies:
+    "@medusajs/framework": ^0.0.1
     awilix: ^8.0.1
   languageName: unknown
   linkType: soft
@@ -13133,15 +13128,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ioredis@npm:^4.28.10":
-  version: 4.28.10
-  resolution: "@types/ioredis@npm:4.28.10"
-  dependencies:
-    "@types/node": "*"
-  checksum: ff680fef6750721c465ee9d6060d3229e49e5b217d68503c4972c4b869b8f84b91cbd9b7d5195a40fb0bff6ab9a4f5e24a2cc17a368ddb0bfe2dfd4eb5fc1872
-  languageName: node
-  linkType: hard
-
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.6
   resolution: "@types/istanbul-lib-coverage@npm:2.0.6"
@@ -15279,7 +15265,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.2, body-parser@npm:^1.19.0":
+"body-parser@npm:1.20.2":
   version: 1.20.2
   resolution: "body-parser@npm:1.20.2"
   dependencies:
@@ -16594,7 +16580,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:5.2.0, connect-redis@npm:^5.0.0":
+"connect-redis@npm:5.2.0":
   version: 5.2.0
   resolution: "connect-redis@npm:5.2.0"
   checksum: 89352028531d0c7ed86ebbb3af923e0cf41dc098aa556925d7372ec9b9fafb228bfc1085a77888a1c7c2373844c8ac336b2ebb8771cb9b89785770e932ae5888

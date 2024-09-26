@@ -3,7 +3,7 @@ import {
   remoteQueryObjectFromString,
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

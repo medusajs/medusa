@@ -7,7 +7,7 @@ import {
   ContainerRegistrationKeys,
   promiseAll,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const refetchShippingOption = async (
   shippingOptionId: string,

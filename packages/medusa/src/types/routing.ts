@@ -6,12 +6,17 @@ import {
   MedusaPricingContext,
   RequestQueryFields,
 } from "@medusajs/types"
-import * as core from "express-serve-static-core"
 import { FindConfig } from "./common"
 
 // TODO this will be reqorked and move to the framework at a later point unless decided otherwise
 export interface MedusaRequest<Body = unknown>
-  extends Request<core.ParamsDictionary, any, Body> {
+  extends Request<
+    {
+      [key: string]: string
+    },
+    any,
+    Body
+  > {
   validatedBody: Body
   validatedQuery: RequestQueryFields & Record<string, unknown>
   /**

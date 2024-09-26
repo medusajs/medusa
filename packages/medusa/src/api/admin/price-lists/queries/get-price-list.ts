@@ -4,7 +4,7 @@ import {
   MedusaError,
   isPresent,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { AdminPriceListRemoteQueryDTO } from "../types"
 import { buildPriceListResponse } from "./"
 

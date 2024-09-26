@@ -9,7 +9,7 @@ import {
 
 import { refetchApiKey } from "../helpers"
 import { AdminUpdateApiKeyType } from "../validators"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { HttpTypes } from "@medusajs/types"
 
 export const GET = async (

@@ -8,7 +8,7 @@ import {
   dbExists,
   EnvEditor,
   parseConnectionString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 /**
  * A low-level utility to create the database. This util should

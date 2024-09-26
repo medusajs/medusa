@@ -12,7 +12,7 @@ import {
   AdminProductCategoryParamsType,
   AdminUpdateProductCategoryType,
 } from "../validators"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminProductCategoryParamsType>,

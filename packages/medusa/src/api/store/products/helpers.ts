@@ -5,7 +5,7 @@ import {
   TaxCalculationContext,
   TaxableItemDTO,
 } from "@medusajs/types"
-import { Modules, calculateAmountsWithTax } from "@medusajs/utils"
+import { Modules, calculateAmountsWithTax } from "@medusajs/framework/utils"
 import { MedusaRequest } from "../../../types/routing"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
 

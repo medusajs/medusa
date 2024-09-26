@@ -9,7 +9,7 @@ import {
 
 import { refetchCampaign } from "../helpers"
 import { AdminUpdateCampaignType } from "../validators"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { AdditionalData, HttpTypes } from "@medusajs/types"
 
 export const GET = async (

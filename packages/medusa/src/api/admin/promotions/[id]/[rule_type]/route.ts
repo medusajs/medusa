@@ -4,7 +4,7 @@ import {
   remoteQueryObjectFromString,
   RuleOperator,
   RuleType,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

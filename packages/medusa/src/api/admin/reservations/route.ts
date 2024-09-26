@@ -5,7 +5,7 @@ import {
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import { createReservationsWorkflow } from "@medusajs/core-flows"
 import { refetchReservation } from "./helpers"

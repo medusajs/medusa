@@ -2,7 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { NextFunction } from "express"
 import { MedusaRequest } from "../../../../types/routing"
 

@@ -4,7 +4,7 @@ import {
   promiseAll,
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const refetchPromotion = async (
   promotionId: string,

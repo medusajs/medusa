@@ -3,12 +3,15 @@ import express from "express"
 import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
-import { gqlSchemaToTypes, GracefulShutdownServer } from "@medusajs/utils"
+import {
+  gqlSchemaToTypes,
+  GracefulShutdownServer,
+} from "@medusajs/framework/utils"
 import http, { IncomingMessage, ServerResponse } from "http"
 import { logger } from "@medusajs/framework/logger"
 
 import loaders from "../loaders"
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR

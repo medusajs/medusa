@@ -1,5 +1,5 @@
 import { createLinksWorkflow } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

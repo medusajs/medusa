@@ -13,7 +13,7 @@ import {
   Modules,
   promiseAll,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { AdminBatchVariantInventoryItemsType } from "./validators"
 
 const isPricing = (fieldName: string) =>

@@ -7,7 +7,7 @@ import {
   deleteStockLocationsWorkflow,
   updateStockLocationsWorkflow,
 } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { refetchStockLocation } from "../helpers"
 import {
   AdminGetStockLocationParamsType,

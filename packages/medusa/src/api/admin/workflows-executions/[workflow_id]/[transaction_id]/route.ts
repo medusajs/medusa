@@ -6,7 +6,7 @@ import {
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { AdminGetWorkflowExecutionDetailsParamsType } from "../../validators"
 import { HttpTypes } from "@medusajs/types"
 

@@ -6,7 +6,7 @@ import {
   AdminGetReservationParamsType,
   AdminUpdateReservationType,
 } from "../validators"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { deleteReservationsWorkflow } from "@medusajs/core-flows"
 import { updateReservationsWorkflow } from "@medusajs/core-flows"
 import { refetchReservation } from "../helpers"

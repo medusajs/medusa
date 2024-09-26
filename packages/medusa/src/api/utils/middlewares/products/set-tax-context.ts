@@ -5,7 +5,7 @@ import {
   MedusaRequest,
 } from "../../../../types/routing"
 import { refetchEntity } from "../../refetch-entity"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { RequestWithContext } from "../../../store/products/helpers"
 
 export function setTaxContext() {

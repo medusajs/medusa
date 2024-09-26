@@ -5,7 +5,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { ConfigModule, IAuthModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { decode, JwtPayload, verify } from "jsonwebtoken"
 
 // Middleware to validate that a token is valid

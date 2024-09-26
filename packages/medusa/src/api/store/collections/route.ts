@@ -7,7 +7,7 @@ import {
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.StoreCollectionFilters>,

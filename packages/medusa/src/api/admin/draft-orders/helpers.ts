@@ -2,7 +2,7 @@ import { MedusaContainer } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const refetchOrder = async (
   orderId: string,

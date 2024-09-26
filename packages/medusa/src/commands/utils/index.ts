@@ -1,6 +1,6 @@
 import { logger } from "@medusajs/framework/logger"
 import { MedusaContainer } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export async function ensureDbExists(container: MedusaContainer) {
   const pgConnection = container.resolve(

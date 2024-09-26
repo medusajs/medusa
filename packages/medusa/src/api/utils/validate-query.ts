@@ -9,7 +9,7 @@ import {
   prepareRetrieveQuery,
 } from "../../utils/get-query-config"
 import { zodValidator } from "./zod-helper"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 
 /**
  * Normalize an input query, especially from array like query params to an array type

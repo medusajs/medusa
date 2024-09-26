@@ -11,7 +11,7 @@ import {
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { refetchCustomer } from "../../helpers"
 import { HttpTypes } from "@medusajs/types"
 

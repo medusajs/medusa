@@ -6,7 +6,7 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { HttpTypes } from "@medusajs/types"
 
 // TODO: Add more fields to provider, such as default name and maybe logo.

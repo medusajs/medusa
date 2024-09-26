@@ -13,7 +13,7 @@ import {
 } from "../validators"
 import { refetchEntity } from "../../../utils/refetch-entity"
 import { HttpTypes } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTagParamsType>,

@@ -3,7 +3,7 @@ import {
   updateShippingProfilesWorkflow,
 } from "@medusajs/core-flows"
 import { HttpTypes, IFulfillmentModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

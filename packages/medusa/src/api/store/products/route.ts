@@ -2,7 +2,7 @@ import {
   ContainerRegistrationKeys,
   isPresent,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { MedusaResponse } from "../../../types/routing"
 import { wrapVariantsWithInventoryQuantity } from "../../utils/middlewares"
 import { RequestWithContext, wrapProductsWithTaxPrices } from "./helpers"

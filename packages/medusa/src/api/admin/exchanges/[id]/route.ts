@@ -1,5 +1,5 @@
 import { AdminExchangeResponse } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

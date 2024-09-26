@@ -12,7 +12,7 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { refetchUser } from "../helpers"
 import { AdminUpdateUserType } from "../validators"
 

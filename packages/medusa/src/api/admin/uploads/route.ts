@@ -3,7 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (

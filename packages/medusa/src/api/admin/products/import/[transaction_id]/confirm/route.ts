@@ -8,8 +8,8 @@ import {
   waitConfirmationProductImportStepId,
 } from "@medusajs/core-flows"
 import { IWorkflowEngineService } from "@medusajs/types"
-import { Modules, TransactionHandlerType } from "@medusajs/utils"
-import { StepResponse } from "@medusajs/workflows-sdk"
+import { Modules, TransactionHandlerType } from "@medusajs/framework/utils"
+import { StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,

@@ -2,7 +2,7 @@ import { orderClaimAddNewItemWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import {
   AuthenticatedMedusaRequest,

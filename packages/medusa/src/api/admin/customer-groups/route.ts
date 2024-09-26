@@ -6,7 +6,7 @@ import { createCustomerGroupsWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { AdminCreateCustomerGroupType } from "./validators"
 import { refetchCustomerGroup } from "./helpers"
 import { HttpTypes } from "@medusajs/types"

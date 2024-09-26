@@ -4,8 +4,11 @@ import {
 } from "../../../../types/routing"
 import { deleteFilesWorkflow } from "@medusajs/core-flows"
 import { HttpTypes } from "@medusajs/types"
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
+import { remoteQueryObjectFromString } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

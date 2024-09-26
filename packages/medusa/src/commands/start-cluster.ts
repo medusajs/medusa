@@ -5,7 +5,7 @@ import { scheduleJob } from "node-schedule"
 import os from "os"
 
 import { logger } from "@medusajs/framework/logger"
-import { GracefulShutdownServer, isPresent } from "@medusajs/utils"
+import { GracefulShutdownServer, isPresent } from "@medusajs/framework/utils"
 import loaders from "../loaders"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"

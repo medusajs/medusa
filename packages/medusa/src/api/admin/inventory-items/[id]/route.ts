@@ -1,4 +1,4 @@
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import {
   deleteInventoryItemWorkflow,

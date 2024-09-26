@@ -3,7 +3,7 @@ import {
   ContainerRegistrationKeys,
   isString,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { MedusaRequest } from "../../types/routing"
 
 export const refetchEntities = async (

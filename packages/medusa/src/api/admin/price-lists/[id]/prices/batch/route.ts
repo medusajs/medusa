@@ -1,4 +1,4 @@
-import { promiseAll } from "@medusajs/utils"
+import { promiseAll } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

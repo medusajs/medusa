@@ -1,5 +1,5 @@
 import { completeCartWorkflow } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
 import { refetchOrder } from "../../../orders/helpers"

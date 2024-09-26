@@ -8,7 +8,7 @@ import {
   AdminCreatePromotionRuleType,
   AdminUpdatePromotionRuleType,
 } from "../../../validators"
-import { RuleType } from "@medusajs/utils"
+import { RuleType } from "@medusajs/framework/utils"
 import { refetchBatchRules } from "../../../helpers"
 
 export const POST = async (

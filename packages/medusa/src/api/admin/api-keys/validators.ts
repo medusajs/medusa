@@ -1,4 +1,4 @@
-import { ApiKeyType } from "@medusajs/utils"
+import { ApiKeyType } from "@medusajs/framework/utils"
 import { z } from "zod"
 import {
   createFindParams,

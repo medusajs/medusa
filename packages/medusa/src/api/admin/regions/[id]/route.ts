@@ -2,7 +2,7 @@ import {
   deleteRegionsWorkflow,
   updateRegionsWorkflow,
 } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

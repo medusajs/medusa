@@ -8,7 +8,7 @@ import { AdminGetWorkflowExecutionDetailsParamsType } from "../validators"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetWorkflowExecutionDetailsParamsType>,

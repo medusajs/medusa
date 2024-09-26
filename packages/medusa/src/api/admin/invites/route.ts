@@ -5,7 +5,7 @@ import {
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import { createInvitesWorkflow } from "@medusajs/core-flows"
 import { refetchInvite } from "./helpers"

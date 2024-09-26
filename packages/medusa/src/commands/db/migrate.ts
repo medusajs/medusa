@@ -1,5 +1,5 @@
 import { join } from "path"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { LinkLoader } from "@medusajs/framework/links"
 import { logger } from "@medusajs/framework/logger"
 import { MedusaAppLoader } from "@medusajs/framework"

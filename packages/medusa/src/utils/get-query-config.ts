@@ -5,7 +5,7 @@ import {
   isPresent,
   MedusaError,
   stringToSelectRelationObject,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { pick } from "lodash"
 import { FindConfig, QueryConfig } from "../types/common"
 

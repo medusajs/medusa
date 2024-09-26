@@ -2,7 +2,10 @@ import { LinkLoader } from "@medusajs/framework/links"
 import { logger } from "@medusajs/framework/logger"
 import { MedusaAppLoader } from "@medusajs/framework"
 import { initializeContainer } from "../loaders"
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import { getResolvedPlugins } from "../loaders/helpers/resolve-plugins"
 import { join } from "path"
 

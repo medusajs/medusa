@@ -1,6 +1,6 @@
 import { linkSalesChannelsToApiKeyWorkflow } from "@medusajs/core-flows"
 import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
-import { ApiKeyType, MedusaError } from "@medusajs/utils"
+import { ApiKeyType, MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

@@ -8,7 +8,7 @@ import {
   isPresent,
   MedusaError,
   PUBLISHABLE_KEY_HEADER,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { refetchEntity } from "../../api/utils/refetch-entity"
 
 export function ensurePublishableApiKey() {
