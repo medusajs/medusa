@@ -3,8 +3,8 @@ import {
   IRegionModuleService,
   IStoreModuleService,
   MedusaContainer,
-} from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export const seedStorefrontDefaults = async (
   container: MedusaContainer,

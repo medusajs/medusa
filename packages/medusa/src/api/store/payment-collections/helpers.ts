@@ -1,4 +1,7 @@
-import { MedusaContainer, PaymentCollectionDTO } from "@medusajs/types"
+import {
+  MedusaContainer,
+  PaymentCollectionDTO,
+} from "@medusajs/framework/types"
 import { refetchEntity } from "../../utils/refetch-entity"
 
 export const refetchPaymentCollection = async (

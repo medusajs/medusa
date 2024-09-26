@@ -2,7 +2,7 @@ import { orderClaimRequestItemReturnWorkflow } from "@medusajs/core-flows"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import {
   AuthenticatedMedusaRequest,
@@ -10,7 +10,7 @@ import {
 } from "../../../../../../types/routing"
 import { defaultAdminDetailsReturnFields } from "../../../../returns/query-config"
 import { AdminPostReturnsRequestItemsReqSchemaType } from "../../../../returns/validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsRequestItemsReqSchemaType>,

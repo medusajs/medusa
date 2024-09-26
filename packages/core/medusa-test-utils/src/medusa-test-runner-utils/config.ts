@@ -4,7 +4,7 @@ export async function configLoaderOverride(
   entryDirectory: string,
   override: { clientUrl: string; debug?: boolean }
 ) {
-  const { configManager } = await import("@medusajs/framework")
+  const { configManager } = await import("@medusajs/framework/config")
   const { configModule, error } = getConfigFile<
     ReturnType<typeof configManager.loadConfig>
   >(entryDirectory, "medusa-config.js")
@@ -13,6 +13,7 @@ export async function configLoaderOverride(
     throw new Error(error.message || "Error during config loading")
   }
 
+  configModule.projectConfig.databaseDriverOptions
   configModule.projectConfig.databaseUrl = override.clientUrl
   configModule.projectConfig.databaseLogging = !!override.debug
   configModule.projectConfig.databaseDriverOptions =

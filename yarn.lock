@@ -5207,7 +5207,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/core-flows@^0.0.9, @medusajs/core-flows@workspace:packages/core/core-flows":
+"@medusajs/core-flows@^0.0.9, @medusajs/core-flows@workspace:*, @medusajs/core-flows@workspace:^, @medusajs/core-flows@workspace:packages/core/core-flows":
   version: 0.0.0-use.local
   resolution: "@medusajs/core-flows@workspace:packages/core/core-flows"
   dependencies:
@@ -5233,7 +5233,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/currency@workspace:packages/modules/currency":
+"@medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/modules/currency"
   dependencies:
@@ -5427,7 +5427,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/framework@^0.0.1, @medusajs/framework@workspace:packages/core/framework":
+"@medusajs/framework@^0.0.1, @medusajs/framework@workspace:^, @medusajs/framework@workspace:packages/core/framework":
   version: 0.0.0-use.local
   resolution: "@medusajs/framework@workspace:packages/core/framework"
   dependencies:
@@ -5617,7 +5617,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/link-modules@^0.2.11, @medusajs/link-modules@workspace:packages/modules/link-modules":
+"@medusajs/link-modules@^0.2.11, @medusajs/link-modules@workspace:^, @medusajs/link-modules@workspace:packages/modules/link-modules":
   version: 0.0.0-use.local
   resolution: "@medusajs/link-modules@workspace:packages/modules/link-modules"
   dependencies:
@@ -5668,18 +5668,12 @@ __metadata:
     pg-god: ^1.0.12
     prompts: ^2.4.2
     resolve-cwd: ^3.0.0
-    rimraf: ^6.0.1
+    rimraf: ^5.0.1
     stack-trace: ^0.0.10
-    ts-node: ^10.9.2
     typescript: ^5.6.2
     ulid: ^2.3.0
     winston: ^3.8.2
     yargs: ^15.3.1
-  peerDependencies:
-    ts-node: ^10.9.2
-  peerDependenciesMeta:
-    ts-node:
-      optional: true
   bin:
     medusa: cli.js
   languageName: unknown
@@ -5724,9 +5718,7 @@ __metadata:
     "@medusajs/core-flows": ^0.0.9
     "@medusajs/framework": ^0.0.1
     "@medusajs/link-modules": ^0.2.11
-    "@medusajs/types": ^1.11.16
-    "@medusajs/utils": ^1.11.9
-    "@medusajs/workflows-sdk": ^0.1.6
+    "@opentelemetry/api": ^1.9.0
     "@opentelemetry/instrumentation": ^0.53.0
     "@opentelemetry/instrumentation-pg": ^0.44.0
     "@opentelemetry/resources": ^1.26.0
@@ -5736,23 +5728,17 @@ __metadata:
     "@swc/helpers": ^0.5.11
     "@swc/jest": ^0.2.36
     "@types/express": ^4.17.17
-    "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
     "@types/lodash": ^4.14.191
     "@types/multer": ^1.4.7
-    body-parser: ^1.19.0
     boxen: ^5.0.1
     chalk: ^4.0.0
     chokidar: ^3.4.2
     compression: ^1.7.4
-    connect-redis: ^5.0.0
-    cookie-parser: ^1.4.6
-    cors: ^2.8.5
-    cross-env: ^5.2.1
     express: ^4.18.2
     fs-exists-cached: ^1.0.0
-    glob: ^7.1.6
     jest: ^29.7.0
+    jsonwebtoken: ^9.0.2
     lodash: ^4.17.21
     medusa-telemetry: ^0.0.17
     multer: ^1.4.5-lts.1
@@ -5761,11 +5747,11 @@ __metadata:
     request-ip: ^3.3.0
     rimraf: ^5.0.1
     slugify: ^1.6.6
-    supertest: ^4.0.2
-    typescript: ^5.3.3
+    typescript: ^5.6.2
     uuid: ^9.0.0
     zod: 3.22.4
   peerDependencies:
+    "@medusajs/framework": ^0.0.1
     awilix: ^8.0.1
   languageName: unknown
   linkType: soft
@@ -5918,7 +5904,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment@workspace:packages/modules/payment":
+"@medusajs/payment@workspace:^, @medusajs/payment@workspace:packages/modules/payment":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment@workspace:packages/modules/payment"
   dependencies:
@@ -13141,15 +13127,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ioredis@npm:^4.28.10":
-  version: 4.28.10
-  resolution: "@types/ioredis@npm:4.28.10"
-  dependencies:
-    "@types/node": "*"
-  checksum: ff680fef6750721c465ee9d6060d3229e49e5b217d68503c4972c4b869b8f84b91cbd9b7d5195a40fb0bff6ab9a4f5e24a2cc17a368ddb0bfe2dfd4eb5fc1872
-  languageName: node
-  linkType: hard
-
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.6
   resolution: "@types/istanbul-lib-coverage@npm:2.0.6"
@@ -15287,7 +15264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.2, body-parser@npm:^1.19.0":
+"body-parser@npm:1.20.2":
   version: 1.20.2
   resolution: "body-parser@npm:1.20.2"
   dependencies:
@@ -16602,7 +16579,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:5.2.0, connect-redis@npm:^5.0.0":
+"connect-redis@npm:5.2.0":
   version: 5.2.0
   resolution: "connect-redis@npm:5.2.0"
   checksum: 89352028531d0c7ed86ebbb3af923e0cf41dc098aa556925d7372ec9b9fafb228bfc1085a77888a1c7c2373844c8ac336b2ebb8771cb9b89785770e932ae5888
@@ -16853,7 +16830,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-medusa-app@workspace:packages/cli/create-medusa-app"
   dependencies:
-    "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@types/chalk": ^2.2.0
     "@types/commander": ^2.12.2
@@ -16886,7 +16862,7 @@ __metadata:
     prettier: ^2.8.8
     slugify: ^1.6.6
     ts-node: ^10.9.1
-    typescript: ^5.0.4
+    typescript: ^5.6.2
     uuid: ^9.0.0
     validator: ^13.9.0
     wait-on: ^7.0.1
@@ -20453,22 +20429,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^11.0.0":
-  version: 11.0.0
-  resolution: "glob@npm:11.0.0"
-  dependencies:
-    foreground-child: ^3.1.0
-    jackspeak: ^4.0.1
-    minimatch: ^10.0.0
-    minipass: ^7.1.2
-    package-json-from-dist: ^1.0.0
-    path-scurry: ^2.0.0
-  bin:
-    glob: dist/esm/bin.mjs
-  checksum: 419866015d8795258a8ac51de5b9d1a99c72634fc3ead93338e4da388e89773ab21681e494eac0fbc4250b003451ca3110bb4f1c9393d15d14466270094fdb4e
-  languageName: node
-  linkType: hard
-
 "glob@npm:^6.0.1":
   version: 6.0.4
   resolution: "glob@npm:6.0.4"
@@ -21370,6 +21330,7 @@ __metadata:
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/payment": "workspace:^"
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
@@ -21381,10 +21342,7 @@ __metadata:
     "@medusajs/workflow-engine-inmemory": "workspace:*"
     "@swc/core": ^1.4.8
     "@swc/jest": ^0.2.36
-    faker: ^5.5.3
-    form-data: ^4.0.0
     jest: ^29.7.0
-    jest-environment-node: ^29.7.0
     pg: ^8.11.3
     typescript: ^5.6.2
   languageName: unknown
@@ -21397,6 +21355,7 @@ __metadata:
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/core-flows": "workspace:*"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/fulfillment": "workspace:^"
@@ -21417,9 +21376,9 @@ __metadata:
     "@medusajs/workflow-engine-inmemory": "workspace:*"
     "@swc/core": ^1.4.8
     "@swc/jest": ^0.2.36
-    faker: ^5.5.3
+    form-data: ^4.0.0
     jest: ^29.7.0
-    jest-environment-node: ^29.7.0
+    jsonwebtoken: ^9.0.2
     medusa-test-utils: "workspace:*"
     pg: ^8.11.3
     typescript: ^5.6.2
@@ -21433,13 +21392,18 @@ __metadata:
     "@medusajs/api-key": "workspace:^"
     "@medusajs/auth": "workspace:*"
     "@medusajs/cache-inmemory": "workspace:*"
+    "@medusajs/core-flows": "workspace:^"
+    "@medusajs/currency": "workspace:^"
     "@medusajs/customer": "workspace:^"
     "@medusajs/event-bus-local": "workspace:*"
+    "@medusajs/framework": "workspace:^"
     "@medusajs/fulfillment": "workspace:^"
     "@medusajs/fulfillment-manual": "workspace:^"
     "@medusajs/inventory-next": "workspace:^"
+    "@medusajs/link-modules": "workspace:^"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/payment": "workspace:^"
     "@medusajs/pricing": "workspace:^"
     "@medusajs/product": "workspace:^"
     "@medusajs/promotion": "workspace:^"
@@ -21455,9 +21419,10 @@ __metadata:
     "@swc/jest": ^0.2.36
     faker: ^5.5.3
     jest: ^29.7.0
-    jest-environment-node: ^29.7.0
+    jsonwebtoken: ^9.0.2
     medusa-test-utils: "workspace:*"
     pg: ^8.11.3
+    scrypt-kdf: ^2.0.1
     typescript: ^5.6.2
   languageName: unknown
   linkType: soft
@@ -22318,15 +22283,6 @@ __metadata:
     "@pkgjs/parseargs":
       optional: true
   checksum: f01d8f972d894cd7638bc338e9ef5ddb86f7b208ce177a36d718eac96ec86638a6efa17d0221b10073e64b45edc2ce15340db9380b1f5d5c5d000cbc517dc111
-  languageName: node
-  linkType: hard
-
-"jackspeak@npm:^4.0.1":
-  version: 4.0.2
-  resolution: "jackspeak@npm:4.0.2"
-  dependencies:
-    "@isaacs/cliui": ^8.0.2
-  checksum: b26039d11c0163a95b1e58851b9ac453cce64ad6d1eb98a00b303ad5eeb761b29d33c9419d1e16c016d3f7151c8edf7df223e6cf93a1907655fd95d6ce85c0de
   languageName: node
   linkType: hard
 
@@ -23944,13 +23900,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^11.0.0":
-  version: 11.0.1
-  resolution: "lru-cache@npm:11.0.1"
-  checksum: 8bad6603dc67eb5b03520fba05bce5df6473dbba58ac4c6067ed088d29225a0a04416bb1462acd8c1f819d1fbf37920446a1c36bafd9c384bcc54cee0d3b697a
-  languageName: node
-  linkType: hard
-
 "lru-cache@npm:^4.0.1":
   version: 4.1.5
   resolution: "lru-cache@npm:4.1.5"
@@ -24603,15 +24552,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.0.0":
-  version: 10.0.1
-  resolution: "minimatch@npm:10.0.1"
-  dependencies:
-    brace-expansion: ^2.0.1
-  checksum: e6c29a81fe83e1877ad51348306be2e8aeca18c88fdee7a99df44322314279e15799e41d7cb274e4e8bb0b451a3bc622d6182e157dfa1717d6cda75e9cd8cd5d
-  languageName: node
-  linkType: hard
-
 "minimatch@npm:^5.0.1":
   version: 5.1.6
   resolution: "minimatch@npm:5.1.6"
@@ -24719,13 +24659,6 @@ __metadata:
   version: 7.1.0
   resolution: "minipass@npm:7.1.0"
   checksum: 6861c6ec9dc3cb99c745b287d92b2a8f409951852940205b4bb106faceb790544288622a0db7aa152f37793e2fc8f303628787883d9a679f2126605204feb97f
-  languageName: node
-  linkType: hard
-
-"minipass@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "minipass@npm:7.1.2"
-  checksum: b0fd20bb9fb56e5fa9a8bfac539e8915ae07430a619e4b86ff71f5fc757ef3924b23b2c4230393af1eda647ed3d75739e4e0acb250a6b1eb277cf7f8fe449557
   languageName: node
   linkType: hard
 
@@ -25964,13 +25897,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"package-json-from-dist@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "package-json-from-dist@npm:1.0.0"
-  checksum: e3ffaf6ac1040ab6082a658230c041ad14e72fabe99076a2081bb1d5d41210f11872403fc09082daf4387fc0baa6577f96c9c0e94c90c394fd57794b66aa4033
-  languageName: node
-  linkType: hard
-
 "package-name-regex@npm:~2.0.6":
   version: 2.0.6
   resolution: "package-name-regex@npm:2.0.6"
@@ -26173,16 +26099,6 @@ __metadata:
     lru-cache: ^10.2.0
     minipass: ^5.0.0 || ^6.0.2 || ^7.0.0
   checksum: d723777fbf9627f201e64656680f66ebd940957eebacf780e6cce1c2919c29c116678b2d7dbf8821b3a2caa758d125f4444005ccec886a25c8f324504e48e601
-  languageName: node
-  linkType: hard
-
-"path-scurry@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "path-scurry@npm:2.0.0"
-  dependencies:
-    lru-cache: ^11.0.0
-    minipass: ^7.1.2
-  checksum: 3da4adedaa8e7ef8d6dc4f35a0ff8f05a9b4d8365f2b28047752b62d4c1ad73eec21e37b1579ef2d075920157856a3b52ae8309c480a6f1a8bbe06ff8e52b33c
   languageName: node
   linkType: hard
 
@@ -28755,18 +28671,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "rimraf@npm:6.0.1"
-  dependencies:
-    glob: ^11.0.0
-    package-json-from-dist: ^1.0.0
-  bin:
-    rimraf: dist/esm/bin.mjs
-  checksum: b30b6b072771f0d1e73b4ca5f37bb2944ee09375be9db5f558fcd3310000d29dfcfa93cf7734d75295ad5a7486dc8e40f63089ced1722a664539ffc0c3ece8c6
-  languageName: node
-  linkType: hard
-
 "rimraf@npm:~2.4.0":
   version: 2.4.5
   resolution: "rimraf@npm:2.4.5"
@@ -31238,7 +31142,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.9.1, ts-node@npm:^10.9.2":
+"ts-node@npm:^10.9.1":
   version: 10.9.2
   resolution: "ts-node@npm:10.9.2"
   dependencies:
@@ -31823,7 +31727,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.0.4, typescript@npm:^5.1.6, typescript@npm:^5.3.3":
+"typescript@npm:^5.1.6, typescript@npm:^5.3.3":
   version: 5.4.5
   resolution: "typescript@npm:5.4.5"
   bin:
@@ -31883,7 +31787,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.0.4#~builtin<compat/typescript>, typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>, typescript@patch:typescript@^5.3.3#~builtin<compat/typescript>":
   version: 5.4.5
   resolution: "typescript@patch:typescript@npm%3A5.4.5#~builtin<compat/typescript>::version=5.4.5&hash=7ad353"
   bin:
