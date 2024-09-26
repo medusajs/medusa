@@ -4,13 +4,13 @@ import {
   logger,
   MedusaAppLoader,
 } from "@medusajs/framework"
-import { MedusaAppOutput, MedusaModule } from "@medusajs/modules-sdk"
-import { IndexTypes } from "@medusajs/types"
+import { MedusaAppOutput, MedusaModule } from "@medusajs/framework/modules-sdk"
+import { IndexTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   ModuleRegistrationName,
   Modules,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { EntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
 import { asValue } from "awilix"
@@ -65,7 +65,6 @@ const beforeAll_ = async () => {
     ;(index as any).eventBusModuleService_ = eventBusMock
 
     await globalApp.onApplicationStart()
-
     ;(index as any).storageProvider_.query_ = queryMock
 
     return globalApp

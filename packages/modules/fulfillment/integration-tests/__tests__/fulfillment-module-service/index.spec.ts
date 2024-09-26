@@ -1,6 +1,9 @@
-import { ModulesDefinition } from "@medusajs/modules-sdk"
-import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { ModulesDefinition } from "@medusajs/framework/modules-sdk"
+import {
+  FulfillmentSetDTO,
+  IFulfillmentModuleService,
+} from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { FulfillmentModuleService, FulfillmentProviderService } from "@services"
 import {
   initModules,

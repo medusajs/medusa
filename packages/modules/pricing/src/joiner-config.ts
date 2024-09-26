@@ -1,4 +1,4 @@
-import { defineJoinerConfig, Modules } from "@medusajs/utils"
+import { defineJoinerConfig, Modules } from "@medusajs/framework/utils"
 import { Price, PriceList, PricePreference, PriceSet } from "@models"
 import { default as schema } from "./schema"
 

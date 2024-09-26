@@ -1,10 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
   OrderChangeStatus,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -20,7 +20,7 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import { } from "@types"
+import {} from "@types"
 import OrderClaim from "./claim"
 import OrderExchange from "./exchange"
 import Order from "./order"

@@ -1,4 +1,4 @@
-import { Constructor, Context, DAL } from "@medusajs/types"
+import { Constructor, Context, DAL } from "@medusajs/framework/types"
 import { LoadStrategy } from "@mikro-orm/core"
 import { Order, OrderClaim } from "@models"
 import { mapRepositoryToOrderModel } from "."

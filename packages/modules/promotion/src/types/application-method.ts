@@ -4,7 +4,7 @@ import {
   ApplicationMethodTypeValues,
   BigNumberInput,
   PromotionDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 import { Promotion } from "@models"
 
