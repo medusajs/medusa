@@ -1,5 +1,5 @@
-import { ICurrencyModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { ICurrencyModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { CurrencyModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 

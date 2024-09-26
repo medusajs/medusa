@@ -1,5 +1,5 @@
-import { IAuthModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { IAuthModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { AuthModuleService } from "@services"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { resolve } from "path"

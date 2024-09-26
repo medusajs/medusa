@@ -9,13 +9,13 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
   Searchable,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 const userEmailIndexName = "IDX_user_email"
 const userEmailIndexStatement = createPsqlIndexStatementHelper({

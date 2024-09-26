@@ -1,10 +1,13 @@
-import { CreatePriceSetDTO, IPricingModuleService } from "@medusajs/types"
+import {
+  CreatePriceSetDTO,
+  IPricingModuleService,
+} from "@medusajs/framework/types"
 import {
   CommonEvents,
   composeMessage,
   Modules,
   PricingEvents,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,

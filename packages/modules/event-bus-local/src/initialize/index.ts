@@ -1,6 +1,6 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
-import { IEventBusService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { IEventBusService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export const initialize = async (): Promise<IEventBusService> => {
   const serviceKey = Modules.EVENT_BUS

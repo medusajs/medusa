@@ -1,7 +1,7 @@
 import {
   ModuleProviderExports,
   ModuleServiceInitializeOptions,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 export const FileProviderIdentifierRegistrationName =
   "file_providers_identifier"

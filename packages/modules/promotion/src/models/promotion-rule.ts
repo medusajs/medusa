@@ -1,5 +1,9 @@
-import { DAL, PromotionRuleOperatorValues } from "@medusajs/types"
-import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
+import { DAL, PromotionRuleOperatorValues } from "@medusajs/framework/types"
+import {
+  DALUtils,
+  PromotionUtils,
+  generateEntityId,
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,

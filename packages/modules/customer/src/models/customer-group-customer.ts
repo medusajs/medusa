@@ -1,5 +1,5 @@
-import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import { DAL } from "@medusajs/framework/types"
+import { generateEntityId } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,

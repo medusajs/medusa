@@ -1,10 +1,10 @@
-import { DAL, PromotionTypeValues } from "@medusajs/types"
+import { DAL, PromotionTypeValues } from "@medusajs/framework/types"
 import {
   DALUtils,
   PromotionUtils,
   Searchable,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Collection,

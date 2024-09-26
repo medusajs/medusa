@@ -4,14 +4,14 @@ import {
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
   PlannerActionLinkDescriptor,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 import {
   DALUtils,
   ModulesSdkUtils,
   arrayDifference,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { EntitySchema, MikroORM } from "@mikro-orm/core"
 import { DatabaseSchema, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { generateEntity } from "../utils"

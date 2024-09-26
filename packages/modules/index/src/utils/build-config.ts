@@ -1,12 +1,12 @@
 import { makeExecutableSchema } from "@graphql-tools/schema"
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   IndexTypes,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   ModuleJoinerRelationship,
-} from "@medusajs/types"
-import { CommonEvents, GraphQLUtils } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { CommonEvents, GraphQLUtils } from "@medusajs/framework/utils"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 
 export const CustomDirectives = {
