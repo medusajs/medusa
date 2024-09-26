@@ -53,7 +53,7 @@ export class BrandClient {
 
     const moduleDef = configModule.modules[BRAND_MODULE]
     if (typeof moduleDef !== "boolean") {
-      this.options_ = moduleDef.options
+      this.options_ = moduleDef.options as BrandClientOptions
     }
   }
 }
@@ -101,7 +101,7 @@ export class BrandClient {
     }`)
   }
 
-  async createBrand(brand: Record<string, string>) {
+  async createBrand(brand: Record<string, any>) {
     await this.sendRequest("/brands", "POST", brand)
   }
 
