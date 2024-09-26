@@ -5056,7 +5056,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/modules/api-key":
+"@medusajs/api-key@^0.1.2, @medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/modules/api-key":
   version: 0.0.0-use.local
   resolution: "@medusajs/api-key@workspace:packages/modules/api-key"
   dependencies:
@@ -5077,7 +5077,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
+"@medusajs/auth-emailpass@^0.0.1, @medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-emailpass@workspace:packages/modules/providers/auth-emailpass"
   dependencies:
@@ -5093,7 +5093,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-github@workspace:packages/modules/providers/auth-github":
+"@medusajs/auth-github@^0.0.1, @medusajs/auth-github@workspace:packages/modules/providers/auth-github":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-github@workspace:packages/modules/providers/auth-github"
   dependencies:
@@ -5109,7 +5109,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth-google@workspace:packages/modules/providers/auth-google":
+"@medusajs/auth-google@^0.0.1, @medusajs/auth-google@workspace:packages/modules/providers/auth-google":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth-google@workspace:packages/modules/providers/auth-google"
   dependencies:
@@ -5126,7 +5126,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
+"@medusajs/auth@^0.0.3, @medusajs/auth@workspace:*, @medusajs/auth@workspace:packages/modules/auth":
   version: 0.0.0-use.local
   resolution: "@medusajs/auth@workspace:packages/modules/auth"
   dependencies:
@@ -5151,7 +5151,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/cache-inmemory@workspace:*, @medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory":
+"@medusajs/cache-inmemory@^1.8.10, @medusajs/cache-inmemory@workspace:*, @medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
   dependencies:
@@ -5166,7 +5166,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/cache-redis@workspace:packages/modules/cache-redis":
+"@medusajs/cache-redis@^1.9.1, @medusajs/cache-redis@workspace:packages/modules/cache-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-redis@workspace:packages/modules/cache-redis"
   dependencies:
@@ -5183,7 +5183,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/cart@workspace:packages/modules/cart":
+"@medusajs/cart@^0.0.3, @medusajs/cart@workspace:packages/modules/cart":
   version: 0.0.0-use.local
   resolution: "@medusajs/cart@workspace:packages/modules/cart"
   dependencies:
@@ -5233,7 +5233,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
+"@medusajs/currency@^0.1.2, @medusajs/currency@workspace:^, @medusajs/currency@workspace:packages/modules/currency":
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/modules/currency"
   dependencies:
@@ -5258,7 +5258,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/customer@workspace:^, @medusajs/customer@workspace:packages/modules/customer":
+"@medusajs/customer@^0.0.3, @medusajs/customer@workspace:^, @medusajs/customer@workspace:packages/modules/customer":
   version: 0.0.0-use.local
   resolution: "@medusajs/customer@workspace:packages/modules/customer"
   dependencies:
@@ -5337,7 +5337,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/modules/event-bus-local":
+"@medusajs/event-bus-local@^1.9.8, @medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/modules/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/modules/event-bus-local"
   dependencies:
@@ -5353,7 +5353,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis":
+"@medusajs/event-bus-redis@^1.8.13, @medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-redis@workspace:packages/modules/event-bus-redis"
   dependencies:
@@ -5371,7 +5371,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/file-local-next@workspace:packages/modules/providers/file-local":
+"@medusajs/file-local-next@^0.0.2, @medusajs/file-local-next@workspace:packages/modules/providers/file-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/file-local-next@workspace:packages/modules/providers/file-local"
   dependencies:
@@ -5386,7 +5386,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/file-s3@workspace:packages/modules/providers/file-s3":
+"@medusajs/file-s3@^0.0.2, @medusajs/file-s3@workspace:packages/modules/providers/file-s3":
   version: 0.0.0-use.local
   resolution: "@medusajs/file-s3@workspace:packages/modules/providers/file-s3"
   dependencies:
@@ -5405,7 +5405,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/file@workspace:packages/modules/file":
+"@medusajs/file@^0.0.1, @medusajs/file@workspace:packages/modules/file":
   version: 0.0.0-use.local
   resolution: "@medusajs/file@workspace:packages/modules/file"
   dependencies:
@@ -5477,7 +5477,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
+"@medusajs/fulfillment-manual@^0.0.2, @medusajs/fulfillment-manual@workspace:^, @medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment-manual@workspace:packages/modules/providers/fulfillment-manual"
   dependencies:
@@ -5492,7 +5492,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/fulfillment@workspace:^, @medusajs/fulfillment@workspace:packages/modules/fulfillment":
+"@medusajs/fulfillment@^0.1.2, @medusajs/fulfillment@workspace:^, @medusajs/fulfillment@workspace:packages/modules/fulfillment":
   version: 0.0.0-use.local
   resolution: "@medusajs/fulfillment@workspace:packages/modules/fulfillment"
   dependencies:
@@ -5551,7 +5551,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/index@workspace:packages/modules/index":
+"@medusajs/index@^0.0.1, @medusajs/index@workspace:packages/modules/index":
   version: 0.0.0-use.local
   resolution: "@medusajs/index@workspace:packages/modules/index"
   dependencies:
@@ -5578,7 +5578,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/inventory-next@workspace:^, @medusajs/inventory-next@workspace:packages/modules/inventory-next":
+"@medusajs/inventory-next@^0.0.3, @medusajs/inventory-next@workspace:^, @medusajs/inventory-next@workspace:packages/modules/inventory-next":
   version: 0.0.0-use.local
   resolution: "@medusajs/inventory-next@workspace:packages/modules/inventory-next"
   dependencies:
@@ -5715,9 +5715,45 @@ __metadata:
     "@inquirer/checkbox": ^2.3.11
     "@inquirer/input": ^2.2.9
     "@medusajs/admin-bundler": 0.0.1
+    "@medusajs/api-key": ^0.1.2
+    "@medusajs/auth": ^0.0.3
+    "@medusajs/auth-emailpass": ^0.0.1
+    "@medusajs/auth-github": ^0.0.1
+    "@medusajs/auth-google": ^0.0.1
+    "@medusajs/cache-inmemory": ^1.8.10
+    "@medusajs/cache-redis": ^1.9.1
+    "@medusajs/cart": ^0.0.3
     "@medusajs/core-flows": ^0.0.9
+    "@medusajs/currency": ^0.1.2
+    "@medusajs/customer": ^0.0.3
+    "@medusajs/event-bus-local": ^1.9.8
+    "@medusajs/event-bus-redis": ^1.8.13
+    "@medusajs/file": ^0.0.1
+    "@medusajs/file-local-next": ^0.0.2
+    "@medusajs/file-s3": ^0.0.2
     "@medusajs/framework": ^0.0.1
+    "@medusajs/fulfillment": ^0.1.2
+    "@medusajs/fulfillment-manual": ^0.0.2
+    "@medusajs/index": ^0.0.1
+    "@medusajs/inventory-next": ^0.0.3
     "@medusajs/link-modules": ^0.2.11
+    "@medusajs/notification": ^0.1.2
+    "@medusajs/notification-local": ^0.0.1
+    "@medusajs/notification-sendgrid": ^0.0.1
+    "@medusajs/order": ^0.1.2
+    "@medusajs/payment": ^0.0.3
+    "@medusajs/payment-stripe": ^0.0.2
+    "@medusajs/pricing": ^0.1.12
+    "@medusajs/product": ^0.3.12
+    "@medusajs/promotion": ^0.0.4
+    "@medusajs/region": ^0.1.1
+    "@medusajs/sales-channel": ^0.1.1
+    "@medusajs/stock-location-next": ^0.0.3
+    "@medusajs/store": ^0.1.1
+    "@medusajs/tax": ^0.1.1
+    "@medusajs/user": ^0.0.3
+    "@medusajs/workflow-engine-inmemory": ^0.0.4
+    "@medusajs/workflow-engine-redis": ^0.0.4
     "@opentelemetry/api": ^1.9.0
     "@opentelemetry/instrumentation": ^0.53.0
     "@opentelemetry/instrumentation-pg": ^0.44.0
@@ -5780,7 +5816,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification-local@workspace:packages/modules/providers/notification-local":
+"@medusajs/notification-local@^0.0.1, @medusajs/notification-local@workspace:packages/modules/providers/notification-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification-local@workspace:packages/modules/providers/notification-local"
   dependencies:
@@ -5795,7 +5831,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
+"@medusajs/notification-sendgrid@^0.0.1, @medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification-sendgrid@workspace:packages/modules/providers/notification-sendgrid"
   dependencies:
@@ -5811,7 +5847,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/notification@workspace:packages/modules/notification":
+"@medusajs/notification@^0.1.2, @medusajs/notification@workspace:packages/modules/notification":
   version: 0.0.0-use.local
   resolution: "@medusajs/notification@workspace:packages/modules/notification"
   dependencies:
@@ -5862,7 +5898,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/order@workspace:packages/modules/order":
+"@medusajs/order@^0.1.2, @medusajs/order@workspace:packages/modules/order":
   version: 0.0.0-use.local
   resolution: "@medusajs/order@workspace:packages/modules/order"
   dependencies:
@@ -5887,7 +5923,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe":
+"@medusajs/payment-stripe@^0.0.2, @medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment-stripe@workspace:packages/modules/providers/payment-stripe"
   dependencies:
@@ -5904,7 +5940,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/payment@workspace:^, @medusajs/payment@workspace:packages/modules/payment":
+"@medusajs/payment@^0.0.3, @medusajs/payment@workspace:^, @medusajs/payment@workspace:packages/modules/payment":
   version: 0.0.0-use.local
   resolution: "@medusajs/payment@workspace:packages/modules/payment"
   dependencies:
@@ -5930,7 +5966,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/modules/pricing":
+"@medusajs/pricing@^0.1.12, @medusajs/pricing@workspace:^, @medusajs/pricing@workspace:packages/modules/pricing":
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/modules/pricing"
   dependencies:
@@ -5955,7 +5991,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/product@workspace:^, @medusajs/product@workspace:packages/modules/product":
+"@medusajs/product@^0.3.12, @medusajs/product@workspace:^, @medusajs/product@workspace:packages/modules/product":
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/modules/product"
   dependencies:
@@ -5981,7 +6017,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/promotion@workspace:^, @medusajs/promotion@workspace:packages/modules/promotion":
+"@medusajs/promotion@^0.0.4, @medusajs/promotion@workspace:^, @medusajs/promotion@workspace:packages/modules/promotion":
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/modules/promotion"
   dependencies:
@@ -6006,7 +6042,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/region@workspace:^, @medusajs/region@workspace:packages/modules/region":
+"@medusajs/region@^0.1.1, @medusajs/region@workspace:^, @medusajs/region@workspace:packages/modules/region":
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/modules/region"
   dependencies:
@@ -6031,7 +6067,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/sales-channel@workspace:packages/modules/sales-channel":
+"@medusajs/sales-channel@^0.1.1, @medusajs/sales-channel@workspace:packages/modules/sales-channel":
   version: 0.0.0-use.local
   resolution: "@medusajs/sales-channel@workspace:packages/modules/sales-channel"
   dependencies:
@@ -6056,7 +6092,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location-next@workspace:^, @medusajs/stock-location-next@workspace:packages/modules/stock-location-next":
+"@medusajs/stock-location-next@^0.0.3, @medusajs/stock-location-next@workspace:^, @medusajs/stock-location-next@workspace:packages/modules/stock-location-next":
   version: 0.0.0-use.local
   resolution: "@medusajs/stock-location-next@workspace:packages/modules/stock-location-next"
   dependencies:
@@ -6081,7 +6117,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/store@workspace:^, @medusajs/store@workspace:packages/modules/store":
+"@medusajs/store@^0.1.1, @medusajs/store@workspace:^, @medusajs/store@workspace:packages/modules/store":
   version: 0.0.0-use.local
   resolution: "@medusajs/store@workspace:packages/modules/store"
   dependencies:
@@ -6106,7 +6142,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/tax@workspace:^, @medusajs/tax@workspace:packages/modules/tax":
+"@medusajs/tax@^0.1.1, @medusajs/tax@workspace:^, @medusajs/tax@workspace:packages/modules/tax":
   version: 0.0.0-use.local
   resolution: "@medusajs/tax@workspace:packages/modules/tax"
   dependencies:
@@ -6267,7 +6303,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/user@workspace:^, @medusajs/user@workspace:packages/modules/user":
+"@medusajs/user@^0.0.3, @medusajs/user@workspace:^, @medusajs/user@workspace:packages/modules/user":
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/modules/user"
   dependencies:
@@ -6336,7 +6372,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
+"@medusajs/workflow-engine-inmemory@^0.0.4, @medusajs/workflow-engine-inmemory@workspace:*, @medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
   dependencies:
@@ -6363,7 +6399,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
+"@medusajs/workflow-engine-redis@^0.0.4, @medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-redis@workspace:packages/modules/workflow-engine-redis"
   dependencies:
