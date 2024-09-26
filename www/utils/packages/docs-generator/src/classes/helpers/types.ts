@@ -35,7 +35,9 @@ export default class TypesHelper {
   }
 
   cleanUpTypes(types: ts.Type[]): ts.Type[] {
-    let cleanedUpTypes = this.removeStringRegExpTypeOverlaps(types)
+    let cleanedUpTypes = this.removeUndefinedNullTypes(types)
+
+    cleanedUpTypes = this.removeStringRegExpTypeOverlaps(cleanedUpTypes)
 
     cleanedUpTypes = this.joinDateAndString(cleanedUpTypes)
 
@@ -79,5 +81,13 @@ export default class TypesHelper {
     })
 
     return dateType && hasStringType ? [dateType] : types
+  }
+
+  private removeUndefinedNullTypes(types: ts.Type[]): ts.Type[] {
+    return types.filter(
+      (type) =>
+        type.flags !== ts.TypeFlags.Undefined &&
+        type.flags !== ts.TypeFlags.Null
+    )
   }
 }
