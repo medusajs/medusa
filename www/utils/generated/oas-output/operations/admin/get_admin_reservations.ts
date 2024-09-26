@@ -558,9 +558,9 @@
  *               properties:
  *                 reservations:
  *                   type: array
- *                   description: The list of reservations`.
+ *                   description: The list of reservations.
  *                   items:
- *                     $ref: "#/components/schemas/ReservationResponse"
+ *                     $ref: "#/components/schemas/AdminReservation"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
