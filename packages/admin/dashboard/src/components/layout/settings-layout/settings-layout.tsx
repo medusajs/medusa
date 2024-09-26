@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
 import { Divider } from "../../common/divider"
-import { NavItem, NavItemProps } from "../nav-item"
+import { INavItem, NavItem } from "../nav-item"
 import { Shell } from "../shell"
 
 import { useMedusaApp } from "../../../providers/medusa-app-provider"
@@ -20,7 +20,7 @@ export const SettingsLayout = () => {
   )
 }
 
-const useSettingRoutes = (): NavItemProps[] => {
+const useSettingRoutes = (): INavItem[] => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -66,7 +66,7 @@ const useSettingRoutes = (): NavItemProps[] => {
   )
 }
 
-const useDeveloperRoutes = (): NavItemProps[] => {
+const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -88,7 +88,7 @@ const useDeveloperRoutes = (): NavItemProps[] => {
   )
 }
 
-const useMyAccountRoutes = (): NavItemProps[] => {
+const useMyAccountRoutes = (): INavItem[] => {
   const { t } = useTranslation()
 
   return useMemo(
@@ -213,7 +213,7 @@ const CollapsibleSection = ({
   items,
 }: {
   label: string
-  items: NavItemProps[]
+  items: INavItem[]
 }) => {
   return (
     <Collapsible.Root defaultOpen className="py-3">

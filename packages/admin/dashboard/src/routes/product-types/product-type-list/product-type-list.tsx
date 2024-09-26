@@ -1,28 +1,18 @@
-import { Outlet } from "react-router-dom"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { ProductTypeListTable } from "./components/product-type-list-table"
 
-import after from "virtual:medusa/widgets/product_type/list/after"
-import before from "virtual:medusa/widgets/product_type/list/before"
-
 export const ProductTypeList = () => {
+  const { getWidgets } = useMedusaApp()
+
   return (
-    <div className="flex flex-col gap-y-3">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("product_type.list.after"),
+        before: getWidgets("product_type.list.before"),
+      }}
+    >
       <ProductTypeListTable />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

@@ -1,16 +1,15 @@
-import "./index.css"
-import { MedusaApp } from "./medusa-app"
+import config from "virtual:medusa/config"
+import { MedusaApp } from "./core/medusa-app/medusa-app"
 import { Providers } from "./providers/providers"
 import { RouterProvider } from "./providers/router-provider"
 
-type AppProps = {
-  getMenu: MedusaApp["getMenu"]
-  getWidgets: MedusaApp["getWidgets"]
-}
+import "./index.css"
 
-function App({ getMenu, getWidgets }: AppProps) {
+function App() {
+  const app = new MedusaApp({ config })
+
   return (
-    <Providers getMenu={getMenu} getWidgets={getWidgets}>
+    <Providers api={app.api}>
       <RouterProvider />
     </Providers>
   )

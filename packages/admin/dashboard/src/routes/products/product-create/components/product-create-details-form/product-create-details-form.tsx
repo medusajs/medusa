@@ -3,25 +3,28 @@ import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { Divider } from "../../../../../components/common/divider"
+import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
+import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
 import { ProductCreateSchemaType } from "../../types"
 import { ProductCreateGeneralSection } from "./components/product-create-details-general-section"
 import { ProductCreateMediaSection } from "./components/product-create-details-media-section"
 import { ProductCreateVariantsSection } from "./components/product-create-details-variant-section"
-
-import ext from "virtual:medusa/custom-fields/product/create/general/$field"
 
 type ProductAttributesProps = {
   form: UseFormReturn<ProductCreateSchemaType>
 }
 
 export const ProductCreateDetailsForm = ({ form }: ProductAttributesProps) => {
-  console.log(ext)
+  const { getFormFields } = useMedusaApp()
+  const fields = getFormFields("product", "create", "general")
+
   return (
     <div className="flex flex-col items-center p-16">
       <div className="flex w-full max-w-[720px] flex-col gap-y-8">
         <Header />
         <div className="flex flex-col gap-y-6">
           <ProductCreateGeneralSection form={form} />
+          <FormExtensionZone fields={fields} form={form} />
           <ProductCreateMediaSection form={form} />
         </div>
         <Divider />

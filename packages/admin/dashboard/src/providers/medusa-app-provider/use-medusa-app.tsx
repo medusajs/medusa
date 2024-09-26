@@ -6,8 +6,5 @@ export const useMedusaApp = () => {
   if (!context) {
     throw new Error("useMedusaApp must be used within a MedusaAppProvider")
   }
-  return {
-    getWidgets: context.api.getWidgets,
-    getMenu: context.api.getMenu,
-  }
+  return context
 }

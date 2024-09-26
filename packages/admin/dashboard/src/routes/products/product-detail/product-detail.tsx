@@ -54,18 +54,10 @@ export const ProductDetail = () => {
   return (
     <TwoColumnPage
       widgets={{
-        after: {
-          widgets: after.map((w) => ({ Component: w })),
-        },
-        before: {
-          widgets: before.map((w) => ({ Component: w })),
-        },
-        sideAfter: {
-          widgets: sideAfter.map((w) => ({ Component: w })),
-        },
-        sideBefore: {
-          widgets: sideBefore.map((w) => ({ Component: w })),
-        },
+        after,
+        before,
+        sideAfter,
+        sideBefore,
       }}
       showJSON
       showMetadata

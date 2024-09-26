@@ -1,18 +1,18 @@
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { ProductTagListTable } from "./components/product-tag-list-table"
 
-import after from "virtual:medusa/widgets/product_tag/list/after"
-import before from "virtual:medusa/widgets/product_tag/list/before"
-
 export const ProductTagList = () => {
+  const { getWidgets } = useMedusaApp()
+
   return (
     <SingleColumnPage
       showMetadata={false}
       showJSON={false}
       hasOutlet
       widgets={{
-        after,
-        before,
+        after: getWidgets("product_tag.list.after"),
+        before: getWidgets("product_tag.list.before"),
       }}
     >
       <ProductTagListTable />

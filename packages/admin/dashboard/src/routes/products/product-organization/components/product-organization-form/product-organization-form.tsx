@@ -1,15 +1,17 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, toast } from "@medusajs/ui"
-import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
+import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
+import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
+import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
 import { CategoryCombobox } from "../../../common/components/category-combobox"
 
 type ProductOrganizationFormProps = {
@@ -28,6 +30,10 @@ export const ProductOrganizationForm = ({
 }: ProductOrganizationFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { getFormConfigs, getFormFields } = useMedusaApp()
+
+  const configs = getFormConfigs("product", "organize")
+  const fields = getFormFields("product", "organize")
 
   const collections = useComboboxData({
     queryKey: ["product_collections"],
@@ -59,14 +65,16 @@ export const ProductOrganizationForm = ({
       })),
   })
 
-  const form = useForm<zod.infer<typeof ProductOrganizationSchema>>({
+  const form = useExtendableForm({
     defaultValues: {
       type_id: product.type_id || "",
       collection_id: product.collection_id || "",
       category_ids: product.categories?.map((c) => c.id) || [],
       tag_ids: product.tags?.map((t) => t.id) || [],
     },
-    resolver: zodResolver(ProductOrganizationSchema),
+    schema: ProductOrganizationSchema,
+    configs: configs,
+    data: product,
   })
 
   const { mutateAsync, isPending } = useUpdateProduct(product.id)
@@ -190,6 +198,7 @@ export const ProductOrganizationForm = ({
                 )
               }}
             />
+            <FormExtensionZone fields={fields} form={form} />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

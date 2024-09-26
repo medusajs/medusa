@@ -19,7 +19,9 @@ export const ProductAttributes = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("products.editAttributes")}</Heading>
+        <RouteDrawer.Title asChild>
+          <Heading>{t("products.editAttributes")}</Heading>
+        </RouteDrawer.Title>
       </RouteDrawer.Header>
       {!isLoading && product && <ProductAttributesForm product={product} />}
     </RouteDrawer>

@@ -1,7 +1,7 @@
-import { ArrowUpRightOnBox, Buildings, ShoppingBag } from "@medusajs/icons"
+import { ArrowUpRightOnBox, ShoppingBag } from "@medusajs/icons"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { Link, Outlet, useLoaderData } from "react-router-dom"
+import { Link, useLoaderData } from "react-router-dom"
 
 import { useStockLocations } from "../../../hooks/api/stock-locations"
 import LocationListItem from "./components/location-list-item/location-list-item"
@@ -9,9 +9,9 @@ import { LOCATION_LIST_FIELDS } from "./constants"
 import { shippingListLoader } from "./loader"
 
 import { ReactNode } from "react"
-import after from "virtual:medusa/widgets/location/list/after"
-import before from "virtual:medusa/widgets/location/list/before"
 import { IconAvatar } from "../../../components/common/icon-avatar"
+import { TwoColumnPage } from "../../../components/layout/pages"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { LocationListHeader } from "./components/location-list-header"
 
 export function LocationList() {
@@ -30,42 +30,34 @@ export function LocationList() {
     { initialData }
   )
 
+  const { getWidgets } = useMedusaApp()
+
   if (isError) {
     throw error
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      <div className="flex flex-col gap-x-4 gap-y-3 xl:flex-row xl:items-start">
-        <div className="flex w-full flex-col gap-y-3">
-          {before.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component />
-              </div>
-            )
-          })}
-          <LocationListHeader />
-          <div className="flex flex-col gap-3 lg:col-span-2">
-            {stockLocations.map((location) => (
-              <LocationListItem key={location.id} location={location} />
-            ))}
-          </div>
-          {after.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component />
-              </div>
-            )
-          })}
+    <TwoColumnPage
+      widgets={{
+        after: getWidgets("location.details.after"),
+        before: getWidgets("location.details.before"),
+        sideAfter: getWidgets("location.details.side.after"),
+        sideBefore: getWidgets("location.details.side.before"),
+      }}
+      showJSON
+    >
+      <TwoColumnPage.Main>
+        <LocationListHeader />
+        <div className="flex flex-col gap-3 lg:col-span-2">
+          {stockLocations.map((location) => (
+            <LocationListItem key={location.id} location={location} />
+          ))}
         </div>
-
-        <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[400px]">
-          <LinksSection />
-        </div>
-      </div>
-      <Outlet />
-    </div>
+      </TwoColumnPage.Main>
+      <TwoColumnPage.Sidebar>
+        <LinksSection />
+      </TwoColumnPage.Sidebar>
+    </TwoColumnPage>
   )
 }
 
@@ -126,15 +118,6 @@ const LinksSection = () => {
           "stockLocations.sidebar.shippingProfiles.description"
         )}
         icon={<ShoppingBag />}
-      />
-
-      <SidebarLink
-        to="/settings/locations/shipping-option-types"
-        labelKey={t("stockLocations.sidebar.shippingOptionTypes.label")}
-        descriptionKey={t(
-          "stockLocations.sidebar.shippingOptionTypes.description"
-        )}
-        icon={<Buildings />}
       />
     </Container>
   )

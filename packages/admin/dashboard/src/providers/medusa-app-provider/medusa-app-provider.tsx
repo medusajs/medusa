@@ -1,26 +1,17 @@
 import { PropsWithChildren } from "react"
-import { MedusaApp } from "../../medusa-app"
+import { MedusaApp } from "../../core/medusa-app/medusa-app"
 import { MedusaAppContext } from "./medusa-app-context"
 
 type MedusaAppProviderProps = PropsWithChildren<{
-  getMenu: MedusaApp["getMenu"]
-  getWidgets: MedusaApp["getWidgets"]
+  api: MedusaApp["api"]
 }>
 
 export const MedusaAppProvider = ({
-  getMenu,
-  getWidgets,
+  api,
   children,
 }: MedusaAppProviderProps) => {
   return (
-    <MedusaAppContext.Provider
-      value={{
-        api: {
-          getMenu,
-          getWidgets,
-        },
-      }}
-    >
+    <MedusaAppContext.Provider value={api}>
       {children}
     </MedusaAppContext.Provider>
   )

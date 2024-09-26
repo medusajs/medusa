@@ -1,5 +1,5 @@
 import { ComponentType } from "react"
-import { LoaderFunctionArgs, RouteObject } from "react-router-dom"
+import { LoaderFunction, RouteObject } from "react-router-dom"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { RouteExtension } from "../../providers/medusa-app-provider/types"
 
@@ -18,7 +18,7 @@ export const createRouteMap = (
     pathSegments: string[],
     Component: ComponentType,
     currentLevel: RouteObject[],
-    loader?: (args: LoaderFunctionArgs) => Promise<any>
+    loader?: LoaderFunction
   ) => {
     if (!pathSegments.length) {
       return

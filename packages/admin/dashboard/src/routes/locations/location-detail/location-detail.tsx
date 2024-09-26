@@ -1,15 +1,13 @@
-import { Outlet, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { LocationGeneralSection } from "./components/location-general-section"
 import LocationsSalesChannelsSection from "./components/location-sales-channels-section/locations-sales-channels-section"
 import { locationLoader } from "./loader"
 
-import after from "virtual:medusa/widgets/location/details/after"
-import before from "virtual:medusa/widgets/location/details/before"
-import sideAfter from "virtual:medusa/widgets/location/details/side/after"
-import sideBefore from "virtual:medusa/widgets/location/details/side/before"
+import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
+import { TwoColumnPage } from "../../../components/layout/pages"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import LocationsFulfillmentProvidersSection from "./components/location-fulfillment-providers-section/location-fulfillment-providers-section"
 import { detailsFields } from "./const"
 
@@ -26,9 +24,12 @@ export const LocationDetail = () => {
     error,
   } = useStockLocation(location_id!, { fields: detailsFields }, { initialData })
 
-  // TODO: Move to loading.tsx and set as Suspense fallback for the route
+  const { getWidgets } = useMedusaApp()
+
   if (isLoading || !location) {
-    return <div>Loading...</div>
+    return (
+      <TwoColumnPageSkeleton mainSections={3} sidebarSections={2} showJSON />
+    )
   }
 
   if (isError) {
@@ -36,53 +37,24 @@ export const LocationDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-3">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={location} />
-          </div>
-        )
-      })}
-      <div className="flex flex-col gap-y-3 xl:flex-row xl:items-start xl:gap-x-4">
-        <div className="flex w-full flex-col gap-y-3">
-          <LocationGeneralSection location={location} />
-          {after.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component data={location} />
-              </div>
-            )
-          })}
-          <div className="hidden xl:block">
-            <JsonViewSection data={location} />
-          </div>
-        </div>
-        <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[400px]">
-          {sideBefore.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component data={location} />
-              </div>
-            )
-          })}
-
-          <LocationsSalesChannelsSection location={location} />
-          <LocationsFulfillmentProvidersSection location={location} />
-
-          {sideAfter.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component data={location} />
-              </div>
-            )
-          })}
-          <div className="xl:hidden">
-            <JsonViewSection data={location} />
-          </div>
-        </div>
-        <Outlet />
-      </div>
-    </div>
+    <TwoColumnPage
+      widgets={{
+        after: getWidgets("location.details.after"),
+        before: getWidgets("location.details.before"),
+        sideAfter: getWidgets("location.details.side.after"),
+        sideBefore: getWidgets("location.details.side.before"),
+      }}
+      data={location}
+      showJSON
+      hasOutlet
+    >
+      <TwoColumnPage.Main>
+        <LocationGeneralSection location={location} />
+      </TwoColumnPage.Main>
+      <TwoColumnPage.Sidebar>
+        <LocationsSalesChannelsSection location={location} />
+        <LocationsFulfillmentProvidersSection location={location} />
+      </TwoColumnPage.Sidebar>
+    </TwoColumnPage>
   )
 }

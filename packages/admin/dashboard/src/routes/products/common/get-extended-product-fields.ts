@@ -1,6 +1,6 @@
-import linkedModels from "virtual:medusa/custom-fields/product/$link"
+import linkedModels from "virtual:medusa/links"
 import { appendLinkableFields } from "../../../extensions/links/utils"
 
 export function getExtendedProductFields(fields?: string) {
-  return appendLinkableFields(fields, linkedModels.links)
+  return appendLinkableFields(fields, linkedModels.customFieldLinks.product)
 }

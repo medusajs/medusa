@@ -1,10 +1,9 @@
-import config from "virtual:medusa/extensions"
-import { render } from "./render.js"
+import React from "react"
+import ReactDOM from "react-dom/client"
+import App from "./app.js"
 
-render(document.getElementById("root")!, {
-  config,
-})
-
-if (import.meta.hot) {
-  import.meta.hot.accept()
-}
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)

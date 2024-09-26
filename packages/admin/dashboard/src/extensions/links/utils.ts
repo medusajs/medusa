@@ -1,3 +1,9 @@
-export function appendLinkableFields(fields: string = "", linkable: string[]) {
-  return [fields, ...linkable.map((link) => `+${link}.*`)].join(",")
+export function appendLinkableFields(fields: string = "", linkable: (string | string[])[]) {
+  const linkableFields = linkable.flatMap((link) =>
+    {
+      return typeof link === "string" ? [`+${link}.*`] : link.map((l) => `+${l}.*`)
+    }
+  )
+
+  return [fields, ...linkableFields].join(",")
 }

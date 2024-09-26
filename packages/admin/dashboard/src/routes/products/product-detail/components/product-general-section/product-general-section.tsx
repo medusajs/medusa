@@ -7,8 +7,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
-
-import details from "virtual:medusa/custom-fields/product/general/$display"
+import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
 
 const productStatusColor = (status: string) => {
   switch (status) {
@@ -35,6 +34,9 @@ export const ProductGeneralSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const navigate = useNavigate()
+  const { getDisplays } = useMedusaApp()
+
+  const displays = getDisplays("product", "general")
 
   const { mutateAsync } = useDeleteProduct(product.id)
 
@@ -99,8 +101,8 @@ export const ProductGeneralSection = ({
         title={t("fields.discountable")}
         value={product.discountable ? t("fields.true") : t("fields.false")}
       />
-      {details.containers.map((b, index) => {
-        return <b.component key={index} data={product} />
+      {displays.map((Component, index) => {
+        return <Component key={index} data={product} />
       })}
     </Container>
   )

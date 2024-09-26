@@ -1,26 +1,20 @@
 import { WorkflowExecutionListTable } from "./components/workflow-execution-list-table"
 
-import after from "virtual:medusa/widgets/workflow/list/after"
-import before from "virtual:medusa/widgets/workflow/list/before"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 
 export const WorkflowExcecutionList = () => {
+  const { getWidgets } = useMedusaApp()
+
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("workflow.list.after"),
+        before: getWidgets("workflow.list.before"),
+      }}
+      hasOutlet={false}
+    >
       <WorkflowExecutionListTable />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
-    </div>
+    </SingleColumnPage>
   )
 }

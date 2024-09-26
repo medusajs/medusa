@@ -3,15 +3,11 @@ import { useLoaderData, useParams } from "react-router-dom"
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
 import { usePromotion, usePromotionRules } from "../../../hooks/api/promotions"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { CampaignSection } from "./components/campaign-section"
 import { PromotionConditionsSection } from "./components/promotion-conditions-section"
 import { PromotionGeneralSection } from "./components/promotion-general-section"
 import { promotionLoader } from "./loader"
-
-import after from "virtual:medusa/widgets/promotion/details/after"
-import before from "virtual:medusa/widgets/promotion/details/before"
-import sideAfter from "virtual:medusa/widgets/promotion/details/side/after"
-import sideBefore from "virtual:medusa/widgets/promotion/details/side/before"
 
 export const PromotionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -30,6 +26,8 @@ export const PromotionDetail = () => {
   const { rules: targetRules } = usePromotionRules(id!, "target-rules", query)
   const { rules: buyRules } = usePromotionRules(id!, "buy-rules", query)
 
+  const { getWidgets } = useMedusaApp()
+
   if (isLoading || !promotion) {
     return (
       <TwoColumnPageSkeleton mainSections={3} sidebarSections={1} showJSON />
@@ -40,10 +38,10 @@ export const PromotionDetail = () => {
     <TwoColumnPage
       data={promotion}
       widgets={{
-        after,
-        before,
-        sideAfter,
-        sideBefore,
+        after: getWidgets("promotion.details.after"),
+        before: getWidgets("promotion.details.before"),
+        sideAfter: getWidgets("promotion.details.side.after"),
+        sideBefore: getWidgets("promotion.details.side.before"),
       }}
       hasOutlet
       showJSON

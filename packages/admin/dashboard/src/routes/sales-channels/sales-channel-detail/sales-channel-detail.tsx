@@ -1,13 +1,12 @@
-import { Outlet, useLoaderData, useParams } from "react-router-dom"
+import { useLoaderData, useParams } from "react-router-dom"
 
-import { JsonViewSection } from "../../../components/common/json-view-section"
+import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
+import { SingleColumnPage } from "../../../components/layout/pages"
 import { useSalesChannel } from "../../../hooks/api/sales-channels"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { SalesChannelGeneralSection } from "./components/sales-channel-general-section"
 import { SalesChannelProductSection } from "./components/sales-channel-product-section"
 import { salesChannelLoader } from "./loader"
-
-import after from "virtual:medusa/widgets/sales_channel/details/after"
-import before from "virtual:medusa/widgets/sales_channel/details/before"
 
 export const SalesChannelDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -19,30 +18,24 @@ export const SalesChannelDetail = () => {
     initialData,
   })
 
+  const { getWidgets } = useMedusaApp()
+
   if (isLoading || !sales_channel) {
-    return <div>Loading...</div>
+    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={sales_channel} />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      widgets={{
+        before: getWidgets("sales_channel.details.before"),
+        after: getWidgets("sales_channel.details.after"),
+      }}
+      showMetadata
+      showJSON
+      data={sales_channel}
+    >
       <SalesChannelGeneralSection salesChannel={sales_channel} />
       <SalesChannelProductSection salesChannel={sales_channel} />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component data={sales_channel} />
-          </div>
-        )
-      })}
-      <JsonViewSection data={sales_channel} />
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

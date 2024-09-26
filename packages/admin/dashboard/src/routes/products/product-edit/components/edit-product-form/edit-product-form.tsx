@@ -10,9 +10,8 @@ import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { transformNullableFormData } from "../../../../../lib/form-helpers"
 
-import extensions from "virtual:medusa/custom-fields/product/edit/$config"
-import fields from "virtual:medusa/custom-fields/product/edit/$field"
 import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
+import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
 
 type EditProductFormProps = {
   product: HttpTypes.AdminProduct
@@ -32,6 +31,10 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const { getFormFields, getFormConfigs } = useMedusaApp()
+  const fields = getFormFields("product", "edit")
+  const configs = getFormConfigs("product", "edit")
+
   const form = useExtendableForm({
     defaultValues: {
       status: product.status,
@@ -43,7 +46,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
       discountable: product.discountable,
     },
     schema: EditProductSchema,
-    extensions: extensions,
+    configs: configs,
     data: product,
   })
 
@@ -210,7 +213,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
               label={t("fields.discountable")}
               description={t("products.discountableHint")}
             />
-            <FormExtensionZone extensions={fields} form={form} />
+            <FormExtensionZone fields={fields} form={form} />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

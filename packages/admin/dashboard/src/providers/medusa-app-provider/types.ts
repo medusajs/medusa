@@ -1,10 +1,11 @@
 import { InjectionZone } from "@medusajs/admin-shared"
 import { ComponentType } from "react"
-import { LoaderFunctionArgs } from "react-router-dom"
+import { LoaderFunction } from "react-router-dom"
+import { CustomFieldConfiguration } from "../../core/custom-field-registry/types"
 
 export type RouteExtension = {
   Component: ComponentType
-  loader?: (args: LoaderFunctionArgs) => Promise<any>
+  loader?: LoaderFunction
   path: string
 }
 
@@ -25,6 +26,7 @@ export type RoutingExtensionConfig = {
 }
 
 export type DashboardExtensionConfig = {
-  routing: RoutingExtensionConfig
-  widgets: WidgetExtension[]
+  customFields?: CustomFieldConfiguration
+  menuItems?: MenuItemExtension[]
+  widgets?: WidgetExtension[]
 }

@@ -1,4 +1,5 @@
 import { InjectionZone, isValidInjectionZone } from "@medusajs/admin-shared"
+import crypto from "crypto"
 import fs from "fs/promises"
 import outdent from "outdent"
 import {
@@ -19,24 +20,17 @@ import {
   hasDefaultExport,
 } from "../utils"
 
-type Widget = {
+type WidgetConfig = {
   Component: string
   zone: InjectionZone[]
 }
 
-type WidgetResult = {
+type ParsedWidgetConfig = {
   import: string
-  widget: Widget
+  widget: WidgetConfig
 }
 
-type WidgetEntrypoint = {
-  imports: string[]
-  code: string
-}
-
-export async function createWidgetEntrypoint(
-  sources: Set<string>
-): Promise<WidgetEntrypoint> {
+export async function generateWidgets(sources: Set<string>) {
   const files = await getFilesFromSources(sources)
   const results = await getWidgetResults(files)
 
@@ -57,13 +51,15 @@ async function getFilesFromSources(sources: Set<string>): Promise<string[]> {
   ).flat()
 }
 
-async function getWidgetResults(files: string[]): Promise<WidgetResult[]> {
+async function getWidgetResults(
+  files: string[]
+): Promise<ParsedWidgetConfig[]> {
   return (await Promise.all(files.map(parseFile))).filter(
     (r) => r !== null
-  ) as WidgetResult[]
+  ) as ParsedWidgetConfig[]
 }
 
-function generateCode(results: WidgetResult[]): string {
+function generateCode(results: ParsedWidgetConfig[]): string {
   return outdent`
     widgets: [
       ${results.map((r) => formatWidget(r.widget)).join(",\n")}
@@ -71,7 +67,7 @@ function generateCode(results: WidgetResult[]): string {
   `
 }
 
-function formatWidget(widget: Widget): string {
+function formatWidget(widget: WidgetConfig): string {
   return outdent`
     {
         Component: ${widget.Component},
@@ -83,7 +79,7 @@ function formatWidget(widget: Widget): string {
 async function parseFile(
   file: string,
   index: number
-): Promise<WidgetResult | null> {
+): Promise<ParsedWidgetConfig | null> {
   const code = await fs.readFile(file, "utf-8")
   let ast: ParseResult<File>
 
@@ -153,7 +149,7 @@ function generateImport(file: string, index: number): string {
   )}, { config as ${generateWidgetConfigName(index)} } from "${file}"`
 }
 
-function generateWidget(zone: InjectionZone[], index: number): Widget {
+function generateWidget(zone: InjectionZone[], index: number): WidgetConfig {
   return {
     Component: generateWidgetComponentName(index),
     zone: zone,
@@ -213,4 +209,44 @@ async function getWidgetZone(
 
   const validatedZones = zones.filter(isValidInjectionZone)
   return validatedZones.length > 0 ? validatedZones : null
+}
+
+export async function generateWidgetConfigHash(
+  sources: Set<string>
+): Promise<string> {
+  const files = await getFilesFromSources(sources)
+  const configContents = await Promise.all(files.map(getWidgetConfigContent))
+  const totalContent = configContents.filter(Boolean).join("")
+  return crypto.createHash("md5").update(totalContent).digest("hex")
+}
+
+async function getWidgetConfigContent(file: string) {
+  const code = await fs.readFile(file, "utf-8")
+  let ast: ParseResult<File>
+
+  try {
+    ast = parse(code, getParserOptions(file))
+  } catch (e) {
+    logger.error(
+      `An error occurred while parsing the file. Due to the error we cannot validate whether the widget has changed. If your changes aren't correctly reflected try restarting the dev server.`,
+      {
+        file,
+        error: e,
+      }
+    )
+    return null
+  }
+
+  let configContent: string | null = null
+
+  traverse(ast, {
+    ExportNamedDeclaration(path) {
+      const properties = getConfigObjectProperties(path)
+      if (properties) {
+        configContent = code.slice(path.node.start!, path.node.end!)
+      }
+    },
+  })
+
+  return configContent
 }

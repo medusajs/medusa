@@ -1,1 +1,1 @@
-export * from "./widget-utils"
+export * from "./generate-widgets"

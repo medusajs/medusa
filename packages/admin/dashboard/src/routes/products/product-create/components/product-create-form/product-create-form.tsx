@@ -7,9 +7,11 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
+import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 import { useCreateProduct } from "../../../../../hooks/api/products"
 import { sdk } from "../../../../../lib/client"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
+import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
 import {
   PRODUCT_CREATE_FORM_DEFAULTS,
   ProductCreateSchema,
@@ -19,9 +21,6 @@ import { ProductCreateDetailsForm } from "../product-create-details-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
 import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
-
-import extensions from "virtual:medusa/custom-fields/product/create/$config"
-import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 
 enum Tab {
   DETAILS = "details",
@@ -57,6 +56,8 @@ export const ProductCreateForm = ({
 
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const { getFormConfigs } = useMedusaApp()
+  const configs = getFormConfigs("product", "create")
 
   const form = useExtendableForm({
     defaultValues: {
@@ -66,7 +67,7 @@ export const ProductCreateForm = ({
         : [],
     },
     schema: ProductCreateSchema,
-    extensions: extensions.configs,
+    configs,
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
@@ -155,7 +156,7 @@ export const ProductCreateForm = ({
         toast.error(error.message)
       } else {
         toast.error(t("general.error"), {
-          description: error.stack,
+          description: error.message,
         })
       }
     }

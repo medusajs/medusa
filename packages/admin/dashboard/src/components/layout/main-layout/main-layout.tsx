@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next"
 import { useStore } from "../../../hooks/api/store"
 import { Divider } from "../../common/divider"
 import { Skeleton } from "../../common/skeleton"
-import { NavItem, NavItemProps } from "../../layout/nav-item"
+import { INavItem, NavItem } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -176,7 +176,7 @@ const Header = () => {
   )
 }
 
-const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
+const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { t } = useTranslation()
 
   return [
@@ -333,6 +333,7 @@ const ExtensionRouteSection = () => {
                     to={item.to}
                     label={item.label}
                     icon={item.icon ? item.icon : <SquaresPlus />}
+                    items={item.items}
                     type="extension"
                   />
                 )

@@ -34,18 +34,18 @@ import {
 import { logger } from "../logger"
 import { crawl, getParserOptions } from "../utils"
 
-type FormConfigField = {
+type CustomFieldConfigField = {
   name: string
   defaultValue: string
   validation: string
 }
 
-type FormConfig = {
+type CustomFieldConfig = {
   zone: CustomFieldFormZone
-  fields: FormConfigField[]
+  fields: CustomFieldConfigField[]
 }
 
-type FormFieldSectionField = {
+type CustomFieldFormField = {
   name: string
   label: string
   description: string
@@ -53,31 +53,26 @@ type FormFieldSectionField = {
   validation: string
 }
 
-type FormFieldSection = {
+type CustomFieldFormSection = {
   zone: CustomFieldFormZone
   tab?: CustomFieldFormTab
-  fields: FormFieldSectionField[]
+  fields: CustomFieldFormField[]
 }
 
-type Link = {
-  field: string
-}
-
-type Display = {
+type CustomFieldDisplay = {
   zone: CustomFieldContainerZone
   Component: string
 }
 
-type CustomFieldResult = {
+type ParsedCustomFieldConfig = {
   import: string
   model: CustomFieldModel
-  configs: FormConfig[] | null
-  fields: FormFieldSection[] | null
-  displays: Display[] | null
-  link: Link
+  configs: CustomFieldConfig[] | null
+  forms: CustomFieldFormSection[] | null
+  displays: CustomFieldDisplay[] | null
 }
 
-export async function createCustomFieldEntrypoint(sources: Set<string>) {
+export async function generateCustomFields(sources: Set<string>) {
   const files = await getFilesFromSources(sources)
   const results = await getCustomFieldResults(files)
 
@@ -101,8 +96,8 @@ async function getFilesFromSources(sources: Set<string>): Promise<string[]> {
   return files
 }
 
-function generateCode(results: CustomFieldResult[]): string {
-  const groupedByModel = new Map<CustomFieldModel, CustomFieldResult[]>()
+function generateCode(results: ParsedCustomFieldConfig[]): string {
+  const groupedByModel = new Map<CustomFieldModel, ParsedCustomFieldConfig[]>()
 
   results.forEach((result) => {
     const model = result.model
@@ -115,14 +110,13 @@ function generateCode(results: CustomFieldResult[]): string {
   const segments: string[] = []
 
   groupedByModel.forEach((results, model) => {
-    const links = results.map((result) => result.link.field).join(",\n")
     const configs = results
       .map((result) => formatConfig(result.configs))
       .filter((config) => config !== "")
       .join(",\n")
-    const fields = results
-      .map((result) => formatFields(result.fields))
-      .filter((field) => field !== "")
+    const forms = results
+      .map((result) => formatForms(result.forms))
+      .filter((form) => form !== "")
       .join(",\n")
     const displays = results
       .map((result) => formatDisplays(result.displays))
@@ -131,14 +125,11 @@ function generateCode(results: CustomFieldResult[]): string {
 
     segments.push(outdent`
       ${model}: {
-        links: [
-          ${links}
-        ],
         configs: [
           ${configs}
         ],
-        fields: [
-          ${fields}
+        forms: [
+          ${forms}
         ],
         displays: [
           ${displays}
@@ -154,7 +145,7 @@ function generateCode(results: CustomFieldResult[]): string {
   `
 }
 
-function formatDisplays(displays: Display[] | null): string {
+function formatDisplays(displays: CustomFieldDisplay[] | null): string {
   if (!displays || displays.length === 0) {
     return ""
   }
@@ -173,7 +164,7 @@ function formatDisplays(displays: Display[] | null): string {
   `
 }
 
-function formatConfig(configs: FormConfig[] | null): string {
+function formatConfig(configs: CustomFieldConfig[] | null): string {
   if (!configs || configs.length === 0) {
     return ""
   }
@@ -201,19 +192,19 @@ function formatConfig(configs: FormConfig[] | null): string {
   `
 }
 
-function formatFields(fields: FormFieldSection[] | null): string {
-  if (!fields || fields.length === 0) {
+function formatForms(forms: CustomFieldFormSection[] | null): string {
+  if (!forms || forms.length === 0) {
     return ""
   }
 
-  return fields
+  return forms
     .map(
-      (field) => outdent`
+      (form) => outdent`
         {
-          zone: "${field.zone}",
-          tab: ${field.tab === undefined ? undefined : `"${field.tab}"`},
+          zone: "${form.zone}",
+          tab: ${form.tab === undefined ? undefined : `"${form.tab}"`},
           fields: {
-            ${field.fields
+            ${form.fields
               .map(
                 (field) => `${field.name}: {
               validation: ${field.validation},
@@ -232,16 +223,16 @@ function formatFields(fields: FormFieldSection[] | null): string {
 
 async function getCustomFieldResults(
   files: string[]
-): Promise<CustomFieldResult[]> {
+): Promise<ParsedCustomFieldConfig[]> {
   return (
     await Promise.all(files.map(async (file, index) => parseFile(file, index)))
-  ).filter(Boolean) as CustomFieldResult[]
+  ).filter(Boolean) as ParsedCustomFieldConfig[]
 }
 
 async function parseFile(
   file: string,
   index: number
-): Promise<CustomFieldResult | null> {
+): Promise<ParsedCustomFieldConfig | null> {
   const content = await fs.readFile(file, "utf8")
   let ast: ParseResult<File>
 
@@ -254,11 +245,11 @@ async function parseFile(
 
   const import_ = generateImport(file, index)
 
-  let configs: FormConfig[] | null = []
-  let fields: FormFieldSection[] | null = []
-  let displays: Display[] | null = []
-  let link: Link | null = null
+  let configs: CustomFieldConfig[] | null = []
+  let forms: CustomFieldFormSection[] | null = []
+  let displays: CustomFieldDisplay[] | null = []
   let model: CustomFieldModel | null = null
+  let hasLink = false
   try {
     traverse(ast, {
       ExportDefaultDeclaration(path) {
@@ -269,9 +260,9 @@ async function parseFile(
         }
 
         model = _model
-        link = getLink(path, index, file)
+        hasLink = validateLink(path, file) // Add this line to validate link
         configs = getConfigs(path, model, index, file)
-        fields = getFields(path, model, index, file)
+        forms = getForms(path, model, index, file)
         displays = getDisplays(path, model, index, file)
       },
     })
@@ -283,18 +274,45 @@ async function parseFile(
     return null
   }
 
-  if (!link || !model) {
+  if (!model) {
+    logger.warn(`'model' property is missing.`, { file })
+    return null
+  }
+
+  if (!hasLink) {
+    logger.warn(`'link' property is missing.`, { file })
     return null
   }
 
   return {
     import: import_,
     model,
-    link,
     configs,
-    fields,
+    forms,
     displays,
   }
+}
+
+function validateLink(
+  path: NodePath<ExportDefaultDeclaration>,
+  file: string
+): boolean {
+  const configArgument = getConfigArgument(path)
+
+  if (!configArgument) {
+    return false
+  }
+
+  const linkProperty = configArgument.properties.find(
+    (p) => isObjectProperty(p) && isIdentifier(p.key, { name: "link" })
+  ) as ObjectProperty | undefined
+
+  if (!linkProperty) {
+    logger.warn(`'link' property is missing.`, { file })
+    return false
+  }
+
+  return true
 }
 
 function generateCustomFieldConfigName(index: number): string {
@@ -305,19 +323,19 @@ function generateImport(file: string, index: number): string {
   return `import ${generateCustomFieldConfigName(index)} from "${file}"`
 }
 
-function getFields(
+function getForms(
   path: NodePath<ExportDefaultDeclaration>,
   model: CustomFieldModel,
   index: number,
   file: string
-): FormFieldSection[] | null {
+): CustomFieldFormSection[] | null {
   const formArray = getFormsArgument(path, file)
 
   if (!formArray) {
     return null
   }
 
-  const forms: FormFieldSection[] = []
+  const forms: CustomFieldFormSection[] = []
 
   formArray.elements.forEach((element, j) => {
     if (!isObjectExpression(element)) {
@@ -396,7 +414,7 @@ function getFields(
       return
     }
 
-    const fields: FormFieldSectionField[] = []
+    const fields: CustomFieldFormField[] = []
 
     if (!isObjectExpression(fieldsObject.value)) {
       logger.warn(
@@ -515,17 +533,22 @@ function getConfigs(
   model: CustomFieldModel,
   index: number,
   file: string
-): FormConfig[] | null {
+): CustomFieldConfig[] | null {
   const formArray = getFormsArgument(path, file)
 
   if (!formArray) {
+    logger.warn(`'forms' property is missing.`, { file })
     return null
   }
 
-  const configs: FormConfig[] = []
+  const configs: CustomFieldConfig[] = []
 
   formArray.elements.forEach((element, j) => {
     if (!isObjectExpression(element)) {
+      logger.warn(
+        `'forms' property at the ${j} index is malformed. The 'forms' property must be an object.`,
+        { file }
+      )
       return
     }
 
@@ -582,7 +605,7 @@ function getConfigs(
       return
     }
 
-    const fields: FormConfigField[] = []
+    const fields: CustomFieldConfigField[] = []
 
     if (!isObjectExpression(fieldsObject.value)) {
       logger.warn(
@@ -645,11 +668,11 @@ function getConfigs(
 
     configs.push({
       zone: zone,
-      fields: [],
+      fields,
     })
   })
 
-  return null
+  return configs.length > 0 ? configs : null
 }
 
 function getFormFieldValue(
@@ -671,7 +694,7 @@ function getDisplays(
   model: CustomFieldModel,
   index: number,
   file: string
-): Display[] | null {
+): CustomFieldDisplay[] | null {
   const configArgument = getConfigArgument(path)
 
   if (!configArgument) {
@@ -694,7 +717,7 @@ function getDisplays(
     return null
   }
 
-  const displays: Display[] = []
+  const displays: CustomFieldDisplay[] = []
 
   displayProperty.value.elements.forEach((element, j) => {
     if (!isObjectExpression(element)) {
@@ -766,33 +789,6 @@ function getDisplayComponent(
 ): string {
   const import_ = generateCustomFieldConfigName(fileIndex)
   return `${import_}.display[${displayEntryIndex}].component`
-}
-
-function getLink(
-  path: NodePath<ExportDefaultDeclaration>,
-  index: number,
-  file: string
-): Link | null {
-  const configArgument = getConfigArgument(path)
-
-  if (!configArgument) {
-    return null
-  }
-
-  const linkProperty = configArgument.properties.find(
-    (p) => isObjectProperty(p) && isIdentifier(p.key, { name: "link" })
-  ) as ObjectProperty | undefined
-
-  if (!linkProperty) {
-    logger.warn(`'link' is missing.`, { file })
-    return null
-  }
-
-  const import_ = generateCustomFieldConfigName(index)
-
-  return {
-    field: `${import_}.link`,
-  }
 }
 
 function getModel(

@@ -1,13 +1,14 @@
-import { render } from "@medusajs/dashboard";
-import config from "virtual:medusa/extensions";
+import App from "@medusajs/dashboard";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 
-render(
-    document.getElementById("medusa"),
-    {
-        config
-    }
+ReactDOM.createRoot(document.getElementById("medusa")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 )
+
 
 if (import.meta.hot) {
     import.meta.hot.accept()

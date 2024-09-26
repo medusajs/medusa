@@ -1,33 +1,25 @@
-import { Outlet, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { getApiKeyTypeFromPathname } from "../common/utils"
 import { ApiKeyManagementListTable } from "./components/api-key-management-list-table"
 
-import after from "virtual:medusa/widgets/api_key/list/after"
-import before from "virtual:medusa/widgets/api_key/list/before"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 
 export const ApiKeyManagementList = () => {
   const { pathname } = useLocation()
+  const { getWidgets } = useMedusaApp()
 
   const keyType = getApiKeyTypeFromPathname(pathname)
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
+    <SingleColumnPage
+      hasOutlet
+      widgets={{
+        before: getWidgets("api_key.list.before"),
+        after: getWidgets("api_key.list.after"),
+      }}
+    >
       <ApiKeyManagementListTable keyType={keyType} />
-      {after.widgets.map((w, i) => {
-        return (
-          <div key={i}>
-            <w.Component />
-          </div>
-        )
-      })}
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

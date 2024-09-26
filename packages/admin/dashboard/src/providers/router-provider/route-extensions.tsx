@@ -1,11 +1,10 @@
-import routes from "virtual:medusa/routes/pages"
-
+import VirtualRoutes from "virtual:medusa/routes"
 import {
   createRouteMap,
   settingsRouteRegex,
 } from "../../extensions/routes/utils"
 
-const pages = routes.pages
+const pages = VirtualRoutes.routes
   .filter((ext) => !settingsRouteRegex.test(ext.path))
   .map((ext) => ext)
 

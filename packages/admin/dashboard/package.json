@@ -14,13 +14,13 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
+      "import": "./dist/app.mjs",
+      "require": "./dist/app.js",
       "types": "./dist/index.d.ts"
     },
     "./css": {
-      "import": "./dist/index.css",
-      "require": "./dist/index.css"
+      "import": "./dist/app.css",
+      "require": "./dist/app.css"
     },
     "./root": "./",
     "./package.json": "./package.json"

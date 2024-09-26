@@ -1,14 +1,7 @@
-import { InjectionZone } from "@medusajs/admin-shared"
-import { ComponentType, createContext } from "react"
-import { NavItemProps } from "../../components/layout/nav-item"
-import { MenuItemPath } from "../../medusa-app"
+import { createContext } from "react"
+import { MedusaApp } from "../../core/medusa-app/medusa-app"
 
-type MedusaAppContextValue = {
-  api: {
-    getWidgets: (zone: InjectionZone) => ComponentType[]
-    getMenu: (path: MenuItemPath) => NavItemProps[]
-  }
-}
+type MedusaAppContextValue = MedusaApp["api"]
 
 export const MedusaAppContext = createContext<MedusaAppContextValue | null>(
   null

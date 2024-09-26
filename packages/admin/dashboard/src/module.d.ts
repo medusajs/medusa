@@ -1,3 +1,5 @@
+import { CustomFieldModel } from "@medusajs/admin-shared"
+
 declare module "virtual:medusa/widgets/*" {
   import type { ComponentType } from "react"
 
@@ -60,4 +62,46 @@ declare module "virtual:medusa/custom-fields/*/$display" {
 
 declare module "virtual:medusa/custom-fields/*/$link" {
   const links: string[]
+}
+
+declare module "virtual:medusa/config" {
+  import type { CustomFieldConfiguration } from "./core/form-registry/types"
+  import type {
+    MenuItemExtension,
+    RouteExtension,
+    WidgetExtension,
+  } from "./providers/medusa-app-provider/types"
+
+  const extensions: {
+    widgets: WidgetExtension[]
+    routing: {
+      menuItems: MenuItemExtension[]
+      routes: RouteExtension[]
+    }
+    customFields: CustomFieldConfiguration
+  }
+
+  export default extensions
+}
+
+declare module "virtual:medusa/routes" {
+  import type { ComponentType } from "react"
+  import type { LoaderFunction } from "react-router-dom"
+  const routes: {
+    path: string
+    Component: ComponentType
+    loader?: LoaderFunction
+  }[]
+
+  export default {
+    routes,
+  }
+}
+
+declare module "virtual:medusa/links" {
+  const links: Record<CustomFieldModel, (string | string[])[]>
+
+  export default {
+    customFieldLinks: links,
+  }
 }

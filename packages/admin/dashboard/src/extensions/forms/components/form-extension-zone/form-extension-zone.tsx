@@ -3,80 +3,55 @@ import { ComponentType } from "react"
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form"
 import { Form } from "../../../../components/common/form"
 import { InlineTip } from "../../../../components/common/inline-tip"
-import {
-  FormFieldExtension,
-  FormFieldImport,
-  FormFieldSection,
-} from "../../types"
+import { FormField } from "../../../../core/custom-field-registry"
 import { FormFieldType } from "./types"
 import { getFieldType } from "./utils"
 
 type FormExtensionZoneProps = {
-  extensions: FormFieldImport
+  fields: FormField[]
   form: UseFormReturn<any>
 }
 
-export const FormExtensionZone = ({
-  extensions,
-  form,
-}: FormExtensionZoneProps) => {
-  const sections = extensions.sections || []
-
+export const FormExtensionZone = ({ fields, form }: FormExtensionZoneProps) => {
   return (
     <div>
-      {sections.map((section, index) => (
-        <FormExtensionSection key={index} section={section} form={form} />
+      {fields.map((field, index) => (
+        <FormExtensionField key={index} field={field} form={form} />
       ))}
     </div>
   )
 }
 
-type FormExtensionSectionProps = {
-  section: FormFieldSection
-  form: UseFormReturn<any>
-}
-
-const FormExtensionSection = ({ section, form }: FormExtensionSectionProps) => {
-  return (
-    <div>
-      {Object.entries(section).map(([key, field], index) => (
-        <FormExtensionField key={index} field={field} name={key} form={form} />
-      ))}
-    </div>
-  )
-}
-
-function getFieldLabel(field: FormFieldExtension, name: string) {
+function getFieldLabel(field: FormField) {
   if (field.label) {
     return field.label
   }
 
-  return name
+  return field.name
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ")
 }
 
 type FormExtensionFieldProps = {
-  field: FormFieldExtension
-  name: string
+  field: FormField
   form: UseFormReturn<any>
 }
 
-const FormExtensionField = ({ field, name, form }: FormExtensionFieldProps) => {
-  const label = getFieldLabel(field, name)
+const FormExtensionField = ({ field, form }: FormExtensionFieldProps) => {
+  const label = getFieldLabel(field)
   const description = field.description
-  const placeholder = field.placeholder
-  const component = field.component
+  // const placeholder = field.placeholder
+  const Component = field.Component
 
-  const type = getFieldType(field.type)
+  const type = getFieldType(field.validation)
 
   const { control } = form
 
   return (
     <Form.Field
       control={control}
-      name={`additional_data.${name}`}
+      name={`additional_data.${field.name}`}
       render={({ field }) => {
         return (
           <Form.Item>
@@ -86,8 +61,8 @@ const FormExtensionField = ({ field, name, form }: FormExtensionFieldProps) => {
               <FormExtensionFieldComponent
                 field={field}
                 type={type}
-                component={component}
-                placeholder={placeholder}
+                component={Component}
+                // placeholder={placeholder}
               />
             </Form.Control>
             <Form.ErrorMessage />

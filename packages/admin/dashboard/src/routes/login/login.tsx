@@ -6,13 +6,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
 import { Form } from "../../components/common/form"
-
-import { useSignInWithEmailPassword } from "../../hooks/api/auth"
-
-import after from "virtual:medusa/widgets/login/after"
-import before from "virtual:medusa/widgets/login/before"
-import { isFetchError } from "../../lib/is-fetch-error"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
+import { useSignInWithEmailPassword } from "../../hooks/api/auth"
+import { isFetchError } from "../../lib/is-fetch-error"
+import { useMedusaApp } from "../../providers/medusa-app-provider"
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -23,6 +20,7 @@ export const Login = () => {
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
+  const { getWidgets } = useMedusaApp()
 
   const from = location.state?.from?.pathname || "/orders"
 
@@ -81,12 +79,8 @@ export const Login = () => {
           </Text>
         </div>
         <div className="flex w-full flex-col gap-y-3">
-          {before.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component />
-              </div>
-            )
+          {getWidgets("login.before").map((Component, i) => {
+            return <Component key={i} />
           })}
           <Form {...form}>
             <form
@@ -142,7 +136,7 @@ export const Login = () => {
               )}
               {serverError && (
                 <Alert
-                  className="p-2 bg-white items-center"
+                  className="items-center bg-white p-2"
                   dismissible
                   variant="error"
                 >
@@ -154,12 +148,8 @@ export const Login = () => {
               </Button>
             </form>
           </Form>
-          {after.widgets.map((w, i) => {
-            return (
-              <div key={i}>
-                <w.Component />
-              </div>
-            )
+          {getWidgets("login.after").map((Component, i) => {
+            return <Component key={i} />
           })}
         </div>
         <span className="text-ui-fg-muted txt-small my-6">

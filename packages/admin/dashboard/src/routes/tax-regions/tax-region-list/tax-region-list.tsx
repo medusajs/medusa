@@ -1,15 +1,15 @@
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { TaxRegionListView } from "./components/tax-region-list-view"
 
-import after from "virtual:medusa/widgets/tax/list/after"
-import before from "virtual:medusa/widgets/tax/list/before"
-
 export const TaxRegionsList = () => {
+  const { getWidgets } = useMedusaApp()
+
   return (
     <SingleColumnPage
       widgets={{
-        before,
-        after,
+        before: getWidgets("tax.list.before"),
+        after: getWidgets("tax.list.after"),
       }}
       hasOutlet
     >

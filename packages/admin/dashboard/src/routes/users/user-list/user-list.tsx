@@ -1,25 +1,18 @@
-import { Outlet } from "react-router-dom"
-
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { UserListTable } from "./components/user-list-table"
 
-import after from "virtual:medusa/widgets/user/list/after"
-import before from "virtual:medusa/widgets/user/list/before"
-
 export const UserList = () => {
+  const { getWidgets } = useMedusaApp()
+
   return (
-    <div className="flex flex-col gap-y-2">
-      {before.widgets.map((w, i) => (
-        <div key={i}>
-          <w.Component />
-        </div>
-      ))}
+    <SingleColumnPage
+      widgets={{
+        after: getWidgets("user.list.after"),
+        before: getWidgets("user.list.before"),
+      }}
+    >
       <UserListTable />
-      {after.widgets.map((w, i) => (
-        <div key={i}>
-          <w.Component />
-        </div>
-      ))}
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }
