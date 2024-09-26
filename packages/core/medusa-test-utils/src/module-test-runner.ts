@@ -66,6 +66,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   moduleName,
   moduleModels,
   moduleOptions = {},
+  moduleDependencies,
   joinerConfig = [],
   schema = "public",
   debug = false,
@@ -76,6 +77,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   moduleName: string
   moduleModels?: any[]
   moduleOptions?: Record<string, any>
+  moduleDependencies?: string[]
   joinerConfig?: any[]
   schema?: string
   dbName?: string
@@ -112,6 +114,7 @@ export function moduleIntegrationTestRunner<TService = any>({
     [moduleName]: {
       definition: moduleSdkImports.ModulesDefinition[moduleName],
       resolve,
+      dependencies: moduleDependencies,
       options: {
         database: dbConfig,
         ...moduleOptions,
