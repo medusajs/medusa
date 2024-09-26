@@ -29,7 +29,7 @@ export const useRegion = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryKey: regionsQueryKeys.detail(id),
+    queryKey: regionsQueryKeys.detail(id, query),
     queryFn: async () => sdk.admin.region.retrieve(id, query),
     ...options,
   })
@@ -95,7 +95,7 @@ export const useUpdateRegion = (
     mutationFn: (payload) => sdk.admin.region.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: regionsQueryKeys.lists() })
-      queryClient.invalidateQueries({ queryKey: regionsQueryKeys.detail(id) })
+      queryClient.invalidateQueries({ queryKey: regionsQueryKeys.details() })
 
       queryClient.invalidateQueries({
         queryKey: pricePreferencesQueryKeys.list(),
