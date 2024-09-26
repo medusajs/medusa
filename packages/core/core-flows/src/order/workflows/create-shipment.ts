@@ -3,8 +3,8 @@ import {
   FulfillmentDTO,
   OrderDTO,
   OrderWorkflow,
-} from "@medusajs/types"
-import { FulfillmentEvents, Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { FulfillmentEvents, Modules } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -13,7 +13,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { createShipmentWorkflow } from "../../fulfillment"
 import { registerOrderShipmentStep } from "../steps"

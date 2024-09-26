@@ -3,8 +3,8 @@ import {
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
-import { WorkflowTypes } from "@medusajs/types"
+} from "@medusajs/framework/workflows-sdk"
+import { WorkflowTypes } from "@medusajs/framework/types"
 import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
 import {
   waitConfirmationProductImportStep,

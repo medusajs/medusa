@@ -1,4 +1,5 @@
-const ConfigStore = require("configstore")
+// @ts-ignore
+import ConfigStore from "configstore"
 import reporter from "../reporter"
 
 const config = new ConfigStore(`medusa`, {}, { globalConfigPath: true })

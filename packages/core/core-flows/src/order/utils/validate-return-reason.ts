@@ -3,7 +3,7 @@ import {
   MedusaError,
   arrayDifference,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export async function validateReturnReasons(
   {

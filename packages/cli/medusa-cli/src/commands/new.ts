@@ -13,9 +13,10 @@ import path from "path"
 import prompts from "prompts"
 import { Pool } from "pg"
 import url from "url"
+// @ts-ignore
+import inquirer from "inquirer"
 import { createDatabase } from "pg-god"
 import { track } from "medusa-telemetry"
-const inquirer = require("inquirer")
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"

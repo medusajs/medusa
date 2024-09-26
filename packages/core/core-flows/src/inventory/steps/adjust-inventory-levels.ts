@@ -1,7 +1,7 @@
-import { IInventoryService, InventoryTypes } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IInventoryService, InventoryTypes } from "@medusajs/framework/types"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { MathBN, Modules } from "@medusajs/utils"
+import { MathBN, Modules } from "@medusajs/framework/utils"
 
 export const adjustInventoryLevelsStepId = "adjust-inventory-levels-step"
 /**

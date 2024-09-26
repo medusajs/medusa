@@ -6,8 +6,8 @@ import {
   OrderLineItemDTO,
   OrderWorkflow,
   ReservationItemDTO,
-} from "@medusajs/types"
-import { MathBN, MedusaError, Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MathBN, MedusaError, Modules } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -16,7 +16,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"
