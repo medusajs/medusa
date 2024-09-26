@@ -1,9 +1,9 @@
-import { FulfillmentDTO, FulfillmentWorkflow } from "@medusajs/types"
+import { FulfillmentDTO, FulfillmentWorkflow } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createReturnFulfillmentStep } from "../steps"
 
 export const createReturnFulfillmentWorkflowId =

@@ -1,11 +1,11 @@
-import { ListShippingOptionsForCartWorkflowInputDTO } from "@medusajs/types"
-import { deepFlatMap, isPresent, MedusaError } from "@medusajs/utils"
+import { ListShippingOptionsForCartWorkflowInputDTO } from "@medusajs/framework/types"
+import { deepFlatMap, isPresent, MedusaError } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 
 export const listShippingOptionsForCartWorkflowId =

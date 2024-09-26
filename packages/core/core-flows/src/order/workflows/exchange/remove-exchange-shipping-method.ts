@@ -4,8 +4,8 @@ import {
   OrderExchangeDTO,
   OrderPreviewDTO,
   OrderWorkflow,
-} from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -13,7 +13,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { deleteOrderShippingMethods } from "../../steps"
 import { deleteOrderChangeActionsStep } from "../../steps/delete-order-change-actions"

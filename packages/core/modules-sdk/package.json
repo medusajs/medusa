@@ -31,8 +31,10 @@
     "watch": "tsc --build --watch"
   },
   "devDependencies": {
-    "@medusajs/types": "^1.11.16",
     "@mikro-orm/core": "5.9.7",
+    "@mikro-orm/knex": "5.9.7",
+    "@swc/core": "^1.7.28",
+    "@swc/jest": "^0.2.36",
     "awilix": "^8.0.1",
     "cross-env": "^5.2.1",
     "jest": "^29.7.0",
@@ -41,11 +43,13 @@
   },
   "dependencies": {
     "@medusajs/orchestration": "^0.5.7",
+    "@medusajs/types": "^1.11.16",
     "@medusajs/utils": "^1.11.9",
     "resolve-cwd": "^3.0.0"
   },
   "peerDependencies": {
     "@mikro-orm/core": "5.9.7",
+    "@mikro-orm/knex": "5.9.7",
     "awilix": "^8.0.1"
   }
 }

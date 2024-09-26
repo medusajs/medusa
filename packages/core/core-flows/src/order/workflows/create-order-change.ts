@@ -1,9 +1,9 @@
-import { CreateOrderChangeDTO, OrderChangeDTO } from "@medusajs/types"
+import { CreateOrderChangeDTO, OrderChangeDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createOrderChangeStep } from "../steps"
 
 export const createOrderChangeWorkflowId = "create-order-change"

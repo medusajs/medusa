@@ -1,4 +1,4 @@
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface DeleteEntitiesStepType {
   moduleRegistrationName: string

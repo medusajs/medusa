@@ -1,11 +1,14 @@
-import { Modules, ProductVariantWorkflowEvents } from "@medusajs/utils"
+import {
+  Modules,
+  ProductVariantWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, removeRemoteLinkStep } from "../../common"
 import { deleteProductVariantsStep } from "../steps"
 
