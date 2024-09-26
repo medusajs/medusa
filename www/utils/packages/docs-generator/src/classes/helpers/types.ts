@@ -37,6 +37,8 @@ export default class TypesHelper {
   cleanUpTypes(types: ts.Type[]): ts.Type[] {
     let cleanedUpTypes = this.removeUndefinedNullTypes(types)
 
+    cleanedUpTypes = this.removeExtraBoolean(cleanedUpTypes)
+
     cleanedUpTypes = this.removeStringRegExpTypeOverlaps(cleanedUpTypes)
 
     cleanedUpTypes = this.joinDateAndString(cleanedUpTypes)
@@ -89,5 +91,21 @@ export default class TypesHelper {
         type.flags !== ts.TypeFlags.Undefined &&
         type.flags !== ts.TypeFlags.Null
     )
+  }
+
+  private removeExtraBoolean(types: ts.Type[]): ts.Type[] {
+    let found = false
+    return types.filter((tsType) => {
+      if (tsType.flags !== ts.TypeFlags.BooleanLiteral) {
+        return true
+      }
+
+      if (!found) {
+        found = true
+        return true
+      }
+
+      return false
+    })
   }
 }
