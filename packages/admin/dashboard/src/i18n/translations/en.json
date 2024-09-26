@@ -534,7 +534,8 @@
     },
     "variant": {
       "edit": {
-        "header": "Edit Variant"
+        "header": "Edit Variant",
+        "success": "Product variant edited sucessfully"
       },
       "create": {
         "header": "Variant details"

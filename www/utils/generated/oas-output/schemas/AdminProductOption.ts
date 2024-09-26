@@ -16,7 +16,7 @@
  *     title: title
  *     description: The product option's title.
  *   product:
- *     $ref: "#/components/schemas/BaseProduct"
+ *     $ref: "#/components/schemas/AdminProduct"
  *   product_id:
  *     type: string
  *     title: product_id

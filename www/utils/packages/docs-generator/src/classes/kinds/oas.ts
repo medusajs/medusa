@@ -26,6 +26,11 @@ import FunctionKindGenerator, {
   VariableNode,
 } from "./function.js"
 import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
+import TypesHelper from "../helpers/types.js"
+import {
+  isLevelExceeded,
+  maybeIncrementLevel,
+} from "../../utils/level-utils.js"
 
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 
@@ -55,7 +60,7 @@ type AuthRequests = {
 class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
-  private MAX_LEVEL = 5
+  private MAX_LEVEL = 7
   readonly REQUEST_TYPE_NAMES = [
     "MedusaRequest",
     "RequestWithContext",
@@ -89,6 +94,7 @@ class OasKindGenerator extends FunctionKindGenerator {
   protected oasExamplesGenerator: OasExamplesGenerator
   protected oasSchemaHelper: OasSchemaHelper
   protected schemaFactory: SchemaFactory
+  protected typesHelper: TypesHelper
 
   constructor(options: GeneratorOptions) {
     super(options)
@@ -99,6 +105,9 @@ class OasKindGenerator extends FunctionKindGenerator {
     this.tags = new Map()
     this.oasSchemaHelper = new OasSchemaHelper()
     this.schemaFactory = new SchemaFactory()
+    this.typesHelper = new TypesHelper({
+      checker: this.checker,
+    })
     this.init()
 
     this.generatorEventManager.listen(
@@ -1251,7 +1260,7 @@ class OasKindGenerator extends FunctionKindGenerator {
      */
     saveSchema?: boolean
   }): OpenApiSchema {
-    if (level > this.MAX_LEVEL) {
+    if (isLevelExceeded(level, this.MAX_LEVEL)) {
       return {}
     }
 
@@ -1364,9 +1373,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             itemType: this.checker.getTypeArguments(
               itemType as ts.TypeReference
             )[0],
-            // can't increment level because
-            // array must have items in it
-            level,
+            level: maybeIncrementLevel(level, "array"),
             title,
             descriptionOptions:
               descriptionOptions || title
@@ -1395,21 +1402,18 @@ class OasKindGenerator extends FunctionKindGenerator {
           }
         }
 
-        const oneOfItems = this.removeStringRegExpTypeOverlaps(
-          (itemType as ts.UnionType).types
-        ).map((unionType) =>
-          this.typeToSchema({
-            itemType: unionType,
-            // not incrementing considering the
-            // current schema isn't actually a
-            // schema
-            level,
-            title,
-            descriptionOptions,
-            saveSchema,
-            ...rest,
-          })
-        )
+        const oneOfItems = this.typesHelper
+          .cleanUpTypes((itemType as ts.UnionType).types)
+          .map((unionType) =>
+            this.typeToSchema({
+              itemType: unionType,
+              level: maybeIncrementLevel(level, "oneOf"),
+              title,
+              descriptionOptions,
+              saveSchema,
+              ...rest,
+            })
+          )
 
         if (oneOfItems.length === 1) {
           return oneOfItems[0]
@@ -1419,21 +1423,18 @@ class OasKindGenerator extends FunctionKindGenerator {
           oneOf: oneOfItems,
         }
       case itemType.isIntersection():
-        const allOfItems = this.removeStringRegExpTypeOverlaps(
-          (itemType as ts.IntersectionType).types
-        ).map((intersectionType) => {
-          return this.typeToSchema({
-            itemType: intersectionType,
-            // not incrementing considering the
-            // current schema isn't actually a
-            // schema
-            level,
-            title,
-            descriptionOptions,
-            saveSchema,
-            ...rest,
+        const allOfItems = this.typesHelper
+          .cleanUpTypes((itemType as ts.IntersectionType).types)
+          .map((intersectionType) => {
+            return this.typeToSchema({
+              itemType: intersectionType,
+              level: maybeIncrementLevel(level, "allOf"),
+              title,
+              descriptionOptions,
+              saveSchema,
+              ...rest,
+            })
           })
-        })
 
         if (allOfItems.length === 1) {
           return allOfItems[0]
@@ -1452,9 +1453,9 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
         const pickedProperties = pickTypeArgs[1].isUnion()
           ? pickTypeArgs[1].types.map((unionType) =>
-              this.getTypeName(unionType)
+              this.typesHelper.getTypeName(unionType)
             )
-          : [this.getTypeName(pickTypeArgs[1])]
+          : [this.typesHelper.getTypeName(pickTypeArgs[1])]
         return this.typeToSchema({
           itemType: pickTypeArgs[0],
           title,
@@ -1474,9 +1475,9 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
         const omitProperties = omitTypeArgs[1].isUnion()
           ? omitTypeArgs[1].types.map((unionType) =>
-              this.getTypeName(unionType)
+              this.typesHelper.getTypeName(unionType)
             )
-          : [this.getTypeName(omitTypeArgs[1])]
+          : [this.typesHelper.getTypeName(omitTypeArgs[1])]
         return this.typeToSchema({
           itemType: omitTypeArgs[0],
           title,
@@ -1537,7 +1538,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         > = {}
         let isAdditionalProperties = false
 
-        if (level + 1 <= this.MAX_LEVEL) {
+        if (!isLevelExceeded(level + 1, this.MAX_LEVEL)) {
           let itemProperties = itemType.getProperties()
 
           if (
@@ -1545,9 +1546,18 @@ class OasKindGenerator extends FunctionKindGenerator {
             itemType.aliasTypeArguments?.length === 2 &&
             itemType.aliasTypeArguments[0].flags === ts.TypeFlags.String
           ) {
-            // object has dynamic keys, so put the properties under additionalProperties
-            itemProperties = itemType.aliasTypeArguments[1].getProperties()
-            isAdditionalProperties = true
+            const isValueObj =
+              itemType.aliasTypeArguments[1].isClassOrInterface() ||
+              itemType.aliasTypeArguments[1].isTypeParameter() ||
+              ((itemType.aliasTypeArguments[1] as ts.Type).flags ===
+                ts.TypeFlags.Object &&
+                !this.checker.isArrayType(itemType.aliasTypeArguments[1]))
+
+            if (isValueObj) {
+              // object has dynamic keys, so put the properties under additionalProperties
+              itemProperties = itemType.aliasTypeArguments[1].getProperties()
+              isAdditionalProperties = true
+            }
           }
 
           itemProperties.forEach((property) => {
@@ -1576,7 +1586,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             const arrHasParentType =
               rest.context !== "query" &&
               this.checker.isArrayType(propertyType) &&
-              this.areTypesEqual(
+              this.typesHelper.areTypesEqual(
                 itemType,
                 this.checker.getTypeArguments(
                   propertyType as ts.TypeReference
@@ -1584,7 +1594,7 @@ class OasKindGenerator extends FunctionKindGenerator {
               )
             const isParentType =
               rest.context !== "query" &&
-              this.areTypesEqual(itemType, propertyType)
+              this.typesHelper.areTypesEqual(itemType, propertyType)
 
             if (isParentType && objSchema["x-schemaName"]) {
               properties[property.name] = {
@@ -1610,7 +1620,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
             properties[property.name] = this.typeToSchema({
               itemType: propertyType,
-              level: level + 1,
+              level: maybeIncrementLevel(level, "object"),
               title: property.name,
               descriptionOptions: {
                 ...descriptionOptions,
@@ -1717,7 +1727,7 @@ class OasKindGenerator extends FunctionKindGenerator {
    * @param level - The current recursion level to avoid max-stack error
    * @returns Whether the symbol is required.
    */
-  isRequired(symbol: ts.Symbol, level = 0): boolean {
+  isRequired(symbol: ts.Symbol, level = 1): boolean {
     let isRequired = true
     const checkNode = (node: ts.Node) => {
       switch (node.kind) {
@@ -1749,11 +1759,11 @@ class OasKindGenerator extends FunctionKindGenerator {
       !symbol.valueDeclaration &&
       symbol.declarations?.length &&
       "symbol" in symbol.declarations[0] &&
-      level < this.MAX_LEVEL
+      !isLevelExceeded(level, this.MAX_LEVEL)
     ) {
       return this.isRequired(
         symbol.declarations[0].symbol as ts.Symbol,
-        level + 1
+        maybeIncrementLevel(level, "object")
       )
     }
 
@@ -1785,25 +1795,6 @@ class OasKindGenerator extends FunctionKindGenerator {
       case name?.includes("password"):
         return "password"
     }
-  }
-
-  /**
-   * Retrieve the name of a type. This is useful when retrieving allowed/disallowed
-   * properties in an Omit/Pick type.
-   *
-   * @param itemType - The type to retrieve its name.
-   * @returns The type's name.
-   */
-  getTypeName(itemType: ts.Type): string {
-    if (itemType.symbol || itemType.aliasSymbol) {
-      return (itemType.aliasSymbol || itemType.symbol).name
-    }
-
-    if (itemType.isLiteral()) {
-      return itemType.value.toString()
-    }
-
-    return this.checker.typeToString(itemType)
   }
 
   /**
@@ -1956,13 +1947,14 @@ class OasKindGenerator extends FunctionKindGenerator {
      */
     level?: number
   }): OpenApiSchema | undefined {
-    if (level > this.MAX_LEVEL) {
+    if (isLevelExceeded(level, this.MAX_LEVEL)) {
       return
     }
 
     let oldSchemaObj = (
       oldSchema && "$ref" in oldSchema
-        ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref)?.schema
+        ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref, true, true)
+            ?.schema
         : oldSchema
     ) as OpenApiSchema | undefined
     const newSchemaObj = (
@@ -1973,7 +1965,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
-    } else if (!newSchemaObj) {
+    } else if (!newSchemaObj || !Object.keys(newSchemaObj)) {
       return undefined
     }
 
@@ -1984,6 +1976,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       oldSchemaObj = {
         ...newSchemaObj,
         description: oldSchemaObj?.description,
+        example: oldSchemaObj?.example || newSchemaObj.example,
       }
     } else if (
       oldSchemaObj?.allOf &&
@@ -2025,7 +2018,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             this.updateSchema({
               oldSchema: oldSchemaObj!.additionalProperties,
               newSchema: newSchemaObj.additionalProperties,
-              level: level + 1,
+              level: maybeIncrementLevel(level, "object"),
             }) || oldSchemaObj!.additionalProperties
         }
       } else {
@@ -2047,7 +2040,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 newSchema: newSchemaObj!.properties![
                   propertyName
                 ] as OpenApiSchema,
-                level: level + 1,
+                level: maybeIncrementLevel(level, "object"),
               }) || propertySchema
           }
         )
@@ -2070,7 +2063,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         this.updateSchema({
           oldSchema: oldSchemaObj.items as OpenApiSchema,
           newSchema: newSchemaObj!.items as OpenApiSchema,
-          level: level + 1,
+          level: maybeIncrementLevel(level, "array"),
         }) || oldSchemaObj.items
     }
 
@@ -2291,27 +2284,6 @@ class OasKindGenerator extends FunctionKindGenerator {
     return Object.keys(responseContent).some((responseType) =>
       fnText.includes(responseType)
     )
-  }
-
-  private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
-    return types.filter((itemType) => {
-      // remove overlapping string / regexp types
-      if (this.checker.typeToString(itemType) === "RegExp") {
-        const hasString = types.some((t) => {
-          return (
-            t.flags === ts.TypeFlags.String ||
-            t.flags === ts.TypeFlags.StringLiteral
-          )
-        })
-        return !hasString
-      }
-
-      return true
-    })
-  }
-
-  private areTypesEqual(type1: ts.Type, type2: ts.Type): boolean {
-    return "id" in type1 && "id" in type2 && type1.id === type2.id
   }
 }
 

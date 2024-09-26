@@ -56,7 +56,7 @@
  *     type: array
  *     description: The customer's addresses.
  *     items:
- *       $ref: "#/components/schemas/BaseCustomerAddress"
+ *       $ref: "#/components/schemas/AdminCustomerAddress"
  *   phone:
  *     type: string
  *     title: phone

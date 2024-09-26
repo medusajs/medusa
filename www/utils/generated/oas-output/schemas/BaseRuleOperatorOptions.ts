@@ -1,7 +1,7 @@
 /**
  * @schema BaseRuleOperatorOptions
  * type: object
- * description: The operator's operators.
+ * description: The operator's details.
  * x-schemaName: BaseRuleOperatorOptions
  * required:
  *   - id
@@ -12,14 +12,17 @@
  *     type: string
  *     title: id
  *     description: The operator's ID.
+ *     example: "in"
  *   value:
  *     type: string
  *     title: value
  *     description: The operator's value.
+ *     example: "in"
  *   label:
  *     type: string
  *     title: label
  *     description: The operator's label.
+ *     example: "In"
  * 
 */
 
