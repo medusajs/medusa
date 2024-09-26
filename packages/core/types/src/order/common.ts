@@ -1828,7 +1828,7 @@ export interface OrderClaimDTO {
   /**
    * The version of the order when the claim is applied.
    */
-  order_version: string
+  order_version: number
 
   /**
    * The claim's display ID.
@@ -1935,7 +1935,7 @@ export interface OrderExchangeDTO {
   /**
    * The version of the order when the exchange is applied.
    */
-  order_version: string
+  order_version: number
 
   /**
    * The exchange's display ID.
