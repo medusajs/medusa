@@ -16,14 +16,14 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  dynamicImport,
   GraphQLUtils,
+  isObject,
+  isString,
   MedusaError,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  dynamicImport,
-  isObject,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
@@ -31,11 +31,11 @@ import { asValue } from "awilix"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
-  MigrationOptions,
+  MigrationOptions, ModuleBootstrapOptions,
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { RemoteQuery, createQuery } from "./remote-query"
+import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
@@ -97,7 +97,7 @@ export async function loadModules(args: {
     sharedResourcesConfig,
     migrationOnly = false,
     loaderOnly = false,
-    workerMode = "server",
+    workerMode = "server" as ModuleBootstrapOptions['workerMode'],
   } = args
 
   const allModules = {} as any
@@ -109,9 +109,8 @@ export async function loadModules(args: {
     let declaration: any = {}
     let definition: Partial<ModuleDefinition> | undefined = undefined
 
-    // Skip disabled modules
     if (mod === false) {
-      return
+      continue
     }
 
     if (isObject(mod)) {
