@@ -1,9 +1,8 @@
-import { FileSystem, toCamelCase } from "@medusajs/utils"
-import { GraphQLSchema } from "graphql/type"
-import { parse, printSchema } from "graphql"
 import { codegen } from "@graphql-codegen/core"
+import { parse, printSchema, type GraphQLSchema } from "graphql"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { FileSystem } from "../common"
 
 function buildEntryPointsTypeMap({
   schema,
@@ -43,11 +42,13 @@ function buildEntryPointsTypeMap({
 async function generateTypes({
   outputDir,
   filename,
+  interfaceName,
   config,
   joinerConfigs,
 }: {
   outputDir: string
   filename: string
+  interfaceName: string
   config: Parameters<typeof codegen>[0]
   joinerConfigs: ModuleJoinerConfig[]
 }) {
@@ -55,8 +56,6 @@ async function generateTypes({
 
   let output = await codegen(config)
   const entryPoints = buildEntryPointsTypeMap({ schema: output, joinerConfigs })
-
-  const interfaceName = toCamelCase(filename)
 
   const remoteQueryEntryPoints = `
 declare module '@medusajs/types' {
@@ -92,11 +91,13 @@ export async function gqlSchemaToTypes({
   outputDir,
   filename,
   joinerConfigs,
+  interfaceName,
 }: {
   schema: GraphQLSchema
   outputDir: string
   filename: string
   joinerConfigs: ModuleJoinerConfig[]
+  interfaceName: string
 }) {
   const config = {
     documents: [],
@@ -122,5 +123,11 @@ export async function gqlSchemaToTypes({
     },
   }
 
-  await generateTypes({ outputDir, filename, config, joinerConfigs })
+  await generateTypes({
+    outputDir,
+    filename,
+    config,
+    joinerConfigs,
+    interfaceName,
+  })
 }

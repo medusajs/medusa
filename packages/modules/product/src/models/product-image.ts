@@ -14,7 +14,7 @@ import {
   DALUtils,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import Product from "./product"
 
 const imageUrlIndexName = "IDX_product_image_url"

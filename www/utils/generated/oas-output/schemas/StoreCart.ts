@@ -58,14 +58,14 @@
  *     description: The cart's currency code.
  *     example: usd
  *   shipping_address:
- *     $ref: "#/components/schemas/BaseCartAddress"
+ *     $ref: "#/components/schemas/StoreCartAddress"
  *   billing_address:
- *     $ref: "#/components/schemas/BaseCartAddress"
+ *     $ref: "#/components/schemas/StoreCartAddress"
  *   items:
  *     type: array
  *     description: The cart's items.
  *     items:
- *       $ref: "#/components/schemas/BaseCartLineItem"
+ *       $ref: "#/components/schemas/StoreCartLineItem"
  *   shipping_methods:
  *     type: array
  *     description: The cart's shipping methods.

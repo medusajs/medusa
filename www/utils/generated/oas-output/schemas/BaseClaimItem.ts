@@ -1,7 +1,7 @@
 /**
  * @schema BaseClaimItem
  * type: object
- * description: The claim item's claim items.
+ * description: The claim item's details.
  * x-schemaName: BaseClaimItem
  * required:
  *   - id
@@ -19,22 +19,22 @@
  *   claim_id:
  *     type: string
  *     title: claim_id
- *     description: The claim item's claim id.
+ *     description: The ID of the claim this item belongs to.
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The claim item's order id.
+ *     description: The ID of the order this item belongs to.
  *   item_id:
  *     type: string
  *     title: item_id
- *     description: The claim item's item id.
+ *     description: The ID of the item in the order.
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The claim item's quantity.
+ *     description: The quantity claimed.
  *   reason:
  *     type: string
- *     description: The claim item's reason.
+ *     description: The claim's reason.
  *     enum:
  *       - missing_item
  *       - wrong_item
@@ -42,20 +42,20 @@
  *       - other
  *   raw_quantity:
  *     type: object
- *     description: The claim item's raw quantity.
+ *     description: The quantity claimed.
  *   metadata:
  *     type: object
- *     description: The claim item's metadata.
+ *     description: The item's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The claim item's created at.
+ *     description: The date the claim was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The claim item's updated at.
+ *     description: The date the claim was updated.
  * 
 */
 

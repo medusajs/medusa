@@ -7,3 +7,5 @@ export * from "./get-fields-and-relations"
 
 export * from "graphql"
 export * from "graphql/type"
+export { makeExecutableSchema } from "@graphql-tools/schema"
+export { mergeTypeDefs } from "@graphql-tools/merge"

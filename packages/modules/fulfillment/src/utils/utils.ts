@@ -4,7 +4,7 @@ import {
   MedusaError,
   pickValueFromObject,
   RuleOperator,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 /**
  * The rule engine here is kept inside the module as of now, but it could be moved

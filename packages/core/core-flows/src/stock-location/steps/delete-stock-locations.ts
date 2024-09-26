@@ -1,6 +1,6 @@
-import { DeleteEntityInput } from "@medusajs/modules-sdk"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { DeleteEntityInput } from "@medusajs/framework/modules-sdk"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteStockLocationsStepId = "delete-stock-locations-step"
 /**

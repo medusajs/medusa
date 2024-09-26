@@ -1,6 +1,6 @@
 /*
-import { Context, FulfillmentTypes } from "@medusajs/types"
-import { DALUtils, promiseAll } from "@medusajs/utils"
+import { Context, FulfillmentTypes } from "@medusajs/framework/types"
+import { DALUtils, promiseAll } from "@medusajs/framework/utils"
 import { FulfillmentSet, ServiceZone } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 

@@ -12,8 +12,8 @@ import {
   AdminGetProductTypeParamsType,
   AdminUpdateProductTypeType,
 } from "../validators"
-import { HttpTypes } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { HttpTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetProductTypeParamsType>,

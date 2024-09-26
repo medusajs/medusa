@@ -4,13 +4,13 @@ import {
   FindConfig,
   OrderTypes,
   RepositoryService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   InjectManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { Order } from "@models"
 
 type InjectedDependencies = {

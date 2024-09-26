@@ -27,22 +27,22 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.11.16",
+    "@swc/core": "^1.7.28",
     "@swc/jest": "^0.2.36",
-    "cross-env": "^5.2.1",
+    "awilix": "^8.0.1",
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
-    "ts-jest": "^29.2.5",
     "typescript": "^5.6.2"
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.12.11",
     "@medusajs/orchestration": "^0.5.7",
-    "@medusajs/utils": "^1.11.9"
+    "@medusajs/types": "^1.11.16",
+    "@medusajs/utils": "^1.11.9",
+    "ulid": "^2.3.0"
   },
   "peerDependencies": {
-    "awilix": "^8.0.1",
-    "ulid": "^2.3.0"
+    "awilix": "^8.0.1"
   },
   "scripts": {
     "build": "rimraf dist && tsc --build",

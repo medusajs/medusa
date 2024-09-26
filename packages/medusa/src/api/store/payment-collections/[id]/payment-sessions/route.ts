@@ -5,7 +5,7 @@ import {
 } from "../../../../../types/routing"
 import { StoreCreatePaymentSessionType } from "../../validators"
 import { refetchPaymentCollection } from "../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreCreatePaymentSessionType>,
@@ -37,5 +37,7 @@ export const POST = async (
     req.remoteQueryConfig.fields
   )
 
-  res.status(200).json({ payment_collection: paymentCollection })
+  res.status(200).json({
+    payment_collection: paymentCollection as HttpTypes.StorePaymentCollection,
+  })
 }

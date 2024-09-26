@@ -1,5 +1,3 @@
-import { mergeTypeDefs } from "@graphql-tools/merge"
-import { makeExecutableSchema } from "@graphql-tools/schema"
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   ConfigModule,
@@ -85,13 +83,23 @@ export type SharedResources = {
   }
 }
 
-export async function loadModules(
-  modulesConfig,
-  sharedContainer,
-  migrationOnly = false,
-  loaderOnly = false,
-  workerMode: "shared" | "worker" | "server" = "server"
-) {
+export async function loadModules(args: {
+  modulesConfig: MedusaModuleConfig
+  sharedContainer: MedusaContainer
+  sharedResourcesConfig?: SharedResources
+  migrationOnly?: boolean
+  loaderOnly?: boolean
+  workerMode?: "shared" | "worker" | "server"
+}) {
+  const {
+    modulesConfig,
+    sharedContainer,
+    sharedResourcesConfig,
+    migrationOnly = false,
+    loaderOnly = false,
+    workerMode = "server",
+  } = args
+
   const allModules = {}
 
   await Promise.all(
@@ -126,6 +134,18 @@ export async function loadModules(
         !declaration.resources
       ) {
         declaration.resources = MODULE_RESOURCE_TYPE.SHARED
+      }
+
+      if (
+        declaration.scope === MODULE_SCOPE.INTERNAL &&
+        declaration.resources === MODULE_RESOURCE_TYPE.SHARED
+      ) {
+        declaration.options ??= {}
+        declaration.options.database ??= {
+          ...sharedResourcesConfig?.database,
+        }
+        declaration.options.database.debug ??=
+          sharedResourcesConfig?.database?.debug
       }
 
       const loaded = (await MedusaModule.bootstrap({
@@ -206,8 +226,11 @@ function cleanAndMergeSchema(loadedSchema) {
   const { schema: cleanedSchema, notFound } = GraphQLUtils.cleanGraphQLSchema(
     defaultMedusaSchema + loadedSchema
   )
-  const mergedSchema = mergeTypeDefs(cleanedSchema)
-  return { schema: makeExecutableSchema({ typeDefs: mergedSchema }), notFound }
+  const mergedSchema = GraphQLUtils.mergeTypeDefs(cleanedSchema)
+  return {
+    schema: GraphQLUtils.makeExecutableSchema({ typeDefs: mergedSchema }),
+    notFound,
+  }
 }
 
 function getLoadedSchema(): string {
@@ -348,13 +371,14 @@ async function MedusaApp_({
     })
   }
 
-  const allModules = await loadModules(
-    modules,
-    sharedContainer_,
+  const allModules = await loadModules({
+    modulesConfig: modules,
+    sharedContainer: sharedContainer_,
+    sharedResourcesConfig,
     migrationOnly,
     loaderOnly,
-    workerMode
-  )
+    workerMode,
+  })
 
   if (loaderOnly) {
     async function query(...args: any[]) {
@@ -457,11 +481,18 @@ async function MedusaApp_({
     }
 
     for (const { resolution: moduleResolution } of moduleResolutions) {
-      if (!moduleResolution.options?.database) {
+      if (
+        !moduleResolution.options?.database &&
+        moduleResolution.moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
+        moduleResolution.moduleDeclaration?.resources ===
+          MODULE_RESOURCE_TYPE.SHARED
+      ) {
         moduleResolution.options ??= {}
         moduleResolution.options.database = {
           ...(sharedResourcesConfig?.database ?? {}),
         }
+        ;(moduleResolution as any).options.database.debug ??=
+          sharedResourcesConfig?.database?.debug
       }
 
       const migrationOptions: MigrationOptions = {
@@ -517,6 +548,7 @@ async function MedusaApp_({
     options.database ??= {
       ...sharedResourcesConfig?.database,
     }
+    options.database.debug ??= sharedResourcesConfig?.database?.debug
 
     return getMigrationPlanner(options, linkModules)
   }

@@ -2,7 +2,7 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { removePriceListPricesStep } from "../steps/remove-price-list-prices"
 
 export const removePriceListPricesWorkflowId = "remove-price-list-prices"

@@ -5,7 +5,7 @@ import {
 
 import { createProductOptionsWorkflow } from "@medusajs/core-flows"
 import { remapKeysForProduct, remapProductResponse } from "../../helpers"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 import {
   refetchEntities,
   refetchEntity,

@@ -1,9 +1,9 @@
-import { RegionWorkflowEvents } from "@medusajs/utils"
+import { RegionWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { deleteRegionsStep } from "../steps"
 
