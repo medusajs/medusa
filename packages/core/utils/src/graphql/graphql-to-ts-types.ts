@@ -1,16 +1,18 @@
-import { MedusaModule } from "../medusa-module"
-import { FileSystem, toCamelCase } from "@medusajs/utils"
-import { GraphQLSchema } from "graphql/type"
-import { parse, printSchema } from "graphql"
 import { codegen } from "@graphql-codegen/core"
+import { parse, printSchema, type GraphQLSchema } from "graphql"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { FileSystem } from "../common"
 
-function buildEntryPointsTypeMap(
+function buildEntryPointsTypeMap({
+  schema,
+  joinerConfigs,
+}: {
   schema: string
-): { entryPoint: string; entityType: any }[] {
+  joinerConfigs: ModuleJoinerConfig[]
+}): { entryPoint: string; entityType: any }[] {
   // build map entry point to there type to be merged and used by the remote query
 
-  const joinerConfigs = MedusaModule.getAllJoinerConfigs()
   return joinerConfigs
     .flatMap((config) => {
       const aliases = Array.isArray(config.alias)
@@ -40,18 +42,20 @@ function buildEntryPointsTypeMap(
 async function generateTypes({
   outputDir,
   filename,
+  interfaceName,
   config,
+  joinerConfigs,
 }: {
   outputDir: string
   filename: string
+  interfaceName: string
   config: Parameters<typeof codegen>[0]
+  joinerConfigs: ModuleJoinerConfig[]
 }) {
   const fileSystem = new FileSystem(outputDir)
 
   let output = await codegen(config)
-  const entryPoints = buildEntryPointsTypeMap(output)
-
-  const interfaceName = toCamelCase(filename)
+  const entryPoints = buildEntryPointsTypeMap({ schema: output, joinerConfigs })
 
   const remoteQueryEntryPoints = `
 declare module '@medusajs/types' {
@@ -81,14 +85,19 @@ ${entryPoints
   }
 }
 
+// TODO: rename from gqlSchemaToTypes to grapthqlToTsTypes
 export async function gqlSchemaToTypes({
   schema,
   outputDir,
   filename,
+  joinerConfigs,
+  interfaceName,
 }: {
   schema: GraphQLSchema
   outputDir: string
   filename: string
+  joinerConfigs: ModuleJoinerConfig[]
+  interfaceName: string
 }) {
   const config = {
     documents: [],
@@ -114,5 +123,11 @@ export async function gqlSchemaToTypes({
     },
   }
 
-  await generateTypes({ outputDir, filename, config })
+  await generateTypes({
+    outputDir,
+    filename,
+    config,
+    joinerConfigs,
+    interfaceName,
+  })
 }

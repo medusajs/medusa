@@ -1,10 +1,10 @@
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
+import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
 import {
   MedusaError,
   Modules,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export type UpdateProductsStepInput =
   | {

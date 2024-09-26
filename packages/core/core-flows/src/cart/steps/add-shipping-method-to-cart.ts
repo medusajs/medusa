@@ -1,6 +1,9 @@
-import { CreateShippingMethodDTO, ICartModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  CreateShippingMethodDTO,
+  ICartModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface AddShippingMethodToCartStepInput {
   shipping_methods: CreateShippingMethodDTO[]

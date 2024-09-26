@@ -1,9 +1,9 @@
-import { MedusaAppOutput } from "@medusajs/modules-sdk"
-import { ContainerLike, MedusaContainer } from "@medusajs/types"
+import { MedusaAppOutput } from "@medusajs/framework/modules-sdk"
+import { ContainerLike, MedusaContainer } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { asValue } from "awilix"
 import { dbTestUtilFactory, getDatabaseURL } from "./database"
 import { startApp } from "./medusa-test-runner-utils/bootstrap-app"
@@ -37,7 +37,6 @@ export function medusaIntegrationTestRunner({
   moduleName,
   dbName,
   medusaConfigFile,
-  loadApplication,
   schema = "public",
   env = {},
   debug = false,
@@ -48,7 +47,6 @@ export function medusaIntegrationTestRunner({
   env?: Record<string, any>
   dbName?: string
   medusaConfigFile?: string
-  loadApplication?: boolean
   schema?: string
   debug?: boolean
   inApp?: boolean
@@ -133,9 +131,7 @@ export function medusaIntegrationTestRunner({
     let serverShutdownRes: () => any
     let portRes: number
 
-    if (loadApplication) {
-      loadedApplication = await appLoader.load()
-    }
+    loadedApplication = await appLoader.load()
 
     try {
       const {

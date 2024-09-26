@@ -1,14 +1,16 @@
-import { StoreDTO, StoreWorkflow } from "@medusajs/types"
+import { StoreDTO, StoreWorkflow } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createStoresStep } from "../steps"
 import { updatePricePreferencesAsArrayStep } from "../../pricing"
 
-type CreateStoresWorkflowInput = { stores: StoreWorkflow.CreateStoreWorkflowInput[] }
+type CreateStoresWorkflowInput = {
+  stores: StoreWorkflow.CreateStoreWorkflowInput[]
+}
 
 export const createStoresWorkflowId = "create-stores"
 /**
@@ -16,7 +18,9 @@ export const createStoresWorkflowId = "create-stores"
  */
 export const createStoresWorkflow = createWorkflow(
   createStoresWorkflowId,
-  (input: WorkflowData<CreateStoresWorkflowInput>): WorkflowResponse<StoreDTO[]> => {
+  (
+    input: WorkflowData<CreateStoresWorkflowInput>
+  ): WorkflowResponse<StoreDTO[]> => {
     const normalizedInput = transform({ input }, (data) => {
       return data.input.stores.map((store) => {
         return {

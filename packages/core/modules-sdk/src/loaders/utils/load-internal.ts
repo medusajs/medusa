@@ -17,7 +17,6 @@ import {
   dynamicImport,
   MedusaModuleType,
   ModulesSdkUtils,
-  resolveExports,
   toMikroOrmEntities,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
@@ -264,9 +263,9 @@ async function importAllFromDir(path: string) {
   })
 
   return (
-    await Promise.all(filesToLoad.map((filePath) => import(filePath)))
+    await Promise.all(filesToLoad.map((filePath) => dynamicImport(filePath)))
   ).flatMap((value) => {
-    return Object.values(resolveExports(value))
+    return Object.values(value)
   })
 }
 
@@ -287,8 +286,8 @@ export async function loadResources(
     }
 
     const [moduleService, services, models, repositories] = await Promise.all([
-      import(modulePath).then((moduleExports) => {
-        return resolveExports(moduleExports).default.service
+      dynamicImport(modulePath).then((moduleExports) => {
+        return moduleExports.default.service
       }),
       importAllFromDir(resolve(normalizedPath, "services")).catch(
         defaultOnFail

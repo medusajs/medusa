@@ -1,4 +1,4 @@
-import { DALUtils } from "@medusajs/utils"
+import { DALUtils } from "@medusajs/framework/utils"
 import { Order } from "@models"
 import { setFindMethods } from "../utils/base-repository-find"
 

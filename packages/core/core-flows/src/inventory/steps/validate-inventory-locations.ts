@@ -2,10 +2,10 @@ import {
   arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { InventoryTypes } from "@medusajs/types"
-import { createStep } from "@medusajs/workflows-sdk"
+import { InventoryTypes } from "@medusajs/framework/types"
+import { createStep } from "@medusajs/framework/workflows-sdk"
 
 export const validateInventoryLocationsStepId = "validate-inventory-levels-step"
 /**

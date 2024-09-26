@@ -1,4 +1,4 @@
-import { IEventBusModuleService, Logger } from "@medusajs/types"
+import { IEventBusModuleService, Logger } from "@medusajs/framework/types"
 
 export * from "./address"
 export * from "./line-item"

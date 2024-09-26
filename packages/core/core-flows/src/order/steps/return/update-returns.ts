@@ -1,6 +1,9 @@
-import { UpdateReturnDTO } from "@medusajs/types"
-import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { UpdateReturnDTO } from "@medusajs/framework/types"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const updateReturnsStepId = "update-returns"
 /**

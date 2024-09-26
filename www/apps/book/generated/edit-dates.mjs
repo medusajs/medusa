@@ -20,7 +20,6 @@ export const generatedEditDates = {
   "app/first-customizations/page.mdx": "2024-09-11T10:48:42.374Z",
   "app/debugging-and-testing/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/basics/medusa-container/page.mdx": "2024-09-03T07:31:40.214Z",
-  "app/architectural-modules/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/basics/project-directories-files/page.mdx": "2024-07-04T17:26:03+03:00",
   "app/basics/api-routes/page.mdx": "2024-09-11T10:48:31.777Z",
   "app/basics/modules-directory-structure/page.mdx": "2024-05-07T18:00:28+02:00",
@@ -104,5 +103,7 @@ export const generatedEditDates = {
   "app/customization/next-steps/page.mdx": "2024-09-12T10:50:04.873Z",
   "app/customization/page.mdx": "2024-09-12T11:16:18.504Z",
   "app/more-resources/cheatsheet/page.mdx": "2024-07-11T16:11:26.480Z",
-  "app/more-resources/examples/page.mdx": "2024-09-25T10:56:24.516Z"
+  "app/more-resources/examples/page.mdx": "2024-09-25T10:56:24.516Z",
+  "app/architecture/architectural-modules/page.mdx": "2024-09-23T12:51:04.520Z",
+  "app/architecture/overview/page.mdx": "2024-09-23T12:55:01.339Z"
 }

@@ -1,10 +1,10 @@
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createPaymentCollectionsStep } from "../../cart"
 

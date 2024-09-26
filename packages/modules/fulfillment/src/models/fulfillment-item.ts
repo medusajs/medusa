@@ -4,9 +4,9 @@ import {
   DALUtils,
   generateEntityId,
   MikroOrmBigNumberProperty,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { BigNumberRawValue, DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BeforeCreate,
   Entity,

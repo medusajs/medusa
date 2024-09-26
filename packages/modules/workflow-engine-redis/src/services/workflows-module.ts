@@ -9,7 +9,7 @@ import {
   InjectSharedContext,
   MedusaContext,
   ModulesSdkUtils,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import type {
   ReturnWorkflow,
   UnwrapWorkflowInputDataType,

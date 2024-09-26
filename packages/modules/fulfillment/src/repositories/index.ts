@@ -1,1 +1,1 @@
-export { MikroOrmBaseRepository as BaseRepository } from "@medusajs/utils"
+export { MikroOrmBaseRepository as BaseRepository } from "@medusajs/framework/utils"

@@ -1,24 +1,3 @@
 {
-  "compilerOptions": {
-    "lib": ["es5", "es6", "es2019"],
-    "target": "es2022",
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "declarationMap": true,
-    "declaration": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "sourceMap": true,
-    "noImplicitReturns": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitThis": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-    "downlevelIteration": true
-  },
-  "include": ["src"],
-  "exclude": ["dist", "node_modules"]
+  "extends": "../../../_tsconfig.base.json"
 }

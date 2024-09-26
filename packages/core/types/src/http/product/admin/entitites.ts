@@ -15,18 +15,27 @@ import {
 
 export interface AdminProductVariant extends BaseProductVariant {
   prices: AdminPrice[] | null
+  options: AdminProductOptionValue[] | null
+  product?: AdminProduct | null
 }
-export interface AdminProductOption extends BaseProductOption {}
+export interface AdminProductOption extends BaseProductOption {
+  product?: AdminProduct | null
+  values?: AdminProductOptionValue[]
+}
 export interface AdminProductImage extends BaseProductImage {}
-export interface AdminProductOptionValue extends BaseProductOptionValue {}
+export interface AdminProductOptionValue extends BaseProductOptionValue {
+  option?: AdminProductOption | null
+}
 export interface AdminProduct
   extends Omit<BaseProduct, "categories" | "variants"> {
   collection?: AdminCollection | null
   categories?: AdminProductCategory[] | null
   sales_channels?: AdminSalesChannel[] | null
-  variants?: AdminProductVariant[] | null
+  variants: AdminProductVariant[] | null
   type: AdminProductType | null
   tags?: AdminProductTag[] | null
+  options: AdminProductOption[] | null
+  images: AdminProductImage[] | null
 }
 export type AdminProductStatus = ProductStatus
 export interface AdminProductVariantInventoryLink {
