@@ -6,6 +6,7 @@ import { CommonCliOptions } from "../../types/index.js"
 import { existsSync, readdirSync, statSync } from "node:fs"
 import path from "node:path"
 import getBasePath from "../../utils/get-base-path.js"
+import getMonorepoRoot from "../../utils/get-monorepo-root.js"
 
 export type Options = {
   paths: string[]
@@ -50,7 +51,7 @@ abstract class AbstractGenerator {
       )
     })
 
-    this.program = ts.createProgram(files, {})
+    this.program = ts.createProgram(files, this.getBaseCompilerOptions())
 
     this.checker = this.program.getTypeChecker()
 
@@ -89,6 +90,23 @@ abstract class AbstractGenerator {
   reset() {
     this.program = undefined
     this.checker = undefined
+  }
+
+  getBaseCompilerOptions(): ts.CompilerOptions {
+    const monorepoPath = getMonorepoRoot()
+    const tsconfigBasePath = path.join(monorepoPath, "_tsconfig.base.json")
+
+    const configStr = ts.sys.readFile(tsconfigBasePath)
+
+    if (!configStr) {
+      return {}
+    }
+
+    return ts.parseJsonConfigFileContent(
+      JSON.parse(configStr),
+      ts.sys,
+      monorepoPath
+    ).options
   }
 }
 
