@@ -10,7 +10,7 @@ import {
   BaseOrderShippingMethod,
 } from "../common"
 
-export interface StoreOrder extends Omit<BaseOrder, "items"> {
+export interface StoreOrder extends Omit<BaseOrder, "items" | "version" | "transations"> {
   shipping_address?: StoreOrderAddress | null
   billing_address?: StoreOrderAddress | null
   items: StoreOrderLineItem[] | null
