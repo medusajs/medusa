@@ -1,5 +1,8 @@
-import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface UpdateReturnItemBySelector {
   id: string

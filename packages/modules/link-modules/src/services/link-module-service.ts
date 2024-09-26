@@ -8,7 +8,7 @@ import {
   ModuleJoinerConfig,
   RestoreReturn,
   SoftDeleteReturn,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   CommonEvents,
   InjectManager,
@@ -20,7 +20,7 @@ import {
   MedusaError,
   Modules,
   ModulesSdkUtils,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { LinkService } from "@services"
 import { shouldForceTransaction } from "../utils"
 

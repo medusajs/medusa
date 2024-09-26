@@ -1,7 +1,7 @@
 /**
  * @schema BaseProductOptionValue
  * type: object
- * description: The option's options.
+ * description: The product option value's details.
  * x-schemaName: BaseProductOptionValue
  * required:
  *   - id
@@ -10,35 +10,35 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The option's ID.
+ *     description: The value's ID.
  *   value:
  *     type: string
  *     title: value
- *     description: The option's value.
+ *     description: The value.
  *   option:
  *     $ref: "#/components/schemas/BaseProductOption"
  *   option_id:
  *     type: string
  *     title: option_id
- *     description: The option's option id.
+ *     description: The ID of the option this value belongs to.
  *   metadata:
  *     type: object
- *     description: The option's metadata.
+ *     description: The value's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The option's created at.
+ *     description: The date the value was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The option's updated at.
+ *     description: The date the value was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The option's deleted at.
+ *     description: The date the value was deleted.
  * 
 */
 

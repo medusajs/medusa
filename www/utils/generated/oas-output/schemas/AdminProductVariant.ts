@@ -109,7 +109,7 @@
  *     items:
  *       $ref: "#/components/schemas/BaseProductOptionValue"
  *   product:
- *     $ref: "#/components/schemas/BaseProduct"
+ *     $ref: "#/components/schemas/AdminProduct"
  *   product_id:
  *     type: string
  *     title: product_id

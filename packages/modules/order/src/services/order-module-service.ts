@@ -16,7 +16,7 @@ import {
   SoftDeleteReturn,
   UpdateOrderItemWithSelectorDTO,
   UpdateOrderReturnReasonDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   BigNumber,
   createRawPropertiesFromBigNumber,
@@ -36,7 +36,7 @@ import {
   OrderStatus,
   promiseAll,
   transformPropertiesToBigNumber,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   Order,
   OrderAddress,

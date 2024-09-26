@@ -3,7 +3,7 @@ import {
   AdditionalData,
   CreateCartWorkflowInputDTO,
   HttpTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

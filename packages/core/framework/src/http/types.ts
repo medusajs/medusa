@@ -2,7 +2,6 @@ import type { NextFunction, Request, Response } from "express"
 import { ZodObject } from "zod"
 
 import { MedusaPricingContext, RequestQueryFields } from "@medusajs/types"
-import * as core from "express-serve-static-core"
 import { MedusaContainer } from "../container"
 
 export interface FindConfig<Entity> {
@@ -95,7 +94,13 @@ export type GlobalMiddlewareDescriptor = {
 }
 
 export interface MedusaRequest<Body = unknown>
-  extends Request<core.ParamsDictionary, any, Body> {
+  extends Request<
+    {
+      [key: string]: string
+    },
+    any,
+    Body
+  > {
   validatedBody: Body
   validatedQuery: RequestQueryFields & Record<string, unknown>
   /**

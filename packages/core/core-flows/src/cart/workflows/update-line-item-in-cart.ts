@@ -1,10 +1,10 @@
-import { UpdateLineItemInCartWorkflowInputDTO } from "@medusajs/types"
+import { UpdateLineItemInCartWorkflowInputDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { updateLineItemsStepWithSelector } from "../../line-item/steps"
 import { refreshCartShippingMethodsStep } from "../steps"

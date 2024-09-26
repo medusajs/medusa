@@ -1,5 +1,5 @@
-import { ConfigModule } from "@medusajs/types"
-import { getConfigFile } from "@medusajs/utils"
+import { ConfigModule } from "@medusajs/framework/types"
+import { getConfigFile } from "@medusajs/framework/utils"
 import { transformFile } from "@swc/core"
 import { existsSync } from "node:fs"
 import { copyFile, mkdir, readdir, rm, writeFile } from "node:fs/promises"

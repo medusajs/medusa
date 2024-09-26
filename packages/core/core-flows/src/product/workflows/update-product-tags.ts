@@ -1,12 +1,12 @@
-import { AdditionalData, ProductTypes } from "@medusajs/types"
-import { ProductTagWorkflowEvents } from "@medusajs/utils"
+import { AdditionalData, ProductTypes } from "@medusajs/framework/types"
+import { ProductTagWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { updateProductTagsStep } from "../steps"
 

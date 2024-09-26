@@ -1,11 +1,11 @@
-import { RequestQueryFields } from "@medusajs/types"
+import { RequestQueryFields } from "@medusajs/framework/types"
 import {
   getSetDifference,
   isDefined,
   isPresent,
   MedusaError,
   stringToSelectRelationObject,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { pick } from "lodash"
 import { FindConfig, QueryConfig } from "../types/common"
 

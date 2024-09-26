@@ -1,4 +1,4 @@
-const { defineConfig, Modules } = require("@medusajs/utils")
+const { defineConfig, Modules } = require("@medusajs/framework/utils")
 const { schema } = require("./schema")
 
 export const dbName = "medusa-index-integration-2024"

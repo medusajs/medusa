@@ -1,4 +1,4 @@
-import { FlagSettings } from "@medusajs/framework"
+import { FlagSettings } from "@medusajs/framework/feature-flags"
 
 const OrderEditingFeatureFlag: FlagSettings = {
   key: "order_editing",

@@ -3,15 +3,15 @@ import {
   CreateProductWorkflowInputDTO,
   PricingTypes,
   ProductTypes,
-} from "@medusajs/types"
-import { ProductWorkflowEvents, isPresent } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { ProductWorkflowEvents, isPresent } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common"
 import { associateProductsWithSalesChannelsStep } from "../../sales-channel"
 import { createProductsStep } from "../steps/create-products"

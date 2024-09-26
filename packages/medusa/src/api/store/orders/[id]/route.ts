@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { refetchOrder } from "../helpers"
 

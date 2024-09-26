@@ -1,10 +1,10 @@
-import { Context, FindConfig } from "@medusajs/types"
+import { Context, FindConfig } from "@medusajs/framework/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {

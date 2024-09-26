@@ -1,5 +1,5 @@
-import { MedusaError } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { MedusaError } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface ValidateDeletedPaymentSessionsStepInput {
   idsToDelete: string[]

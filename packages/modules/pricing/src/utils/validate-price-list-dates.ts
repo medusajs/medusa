@@ -1,4 +1,4 @@
-import { isDate, MedusaError } from "@medusajs/utils"
+import { isDate, MedusaError } from "@medusajs/framework/utils"
 
 export const validatePriceListDates = (priceListData: {
   starts_at?: Date | string | null

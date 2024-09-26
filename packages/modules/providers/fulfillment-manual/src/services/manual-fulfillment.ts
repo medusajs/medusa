@@ -1,4 +1,4 @@
-import { AbstractFulfillmentProviderService } from "@medusajs/utils"
+import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
 
 // TODO rework type and DTO's
 

@@ -3,7 +3,7 @@ import {
   DALUtils,
   generateEntityId,
   Searchable,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Collection,
@@ -18,7 +18,7 @@ import {
   Rel,
 } from "@mikro-orm/core"
 
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import { InventoryLevel } from "./inventory-level"
 import { ReservationItem } from "./reservation-item"
 

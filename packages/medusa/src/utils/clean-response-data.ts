@@ -1,4 +1,4 @@
-import { pickDeep } from "@medusajs/utils"
+import { pickDeep } from "@medusajs/framework/utils"
 import { omitDeep } from "./omit-deep"
 
 // TODO: once the legacy totals decoration will be removed.

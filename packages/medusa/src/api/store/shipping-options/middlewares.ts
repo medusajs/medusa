@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import { listTransformQueryConfig } from "./query-config"
 import { StoreGetShippingOptions } from "./validators"

@@ -6,7 +6,7 @@ import {
   ModulesSdkUtils,
   normalizeImportPathWithSource,
   toMikroOrmEntities,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import * as fs from "fs"
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { initModules, InitModulesOptions } from "./init-modules"
@@ -66,6 +66,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   moduleName,
   moduleModels,
   moduleOptions = {},
+  moduleDependencies,
   joinerConfig = [],
   schema = "public",
   debug = false,
@@ -76,6 +77,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   moduleName: string
   moduleModels?: any[]
   moduleOptions?: Record<string, any>
+  moduleDependencies?: string[]
   joinerConfig?: any[]
   schema?: string
   dbName?: string
@@ -84,7 +86,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   debug?: boolean
   testSuite: (options: SuiteOptions<TService>) => void
 }) {
-  const moduleSdkImports = require("@medusajs/modules-sdk")
+  const moduleSdkImports = require("@medusajs/framework/modules-sdk")
 
   process.env.LOG_LEVEL = "error"
 
@@ -112,6 +114,7 @@ export function moduleIntegrationTestRunner<TService = any>({
     [moduleName]: {
       definition: moduleSdkImports.ModulesDefinition[moduleName],
       resolve,
+      dependencies: moduleDependencies,
       options: {
         database: dbConfig,
         ...moduleOptions,

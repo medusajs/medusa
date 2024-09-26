@@ -2,9 +2,9 @@ import loaders from "../loaders"
 import express from "express"
 import path from "path"
 import { existsSync } from "fs"
-import { logger } from "@medusajs/framework"
-import { ExecArgs } from "@medusajs/types"
-import { dynamicImport } from "@medusajs/utils"
+import { logger } from "@medusajs/framework/logger"
+import { ExecArgs } from "@medusajs/framework/types"
+import { dynamicImport } from "@medusajs/framework/utils"
 
 type Options = {
   file: string

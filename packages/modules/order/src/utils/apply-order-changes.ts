@@ -1,10 +1,10 @@
-import { OrderChangeActionDTO } from "@medusajs/types"
+import { OrderChangeActionDTO } from "@medusajs/framework/types"
 import {
   ChangeActionType,
   MathBN,
   createRawPropertiesFromBigNumber,
   isDefined,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { OrderItem, OrderShippingMethod } from "@models"
 import { calculateOrderChange } from "./calculate-order-change"
 

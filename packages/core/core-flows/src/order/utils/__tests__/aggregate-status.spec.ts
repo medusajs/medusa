@@ -8,19 +8,19 @@ describe("Aggregate Order Status", () => {
     expect(
       getLastPaymentStatus({
         payment_collections: [],
-      })
+      } as any)
     ).toEqual("not_paid")
 
     expect(
       getLastPaymentStatus({
         payment_collections: [{ status: "not_paid" }],
-      })
+      } as any)
     ).toEqual("not_paid")
 
     expect(
       getLastPaymentStatus({
         payment_collections: [{ status: "not_paid" }, { status: "awaiting" }],
-      })
+      } as any)
     ).toEqual("awaiting")
 
     expect(
@@ -34,7 +34,7 @@ describe("Aggregate Order Status", () => {
           { status: "canceled" },
           { status: "authorized" },
         ],
-      })
+      } as any)
     ).toEqual("requires_action")
 
     expect(
@@ -45,7 +45,7 @@ describe("Aggregate Order Status", () => {
           { status: "canceled" },
           { status: "awaiting" },
         ],
-      })
+      } as any)
     ).toEqual("awaiting")
 
     expect(
@@ -55,7 +55,7 @@ describe("Aggregate Order Status", () => {
           { status: "authorized" },
           { status: "canceled" },
         ],
-      })
+      } as any)
     ).toEqual("authorized")
 
     expect(
@@ -65,7 +65,7 @@ describe("Aggregate Order Status", () => {
           { status: "authorized" },
           { status: "canceled" },
         ],
-      })
+      } as any)
     ).toEqual("partially_authorized")
 
     expect(
@@ -75,7 +75,7 @@ describe("Aggregate Order Status", () => {
           { status: "authorized", refunded_amount: 5, amount: 10 },
           { status: "canceled" },
         ],
-      })
+      } as any)
     ).toEqual("partially_refunded")
 
     expect(
@@ -87,7 +87,7 @@ describe("Aggregate Order Status", () => {
           { status: "authorized" },
           { status: "canceled" },
         ],
-      })
+      } as any)
     ).toEqual("partially_refunded")
 
     expect(
@@ -97,7 +97,7 @@ describe("Aggregate Order Status", () => {
           { status: "authorized", captured_amount: 12, amount: 12 },
           { status: "canceled" },
         ],
-      })
+      } as any)
     ).toEqual("captured")
 
     expect(
@@ -106,7 +106,7 @@ describe("Aggregate Order Status", () => {
           { status: "authorized", captured_amount: 10, amount: 10 },
           { status: "authorized", captured_amount: 5, amount: 10 },
         ],
-      })
+      } as any)
     ).toEqual("partially_captured")
 
     expect(
@@ -116,7 +116,7 @@ describe("Aggregate Order Status", () => {
           { status: "authorized", captured_amount: 10, amount: 10 },
           { status: "authorized" },
         ],
-      })
+      } as any)
     ).toEqual("partially_captured")
 
     expect(
@@ -125,13 +125,13 @@ describe("Aggregate Order Status", () => {
           { status: "authorized", captured_amount: 10, amount: 10 },
           { status: "authorized", captured_amount: 12, amount: 12 },
         ],
-      })
+      } as any)
     ).toEqual("captured")
 
     expect(
       getLastPaymentStatus({
         payment_collections: [{ status: "canceled" }, { status: "canceled" }],
-      })
+      } as any)
     ).toEqual("canceled")
   })
 
@@ -139,37 +139,37 @@ describe("Aggregate Order Status", () => {
     expect(
       getLastFulfillmentStatus({
         fulfillments: [],
-      })
+      } as any)
     ).toEqual("not_fulfilled")
 
     expect(
       getLastFulfillmentStatus({
         fulfillments: [{ created_at: new Date() }],
-      })
+      } as any)
     ).toEqual("not_fulfilled")
 
     expect(
       getLastFulfillmentStatus({
         fulfillments: [{ created_at: new Date() }, { packed_at: new Date() }],
-      })
+      } as any)
     ).toEqual("partially_fulfilled")
 
     expect(
       getLastFulfillmentStatus({
         fulfillments: [{ packed_at: new Date() }, { packed_at: new Date() }],
-      })
+      } as any)
     ).toEqual("fulfilled")
 
     expect(
       getLastFulfillmentStatus({
         fulfillments: [{ shipped_at: new Date() }, { packed_at: new Date() }],
-      })
+      } as any)
     ).toEqual("partially_shipped")
 
     expect(
       getLastFulfillmentStatus({
         fulfillments: [{ shipped_at: new Date() }, { shipped_at: new Date() }],
-      })
+      } as any)
     ).toEqual("shipped")
 
     expect(
@@ -178,7 +178,7 @@ describe("Aggregate Order Status", () => {
           { shipped_at: new Date() },
           { delivered_at: new Date() },
         ],
-      })
+      } as any)
     ).toEqual("partially_delivered")
 
     expect(
@@ -187,7 +187,7 @@ describe("Aggregate Order Status", () => {
           { delivered_at: new Date() },
           { delivered_at: new Date() },
         ],
-      })
+      } as any)
     ).toEqual("delivered")
 
     expect(
@@ -196,13 +196,13 @@ describe("Aggregate Order Status", () => {
           { delivered_at: new Date() },
           { canceled_at: new Date() },
         ],
-      })
+      } as any)
     ).toEqual("delivered")
 
     expect(
       getLastFulfillmentStatus({
         fulfillments: [{ shipped_at: new Date() }, { canceled_at: new Date() }],
-      })
+      } as any)
     ).toEqual("shipped")
 
     expect(
@@ -212,7 +212,7 @@ describe("Aggregate Order Status", () => {
           { shipped_at: new Date() },
           { canceled_at: new Date() },
         ],
-      })
+      } as any)
     ).toEqual("partially_shipped")
 
     expect(
@@ -221,7 +221,7 @@ describe("Aggregate Order Status", () => {
           { canceled_at: new Date() },
           { canceled_at: new Date() },
         ],
-      })
+      } as any)
     ).toEqual("canceled")
   })
 })
