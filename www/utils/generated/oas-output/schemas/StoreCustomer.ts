@@ -46,7 +46,7 @@
  *     type: array
  *     description: The parent's addresses.
  *     items:
- *       $ref: "#/components/schemas/BaseCustomerAddress"
+ *       $ref: "#/components/schemas/StoreCustomerAddress"
  *   phone:
  *     type: string
  *     title: phone

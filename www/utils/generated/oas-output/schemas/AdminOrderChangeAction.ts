@@ -1,8 +1,8 @@
 /**
- * @schema BaseOrderChangeAction
+ * @schema AdminOrderChangeAction
  * type: object
- * description: The action's actions.
- * x-schemaName: BaseOrderChangeAction
+ * description: The action's details.
+ * x-schemaName: AdminOrderChangeAction
  * properties:
  *   order_change:
  *     $ref: "#/components/schemas/AdminOrderChange"
@@ -87,3 +87,4 @@
  *   - order
  * 
 */
+
