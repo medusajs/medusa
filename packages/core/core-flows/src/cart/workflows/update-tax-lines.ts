@@ -2,12 +2,12 @@ import {
   CartLineItemDTO,
   CartShippingMethodDTO,
   CartWorkflowDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   getItemTaxLinesStep,
   retrieveCartWithLinksStep,

@@ -2,9 +2,9 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
-import { InventoryTypes } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/framework/types"
 import { updateInventoryItemsStep } from "../steps"
 
 export interface UpdateInventoryItemsWorkflowInput {

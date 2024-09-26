@@ -2,7 +2,7 @@ import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { deleteRefundReasonsStep } from "../steps"
 
 export const deleteRefundReasonsWorkflowId = "delete-refund-reasons-workflow"

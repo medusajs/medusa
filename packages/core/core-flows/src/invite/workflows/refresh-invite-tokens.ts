@@ -1,12 +1,12 @@
-import { InviteDTO, InviteWorkflow } from "@medusajs/types"
+import { InviteDTO, InviteWorkflow } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
-import { InviteWorkflowEvents } from "@medusajs/utils"
+import { InviteWorkflowEvents } from "@medusajs/framework/utils"
 import { emitEventStep } from "../../common"
 import { refreshInviteTokensStep } from "../steps/refresh-invite-tokens"
 

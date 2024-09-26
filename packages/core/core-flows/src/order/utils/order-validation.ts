@@ -4,13 +4,13 @@ import {
   OrderLineItemDTO,
   OrderWorkflow,
   ReturnDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   MedusaError,
   OrderStatus,
   arrayDifference,
   isPresent,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export function throwIfOrderIsCancelled({ order }: { order: OrderDTO }) {
   if (order.status === OrderStatus.CANCELED) {

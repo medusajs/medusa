@@ -1,6 +1,13 @@
-import { IPricingModuleService, PricingWorkflow } from "@medusajs/types"
-import { MedusaError, Modules, arrayDifference } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  IPricingModuleService,
+  PricingWorkflow,
+} from "@medusajs/framework/types"
+import {
+  MedusaError,
+  Modules,
+  arrayDifference,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export type UpdatePricePreferencesAsArrayStepInput =
   PricingWorkflow.UpdatePricePreferencesWorkflowInput["update"][]

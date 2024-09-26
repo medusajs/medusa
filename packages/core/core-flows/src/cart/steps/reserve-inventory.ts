@@ -1,6 +1,6 @@
-import { IInventoryService } from "@medusajs/types"
-import { MathBN, Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IInventoryService } from "@medusajs/framework/types"
+import { MathBN, Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface ReserveVariantInventoryStepInput {
   items: {

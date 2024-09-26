@@ -1,4 +1,3 @@
-import { makeExecutableSchema } from "@graphql-tools/schema"
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   IndexTypes,
@@ -22,7 +21,7 @@ export const CustomDirectives = {
 export function makeSchemaExecutable(inputSchema: string) {
   const { schema: cleanedSchema } = GraphQLUtils.cleanGraphQLSchema(inputSchema)
 
-  return makeExecutableSchema({ typeDefs: cleanedSchema })
+  return GraphQLUtils.makeExecutableSchema({ typeDefs: cleanedSchema })
 }
 
 function extractNameFromAlias(

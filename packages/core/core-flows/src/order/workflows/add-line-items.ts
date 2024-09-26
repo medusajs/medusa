@@ -1,12 +1,12 @@
-import { OrderLineItemDTO, OrderWorkflow } from "@medusajs/types"
-import { MathBN, MedusaError } from "@medusajs/utils"
+import { OrderLineItemDTO, OrderWorkflow } from "@medusajs/framework/types"
+import { MathBN, MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { findOneOrAnyRegionStep } from "../../cart/steps/find-one-or-any-region"
 import { findOrCreateCustomerStep } from "../../cart/steps/find-or-create-customer"
 import { findSalesChannelStep } from "../../cart/steps/find-sales-channel"
