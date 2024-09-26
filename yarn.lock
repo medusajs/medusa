@@ -5718,7 +5718,6 @@ __metadata:
     "@medusajs/core-flows": ^0.0.9
     "@medusajs/framework": ^0.0.1
     "@medusajs/link-modules": ^0.2.11
-    "@medusajs/types": ^1.11.16
     "@opentelemetry/api": ^1.9.0
     "@opentelemetry/instrumentation": ^0.53.0
     "@opentelemetry/instrumentation-pg": ^0.44.0
