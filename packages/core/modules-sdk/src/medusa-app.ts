@@ -16,14 +16,14 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  createMedusaContainer,
-  dynamicImport,
   GraphQLUtils,
-  isObject,
-  isString,
   MedusaError,
   Modules,
   ModulesSdkUtils,
+  createMedusaContainer,
+  dynamicImport,
+  isObject,
+  isString,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
@@ -35,7 +35,7 @@ import {
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { createQuery, RemoteQuery } from "./remote-query"
+import { RemoteQuery, createQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
@@ -100,86 +100,82 @@ export async function loadModules(args: {
     workerMode = "server",
   } = args
 
-  const allModules = {}
+  const allModules = {} as any
 
-  await Promise.all(
-    Object.keys(modulesConfig).map(async (moduleName) => {
-      const mod = modulesConfig[moduleName]
-      let path: string
-      let moduleExports: ModuleExports | undefined = undefined
-      let declaration: any = {}
-      let definition: Partial<ModuleDefinition> | undefined = undefined
+  for (const moduleName of Object.keys(modulesConfig)) {
+    const mod = modulesConfig[moduleName]
+    let path: string
+    let moduleExports: ModuleExports | undefined = undefined
+    let declaration: any = {}
+    let definition: Partial<ModuleDefinition> | undefined = undefined
 
-      // Skip disabled modules
-      if (mod === false) {
-        return
+    // Skip disabled modules
+    if (mod === false) {
+      return
+    }
+
+    if (isObject(mod)) {
+      const mod_ = mod as unknown as InternalModuleDeclaration
+      path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
+      definition = mod_.definition
+      moduleExports = !isString(mod_.resolve)
+        ? (mod_.resolve as ModuleExports)
+        : undefined
+      declaration = { ...mod }
+      delete declaration.definition
+    } else {
+      path = MODULE_PACKAGE_NAMES[moduleName]
+    }
+
+    declaration.scope ??= MODULE_SCOPE.INTERNAL
+    if (declaration.scope === MODULE_SCOPE.INTERNAL && !declaration.resources) {
+      declaration.resources = MODULE_RESOURCE_TYPE.SHARED
+    }
+
+    if (
+      declaration.scope === MODULE_SCOPE.INTERNAL &&
+      declaration.resources === MODULE_RESOURCE_TYPE.SHARED
+    ) {
+      declaration.options ??= {}
+      declaration.options.database ??= {
+        ...sharedResourcesConfig?.database,
       }
+      declaration.options.database.debug ??=
+        sharedResourcesConfig?.database?.debug
+    }
 
-      if (isObject(mod)) {
-        const mod_ = mod as unknown as InternalModuleDeclaration
-        path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
-        definition = mod_.definition
-        moduleExports = !isString(mod_.resolve)
-          ? (mod_.resolve as ModuleExports)
-          : undefined
-        declaration = { ...mod }
-        delete declaration.definition
-      } else {
-        path = MODULE_PACKAGE_NAMES[moduleName]
-      }
+    const loaded = (await MedusaModule.bootstrap({
+      moduleKey: moduleName,
+      defaultPath: path,
+      declaration,
+      sharedContainer,
+      moduleDefinition: definition as ModuleDefinition,
+      moduleExports,
+      migrationOnly,
+      loaderOnly,
+      workerMode,
+    })) as LoadedModule
 
-      declaration.scope ??= MODULE_SCOPE.INTERNAL
-      if (
-        declaration.scope === MODULE_SCOPE.INTERNAL &&
-        !declaration.resources
-      ) {
-        declaration.resources = MODULE_RESOURCE_TYPE.SHARED
-      }
+    if (loaderOnly) {
+      return
+    }
 
-      if (
-        declaration.scope === MODULE_SCOPE.INTERNAL &&
-        declaration.resources === MODULE_RESOURCE_TYPE.SHARED
-      ) {
-        declaration.options ??= {}
-        declaration.options.database ??= {
-          ...sharedResourcesConfig?.database,
-        }
-        declaration.options.database.debug ??=
-          sharedResourcesConfig?.database?.debug
-      }
-
-      const loaded = (await MedusaModule.bootstrap({
-        moduleKey: moduleName,
-        defaultPath: path,
-        declaration,
-        sharedContainer,
-        moduleDefinition: definition as ModuleDefinition,
-        moduleExports,
-        migrationOnly,
-        loaderOnly,
-        workerMode,
-      })) as LoadedModule
-
-      if (loaderOnly) {
-        return
-      }
-
-      const service = loaded[moduleName]
-      sharedContainer.register({
-        [service.__definition.key]: asValue(service),
-      })
-
-      if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
-        allModules[moduleName] = []
-      }
-
-      if (allModules[moduleName]) {
-        ;(allModules[moduleName] as LoadedModule[]).push(loaded[moduleName])
-      } else {
-        allModules[moduleName] = loaded[moduleName]
-      }
+    const service = loaded[moduleName]
+    sharedContainer.register({
+      [service.__definition.key]: asValue(service),
     })
-  )
+
+    if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
+      allModules[moduleName] = []
+    }
+
+    if (allModules[moduleName]) {
+      ;(allModules[moduleName] as LoadedModule[]).push(loaded[moduleName])
+    } else {
+      allModules[moduleName] = loaded[moduleName]
+    }
+  }
+
   return allModules
 }
 
@@ -374,7 +370,7 @@ async function MedusaApp_({
   const allModules = await loadModules({
     modulesConfig: modules,
     sharedContainer: sharedContainer_,
-    sharedResourcesConfig,
+    sharedResourcesConfig: { database: dbData },
     migrationOnly,
     loaderOnly,
     workerMode,
