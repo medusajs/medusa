@@ -3,6 +3,259 @@
  * type: object
  * description: The order change's claim.
  * x-schemaName: OrderClaim
+ * required:
+ *   - order_id
+ *   - claim_items
+ *   - additional_items
+ *   - currency_code
+ *   - id
+ *   - region_id
+ *   - customer_id
+ *   - sales_channel_id
+ *   - email
+ *   - shipping_methods
+ *   - payment_status
+ *   - fulfillment_status
+ *   - summary
+ *   - metadata
+ *   - created_at
+ *   - updated_at
+ *   - original_item_total
+ *   - original_item_subtotal
+ *   - original_item_tax_total
+ *   - item_total
+ *   - item_subtotal
+ *   - item_tax_total
+ *   - original_total
+ *   - original_subtotal
+ *   - original_tax_total
+ *   - total
+ *   - subtotal
+ *   - tax_total
+ *   - discount_total
+ *   - discount_tax_total
+ *   - gift_card_total
+ *   - gift_card_tax_total
+ *   - shipping_total
+ *   - shipping_subtotal
+ *   - shipping_tax_total
+ *   - original_shipping_total
+ *   - original_shipping_subtotal
+ *   - original_shipping_tax_total
+ * properties:
+ *   id:
+ *     type: string
+ *     title: id
+ *     description: The claim's ID.
+ *   order_id:
+ *     type: string
+ *     title: order_id
+ *     description: The ID of the order associated with the claim.
+ *   claim_items:
+ *     type: array
+ *     description: The order items targetted by the claim.
+ *     items:
+ *       $ref: "#/components/schemas/BaseClaimItem"
+ *   additional_items:
+ *     type: array
+ *     description: The outbound or new items of the claim.
+ *     items:
+ *       $ref: "#/components/schemas/BaseClaimItem"
+ *   return:
+ *     $ref: "#/components/schemas/Return"
+ *   return_id:
+ *     type: string
+ *     title: return_id
+ *     description: The ID of the associated return.
+ *   no_notification:
+ *     type: boolean
+ *     title: no_notification
+ *     description: Whether the customer should be notified about changes in the claim.
+ *   refund_amount:
+ *     type: number
+ *     title: refund_amount
+ *     description: The amount to be refunded.
+ *   currency_code:
+ *     type: string
+ *     title: currency_code
+ *     description: The claim's currency code.
+ *   region_id:
+ *     type: string
+ *     title: region_id
+ *     description: The ID of the region associated with the claim.
+ *   customer_id:
+ *     type: string
+ *     title: customer_id
+ *     description: The ID of the customer associated with the claim's order.
+ *   sales_channel_id:
+ *     type: string
+ *     title: sales_channel_id
+ *     description: The ID of the sales channel the claim's order is created in.
+ *   email:
+ *     type: string
+ *     title: email
+ *     description: The email associated with the claim's order.
+ *     format: email
+ *   display_id:
+ *     type: number
+ *     title: display_id
+ *     description: The claim's display ID.
+ *   shipping_address:
+ *     $ref: "#/components/schemas/BaseOrderAddress"
+ *   billing_address:
+ *     $ref: "#/components/schemas/BaseOrderAddress"
+ *   shipping_methods:
+ *     type: array
+ *     description: The claim's shipping methods.
+ *     items:
+ *       $ref: "#/components/schemas/BaseOrderShippingMethod"
+ *   payment_collections:
+ *     type: array
+ *     description: The claim's payment collections.
+ *     items:
+ *       $ref: "#/components/schemas/BasePaymentCollection"
+ *   payment_status:
+ *     type: string
+ *     description: The claim's payment status.
+ *     enum:
+ *       - canceled
+ *       - not_paid
+ *       - awaiting
+ *       - authorized
+ *       - partially_authorized
+ *       - captured
+ *       - partially_captured
+ *       - partially_refunded
+ *       - refunded
+ *       - requires_action
+ *   fulfillments:
+ *     type: array
+ *     description: The claim's fulfillments.
+ *     items:
+ *       $ref: "#/components/schemas/BaseOrderFulfillment"
+ *   fulfillment_status:
+ *     type: string
+ *     description: The claim's fulfillment status.
+ *     enum:
+ *       - canceled
+ *       - not_fulfilled
+ *       - partially_fulfilled
+ *       - fulfilled
+ *       - partially_shipped
+ *       - shipped
+ *       - partially_delivered
+ *       - delivered
+ *   transactions:
+ *     type: array
+ *     description: The claim's transactions.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/order/transactions
+ *       description: Learn more about transactions of orders and associated models.
+ *     items:
+ *       $ref: "#/components/schemas/BaseOrderTransaction"
+ *   summary:
+ *     $ref: "#/components/schemas/BaseOrderSummary"
+ *   metadata:
+ *     type: object
+ *     description: The claim's metadata, used to store custom key-value pairs.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The claim's creation date.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The claim's update date.
+ *   original_item_total:
+ *     type: number
+ *     title: original_item_total
+ *     description: The total of the original items in the associated order.
+ *   original_item_subtotal:
+ *     type: number
+ *     title: original_item_subtotal
+ *     description: The subtotal of the original items in the associated order.
+ *   original_item_tax_total:
+ *     type: number
+ *     title: original_item_tax_total
+ *     description: The tax total of the original items in the associated order.
+ *   item_total:
+ *     type: number
+ *     title: item_total
+ *     description: The total of the claim's items.
+ *   item_subtotal:
+ *     type: number
+ *     title: item_subtotal
+ *     description: The subtotal of the claim's items.
+ *   item_tax_total:
+ *     type: number
+ *     title: item_tax_total
+ *     description: The tax total of the claim's items.
+ *   original_total:
+ *     type: number
+ *     title: original_total
+ *     description: The associated order's original total.
+ *   original_subtotal:
+ *     type: number
+ *     title: original_subtotal
+ *     description: The associated order's original subtotal.
+ *   original_tax_total:
+ *     type: number
+ *     title: original_tax_total
+ *     description: The associated order's original tax total.
+ *   total:
+ *     type: number
+ *     title: total
+ *     description: The associated order's total.
+ *   subtotal:
+ *     type: number
+ *     title: subtotal
+ *     description: The claim's subtotal.
+ *   tax_total:
+ *     type: number
+ *     title: tax_total
+ *     description: The claim's tax total.
+ *   discount_total:
+ *     type: number
+ *     title: discount_total
+ *     description: The claim's discount total.
+ *   discount_tax_total:
+ *     type: number
+ *     title: discount_tax_total
+ *     description: The claim's discount tax total.
+ *   gift_card_total:
+ *     type: number
+ *     title: gift_card_total
+ *     description: The claim's gift card total.
+ *   gift_card_tax_total:
+ *     type: number
+ *     title: gift_card_tax_total
+ *     description: The claim's gift card tax total.
+ *   shipping_total:
+ *     type: number
+ *     title: shipping_total
+ *     description: The claim's shipping total.
+ *   shipping_subtotal:
+ *     type: number
+ *     title: shipping_subtotal
+ *     description: The claim's shipping subtotal.
+ *   shipping_tax_total:
+ *     type: number
+ *     title: shipping_tax_total
+ *     description: The claim's shipping tax total.
+ *   original_shipping_total:
+ *     type: number
+ *     title: original_shipping_total
+ *     description: The associated order's original shipping total.
+ *   original_shipping_subtotal:
+ *     type: number
+ *     title: original_shipping_subtotal
+ *     description: The associated order's original shipping subtotal.
+ *   original_shipping_tax_total:
+ *     type: number
+ *     title: original_shipping_tax_total
+ *     description: The associated order's original shipping tax total.
  * 
 */
 

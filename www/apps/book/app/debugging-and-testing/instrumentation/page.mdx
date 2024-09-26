@@ -51,22 +51,22 @@ Next, create the file `instrumentation.js` with the following content:
 ```js title="instrumentation.js"
 const { registerOtel } = require("@medusajs/medusa")
 // If using an exporter other than Zipkin, require it here.
-const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin')
+const { ZipkinExporter } = require("@opentelemetry/exporter-zipkin")
 
 // If using an exporter other than Zipkin, initialize it here.
 const exporter = new ZipkinExporter({
-  serviceName: 'my-medusa-project',
+  serviceName: "my-medusa-project",
 })
 
 export function register() {
   registerOtel({
-    serviceName: 'medusajs',
+    serviceName: "medusajs",
     // pass exporter
     exporter,
     instrument: {
       http: true,
       workflows: true,
-      remoteQuery: true
+      remoteQuery: true,
     },
   })
 }
