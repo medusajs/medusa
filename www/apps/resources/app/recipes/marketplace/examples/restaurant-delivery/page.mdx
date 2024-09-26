@@ -435,17 +435,13 @@ Before implementing the functionalities, you’ll create type files in the Resta
 Create the file `src/modules/restaurant/types/index.ts` with the following content:
 
 ```ts title="src/modules/restaurant/types/index.ts"
-import RestaurantModuleService from "../service"
+import { InferTypeOf } from "@medusajs/types";
+import RestaurantModuleService from "../service";
+import { Restaurant } from "../models/restaurant";
 
-export interface CreateRestaurant {
-  name: string;
-  handle: string;
-  address: string;
-  phone: string;
-  email: string;
-  image_url?: string;
-  is_open?: boolean;
-}
+export type CreateRestaurant = Omit<
+  InferTypeOf<typeof Restaurant>, "id" | "admins"
+>
 
 declare module "@medusajs/types" {
   export interface ModuleImplementations {
@@ -455,6 +451,12 @@ declare module "@medusajs/types" {
 ```
 
 This adds a type used for inputs in creating a restaurant. It also adds a type for `restaurantModuleService` in `ModuleImplementations` so that when you resolve it from the Medusa container, it has the correct typing.
+
+<Note title="Tip">
+
+Since the `Restaurant` data model is a variable, use the `InferTypeOf` utility imported from `@medusajs/types` to infer its type.
+
+</Note>
 
 ### Create Workflow
 
@@ -2259,39 +2261,25 @@ Before implementing the necessary functionalities, add the following types to `s
 
 ```ts title="src/modules/delivery/types/index.ts"
 // other imports...
-import {
-  CartLineItemDTO,
-  OrderLineItemDTO,
-  CartDTO,
-  OrderDTO,
-} from "@medusajs/types"
+import { InferTypeOf } from "@medusajs/types";
+import { Delivery } from "../models/delivery";
 
 // ...
 
-export interface Delivery {
-  id: string;
-  transaction_id: string;
-  driver_id?: string;
-  delivered_at?: Date;
-  delivery_status: DeliveryStatus;
-  created_at: Date;
-  updated_at: Date;
-  eta?: Date;
-  items: DeliveryItem[];
-  cart?: CartDTO;
-  order?: OrderDTO;
-}
+export type Delivery = InferTypeOf<typeof Delivery>
 
-export type DeliveryItem = (CartLineItemDTO | OrderLineItemDTO) & {
-  quantity: number;
-}
-
-export interface UpdateDelivery extends Partial<Delivery> {
+export type UpdateDelivery = Partial<Delivery> & {
   id: string;
 }
 ```
 
 These types are useful in the upcoming implementation steps. 
+
+<Note title="Tip">
+
+Since the `Delivery` data model is a variable, use the `InferTypeOf` utility imported from `@medusajs/types` to infer its type.
+
+</Note>
 
 ### Create Workflow
 
