@@ -54,6 +54,7 @@ export async function syncLinks(
 
 async function loadCustomLinks(directory: string, container: MedusaContainer) {
   // TODO: move to framework once settle down
+  await import("@medusajs/medusa/loaders/index")
   const { getResolvedPlugins } = await import(
     "@medusajs/medusa/loaders/helpers/resolve-plugins"
   )
