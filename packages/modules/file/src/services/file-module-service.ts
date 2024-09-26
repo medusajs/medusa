@@ -6,11 +6,11 @@ import {
   FilterableFileProps,
   FindConfig,
   ModuleJoinerConfig,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 import { joinerConfig } from "../joiner-config"
 import FileProviderService from "./file-provider-service"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 
 type InjectedDependencies = {
   fileProviderService: FileProviderService

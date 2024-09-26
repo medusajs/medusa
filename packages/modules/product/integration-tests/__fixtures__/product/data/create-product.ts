@@ -1,5 +1,5 @@
-import { ProductTypes } from "@medusajs/types"
-import { ProductStatus } from "@medusajs/utils"
+import { ProductTypes } from "@medusajs/framework/types"
+import { ProductStatus } from "@medusajs/framework/utils"
 import { Image } from "@models"
 import faker from "faker"
 

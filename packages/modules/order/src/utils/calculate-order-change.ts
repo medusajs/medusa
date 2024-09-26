@@ -1,10 +1,10 @@
-import { BigNumberInput, OrderSummaryDTO } from "@medusajs/types"
+import { BigNumberInput, OrderSummaryDTO } from "@medusajs/framework/types"
 import {
   BigNumber,
   MathBN,
   isPresent,
   transformPropertiesToBigNumber,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   ActionTypeDefinition,
   EVENT_STATUS,

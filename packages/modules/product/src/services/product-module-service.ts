@@ -6,7 +6,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   ProductTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   Image as ProductImage,
   Product,
@@ -37,7 +37,7 @@ import {
   promiseAll,
   removeUndefined,
   toHandle,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   ProductCollectionEventData,
   ProductCollectionEvents,

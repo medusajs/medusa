@@ -1,4 +1,8 @@
-import { MedusaError, MikroOrmBase, PriceListStatus } from "@medusajs/utils"
+import {
+  MedusaError,
+  MikroOrmBase,
+  PriceListStatus,
+} from "@medusajs/framework/utils"
 
 import {
   CalculatedPriceSetDTO,
@@ -6,7 +10,7 @@ import {
   PricingContext,
   PricingFilters,
   PricingRepositoryService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PricingRepository

@@ -6,8 +6,15 @@ import {
   S3ClientConfigType,
 } from "@aws-sdk/client-s3"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
-import { FileTypes, Logger, S3FileServiceOptions } from "@medusajs/types"
-import { AbstractFileProviderService, MedusaError } from "@medusajs/utils"
+import {
+  FileTypes,
+  Logger,
+  S3FileServiceOptions,
+} from "@medusajs/framework/types"
+import {
+  AbstractFileProviderService,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import path from "path"
 import { ulid } from "ulid"
 
