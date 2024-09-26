@@ -1,6 +1,5 @@
-import { isObject, isString } from "@medusajs/framework/utils"
+import { isObject, isString, GraphQLUtils } from "@medusajs/utils"
 import { IndexTypes } from "@medusajs/framework/types"
-import { GraphQLList } from "graphql"
 import { Knex } from "knex"
 import { OrderBy, QueryFormat, QueryOptions, Select } from "@types"
 
@@ -62,7 +61,7 @@ export class QueryBuilder {
     let currentType = fieldRef.type
     let isArray = false
     while (currentType.ofType) {
-      if (currentType instanceof GraphQLList) {
+      if (currentType instanceof GraphQLUtils.GraphQLList) {
         isArray = true
       }
 
