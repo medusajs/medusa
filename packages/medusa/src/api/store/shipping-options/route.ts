@@ -1,6 +1,6 @@
 import { listShippingOptionsForCartWorkflow } from "@medusajs/core-flows"
-import { HttpTypes, ICartModuleService } from "@medusajs/types"
-import { MedusaError, Modules } from "@medusajs/utils"
+import { HttpTypes, ICartModuleService } from "@medusajs/framework/types"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 export const GET = async (

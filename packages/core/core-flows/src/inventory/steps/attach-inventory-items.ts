@@ -1,6 +1,6 @@
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const attachInventoryItemToVariantsStepId =
   "attach-inventory-items-to-variants-step"

@@ -1,5 +1,8 @@
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export const validateVariantPriceLinksStepId = "validate-variant-price-links"
 /**

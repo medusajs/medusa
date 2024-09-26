@@ -1,6 +1,6 @@
-import { ICartModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { ICartModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface RemoveShippingMethodFromCartStepInput {
   shipping_method_ids: string[]
