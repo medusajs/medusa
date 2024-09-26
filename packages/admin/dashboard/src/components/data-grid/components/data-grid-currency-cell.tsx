@@ -102,13 +102,6 @@ const Inner = ({
       update = formatter(update)
     }
 
-    /**
-     * Value will be set to 0 from outside on delte, in that case we want to unset the value.
-     */
-    if (value === 0) {
-      update = undefined
-    }
-
     setLocalValue(update)
   }, [value, formatter])
 

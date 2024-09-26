@@ -12,7 +12,7 @@ type UseDataGridFormHandlersOptions<TData, TFieldValues extends FieldValues> = {
 
 export const useDataGridFormHandlers = <
   TData,
-  TFieldValues extends FieldValues
+  TFieldValues extends FieldValues,
 >({
   matrix,
   form,
@@ -119,7 +119,7 @@ export function convertArrayToPrimitive(
 ): any[] {
   switch (type) {
     case "number":
-      return values.map(convertToNumber)
+      return values.map((v) => (v === "" ? v : convertToNumber))
     case "boolean":
       return values.map(convertToBoolean)
     case "text":
