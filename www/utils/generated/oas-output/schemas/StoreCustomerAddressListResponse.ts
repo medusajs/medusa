@@ -1,7 +1,7 @@
 /**
  * @schema StoreCustomerAddressListResponse
  * type: object
- * description: SUMMARY
+ * description: The paginated list of customer addresses.
  * x-schemaName: StoreCustomerAddressListResponse
  * required:
  *   - limit
@@ -12,18 +12,18 @@
  *   limit:
  *     type: number
  *     title: limit
- *     description: The customer's limit.
+ *     description: The maximum number of items returned.
  *   offset:
  *     type: number
  *     title: offset
- *     description: The customer's offset.
+ *     description: The number of items skipped before retrieving the returned items.
  *   count:
  *     type: number
  *     title: count
- *     description: The customer's count.
+ *     description: The total number of items.
  *   addresses:
  *     type: array
- *     description: The customer's addresses.
+ *     description: The list of addresses.
  *     items:
  *       $ref: "#/components/schemas/StoreCustomerAddress"
  * 
