@@ -1,4 +1,4 @@
-import { RemoteQueryFunction } from "@medusajs/types"
+import { RemoteQueryFunction } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,

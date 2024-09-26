@@ -1,4 +1,4 @@
-import { TaxCalculationContext } from "@medusajs/types"
+import { TaxCalculationContext } from "@medusajs/framework/types"
 import { NextFunction } from "express"
 import {
   AuthenticatedMedusaRequest,

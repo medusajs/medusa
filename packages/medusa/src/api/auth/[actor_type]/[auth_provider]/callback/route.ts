@@ -2,7 +2,7 @@ import {
   AuthenticationInput,
   ConfigModule,
   IAuthModuleService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,

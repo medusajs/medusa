@@ -1,5 +1,5 @@
 import { AuthenticatedMedusaRequest } from "@medusajs/framework/http"
-import { IAuthModuleService } from "@medusajs/types"
+import { IAuthModuleService } from "@medusajs/framework/types"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { MedusaResponse } from "../../../../../types/routing"
 

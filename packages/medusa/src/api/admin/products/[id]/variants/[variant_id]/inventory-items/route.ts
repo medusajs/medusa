@@ -6,7 +6,7 @@ import {
 } from "../../../../../../../types/routing"
 import { refetchVariant } from "../../../../helpers"
 import { AdminCreateVariantInventoryItemType } from "../../../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateVariantInventoryItemType>,

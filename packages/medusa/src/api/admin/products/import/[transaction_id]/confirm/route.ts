@@ -7,7 +7,7 @@ import {
   importProductsWorkflowId,
   waitConfirmationProductImportStepId,
 } from "@medusajs/core-flows"
-import { IWorkflowEngineService } from "@medusajs/types"
+import { IWorkflowEngineService } from "@medusajs/framework/types"
 import { Modules, TransactionHandlerType } from "@medusajs/framework/utils"
 import { StepResponse } from "@medusajs/framework/workflows-sdk"
 

@@ -9,7 +9,7 @@ import {
 } from "@medusajs/framework/utils"
 import { AdminCreateCustomerAddressType } from "../../validators"
 import { refetchCustomer } from "../../helpers"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminCustomerAddressFilters>,

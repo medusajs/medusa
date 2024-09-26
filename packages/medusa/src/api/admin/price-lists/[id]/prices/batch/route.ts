@@ -5,7 +5,7 @@ import {
 } from "../../../../../../types/routing"
 import { listPrices } from "../../../queries"
 import { adminPriceListPriceRemoteQueryFields } from "../../../query-config"
-import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
+import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
 import {
   AdminCreatePriceListPriceType,
   AdminUpdatePriceListPriceType,

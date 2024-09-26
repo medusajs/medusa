@@ -1,4 +1,8 @@
-import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
+import {
+  BaseEntity,
+  QueryConfig,
+  RequestQueryFields,
+} from "@medusajs/framework/types"
 import { NextFunction } from "express"
 import { omit } from "lodash"
 import { z } from "zod"

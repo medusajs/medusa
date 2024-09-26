@@ -5,7 +5,7 @@ import {
 } from "../../../../../types/routing"
 import { StoreCreatePaymentSessionType } from "../../validators"
 import { refetchPaymentCollection } from "../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<StoreCreatePaymentSessionType>,

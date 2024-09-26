@@ -1,5 +1,5 @@
 import { createShippingOptionsWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,

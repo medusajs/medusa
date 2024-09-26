@@ -2,7 +2,7 @@ import {
   deleteReturnReasonsWorkflow,
   updateReturnReasonsWorkflow,
 } from "@medusajs/core-flows"
-import { AdminReturnReasonResponse, HttpTypes } from "@medusajs/types"
+import { AdminReturnReasonResponse, HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,

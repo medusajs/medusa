@@ -1,4 +1,4 @@
-import { IWorkflowEngineService } from "@medusajs/types"
+import { IWorkflowEngineService } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

@@ -1,5 +1,5 @@
 import { batchLinksWorkflow } from "@medusajs/core-flows"
-import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
+import { HttpTypes, LinkMethodRequest } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 import {

@@ -1,5 +1,5 @@
 import { listShippingOptionsForCartWorkflow } from "@medusajs/core-flows"
-import { HttpTypes, ICartModuleService } from "@medusajs/types"
+import { HttpTypes, ICartModuleService } from "@medusajs/framework/types"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 

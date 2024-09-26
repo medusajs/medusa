@@ -1,4 +1,7 @@
-import { IPaymentModuleService, ProviderWebhookPayload } from "@medusajs/types"
+import {
+  IPaymentModuleService,
+  ProviderWebhookPayload,
+} from "@medusajs/framework/types"
 import { Modules, PaymentWebhookEvents } from "@medusajs/framework/utils"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 

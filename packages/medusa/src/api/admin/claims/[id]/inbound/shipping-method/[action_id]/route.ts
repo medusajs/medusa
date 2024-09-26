@@ -12,7 +12,7 @@ import {
 } from "../../../../../../../types/routing"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostClaimsShippingActionReqSchemaType } from "../../../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostClaimsShippingActionReqSchemaType>,

@@ -9,7 +9,7 @@ import {
 
 import { createReservationsWorkflow } from "@medusajs/core-flows"
 import { refetchReservation } from "./helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetReservationsParams>,

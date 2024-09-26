@@ -9,7 +9,7 @@ import {
 } from "../../../types/routing"
 import { fetchPriceList, transformPriceList } from "./helpers"
 import { AdminCreatePriceListType } from "./validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminPriceListListParams>,

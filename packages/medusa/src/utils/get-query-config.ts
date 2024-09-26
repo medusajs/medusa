@@ -1,4 +1,4 @@
-import { RequestQueryFields } from "@medusajs/types"
+import { RequestQueryFields } from "@medusajs/framework/types"
 import {
   getSetDifference,
   isDefined,

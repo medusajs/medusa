@@ -9,7 +9,7 @@ import {
 
 import { createStockLocationsWorkflow } from "@medusajs/core-flows"
 import { refetchStockLocation } from "./helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 // Create stock location
 export const POST = async (

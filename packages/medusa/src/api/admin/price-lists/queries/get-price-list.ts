@@ -1,4 +1,4 @@
-import { MedusaContainer } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,

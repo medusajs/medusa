@@ -1,4 +1,4 @@
-import { INotificationModuleService } from "@medusajs/types"
+import { INotificationModuleService } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,

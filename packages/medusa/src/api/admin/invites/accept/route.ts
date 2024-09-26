@@ -1,5 +1,5 @@
 import { acceptInviteWorkflow } from "@medusajs/core-flows"
-import { HttpTypes, InviteWorkflow } from "@medusajs/types"
+import { HttpTypes, InviteWorkflow } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,

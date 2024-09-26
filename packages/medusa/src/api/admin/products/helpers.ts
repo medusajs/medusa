@@ -7,7 +7,7 @@ import {
   PriceDTO,
   ProductDTO,
   ProductVariantDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,

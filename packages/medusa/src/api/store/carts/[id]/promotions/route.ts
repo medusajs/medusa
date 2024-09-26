@@ -6,7 +6,7 @@ import {
   StoreAddCartPromotionsType,
   StoreRemoveCartPromotionsType,
 } from "../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: MedusaRequest<StoreAddCartPromotionsType>,

@@ -1,4 +1,4 @@
-import { ConfigModule, PluginDetails } from "@medusajs/types"
+import { ConfigModule, PluginDetails } from "@medusajs/framework/types"
 import { isString } from "@medusajs/framework/utils"
 import fs from "fs"
 import { sync as existsSync } from "fs-exists-cached"

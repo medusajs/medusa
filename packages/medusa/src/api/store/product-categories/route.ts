@@ -1,7 +1,7 @@
 import {
   StoreProductCategoryListParams,
   StoreProductCategoryListResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,

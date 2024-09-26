@@ -2,7 +2,7 @@ import {
   BatchMethodResponse,
   MedusaContainer,
   ShippingOptionRuleDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   promiseAll,

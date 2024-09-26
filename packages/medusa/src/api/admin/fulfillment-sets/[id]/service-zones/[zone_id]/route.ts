@@ -7,7 +7,7 @@ import {
   AdminServiceZoneResponse,
   HttpTypes,
   IFulfillmentModuleService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,

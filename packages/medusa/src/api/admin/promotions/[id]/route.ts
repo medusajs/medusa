@@ -16,7 +16,7 @@ import {
   AdminGetPromotionParamsType,
   AdminUpdatePromotionType,
 } from "../validators"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetPromotionParamsType>,

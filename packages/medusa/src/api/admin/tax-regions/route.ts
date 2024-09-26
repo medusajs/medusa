@@ -8,7 +8,7 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchTaxRegion } from "./helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateTaxRegion>,

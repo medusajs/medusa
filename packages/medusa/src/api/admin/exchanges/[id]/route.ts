@@ -1,4 +1,4 @@
-import { AdminExchangeResponse } from "@medusajs/types"
+import { AdminExchangeResponse } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,

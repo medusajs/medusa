@@ -9,7 +9,7 @@ import {
 } from "../../../../types/routing"
 import { refetchRegion } from "../helpers"
 import { AdminGetRegionParamsType, AdminUpdateRegionType } from "../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetRegionParamsType>,

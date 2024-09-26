@@ -1,4 +1,8 @@
-import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
+import {
+  ConfigModule,
+  MedusaContainer,
+  PluginDetails,
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   promiseAll,

@@ -5,7 +5,7 @@ import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
 import { refetchOrder } from "../../../orders/helpers"
 import { refetchCart } from "../../helpers"
 import { defaultStoreCartFields } from "../../query-config"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: MedusaRequest,

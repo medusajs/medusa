@@ -3,7 +3,7 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { ConfigModule } from "@medusajs/types"
+import { ConfigModule } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,

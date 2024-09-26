@@ -19,7 +19,7 @@
     "!dist/**/__fixtures__"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",
@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "@medusajs/framework": "^0.0.1",
-    "@medusajs/types": "^1.11.16",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/instrumentation": "^0.53.0",
     "@opentelemetry/instrumentation-pg": "^0.44.0",

@@ -1,5 +1,5 @@
 import { logger } from "@medusajs/framework/logger"
-import { MedusaContainer } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export async function ensureDbExists(container: MedusaContainer) {

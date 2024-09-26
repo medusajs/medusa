@@ -2,7 +2,10 @@ import {
   deleteProductCategoriesWorkflow,
   updateProductCategoriesWorkflow,
 } from "@medusajs/core-flows"
-import { AdminProductCategoryResponse, HttpTypes } from "@medusajs/types"
+import {
+  AdminProductCategoryResponse,
+  HttpTypes,
+} from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

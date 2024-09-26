@@ -1,4 +1,4 @@
-import { BatchMethodRequest } from "@medusajs/types"
+import { BatchMethodRequest } from "@medusajs/framework/types"
 import { ProductStatus } from "@medusajs/framework/utils"
 import { z } from "zod"
 import {

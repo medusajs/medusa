@@ -11,7 +11,11 @@ import {
 } from "../../../types/routing"
 import { AdminCreateDraftOrderType } from "./validators"
 import { refetchOrder } from "./helpers"
-import { AdditionalData, CreateOrderDTO, HttpTypes } from "@medusajs/types"
+import {
+  AdditionalData,
+  CreateOrderDTO,
+  HttpTypes,
+} from "@medusajs/framework/types"
 
 export const GET = async (
   req: MedusaRequest<HttpTypes.AdminOrderFilters>,

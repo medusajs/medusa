@@ -1,4 +1,4 @@
-import { MedusaPricingContext } from "@medusajs/types"
+import { MedusaPricingContext } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
 import { AuthenticatedMedusaRequest } from "../../../../types/routing"

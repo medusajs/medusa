@@ -12,7 +12,7 @@ import {
   validateRuleType,
 } from "../../../utils"
 import { AdminGetPromotionRuleParamsType } from "../../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 /*
   This endpoint returns all the potential values for rules (promotion rules, target rules and buy rules)

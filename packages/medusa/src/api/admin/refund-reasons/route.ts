@@ -9,7 +9,7 @@ import {
   PaginatedResponse,
   RefundReasonResponse,
   RefundReasonsResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
 
 export const GET = async (

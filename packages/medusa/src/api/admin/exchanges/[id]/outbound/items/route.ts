@@ -9,7 +9,7 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { AdminPostExchangesAddItemsReqSchemaType } from "../../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostExchangesAddItemsReqSchemaType>,

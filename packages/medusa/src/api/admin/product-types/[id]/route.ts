@@ -12,7 +12,7 @@ import {
   AdminGetProductTypeParamsType,
   AdminUpdateProductTypeType,
 } from "../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (

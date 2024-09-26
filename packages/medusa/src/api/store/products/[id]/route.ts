@@ -7,7 +7,7 @@ import {
   wrapProductsWithTaxPrices,
 } from "../helpers"
 import { StoreGetProductParamsType } from "../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: RequestWithContext<StoreGetProductParamsType>,

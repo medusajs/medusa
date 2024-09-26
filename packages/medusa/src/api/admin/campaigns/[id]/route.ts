@@ -10,7 +10,7 @@ import {
 import { refetchCampaign } from "../helpers"
 import { AdminUpdateCampaignType } from "../validators"
 import { MedusaError } from "@medusajs/framework/utils"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

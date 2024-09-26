@@ -8,7 +8,7 @@ import {
   MedusaResponse,
 } from "../../../../../../../types/routing"
 import { AdminOrderCreateShipmentType } from "../../../../validators"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<

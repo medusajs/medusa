@@ -5,7 +5,7 @@ import {
   MedusaContainer,
   MedusaPricingContext,
   RequestQueryFields,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { FindConfig } from "./common"
 
 // TODO this will be reqorked and move to the framework at a later point unless decided otherwise

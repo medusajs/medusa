@@ -4,7 +4,7 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { MedusaError } from "@medusajs/framework/utils"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminUploadFile>,

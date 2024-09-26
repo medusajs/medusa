@@ -1,4 +1,4 @@
-import { StoreProductCategoryResponse } from "@medusajs/types"
+import { StoreProductCategoryResponse } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,

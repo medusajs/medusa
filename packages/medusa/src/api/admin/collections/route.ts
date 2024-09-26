@@ -10,7 +10,7 @@ import {
 } from "@medusajs/framework/utils"
 import { AdminCreateCollectionType } from "./validators"
 import { refetchCollection } from "./helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminCollectionListParams>,

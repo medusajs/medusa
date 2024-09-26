@@ -3,7 +3,7 @@ import express from "express"
 import path from "path"
 import { existsSync } from "fs"
 import { logger } from "@medusajs/framework/logger"
-import { ExecArgs } from "@medusajs/types"
+import { ExecArgs } from "@medusajs/framework/types"
 import { dynamicImport } from "@medusajs/framework/utils"
 
 type Options = {

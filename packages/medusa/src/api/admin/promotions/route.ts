@@ -8,7 +8,7 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 import { refetchPromotion } from "./helpers"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminGetPromotionsParams>,

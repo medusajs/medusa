@@ -5,7 +5,7 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 
-import { IWorkflowEngineService } from "@medusajs/types"
+import { IWorkflowEngineService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { AdminCreateWorkflowsAsyncResponseType } from "../../../validators"
 

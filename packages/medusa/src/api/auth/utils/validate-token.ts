@@ -4,7 +4,7 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { ConfigModule, IAuthModuleService } from "@medusajs/types"
+import { ConfigModule, IAuthModuleService } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { decode, JwtPayload, verify } from "jsonwebtoken"
 

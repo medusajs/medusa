@@ -1,4 +1,4 @@
-import { FilterableProductProps } from "@medusajs/types"
+import { FilterableProductProps } from "@medusajs/framework/types"
 import { ProductStatus } from "@medusajs/framework/utils"
 import { z } from "zod"
 import { createOperatorMap } from "../../validators"
