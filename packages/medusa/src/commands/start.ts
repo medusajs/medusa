@@ -32,7 +32,11 @@ async function registerInstrumentation(directory: string) {
       instrumentation.register()
     }
   } catch (error) {
-    if (!["ENOENT", "MODULE_NOT_FOUND"].includes(error.code)) {
+    if (
+      !["ENOENT", "MODULE_NOT_FOUND", "ERR_MODULE_NOT_FOUND"].includes(
+        error.code
+      )
+    ) {
       throw error
     }
   }
