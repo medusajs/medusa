@@ -87,7 +87,7 @@ export const generatedEditDates = {
   "app/customization/custom-features/api-route/page.mdx": "2024-09-12T12:42:34.201Z",
   "app/customization/custom-features/module/page.mdx": "2024-09-12T12:39:37.928Z",
   "app/customization/custom-features/workflow/page.mdx": "2024-09-12T12:40:39.582Z",
-  "app/customization/extend-models/create-links/page.mdx": "2024-09-12T12:42:55.602Z",
+  "app/customization/extend-models/create-links/page.mdx": "2024-09-26T08:31:08.177Z",
   "app/customization/extend-models/extend-create-product/page.mdx": "2024-09-12T12:43:57.702Z",
   "app/customization/custom-features/page.mdx": "2024-09-12T11:18:13.271Z",
   "app/customization/customize-admin/page.mdx": "2024-09-12T12:25:29.853Z",
@@ -96,14 +96,15 @@ export const generatedEditDates = {
   "app/customization/extend-models/define-link/page.mdx": "2024-09-12T12:38:53.230Z",
   "app/customization/extend-models/page.mdx": "2024-09-12T12:38:57.394Z",
   "app/customization/extend-models/query-linked-records/page.mdx": "2024-09-12T12:44:41.089Z",
-  "app/customization/integrate-systems/handle-event/page.mdx": "2024-09-12T12:39:07.978Z",
+  "app/customization/integrate-systems/handle-event/page.mdx": "2024-09-26T08:34:57.278Z",
   "app/customization/integrate-systems/page.mdx": "2024-09-12T12:33:29.827Z",
-  "app/customization/integrate-systems/schedule-task/page.mdx": "2024-09-12T12:46:17.591Z",
-  "app/customization/integrate-systems/service/page.mdx": "2024-09-12T12:39:12.831Z",
+  "app/customization/integrate-systems/schedule-task/page.mdx": "2024-09-26T08:40:26.509Z",
+  "app/customization/integrate-systems/service/page.mdx": "2024-09-26T08:34:30.313Z",
   "app/customization/next-steps/page.mdx": "2024-09-12T10:50:04.873Z",
   "app/customization/page.mdx": "2024-09-12T11:16:18.504Z",
   "app/more-resources/cheatsheet/page.mdx": "2024-07-11T16:11:26.480Z",
   "app/more-resources/examples/page.mdx": "2024-09-25T10:56:24.516Z",
   "app/architecture/architectural-modules/page.mdx": "2024-09-23T12:51:04.520Z",
-  "app/architecture/overview/page.mdx": "2024-09-23T12:55:01.339Z"
+  "app/architecture/overview/page.mdx": "2024-09-23T12:55:01.339Z",
+  "app/advanced-development/data-models/infer-type/page.mdx": "2024-09-26T08:28:13.041Z"
 }
