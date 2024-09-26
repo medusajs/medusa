@@ -548,7 +548,6 @@ export default class PricingModuleService
               price_set_id: price.price_set_id,
               price_list_id: price.price_list_id,
             })),
-          ,
         ],
       }
     })
