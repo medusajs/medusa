@@ -1,5 +1,8 @@
-import { IPaymentModuleService, ProviderWebhookPayload } from "@medusajs/types"
-import { Modules, PaymentWebhookEvents } from "@medusajs/utils"
+import {
+  IPaymentModuleService,
+  ProviderWebhookPayload,
+} from "@medusajs/framework/types"
+import { Modules, PaymentWebhookEvents } from "@medusajs/framework/utils"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
 
 type SerializedBuffer = {

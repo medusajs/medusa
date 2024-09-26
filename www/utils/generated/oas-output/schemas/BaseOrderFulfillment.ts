@@ -24,51 +24,52 @@
  *   location_id:
  *     type: string
  *     title: location_id
- *     description: The fulfillment's location id.
+ *     description: The ID of the location the items are fulfilled from.
  *   packed_at:
  *     type: string
  *     title: packed_at
- *     description: The fulfillment's packed at.
+ *     description: The date the items were packed.
  *     format: date-time
  *   shipped_at:
  *     type: string
  *     title: shipped_at
- *     description: The fulfillment's shipped at.
+ *     description: The date the items were shipped.
  *     format: date-time
  *   delivered_at:
  *     type: string
  *     title: delivered_at
- *     description: The fulfillment's delivered at.
+ *     description: The date the items were delivered.
  *     format: date-time
  *   canceled_at:
  *     type: string
  *     title: canceled_at
- *     description: The fulfillment's canceled at.
+ *     description: The date the items were canceled.
  *     format: date-time
  *   data:
  *     type: object
- *     description: The fulfillment's data.
+ *     description: Data useful for the fulfillment provider handling it. This is taken from the associated shipping option.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
  *   provider_id:
  *     type: string
  *     title: provider_id
- *     description: The fulfillment's provider id.
+ *     description: The ID of the fulfillment provider used to handle the fulfillment.
  *   shipping_option_id:
  *     type: string
  *     title: shipping_option_id
- *     description: The fulfillment's shipping option id.
+ *     description: The ID of the associated shipping option.
  *   metadata:
  *     type: object
- *     description: The fulfillment's metadata.
+ *     description: The fulfillment's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The fulfillment's created at.
+ *     description: The date the fulfillment was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The fulfillment's updated at.
+ *     description: The date the fulfillment was updated.
  * 
 */
-

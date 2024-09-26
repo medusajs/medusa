@@ -5,7 +5,8 @@ import { Store } from "medusa-telemetry"
 import { EOL } from "os"
 import path from "path"
 
-import { logger, MEDUSA_CLI_PATH } from "@medusajs/framework"
+import { logger } from "@medusajs/framework/logger"
+import { MEDUSA_CLI_PATH } from "@medusajs/framework"
 
 const defaultConfig = {
   padding: 5,

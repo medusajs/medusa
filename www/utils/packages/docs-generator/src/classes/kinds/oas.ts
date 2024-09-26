@@ -26,6 +26,10 @@ import FunctionKindGenerator, {
   VariableNode,
 } from "./function.js"
 import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
+import {
+  isLevelExceeded,
+  maybeIncrementLevel,
+} from "../../utils/level-utils.js"
 
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 
@@ -55,7 +59,7 @@ type AuthRequests = {
 class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
-  private MAX_LEVEL = 5
+  private MAX_LEVEL = 7
   readonly REQUEST_TYPE_NAMES = [
     "MedusaRequest",
     "RequestWithContext",
@@ -1251,7 +1255,7 @@ class OasKindGenerator extends FunctionKindGenerator {
      */
     saveSchema?: boolean
   }): OpenApiSchema {
-    if (level > this.MAX_LEVEL) {
+    if (isLevelExceeded(level, this.MAX_LEVEL)) {
       return {}
     }
 
@@ -1364,9 +1368,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             itemType: this.checker.getTypeArguments(
               itemType as ts.TypeReference
             )[0],
-            // can't increment level because
-            // array must have items in it
-            level,
+            level: maybeIncrementLevel(level, "array"),
             title,
             descriptionOptions:
               descriptionOptions || title
@@ -1400,10 +1402,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         ).map((unionType) =>
           this.typeToSchema({
             itemType: unionType,
-            // not incrementing considering the
-            // current schema isn't actually a
-            // schema
-            level,
+            level: maybeIncrementLevel(level, "oneOf"),
             title,
             descriptionOptions,
             saveSchema,
@@ -1424,10 +1423,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         ).map((intersectionType) => {
           return this.typeToSchema({
             itemType: intersectionType,
-            // not incrementing considering the
-            // current schema isn't actually a
-            // schema
-            level,
+            level: maybeIncrementLevel(level, "allOf"),
             title,
             descriptionOptions,
             saveSchema,
@@ -1537,7 +1533,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         > = {}
         let isAdditionalProperties = false
 
-        if (level + 1 <= this.MAX_LEVEL) {
+        if (!isLevelExceeded(level + 1, this.MAX_LEVEL)) {
           let itemProperties = itemType.getProperties()
 
           if (
@@ -1545,9 +1541,18 @@ class OasKindGenerator extends FunctionKindGenerator {
             itemType.aliasTypeArguments?.length === 2 &&
             itemType.aliasTypeArguments[0].flags === ts.TypeFlags.String
           ) {
-            // object has dynamic keys, so put the properties under additionalProperties
-            itemProperties = itemType.aliasTypeArguments[1].getProperties()
-            isAdditionalProperties = true
+            const isValueObj =
+              itemType.aliasTypeArguments[1].isClassOrInterface() ||
+              itemType.aliasTypeArguments[1].isTypeParameter() ||
+              ((itemType.aliasTypeArguments[1] as ts.Type).flags ===
+                ts.TypeFlags.Object &&
+                !this.checker.isArrayType(itemType.aliasTypeArguments[1]))
+
+            if (isValueObj) {
+              // object has dynamic keys, so put the properties under additionalProperties
+              itemProperties = itemType.aliasTypeArguments[1].getProperties()
+              isAdditionalProperties = true
+            }
           }
 
           itemProperties.forEach((property) => {
@@ -1610,7 +1615,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
             properties[property.name] = this.typeToSchema({
               itemType: propertyType,
-              level: level + 1,
+              level: maybeIncrementLevel(level, "object"),
               title: property.name,
               descriptionOptions: {
                 ...descriptionOptions,
@@ -1717,7 +1722,7 @@ class OasKindGenerator extends FunctionKindGenerator {
    * @param level - The current recursion level to avoid max-stack error
    * @returns Whether the symbol is required.
    */
-  isRequired(symbol: ts.Symbol, level = 0): boolean {
+  isRequired(symbol: ts.Symbol, level = 1): boolean {
     let isRequired = true
     const checkNode = (node: ts.Node) => {
       switch (node.kind) {
@@ -1749,11 +1754,11 @@ class OasKindGenerator extends FunctionKindGenerator {
       !symbol.valueDeclaration &&
       symbol.declarations?.length &&
       "symbol" in symbol.declarations[0] &&
-      level < this.MAX_LEVEL
+      !isLevelExceeded(level, this.MAX_LEVEL)
     ) {
       return this.isRequired(
         symbol.declarations[0].symbol as ts.Symbol,
-        level + 1
+        maybeIncrementLevel(level, "object")
       )
     }
 
@@ -1956,13 +1961,14 @@ class OasKindGenerator extends FunctionKindGenerator {
      */
     level?: number
   }): OpenApiSchema | undefined {
-    if (level > this.MAX_LEVEL) {
+    if (isLevelExceeded(level, this.MAX_LEVEL)) {
       return
     }
 
     let oldSchemaObj = (
       oldSchema && "$ref" in oldSchema
-        ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref)?.schema
+        ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref, true, true)
+            ?.schema
         : oldSchema
     ) as OpenApiSchema | undefined
     const newSchemaObj = (
@@ -1973,7 +1979,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
-    } else if (!newSchemaObj) {
+    } else if (!newSchemaObj || !Object.keys(newSchemaObj)) {
       return undefined
     }
 
@@ -1984,6 +1990,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       oldSchemaObj = {
         ...newSchemaObj,
         description: oldSchemaObj?.description,
+        example: oldSchemaObj?.example || newSchemaObj.example,
       }
     } else if (
       oldSchemaObj?.allOf &&
@@ -2025,7 +2032,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             this.updateSchema({
               oldSchema: oldSchemaObj!.additionalProperties,
               newSchema: newSchemaObj.additionalProperties,
-              level: level + 1,
+              level: maybeIncrementLevel(level, "object"),
             }) || oldSchemaObj!.additionalProperties
         }
       } else {
@@ -2047,7 +2054,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 newSchema: newSchemaObj!.properties![
                   propertyName
                 ] as OpenApiSchema,
-                level: level + 1,
+                level: maybeIncrementLevel(level, "object"),
               }) || propertySchema
           }
         )
@@ -2070,7 +2077,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         this.updateSchema({
           oldSchema: oldSchemaObj.items as OpenApiSchema,
           newSchema: newSchemaObj!.items as OpenApiSchema,
-          level: level + 1,
+          level: maybeIncrementLevel(level, "array"),
         }) || oldSchemaObj.items
     }
 
