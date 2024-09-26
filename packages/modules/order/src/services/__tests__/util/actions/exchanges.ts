@@ -1,4 +1,4 @@
-import { ChangeActionType } from "@medusajs/utils"
+import { ChangeActionType } from "@medusajs/framework/utils"
 import { OrderChangeEvent } from "../../../../types"
 import { calculateOrderChange } from "../../../../utils"
 

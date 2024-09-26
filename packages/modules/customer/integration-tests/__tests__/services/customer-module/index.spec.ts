@@ -1,5 +1,5 @@
-import { ICustomerModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { ICustomerModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { CustomerModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 

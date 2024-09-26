@@ -4,7 +4,7 @@ import {
   createPsqlIndexStatementHelper,
   generateEntityId,
   kebabCase,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Collection,

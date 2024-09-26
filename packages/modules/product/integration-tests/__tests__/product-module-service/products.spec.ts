@@ -2,8 +2,8 @@ import {
   IProductModuleService,
   ProductCategoryDTO,
   ProductTagDTO,
-} from "@medusajs/types"
-import { Modules, ProductStatus, kebabCase } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { Modules, ProductStatus, kebabCase } from "@medusajs/framework/utils"
 import {
   Product,
   ProductCategory,

@@ -15,7 +15,7 @@ import {
   Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import Product from "./product"
 
 const tagValueIndexName = "IDX_tag_value_unique"

@@ -1,4 +1,8 @@
-import { DALUtils, generateEntityId, Searchable } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  Searchable,
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,

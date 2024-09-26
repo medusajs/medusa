@@ -1,5 +1,5 @@
-import { NotificationTypes } from "@medusajs/types"
-import { AbstractNotificationProviderService } from "@medusajs/utils"
+import { NotificationTypes } from "@medusajs/framework/types"
+import { AbstractNotificationProviderService } from "@medusajs/framework/utils"
 
 export class NotificationProviderServiceFixtures extends AbstractNotificationProviderService {
   static identifier = "fixtures-notification-provider"
