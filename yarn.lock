@@ -6299,6 +6299,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/core/utils"
   dependencies:
+    "@graphql-codegen/core": ^4.0.2
+    "@graphql-codegen/typescript": ^4.0.9
     "@graphql-tools/merge": ^9.0.7
     "@graphql-tools/schema": ^10.0.6
     "@medusajs/types": ^1.11.16
@@ -21503,7 +21505,7 @@ __metadata:
     jest: ^29.7.0
     jest-environment-node: ^29.7.0
     pg: ^8.11.3
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -21539,7 +21541,7 @@ __metadata:
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
     pg: ^8.11.3
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
@@ -21575,7 +21577,7 @@ __metadata:
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
     pg: ^8.11.3
-    typescript: ^5.3.3
+    typescript: ^5.6.2
   languageName: unknown
   linkType: soft
 
