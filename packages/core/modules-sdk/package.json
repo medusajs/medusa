@@ -42,10 +42,6 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@graphql-codegen/core": "^4.0.2",
-    "@graphql-codegen/typescript": "^4.0.9",
-    "@graphql-tools/merge": "^9.0.0",
-    "@graphql-tools/schema": "^10.0.6",
     "@medusajs/orchestration": "^0.5.7",
     "@medusajs/types": "^1.11.16",
     "@medusajs/utils": "^1.11.9",

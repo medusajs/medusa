@@ -7,7 +7,9 @@ import { queryClient } from "../../../lib/query-client"
 const regionQuery = (id: string) => ({
   queryKey: regionsQueryKeys.detail(id),
   queryFn: async () =>
-    sdk.admin.region.retrieve(id, { fields: "*payment_providers" }),
+    sdk.admin.region.retrieve(id, {
+      fields: "*payment_providers,*countries,+automatic_taxes",
+    }),
 })
 
 export const regionLoader = async ({ params }: LoaderFunctionArgs) => {

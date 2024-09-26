@@ -1,8 +1,7 @@
-import { isObject, isString } from "@medusajs/framework/utils"
-import { IndexTypes } from "@medusajs/framework/types"
-import { GraphQLList } from "graphql"
 import { Knex } from "@mikro-orm/knex"
+import { IndexTypes } from "@medusajs/framework/types"
 import { OrderBy, QueryFormat, QueryOptions, Select } from "@types"
+import { isObject, isString, GraphQLUtils } from "@medusajs/framework/utils"
 
 export const OPERATOR_MAP = {
   $eq: "=",
@@ -62,7 +61,7 @@ export class QueryBuilder {
     let currentType = fieldRef.type
     let isArray = false
     while (currentType.ofType) {
-      if (currentType instanceof GraphQLList) {
+      if (currentType instanceof GraphQLUtils.GraphQLList) {
         isArray = true
       }
 
