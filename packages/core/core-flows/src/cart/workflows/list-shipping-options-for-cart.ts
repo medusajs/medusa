@@ -3,7 +3,6 @@ import { deepFlatMap, isPresent, MedusaError } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   transform,
-  when,
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
@@ -92,38 +91,11 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
       },
     }).config({ name: "shipping-options-query" })
 
-    const pricesIds = transform({ shippingOptions }, ({ shippingOptions }) => {
-      return shippingOptions
-        .map((so) => so.calculated_price?.calculated_price?.id)
-        .filter(Boolean)
-    })
-    const originalPriceQuery = when({ pricesIds }, ({ pricesIds }) => {
-      return pricesIds.length > 0
-    }).then(() => {
-      useRemoteQueryStep({
-        entry_point: "price",
-        fields: ["id", "price_rules.*"],
-        variables: {
-          id: pricesIds,
-        },
-      }).config({ name: "price-set-query" })
-    })
-
     const shippingOptionsWithPrice = transform(
       {
         shippingOptions,
-        originalPriceQuery,
-        pricesIds,
       },
       (data) => {
-        const calcPricesMap = (data.originalPriceQuery ?? ([] as any)).reduce(
-          (acc, calcPrice) => {
-            acc[calcPrice.id] = calcPrice
-            return acc
-          },
-          {}
-        )
-
         const optionsMissingPrices: string[] = []
 
         const options = data.shippingOptions.map((shippingOption) => {
@@ -136,13 +108,6 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
           return {
             ...options,
             amount: calculated_price?.calculated_amount,
-            rules: [
-              ...(options.rules || []),
-              ...[
-                calcPricesMap[calculated_price?.calculated_price?.id]
-                  ?.price_rules ?? [],
-              ],
-            ],
             is_tax_inclusive:
               !!calculated_price?.is_calculated_price_tax_inclusive,
           }

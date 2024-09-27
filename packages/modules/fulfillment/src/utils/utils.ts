@@ -1,9 +1,10 @@
 import {
+  MedusaError,
+  RuleOperator,
+  isDefined,
   isObject,
   isString,
-  MedusaError,
   pickValueFromObject,
-  RuleOperator,
 } from "@medusajs/framework/utils"
 
 /**
@@ -82,7 +83,7 @@ export function isContextValid(
     const { attribute, operator, value } = rule
     const contextValue = pickValueFromObject(attribute, context)
 
-    if (typeof contextValue === "undefined") {
+    if (!isDefined(contextValue)) {
       return true
     }
 
