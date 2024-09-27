@@ -854,7 +854,10 @@
  *                 - exchanges
  *               properties:
  *                 exchanges:
- *                   $ref: "#/components/schemas/AdminExchange"
+ *                   type: array
+ *                   description: The exchange's exchanges.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminExchange"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
