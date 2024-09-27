@@ -8517,17 +8517,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin@npm:^7.1.16":
-  version: 7.1.16
-  resolution: "@medusajs/admin@npm:7.1.16"
+"@medusajs/admin@^7.1.16, @medusajs/admin@workspace:packages/admin":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
     "@medusajs/admin-ui": ^2.1.16
+    "@medusajs/medusa": ^1.20.9
     "@rollup/plugin-alias": 5.0.0
     "@rollup/plugin-commonjs": 24.1.0
     "@rollup/plugin-json": 6.0.0
     "@rollup/plugin-node-resolve": 15.0.2
     "@rollup/plugin-replace": 5.0.2
     "@rollup/plugin-virtual": ^3.0.1
+    "@types/express": ^4.17.13
     commander: ^10.0.0
     dotenv: ^16.4.5
     esbuild: 0.17.18
@@ -8538,13 +8540,13 @@ __metadata:
     rollup: 3.20.7
     rollup-plugin-esbuild: 5.0.0
     ts-dedent: ^2.2.0
+    typescript: ^4.9.3
   peerDependencies:
     "@medusajs/medusa": ^1.14.0
   bin:
-    medusa-admin: bin/medusa-admin.js
-  checksum: dabafef9c60185dfd0952e801a66b9716d513ad9e3e88289863f174b18a6c15ede6662ab6f705c9af86000115ddd708faddd3faf34150b7778b07ba7bffb6c89
-  languageName: node
-  linkType: hard
+    medusa-admin: ./bin/medusa-admin.js
+  languageName: unknown
+  linkType: soft
 
 "@medusajs/api-key@workspace:^, @medusajs/api-key@workspace:packages/api-key":
   version: 0.0.0-use.local
