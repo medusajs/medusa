@@ -34,7 +34,7 @@ const getDevServerConfig = () => {
     ...devConfig,
     ...{
       devServer: {
-        port: 7001,
+        port: 7000,
         hot: true,
         historyApiFallback: true,
         client: {
