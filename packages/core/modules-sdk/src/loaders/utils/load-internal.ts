@@ -39,7 +39,7 @@ type MigrationFunction = (
   moduleDeclaration?: InternalModuleDeclaration
 ) => Promise<void>
 
-async function resolveModuleExports({
+export async function resolveModuleExports({
   resolution,
 }: {
   resolution: ModuleResolution
