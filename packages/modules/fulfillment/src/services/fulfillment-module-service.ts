@@ -625,7 +625,10 @@ export default class FulfillmentModuleService
           fulfillmentData || {},
           items.map((i) => i),
           order,
-          fulfillmentRest
+          {
+            ...fulfillmentRest,
+            location: fulfillmentDataToCreate.location,
+          }
         )
       await this.fulfillmentService_.update(
         {
@@ -667,7 +670,10 @@ export default class FulfillmentModuleService
       const providerResult =
         await this.fulfillmentProviderService_.createReturn(
           fulfillment.provider_id,
-          fulfillment as Record<any, any>
+          {
+            ...fulfillment,
+            location: fulfillmentDataToCreate.location,
+          } as Record<any, any>
         )
       await this.fulfillmentService_.update(
         {

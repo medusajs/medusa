@@ -6,8 +6,8 @@ import {
   updateFulfillmentWorkflow,
   updateFulfillmentWorkflowId,
 } from "@medusajs/core-flows"
-import { IFulfillmentModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { IFulfillmentModuleService, MedusaContainer } from "@medusajs/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   generateCreateFulfillmentData,
@@ -22,7 +22,7 @@ medusaIntegrationTestRunner({
   env: { MEDUSA_FF_MEDUSA_V2: true },
   testSuite: ({ getContainer }) => {
     describe("Workflows: Fulfillment", () => {
-      let appContainer
+      let appContainer: MedusaContainer
       let service: IFulfillmentModuleService
 
       beforeAll(async () => {
@@ -31,6 +31,99 @@ medusaIntegrationTestRunner({
       })
 
       describe("createFulfillmentWorkflow", () => {
+        describe("invoke", () => {
+          it("should get stock location", async () => {
+            const workflow = createFulfillmentWorkflow(appContainer)
+
+            const link = appContainer.resolve(
+              ContainerRegistrationKeys.REMOTE_LINK
+            )
+
+            const stockLocationService = appContainer.resolve(
+              Modules.STOCK_LOCATION
+            )
+
+            const location = await stockLocationService.createStockLocations({
+              name: "Test Location",
+              address: {
+                address_1: "Test Address",
+                address_2: "tttest",
+                city: "Test City",
+                country_code: "us",
+                postal_code: "12345",
+                metadata: { email: "test@mail.com" },
+              },
+              metadata: { custom_location: "yes" },
+            })
+
+            const shippingProfile = await service.createShippingProfiles({
+              name: "test",
+              type: "default",
+            })
+
+            const fulfillmentSet = await service.createFulfillmentSets({
+              name: "test",
+              type: "test-type",
+            })
+
+            await link.create({
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+              [Modules.FULFILLMENT]: {
+                fulfillment_set_id: fulfillmentSet.id,
+              },
+            })
+
+            const serviceZone = await service.createServiceZones({
+              name: "test",
+              fulfillment_set_id: fulfillmentSet.id,
+            })
+
+            const shippingOption = await service.createShippingOptions(
+              generateCreateShippingOptionsData({
+                provider_id: providerId,
+                service_zone_id: serviceZone.id,
+                shipping_profile_id: shippingProfile.id,
+                location_id: location.id,
+              })
+            )
+
+            const data = generateCreateFulfillmentData({
+              provider_id: providerId,
+              shipping_option_id: shippingOption.id,
+              order_id: "fake-order",
+              location_id: location.id,
+            })
+
+            const { transaction } = await workflow.run({
+              input: data,
+              throwOnError: true,
+            })
+
+            expect(
+              transaction.context.invoke["get-location"].output.output
+            ).toEqual({
+              id: expect.any(String),
+              created_at: expect.any(Date),
+              updated_at: expect.any(Date),
+              name: "Test Location",
+              address: {
+                id: expect.any(String),
+                address_1: "Test Address",
+                address_2: "tttest",
+                city: "Test City",
+                country_code: "us",
+                postal_code: "12345",
+                metadata: { email: "test@mail.com" },
+                phone: null,
+                province: null,
+              },
+              metadata: { custom_location: "yes" },
+            })
+          })
+        })
+
         describe("compensation", () => {
           it("should cancel created fulfillment if step following step throws error", async () => {
             const workflow = createFulfillmentWorkflow(appContainer)
@@ -41,6 +134,22 @@ medusaIntegrationTestRunner({
                   `Failed to do something after creating fulfillment`
                 )
               },
+            })
+
+            const stockLocationService = appContainer.resolve(
+              Modules.STOCK_LOCATION
+            )
+            const location = await stockLocationService.createStockLocations({
+              name: "Test Location",
+              address: {
+                address_1: "Test Address",
+                address_2: "tttest",
+                city: "Test City",
+                country_code: "us",
+                postal_code: "12345",
+                metadata: { email: "test@mail.com" },
+              },
+              metadata: { custom_location: "yes" },
             })
 
             const shippingProfile = await service.createShippingProfiles({
@@ -70,6 +179,7 @@ medusaIntegrationTestRunner({
               provider_id: providerId,
               shipping_option_id: shippingOption.id,
               order_id: "fake-order",
+              location_id: location.id,
             })
             const { errors } = await workflow.run({
               input: data,
@@ -106,6 +216,22 @@ medusaIntegrationTestRunner({
               },
             })
 
+            const stockLocationService = appContainer.resolve(
+              Modules.STOCK_LOCATION
+            )
+            const location = await stockLocationService.createStockLocations({
+              name: "Test Location",
+              address: {
+                address_1: "Test Address",
+                address_2: "tttest",
+                city: "Test City",
+                country_code: "us",
+                postal_code: "12345",
+                metadata: { email: "test@mail.com" },
+              },
+              metadata: { custom_location: "yes" },
+            })
+
             const shippingProfile = await service.createShippingProfiles({
               name: "test",
               type: "default",
@@ -132,6 +258,7 @@ medusaIntegrationTestRunner({
             const data = generateCreateFulfillmentData({
               provider_id: providerId,
               shipping_option_id: shippingOption.id,
+              location_id: location.id,
             })
 
             const fulfillment = await service.createFulfillment(data)
@@ -185,6 +312,22 @@ medusaIntegrationTestRunner({
               },
             })
 
+            const stockLocationService = appContainer.resolve(
+              Modules.STOCK_LOCATION
+            )
+            const location = await stockLocationService.createStockLocations({
+              name: "Test Location",
+              address: {
+                address_1: "Test Address",
+                address_2: "tttest",
+                city: "Test City",
+                country_code: "us",
+                postal_code: "12345",
+                metadata: { email: "test@mail.com" },
+              },
+              metadata: { custom_location: "yes" },
+            })
+
             const shippingProfile = await service.createShippingProfiles({
               name: "test",
               type: "default",
@@ -211,6 +354,7 @@ medusaIntegrationTestRunner({
             const data = generateCreateFulfillmentData({
               provider_id: providerId,
               shipping_option_id: shippingOption.id,
+              location_id: location.id,
             })
 
             const fulfillment = await service.createFulfillment({
