@@ -6412,6 +6412,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.1
     bignumber.js: ^9.1.2
+    express: ^4.21.0
     pg: ^8.13.0
   languageName: unknown
   linkType: soft
