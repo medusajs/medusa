@@ -8,6 +8,7 @@
     "./api/*": "./dist/api/*.js",
     "./subscribers/*": "./dist/subscribers/*.js",
     "./jobs/*": "./dist/jobs/*.js",
+    "./core-flows": "./dist/core-flows/index.js",
     "./loaders/*": "./dist/loaders/*.js",
     "./commands/*": "./dist/commands/*.js",
     "./modules/*": "./dist/modules/*.js"
