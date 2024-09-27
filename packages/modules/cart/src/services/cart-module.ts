@@ -7,7 +7,7 @@ import {
   ICartModuleService,
   InternalModuleDeclaration,
   ModulesSdkTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
@@ -19,7 +19,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   Address,
   Cart,

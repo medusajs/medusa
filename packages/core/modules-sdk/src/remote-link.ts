@@ -472,8 +472,7 @@ export class RemoteLink {
 
     for (const link of allLinks) {
       const service = this.getLinkModuleOrThrow(link)
-      const { moduleA, moduleB, moduleBKey, primaryKeys } =
-        this.getLinkDataConfig(link)
+      const { moduleA, moduleB } = this.getLinkDataConfig(link)
 
       if (!serviceLinks.has(service.__definition.key)) {
         serviceLinks.set(service.__definition.key, [])

@@ -363,6 +363,9 @@ The `getExpirationDate` method accepts a subscription’s date, interval, and pe
 Before overriding the `createSubscriptions` method, add the following types to `src/modules/subscription/types/index.ts`:
 
 ```ts title="src/modules/subscription/types/index.ts"
+import { InferTypeOf } from "@medusajs/types"
+import Subscription from "../models/subscription"
+
 // ...
 
 export type CreateSubscriptionData = {
@@ -373,18 +376,14 @@ export type CreateSubscriptionData = {
   metadata?: Record<string, unknown>
 }
 
-export type SubscriptionData = {
-  id: string
-  status: SubscriptionStatus
-  interval: SubscriptionInterval
-  subscription_date: Date
-  last_order_date: Date
-  next_order_date: Date | null
-  expiration_date: Date
-  metadata: Record<string, unknown> | null
-}
-
+export type SubscriptionData = InferTypeOf<typeof Subscription>
 ```
+
+<Note title="Tip">
+
+Since the `Subscription` data model is a variable, use the `InferTypeOf` utility imported from `@medusajs/types` to infer its type.
+
+</Note>
 
 Then, in `src/modules/subscription/service.ts`, add the following to override the `createSubscriptions` method:
 

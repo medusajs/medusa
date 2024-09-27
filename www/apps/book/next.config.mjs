@@ -159,6 +159,11 @@ const nextConfig = {
         destination: "/more-resources/cheatsheet",
         permanent: true,
       },
+      {
+        source: "/architectural-modules",
+        destination: "/advanced-development/architecture/architectural-modules",
+        permanent: true,
+      },
     ]
   },
 }

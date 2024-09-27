@@ -1,7 +1,7 @@
 const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
-const { isObject } = require("@medusajs/utils")
+const { isObject } = require("@medusajs/framework/utils")
 const { setContainer } = require("./use-container")
 const { setPort, setExpressServer } = require("./use-api")
 

@@ -1,7 +1,7 @@
-import { RemoteLink } from "@medusajs/modules-sdk"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { RemoteLink } from "@medusajs/framework/modules-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 
 export interface DetachLocationsFromSalesChannelsStepInput {
   links: {

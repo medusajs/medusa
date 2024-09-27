@@ -1,12 +1,12 @@
 import { updateCartPromotionsWorkflow } from "@medusajs/core-flows"
-import { PromotionActions } from "@medusajs/utils"
+import { PromotionActions } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { refetchCart } from "../../helpers"
 import {
   StoreAddCartPromotionsType,
   StoreRemoveCartPromotionsType,
 } from "../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: MedusaRequest<StoreAddCartPromotionsType>,

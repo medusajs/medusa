@@ -1,5 +1,12 @@
-import { AdditionalData, UpdateCartWorkflowInputDTO } from "@medusajs/types"
-import { MedusaError, PromotionActions, isPresent } from "@medusajs/utils"
+import {
+  AdditionalData,
+  UpdateCartWorkflowInputDTO,
+} from "@medusajs/framework/types"
+import {
+  MedusaError,
+  PromotionActions,
+  isPresent,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -7,7 +14,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {
   findOneOrAnyRegionStep,

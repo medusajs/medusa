@@ -192,6 +192,18 @@ export const sidebar = numberSidebarItems(
       children: [
         {
           type: "link",
+          title: "Architecture",
+          path: "/advanced-development/architecture/overview",
+          children: [
+            {
+              type: "link",
+              path: "/advanced-development/architecture/architectural-modules",
+              title: "Architectural Modules",
+            },
+          ],
+        },
+        {
+          type: "link",
           title: "API Routes",
           path: "/advanced-development/api-routes",
           children: [
@@ -316,6 +328,11 @@ export const sidebar = numberSidebarItems(
           path: "/advanced-development/data-models",
           title: "Data Models",
           children: [
+            {
+              type: "link",
+              path: "/advanced-development/data-models/infer-type",
+              title: "Infer Type",
+            },
             {
               type: "link",
               path: "/advanced-development/data-models/property-types",
@@ -502,11 +519,6 @@ export const sidebar = numberSidebarItems(
           title: "Next.js Starter",
         },
       ],
-    },
-    {
-      type: "link",
-      path: "/architectural-modules",
-      title: "Architectural Modules",
     },
     {
       type: "link",

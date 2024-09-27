@@ -115,6 +115,7 @@
     "close": "Close",
     "showMore": "Show more",
     "continue": "Continue",
+    "continueWithEmail": "Continue with Email",
     "addReason": "Add Reason",
     "addNote": "Add Note",
     "reset": "Reset",
@@ -533,7 +534,8 @@
     },
     "variant": {
       "edit": {
-        "header": "Edit Variant"
+        "header": "Edit Variant",
+        "success": "Product variant edited sucessfully"
       },
       "create": {
         "header": "Variant details"
@@ -546,7 +548,7 @@
       "inventory": {
         "notManaged": "Not managed",
         "manageItems": "Manage inventory items",
-        "notManagedDesc":"Inventory is not managed for this variant. Turn on ‘Manage Inventory’ to track the variant's inventory.",
+        "notManagedDesc": "Inventory is not managed for this variant. Turn on ‘Manage Inventory’ to track the variant's inventory.",
         "manageKit": "Manage inventory kit",
         "navigateToItem": "Go to inventory item",
         "actions": {
@@ -611,6 +613,7 @@
     "subtitle": "Organize products into collections.",
     "createCollection": "Create Collection",
     "createCollectionHint": "Create a new collection to organize your products.",
+    "createSuccess": "Collection created successfully.",
     "editCollection": "Edit Collection",
     "handleTooltip": "The handle is used to reference the collection in your storefront. If not specified, the handle will be generated from the collection title.",
     "deleteWarning": "You are about to delete the collection {{title}}. This action cannot be undone.",
@@ -777,6 +780,7 @@
         "noRecordsMessage": "This customer doesn't belong to any group."
       },
       "add": {
+        "success": "Customer added to: {{groups}}.",
         "list": {
           "noRecordsMessage": "Please create a customer group first."
         }
@@ -1088,6 +1092,7 @@
       "statusTitle": "Fulfillment Status",
       "fulfillItems": "Fulfill items",
       "awaitingFulfillmentBadge": "Awaiting fulfillment",
+      "requiresShipping": "Requires shipping",
       "number": "Fulfillment #{{number}}",
       "itemsToFulfill": "Items to fulfill",
       "create": "Create Fulfillment",
@@ -2338,19 +2343,20 @@
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
-    "title": "Log in",
-    "hint": "to continue to Medusa"
+    "title": "Welcome to Medusa",
+    "hint": "Sign in to access the account area"
   },
   "invite": {
-    "title": "Create your account",
-    "hint": "to continue to Medusa",
+    "title": "Welcome to Medusa",
+    "hint": "Create you account below",
+    "backToLogin": "Back to login",
     "createAccount": "Create account",
     "alreadyHaveAccount": "Already have an account? - <0>Log in</0>",
     "emailTooltip": "Your email cannot be changed. If you would like to use another email, a new invite must be sent.",
     "invalidInvite": "The invite is invalid or has expired.",
-    "successTitle": "Your account has been created",
+    "successTitle": "Your account has is registered",
     "successHint": "Get started with Medusa Admin right away.",
-    "successAction": "Sign in to start using Medusa",
+    "successAction": "Start Medusa Admin",
     "invalidTokenTitle": "Your invite token is invalid",
     "invalidTokenHint": "Try requesting a new invite link.",
     "passwordMismatch": "Passwords do not match",

@@ -3,8 +3,12 @@ import {
   DAL,
   FulfillmentTypes,
   IFulfillmentProvider,
-} from "@medusajs/types"
-import { MedusaError, ModulesSdkUtils, promiseAll } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import {
+  MedusaError,
+  ModulesSdkUtils,
+  promiseAll,
+} from "@medusajs/framework/utils"
 import { FulfillmentProvider } from "@models"
 
 type InjectedDependencies = {

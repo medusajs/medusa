@@ -1,7 +1,7 @@
 /**
  * @schema StoreCartResponse
  * type: object
- * description: SUMMARY
+ * description: The cart's details.
  * x-schemaName: StoreCartResponse
  * required:
  *   - cart

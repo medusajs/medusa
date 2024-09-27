@@ -1,5 +1,5 @@
 import { StockLocationModuleService } from "@services"
-import { ModuleExports } from "@medusajs/types"
+import { ModuleExports } from "@medusajs/framework/types"
 
 const moduleDefinition: ModuleExports = {
   service: StockLocationModuleService,

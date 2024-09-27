@@ -2,7 +2,7 @@ import {
   WorkflowData,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   addShippingMethodToCartStep,

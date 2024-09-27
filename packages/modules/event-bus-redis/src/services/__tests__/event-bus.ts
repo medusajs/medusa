@@ -1,4 +1,4 @@
-import { Logger } from "@medusajs/types"
+import { Logger } from "@medusajs/framework/types"
 import { Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import RedisEventBusService from "../event-bus-redis"
@@ -339,8 +339,6 @@ describe("RedisEventBusService", () => {
   })
 
   describe("worker_", () => {
-    let result!: any
-
     describe("Successfully processes the jobs", () => {
       beforeEach(async () => {
         jest.clearAllMocks()
@@ -395,7 +393,7 @@ describe("RedisEventBusService", () => {
           return Promise.reject("fail2")
         })
 
-        result = await eventBus.worker_({
+        await eventBus.worker_({
           name: "eventName",
           data: { data: { test: 1 } },
           opts: { attempts: 1 },
@@ -434,7 +432,7 @@ describe("RedisEventBusService", () => {
           }
         )
 
-        result = await eventBus
+        await eventBus
           .worker_({
             name: "eventName",
             data: {
@@ -473,7 +471,7 @@ describe("RedisEventBusService", () => {
           }
         )
 
-        result = await eventBus
+        await eventBus
           .worker_({
             name: "eventName",
             data: {

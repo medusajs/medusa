@@ -1,4 +1,8 @@
-import { MedusaContainer, RemoteExpandProperty } from "@medusajs/types"
+import {
+  IModuleService,
+  MedusaContainer,
+  RemoteExpandProperty,
+} from "@medusajs/types"
 import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { serviceConfigs, serviceMock } from "../../__mocks__/joiner/mock_data"
 import { RemoteJoiner } from "./../../joiner"
@@ -23,7 +27,7 @@ const fetchServiceDataCallback = async (
   const moduleRegistryName =
     lowerCaseFirst(serviceConfig.serviceName) + "Service"
 
-  const service = container.resolve(moduleRegistryName)
+  const service: IModuleService = container.resolve(moduleRegistryName)
   const methodName = relationship?.inverse
     ? `getBy${toPascalCase(pkField)}`
     : "list"
@@ -353,7 +357,6 @@ describe("RemoteJoiner", () => {
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
-      args: [],
       fields: ["id", "name", "email"],
       options: { id: ["1"] },
     })
@@ -375,7 +378,6 @@ describe("RemoteJoiner", () => {
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
-      args: [],
       fields: ["id"],
       options: { id: ["1"] },
     })
@@ -428,7 +430,6 @@ describe("RemoteJoiner", () => {
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
-      args: [],
       fields: ["username", "email"],
       options: { id: ["1"] },
     })
@@ -460,7 +461,6 @@ describe("RemoteJoiner", () => {
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
     expect(serviceMock.userService).toHaveBeenCalledWith({
-      args: [],
       fields: ["username", "email", "products"],
       expands: {
         products: {

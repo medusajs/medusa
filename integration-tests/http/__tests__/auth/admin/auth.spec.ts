@@ -184,6 +184,7 @@ medusaIntegrationTestRunner({
         ).run({
           input: {
             entityId: "test@medusa-commerce.com",
+            actorType: "user",
             provider: "emailpass",
             secret: "test",
           },
@@ -236,6 +237,7 @@ medusaIntegrationTestRunner({
         ).run({
           input: {
             entityId: "test@medusa-commerce.com",
+            actorType: "user",
             provider: "emailpass",
             secret: "test",
           },

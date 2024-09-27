@@ -3,8 +3,8 @@ import {
   DAL,
   ProductCategoryTransformOptions,
   ProductTypes,
-} from "@medusajs/types"
-import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { DALUtils, isDefined, MedusaError } from "@medusajs/framework/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,

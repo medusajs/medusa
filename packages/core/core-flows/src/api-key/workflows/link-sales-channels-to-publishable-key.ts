@@ -1,5 +1,5 @@
-import { LinkWorkflowInput } from "@medusajs/types"
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { LinkWorkflowInput } from "@medusajs/framework/types"
+import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
 import {
   linkSalesChannelsToApiKeyStep,
   validateSalesChannelsExistStep,

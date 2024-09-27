@@ -2,11 +2,6 @@ import { createMedusaContainer } from "@medusajs/utils"
 import { asFunction, Lifetime } from "awilix"
 import { moduleProviderLoader } from "../module-provider-loader"
 
-const logger = {
-  warn: jest.fn(),
-  error: jest.fn(),
-} as any
-
 describe("modules loader", () => {
   let container
 

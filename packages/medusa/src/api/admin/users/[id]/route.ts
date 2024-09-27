@@ -2,7 +2,7 @@ import {
   removeUserAccountWorkflow,
   updateUsersWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes, UpdateUserDTO } from "@medusajs/types"
+import { HttpTypes, UpdateUserDTO } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -12,7 +12,7 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { refetchUser } from "../helpers"
 import { AdminUpdateUserType } from "../validators"
 

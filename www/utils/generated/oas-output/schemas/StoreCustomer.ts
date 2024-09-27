@@ -1,7 +1,7 @@
 /**
  * @schema StoreCustomer
  * type: object
- * description: The customer's parent.
+ * description: The customer's details.
  * x-schemaName: StoreCustomer
  * required:
  *   - id
@@ -16,63 +16,59 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The parent's ID.
+ *     description: The customer's ID.
  *   email:
  *     type: string
  *     title: email
- *     description: The parent's email.
+ *     description: The customer's email.
  *     format: email
  *   default_billing_address_id:
  *     type: string
  *     title: default_billing_address_id
- *     description: The parent's default billing address id.
+ *     description: The ID of the address used for billing by default.
  *   default_shipping_address_id:
  *     type: string
  *     title: default_shipping_address_id
- *     description: The parent's default shipping address id.
+ *     description: The ID of the address used for shipping by default.
  *   company_name:
  *     type: string
  *     title: company_name
- *     description: The parent's company name.
+ *     description: The customer's company name.
  *   first_name:
  *     type: string
  *     title: first_name
- *     description: The parent's first name.
+ *     description: The customer's first name.
  *   last_name:
  *     type: string
  *     title: last_name
- *     description: The parent's last name.
+ *     description: The customer's last name.
  *   addresses:
  *     type: array
- *     description: The parent's addresses.
+ *     description: The customer's addresses.
  *     items:
- *       $ref: "#/components/schemas/BaseCustomerAddress"
+ *       $ref: "#/components/schemas/StoreCustomerAddress"
  *   phone:
  *     type: string
  *     title: phone
- *     description: The parent's phone.
+ *     description: The customer's phone.
  *   metadata:
  *     type: object
- *     description: The parent's metadata.
- *   created_by:
- *     type: string
- *     title: created_by
- *     description: The parent's created by.
- *   deleted_at:
- *     type: string
- *     format: date-time
- *     title: deleted_at
- *     description: The parent's deleted at.
+ *     description: The customer's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The parent's created at.
+ *     description: The date the customer was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The parent's updated at.
+ *     description: The date the customer was updated.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The date the customer was deleted.
  * 
 */
 

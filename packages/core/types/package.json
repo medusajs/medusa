@@ -4,36 +4,51 @@
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "export": {
+    ".": "./dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/types"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__fixtures__",
+    "!dist/**/__mocks__"
   ],
   "author": "Medusa",
   "license": "MIT",
+  "scripts": {
+    "build": "rimraf dist && tsc --build",
+    "watch": "tsc --build --watch",
+    "test": "exit 0"
+  },
   "devDependencies": {
     "awilix": "^8.0.1",
     "bignumber.js": "^9.1.2",
-    "cross-env": "^5.2.1",
     "expect-type": "^0.20.0",
     "ioredis": "^5.4.1",
     "rimraf": "^5.0.1",
-    "typescript": "^5.1.6",
-    "vite": "^5.2.11",
-    "winston": "^3.8.2"
+    "typescript": "^5.6.2",
+    "vite": "^5.2.11"
   },
-  "scripts": {
-    "build": "rimraf dist && tsc -p tsconfig.spec.json --noEmit && tsc -p tsconfig.build.json",
-    "watch": "tsc --build --watch",
-    "test": "exit 0"
+  "peerDependencies": {
+    "awilix": "^8.0.1",
+    "bignumber.js": "^9.1.2",
+    "ioredis": "^5.4.1",
+    "vite": "^5.2.11"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
   }
 }

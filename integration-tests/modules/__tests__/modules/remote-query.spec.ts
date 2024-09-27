@@ -231,6 +231,40 @@ medusaIntegrationTestRunner({
           })
       })
 
+      it(`should throw if not exists`, async () => {
+        const err = await query
+          .graph(
+            {
+              entity: "product",
+              fields: ["id", "title", "variants.*", "variants.prices.amount"],
+              filters: {
+                id: "non-existing-id",
+                variants: {
+                  prices: {
+                    amount: {
+                      $gt: 100,
+                    },
+                  },
+                },
+              },
+            },
+            {
+              throwIfKeyNotFound: true,
+            }
+          )
+          .catch((err) => {
+            return err
+          })
+
+        expect(err).toEqual(
+          expect.objectContaining({
+            message: expect.stringContaining(
+              "Product id not found: non-existing-id"
+            ),
+          })
+        )
+      })
+
       it(`should perform cross module query and apply filters correctly to the correct modules [1]`, async () => {
         const { data } = await query.graph({
           entity: "product",

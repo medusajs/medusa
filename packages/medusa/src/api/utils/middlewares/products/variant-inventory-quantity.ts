@@ -2,7 +2,7 @@ import {
   ContainerRegistrationKeys,
   LINKS,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { MedusaRequest } from "../../../../types/routing"
 
 export async function getVariantInventoryItems({

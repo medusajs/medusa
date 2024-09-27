@@ -1,4 +1,4 @@
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
 import { AuthenticatedMedusaRequest } from "../../../../types/routing"
 import { refetchEntities, refetchEntity } from "../../refetch-entity"

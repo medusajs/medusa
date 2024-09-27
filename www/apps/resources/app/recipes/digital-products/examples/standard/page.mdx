@@ -1575,12 +1575,13 @@ You’ll only implement the `3.a` step of the workflow.
 Create the file `src/workflows/create-digital-product-order/steps/create-digital-product-order.ts` with the following content:
 
 export const createDpoHighlights = [
+  ["18", "InferTypeOf", "Infer the type of the `DigitalProduct` data model since it's a variable."],
   ["33", "createDigitalProductOrders", "Create the digital product order."],
   ["41", "digital_product_order", "Pass the created digital product order to the compensation function."],
   ["48", "deleteDigitalProductOrders", "Delete the digital product order if an error occurs in the workflow."]
 ]
 
-```ts title="src/workflows/create-digital-product-order/steps/create-digital-product-order.ts" highlights={createDpoHighlights} collapsibleLines="1-15" expandMoreLabel="Show Imports"
+```ts title="src/workflows/create-digital-product-order/steps/create-digital-product-order.ts" highlights={createDpoHighlights} collapsibleLines="1-14" expandMoreLabel="Show Imports"
 import {
   createStep,
   StepResponse,
@@ -1588,18 +1589,17 @@ import {
 import { 
   OrderLineItemDTO,
   ProductVariantDTO,
+  InferTypeOf,
 } from "@medusajs/types"
-import { 
-  DigitalProductData, 
-  OrderStatus,
-} from "../../../modules/digital-product/types"
+import { OrderStatus } from "../../../modules/digital-product/types"
 import DigitalProductModuleService from "../../../modules/digital-product/service"
 import { DIGITAL_PRODUCT_MODULE } from "../../../modules/digital-product"
+import DigitalProduct from "../../../modules/digital-product/models/digital-product"
 
 type StepInput = {
   items: (OrderLineItemDTO & {
     variant: ProductVariantDTO & {
-      digital_product: DigitalProductData
+      digital_product: InferTypeOf<typeof DigitalProduct>
     }
   })[]
 }
@@ -1833,19 +1833,20 @@ So, you only need to implement the second step.
 Before creating the step, add to `src/modules/digital-product/types/index.ts` the following:
 
 ```ts
-import { OrderDTO } from "@medusajs/types"
+import { OrderDTO, InferTypeOf } from "@medusajs/types"
+import DigitalProductOrder from "../models/digital-product-order"
 
 // ...
 
-export type DigitalProductOrderData = {
-  id: string
-  status: OrderStatus
-  products?: DigitalProductData[]
-  order?: OrderDTO
-}
+export type DigitalProductOrder = 
+  InferTypeOf<typeof DigitalProductOrder> & {
+    order?: OrderDTO
+  }
 ```
 
 This adds a type for a digital product order, which you'll use next.
+
+You use the `InferTypeOf` utility to infer the type of the `DigitalProductOrder` data model, and add to it the optional `order` property, which is the linked order.
 
 ### Create sendDigitalOrderNotificationStep
 
@@ -1854,23 +1855,23 @@ To create the step, create the file `src/workflows/fulfill-digital-order/steps/s
 ```ts title="src/workflows/fulfill-digital-order/steps/send-digital-order-notification.ts" collapsibleLines="1-11" expandMoreLabel="Show Imports"
 import {
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { 
   INotificationModuleService,
-  IFileModuleService
+  IFileModuleService,
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
-import { DigitalProductOrderData, MediaType } from "../../../modules/digital-product/types"
+import { DigitalProductOrder, MediaType } from "../../../modules/digital-product/types"
 
 type SendDigitalOrderNotificationStepInput = {
-  digital_product_order: DigitalProductOrderData
+  digital_product_order: DigitalProductOrder
 }
 
 export const sendDigitalOrderNotificationStep = createStep(
   "send-digital-order-notification",
   async ({ 
-    digital_product_order: digitalProductOrder 
+    digital_product_order: digitalProductOrder, 
   }: SendDigitalOrderNotificationStepInput, 
   { container }) => {
     const notificationModuleService: INotificationModuleService = container
@@ -1907,7 +1908,7 @@ const notificationData = await Promise.all(
 
     return {
       name: product.name,
-      medias
+      medias,
     }
   })
 )
@@ -1925,8 +1926,8 @@ const notification = await notificationModuleService.createNotifications({
   template: "digital-order-template",
   channel: "email",
   data: {
-    products: notificationData
-  }
+    products: notificationData,
+  },
 })
 
 return new StepResponse(notification)
@@ -1946,10 +1947,10 @@ export const fulfillWorkflowHighlights = [
 ```ts title="src/workflows/fulfill-digital-order/index.ts" highlights={fulfillWorkflowHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
 import {
   createWorkflow,
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/workflows-sdk"
 import {
-  useRemoteQueryStep
+  useRemoteQueryStep,
 } from "@medusajs/core-flows"
 import { sendDigitalOrderNotificationStep } from "./steps/send-digital-order-notification"
 
@@ -1966,7 +1967,7 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
         "*",
         "products.*",
         "products.medias.*",
-        "order.*"
+        "order.*",
       ],
       variables: {
         filters: {
@@ -1974,11 +1975,11 @@ export const fulfillDigitalOrderWorkflow = createWorkflow(
         },
       },
       list: false,
-      throw_if_key_not_found: true
+      throw_if_key_not_found: true,
     })
 
     sendDigitalOrderNotificationStep({
-      digital_product_order: digitalProductOrder
+      digital_product_order: digitalProductOrder,
     })
 
     return new WorkflowResponse(
@@ -2021,7 +2022,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  }
+  },
 })
 
 ```
@@ -2040,7 +2041,7 @@ import type {
   SubscriberConfig,
 } from "@medusajs/medusa"
 import { 
-  fulfillDigitalOrderWorkflow
+  fulfillDigitalOrderWorkflow,
 } from "../workflows/fulfill-digital-order"
 
 async function digitalProductOrderCreatedHandler({
@@ -2049,8 +2050,8 @@ async function digitalProductOrderCreatedHandler({
 }: SubscriberArgs<{ id: string }>) {
   await fulfillDigitalOrderWorkflow(container).run({
     input: {
-      id: data.id
-    }
+      id: data.id,
+    },
   })
 }
 

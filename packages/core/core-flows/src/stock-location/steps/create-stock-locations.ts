@@ -1,10 +1,10 @@
 import {
   CreateStockLocationInput,
   IStockLocationService,
-} from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 export const createStockLocationsStepId = "create-stock-locations"
 /**

@@ -7,7 +7,7 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 
-import { AdditionalData, HttpTypes } from "@medusajs/types"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 import { refetchEntity } from "../../../../../utils/refetch-entity"
 import {
   remapKeysForProduct,

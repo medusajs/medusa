@@ -1,5 +1,5 @@
-import { HttpTypes } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { HttpTypes } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

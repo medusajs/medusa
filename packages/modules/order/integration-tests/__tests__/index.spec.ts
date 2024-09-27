@@ -1,5 +1,5 @@
-import { IOrderModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { IOrderModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { OrderModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
