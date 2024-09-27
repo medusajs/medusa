@@ -71,7 +71,7 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
       ],
       variables: {
         context: {
-          // is_return: "false",
+          is_return: input.is_return,
           enabled_in_store: "true",
         },
         filters: {

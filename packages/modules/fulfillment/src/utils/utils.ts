@@ -1,7 +1,6 @@
 import {
   MedusaError,
   RuleOperator,
-  isDefined,
   isObject,
   isString,
   pickValueFromObject,
@@ -82,10 +81,6 @@ export function isContextValid(
   const predicate = (rule) => {
     const { attribute, operator, value } = rule
     const contextValue = pickValueFromObject(attribute, context)
-
-    if (!isDefined(contextValue)) {
-      return true
-    }
 
     return operatorsPredicate[operator](
       contextValue,
