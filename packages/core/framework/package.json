@@ -80,7 +80,6 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "medusa-telemetry": "^0.0.17",
     "morgan": "^1.9.1",
@@ -97,5 +96,13 @@
     "ioredis": "^5.4.1",
     "pg": "^8.13.0",
     "vite": "^5.2.11"
+  },
+  "peerDependenciesMeta": {
+    "ioredis": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    }
   }
 }
