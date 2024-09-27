@@ -31,9 +31,11 @@
     "watch": "tsc --build --watch",
     "test": "exit 0"
   },
+  "dependencies": {
+    "bignumber.js": "^9.1.2"
+  },
   "devDependencies": {
     "awilix": "^8.0.1",
-    "bignumber.js": "^9.1.2",
     "expect-type": "^0.20.0",
     "ioredis": "^5.4.1",
     "rimraf": "^5.0.1",
@@ -42,7 +44,6 @@
   },
   "peerDependencies": {
     "awilix": "^8.0.1",
-    "bignumber.js": "^9.1.2",
     "ioredis": "^5.4.1",
     "vite": "^5.2.11"
   },
