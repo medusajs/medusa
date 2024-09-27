@@ -14,12 +14,15 @@ import {
   ExportDefaultDeclaration,
   File,
   isArrayExpression,
+  isCallExpression,
   isIdentifier,
+  isMemberExpression,
   isObjectExpression,
   isObjectProperty,
   isStringLiteral,
   isTemplateLiteral,
   NodePath,
+  ObjectExpression,
   ObjectProperty,
   parse,
   ParseResult,
@@ -371,33 +374,49 @@ function getForms(
 
       const name = field.key.name
 
-      if (!isObjectExpression(field.value)) {
+      if (
+        !isObjectExpression(field.value) &&
+        !(
+          isCallExpression(field.value) &&
+          isMemberExpression(field.value.callee) &&
+          isIdentifier(field.value.callee.object) &&
+          isIdentifier(field.value.callee.property) &&
+          field.value.callee.object.name === "form" &&
+          field.value.callee.property.name === "define" &&
+          field.value.arguments.length === 1 &&
+          isObjectExpression(field.value.arguments[0])
+        )
+      ) {
         logger.warn(
-          `'${name}' property in the 'fields' property at the ${j} index of the 'forms' property in ${file} is malformed. The property must be an object.`,
+          `'${name}' property in the 'fields' property at the ${j} index of the 'forms' property in ${file} is malformed. The property must be an object or a call to form.define().`,
           { file }
         )
         return
       }
 
-      const labelProperty = field.value.properties.find(
+      const fieldObject = isObjectExpression(field.value)
+        ? field.value
+        : (field.value.arguments[0] as ObjectExpression)
+
+      const labelProperty = fieldObject.properties.find(
         (p) => isObjectProperty(p) && isIdentifier(p.key, { name: "label" })
       ) as ObjectProperty | undefined
 
-      const descriptionProperty = field.value.properties.find(
+      const descriptionProperty = fieldObject.properties.find(
         (p) =>
           isObjectProperty(p) && isIdentifier(p.key, { name: "description" })
       ) as ObjectProperty | undefined
 
-      const componentProperty = field.value.properties.find(
+      const componentProperty = fieldObject.properties.find(
         (p) => isObjectProperty(p) && isIdentifier(p.key, { name: "component" })
       ) as ObjectProperty | undefined
 
-      const validationProperty = field.value.properties.find(
+      const validationProperty = fieldObject.properties.find(
         (p) =>
           isObjectProperty(p) && isIdentifier(p.key, { name: "validation" })
       ) as ObjectProperty | undefined
 
-      const placeholderProperty = field.value.properties.find(
+      const placeholderProperty = fieldObject.properties.find(
         (p) =>
           isObjectProperty(p) && isIdentifier(p.key, { name: "placeholder" })
       ) as ObjectProperty | undefined
@@ -575,15 +594,31 @@ function getConfigs(
 
       const name = field.key.name
 
-      if (!isObjectExpression(field.value)) {
+      if (
+        !isObjectExpression(field.value) &&
+        !(
+          isCallExpression(field.value) &&
+          isMemberExpression(field.value.callee) &&
+          isIdentifier(field.value.callee.object) &&
+          isIdentifier(field.value.callee.property) &&
+          field.value.callee.object.name === "form" &&
+          field.value.callee.property.name === "define" &&
+          field.value.arguments.length === 1 &&
+          isObjectExpression(field.value.arguments[0])
+        )
+      ) {
         logger.warn(
-          `'${name}' property in the 'fields' property at the ${j} index of the 'forms' property is malformed. The property must be an object.`,
+          `'${name}' property in the 'fields' property at the ${j} index of the 'forms' property in ${file} is malformed. The property must be an object or a call to form.define().`,
           { file }
         )
         return
       }
 
-      const defaultValueProperty = field.value.properties.find(
+      const fieldObject = isObjectExpression(field.value)
+        ? field.value
+        : (field.value.arguments[0] as ObjectExpression)
+
+      const defaultValueProperty = fieldObject.properties.find(
         (p) =>
           isObjectProperty(p) && isIdentifier(p.key, { name: "defaultValue" })
       ) as ObjectProperty | undefined
@@ -596,7 +631,7 @@ function getConfigs(
         return
       }
 
-      const validationProperty = field.value.properties.find(
+      const validationProperty = fieldObject.properties.find(
         (p) =>
           isObjectProperty(p) && isIdentifier(p.key, { name: "validation" })
       ) as ObjectProperty | undefined

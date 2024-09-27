@@ -280,7 +280,7 @@ function getDisplayComponent(
   displayEntryIndex: number
 ): string {
   const import_ = generateCustomFieldConfigName(fileIndex)
-  return `${import_}.display[${displayEntryIndex}].component`
+  return `${import_}.displays[${displayEntryIndex}].component`
 }
 
 function generateCustomFieldConfigName(index: number): string {
