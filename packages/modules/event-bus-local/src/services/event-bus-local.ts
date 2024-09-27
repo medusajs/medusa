@@ -5,8 +5,8 @@ import {
   MedusaContainer,
   Message,
   Subscriber,
-} from "@medusajs/types"
-import { AbstractEventBusModuleService } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { AbstractEventBusModuleService } from "@medusajs/framework/utils"
 import { EventEmitter } from "events"
 import { ulid } from "ulid"
 

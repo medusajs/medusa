@@ -1,5 +1,5 @@
-import { FileTypes } from "@medusajs/types"
-import { AbstractFileProviderService } from "@medusajs/utils"
+import { FileTypes } from "@medusajs/framework/types"
+import { AbstractFileProviderService } from "@medusajs/framework/utils"
 
 export class FileProviderServiceFixtures extends AbstractFileProviderService {
   static identifier = "fixtures-file-provider"

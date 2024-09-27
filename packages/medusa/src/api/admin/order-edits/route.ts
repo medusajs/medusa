@@ -1,5 +1,5 @@
 import { beginOrderEditOrderWorkflow } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -18,6 +18,6 @@ export const POST = async (
   })
 
   res.json({
-    order_change: result,
+    order_change: result as unknown as HttpTypes.AdminOrderChange,
   })
 }

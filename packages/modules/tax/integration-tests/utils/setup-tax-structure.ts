@@ -1,4 +1,4 @@
-import { ITaxModuleService } from "@medusajs/types"
+import { ITaxModuleService } from "@medusajs/framework/types"
 
 /**
  * Setup for this specific test

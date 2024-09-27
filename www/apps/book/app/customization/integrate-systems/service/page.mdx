@@ -53,7 +53,7 @@ export class BrandClient {
 
     const moduleDef = configModule.modules[BRAND_MODULE]
     if (typeof moduleDef !== "boolean") {
-      this.options_ = moduleDef.options
+      this.options_ = moduleDef.options as BrandClientOptions
     }
   }
 }
@@ -80,13 +80,17 @@ If the service integrating the third-party system was a main service, it receive
 Next, add the following methods to simulate sending requests to the third-party system:
 
 export const methodsHighlights = [
-  ["6", "sendRequest", "Since the third-party system isn't real, this method only logs a message."],
-  ["15", "createBrand", "A method that creates a brand in the third-party system."],
-  ["19", "deleteBrand", "A method that deletes a brand in the third-party system."],
-  ["23", "retrieveBrands", "A method that retrieves a brand from a third-party system."]
+  ["10", "sendRequest", "Since the third-party system isn't real, this method only logs a message."],
+  ["19", "createBrand", "A method that creates a brand in the third-party system."],
+  ["23", "deleteBrand", "A method that deletes a brand in the third-party system."],
+  ["27", "retrieveBrands", "A method that retrieves a brand from a third-party system."]
 ]
 
 ```ts title="src/modules/brand/services/client.ts" highlights={methodsHighlights}
+// other imports...
+import { InferTypeOf } from "@medusajs/types"
+import { Brand } from "../models/brand"
+
 export class BrandClient {
   // ...
 
@@ -101,7 +105,7 @@ export class BrandClient {
     }`)
   }
 
-  async createBrand(brand: Record<string, string>) {
+  async createBrand(brand: InferTypeOf<typeof Brand>) {
     await this.sendRequest("/brands", "POST", brand)
   }
 
@@ -121,7 +125,7 @@ The `sendRequest` method is a dummy method to simulate sending a request to a th
 
 You also add three methods that use the `sendRequest` method:
 
-- `createBrand` that creates a brand in the third-party system.
+- `createBrand` that creates a brand in the third-party system. To reference a brand's type, you use the `InferTypeOf` utility imported from `@medusajs/types`. This transforms a data model, which is a variable, to its equivalent type.
 - `deleteBrand` that deletes the brand in the third-party system.
 - `retrieveBrands` to retrieve a brand from the third-party system.
 

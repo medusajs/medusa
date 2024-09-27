@@ -2,7 +2,7 @@ import {
   deleteShippingOptionsWorkflow,
   updateShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { FulfillmentWorkflow, HttpTypes } from "@medusajs/types"
+import { FulfillmentWorkflow, HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

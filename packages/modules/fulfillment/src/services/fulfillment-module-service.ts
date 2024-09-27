@@ -13,7 +13,7 @@ import {
   SoftDeleteReturn,
   UpdateFulfillmentSetDTO,
   UpdateServiceZoneDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   arrayDifference,
   deepEqualObj,
@@ -28,7 +28,7 @@ import {
   MedusaError,
   ModulesSdkUtils,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   Fulfillment,
   FulfillmentProvider,

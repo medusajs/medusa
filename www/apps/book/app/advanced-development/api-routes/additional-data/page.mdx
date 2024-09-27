@@ -73,10 +73,10 @@ export default defineMiddlewares({
       method: "POST",
       matcher: "/admin/products",
       additionalDataValidator: {
-        brand: z.string().optional()
-      }
-    }
-  ]
+        brand: z.string().optional(),
+      },
+    },
+  ],
 })
 ```
 
@@ -154,14 +154,14 @@ createProductsWorkflow.hooks.productsCreated(
         ...product,
         metadata: {
           ...product.metadata,
-          brand: additional_data.brand
-        }
+          brand: additional_data.brand,
+        },
       }))
     )
 
     return new StepResponse(products, {
       products,
-      additional_data
+      additional_data,
     })
   }
 )

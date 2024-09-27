@@ -1,12 +1,12 @@
-import { RemoteLink } from "@medusajs/modules-sdk"
-import { RemoteQueryFunction } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { RemoteLink } from "@medusajs/framework/modules-sdk"
+import { RemoteQueryFunction } from "@medusajs/framework/types"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   ContainerRegistrationKeys,
   LINKS,
   Modules,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export type SetShippingOptionsPriceSetsStepInput = {
   id: string

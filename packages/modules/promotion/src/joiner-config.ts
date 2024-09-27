@@ -1,4 +1,4 @@
-import { defineJoinerConfig, Modules } from "@medusajs/utils"
+import { defineJoinerConfig, Modules } from "@medusajs/framework/utils"
 import { Campaign, Promotion, PromotionRule } from "@models"
 import { default as schema } from "./schema"
 

@@ -1,5 +1,5 @@
-import { MedusaError, Modules } from "@medusajs/utils"
-import { createStep } from "@medusajs/workflows-sdk"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { createStep } from "@medusajs/framework/workflows-sdk"
 import { CreateCustomerAccountWorkflowInput } from "../workflows"
 
 export const validateCustomerAccountCreationStepId =

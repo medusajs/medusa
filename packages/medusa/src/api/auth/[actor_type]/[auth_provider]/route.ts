@@ -2,12 +2,12 @@ import {
   AuthenticationInput,
   ConfigModule,
   IAuthModuleService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   Modules,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 import { generateJwtTokenForAuthIdentity } from "../../utils/generate-jwt-token"
 

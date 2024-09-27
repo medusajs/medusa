@@ -130,7 +130,7 @@
  *     title: material
  *     description: The product's material.
  *   collection:
- *     $ref: "#/components/schemas/BaseCollection"
+ *     $ref: "#/components/schemas/StoreCollection"
  *   collection_id:
  *     type: string
  *     title: collection_id

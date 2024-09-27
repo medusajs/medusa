@@ -1,9 +1,9 @@
-import { FileDTO } from "@medusajs/types"
+import { FileDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { uploadFilesStep } from "../steps"
 
 export type UploadFilesWorkflowInput = {
@@ -21,7 +21,9 @@ export const uploadFilesWorkflowId = "upload-files"
  */
 export const uploadFilesWorkflow = createWorkflow(
   uploadFilesWorkflowId,
-  (input: WorkflowData<UploadFilesWorkflowInput>): WorkflowResponse<FileDTO[]> => {
+  (
+    input: WorkflowData<UploadFilesWorkflowInput>
+  ): WorkflowResponse<FileDTO[]> => {
     return new WorkflowResponse(uploadFilesStep(input))
   }
 )

@@ -1,4 +1,4 @@
-import { DALUtils, isDefined, MathBN } from "@medusajs/utils"
+import { DALUtils, isDefined, MathBN } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -11,13 +11,13 @@ import {
   Rel,
 } from "@mikro-orm/core"
 
-import { BigNumberRawValue } from "@medusajs/types"
+import { BigNumberRawValue } from "@medusajs/framework/types"
 import {
   BigNumber,
   createPsqlIndexStatementHelper,
   generateEntityId,
   MikroOrmBigNumberProperty,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { InventoryItem } from "./inventory-item"
 
 const InventoryLevelDeletedAtIndex = createPsqlIndexStatementHelper({

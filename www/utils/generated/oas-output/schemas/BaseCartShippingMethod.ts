@@ -1,7 +1,7 @@
 /**
  * @schema BaseCartShippingMethod
  * type: object
- * description: The shipping method's shipping methods.
+ * description: A cart's shipping method.
  * x-schemaName: BaseCartShippingMethod
  * required:
  *   - id
@@ -27,7 +27,7 @@
  *   cart_id:
  *     type: string
  *     title: cart_id
- *     description: The shipping method's cart id.
+ *     description: The ID of the cart this shipping method belongs to.
  *   name:
  *     type: string
  *     title: name
@@ -37,31 +37,25 @@
  *     title: description
  *     description: The shipping method's description.
  *   amount:
- *     oneOf:
- *       - type: string
- *         title: amount
- *         description: The shipping method's amount.
- *       - type: number
- *         title: amount
- *         description: The shipping method's amount.
- *       - type: string
- *         title: amount
- *         description: The shipping method's amount.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: amount
+ *     description: The shipping method's amount.
  *   is_tax_inclusive:
  *     type: boolean
  *     title: is_tax_inclusive
- *     description: The shipping method's is tax inclusive.
+ *     description: Whether the shipping method's amount is tax inclusive.
  *   shipping_option_id:
  *     type: string
  *     title: shipping_option_id
- *     description: The shipping method's shipping option id.
+ *     description: The ID of the shipping option this method was created from.
  *   data:
  *     type: object
- *     description: The shipping method's data.
+ *     description: The shipping method's data, useful for fulfillment handling by third-party services.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/commerce-modules/cart/concepts#data-property
  *   metadata:
  *     type: object
- *     description: The shipping method's metadata.
+ *     description: The shipping method's metadata, can hold custom key-value pairs.
  *   tax_lines:
  *     type: array
  *     description: The shipping method's tax lines.
@@ -69,115 +63,51 @@
  *       $ref: "#/components/schemas/BaseShippingMethodTaxLine"
  *   adjustments:
  *     type: array
- *     description: The shipping method's adjustments.
+ *     description: The shipping method's adjustments, such as applied promotions.
  *     items:
  *       $ref: "#/components/schemas/BaseShippingMethodAdjustment"
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The shipping method's created at.
+ *     description: The date the shipping method was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The shipping method's updated at.
+ *     description: The date the shipping method was updated.
  *   original_total:
- *     oneOf:
- *       - type: string
- *         title: original_total
- *         description: The shipping method's original total.
- *       - type: number
- *         title: original_total
- *         description: The shipping method's original total.
- *       - type: string
- *         title: original_total
- *         description: The shipping method's original total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: string
+ *     title: original_total
+ *     description: The shipping method's total including taxes, excluding promotions.
  *   original_subtotal:
- *     oneOf:
- *       - type: string
- *         title: original_subtotal
- *         description: The shipping method's original subtotal.
- *       - type: number
- *         title: original_subtotal
- *         description: The shipping method's original subtotal.
- *       - type: string
- *         title: original_subtotal
- *         description: The shipping method's original subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: string
+ *     title: original_subtotal
+ *     description: The shipping method's total excluding taxes, including promotions.
  *   original_tax_total:
- *     oneOf:
- *       - type: string
- *         title: original_tax_total
- *         description: The shipping method's original tax total.
- *       - type: number
- *         title: original_tax_total
- *         description: The shipping method's original tax total.
- *       - type: string
- *         title: original_tax_total
- *         description: The shipping method's original tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: string
+ *     title: original_tax_total
+ *     description: The total taxes applied on the shipping method's amount including promotions.
  *   total:
- *     oneOf:
- *       - type: string
- *         title: total
- *         description: The shipping method's total.
- *       - type: number
- *         title: total
- *         description: The shipping method's total.
- *       - type: string
- *         title: total
- *         description: The shipping method's total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: string
+ *     title: total
+ *     description: The shipping method's total amount including taxes and promotions.
  *   subtotal:
- *     oneOf:
- *       - type: string
- *         title: subtotal
- *         description: The shipping method's subtotal.
- *       - type: number
- *         title: subtotal
- *         description: The shipping method's subtotal.
- *       - type: string
- *         title: subtotal
- *         description: The shipping method's subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: string
+ *     title: subtotal
+ *     description: The shipping method's total amount excluding taxes, including promotions.
  *   tax_total:
- *     oneOf:
- *       - type: string
- *         title: tax_total
- *         description: The shipping method's tax total.
- *       - type: number
- *         title: tax_total
- *         description: The shipping method's tax total.
- *       - type: string
- *         title: tax_total
- *         description: The shipping method's tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: string
+ *     title: tax_total
+ *     description: The total taxes applied on the shipping method's amount including promotions.
  *   discount_total:
- *     oneOf:
- *       - type: string
- *         title: discount_total
- *         description: The shipping method's discount total.
- *       - type: number
- *         title: discount_total
- *         description: The shipping method's discount total.
- *       - type: string
- *         title: discount_total
- *         description: The shipping method's discount total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: string
+ *     title: discount_total
+ *     description: The total amount discounted.
  *   discount_tax_total:
- *     oneOf:
- *       - type: string
- *         title: discount_tax_total
- *         description: The shipping method's discount tax total.
- *       - type: number
- *         title: discount_tax_total
- *         description: The shipping method's discount tax total.
- *       - type: string
- *         title: discount_tax_total
- *         description: The shipping method's discount tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: string
+ *     title: discount_total
+ *     description: The taxes applied on the discounted amount.
  * 
 */
 

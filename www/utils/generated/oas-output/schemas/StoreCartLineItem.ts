@@ -1,7 +1,7 @@
 /**
  * @schema StoreCartLineItem
  * type: object
- * description: The item's items.
+ * description: The item's details.
  * x-schemaName: StoreCartLineItem
  * required:
  *   - id
@@ -40,25 +40,17 @@
  *   thumbnail:
  *     type: string
  *     title: thumbnail
- *     description: The item's thumbnail.
+ *     description: The item's thumbnail URL.
  *   quantity:
- *     oneOf:
- *       - type: string
- *         title: quantity
- *         description: The item's quantity.
- *       - type: number
- *         title: quantity
- *         description: The item's quantity.
- *       - type: string
- *         title: quantity
- *         description: The item's quantity.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: quantity
+ *     description: The item's quantity.
  *   product:
- *     $ref: "#/components/schemas/BaseProduct"
+ *     $ref: "#/components/schemas/StoreProduct"
  *   product_id:
  *     type: string
  *     title: product_id
- *     description: The item's product id.
+ *     description: The ID of the associated product.
  *   product_title:
  *     type: string
  *     title: product_title
@@ -74,11 +66,11 @@
  *   product_type:
  *     type: string
  *     title: product_type
- *     description: The item's product type.
+ *     description: The ID of the associated product's type.
  *   product_collection:
  *     type: string
  *     title: product_collection
- *     description: The item's product collection.
+ *     description: The ID of the associated product's collection.
  *   product_handle:
  *     type: string
  *     title: product_handle
@@ -88,11 +80,11 @@
  *   variant_id:
  *     type: string
  *     title: variant_id
- *     description: The item's variant id.
+ *     description: The ID of the associated product variant.
  *   variant_sku:
  *     type: string
  *     title: variant_sku
- *     description: The item's variant sku.
+ *     description: The item's variant SKU.
  *   variant_barcode:
  *     type: string
  *     title: variant_barcode
@@ -103,43 +95,29 @@
  *     description: The item's variant title.
  *   variant_option_values:
  *     type: object
- *     description: The item's variant option values.
+ *     description: The associated variant's value for the product's options.
+ *     example:
+ *       Color: Red
  *   requires_shipping:
  *     type: boolean
  *     title: requires_shipping
- *     description: The item's requires shipping.
+ *     description: Whether the item requires shipping.
  *   is_discountable:
  *     type: boolean
  *     title: is_discountable
- *     description: The item's is discountable.
+ *     description: Whether the item is discountable.
  *   is_tax_inclusive:
  *     type: boolean
  *     title: is_tax_inclusive
- *     description: The item's is tax inclusive.
+ *     description: Whether the item's price includes taxes.
  *   compare_at_unit_price:
- *     oneOf:
- *       - type: string
- *         title: compare_at_unit_price
- *         description: The item's compare at unit price.
- *       - type: number
- *         title: compare_at_unit_price
- *         description: The item's compare at unit price.
- *       - type: string
- *         title: compare_at_unit_price
- *         description: The item's compare at unit price.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: compare_at_unit_price
+ *     description: The original price of the item before a promotion or sale.
  *   unit_price:
- *     oneOf:
- *       - type: string
- *         title: unit_price
- *         description: The item's unit price.
- *       - type: number
- *         title: unit_price
- *         description: The item's unit price.
- *       - type: string
- *         title: unit_price
- *         description: The item's unit price.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: unit_price
+ *     description: The price of a single quantity of the item.
  *   tax_lines:
  *     type: array
  *     description: The item's tax lines.
@@ -151,161 +129,73 @@
  *     items:
  *       $ref: "#/components/schemas/BaseLineItemAdjustment"
  *   cart:
- *     $ref: "#/components/schemas/BaseCart"
+ *     $ref: "#/components/schemas/StoreCart"
  *   cart_id:
  *     type: string
  *     title: cart_id
- *     description: The item's cart id.
+ *     description: The ID of the cart that the line item belongs to.
  *   metadata:
  *     type: object
- *     description: The item's metadata.
+ *     description: The item's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     title: created_at
- *     description: The item's created at.
+ *     description: The date the item was created.
  *     format: date-time
  *   updated_at:
  *     type: string
  *     title: updated_at
- *     description: The item's updated at.
+ *     description: The date the item was updated.
  *     format: date-time
  *   deleted_at:
  *     type: string
  *     title: deleted_at
- *     description: The item's deleted at.
+ *     description: The date the item was deleted.
  *     format: date-time
  *   original_total:
- *     oneOf:
- *       - type: string
- *         title: original_total
- *         description: The item's original total.
- *       - type: number
- *         title: original_total
- *         description: The item's original total.
- *       - type: string
- *         title: original_total
- *         description: The item's original total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_total
+ *     description: The item's total including taxes, excluding promotions.
  *   original_subtotal:
- *     oneOf:
- *       - type: string
- *         title: original_subtotal
- *         description: The item's original subtotal.
- *       - type: number
- *         title: original_subtotal
- *         description: The item's original subtotal.
- *       - type: string
- *         title: original_subtotal
- *         description: The item's original subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_subtotal
+ *     description: The item's total excluding taxes, including promotions.
  *   original_tax_total:
- *     oneOf:
- *       - type: string
- *         title: original_tax_total
- *         description: The item's original tax total.
- *       - type: number
- *         title: original_tax_total
- *         description: The item's original tax total.
- *       - type: string
- *         title: original_tax_total
- *         description: The item's original tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_tax_total
+ *     description: The total taxes of the item excluding promotions.
  *   item_total:
- *     oneOf:
- *       - type: string
- *         title: item_total
- *         description: The item's item total.
- *       - type: number
- *         title: item_total
- *         description: The item's item total.
- *       - type: string
- *         title: item_total
- *         description: The item's item total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_tax_total
+ *     description: The item's total including taxes and promotions.
  *   item_subtotal:
- *     oneOf:
- *       - type: string
- *         title: item_subtotal
- *         description: The item's item subtotal.
- *       - type: number
- *         title: item_subtotal
- *         description: The item's item subtotal.
- *       - type: string
- *         title: item_subtotal
- *         description: The item's item subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: item_subtotal
+ *     description: The item's total excluding taxes, including promotions.
  *   item_tax_total:
- *     oneOf:
- *       - type: string
- *         title: item_tax_total
- *         description: The item's item tax total.
- *       - type: number
- *         title: item_tax_total
- *         description: The item's item tax total.
- *       - type: string
- *         title: item_tax_total
- *         description: The item's item tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: item_tax_total
+ *     description: The total taxes of the item including promotions.
  *   total:
- *     oneOf:
- *       - type: string
- *         title: total
- *         description: The item's total.
- *       - type: number
- *         title: total
- *         description: The item's total.
- *       - type: string
- *         title: total
- *         description: The item's total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: total
+ *     description: The item's total including taxes and promotions.
  *   subtotal:
- *     oneOf:
- *       - type: string
- *         title: subtotal
- *         description: The item's subtotal.
- *       - type: number
- *         title: subtotal
- *         description: The item's subtotal.
- *       - type: string
- *         title: subtotal
- *         description: The item's subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: subtotal
+ *     description: The item's total excluding taxes, including promotions.
  *   tax_total:
- *     oneOf:
- *       - type: string
- *         title: tax_total
- *         description: The item's tax total.
- *       - type: number
- *         title: tax_total
- *         description: The item's tax total.
- *       - type: string
- *         title: tax_total
- *         description: The item's tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: tax_total
+ *     description: The total taxes of the item including promotions.
  *   discount_total:
- *     oneOf:
- *       - type: string
- *         title: discount_total
- *         description: The item's discount total.
- *       - type: number
- *         title: discount_total
- *         description: The item's discount total.
- *       - type: string
- *         title: discount_total
- *         description: The item's discount total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: discount_total
+ *     description: The total discount of the item.
  *   discount_tax_total:
- *     oneOf:
- *       - type: string
- *         title: discount_tax_total
- *         description: The item's discount tax total.
- *       - type: number
- *         title: discount_tax_total
- *         description: The item's discount tax total.
- *       - type: string
- *         title: discount_tax_total
- *         description: The item's discount tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: discount_tax_total
+ *     description: The total taxes applied on the discounted amount.
  * 
 */
 

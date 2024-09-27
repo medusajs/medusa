@@ -4,8 +4,17 @@
  * description: The order preview's order change.
  * x-schemaName: BaseOrderChange
  * required:
+ *   - order
+ *   - claim
+ *   - return
+ *   - exchange
  *   - id
+ *   - version
  *   - order_id
+ *   - return_id
+ *   - exchange_id
+ *   - claim_id
+ *   - return_order
  *   - actions
  *   - status
  *   - requested_by
@@ -20,14 +29,6 @@
  *   - canceled_at
  *   - created_at
  *   - updated_at
- *   - version
- *   - return_id
- *   - exchange_id
- *   - claim_id
- *   - order
- *   - return_order
- *   - exchange
- *   - claim
  * properties:
  *   id:
  *     type: string
@@ -141,11 +142,13 @@
  *     title: claim_id
  *     description: The order change's claim id.
  *   order:
- *     $ref: "#/components/schemas/BaseOrder"
- *   return_order: {}
- *   exchange: {}
+ *     $ref: "#/components/schemas/AdminOrder"
+ *   return_order:
+ *     $ref: "#/components/schemas/AdminReturn"
+ *   exchange:
+ *     $ref: "#/components/schemas/AdminExchange"
  *   claim:
- *     $ref: "#/components/schemas/BaseClaim"
+ *     $ref: "#/components/schemas/AdminClaim"
  * 
 */
 

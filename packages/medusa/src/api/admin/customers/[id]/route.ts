@@ -2,8 +2,8 @@ import {
   removeCustomerAccountWorkflow,
   updateCustomersWorkflow,
 } from "@medusajs/core-flows"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

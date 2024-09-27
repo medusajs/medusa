@@ -3,8 +3,8 @@ import {
   BigNumberInput,
   HttpTypes,
   PricingTypes,
-} from "@medusajs/types"
-import { MedusaError, upperCaseFirst } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError, upperCaseFirst } from "@medusajs/framework/utils"
 
 // We want to have one row per variant, so we need to normalize the data
 export const normalizeForExport = (

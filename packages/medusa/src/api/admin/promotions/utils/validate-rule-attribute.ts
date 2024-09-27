@@ -1,4 +1,4 @@
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { getRuleAttributesMap } from "./rule-attributes-map"
 
 export function validateRuleAttribute(attributes: {

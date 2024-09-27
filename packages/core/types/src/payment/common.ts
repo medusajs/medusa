@@ -610,7 +610,7 @@ export interface PaymentProviderDTO {
   /**
    * Whether the payment provider is enabled.
    */
-  is_enabled: string
+  is_enabled: boolean
 }
 
 /**
