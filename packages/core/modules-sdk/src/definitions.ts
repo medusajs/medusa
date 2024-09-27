@@ -32,7 +32,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.CURRENCY]: "@medusajs/medusa/modules/currency",
   [Modules.FILE]: "@medusajs/medusa/modules/file",
   [Modules.NOTIFICATION]: "@medusajs/medusa/modules/notification",
-  [Modules.INDEX]: "@medusajs/medusa/modules/index",
+  [Modules.INDEX]: "@medusajs/medusa/modules/index-module",
 }
 
 export const ModulesDefinition: {
