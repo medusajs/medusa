@@ -845,7 +845,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of customer groups.
  *               required:
  *                 - limit
  *                 - offset
@@ -854,23 +854,23 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The customer group's limit.
+ *                   description: The maximum number of items retrieved.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The customer group's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The customer group's count.
+ *                   description: The total number of items
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of customer groups.
  *               required:
  *                 - customer_groups
  *               properties:
  *                 customer_groups:
  *                   type: array
- *                   description: The customer group's customer groups.
+ *                   description: The list of customer groups.
  *                   items:
  *                     $ref: "#/components/schemas/AdminCustomerGroup"
  *   "400":

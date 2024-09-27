@@ -1,7 +1,7 @@
 /**
  * @schema AdminExportProductRequest
  * type: object
- * description: SUMMARY
+ * description: The export's details
  * x-schemaName: AdminExportProductRequest
  * 
 */

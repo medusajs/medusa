@@ -134,9 +134,8 @@
  *     content:
  *       application/json:
  *         schema:
- *           allOf:
- *             - type: object
- *               description: SUMMARY
+ *           - type: object
+ *               description: The paginated list of regions.
  *               required:
  *                 - limit
  *                 - offset
@@ -145,17 +144,17 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The region's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The region's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The region's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of regions.
  *               required:
  *                 - regions
  *               properties:
