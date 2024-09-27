@@ -4,6 +4,7 @@ import { Container, Heading, Text, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteCollection } from "../../../../../hooks/api/collections"
+import { useNavigate } from "react-router-dom"
 
 type CollectionGeneralSectionProps = {
   collection: HttpTypes.AdminCollection
@@ -14,6 +15,7 @@ export const CollectionGeneralSection = ({
 }: CollectionGeneralSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const navigate = useNavigate()
 
   const { mutateAsync } = useDeleteCollection(collection.id!)
 
@@ -22,6 +24,7 @@ export const CollectionGeneralSection = ({
       title: t("general.areYouSure"),
       description: t("collections.deleteWarning", {
         count: 1,
+        title: collection.title,
       }),
     })
 
@@ -30,6 +33,7 @@ export const CollectionGeneralSection = ({
     }
 
     await mutateAsync()
+    navigate("../", { replace: true })
   }
 
   return (

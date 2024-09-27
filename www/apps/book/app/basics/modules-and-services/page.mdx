@@ -72,9 +72,11 @@ The last step is to add the module in Medusa’s configurations.
 
 In `medusa-config.js`, add a `modules` property and pass to it your custom module:
 
-```js title="medusa-config.js" highlights={[["4", "helloModuleService", "The key of the main service to be registered in the Medusa container."]]}
+```js title="medusa-config.js" highlights={[["7", "helloModuleService", "The key of the main service to be registered in the Medusa container."]]}
 module.exports = defineConfig({
-  // ...
+  projectConfig: {
+    // ...
+  },
   modules: {
     helloModuleService: {
       resolve: "./modules/hello",
@@ -109,8 +111,8 @@ For example, create the API route `src/api/custom/route.ts` with the following c
 
 ```ts title="src/api/custom/route.ts"
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import HelloModuleService from "../../../modules/hello/service"
-import { HELLO_MODULE } from "../../../modules/hello"
+import HelloModuleService from "../../modules/hello/service"
+import { HELLO_MODULE } from "../../modules/hello"
 
 export async function GET(
   req: MedusaRequest,

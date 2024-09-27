@@ -1,5 +1,5 @@
 import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -9,7 +9,7 @@ export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const { auth_provider } = req.params
+  const { auth_provider, actor_type } = req.params
   const { identifier } = req.body
 
   const { http } = req.scope.resolve(
@@ -19,6 +19,7 @@ export const POST = async (
   await generateResetPasswordTokenWorkflow(req.scope).run({
     input: {
       entityId: identifier,
+      actorType: actor_type,
       provider: auth_provider,
       secret: http.jwtSecret as string,
     },

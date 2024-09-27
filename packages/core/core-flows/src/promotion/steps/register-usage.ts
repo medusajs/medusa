@@ -1,6 +1,9 @@
-import { IPromotionModuleService, UsageComputedActions } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  IPromotionModuleService,
+  UsageComputedActions,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const registerUsageStepId = "register-usage"
 /**

@@ -1,11 +1,15 @@
-import { IPaymentModuleService, Logger, PaymentDTO } from "@medusajs/types"
+import {
+  IPaymentModuleService,
+  Logger,
+  PaymentDTO,
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   Modules,
   PaymentSessionStatus,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export type AuthorizePaymentSessionStepInput = {
   id: string

@@ -2,7 +2,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
+import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
 import {
   AdminCreateShippingOptionRuleType,
   AdminUpdateShippingOptionRuleType,

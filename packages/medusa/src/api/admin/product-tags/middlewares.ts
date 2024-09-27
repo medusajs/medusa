@@ -1,5 +1,5 @@
 import * as QueryConfig from "./query-config"
-import { MiddlewareRoute } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
 import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
   AdminCreateProductTag,

@@ -1,5 +1,12 @@
-import { CartWorkflowDTO, UsageComputedActions } from "@medusajs/types"
-import { Modules, OrderStatus, OrderWorkflowEvents } from "@medusajs/utils"
+import {
+  CartWorkflowDTO,
+  UsageComputedActions
+} from "@medusajs/framework/types"
+import {
+  Modules,
+  OrderStatus,
+  OrderWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   createWorkflow,
   parallelize,
@@ -7,7 +14,7 @@ import {
   when,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   createRemoteLinkStep,
   emitEventStep,
@@ -82,14 +89,14 @@ export const completeCartWorkflow = createWorkflow(
         const allItems: any[] = []
         const allVariants: any[] = []
 
-        data.cart?.items?.forEach((item) => {
-          allItems.push({
-            id: item.id,
-            variant_id: item.variant_id,
-            quantity: item.quantity,
-          })
-          allVariants.push(item.variant)
+      data.cart?.items?.forEach((item) => {
+        allItems.push({
+          id: item.id,
+          variant_id: item.variant_id,
+          quantity: item.quantity,
         })
+        allVariants.push(item.variant)
+      })
 
         return {
           variants: allVariants,

@@ -1,4 +1,4 @@
-import { CreateFulfillmentDTO } from "@medusajs/types"
+import { CreateFulfillmentDTO } from "@medusajs/framework/types"
 
 export function generateCreateFulfillmentData(
   data: Partial<CreateFulfillmentDTO> & {

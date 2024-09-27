@@ -2,26 +2,26 @@ import {
   TransactionStepTimeoutError,
   TransactionTimeoutError,
   WorkflowManager,
-} from "@medusajs/orchestration"
+} from "@medusajs/framework/orchestration"
 import {
   IWorkflowEngineService,
   MedusaContainer,
   RemoteQueryFunction,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   Module,
   Modules,
   TransactionHandlerType,
   TransactionStepState,
-} from "@medusajs/utils"
-import { WorkflowsModuleService } from "@medusajs/workflow-engine-inmemory/dist/services"
+} from "@medusajs/framework/utils"
 import { asValue } from "awilix"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { TestDatabase } from "../utils"
+import { WorkflowsModuleService } from "../../src/services"
 
 jest.setTimeout(999900000)
 

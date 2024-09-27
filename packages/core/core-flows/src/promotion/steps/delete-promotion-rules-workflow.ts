@@ -1,5 +1,5 @@
-import { RemovePromotionRulesWorkflowDTO } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { RemovePromotionRulesWorkflowDTO } from "@medusajs/framework/types"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { deletePromotionRulesWorkflow } from "../workflows/delete-promotion-rules"
 
 export const deletePromotionRulesWorkflowStepId =
@@ -21,10 +21,7 @@ export const deletePromotionRulesWorkflowStep = createStep(
       throw errors[0].error
     }
 
-    return new StepResponse(
-      data.data.rule_ids ?? [],
-      transaction
-    )
+    return new StepResponse(data.data.rule_ids ?? [], transaction)
   },
 
   async (transaction, { container }) => {

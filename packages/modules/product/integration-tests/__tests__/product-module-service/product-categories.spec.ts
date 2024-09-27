@@ -1,11 +1,11 @@
-import { IProductModuleService } from "@medusajs/types"
+import { IProductModuleService } from "@medusajs/framework/types"
 import {
   CommonEvents,
   composeMessage,
   Modules,
   ProductEvents,
   ProductStatus,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { Product, ProductCategory } from "@models"
 import {
   MockEventBusService,

@@ -1,4 +1,4 @@
-import { PromotionRuleOperatorValues } from "@medusajs/types"
+import { PromotionRuleOperatorValues } from "@medusajs/framework/types"
 
 export interface CreatePromotionRuleDTO {
   description?: string | null

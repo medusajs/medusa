@@ -4,7 +4,7 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { refetchTaxRate } from "../../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,

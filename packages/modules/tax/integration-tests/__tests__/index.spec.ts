@@ -1,5 +1,5 @@
-import { ITaxModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { ITaxModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { TaxModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setupTaxStructure } from "../utils/setup-tax-structure"

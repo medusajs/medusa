@@ -8,13 +8,13 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   InjectManager,
   MedusaContext,
   MedusaError,
   MedusaService,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { AuthIdentity, ProviderIdentity } from "@models"
 import { joinerConfig } from "../joiner-config"
 import AuthProviderService from "./auth-provider"

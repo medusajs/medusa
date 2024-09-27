@@ -1,11 +1,11 @@
-import { TaxCalculationContext } from "@medusajs/types"
+import { TaxCalculationContext } from "@medusajs/framework/types"
 import { NextFunction } from "express"
 import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
 } from "../../../../types/routing"
 import { refetchEntity } from "../../refetch-entity"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { RequestWithContext } from "../../../store/products/helpers"
 
 export function setTaxContext() {

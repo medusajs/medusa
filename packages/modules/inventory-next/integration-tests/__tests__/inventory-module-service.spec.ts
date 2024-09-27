@@ -1,5 +1,5 @@
-import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
-import { BigNumber, Module, Modules } from "@medusajs/utils"
+import { IInventoryService, InventoryItemDTO } from "@medusajs/framework/types"
+import { BigNumber, Module, Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { InventoryModuleService } from "../../src/services"
 

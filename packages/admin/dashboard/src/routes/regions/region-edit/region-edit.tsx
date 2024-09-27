@@ -19,7 +19,9 @@ export const RegionEdit = () => {
     isPending: isRegionLoading,
     isError: isRegionError,
     error: regionError,
-  } = useRegion(id!, { fields: "*payment_providers" })
+  } = useRegion(id!, {
+    fields: "*payment_providers,*countries,+automatic_taxes",
+  })
 
   const {
     store,

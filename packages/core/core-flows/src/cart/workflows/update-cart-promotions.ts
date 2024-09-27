@@ -1,9 +1,9 @@
-import { PromotionActions } from "@medusajs/utils"
+import { PromotionActions } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createWorkflow,
   parallelize,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {
   createLineItemAdjustmentsStep,

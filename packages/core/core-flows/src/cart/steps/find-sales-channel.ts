@@ -2,9 +2,9 @@ import {
   ISalesChannelModuleService,
   IStoreModuleService,
   SalesChannelDTO,
-} from "@medusajs/types"
-import { MedusaError, Modules, isDefined } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { MedusaError, Modules, isDefined } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface FindSalesChannelStepInput {
   salesChannelId?: string | null

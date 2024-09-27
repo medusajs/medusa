@@ -1,10 +1,10 @@
-import { FulfillmentWorkflow } from "@medusajs/types"
+import { FulfillmentWorkflow } from "@medusajs/framework/types"
 import {
   createWorkflow,
   transform,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   setShippingOptionsPricesStep,
   upsertShippingOptionsStep,

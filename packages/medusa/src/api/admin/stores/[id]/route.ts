@@ -3,14 +3,14 @@ import {
   remoteQueryObjectFromString,
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
 import { AdminGetStoreParamsType, AdminUpdateStoreType } from "../validators"
 import { refetchStore } from "../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetStoreParamsType>,

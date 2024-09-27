@@ -1,8 +1,12 @@
 import { OperatorMap } from "../../dal"
-import { ClaimReason, OrderClaimType, ReturnDTO } from "../../order"
+import { ClaimReason, OrderClaimType } from "../../order"
 import { BigNumberRawValue } from "../../totals"
 import { FindParams } from "../common"
-import { BaseOrder, BaseOrderShippingMethod, BaseOrderTransaction } from "../order/common"
+import {
+  BaseOrder,
+  BaseOrderShippingMethod,
+  BaseOrderTransaction,
+} from "../order/common"
 import { BaseReturn } from "../return/common"
 
 export interface BaseClaimItem {
@@ -23,7 +27,7 @@ export interface BaseClaim {
   type: OrderClaimType
   order_id: string
   return_id?: string
-  display_id: string
+  display_id: number
   order_version: string
   refund_amount?: number
   created_by?: string

@@ -20,7 +20,7 @@ class RecursiveEntity1 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @OneToMany(() => RecursiveEntity2, (entity2) => entity2.entity1, {
@@ -44,7 +44,7 @@ class RecursiveEntity2 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @ManyToOne(() => RecursiveEntity1, {
@@ -64,7 +64,7 @@ class Entity1 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @OneToMany(() => Entity2, (entity2) => entity2.entity1, {
@@ -89,7 +89,7 @@ class Entity2 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @ManyToOne(() => Entity1, { mapToPk: true })
@@ -111,7 +111,7 @@ class DeepRecursiveEntity1 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @OneToMany(() => DeepRecursiveEntity2, (entity2) => entity2.entity1, {
@@ -136,7 +136,7 @@ class DeepRecursiveEntity2 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @ManyToOne(() => DeepRecursiveEntity1)
@@ -163,7 +163,7 @@ class DeepRecursiveEntity3 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @ManyToOne(() => DeepRecursiveEntity1, {
@@ -187,7 +187,7 @@ class DeepRecursiveEntity4 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @ManyToOne(() => DeepRecursiveEntity1)
@@ -214,7 +214,7 @@ class InternalCircularDependencyEntity1 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @OneToMany(
@@ -226,7 +226,7 @@ class InternalCircularDependencyEntity1 {
   )
   children = new Collection<InternalCircularDependencyEntity1>(this)
 
-  @ManyToOne(() => InternalCircularDependencyEntity1)
+  @ManyToOne(() => InternalCircularDependencyEntity1, { nullable: true })
   parent: Rel<InternalCircularDependencyEntity1>
 }
 
@@ -244,7 +244,7 @@ class Entity1WithUnDecoratedProp {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @OneToMany(() => Entity2WithUnDecoratedProp, (entity2) => entity2.entity1, {
@@ -271,7 +271,7 @@ class Entity2WithUnDecoratedProp {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @ManyToOne(() => Entity1WithUnDecoratedProp, { mapToPk: true })
@@ -293,7 +293,7 @@ class SearchableEntity1 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @Searchable()
@@ -321,7 +321,7 @@ class SearchableEntity2 {
   @PrimaryKey()
   id: string
 
-  @Property()
+  @Property({ nullable: true })
   deleted_at: Date | null
 
   @Searchable()

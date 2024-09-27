@@ -24,7 +24,7 @@
     "ts-node": "^10.9.1",
     "typedoc": "^0.26.2",
     "typedoc-plugin-custom": "*",
-    "typescript": "5.5",
+    "typescript": "^5.6.2",
     "utils": "*"
   },
   "devDependencies": {

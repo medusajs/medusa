@@ -1,8 +1,7 @@
-import { isObject, isString } from "@medusajs/utils"
-import { IndexTypes } from "@medusajs/types"
-import { GraphQLList } from "graphql"
-import { Knex } from "knex"
+import { Knex } from "@mikro-orm/knex"
+import { IndexTypes } from "@medusajs/framework/types"
 import { OrderBy, QueryFormat, QueryOptions, Select } from "@types"
+import { isObject, isString, GraphQLUtils } from "@medusajs/framework/utils"
 
 export const OPERATOR_MAP = {
   $eq: "=",
@@ -62,7 +61,7 @@ export class QueryBuilder {
     let currentType = fieldRef.type
     let isArray = false
     while (currentType.ofType) {
-      if (currentType instanceof GraphQLList) {
+      if (currentType instanceof GraphQLUtils.GraphQLList) {
         isArray = true
       }
 
@@ -116,9 +115,7 @@ export class QueryBuilder {
     const isList = graphqlType.endsWith("[]")
     graphqlType = graphqlType.replace("[]", "")
 
-    return (
-      (graphqlToPostgresTypeMap[graphqlType] ?? "") + (isList ? "[]" : "") ?? ""
-    )
+    return (graphqlToPostgresTypeMap[graphqlType] ?? "") + (isList ? "[]" : "")
   }
 
   private parseWhere(

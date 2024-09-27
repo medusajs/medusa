@@ -1,4 +1,4 @@
-import { MODULE_RESOURCE_TYPE } from "@medusajs/modules-sdk"
+import { MODULE_RESOURCE_TYPE } from "@medusajs/framework/modules-sdk"
 
 export * from "./generate-entity"
 export * from "./generate-schema"

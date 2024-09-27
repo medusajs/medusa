@@ -7,13 +7,13 @@ import {
   AdminServiceZoneResponse,
   HttpTypes,
   IFulfillmentModuleService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   Modules,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaRequest,

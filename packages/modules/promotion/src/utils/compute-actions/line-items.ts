@@ -2,7 +2,7 @@ import {
   ApplicationMethodAllocationValues,
   BigNumberInput,
   PromotionTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
@@ -11,7 +11,7 @@ import {
   MedusaError,
   ApplicationMethodTargetType as TargetType,
   calculateAdjustmentAmountFromPromotion,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { areRulesValidForContext } from "../validations"
 import { computeActionForBudgetExceeded } from "./usage"
 

@@ -1,5 +1,2 @@
-module.exports = {
-  transform: { "^.+\\.[jt]s?$": "@swc/jest" },
-  testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `ts`],
-}
+const defineJestConfig = require("../../../define_jest_config")
+module.exports = defineJestConfig()

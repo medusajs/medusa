@@ -4,6 +4,7 @@ import {
 } from "../modules-sdk"
 
 import type { RedisOptions } from "ioredis"
+// @ts-ignore
 import type { InlineConfig } from "vite"
 
 /**
@@ -11,7 +12,7 @@ import type { InlineConfig } from "vite"
  *
  * Admin dashboard configurations.
  */
-export type AdminOptions = {
+export interface AdminOptions {
   /**
    * Whether to disable the admin dashboard. If set to `true`, the admin dashboard is disabled,
    * in both development and production environments. The default value is `false`.

@@ -1,6 +1,6 @@
-import { HttpTypes, IProductModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { HttpTypes, IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const groupProductsForBatchStepId = "group-products-for-batch"
 /**
@@ -19,7 +19,7 @@ export const groupProductsForBatchStep = createStep(
         // We use the ID to do product updates
         id: data.map((product) => product.id).filter(Boolean) as string[],
       },
-      { take: null, select: ["handle"] }
+      { select: ["handle"] }
     )
     const existingProductsSet = new Set(existingProducts.map((p) => p.id))
 

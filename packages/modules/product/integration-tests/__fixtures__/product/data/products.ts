@@ -1,4 +1,4 @@
-import { ProductStatus } from "@medusajs/utils"
+import { ProductStatus } from "@medusajs/framework/utils"
 
 export const productsData = [
   {

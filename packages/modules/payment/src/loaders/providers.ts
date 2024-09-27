@@ -1,10 +1,10 @@
-import { moduleProviderLoader } from "@medusajs/modules-sdk"
+import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
 import {
   CreatePaymentProviderDTO,
   LoaderOptions,
   ModuleProvider,
   ModulesSdkTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { Lifetime, asFunction, asValue } from "awilix"
 
 import { PaymentProviderService } from "@services"
@@ -57,7 +57,7 @@ const registerProvidersInDb = async ({
 
   const existingProviders = await paymentProviderService.list(
     { id: providersToLoad },
-    { take: null }
+    {}
   )
 
   const upsertData: CreatePaymentProviderDTO[] = []

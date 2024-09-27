@@ -1,4 +1,8 @@
-import { MedusaError, MikroOrmBase, PriceListStatus } from "@medusajs/utils"
+import {
+  MedusaError,
+  MikroOrmBase,
+  PriceListStatus,
+} from "@medusajs/framework/utils"
 
 import {
   CalculatedPriceSetDTO,
@@ -6,7 +10,7 @@ import {
   PricingContext,
   PricingFilters,
   PricingRepositoryService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class PricingRepository
@@ -54,7 +58,6 @@ export class PricingRepository
       return []
     }
 
-    const date = new Date().toISOString()
     // Gets all the price set money amounts where rules match for each of the contexts
     // that the price set is configured for
     const priceSubQueryKnex = knex({
@@ -97,23 +100,34 @@ export class PricingRepository
       )
 
     priceSubQueryKnex.orWhere((q) => {
-      for (const [key, value] of Object.entries(context)) {
-        q.orWhere({
-          "pr.attribute": key,
-          "pr.value": value,
-        })
-      }
-      q.orWhere("price.rules_count", "=", 0)
-      q.whereNull("price.price_list_id")
+      const nullPLq = q.whereNull("price.price_list_id")
+      nullPLq.andWhere((q) => {
+        for (const [key, value] of Object.entries(context)) {
+          q.orWhere({
+            "pr.attribute": key,
+            "pr.value": value,
+          })
+        }
+        q.orWhere("price.rules_count", "=", 0)
+      })
     })
 
     priceSubQueryKnex.orWhere((q) => {
       q.whereNotNull("price.price_list_id")
+        .whereNull("pl.deleted_at")
         .andWhere(function () {
-          this.whereNull("pl.starts_at").orWhere("pl.starts_at", "<=", date)
+          this.whereNull("pl.starts_at").orWhere(
+            "pl.starts_at",
+            "<=",
+            knex.fn.now()
+          )
         })
         .andWhere(function () {
-          this.whereNull("pl.ends_at").orWhere("pl.ends_at", ">=", date)
+          this.whereNull("pl.ends_at").orWhere(
+            "pl.ends_at",
+            ">=",
+            knex.fn.now()
+          )
         })
         .andWhere(function () {
           this.andWhere(function () {

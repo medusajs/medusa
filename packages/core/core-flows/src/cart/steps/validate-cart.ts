@@ -1,6 +1,6 @@
-import { CartDTO, CartWorkflowDTO } from "@medusajs/types"
-import { MedusaError, isPresent } from "@medusajs/utils"
-import { createStep } from "@medusajs/workflows-sdk"
+import { CartDTO, CartWorkflowDTO } from "@medusajs/framework/types"
+import { MedusaError, isPresent } from "@medusajs/framework/utils"
+import { createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface ValidateCartStepInput {
   cart: CartWorkflowDTO | CartDTO

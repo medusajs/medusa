@@ -1,15 +1,20 @@
-import { ModulesDefinition } from "@medusajs/modules-sdk"
-import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { ModulesDefinition } from "@medusajs/framework/modules-sdk"
+import {
+  FulfillmentSetDTO,
+  IFulfillmentModuleService,
+} from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { FulfillmentModuleService, FulfillmentProviderService } from "@services"
 import {
-  SuiteOptions,
   initModules,
   moduleIntegrationTestRunner,
+  SuiteOptions,
 } from "medusa-test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
+
+jest.setTimeout(60000)
 
 let moduleOptions = {
   providers: [
@@ -34,7 +39,6 @@ async function list(
   const finalConfig = {
     relations: [
       "service_zones.geo_zones",
-      "service_zones.shipping_options.shipping_profile",
       "service_zones.shipping_options.provider",
       "service_zones.shipping_options.type",
       "service_zones.shipping_options.rules",
@@ -382,7 +386,7 @@ moduleIntegrationTestRunner({
          */
 
         await service.restoreFulfillmentSets([fulfillmentSets[0].id])
-        const restoredFulfillmentSets = await list(service)
+        const restoredFulfillmentSets = await list(service, {})
         expectSoftDeleted(restoredFulfillmentSets)
       })
     }),

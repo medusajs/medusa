@@ -1,10 +1,10 @@
-import { IPricingModuleService, PricingTypes } from "@medusajs/types"
+import { IPricingModuleService, PricingTypes } from "@medusajs/framework/types"
 import {
   MedusaError,
   Modules,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export type UpdatePriceSetsStepInput =
   | {
