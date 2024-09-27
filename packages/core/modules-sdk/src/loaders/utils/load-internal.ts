@@ -312,7 +312,7 @@ export async function loadResources({
   loadedModuleLoaders ??= []
 
   const modulePath = discoveryPath
-  let normalizedPath = dirname(modulePath)
+  let normalizedPath = dirname(require.resolve(modulePath))
   normalizedPath = resolve(normalizedPath)
 
   try {
