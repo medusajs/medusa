@@ -5,7 +5,7 @@ import {
   useAdminCreateSwapShipment,
 } from "medusa-react"
 import React, { useState } from "react"
-import { Controller, useFieldArray, useForm } from "react-hook-form"
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import Button from "../../../../components/fundamentals/button"
@@ -34,7 +34,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
   handleCancel,
 }) => {
   const { t } = useTranslation()
-  const { control, watch, handleSubmit } = useForm<MarkShippedFormData>({
+  const { control, handleSubmit } = useForm<MarkShippedFormData>({
     defaultValues: {
       tracking_numbers: [{ value: "" }],
     },
@@ -51,13 +51,11 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
     name: "tracking_numbers",
   })
 
-  const watchedFields = watch("tracking_numbers")
-
-  // Allows us to listen to onChange events
-  const trackingNumbers = fields.map((field, index) => ({
-    ...field,
-    ...watchedFields[index],
-  }))
+  const watchedFields = useWatch({
+    control,
+    name: "tracking_numbers",
+    defaultValue: [],
+  })
 
   const markOrderShipped = useAdminCreateShipment(orderId)
   const markSwapShipped = useAdminCreateSwapShipment(orderId)
@@ -75,7 +73,9 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
       fulfillment.claim_order_id || fulfillment.swap_id || fulfillment.order_id
     const [type] = resourceId.split("_")
 
-    const tracking_numbers = data.tracking_numbers.map((tn) => tn.value)
+    const tracking_numbers = data.tracking_numbers
+      .map((tn) => tn?.value)
+      .filter(Boolean) as string[]
 
     type actionType =
       | typeof markOrderShipped
@@ -166,7 +166,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
                 {t("mark-shipped-tracking", "Tracking")}
               </span>
               <div className="flex flex-col space-y-2">
-                {trackingNumbers.map((tn, index) => (
+                {fields.map((tn, index) => (
                   <Controller
                     key={tn.id}
                     name={`tracking_numbers.${index}.value`}
@@ -203,9 +203,13 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
             <div className="mt-4 flex w-full justify-end">
               <Button
                 size="small"
-                onClick={() => appendTracking({ value: undefined })}
+                onClick={() => appendTracking({ value: "" })}
                 variant="secondary"
-                disabled={trackingNumbers.some((tn) => !tn.value)}
+                disabled={
+                  watchedFields.some((tn) => !tn?.value) ||
+                  !watchedFields.length
+                }
+                type="button"
               >
                 {t(
                   "mark-shipped-add-additional-tracking-number",
