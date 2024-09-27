@@ -2,12 +2,15 @@ import { listShippingOptionsForCartWorkflow } from "@medusajs/core-flows"
 import { HttpTypes, ICartModuleService } from "@medusajs/framework/types"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { StoreGetShippingOptionsType } from "./validators"
 
 export const GET = async (
   req: MedusaRequest<HttpTypes.StoreGetShippingOptionList>,
   res: MedusaResponse<HttpTypes.StoreShippingOptionListResponse>
 ) => {
-  const { cart_id } = req.filterableFields as { cart_id: string }
+  const { cart_id, is_return } =
+    req.filterableFields as StoreGetShippingOptionsType
+
   if (!cart_id) {
     throw new MedusaError(
       MedusaError.Types.NOT_ALLOWED,
@@ -34,6 +37,7 @@ export const GET = async (
       cart_id: cart.id,
       sales_channel_id: cart.sales_channel_id,
       currency_code: cart.currency_code,
+      is_return: !!is_return,
       shipping_address: {
         city: cart.shipping_address?.city,
         country_code: cart.shipping_address?.country_code,

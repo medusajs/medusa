@@ -1,7 +1,7 @@
 /**
  * @schema StoreReturnReasonResponse
  * type: object
- * description: SUMMARY
+ * description: The return reason's details.
  * x-schemaName: StoreReturnReasonResponse
  * required:
  *   - return_reason
