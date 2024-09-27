@@ -1,7 +1,7 @@
 /**
  * @schema StoreProductTag
  * type: object
- * description: The tag's tags.
+ * description: The tag's details.
  * x-schemaName: StoreProductTag
  * properties:
  *   id:
@@ -16,20 +16,20 @@
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The tag's created at.
+ *     description: The date the tag was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The tag's updated at.
+ *     description: The date the tag was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The tag's deleted at.
+ *     description: The date the tag was deleted.
  *   metadata:
  *     type: object
- *     description: The tag's metadata.
+ *     description: The tag's metadata, can hold custom key-value pairs.
  * required:
  *   - id
  *   - value

@@ -1,7 +1,7 @@
 /**
  * @schema StoreCreatePaymentCollection
  * type: object
- * description: SUMMARY
+ * description: The details of the payment collection to create.
  * x-schemaName: StoreCreatePaymentCollection
  * required:
  *   - cart_id
@@ -9,7 +9,7 @@
  *   cart_id:
  *     type: string
  *     title: cart_id
- *     description: The payment collection's cart id.
+ *     description: The ID of the cart this payment collection is for.
  * 
 */
 

@@ -136,19 +136,20 @@ export class Client {
     input: FetchInput,
     init?: FetchArgs
   ): Promise<FetchStreamResponse> {
-    let abort = new AbortController()
+    const abortController = new AbortController()
+    const abortFunc = abortController.abort.bind(abortController)
 
     let res = await this.fetch_(input, {
       ...init,
-      signal: abort.signal,
+      signal: abortController.signal,
       headers: { ...init?.headers, accept: "text/event-stream" },
     })
 
     if (res.ok) {
-      return { stream: events(res, abort.signal), abort: abort.abort }
+      return { stream: events(res, abortController.signal), abort: abortFunc }
     }
 
-    return { stream: null, abort: abort.abort }
+    return { stream: null, abort: abortFunc }
   }
 
   setToken(token: string) {

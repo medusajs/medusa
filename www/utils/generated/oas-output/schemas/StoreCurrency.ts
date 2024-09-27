@@ -19,6 +19,7 @@
  *     type: string
  *     title: code
  *     description: The currency's code.
+ *     example: usd
  *   symbol:
  *     type: string
  *     title: symbol
@@ -39,36 +40,21 @@
  *     type: number
  *     title: rounding
  *     description: The currency's rounding.
- *   raw_rounding:
- *     type: object
- *     description: The currency's raw rounding.
- *     required:
- *       - value
- *       - precision
- *     properties:
- *       value:
- *         type: string
- *         title: value
- *         description: The raw rounding's value.
- *       precision:
- *         type: number
- *         title: precision
- *         description: The raw rounding's precision.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The currency's created at.
+ *     description: The date the currency was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The currency's updated at.
+ *     description: The date the currency was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The currency's deleted at.
+ *     description: The date the currency was deleted.
  * 
 */
 

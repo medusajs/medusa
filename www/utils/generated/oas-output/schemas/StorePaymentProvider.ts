@@ -1,7 +1,7 @@
 /**
  * @schema StorePaymentProvider
  * type: object
- * description: The payment provider's payment providers.
+ * description: The payment provider's details
  * x-schemaName: StorePaymentProvider
  * required:
  *   - id

@@ -1,7 +1,7 @@
 /**
  * @schema StoreProductVariant
  * type: object
- * description: The variant's variants.
+ * description: The variant's details.
  * x-schemaName: StoreProductVariant
  * properties:
  *   options:
@@ -17,17 +17,17 @@
  *     description: The variant's ID.
  *   metadata:
  *     type: object
- *     description: The variant's metadata.
+ *     description: The variant's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The variant's created at.
+ *     description: The date the variant was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The variant's updated at.
+ *     description: The date the variant was updated.
  *   title:
  *     type: string
  *     title: title
@@ -35,12 +35,12 @@
  *   product_id:
  *     type: string
  *     title: product_id
- *     description: The variant's product id.
+ *     description: The ID of the product that the variant belongs to.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The variant's deleted at.
+ *     description: The date the variant was deleted.
  *   width:
  *     type: number
  *     title: width
@@ -64,11 +64,11 @@
  *   hs_code:
  *     type: string
  *     title: hs_code
- *     description: The variant's hs code.
+ *     description: The variant's HS code.
  *   mid_code:
  *     type: string
  *     title: mid_code
- *     description: The variant's mid code.
+ *     description: The variant's MID code.
  *   material:
  *     type: string
  *     title: material
@@ -76,7 +76,7 @@
  *   sku:
  *     type: string
  *     title: sku
- *     description: The variant's sku.
+ *     description: The variant's SKU.
  *   barcode:
  *     type: string
  *     title: barcode
@@ -84,27 +84,33 @@
  *   ean:
  *     type: string
  *     title: ean
- *     description: The variant's ean.
+ *     description: The variant's EAN.
  *   upc:
  *     type: string
  *     title: upc
- *     description: The variant's upc.
+ *     description: The variant's UPC.
  *   allow_backorder:
- *     oneOf:
- *       - {}
- *       - {}
+ *     type: boolean
+ *     title: allow_backorder
+ *     description: Whether the variant can be ordered even if it's not in stock.
  *   manage_inventory:
- *     oneOf:
- *       - {}
- *       - {}
+ *     type: boolean
+ *     title: manage_inventory
+ *     description: Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/inventory
+ *       description: "Storefront guide: How to retrieve a product variant's inventory details."
  *   inventory_quantity:
  *     type: number
  *     title: inventory_quantity
- *     description: The variant's inventory quantity.
+ *     description: The variant's inventory quantity. This property is only available if you pass `+variants.inventory_quantity` in the `fields` query parameter.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/inventory
+ *       description: "Storefront guide: How to retrieve a product variant's inventory details."
  *   variant_rank:
  *     type: number
  *     title: variant_rank
- *     description: The variant's variant rank.
+ *     description: The variant's rank among its siblings.
  *   calculated_price:
  *     $ref: "#/components/schemas/BaseCalculatedPriceSet"
  * required:

@@ -273,6 +273,52 @@ class MedusaModule {
     MedusaModule.modules_.set(moduleKey, modules!)
   }
 
+  /**
+   * Load all modules and resolve them once they are loaded
+   * @param modulesOptions
+   * @param migrationOnly
+   * @param loaderOnly
+   * @param workerMode
+   */
+  public static async bootstrapAll(
+    modulesOptions: Omit<
+      ModuleBootstrapOptions,
+      "migrationOnly" | "loaderOnly" | "workerMode"
+    >[],
+    {
+      migrationOnly,
+      loaderOnly,
+      workerMode,
+    }: {
+      migrationOnly?: boolean
+      loaderOnly?: boolean
+      workerMode?: ModuleBootstrapOptions["workerMode"]
+    }
+  ): Promise<
+    {
+      [key: string]: any
+    }[]
+  > {
+    return await MedusaModule.bootstrap_(modulesOptions, {
+      migrationOnly,
+      loaderOnly,
+      workerMode,
+    })
+  }
+
+  /**
+   * Load a single module and resolve it once it is loaded
+   * @param moduleKey
+   * @param defaultPath
+   * @param declaration
+   * @param moduleExports
+   * @param sharedContainer
+   * @param moduleDefinition
+   * @param injectedDependencies
+   * @param migrationOnly
+   * @param loaderOnly
+   * @param workerMode
+   */
   public static async bootstrap<T>({
     moduleKey,
     defaultPath,
@@ -287,96 +333,232 @@ class MedusaModule {
   }: ModuleBootstrapOptions): Promise<{
     [key: string]: T
   }> {
-    const hashKey = simpleHash(
-      stringifyCircular({ moduleKey, defaultPath, declaration })
+    const [service] = await MedusaModule.bootstrap_(
+      [
+        {
+          moduleKey,
+          defaultPath,
+          declaration,
+          moduleExports,
+          sharedContainer,
+          moduleDefinition,
+          injectedDependencies,
+        },
+      ],
+      {
+        migrationOnly,
+        loaderOnly,
+        workerMode,
+      }
     )
 
-    if (!loaderOnly && MedusaModule.instances_.has(hashKey)) {
-      return MedusaModule.instances_.get(hashKey)! as {
-        [key: string]: T
+    return service as {
+      [key: string]: T
+    }
+  }
+
+  /**
+   * Load all modules and then resolve them once they are loaded
+   *
+   * @param modulesOptions
+   * @param migrationOnly
+   * @param loaderOnly
+   * @param workerMode
+   * @protected
+   */
+  protected static async bootstrap_<T>(
+    modulesOptions: Omit<
+      ModuleBootstrapOptions,
+      "migrationOnly" | "loaderOnly" | "workerMode"
+    >[],
+    {
+      migrationOnly,
+      loaderOnly,
+      workerMode,
+    }: {
+      migrationOnly?: boolean
+      loaderOnly?: boolean
+      workerMode?: "shared" | "worker" | "server"
+    }
+  ): Promise<
+    {
+      [key: string]: T
+    }[]
+  > {
+    let loadedModules: {
+      hashKey: string
+      modDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration
+      moduleResolutions: Record<string, ModuleResolution>
+      container: MedusaContainer
+      finishLoading: (arg: { [Key: string]: any }) => void
+    }[] = []
+
+    const services: { [Key: string]: any }[] = []
+
+    for (const moduleOptions of modulesOptions) {
+      const {
+        moduleKey,
+        defaultPath,
+        declaration,
+        moduleExports,
+        sharedContainer,
+        moduleDefinition,
+        injectedDependencies,
+      } = moduleOptions
+
+      const hashKey = simpleHash(
+        stringifyCircular({ moduleKey, defaultPath, declaration })
+      )
+
+      let finishLoading: any
+      let errorLoading: any
+
+      const loadingPromise = new Promise((resolve, reject) => {
+        finishLoading = resolve
+        errorLoading = reject
+      })
+
+      if (!loaderOnly && MedusaModule.instances_.has(hashKey)) {
+        services.push(MedusaModule.instances_.get(hashKey)!)
+        continue
       }
-    }
 
-    if (!loaderOnly && MedusaModule.loading_.has(hashKey)) {
-      return MedusaModule.loading_.get(hashKey)
-    }
-
-    let finishLoading: any
-    let errorLoading: any
-
-    const loadingPromise = new Promise((resolve, reject) => {
-      finishLoading = resolve
-      errorLoading = reject
-    })
-
-    if (!loaderOnly) {
-      MedusaModule.loading_.set(hashKey, loadingPromise)
-    }
-
-    let modDeclaration =
-      declaration ??
-      ({} as InternalModuleDeclaration | ExternalModuleDeclaration)
-
-    if (declaration?.scope !== MODULE_SCOPE.EXTERNAL) {
-      modDeclaration = {
-        scope: declaration?.scope || MODULE_SCOPE.INTERNAL,
-        resources: declaration?.resources || MODULE_RESOURCE_TYPE.ISOLATED,
-        resolve: defaultPath,
-        options: declaration?.options ?? declaration,
-        dependencies: declaration?.dependencies ?? [],
-        alias: declaration?.alias,
-        main: declaration?.main,
-        worker_mode: workerMode,
+      if (!loaderOnly && MedusaModule.loading_.has(hashKey)) {
+        services.push(await MedusaModule.loading_.get(hashKey))
+        continue
       }
-    }
 
-    // TODO: Only do that while legacy modules sharing the manager exists then remove the ternary in favor of createMedusaContainer({}, globalContainer)
-    const container =
-      modDeclaration.scope === MODULE_SCOPE.INTERNAL &&
-      modDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
-        ? sharedContainer ?? createMedusaContainer()
-        : createMedusaContainer({}, sharedContainer)
+      if (!loaderOnly) {
+        MedusaModule.loading_.set(hashKey, loadingPromise)
+      }
 
-    if (injectedDependencies) {
-      for (const service in injectedDependencies) {
-        container.register(service, asValue(injectedDependencies[service]))
-        if (!container.hasRegistration(service)) {
+      let modDeclaration =
+        declaration ??
+        ({} as InternalModuleDeclaration | ExternalModuleDeclaration)
+
+      if (declaration?.scope !== MODULE_SCOPE.EXTERNAL) {
+        modDeclaration = {
+          scope: declaration?.scope || MODULE_SCOPE.INTERNAL,
+          resources:
+            (declaration as InternalModuleDeclaration)?.resources ||
+            MODULE_RESOURCE_TYPE.ISOLATED,
+          resolve: defaultPath,
+          options: declaration?.options ?? declaration,
+          dependencies:
+            (declaration as InternalModuleDeclaration)?.dependencies ?? [],
+          alias: declaration?.alias,
+          main: declaration?.main,
+          worker_mode: workerMode,
+        } as any
+      }
+
+      // TODO: Only do that while legacy modules sharing the manager exists then remove the ternary in favor of createMedusaContainer({}, globalContainer)
+      const container =
+        modDeclaration.scope === MODULE_SCOPE.INTERNAL &&
+        modDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+          ? sharedContainer ?? createMedusaContainer()
+          : createMedusaContainer({}, sharedContainer)
+
+      if (injectedDependencies) {
+        for (const service in injectedDependencies) {
           container.register(service, asValue(injectedDependencies[service]))
+          if (!container.hasRegistration(service)) {
+            container.register(service, asValue(injectedDependencies[service]))
+          }
         }
       }
+
+      const moduleResolutions = registerMedusaModule(
+        moduleKey,
+        modDeclaration!,
+        moduleExports,
+        moduleDefinition
+      )
+
+      const logger_ =
+        container.resolve(ContainerRegistrationKeys.LOGGER, {
+          allowUnregistered: true,
+        }) ?? logger
+
+      try {
+        await moduleLoader({
+          container,
+          moduleResolutions,
+          logger: logger_,
+          migrationOnly,
+          loaderOnly,
+        })
+      } catch (err) {
+        errorLoading(err)
+        throw err
+      }
+
+      loadedModules.push({
+        hashKey,
+        modDeclaration,
+        moduleResolutions,
+        container,
+        finishLoading,
+      })
     }
 
-    const moduleResolutions = registerMedusaModule(
-      moduleKey,
-      modDeclaration!,
-      moduleExports,
-      moduleDefinition
-    )
+    if (loaderOnly) {
+      loadedModules.forEach(({ finishLoading }) => finishLoading({}))
+      return [{}]
+    }
 
+    for (const {
+      hashKey,
+      modDeclaration,
+      moduleResolutions,
+      container,
+      finishLoading,
+    } of loadedModules) {
+      const service = await MedusaModule.resolveLoadedModule({
+        hashKey,
+        modDeclaration,
+        moduleResolutions,
+        container,
+      })
+
+      MedusaModule.instances_.set(hashKey, service)
+      finishLoading(service)
+      MedusaModule.loading_.delete(hashKey)
+      services.push(service)
+    }
+
+    return services
+  }
+
+  /**
+   * Resolve all the modules once they all have been loaded through the bootstrap
+   * and store their references in the instances_ map and return them
+   *
+   * @param hashKey
+   * @param modDeclaration
+   * @param moduleResolutions
+   * @param container
+   * @private
+   */
+  private static async resolveLoadedModule({
+    hashKey,
+    modDeclaration,
+    moduleResolutions,
+    container,
+  }: {
+    hashKey: string
+    modDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration
+    moduleResolutions: Record<string, ModuleResolution>
+    container: MedusaContainer
+  }): Promise<{
+    [key: string]: any
+  }> {
     const logger_ =
       container.resolve(ContainerRegistrationKeys.LOGGER, {
         allowUnregistered: true,
       }) ?? logger
 
-    try {
-      await moduleLoader({
-        container,
-        moduleResolutions,
-        logger: logger_,
-        migrationOnly,
-        loaderOnly,
-      })
-    } catch (err) {
-      errorLoading(err)
-      throw err
-    }
-
-    const services = {}
-
-    if (loaderOnly) {
-      finishLoading(services)
-      return services
-    }
+    const services: { [key: string]: any } = {}
 
     for (const resolution of Object.values(
       moduleResolutions
@@ -390,6 +572,7 @@ class MedusaModule {
         let joinerConfig!: ModuleJoinerConfig
 
         try {
+          // TODO: rework that to store on a separate property
           joinerConfig = await services[keyName].__joinerConfig?.()
         } catch {
           // noop
@@ -424,10 +607,6 @@ class MedusaModule {
       })
     }
 
-    MedusaModule.instances_.set(hashKey, services)
-    finishLoading(services)
-    MedusaModule.loading_.delete(hashKey)
-
     return services
   }
 
@@ -447,7 +626,7 @@ class MedusaModule {
     }
 
     if (MedusaModule.loading_.has(hashKey)) {
-      return MedusaModule.loading_.get(hashKey)
+      return await MedusaModule.loading_.get(hashKey)
     }
 
     let finishLoading: any
