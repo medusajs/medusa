@@ -136,9 +136,13 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
           return {
             ...options,
             amount: calculated_price?.calculated_amount,
-            rules:
-              calcPricesMap[calculated_price?.calculated_price?.id]
-                ?.price_rules ?? [],
+            rules: [
+              ...(options.rules || []),
+              ...[
+                calcPricesMap[calculated_price?.calculated_price?.id]
+                  ?.price_rules ?? [],
+              ],
+            ],
             is_tax_inclusive:
               !!calculated_price?.is_calculated_price_tax_inclusive,
           }
