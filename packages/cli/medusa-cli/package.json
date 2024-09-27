@@ -52,6 +52,7 @@
     "configstore": "5.0.1",
     "dotenv": "^16.4.5",
     "execa": "^5.1.1",
+    "express": "^4.21.0",
     "fs-exists-cached": "^1.0.0",
     "fs-extra": "^10.0.0",
     "glob": "^7.1.6",
