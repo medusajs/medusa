@@ -4,20 +4,22 @@ import type { PropsWithChildren } from "react"
 import { HelmetProvider } from "react-helmet-async"
 
 import { I18n } from "../components/utilities/i18n"
-import { MedusaApp } from "../core/medusa-app/medusa-app"
+import {
+  DashboardExtensionManager,
+  DashboardExtensionProvider,
+} from "../extensions"
 import { queryClient } from "../lib/query-client"
 import { I18nProvider } from "./i18n-provider"
-import { MedusaAppProvider } from "./medusa-app-provider"
 import { ThemeProvider } from "./theme-provider"
 
 type ProvidersProps = PropsWithChildren<{
-  api: MedusaApp["api"]
+  api: DashboardExtensionManager["api"]
 }>
 
 export const Providers = ({ api, children }: ProvidersProps) => {
   return (
     <TooltipProvider>
-      <MedusaAppProvider api={api}>
+      <DashboardExtensionProvider api={api}>
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>
             <ThemeProvider>
@@ -27,7 +29,7 @@ export const Providers = ({ api, children }: ProvidersProps) => {
             </ThemeProvider>
           </QueryClientProvider>
         </HelmetProvider>
-      </MedusaAppProvider>
+      </DashboardExtensionProvider>
     </TooltipProvider>
   )
 }

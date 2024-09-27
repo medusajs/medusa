@@ -6,12 +6,14 @@ import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
-import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
-import { useExtendableForm } from "../../../../../extensions/forms/hooks"
+import {
+  FormExtensionZone,
+  useDashboardExtension,
+  useExtendableForm,
+} from "../../../../../extensions"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
-import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
 import { CategoryCombobox } from "../../../common/components/category-combobox"
 
 type ProductOrganizationFormProps = {
@@ -30,7 +32,7 @@ export const ProductOrganizationForm = ({
 }: ProductOrganizationFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const { getFormConfigs, getFormFields } = useMedusaApp()
+  const { getFormConfigs, getFormFields } = useDashboardExtension()
 
   const configs = getFormConfigs("product", "organize")
   const fields = getFormFields("product", "organize")

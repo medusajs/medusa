@@ -1,9 +1,9 @@
 import { SingleColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 import { ReservationListTable } from "./components/reservation-list-table"
 
 export const ReservationList = () => {
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   return (
     <SingleColumnPage

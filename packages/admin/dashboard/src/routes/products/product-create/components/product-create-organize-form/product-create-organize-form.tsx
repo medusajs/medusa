@@ -2,8 +2,10 @@ import { useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 
 import { SplitView } from "../../../../../components/layout/split-view"
-import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
-import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
+import {
+  FormExtensionZone,
+  useDashboardExtension,
+} from "../../../../../extensions"
 import { ProductCreateSchemaType } from "../../types"
 import { ProductCreateDetailsContext } from "./components/product-create-organize-context"
 import { ProductCreateOrganizationSection } from "./components/product-create-organize-section"
@@ -15,7 +17,7 @@ type ProductAttributesProps = {
 
 export const ProductCreateOrganizeForm = ({ form }: ProductAttributesProps) => {
   const [open, setOpen] = useState(false)
-  const { getFormFields } = useMedusaApp()
+  const { getFormFields } = useDashboardExtension()
   const fields = getFormFields("product", "create", "organize")
 
   return (

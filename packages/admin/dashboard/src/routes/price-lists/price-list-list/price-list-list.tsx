@@ -1,9 +1,9 @@
 import { SingleColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 import { PriceListListTable } from "./components/price-list-list-table"
 
 export const PriceListList = () => {
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   return (
     <SingleColumnPage

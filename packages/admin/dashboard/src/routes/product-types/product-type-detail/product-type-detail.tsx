@@ -2,8 +2,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useProductType } from "../../../hooks/api/product-types"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { ProductTypeGeneralSection } from "./components/product-type-general-section"
 import { ProductTypeProductSection } from "./components/product-type-product-section"
 import { productTypeLoader } from "./loader"
@@ -22,7 +22,7 @@ export const ProductTypeDetail = () => {
     }
   )
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isPending || !product_type) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />

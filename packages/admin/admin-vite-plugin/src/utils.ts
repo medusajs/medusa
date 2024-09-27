@@ -1,5 +1,6 @@
 import { fdir } from "fdir"
 import MagicString from "magic-string"
+import crypto from "node:crypto"
 import path from "path"
 import {
   File,
@@ -15,9 +16,7 @@ import {
   type ParserOptions,
 } from "./babel"
 
-const VALID_FILE_EXTENSIONS = [".tsx", ".jsx"]
-
-export function convertToImportPath(file: string) {
+export function normalizePath(file: string) {
   return path.normalize(file).split(path.sep).join("/")
 }
 
@@ -48,6 +47,8 @@ export function generateModule(code: string) {
     map: magicString.generateMap({ hires: true }),
   }
 }
+
+const VALID_FILE_EXTENSIONS = [".tsx", ".jsx"]
 
 /**
  * Crawls a directory and returns all files that match the criteria.
@@ -127,4 +128,20 @@ export async function hasDefaultExport(
     },
   })
   return hasDefaultExport
+}
+
+export function generateHash(content: string) {
+  return crypto.createHash("md5").update(content).digest("hex")
+}
+
+const ADMIN_SUBDIRECTORIES = ["routes", "custom-fields", "widgets"] as const
+
+export type AdminSubdirectory = (typeof ADMIN_SUBDIRECTORIES)[number]
+
+export function isFileInAdminSubdirectory(
+  file: string,
+  subdirectory: AdminSubdirectory
+): boolean {
+  const normalizedPath = normalizePath(file)
+  return normalizedPath.includes(`/src/admin/${subdirectory}/`)
 }

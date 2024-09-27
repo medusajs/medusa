@@ -7,7 +7,7 @@ import { categoryLoader } from "./loader"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 
 export const CategoryDetail = () => {
   const { id } = useParams()
@@ -16,7 +16,7 @@ export const CategoryDetail = () => {
     ReturnType<typeof categoryLoader>
   >
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   const { product_category, isLoading, isError, error } = useProductCategory(
     id!,
@@ -28,12 +28,7 @@ export const CategoryDetail = () => {
 
   if (isLoading || !product_category) {
     return (
-      <TwoColumnPageSkeleton
-        mainSections={2}
-        sidebarSections={1}
-        showJSON
-        showMetadata
-      />
+      <TwoColumnPageSkeleton mainSections={2} sidebarSections={1} showJSON />
     )
   }
 
@@ -49,9 +44,7 @@ export const CategoryDetail = () => {
         sideAfter: getWidgets("product_category.details.side.after"),
         sideBefore: getWidgets("product_category.details.side.before"),
       }}
-      hasOutlet
       showJSON
-      showMetadata
       data={product_category}
     >
       <TwoColumnPage.Main>

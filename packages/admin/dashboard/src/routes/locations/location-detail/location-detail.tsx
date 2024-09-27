@@ -7,7 +7,7 @@ import { locationLoader } from "./loader"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 import LocationsFulfillmentProvidersSection from "./components/location-fulfillment-providers-section/location-fulfillment-providers-section"
 import { detailsFields } from "./const"
 
@@ -24,7 +24,7 @@ export const LocationDetail = () => {
     error,
   } = useStockLocation(location_id!, { fields: detailsFields }, { initialData })
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !location) {
     return (

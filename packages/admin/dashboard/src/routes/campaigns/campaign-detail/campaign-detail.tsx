@@ -9,7 +9,7 @@ import { campaignLoader } from "./loader"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 import { CampaignConfigurationSection } from "./components/campaign-configuration-section"
 
 export const CampaignDetail = () => {
@@ -24,7 +24,7 @@ export const CampaignDetail = () => {
     { initialData }
   )
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !campaign) {
     return (

@@ -1,27 +1,26 @@
-import crypto from "node:crypto"
+import { SourceMap } from "magic-string"
 import path from "path"
 import type * as Vite from "vite"
+import { generateCustomFieldHashes } from "./custom-fields"
+import { generateRouteHashes } from "./routes"
 import { MedusaVitePlugin } from "./types"
+import { AdminSubdirectory, isFileInAdminSubdirectory } from "./utils"
 import {
-  generateVirtualConfigModule,
+  generateVirtualDisplayModule,
+  generateVirtualFormModule,
   generateVirtualLinkModule,
   generateVirtualMenuItemModule,
   generateVirtualRouteModule,
+  generateVirtualWidgetModule,
 } from "./virtual-modules"
 import {
-  CONFIG_VIRTUAL_MODULE,
-  LINK_VIRTUAL_MODULE,
-  MENU_ITEM_VIRTUAL_MODULE,
-  RESOLVED_CONFIG_VIRTUAL_MODULE,
-  RESOLVED_LINK_VIRTUAL_MODULE,
-  RESOLVED_MENU_ITEM_VIRTUAL_MODULE,
-  RESOLVED_ROUTE_VIRTUAL_MODULE,
-  ROUTE_VIRTUAL_MODULE,
-  VIRTUAL_MODULES,
-  VirtualModule,
+  isResolvedVirtualModuleId,
+  isVirtualModuleId,
   resolveVirtualId,
+  VirtualModule,
+  vmod,
 } from "./vmod"
-import { generateWidgetConfigHash } from "./widgets"
+import { generateWidgetHash } from "./widgets"
 
 export const medusaVitePlugin: MedusaVitePlugin = (options) => {
   const hashMap = new Map<VirtualModule, string>()
@@ -38,26 +37,40 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     return false
   }
 
-  function isFileInRoutes(file: string): boolean {
-    const normalizedPath = path.normalize(file).replace(/\\/g, "/")
-    return normalizedPath.includes("/src/admin/routes/")
+  async function loadVirtualModule(
+    config: ModuleConfig
+  ): Promise<{ code: string; map: SourceMap } | null> {
+    const hash = await config.hashGenerator(_sources)
+    hashMap.set(config.hashKey, hash)
+
+    return config.moduleGenerator(_sources)
   }
 
-  function isFileInCustomFields(file: string): boolean {
-    const normalizedPath = path.normalize(file).replace(/\\/g, "/")
-    return normalizedPath.includes("/src/admin/custom-fields/")
-  }
+  async function handleFileChange(
+    server: Vite.ViteDevServer,
+    config: WatcherConfig
+  ) {
+    const hashes = await config.hashGenerator(_sources)
 
-  function isFileInWidgets(file: string): boolean {
-    const normalizedPath = path.normalize(file).replace(/\\/g, "/")
-    return normalizedPath.includes("/src/admin/widgets/")
+    for (const module of config.modules) {
+      const newHash = hashes[module.hashKey]
+      if (newHash !== hashMap.get(module.virtualModule)) {
+        const moduleToReload = server.moduleGraph.getModuleById(
+          module.resolvedModule
+        )
+        if (moduleToReload) {
+          await server.reloadModule(moduleToReload)
+        }
+        hashMap.set(module.virtualModule, newHash)
+      }
+    }
   }
 
   return {
     name: "@medusajs/admin-vite-plugin",
     enforce: "pre",
-    configureServer(_server) {
-      watcher = _server.watcher
+    configureServer(server) {
+      watcher = server.watcher
       watcher?.add(Array.from(_sources))
 
       watcher?.on("all", async (_event, file) => {
@@ -65,136 +78,32 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
           return
         }
 
-        /**
-         * If the change was in the routes folder, and the hash has changed, we need to reload the route module.
-         * Otherwise, we can skip reloading the module, as there has been no changes to which routes are injected.
-         */
-        if (isFileInRoutes(file)) {
-          const routeModule = await generateVirtualRouteModule(_sources)
-
-          const routeHash = crypto
-            .createHash("md5")
-            .update(routeModule.code)
-            .digest("hex")
-
-          if (routeHash !== hashMap.get(ROUTE_VIRTUAL_MODULE)) {
-            const routeModule = _server.moduleGraph.getModuleById(
-              RESOLVED_ROUTE_VIRTUAL_MODULE
-            )
-
-            if (routeModule) {
-              await _server.reloadModule(routeModule)
-            }
-          }
-        }
-
-        /**
-         * If the change was in the widgets folder, we can compare the hashes of the generated config module.
-         * If the hash is the same, then we don't need to reload the module, as the changes to a widget component
-         * don't require a reload, and can be handled by HMR.
-         */
-        if (isFileInWidgets(file)) {
-          const widgetConfigHash = await generateWidgetConfigHash(_sources)
-
-          if (widgetConfigHash !== hashMap.get(CONFIG_VIRTUAL_MODULE)) {
-            const mod = _server.moduleGraph.getModuleById(
-              RESOLVED_CONFIG_VIRTUAL_MODULE
-            )
-
-            if (mod) {
-              await _server.reloadModule(mod)
-            }
-          }
-        } else {
-          /**
-           * If the change was not in the widgets folder, we need to reload the config module.
-           */
-          const mod = _server.moduleGraph.getModuleById(
-            RESOLVED_CONFIG_VIRTUAL_MODULE
-          )
-
-          if (mod) {
-            await _server.reloadModule(mod)
-          }
-        }
-
-        /**
-         * If the change was in the custom fields folder, and the hash has changed, we need to reload the link module.
-         * Otherwise, we can skip reloading the module, as there has been no changes to which links are injected.
-         */
-        if (isFileInCustomFields(file)) {
-          const linkModule = await generateVirtualLinkModule(_sources)
-
-          const linkHash = crypto
-            .createHash("md5")
-            .update(linkModule.code)
-            .digest("hex")
-
-          if (linkHash !== hashMap.get("virtual:medusa/links")) {
-            const linkModule = _server.moduleGraph.getModuleById(
-              RESOLVED_LINK_VIRTUAL_MODULE
-            )
-
-            if (linkModule) {
-              await _server.reloadModule(linkModule)
-            }
+        for (const config of watcherConfigs) {
+          if (isFileInAdminSubdirectory(file, config.subdirectory)) {
+            await handleFileChange(server, config)
           }
         }
       })
     },
     resolveId(id) {
-      if (VIRTUAL_MODULES.includes(id as VirtualModule)) {
-        return resolveVirtualId(id)
+      if (!isVirtualModuleId(id)) {
+        return null
       }
 
-      return null
+      return resolveVirtualId(id)
     },
     async load(id) {
-      if (id === RESOLVED_CONFIG_VIRTUAL_MODULE) {
-        const widgetConfigHash = await generateWidgetConfigHash(_sources)
-        hashMap.set(CONFIG_VIRTUAL_MODULE, widgetConfigHash)
-
-        return await generateVirtualConfigModule(_sources)
+      if (!isResolvedVirtualModuleId(id)) {
+        return null
       }
 
-      if (id === RESOLVED_LINK_VIRTUAL_MODULE) {
-        const linkModule = await generateVirtualLinkModule(_sources)
+      const config = loadConfigs[id]
 
-        const linkHash = crypto
-          .createHash("md5")
-          .update(linkModule.code)
-          .digest("hex")
-
-        hashMap.set(LINK_VIRTUAL_MODULE, linkHash)
-
-        return linkModule
+      if (!config) {
+        return null
       }
 
-      if (id === RESOLVED_ROUTE_VIRTUAL_MODULE) {
-        const routeModule = await generateVirtualRouteModule(_sources)
-
-        const routeHash = crypto
-          .createHash("md5")
-          .update(routeModule.code)
-          .digest("hex")
-
-        hashMap.set(ROUTE_VIRTUAL_MODULE, routeHash)
-
-        return routeModule
-      }
-
-      if (id === RESOLVED_MENU_ITEM_VIRTUAL_MODULE) {
-        const menuItemModule = await generateVirtualMenuItemModule(_sources)
-
-        const menuItemHash = crypto
-          .createHash("md5")
-          .update(menuItemModule.code)
-          .digest("hex")
-
-        hashMap.set(MENU_ITEM_VIRTUAL_MODULE, menuItemHash)
-
-        return menuItemModule
-      }
+      return loadVirtualModule(config)
     },
     async closeBundle() {
       if (watcher) {
@@ -203,3 +112,112 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     },
   }
 }
+
+type ModuleConfig = {
+  hashGenerator: (sources: Set<string>) => Promise<string>
+  moduleGenerator: (
+    sources: Set<string>
+  ) => Promise<{ code: string; map: SourceMap }>
+  hashKey: VirtualModule
+}
+
+const loadConfigs: Record<string, ModuleConfig> = {
+  [vmod.resolved.widget]: {
+    hashGenerator: async (sources) => generateWidgetHash(sources),
+    moduleGenerator: async (sources) => generateVirtualWidgetModule(sources),
+    hashKey: vmod.virtual.widget,
+  },
+  [vmod.resolved.link]: {
+    hashGenerator: async (sources) =>
+      (await generateCustomFieldHashes(sources)).linkHash,
+    moduleGenerator: async (sources) => generateVirtualLinkModule(sources),
+    hashKey: vmod.virtual.link,
+  },
+  [vmod.resolved.form]: {
+    hashGenerator: async (sources) =>
+      (await generateCustomFieldHashes(sources)).formHash,
+    moduleGenerator: async (sources) => generateVirtualFormModule(sources),
+    hashKey: vmod.virtual.form,
+  },
+  [vmod.resolved.display]: {
+    hashGenerator: async (sources) =>
+      (await generateCustomFieldHashes(sources)).displayHash,
+    moduleGenerator: async (sources) => generateVirtualDisplayModule(sources),
+    hashKey: vmod.virtual.display,
+  },
+  [vmod.resolved.route]: {
+    hashGenerator: async (sources) =>
+      (await generateRouteHashes(sources)).defaultExportHash,
+    moduleGenerator: async (sources) => generateVirtualRouteModule(sources),
+    hashKey: vmod.virtual.route,
+  },
+  [vmod.resolved.menuItem]: {
+    hashGenerator: async (sources) =>
+      (await generateRouteHashes(sources)).configHash,
+    moduleGenerator: async (sources) => generateVirtualMenuItemModule(sources),
+    hashKey: vmod.virtual.menuItem,
+  },
+}
+
+type WatcherConfig = {
+  subdirectory: AdminSubdirectory
+  hashGenerator: (sources: Set<string>) => Promise<Record<string, string>>
+  modules: {
+    virtualModule: VirtualModule
+    resolvedModule: string
+    hashKey: string
+  }[]
+}
+
+const watcherConfigs: WatcherConfig[] = [
+  {
+    subdirectory: "routes",
+    hashGenerator: async (sources) => generateRouteHashes(sources),
+    modules: [
+      {
+        virtualModule: vmod.virtual.route,
+        resolvedModule: vmod.resolved.route,
+        hashKey: "defaultExportHash",
+      },
+      {
+        virtualModule: vmod.virtual.menuItem,
+        resolvedModule: vmod.resolved.menuItem,
+        hashKey: "configHash",
+      },
+    ],
+  },
+  {
+    subdirectory: "widgets",
+    hashGenerator: async (sources) => ({
+      widgetConfigHash: await generateWidgetHash(sources),
+    }),
+    modules: [
+      {
+        virtualModule: vmod.virtual.widget,
+        resolvedModule: vmod.resolved.widget,
+        hashKey: "widgetConfigHash",
+      },
+    ],
+  },
+  {
+    subdirectory: "custom-fields",
+    hashGenerator: async (sources) => generateCustomFieldHashes(sources),
+    modules: [
+      {
+        virtualModule: vmod.virtual.link,
+        resolvedModule: vmod.resolved.link,
+        hashKey: "linkHash",
+      },
+      {
+        virtualModule: vmod.virtual.form,
+        resolvedModule: vmod.resolved.form,
+        hashKey: "formHash",
+      },
+      {
+        virtualModule: vmod.virtual.display,
+        resolvedModule: vmod.resolved.display,
+        hashKey: "displayHash",
+      },
+    ],
+  },
+]

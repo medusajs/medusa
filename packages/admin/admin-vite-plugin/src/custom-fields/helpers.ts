@@ -9,6 +9,7 @@ import {
   isObjectExpression,
   isObjectProperty,
   isStringLiteral,
+  isTemplateLiteral,
   NodePath,
   ObjectExpression,
   ObjectProperty,
@@ -30,6 +31,14 @@ export function getModel(
   ) as ObjectProperty | undefined
 
   if (!modelProperty) {
+    return null
+  }
+
+  if (isTemplateLiteral(modelProperty.value)) {
+    logger.warn(
+      `'model' property cannot be a template literal (e.g. \`product\`).`,
+      { file }
+    )
     return null
   }
 
@@ -63,7 +72,7 @@ export function getConfigArgument(
 
   if (
     !isIdentifier(path.node.declaration.callee, {
-      name: "defineCustomFieldsConfig",
+      name: "unstable_defineCustomFieldsConfig",
     })
   ) {
     return null
@@ -76,4 +85,32 @@ export function getConfigArgument(
   }
 
   return configArgument
+}
+
+/**
+ * Validates that the 'link' property is present in the custom field config.
+ * @param path - The NodePath to the export default declaration.
+ * @param file - The file path.
+ * @returns - True if the 'link' property is present, false otherwise.
+ */
+export function validateLink(
+  path: NodePath<ExportDefaultDeclaration>,
+  file: string
+): boolean {
+  const configArgument = getConfigArgument(path)
+
+  if (!configArgument) {
+    return false
+  }
+
+  const linkProperty = configArgument.properties.find(
+    (p) => isObjectProperty(p) && isIdentifier(p.key, { name: "link" })
+  ) as ObjectProperty | undefined
+
+  if (!linkProperty) {
+    logger.warn(`'link' property is missing.`, { file })
+    return false
+  }
+
+  return true
 }

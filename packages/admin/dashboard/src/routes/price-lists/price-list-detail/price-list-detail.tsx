@@ -7,13 +7,13 @@ import { PriceListProductSection } from "./components/price-list-product-section
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 
 export const PriceListDetails = () => {
   const { id } = useParams()
 
   const { price_list, isLoading, isError, error } = usePriceList(id!)
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !price_list) {
     return (

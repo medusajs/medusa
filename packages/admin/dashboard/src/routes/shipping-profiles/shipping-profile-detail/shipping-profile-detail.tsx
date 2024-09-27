@@ -5,7 +5,7 @@ import { useShippingProfile } from "../../../hooks/api/shipping-profiles"
 import { ShippingProfileGeneralSection } from "./components/shipping-profile-general-section"
 
 import { SingleColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 
 export const ShippingProfileDetail = () => {
   const { id } = useParams()
@@ -14,7 +14,7 @@ export const ShippingProfileDetail = () => {
     id!
   )
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !shipping_profile) {
     return <SingleColumnPageSkeleton sections={1} showJSON showMetadata />

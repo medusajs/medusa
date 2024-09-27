@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/modals"
 import { useProduct } from "../../../hooks/api/products"
-import { getExtendedProductFields } from "../common/get-extended-product-fields"
+import { PRODUCT_DETAIL_FIELDS } from "../product-detail/constants"
 import { EditProductForm } from "./components/edit-product-form"
 
 export const ProductEdit = () => {
@@ -12,7 +12,7 @@ export const ProductEdit = () => {
   const { t } = useTranslation()
 
   const { product, isLoading, isError, error } = useProduct(id!, {
-    fields: getExtendedProductFields(),
+    fields: PRODUCT_DETAIL_FIELDS,
   })
 
   if (isError) {

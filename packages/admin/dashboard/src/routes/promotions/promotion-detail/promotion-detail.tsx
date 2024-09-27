@@ -2,8 +2,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { usePromotion, usePromotionRules } from "../../../hooks/api/promotions"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { CampaignSection } from "./components/campaign-section"
 import { PromotionConditionsSection } from "./components/promotion-conditions-section"
 import { PromotionGeneralSection } from "./components/promotion-general-section"
@@ -26,7 +26,7 @@ export const PromotionDetail = () => {
   const { rules: targetRules } = usePromotionRules(id!, "target-rules", query)
   const { rules: buyRules } = usePromotionRules(id!, "buy-rules", query)
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !promotion) {
     return (

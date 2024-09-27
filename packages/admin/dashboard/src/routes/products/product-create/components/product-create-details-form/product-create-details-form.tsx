@@ -3,8 +3,10 @@ import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { Divider } from "../../../../../components/common/divider"
-import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
-import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
+import {
+  FormExtensionZone,
+  useDashboardExtension,
+} from "../../../../../extensions"
 import { ProductCreateSchemaType } from "../../types"
 import { ProductCreateGeneralSection } from "./components/product-create-details-general-section"
 import { ProductCreateMediaSection } from "./components/product-create-details-media-section"
@@ -15,7 +17,7 @@ type ProductAttributesProps = {
 }
 
 export const ProductCreateDetailsForm = ({ form }: ProductAttributesProps) => {
-  const { getFormFields } = useMedusaApp()
+  const { getFormFields } = useDashboardExtension()
   const fields = getFormFields("product", "create", "general")
 
   return (

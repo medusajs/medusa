@@ -1,10 +1,10 @@
 import { OrderListTable } from "./components/order-list-table"
 
 import { SingleColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 
 export const OrderList = () => {
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   return (
     <SingleColumnPage

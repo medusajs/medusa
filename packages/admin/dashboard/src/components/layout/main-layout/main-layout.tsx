@@ -25,9 +25,9 @@ import { INavItem, NavItem } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
 import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useDashboardExtension } from "../../../extensions"
 import { useLogout } from "../../../hooks/api"
 import { queryClient } from "../../../lib/query-client"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 
@@ -296,7 +296,7 @@ const CoreRouteSection = () => {
 
 const ExtensionRouteSection = () => {
   const { t } = useTranslation()
-  const { getMenu } = useMedusaApp()
+  const { getMenu } = useDashboardExtension()
 
   const menuItems = getMenu("coreExtensions")
 

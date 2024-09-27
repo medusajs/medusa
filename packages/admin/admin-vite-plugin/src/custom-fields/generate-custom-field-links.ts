@@ -15,14 +15,10 @@ import { logger } from "../logger"
 import { crawl, getParserOptions } from "../utils"
 import { getConfigArgument, getModel } from "./helpers"
 
-type CustomFieldLink = {
-  field: string
-}
-
 type ParsedCustomFieldLink = {
   import: string
   model: CustomFieldModel
-  link: CustomFieldLink
+  link: string
 }
 
 export async function generateCustomFieldLinks(sources: Set<string>) {
@@ -63,7 +59,7 @@ function generateCode(results: ParsedCustomFieldLink[]): string {
   const segments: string[] = []
 
   groupedByModel.forEach((results, model) => {
-    const links = results.map((result) => result.link.field).join(",\n")
+    const links = results.map((result) => result.link).join(",\n")
 
     segments.push(`
       ${model}: [
@@ -73,7 +69,7 @@ function generateCode(results: ParsedCustomFieldLink[]): string {
   })
 
   return `
-    customFieldLinks: {
+    links: {
       ${segments.join("\n")}
     }
   `
@@ -103,7 +99,7 @@ async function parseFile(
 
   const import_ = generateImport(file, index)
 
-  let link: CustomFieldLink | null = null
+  let link: string | null = null
   let model: CustomFieldModel | null = null
   try {
     traverse(ast, {
@@ -149,7 +145,7 @@ function getLink(
   path: NodePath<ExportDefaultDeclaration>,
   index: number,
   file: string
-): CustomFieldLink | null {
+): string | null {
   const configArgument = getConfigArgument(path)
 
   if (!configArgument) {
@@ -167,7 +163,5 @@ function getLink(
 
   const import_ = generateCustomFieldConfigName(index)
 
-  return {
-    field: `${import_}.link`,
-  }
+  return `${import_}.link`
 }

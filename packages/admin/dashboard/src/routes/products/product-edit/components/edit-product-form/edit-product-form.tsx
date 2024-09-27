@@ -10,8 +10,10 @@ import { useExtendableForm } from "../../../../../extensions/forms/hooks"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { transformNullableFormData } from "../../../../../lib/form-helpers"
 
-import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
-import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
+import {
+  FormExtensionZone,
+  useDashboardExtension,
+} from "../../../../../extensions"
 
 type EditProductFormProps = {
   product: HttpTypes.AdminProduct
@@ -31,7 +33,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const { getFormFields, getFormConfigs } = useMedusaApp()
+  const { getFormFields, getFormConfigs } = useDashboardExtension()
   const fields = getFormFields("product", "edit")
   const configs = getFormConfigs("product", "edit")
 

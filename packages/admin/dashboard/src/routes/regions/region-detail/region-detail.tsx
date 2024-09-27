@@ -7,8 +7,8 @@ import { regionLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 
 export const RegionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -42,10 +42,10 @@ export const RegionDetail = () => {
     { enabled: !!region }
   )
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || isLoadingPreferences || !region) {
-    return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
+    return <SingleColumnPageSkeleton sections={2} showJSON />
   }
 
   if (isRegionError) {
@@ -63,9 +63,7 @@ export const RegionDetail = () => {
         after: getWidgets("region.details.after"),
       }}
       data={region}
-      hasOutlet
       showJSON
-      showMetadata
     >
       <RegionGeneralSection
         region={region}

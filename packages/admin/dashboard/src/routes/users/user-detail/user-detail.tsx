@@ -6,7 +6,7 @@ import { userLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 
 export const UserDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof userLoader>>
@@ -21,10 +21,10 @@ export const UserDetail = () => {
     initialData,
   })
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !user) {
-    return <SingleColumnPageSkeleton sections={1} showJSON showMetadata />
+    return <SingleColumnPageSkeleton sections={1} showJSON />
   }
 
   if (isError) {
@@ -35,7 +35,6 @@ export const UserDetail = () => {
     <SingleColumnPage
       data={user}
       showJSON
-      showMetadata
       widgets={{
         after: getWidgets("user.details.after"),
         before: getWidgets("user.details.before"),

@@ -10,7 +10,7 @@ import { InventoryItemReservationsSection } from "./components/inventory-item-re
 import { InventoryItemVariantsSection } from "./components/inventory-item-variants/variants-section"
 import { inventoryItemLoader } from "./loader"
 
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 
 export const InventoryDetail = () => {
   const { id } = useParams()
@@ -34,16 +34,11 @@ export const InventoryDetail = () => {
     }
   )
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !inventory_item) {
     return (
-      <TwoColumnPageSkeleton
-        showJSON
-        showMetadata
-        mainSections={3}
-        sidebarSections={2}
-      />
+      <TwoColumnPageSkeleton showJSON mainSections={3} sidebarSections={2} />
     )
   }
 
@@ -61,8 +56,6 @@ export const InventoryDetail = () => {
       }}
       data={inventory_item}
       showJSON
-      showMetadata
-      hasOutlet
     >
       <TwoColumnPage.Main>
         <InventoryItemGeneralSection inventoryItem={inventory_item} />

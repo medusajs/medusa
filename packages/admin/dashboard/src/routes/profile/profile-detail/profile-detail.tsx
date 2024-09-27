@@ -3,11 +3,11 @@ import { ProfileGeneralSection } from "./components/profile-general-section"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 
 export const ProfileDetail = () => {
   const { user, isPending: isLoading, isError, error } = useMe()
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !user) {
     return <SingleColumnPageSkeleton sections={1} />

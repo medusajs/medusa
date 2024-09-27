@@ -1,12 +1,25 @@
 import { ComponentType } from "react"
 import { LoaderFunction, RouteObject } from "react-router-dom"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
-import { RouteExtension } from "../../providers/medusa-app-provider/types"
+import { RouteExtension, RouteModule } from "../types"
 
 /**
  * Used to test if a route is a settings route.
  */
-export const settingsRouteRegex = /^\/settings\//
+const settingsRouteRegex = /^\/settings\//
+
+export const getRouteExtensions = (
+  module: RouteModule,
+  type: "settings" | "core"
+) => {
+  return module.routes.filter((route) => {
+    if (type === "settings") {
+      return settingsRouteRegex.test(route.path)
+    }
+
+    return !settingsRouteRegex.test(route.path)
+  })
+}
 
 export const createRouteMap = (
   routes: RouteExtension[],

@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useWorkflowExecution } from "../../../hooks/api/workflow-executions"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { WorkflowExecutionGeneralSection } from "./components/workflow-execution-general-section"
 import { WorkflowExecutionHistorySection } from "./components/workflow-execution-history-section"
 import { WorkflowExecutionPayloadSection } from "./components/workflow-execution-payload-section"
@@ -15,7 +15,7 @@ export const ExecutionDetail = () => {
   const { workflow_execution, isLoading, isError, error } =
     useWorkflowExecution(id!)
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !workflow_execution) {
     return <SingleColumnPageSkeleton sections={4} showJSON />

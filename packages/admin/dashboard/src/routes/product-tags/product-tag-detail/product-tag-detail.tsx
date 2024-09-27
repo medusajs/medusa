@@ -2,8 +2,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useProductTag } from "../../../hooks/api"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { ProductTagGeneralSection } from "./components/product-tag-general-section"
 import { ProductTagProductSection } from "./components/product-tag-product-section"
 import { productTagLoader } from "./loader"
@@ -15,7 +15,7 @@ export const ProductTagDetail = () => {
     ReturnType<typeof productTagLoader>
   >
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   const { product_tag, isPending, isError, error } = useProductTag(
     id!,

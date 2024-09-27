@@ -2,8 +2,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useCollection } from "../../../hooks/api/collections"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { CollectionGeneralSection } from "./components/collection-general-section"
 import { CollectionProductSection } from "./components/collection-product-section"
 import { collectionLoader } from "./loader"
@@ -18,7 +18,7 @@ export const CollectionDetail = () => {
     initialData,
   })
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !collection) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />

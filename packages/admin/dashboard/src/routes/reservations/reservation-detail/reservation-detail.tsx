@@ -2,8 +2,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useReservationItem } from "../../../hooks/api/reservations"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { InventoryItemGeneralSection } from "../../inventory/inventory-detail/components/inventory-item-general-section"
 import { ReservationGeneralSection } from "./components/reservation-general-section"
 import { reservationItemLoader } from "./loader"
@@ -23,16 +23,11 @@ export const ReservationDetail = () => {
     }
   )
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !reservation) {
     return (
-      <TwoColumnPageSkeleton
-        mainSections={1}
-        sidebarSections={1}
-        showJSON
-        showMetadata
-      />
+      <TwoColumnPageSkeleton mainSections={1} sidebarSections={1} showJSON />
     )
   }
 
@@ -50,7 +45,6 @@ export const ReservationDetail = () => {
       }}
       data={reservation}
       showJSON
-      showMetadata
     >
       <TwoColumnPage.Main>
         <ReservationGeneralSection reservation={reservation} />

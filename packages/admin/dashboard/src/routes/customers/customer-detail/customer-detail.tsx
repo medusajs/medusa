@@ -2,8 +2,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useCustomer } from "../../../hooks/api/customers"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { CustomerGeneralSection } from "./components/customer-general-section"
 import { CustomerGroupSection } from "./components/customer-group-section"
 import { customerLoader } from "./loader"
@@ -18,7 +18,7 @@ export const CustomerDetail = () => {
     initialData,
   })
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !customer) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />

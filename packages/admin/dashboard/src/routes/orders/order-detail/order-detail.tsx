@@ -2,8 +2,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useOrder, useOrderPreview } from "../../../hooks/api/orders"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { ActiveOrderClaimSection } from "./components/active-order-claim-section"
 import { ActiveOrderExchangeSection } from "./components/active-order-exchange-section"
 import { ActiveOrderReturnSection } from "./components/active-order-return-section"
@@ -21,7 +21,7 @@ export const OrderDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof orderLoader>>
 
   const { id } = useParams()
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   const { order, isLoading, isError, error } = useOrder(
     id!,

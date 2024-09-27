@@ -1,14 +1,12 @@
-import VirtualRoutes from "virtual:medusa/routes"
+import routeModule from "virtual:medusa/routes"
 import {
   createRouteMap,
-  settingsRouteRegex,
+  getRouteExtensions,
 } from "../../extensions/routes/utils"
 
-const pages = VirtualRoutes.routes
-  .filter((ext) => !settingsRouteRegex.test(ext.path))
-  .map((ext) => ext)
+const routes = getRouteExtensions(routeModule, "core")
 
 /**
  * Core Route extensions.
  */
-export const RouteExtensions = createRouteMap(pages)
+export const RouteExtensions = createRouteMap(routes)

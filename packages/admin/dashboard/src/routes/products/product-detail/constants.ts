@@ -1,3 +1,3 @@
-import { getExtendedProductFields } from "../common/get-extended-product-fields"
+import { getLinkedFields } from "../../../extensions"
 
-export const PRODUCT_DETAIL_FIELDS = getExtendedProductFields("*categories")
+export const PRODUCT_DETAIL_FIELDS = getLinkedFields("product", "*categories")

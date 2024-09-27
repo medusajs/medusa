@@ -7,9 +7,9 @@ import * as z from "zod"
 
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
+import { useDashboardExtension } from "../../extensions"
 import { useSignInWithEmailPassword } from "../../hooks/api/auth"
 import { isFetchError } from "../../lib/is-fetch-error"
-import { useMedusaApp } from "../../providers/medusa-app-provider"
 
 const LoginSchema = z.object({
   email: z.string().email(),
@@ -20,7 +20,7 @@ export const Login = () => {
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   const from = location.state?.from?.pathname || "/orders"
 

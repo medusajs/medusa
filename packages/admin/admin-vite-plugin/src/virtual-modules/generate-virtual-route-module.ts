@@ -1,5 +1,5 @@
 import { outdent } from "outdent"
-import { generateRoutes } from "../routing"
+import { generateRoutes } from "../routes"
 import { generateModule } from "../utils"
 
 export async function generateVirtualRouteModule(sources: Set<string>) {

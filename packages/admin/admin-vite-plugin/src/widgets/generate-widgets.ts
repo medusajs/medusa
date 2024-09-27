@@ -1,5 +1,4 @@
 import { InjectionZone, isValidInjectionZone } from "@medusajs/admin-shared"
-import crypto from "crypto"
 import fs from "fs/promises"
 import outdent from "outdent"
 import {
@@ -14,11 +13,11 @@ import {
 } from "../babel"
 import { logger } from "../logger"
 import {
-  crawl,
   getConfigObjectProperties,
   getParserOptions,
   hasDefaultExport,
 } from "../utils"
+import { getWidgetFilesFromSources } from "./helpers"
 
 type WidgetConfig = {
   Component: string
@@ -31,7 +30,7 @@ type ParsedWidgetConfig = {
 }
 
 export async function generateWidgets(sources: Set<string>) {
-  const files = await getFilesFromSources(sources)
+  const files = await getWidgetFilesFromSources(sources)
   const results = await getWidgetResults(files)
 
   const imports = results.map((r) => r.import)
@@ -41,14 +40,6 @@ export async function generateWidgets(sources: Set<string>) {
     imports,
     code,
   }
-}
-
-async function getFilesFromSources(sources: Set<string>): Promise<string[]> {
-  return (
-    await Promise.all(
-      Array.from(sources).map(async (source) => crawl(`${source}/widgets`))
-    )
-  ).flat()
 }
 
 async function getWidgetResults(
@@ -209,44 +200,4 @@ async function getWidgetZone(
 
   const validatedZones = zones.filter(isValidInjectionZone)
   return validatedZones.length > 0 ? validatedZones : null
-}
-
-export async function generateWidgetConfigHash(
-  sources: Set<string>
-): Promise<string> {
-  const files = await getFilesFromSources(sources)
-  const configContents = await Promise.all(files.map(getWidgetConfigContent))
-  const totalContent = configContents.filter(Boolean).join("")
-  return crypto.createHash("md5").update(totalContent).digest("hex")
-}
-
-async function getWidgetConfigContent(file: string) {
-  const code = await fs.readFile(file, "utf-8")
-  let ast: ParseResult<File>
-
-  try {
-    ast = parse(code, getParserOptions(file))
-  } catch (e) {
-    logger.error(
-      `An error occurred while parsing the file. Due to the error we cannot validate whether the widget has changed. If your changes aren't correctly reflected try restarting the dev server.`,
-      {
-        file,
-        error: e,
-      }
-    )
-    return null
-  }
-
-  let configContent: string | null = null
-
-  traverse(ast, {
-    ExportNamedDeclaration(path) {
-      const properties = getConfigObjectProperties(path)
-      if (properties) {
-        configContent = code.slice(path.node.start!, path.node.end!)
-      }
-    },
-  })
-
-  return configContent
 }

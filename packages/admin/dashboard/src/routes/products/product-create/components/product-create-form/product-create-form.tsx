@@ -7,11 +7,13 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
-import { useExtendableForm } from "../../../../../extensions/forms/hooks"
+import {
+  useDashboardExtension,
+  useExtendableForm,
+} from "../../../../../extensions"
 import { useCreateProduct } from "../../../../../hooks/api/products"
 import { sdk } from "../../../../../lib/client"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
-import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
 import {
   PRODUCT_CREATE_FORM_DEFAULTS,
   ProductCreateSchema,
@@ -56,7 +58,7 @@ export const ProductCreateForm = ({
 
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const { getFormConfigs } = useMedusaApp()
+  const { getFormConfigs } = useDashboardExtension()
   const configs = getFormConfigs("product", "create")
 
   const form = useExtendableForm({

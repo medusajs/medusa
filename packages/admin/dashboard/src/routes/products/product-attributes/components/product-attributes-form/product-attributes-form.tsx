@@ -5,10 +5,12 @@ import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
-import { FormExtensionZone } from "../../../../../extensions/forms/components/form-extension-zone"
-import { useExtendableForm } from "../../../../../extensions/forms/hooks"
+import {
+  FormExtensionZone,
+  useDashboardExtension,
+  useExtendableForm,
+} from "../../../../../extensions"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
-import { useMedusaApp } from "../../../../../providers/medusa-app-provider"
 
 type ProductAttributesFormProps = {
   product: HttpTypes.AdminProduct
@@ -40,7 +42,7 @@ export const ProductAttributesForm = ({
 }: ProductAttributesFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const { getFormConfigs, getFormFields } = useMedusaApp()
+  const { getFormConfigs, getFormFields } = useDashboardExtension()
 
   const configs = getFormConfigs("product", "attributes")
   const fields = getFormFields("product", "attributes")

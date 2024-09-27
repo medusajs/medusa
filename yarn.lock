@@ -4972,7 +4972,6 @@ __metadata:
     compression: ^1.7.4
     copyfiles: ^2.4.1
     express: ^4.18.2
-    outdent: ^0.8.0
     postcss: ^8.4.32
     tailwindcss: ^3.3.6
     tsup: ^8.0.1

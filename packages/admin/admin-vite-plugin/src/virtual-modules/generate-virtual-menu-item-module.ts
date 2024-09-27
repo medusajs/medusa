@@ -1,6 +1,6 @@
 import outdent from "outdent"
 
-import { generateMenuItems } from "../routing"
+import { generateMenuItems } from "../routes"
 import { generateModule } from "../utils"
 
 export async function generateVirtualMenuItemModule(sources: Set<string>) {

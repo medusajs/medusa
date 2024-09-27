@@ -130,7 +130,7 @@ export interface CustomFieldConfig<TModel extends CustomFieldModel> {
    * Optionally define how to display the custom fields, in an existing container on the entity details page.
    * Alternatively, you can create a new widget to display the custom fields.
    */
-  display?: Array<{
+  displays?: Array<{
     /**
      * The identifier of the container that the custom fields should be injected into.
      */

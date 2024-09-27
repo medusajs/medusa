@@ -11,7 +11,7 @@ import { shippingListLoader } from "./loader"
 import { ReactNode } from "react"
 import { IconAvatar } from "../../../components/common/icon-avatar"
 import { TwoColumnPage } from "../../../components/layout/pages"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 import { LocationListHeader } from "./components/location-list-header"
 
 export function LocationList() {
@@ -30,7 +30,7 @@ export function LocationList() {
     { initialData }
   )
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isError) {
     throw error

@@ -49,7 +49,7 @@ export function defineRouteConfig(config: RouteConfig) {
  *
  * @experimental This API is experimental and may change in the future.
  */
-export function defineCustomFieldsConfig<
+export function unstable_defineCustomFieldsConfig<
   TModel extends keyof CustomFieldModelFormMap
 >(config: CustomFieldConfig<TModel>) {
   return createConfigHelper(config)
@@ -89,7 +89,7 @@ export function defineCustomFieldsConfig<
  *
  * @experimental This API is experimental and may change in the future.
  */
-export function createFormHelper<TData>() {
+export function unstable_createFormHelper<TData>() {
   return {
     /**
      * Define a custom form field.
@@ -114,22 +114,3 @@ export function createFormHelper<TData>() {
     coerce: z.coerce,
   }
 }
-
-// const form = createFormHelper()
-
-// defineCustomFieldsConfig({
-//   model: "product",
-//   link: "categories",
-//   forms: [
-//     {
-//       zone: "create",
-//       tab: "general",
-//       fields: {
-//         brand_id: form.define({
-//           validation: form.string().nullish(),
-//           defaultValue: "",
-//         }),
-//       },
-//     },
-//   ],
-// })

@@ -2,8 +2,8 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
 import { SingleColumnPage } from "../../../components/layout/pages"
+import { useDashboardExtension } from "../../../extensions"
 import { useApiKey } from "../../../hooks/api/api-keys"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
 import { ApiKeyType } from "../common/constants"
 import { ApiKeyGeneralSection } from "./components/api-key-general-section"
 import { ApiKeySalesChannelSection } from "./components/api-key-sales-channel-section"
@@ -15,7 +15,7 @@ export const ApiKeyManagementDetail = () => {
   >
 
   const { id } = useParams()
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   const { api_key, isLoading, isError, error } = useApiKey(id!, {
     initialData: initialData,

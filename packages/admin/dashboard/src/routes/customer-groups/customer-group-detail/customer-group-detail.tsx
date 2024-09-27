@@ -7,7 +7,7 @@ import { CustomerGroupGeneralSection } from "./components/customer-group-general
 import { customerGroupLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { useMedusaApp } from "../../../providers/medusa-app-provider"
+import { useDashboardExtension } from "../../../extensions"
 
 export const CustomerGroupDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -23,7 +23,7 @@ export const CustomerGroupDetail = () => {
     { initialData }
   )
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isLoading || !customer_group) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />

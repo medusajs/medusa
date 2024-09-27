@@ -7,7 +7,7 @@ import { storeLoader } from "./loader.ts"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton/skeleton.tsx"
 import { SingleColumnPage } from "../../../components/layout/pages/index.ts"
-import { useMedusaApp } from "../../../providers/medusa-app-provider/use-medusa-app.tsx"
+import { useDashboardExtension } from "../../../extensions/index.ts"
 
 export const StoreDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof storeLoader>>
@@ -16,7 +16,7 @@ export const StoreDetail = () => {
     initialData,
   })
 
-  const { getWidgets } = useMedusaApp()
+  const { getWidgets } = useDashboardExtension()
 
   if (isPending || !store) {
     return <SingleColumnPageSkeleton sections={2} showJSON showMetadata />
