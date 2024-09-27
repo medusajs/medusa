@@ -104,6 +104,7 @@ export interface CartWorkflowDTO extends CartDTO {
 
 export interface ListShippingOptionsForCartWorkflowInputDTO {
   cart_id: string
+  is_return?: boolean
   sales_channel_id?: string
   currency_code: string
   shipping_address: {
