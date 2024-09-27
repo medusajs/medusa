@@ -33,7 +33,9 @@ medusaIntegrationTestRunner({
       beforeAll(async () => {
         appContainer = getContainer()
         service = appContainer.resolve(Modules.FULFILLMENT)
+      })
 
+      beforeEach(async () => {
         const stockLocationService = appContainer.resolve(
           Modules.STOCK_LOCATION
         )
