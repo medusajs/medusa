@@ -49,7 +49,7 @@
  *     type: string
  *     title: currency_code
  *     description: The application method's currency code.
- *     example; usd
+ *     example: usd
  *   max_quantity:
  *     type: number
  *     title: max_quantity
