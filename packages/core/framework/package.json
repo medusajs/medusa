@@ -49,6 +49,7 @@
     "test": "jest --runInBand --bail --passWithNoTests --forceExit"
   },
   "devDependencies": {
+    "@medusajs/medusa-cli": "^1.3.22",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/knex": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",
@@ -68,7 +69,6 @@
     "vite": "^5.2.11"
   },
   "dependencies": {
-    "@medusajs/medusa-cli": "^1.3.22",
     "@medusajs/modules-sdk": "^1.12.11",
     "@medusajs/orchestration": "^0.5.7",
     "@medusajs/types": "^1.11.16",
@@ -87,6 +87,7 @@
     "zod": "3.22.4"
   },
   "peerDependencies": {
+    "@medusajs/medusa-cli": "^1.3.22",
     "@mikro-orm/core": "5.9.7",
     "@mikro-orm/knex": "5.9.7",
     "@mikro-orm/migrations": "5.9.7",

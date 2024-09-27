@@ -119,6 +119,10 @@
   },
   "peerDependencies": {
     "@medusajs/framework": "^0.0.1",
+    "@mikro-orm/core": "5.9.7",
+    "@mikro-orm/knex": "5.9.7",
+    "@mikro-orm/migrations": "5.9.7",
+    "@mikro-orm/postgresql": "5.9.7",
     "awilix": "^8.0.1"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"

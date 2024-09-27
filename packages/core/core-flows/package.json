@@ -47,7 +47,13 @@
   },
   "peerDependencies": {
     "@medusajs/framework": "^0.0.1",
-    "awilix": "^8.0.1"
+    "awilix": "^8.0.1",
+    "ioredis": "^5.4.1"
+  },
+  "peerDependenciesMeta": {
+    "ioredis": {
+      "optional": true
+    }
   },
   "scripts": {
     "build": "rimraf dist && tsc --build",
