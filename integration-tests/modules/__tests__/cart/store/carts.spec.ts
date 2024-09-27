@@ -1,5 +1,4 @@
 import { RemoteLink } from "@medusajs/modules-sdk"
-import PaymentModuleService from "@medusajs/payment/dist/services/payment-module"
 import {
   IApiKeyModuleService,
   ICartModuleService,
@@ -2391,8 +2390,9 @@ medusaIntegrationTestRunner({
         })
 
         it("should return cart when payment authorization fails", async () => {
+          const paymentModuleService = appContainer.resolve(Modules.PAYMENT)
           const authorizePaymentSessionSpy = jest.spyOn(
-            PaymentModuleService.prototype,
+            paymentModuleService,
             "authorizePaymentSession"
           )
 
