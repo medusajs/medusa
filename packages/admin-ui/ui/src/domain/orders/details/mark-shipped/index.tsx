@@ -74,7 +74,7 @@ const MarkShippedModal: React.FC<MarkShippedModalProps> = ({
     const [type] = resourceId.split("_")
 
     const tracking_numbers = data.tracking_numbers
-      .map((tn) => tn.value)
+      .map((tn) => tn?.value)
       .filter(Boolean) as string[]
 
     type actionType =
