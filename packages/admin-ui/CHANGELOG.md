@@ -1,5 +1,11 @@
 # @medusajs/admin-ui
 
+## 2.1.18
+
+### Patch Changes
+
+- [#9355](https://github.com/medusajs/medusa/pull/9355) [`0edc59e2d0`](https://github.com/medusajs/medusa/commit/0edc59e2d05db9db5bb33da2cd8fd418ed7313f7) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Resolves an issue in the MarkAsAShipped modal that could cause the application to crash in development
+
 ## 2.1.17
 
 ### Patch Changes
