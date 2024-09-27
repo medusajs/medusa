@@ -134,7 +134,8 @@
  *     content:
  *       application/json:
  *         schema:
- *           - type: object
+ *           allOf:
+ *             - type: object
  *               description: The paginated list of regions.
  *               required:
  *                 - limit
@@ -160,7 +161,7 @@
  *               properties:
  *                 regions:
  *                   type: array
- *                   description: The region's regions.
+ *                   description: The list of regions.
  *                   items:
  *                     $ref: "#/components/schemas/StoreRegion"
  *   "400":
