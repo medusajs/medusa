@@ -57,7 +57,7 @@ export default class PaymentProviderService extends ModulesSdkUtils.MedusaIntern
   async updateSession(
     providerId: string,
     sessionInput: UpdatePaymentProviderSession
-  ): Promise<Record<string, unknown> | undefined> {
+  ): Promise<{ data: Record<string, unknown>; status: PaymentSessionStatus }> {
     const provider = this.retrieveProvider(providerId)
 
     const paymentResponse = await provider.updatePayment(sessionInput)
@@ -66,7 +66,8 @@ export default class PaymentProviderService extends ModulesSdkUtils.MedusaIntern
       this.throwPaymentProviderError(paymentResponse)
     }
 
-    return (paymentResponse as PaymentProviderSessionResponse)?.data
+    const { data, status } = paymentResponse as PaymentProviderAuthorizeResponse
+    return { data, status }
   }
 
   async deleteSession(input: PaymentProviderDataInput): Promise<void> {

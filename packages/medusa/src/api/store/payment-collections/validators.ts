@@ -17,6 +17,14 @@ export const StoreCreatePaymentSession = z
   })
   .strict()
 
+export type StoreUpdatePaymentSessionType = z.infer<
+  typeof StoreUpdatePaymentSession
+>
+export const StoreUpdatePaymentSession = z.object({
+  data: z.record(z.unknown()),
+  provider_id: z.string(),
+})
+
 export type StoreCreatePaymentCollectionType = z.infer<
   typeof StoreCreatePaymentCollection
 >

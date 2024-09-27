@@ -36,14 +36,35 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       list: false,
     })
 
+    const cartLink = useRemoteQueryStep({
+      entry_point: "cart_payment_collection",
+      fields: ["cart_id"],
+      variables: { payment_collection_id: input.payment_collection_id },
+      list: false,
+    }).config({ name: "get-cart-payment-collection-link" })
+
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      // Comment: We will likely need more fields here to support other payment flows, e.g. checkouts
+      fields: [
+        "id",
+        "email",
+        "shipping_address.*",
+        "billing_address.*",
+        "customer.*",
+      ],
+      variables: { id: cartLink.cart_id },
+      list: false,
+    }).config({ name: "get-cart" })
+
     const paymentSessionInput = transform(
-      { paymentCollection, input },
+      { paymentCollection, input, cart },
       (data) => {
         return {
           payment_collection_id: data.input.payment_collection_id,
           provider_id: data.input.provider_id,
           data: data.input.data,
-          context: data.input.context,
+          context: { ...data.input.context, cart: { ...(data?.cart ?? {}) } },
           amount: data.paymentCollection.amount,
           currency_code: data.paymentCollection.currency_code,
         }

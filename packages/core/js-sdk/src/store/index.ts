@@ -204,12 +204,13 @@ export class Store {
       lineItemId: string,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<
-        HttpTypes.StoreLineItemDeleteResponse
-      >(`/store/carts/${cartId}/line-items/${lineItemId}`, {
-        method: "DELETE",
-        headers,
-      })
+      return this.client.fetch<HttpTypes.StoreLineItemDeleteResponse>(
+        `/store/carts/${cartId}/line-items/${lineItemId}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      )
     },
     addShippingMethod: async (
       cartId: string,
@@ -308,6 +309,26 @@ export class Store {
         body,
         query,
       })
+    },
+
+    updateSession: async (
+      paymentCollectionId: string,
+      sessionId: string,
+      body: Record<string, any>,
+      query?: SelectParams,
+      headers?: ClientHeaders
+    ) => {
+      return this.client.fetch<{
+        payment_collection: HttpTypes.StorePaymentCollection
+      }>(
+        `/store/payment-collections/${paymentCollectionId}/payment-sessions/${sessionId}`,
+        {
+          method: "POST",
+          headers,
+          body,
+          query,
+        }
+      )
     },
   }
 
@@ -432,12 +453,13 @@ export class Store {
       )
     },
     deleteAddress: async (addressId: string, headers?: ClientHeaders) => {
-      return this.client.fetch<
-        HttpTypes.StoreCustomerAddressDeleteResponse
-      >(`/store/customers/me/addresses/${addressId}`, {
-        method: "DELETE",
-        headers,
-      })
+      return this.client.fetch<HttpTypes.StoreCustomerAddressDeleteResponse>(
+        `/store/customers/me/addresses/${addressId}`,
+        {
+          method: "DELETE",
+          headers,
+        }
+      )
     },
   }
 }

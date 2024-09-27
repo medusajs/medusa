@@ -5664,7 +5664,7 @@ __metadata:
     meant: ^1.0.3
     medusa-telemetry: ^0.0.17
     ora: ^5.4.1
-    pg: ^8.11.3
+    pg: ^8.13.0
     pg-god: ^1.0.12
     prompts: ^2.4.2
     resolve-cwd: ^3.0.0

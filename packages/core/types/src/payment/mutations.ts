@@ -1,4 +1,5 @@
 import { BigNumberInput } from "../totals"
+import { PaymentSessionStatus } from "./common"
 import { PaymentProviderContext } from "./provider"
 
 /**
@@ -276,17 +277,27 @@ export interface UpdatePaymentSessionDTO {
   /**
    * The ISO 3 character currency code.
    */
-  currency_code: string
+  currency_code?: string
 
   /**
    * The amount to be authorized.
    */
-  amount: BigNumberInput
+  amount?: BigNumberInput
 
   /**
    * Necessary context data for the associated payment provider.
    */
   context?: PaymentProviderContext
+
+  /**
+   * The status of the payment session.
+   */
+  status?: PaymentSessionStatus
+
+  /**
+   * The provider's ID.
+   */
+  provider_id: string
 }
 
 /**

@@ -368,26 +368,69 @@ export default class PaymentModuleService
 
   @InjectManager()
   async updatePaymentSession(
-    data: UpdatePaymentSessionDTO,
+    input: UpdatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentSessionDTO> {
     const session = await this.paymentSessionService_.retrieve(
-      data.id,
-      { select: ["id", "data", "provider_id"] },
-      sharedContext
-    )
-
-    const updated = await this.paymentSessionService_.update(
+      input.id,
       {
-        id: session.id,
-        amount: data.amount,
-        currency_code: data.currency_code,
-        data: data.data,
+        select: [
+          "id",
+          "data",
+          "provider_id",
+          "amount",
+          "currency_code",
+          "status",
+        ],
       },
       sharedContext
     )
 
+    const baseUpdate = {
+      amount: input.amount ?? session.amount,
+      currency_code: input.currency_code ?? session.currency_code,
+    }
+
+    const providerUpdate = {
+      data: { ...session.data, ...input.data },
+      context: input.context ?? {},
+      ...baseUpdate,
+    }
+
+    const providerData = await this.paymentProviderService_.updateSession(
+      input.provider_id,
+      providerUpdate
+    )
+
+    const sessionData = {
+      id: session.id,
+      data: providerData.data,
+      status: providerData.status ?? session.status,
+      ...baseUpdate,
+    }
+
+    const updated = await this.updatePaymentSession_(sessionData, sharedContext)
+
     return await this.baseRepository_.serialize(updated[0], { populate: true })
+  }
+
+  @InjectTransactionManager()
+  async updatePaymentSession_(
+    data: Omit<UpdatePaymentSessionDTO, "provider_id" | "context">,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentSession> {
+    const updated = await this.paymentSessionService_.update(
+      {
+        id: data.id,
+        amount: data.amount,
+        currency_code: data.currency_code,
+        data: data.data,
+        status: data.status,
+      },
+      sharedContext
+    )
+
+    return updated
   }
 
   @InjectManager()

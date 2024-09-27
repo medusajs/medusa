@@ -1,4 +1,5 @@
 import { AddressDTO } from "../address"
+import { CartDTO } from "../cart"
 import { CustomerDTO } from "../customer"
 import { BigNumberInput, BigNumberValue } from "../totals"
 import { PaymentSessionStatus } from "./common"
@@ -8,6 +9,11 @@ import { ProviderWebhookPayload } from "./mutations"
  * The address of the payment.
  */
 export type PaymentAddressDTO = Partial<AddressDTO>
+
+/**
+ * An optional Cart context passed to the payment initiation process
+ */
+export type PaymentCartDTO = Partial<CartDTO>
 
 /**
  * The customer associated with the payment.
@@ -30,12 +36,17 @@ export type PaymentActions =
  */
 export type PaymentProviderContext = {
   /**
-   * The payment's billing address.
+   * An optional Cart context passed to the payment initiation process
+   */
+  cart?: PaymentCartDTO
+
+  /**
+   * An optional billing address context passed to the payment initiation process.
    */
   billing_address?: PaymentAddressDTO
 
   /**
-   * The associated customer's email.
+   * An optional email context passed to the payment initiation process.
    */
   email?: string
 
@@ -45,14 +56,14 @@ export type PaymentProviderContext = {
   session_id?: string
 
   /**
-   * The customer associated with this payment.
+   * An optional customer context passed to the payment initiation process.
    */
   customer?: PaymentCustomerDTO
 
   /**
-   * The extra fields specific to the provider session.
+   * An optional description of the payment, e.g. cart or order ID.
    */
-  extra?: Record<string, unknown>
+  description?: string
 }
 
 /**

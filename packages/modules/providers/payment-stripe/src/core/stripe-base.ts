@@ -15,8 +15,6 @@ import {
   AbstractPaymentProvider,
   isDefined,
   isPaymentProviderError,
-  isPresent,
-  MedusaError,
   PaymentActions,
   PaymentSessionStatus,
 } from "@medusajs/framework/utils"
@@ -105,14 +103,11 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
     input: CreatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
     const intentRequestData = this.getPaymentIntentOptions()
-    const { email, extra, session_id, customer } = input.context
+    const { email, session_id, customer, description } = input.context
     const { currency_code, amount } = input
 
-    const description = (extra?.payment_description ??
-      this.options_?.paymentDescription) as string
-
     const intentRequest: Stripe.PaymentIntentCreateParams = {
-      description,
+      description: description ?? this.options_?.paymentDescription,
       amount: getSmallestUnit(amount, currency_code),
       currency: currency_code,
       metadata: { session_id: session_id! },
@@ -258,14 +253,21 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
   async updatePayment(
     input: UpdatePaymentProviderSession
-  ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
-    const { context, data, currency_code, amount } = input
+  ): Promise<
+    | PaymentProviderError
+    | {
+        status: PaymentSessionStatus
+        data: PaymentProviderSessionResponse["data"]
+      }
+  > {
+    const { data, currency_code, amount } = input
 
     const amountNumeric = getSmallestUnit(amount, currency_code)
 
-    const stripeId = context.customer?.metadata?.stripe_id
+    const stripeId = input.context.customer?.metadata?.stripe_id
 
     if (stripeId !== data.customer) {
+      // If the customer has changed, we initiate a new payment
       const result = await this.initiatePayment(input)
       if (isPaymentProviderError(result)) {
         return this.buildError(
@@ -274,41 +276,20 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
         )
       }
 
-      return result
-    } else {
-      if (isPresent(amount) && data.amount === amountNumeric) {
-        return { data }
-      }
-
-      try {
-        const id = data.id as string
-        const sessionData = (await this.stripe_.paymentIntents.update(id, {
-          amount: amountNumeric,
-        })) as unknown as PaymentProviderSessionResponse["data"]
-
-        return { data: sessionData }
-      } catch (e) {
-        return this.buildError("An error occurred in updatePayment", e)
-      }
+      return { data: result, status: PaymentSessionStatus.PENDING }
     }
-  }
 
-  async updatePaymentData(sessionId: string, data: Record<string, unknown>) {
     try {
-      // Prevent from updating the amount from here as it should go through
-      // the updatePayment method to perform the correct logic
-      if (isPresent(data.amount)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Cannot update amount, use updatePayment instead"
-        )
-      }
-
-      return (await this.stripe_.paymentIntents.update(sessionId, {
-        ...data,
+      const id = data.id as string
+      const sessionData = (await this.stripe_.paymentIntents.update(id, {
+        amount: amountNumeric,
       })) as unknown as PaymentProviderSessionResponse["data"]
+
+      const status = await this.getPaymentStatus(sessionData)
+
+      return { data: sessionData, status }
     } catch (e) {
-      return this.buildError("An error occurred in updatePaymentData", e)
+      return this.buildError("An error occurred in updatePayment", e)
     }
   }
 

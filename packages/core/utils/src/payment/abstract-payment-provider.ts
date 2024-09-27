@@ -575,7 +575,7 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *       )
    *
    *       return {
-   *         ...response,
+   *         status: PaymentSessionStatus.PENDING,
    *         data: {
    *           id: response.id
    *         }
@@ -592,9 +592,19 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
    *   // ...
    * }
    */
-  abstract updatePayment(
-    context: UpdatePaymentProviderSession
-  ): Promise<PaymentProviderError | PaymentProviderSessionResponse>
+  abstract updatePayment(context: UpdatePaymentProviderSession): Promise<
+    | PaymentProviderError
+    | {
+        /**
+         * The new status of the payment.
+         */
+        status: PaymentSessionStatus
+        /**
+         * The data to store in the created payment's `data` property.
+         */
+        data: PaymentProviderSessionResponse["data"]
+      }
+  >
 
   /**
    * This method is executed when a webhook event is received from the third-party payment provider. Use it
