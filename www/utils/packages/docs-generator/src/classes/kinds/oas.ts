@@ -1356,7 +1356,9 @@ class OasKindGenerator extends FunctionKindGenerator {
             name: title,
           }),
         }
-      case "intrinsicName" in itemType && itemType.intrinsicName === "boolean":
+      case ("intrinsicName" in itemType &&
+        itemType.intrinsicName === "boolean") ||
+        itemType.flags === ts.TypeFlags.BooleanLiteral:
         return {
           type: "boolean",
           title: title || typeAsString,

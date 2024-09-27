@@ -1,7 +1,7 @@
 /**
  * @schema StoreCreateReturnItem
  * type: object
- * description: The item's items.
+ * description: The details of the line item to create.
  * x-schemaName: StoreCreateReturnItem
  * required:
  *   - id
@@ -18,11 +18,11 @@
  *   reason_id:
  *     type: string
  *     title: reason_id
- *     description: The item's reason id.
+ *     description: The ID of the associated return reason.
  *   note:
  *     type: string
  *     title: note
- *     description: The item's note.
+ *     description: A note with more details about the returned item.
  * 
 */
 

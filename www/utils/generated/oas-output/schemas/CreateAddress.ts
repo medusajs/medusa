@@ -1,7 +1,7 @@
 /**
  * @schema CreateAddress
  * type: object
- * description: The cart's address details.
+ * description: The address to create.
  * x-schemaName: CreateAddress
  * properties:
  *   customer_id:
