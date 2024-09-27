@@ -5220,7 +5220,6 @@ __metadata:
     "@swc/jest": ^0.2.36
     awilix: ^8.0.1
     bignumber.js: ^9.1.2
-    ioredis: ^5.4.1
     jest: ^29.7.0
     json-2-csv: ^5.5.4
     pg: ^8.13.0
@@ -5229,7 +5228,6 @@ __metadata:
   peerDependencies:
     "@medusajs/framework": ^0.0.1
     awilix: ^8.0.1
-    ioredis: ^5.4.1
   languageName: unknown
   linkType: soft
 
