@@ -7,31 +7,32 @@ import {
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 export const MODULE_PACKAGE_NAMES = {
-  [Modules.AUTH]: "@medusajs/modules/auth",
-  [Modules.CACHE]: "@medusajs/modules/cache-inmemory",
-  [Modules.CART]: "@medusajs/modules/cart",
-  [Modules.CUSTOMER]: "@medusajs/modules/customer",
-  [Modules.EVENT_BUS]: "@medusajs/modules/event-bus-local",
-  [Modules.INVENTORY]: "@medusajs/modules/inventory-next", // TODO: To be replaced when current `@medusajs/inventory` is deprecated
-  [Modules.LINK]: "@medusajs/modules/link-modules",
-  [Modules.PAYMENT]: "@medusajs/modules/payment",
-  [Modules.PRICING]: "@medusajs/modules/pricing",
-  [Modules.PRODUCT]: "@medusajs/modules/product",
-  [Modules.PROMOTION]: "@medusajs/modules/promotion",
-  [Modules.SALES_CHANNEL]: "@medusajs/modules/sales-channel",
-  [Modules.FULFILLMENT]: "@medusajs/modules/fulfillment",
-  [Modules.STOCK_LOCATION]: "@medusajs/modules/stock-location-next", // TODO: To be replaced when current `@medusajs/stock-location` is deprecated
-  [Modules.TAX]: "@medusajs/modules/tax",
-  [Modules.USER]: "@medusajs/modules/user",
-  [Modules.WORKFLOW_ENGINE]: "@medusajs/modules/workflow-engine-inmemory",
-  [Modules.REGION]: "@medusajs/modules/region",
-  [Modules.ORDER]: "@medusajs/modules/order",
-  [Modules.API_KEY]: "@medusajs/modules/api-key",
-  [Modules.STORE]: "@medusajs/modules/store",
-  [Modules.CURRENCY]: "@medusajs/modules/currency",
-  [Modules.FILE]: "@medusajs/modules/file",
-  [Modules.NOTIFICATION]: "@medusajs/modules/notification",
-  [Modules.INDEX]: "@medusajs/modules/index",
+  [Modules.AUTH]: "@medusajs/medusa/modules/auth",
+  [Modules.CACHE]: "@medusajs/medusa/modules/cache-inmemory",
+  [Modules.CART]: "@medusajs/medusa/modules/cart",
+  [Modules.CUSTOMER]: "@medusajs/medusa/modules/customer",
+  [Modules.EVENT_BUS]: "@medusajs/medusa/modules/event-bus-local",
+  [Modules.INVENTORY]: "@medusajs/medusa/modules/inventory-next", // TODO: To be replaced when current `@medusajs/inventory` is deprecated
+  [Modules.LINK]: "@medusajs/medusa/modules/link-modules",
+  [Modules.PAYMENT]: "@medusajs/medusa/modules/payment",
+  [Modules.PRICING]: "@medusajs/medusa/modules/pricing",
+  [Modules.PRODUCT]: "@medusajs/medusa/modules/product",
+  [Modules.PROMOTION]: "@medusajs/medusa/modules/promotion",
+  [Modules.SALES_CHANNEL]: "@medusajs/medusa/modules/sales-channel",
+  [Modules.FULFILLMENT]: "@medusajs/medusa/modules/fulfillment",
+  [Modules.STOCK_LOCATION]: "@medusajs/medusa/modules/stock-location-next", // TODO: To be replaced when current `@medusajs/stock-location` is deprecated
+  [Modules.TAX]: "@medusajs/medusa/modules/tax",
+  [Modules.USER]: "@medusajs/medusa/modules/user",
+  [Modules.WORKFLOW_ENGINE]:
+    "@medusajs/medusa/modules/workflow-engine-inmemory",
+  [Modules.REGION]: "@medusajs/medusa/modules/region",
+  [Modules.ORDER]: "@medusajs/medusa/modules/order",
+  [Modules.API_KEY]: "@medusajs/medusa/modules/api-key",
+  [Modules.STORE]: "@medusajs/medusa/modules/store",
+  [Modules.CURRENCY]: "@medusajs/medusa/modules/currency",
+  [Modules.FILE]: "@medusajs/medusa/modules/file",
+  [Modules.NOTIFICATION]: "@medusajs/medusa/modules/notification",
+  [Modules.INDEX]: "@medusajs/medusa/modules/index",
 }
 
 export const ModulesDefinition: {
