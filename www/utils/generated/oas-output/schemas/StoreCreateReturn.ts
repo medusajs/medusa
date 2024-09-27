@@ -1,7 +1,7 @@
 /**
  * @schema StoreCreateReturn
  * type: object
- * description: SUMMARY
+ * description: The details of the return to create.
  * x-schemaName: StoreCreateReturn
  * required:
  *   - order_id
@@ -11,7 +11,7 @@
  *   order_id:
  *     type: string
  *     title: order_id
- *     description: The return's order id.
+ *     description: The ID of the order this return is created for.
  *   items:
  *     type: array
  *     description: The return's items.
@@ -22,15 +22,15 @@
  *   note:
  *     type: string
  *     title: note
- *     description: The return's note.
+ *     description: A note with more details about the return.
  *   receive_now:
  *     type: boolean
  *     title: receive_now
- *     description: The return's receive now.
+ *     description: Whether to mark the return as received.
  *   location_id:
  *     type: string
  *     title: location_id
- *     description: The return's location id.
+ *     description: The ID of the location that items are returned to.
  * 
 */
 
