@@ -64,6 +64,10 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
         "provider.id",
         "provider.is_enabled",
 
+        "rules.attribute",
+        "rules.value",
+        "rules.operator",
+
         "calculated_price.*",
       ],
       variables: {

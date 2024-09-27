@@ -81,6 +81,11 @@ export function isContextValid(
   const predicate = (rule) => {
     const { attribute, operator, value } = rule
     const contextValue = pickValueFromObject(attribute, context)
+
+    if (typeof contextValue === "undefined") {
+      return true
+    }
+
     return operatorsPredicate[operator](
       contextValue,
       value as string & string[]
