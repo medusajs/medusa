@@ -33,7 +33,8 @@
  *     description: The shipping option's name.
  *   price_type:
  *     type: string
- *     description: The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated fulfillment provider.
+ *     description: The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated
+ *       fulfillment provider.
  *     enum:
  *       - calculated
  *       - flat

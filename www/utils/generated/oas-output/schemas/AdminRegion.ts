@@ -4,9 +4,9 @@
  * description: The region's details.
  * x-schemaName: AdminRegion
  * required:
- *   - id
  *   - name
  *   - currency_code
+ *   - id
  * properties:
  *   id:
  *     type: string

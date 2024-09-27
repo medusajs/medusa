@@ -5,4 +5,6 @@ required:
   - order
 properties:
   order:
-    $ref: ./StoreOrder.yaml
+    type: string
+    title: order
+    description: The order's details.

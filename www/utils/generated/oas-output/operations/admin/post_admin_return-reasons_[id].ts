@@ -37,7 +37,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/UpdateOrderReturnReason"
+ *         $ref: "#/components/schemas/AdminUpdateReturnReason"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

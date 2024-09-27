@@ -4,15 +4,14 @@
  * description: The product's details.
  * x-schemaName: StoreProduct
  * required:
+ *   - variants
+ *   - options
+ *   - images
  *   - length
  *   - title
  *   - status
- *   - options
  *   - description
  *   - id
- *   - created_at
- *   - updated_at
- *   - variants
  *   - handle
  *   - subtitle
  *   - is_giftcard
@@ -26,9 +25,10 @@
  *   - material
  *   - collection_id
  *   - type_id
- *   - images
  *   - discountable
  *   - external_id
+ *   - created_at
+ *   - updated_at
  *   - deleted_at
  * properties:
  *   categories:
@@ -58,7 +58,7 @@
  *     type: array
  *     description: The product's options.
  *     items:
- *       $ref: "#/components/schemas/BaseProductOption"
+ *       $ref: "#/components/schemas/StoreProductOption"
  *   description:
  *     type: string
  *     title: description
@@ -84,7 +84,7 @@
  *     type: array
  *     description: The product's variants.
  *     items:
- *       $ref: "#/components/schemas/BaseProductVariant"
+ *       $ref: "#/components/schemas/StoreProductVariant"
  *   handle:
  *     type: string
  *     title: handle
@@ -143,12 +143,12 @@
  *     type: array
  *     description: The product's tags.
  *     items:
- *       $ref: "#/components/schemas/BaseProductTag"
+ *       $ref: "#/components/schemas/StoreProductTag"
  *   images:
  *     type: array
  *     description: The product's images.
  *     items:
- *       $ref: "#/components/schemas/BaseProductImage"
+ *       $ref: "#/components/schemas/StoreProductImage"
  *   discountable:
  *     type: boolean
  *     title: discountable

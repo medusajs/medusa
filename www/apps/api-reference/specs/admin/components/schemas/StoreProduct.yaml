@@ -2,15 +2,14 @@ type: object
 description: The product's details.
 x-schemaName: StoreProduct
 required:
+  - variants
+  - options
+  - images
   - length
   - title
   - status
-  - options
   - description
   - id
-  - created_at
-  - updated_at
-  - variants
   - handle
   - subtitle
   - is_giftcard
@@ -24,9 +23,10 @@ required:
   - material
   - collection_id
   - type_id
-  - images
   - discountable
   - external_id
+  - created_at
+  - updated_at
   - deleted_at
 properties:
   categories:
@@ -56,7 +56,7 @@ properties:
     type: array
     description: The product's options.
     items:
-      $ref: ./BaseProductOption.yaml
+      $ref: ./StoreProductOption.yaml
   description:
     type: string
     title: description
@@ -82,7 +82,7 @@ properties:
     type: array
     description: The product's variants.
     items:
-      $ref: ./BaseProductVariant.yaml
+      $ref: ./StoreProductVariant.yaml
   handle:
     type: string
     title: handle
@@ -128,7 +128,7 @@ properties:
     title: material
     description: The product's material.
   collection:
-    $ref: ./BaseCollection.yaml
+    $ref: ./StoreCollection.yaml
   collection_id:
     type: string
     title: collection_id
@@ -141,12 +141,12 @@ properties:
     type: array
     description: The product's tags.
     items:
-      $ref: ./BaseProductTag.yaml
+      $ref: ./StoreProductTag.yaml
   images:
     type: array
     description: The product's images.
     items:
-      $ref: ./BaseProductImage.yaml
+      $ref: ./StoreProductImage.yaml
   discountable:
     type: boolean
     title: discountable

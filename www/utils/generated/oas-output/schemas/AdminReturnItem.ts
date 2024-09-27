@@ -1,7 +1,7 @@
 /**
  * @schema AdminReturnItem
  * type: object
- * description: The return item's details.
+ * description: The item's items.
  * x-schemaName: AdminReturnItem
  * required:
  *   - id

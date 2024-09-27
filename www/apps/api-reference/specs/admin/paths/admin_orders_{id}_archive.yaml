@@ -44,7 +44,8 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminArchiveOrder.yaml
+          type: object
+          description: SUMMARY
   x-codeSamples:
     - lang: Shell
       label: cURL

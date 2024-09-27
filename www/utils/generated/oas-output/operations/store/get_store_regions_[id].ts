@@ -32,8 +32,7 @@
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
- *     source: |-
- *       curl '{backend_url}/store/regions/{id}'
+ *     source: curl '{backend_url}/store/regions/{id}'
  * tags:
  *   - Regions
  * responses:

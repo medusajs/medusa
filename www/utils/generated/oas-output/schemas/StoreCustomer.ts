@@ -46,7 +46,7 @@
  *     type: array
  *     description: The customer's addresses.
  *     items:
- *       $ref: "#/components/schemas/StoreCustomerAddress"
+ *       $ref: "#/components/schemas/BaseCustomerAddress"
  *   phone:
  *     type: string
  *     title: phone
@@ -69,6 +69,10 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The date the customer was deleted.
+ *   created_by:
+ *     type: string
+ *     title: created_by
+ *     description: The customer's created by.
  * 
 */
 

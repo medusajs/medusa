@@ -3,64 +3,46 @@ description: The shipping option's shipping options.
 x-schemaName: StoreShippingOption
 required:
   - id
-  - name
-  - price_type
-  - service_zone_id
-  - provider_id
-  - provider
-  - shipping_option_type_id
-  - type
-  - shipping_profile_id
-  - amount
-  - is_tax_inclusive
-  - data
-  - metadata
+  - label
+  - description
+  - code
+  - shipping_option_id
+  - created_at
+  - updated_at
+  - deleted_at
 properties:
   id:
     type: string
     title: id
     description: The shipping option's ID.
-  name:
+  label:
     type: string
-    title: name
-    description: The shipping option's name.
-  price_type:
+    title: label
+    description: The type's label.
+  description:
     type: string
-    description: The shipping option's price type.
-    enum:
-      - flat
-      - calculated
-  service_zone_id:
+    title: description
+    description: The type's description.
+  code:
     type: string
-    title: service_zone_id
-    description: The shipping option's service zone id.
-  provider_id:
+    title: code
+    description: The type's code.
+  shipping_option_id:
     type: string
-    title: provider_id
-    description: The shipping option's provider id.
-  provider:
-    $ref: ./BaseFulfillmentProvider.yaml
-  shipping_option_type_id:
+    title: shipping_option_id
+    description: The type's shipping option id.
+  created_at:
     type: string
-    title: shipping_option_type_id
-    description: The shipping option's shipping option type id.
-  type:
-    type: object
-  shipping_profile_id:
+    format: date-time
+    title: created_at
+    description: The type's created at.
+  updated_at:
     type: string
-    title: shipping_profile_id
-    description: The shipping option's shipping profile id.
-  amount:
-    type: number
-    title: amount
-    description: The shipping option's amount.
-  is_tax_inclusive:
-    type: boolean
-    title: is_tax_inclusive
-    description: The shipping option's is tax inclusive.
-  data:
-    type: object
-    description: The shipping option's data.
-  metadata:
-    type: object
-    description: The shipping option's metadata.
+    format: date-time
+    title: updated_at
+    description: The type's updated at.
+  deleted_at:
+    type: string
+    format: date-time
+    title: deleted_at
+    description: The type's deleted at.

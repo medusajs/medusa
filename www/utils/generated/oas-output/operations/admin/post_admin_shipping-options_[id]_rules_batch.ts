@@ -48,9 +48,9 @@
  *               type: object
  *               description: A shipping option's details.
  *               required:
+ *                 - value
  *                 - operator
  *                 - attribute
- *                 - value
  *               properties:
  *                 operator:
  *                   type: string
@@ -73,15 +73,33 @@
  *                   oneOf:
  *                     - type: string
  *                       title: value
- *                       description: A value of the attribute that enables this rule.
- *                       example: cusgroup_123
+ *                       description: The create's value.
  *                     - type: array
- *                       description: Values of the attribute that enable this rule.
+ *                       description: The create's value.
  *                       items:
  *                         type: string
  *                         title: value
- *                         description: A value of the attribute that enables this rule.
- *                         example: cusgroup_123
+ *                         description: The value's details.
+ *                     - allOf:
+ *                         - type: string
+ *                           title: value
+ *                           description: The create's value.
+ *                         - type: array
+ *                           description: The create's value.
+ *                           items:
+ *                             type: string
+ *                             title: value
+ *                             description: The value's details.
+ *                     - allOf:
+ *                         - type: array
+ *                           description: The create's value.
+ *                           items:
+ *                             type: string
+ *                             title: value
+ *                             description: The value's details.
+ *                         - type: string
+ *                           title: value
+ *                           description: The create's value.
  *           update:
  *             type: array
  *             description: The shipping option rules to update.
@@ -89,10 +107,10 @@
  *               type: object
  *               description: The properties to update in the shipping option rule.
  *               required:
+ *                 - value
  *                 - id
  *                 - operator
  *                 - attribute
- *                 - value
  *               properties:
  *                 id:
  *                   type: string
@@ -119,15 +137,33 @@
  *                   oneOf:
  *                     - type: string
  *                       title: value
- *                       description: A value of the attribute that enables this rule.
- *                       example: cusgroup_123
+ *                       description: The update's value.
  *                     - type: array
- *                       description: Values of the attribute that enable this rule.
+ *                       description: The update's value.
  *                       items:
  *                         type: string
  *                         title: value
- *                         description: A value of the attribute that enables this rule.
- *                         example: cusgroup_123
+ *                         description: The value's details.
+ *                     - allOf:
+ *                         - type: string
+ *                           title: value
+ *                           description: The update's value.
+ *                         - type: array
+ *                           description: The update's value.
+ *                           items:
+ *                             type: string
+ *                             title: value
+ *                             description: The value's details.
+ *                     - allOf:
+ *                         - type: array
+ *                           description: The update's value.
+ *                           items:
+ *                             type: string
+ *                             title: value
+ *                             description: The value's details.
+ *                         - type: string
+ *                           title: value
+ *                           description: The update's value.
  *           delete:
  *             type: array
  *             description: The shipping option rules to delete.

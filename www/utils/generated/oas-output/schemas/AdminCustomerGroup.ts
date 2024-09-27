@@ -23,7 +23,7 @@
  *     type: array
  *     description: The customer group's customers.
  *     items:
- *       $ref: "#/components/schemas/AdminCustomer"
+ *       $ref: "#/components/schemas/BaseCustomer"
  *   metadata:
  *     type: object
  *     description: The customer group's metadata, used to store custom key-value pairs.

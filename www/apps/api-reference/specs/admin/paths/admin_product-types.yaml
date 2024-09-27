@@ -606,7 +606,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminCreateProduct.yaml
+          $ref: ../components/schemas/AdminCreateProductType.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL

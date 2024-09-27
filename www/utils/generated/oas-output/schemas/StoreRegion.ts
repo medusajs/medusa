@@ -1,7 +1,7 @@
 /**
  * @schema StoreRegion
  * type: object
- * description: The region's details.
+ * description: The parent's region.
  * x-schemaName: StoreRegion
  * required:
  *   - id

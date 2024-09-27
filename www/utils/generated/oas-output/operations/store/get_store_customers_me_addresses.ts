@@ -54,31 +54,52 @@
  *   - name: city
  *     in: query
  *     description: Filter by the address's city.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: city
- *       description: Filter by the address's city.
+ *       oneOf:
+ *         - type: string
+ *           title: city
+ *           description: The customer's city.
+ *         - type: array
+ *           description: The customer's city.
+ *           items:
+ *             type: string
+ *             title: city
+ *             description: The city's details.
  *   - name: postal_code
  *     in: query
  *     description: Filter by the address's postal code.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: postal_code
- *       description: Filter by the address's postal code.
+ *       oneOf:
+ *         - type: string
+ *           title: postal_code
+ *           description: The customer's postal code.
+ *         - type: array
+ *           description: The customer's postal code.
+ *           items:
+ *             type: string
+ *             title: postal_code
+ *             description: The postal code's details.
  *   - name: country_code
  *     in: query
  *     description: Filter by the address's country code.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: country_code
- *       description: Filter by the address's country code.
+ *       oneOf:
+ *         - type: string
+ *           title: country_code
+ *           description: The customer's country code.
+ *         - type: array
+ *           description: The customer's country code.
+ *           items:
+ *             type: string
+ *             title: country_code
+ *             description: The country code's details.
  *   - name: q
  *     in: query
  *     description: Search term to filter the address's searchable properties.
- *     required: true
+ *     required: false
  *     schema:
  *       type: string
  *       title: q

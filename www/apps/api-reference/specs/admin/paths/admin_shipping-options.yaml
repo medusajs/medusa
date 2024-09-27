@@ -707,7 +707,7 @@ post:
     content:
       application/json:
         schema:
-          type: object
+          $ref: ../components/schemas/AdminCreateShippingOption.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL

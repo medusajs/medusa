@@ -4,11 +4,11 @@
  * description: The return's details.
  * x-schemaName: StoreReturn
  * required:
+ *   - items
  *   - id
  *   - order_id
  *   - order_version
  *   - display_id
- *   - items
  *   - received_at
  *   - created_at
  *   - canceled_at
@@ -22,8 +22,22 @@
  *     title: order_id
  *     description: The return's order id.
  *   status:
- *     type: string
- *     title: status
+ *     oneOf:
+ *       - type: string
+ *         title: status
+ *         description: The return's status.
+ *       - type: string
+ *         title: status
+ *         description: The return's status.
+ *       - type: string
+ *         title: status
+ *         description: The return's status.
+ *       - type: string
+ *         title: status
+ *         description: The return's status.
+ *       - type: string
+ *         title: status
+ *         description: The return's status.
  *     description: The return's status.
  *   exchange_id:
  *     type: string
@@ -57,7 +71,7 @@
  *     type: array
  *     description: The return's items.
  *     items:
- *       $ref: "#/components/schemas/BaseReturnItem"
+ *       $ref: "#/components/schemas/StoreReturnItem"
  *   received_at:
  *     type: string
  *     title: received_at

@@ -1,80 +1,70 @@
 type: object
 description: The category's categories.
 x-schemaName: StoreProductCategory
-required:
-  - id
-  - name
-  - description
-  - handle
-  - is_active
-  - is_internal
-  - rank
-  - parent_category_id
-  - parent_category
-  - category_children
-  - created_at
-  - updated_at
-  - deleted_at
 properties:
   products:
     type: array
-    description: The category's products.
+    description: The parent category's products.
     items:
       $ref: ./StoreProduct.yaml
-  id:
-    type: string
-    title: id
-    description: The category's ID.
+  parent_category:
+    $ref: ./StoreProductCategory.yaml
+  category_children:
+    type: array
+    description: The category's parent category.
+    items:
+      $ref: ./StoreProductCategory.yaml
   name:
     type: string
     title: name
-    description: The category's name.
+    description: The parent category's name.
   description:
     type: string
     title: description
-    description: The category's description.
+    description: The parent category's description.
+  metadata:
+    type: object
+    description: The parent category's metadata.
+  id:
+    type: string
+    title: id
+    description: The parent category's ID.
   handle:
     type: string
     title: handle
-    description: The category's handle.
-  is_active:
-    type: boolean
-    title: is_active
-    description: The category's is active.
-  is_internal:
-    type: boolean
-    title: is_internal
-    description: The category's is internal.
-  rank:
-    type: number
-    title: rank
-    description: The category's rank.
-  parent_category_id:
-    type: string
-    title: parent_category_id
-    description: The category's parent category id.
-  parent_category:
-    $ref: ./BaseProductCategory.yaml
-  category_children:
-    type: array
-    description: The category's category children.
-    items:
-      $ref: ./BaseProductCategory.yaml
-  metadata:
-    type: object
-    description: The category's metadata.
+    description: The parent category's handle.
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The category's created at.
+    description: The parent category's created at.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The category's updated at.
+    description: The parent category's updated at.
   deleted_at:
     type: string
     format: date-time
     title: deleted_at
-    description: The category's deleted at.
+    description: The parent category's deleted at.
+  rank:
+    type: number
+    title: rank
+    description: The parent category's rank.
+  parent_category_id:
+    type: string
+    title: parent_category_id
+    description: The parent category's parent category id.
+required:
+  - parent_category
+  - category_children
+  - name
+  - description
+  - id
+  - handle
+  - created_at
+  - updated_at
+  - deleted_at
+  - rank
+  - parent_category_id

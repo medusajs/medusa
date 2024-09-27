@@ -61,6 +61,11 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: exportProductsWorkflow
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/AdminExportProductRequest"
  * 
 */
 

@@ -877,14 +877,6 @@
  *       externalDocs:
  *         url: https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
  *         description: "Storefront guide: How to show product variants' prices with taxes."
- *   - name: country_code
- *     in: query
- *     description: The country code the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
- *     required: false
- *     schema:
- *       type: string
- *       title: country_code
- *       description: The country code the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
  *   - name: province
  *     in: query
  *     description: The province the products are being viewed from. This is useful to narrow down the tax context when calculating product variant prices with taxes.
@@ -893,14 +885,6 @@
  *       type: string
  *       title: province
  *       description: The province the products are being viewed from. This is useful to narrow down the tax context when calculating product variant prices with taxes.
- *   - name: cart_id
- *     in: query
- *     description: The ID of the customer's cart. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` properties.
- *     required: false
- *     schema:
- *       type: string
- *       title: cart_id
- *       description: The ID of the customer's cart. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` properties.
  *   - name: sales_channel_id
  *     in: query
  *     required: false
@@ -929,6 +913,92 @@
  *             type: string
  *             title: category_id
  *             description: A product category's ID.
+ *   - name: currency_code
+ *     in: query
+ *     description: The product's currency code.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: currency_code
+ *       description: The product's currency code.
+ *   - name: variants
+ *     in: query
+ *     description: The product's variants.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: The product's variants.
+ *       x-schemaName: StoreProductVariantParams
+ *       properties:
+ *         q:
+ *           type: string
+ *           title: q
+ *           description: The variant's q.
+ *         id:
+ *           oneOf:
+ *             - type: string
+ *               title: id
+ *               description: The variant's ID.
+ *             - type: array
+ *               description: The variant's ID.
+ *               items:
+ *                 type: string
+ *                 title: id
+ *                 description: The id's ID.
+ *         sku:
+ *           oneOf:
+ *             - type: string
+ *               title: sku
+ *               description: The variant's sku.
+ *             - type: array
+ *               description: The variant's sku.
+ *               items:
+ *                 type: string
+ *                 title: sku
+ *                 description: The sku's details.
+ *         product_id:
+ *           oneOf:
+ *             - type: string
+ *               title: product_id
+ *               description: The variant's product id.
+ *             - type: array
+ *               description: The variant's product id.
+ *               items:
+ *                 type: string
+ *                 title: product_id
+ *                 description: The product id's details.
+ *         options:
+ *           type: object
+ *           description: The variant's options.
+ *         limit:
+ *           type: number
+ *           title: limit
+ *           description: Limit the number of items returned in the list.
+ *         offset:
+ *           type: number
+ *           title: offset
+ *           description: The number of items to skip when retrieving a list.
+ *         order:
+ *           type: string
+ *           title: order
+ *           description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *         fields:
+ *           type: string
+ *           title: fields
+ *           description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
+ *             fields. without prefix it will replace the entire default fields.
+ *         $and:
+ *           type: array
+ *           description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $and
+ *         $or:
+ *           type: array
+ *           description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+ *           items:
+ *             type: object
+ *           title: $or
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

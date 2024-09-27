@@ -114,7 +114,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/UpdateOrderReturnReason.yaml
+          $ref: ../components/schemas/AdminUpdateReturnReason.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL
