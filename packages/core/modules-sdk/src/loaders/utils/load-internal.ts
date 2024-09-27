@@ -112,12 +112,14 @@ export async function loadInternalModule(
 
   let moduleResources = {} as ModuleResource
 
-  moduleResources = await loadResources({
-    moduleResolution: resolution,
-    discoveryPath: loadedModule.discoveryPath,
-    logger,
-    loadedModuleLoaders: loadedModule?.loaders,
-  })
+  if (loadedModule.discoveryPath) {
+    moduleResources = await loadResources({
+      moduleResolution: resolution,
+      discoveryPath: loadedModule.discoveryPath,
+      logger,
+      loadedModuleLoaders: loadedModule?.loaders,
+    })
+  }
 
   if (!loadedModule?.service && !moduleResources.moduleService) {
     container.register({
