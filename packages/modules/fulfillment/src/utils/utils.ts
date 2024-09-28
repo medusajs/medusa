@@ -1,9 +1,9 @@
 import {
+  MedusaError,
+  RuleOperator,
   isObject,
   isString,
-  MedusaError,
   pickValueFromObject,
-  RuleOperator,
 } from "@medusajs/framework/utils"
 
 /**
@@ -81,6 +81,7 @@ export function isContextValid(
   const predicate = (rule) => {
     const { attribute, operator, value } = rule
     const contextValue = pickValueFromObject(attribute, context)
+
     return operatorsPredicate[operator](
       contextValue,
       value as string & string[]

@@ -1,7 +1,7 @@
 /**
  * @schema UpdateOrderReturnReason
  * type: object
- * description: SUMMARY
+ * description: The details to update in a return reason.
  * x-schemaName: UpdateOrderReturnReason
  * properties:
  *   id:
@@ -22,7 +22,7 @@
  *     description: The return reason's description.
  *   metadata:
  *     type: object
- *     description: The return reason's metadata.
+ *     description: The return reason's metadata, can hold custom key-value pairs.
  * 
 */
 
