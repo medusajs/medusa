@@ -170,17 +170,11 @@ export default class FulfillmentModuleService
       config
     )
 
-    console.log(context)
-    console.log(JSON.stringify(normalizedConfig, null, 2))
-    console.log(JSON.stringify(normalizedFilters, null, 2))
-
     let shippingOptions = await this.shippingOptionService_.list(
       normalizedFilters,
       normalizedConfig,
       sharedContext
     )
-
-    console.log(shippingOptions)
 
     if (context) {
       shippingOptions = shippingOptions.filter((shippingOption) => {
@@ -631,10 +625,7 @@ export default class FulfillmentModuleService
           fulfillmentData || {},
           items.map((i) => i),
           order,
-          {
-            ...fulfillmentRest,
-            location: fulfillmentDataToCreate.location,
-          }
+          fulfillmentRest
         )
       await this.fulfillmentService_.update(
         {
@@ -676,10 +667,7 @@ export default class FulfillmentModuleService
       const providerResult =
         await this.fulfillmentProviderService_.createReturn(
           fulfillment.provider_id,
-          {
-            ...fulfillment,
-            location: fulfillmentDataToCreate.location,
-          } as Record<any, any>
+          fulfillment as Record<any, any>
         )
       await this.fulfillmentService_.update(
         {

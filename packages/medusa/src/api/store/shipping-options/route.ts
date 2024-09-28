@@ -32,8 +32,6 @@ export const GET = async (
     relations: ["shipping_address"],
   })
 
-  console.log(cart)
-
   const { result } = await listShippingOptionsForCartWorkflow(req.scope).run({
     input: {
       cart_id: cart.id,
