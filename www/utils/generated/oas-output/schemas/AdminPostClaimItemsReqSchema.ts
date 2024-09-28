@@ -23,13 +23,24 @@
  *           title: quantity
  *           description: The quantity of the order's item to add to the claim.
  *         reason:
- *           type: string
+ *           oneOf:
+ *             - type: string
+ *               description: The item's reason.
+ *               enum:
+ *                 - MISSING_ITEM
+ *             - type: string
+ *               description: The item's reason.
+ *               enum:
+ *                 - WRONG_ITEM
+ *             - type: string
+ *               description: The item's reason.
+ *               enum:
+ *                 - PRODUCTION_FAILURE
+ *             - type: string
+ *               description: The item's reason.
+ *               enum:
+ *                 - OTHER
  *           description: The reason the item is claimed.
- *           enum:
- *             - missing_item
- *             - wrong_item
- *             - production_failure
- *             - other
  *         description:
  *           type: string
  *           title: description

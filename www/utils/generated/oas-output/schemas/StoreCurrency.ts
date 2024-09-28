@@ -10,7 +10,6 @@
  *   - name
  *   - decimal_digits
  *   - rounding
- *   - raw_rounding
  *   - created_at
  *   - updated_at
  *   - deleted_at

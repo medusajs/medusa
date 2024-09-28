@@ -45,6 +45,8 @@
  *               required:
  *                 - workflowId
  *                 - transactionId
+ *                 - hasFinished
+ *                 - hasFailed
  *               properties:
  *                 workflowId:
  *                   type: string
@@ -54,6 +56,18 @@
  *                   type: string
  *                   description: The ID of the workflow exection's transaction. Use this later to track the workflow execution's progress or succeed / fail its steps.
  *                   title: transactionId
+ *                 parentStepIdempotencyKey:
+ *                   type: string
+ *                   title: parentStepIdempotencyKey
+ *                   description: The acknowledgement's parentstepidempotencykey.
+ *                 hasFinished:
+ *                   type: boolean
+ *                   title: hasFinished
+ *                   description: The acknowledgement's hasfinished.
+ *                 hasFailed:
+ *                   type: boolean
+ *                   title: hasFailed
+ *                   description: The acknowledgement's hasfailed.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

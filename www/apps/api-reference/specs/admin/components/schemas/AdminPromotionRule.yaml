@@ -1,5 +1,5 @@
 type: object
-description: The updated's details.
+description: The target rule's target rules.
 x-schemaName: AdminPromotionRule
 required:
   - id
@@ -8,28 +8,40 @@ properties:
   id:
     type: string
     title: id
-    description: The updated's ID.
+    description: The target rule's ID.
   description:
     type: string
     title: description
-    description: The updated's description.
+    description: The target rule's description.
   attribute:
     type: string
     title: attribute
-    description: The updated's attribute.
+    description: The target rule's attribute.
   operator:
-    type: string
-    description: The updated's operator.
-    enum:
-      - gt
-      - lt
-      - eq
-      - ne
-      - in
-      - lte
-      - gte
+    oneOf:
+      - type: string
+        title: operator
+        description: The target rule's operator.
+      - type: string
+        title: operator
+        description: The target rule's operator.
+      - type: string
+        title: operator
+        description: The target rule's operator.
+      - type: string
+        title: operator
+        description: The target rule's operator.
+      - type: string
+        title: operator
+        description: The target rule's operator.
+      - type: string
+        title: operator
+        description: The target rule's operator.
+      - type: string
+        title: operator
+        description: The target rule's operator.
   values:
     type: array
-    description: The updated's values.
+    description: The target rule's values.
     items:
       $ref: ./BasePromotionRuleValue.yaml

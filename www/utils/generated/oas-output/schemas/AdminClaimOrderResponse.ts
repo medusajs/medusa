@@ -8,7 +8,9 @@
  *   - claim
  * properties:
  *   order:
- *     $ref: "#/components/schemas/Order"
+ *     type: string
+ *     title: order
+ *     description: The order change's order.
  *   claim:
  *     $ref: "#/components/schemas/AdminClaim"
  * 

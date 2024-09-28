@@ -664,7 +664,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/CreateOrderReturnReason.yaml
+          $ref: ../components/schemas/AdminCreateReturnReason.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL

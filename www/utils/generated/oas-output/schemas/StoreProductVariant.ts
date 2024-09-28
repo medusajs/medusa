@@ -1,7 +1,7 @@
 /**
  * @schema StoreProductVariant
  * type: object
- * description: The variant's details.
+ * description: The variant's variants.
  * x-schemaName: StoreProductVariant
  * properties:
  *   options:
@@ -11,36 +11,21 @@
  *       $ref: "#/components/schemas/StoreProductOptionValue"
  *   product:
  *     $ref: "#/components/schemas/StoreProduct"
- *   id:
- *     type: string
- *     title: id
- *     description: The variant's ID.
- *   metadata:
- *     type: object
- *     description: The variant's metadata, can hold custom key-value pairs.
- *   created_at:
- *     type: string
- *     format: date-time
- *     title: created_at
- *     description: The date the variant was created.
- *   updated_at:
- *     type: string
- *     format: date-time
- *     title: updated_at
- *     description: The date the variant was updated.
+ *   length:
+ *     type: number
+ *     title: length
+ *     description: The variant's length.
  *   title:
  *     type: string
  *     title: title
  *     description: The variant's title.
- *   product_id:
+ *   metadata:
+ *     type: object
+ *     description: The variant's metadata.
+ *   id:
  *     type: string
- *     title: product_id
- *     description: The ID of the product that the variant belongs to.
- *   deleted_at:
- *     type: string
- *     format: date-time
- *     title: deleted_at
- *     description: The date the variant was deleted.
+ *     title: id
+ *     description: The variant's ID.
  *   width:
  *     type: number
  *     title: width
@@ -49,10 +34,6 @@
  *     type: number
  *     title: weight
  *     description: The variant's weight.
- *   length:
- *     type: number
- *     title: length
- *     description: The variant's length.
  *   height:
  *     type: number
  *     title: height
@@ -64,19 +45,38 @@
  *   hs_code:
  *     type: string
  *     title: hs_code
- *     description: The variant's HS code.
+ *     description: The variant's hs code.
  *   mid_code:
  *     type: string
  *     title: mid_code
- *     description: The variant's MID code.
+ *     description: The variant's mid code.
  *   material:
  *     type: string
  *     title: material
  *     description: The variant's material.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The variant's created at.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The variant's updated at.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The variant's deleted at.
+ *   product_id:
+ *     type: string
+ *     title: product_id
+ *     description: The variant's product id.
  *   sku:
  *     type: string
  *     title: sku
- *     description: The variant's SKU.
+ *     description: The variant's sku.
  *   barcode:
  *     type: string
  *     title: barcode
@@ -84,50 +84,44 @@
  *   ean:
  *     type: string
  *     title: ean
- *     description: The variant's EAN.
+ *     description: The variant's ean.
  *   upc:
  *     type: string
  *     title: upc
- *     description: The variant's UPC.
+ *     description: The variant's upc.
  *   allow_backorder:
  *     type: boolean
  *     title: allow_backorder
- *     description: Whether the variant can be ordered even if it's not in stock.
+ *     description: The variant's allow backorder.
  *   manage_inventory:
  *     type: boolean
  *     title: manage_inventory
- *     description: Whether Medusa manages the variant's inventory. If disabled, the variant is always considered in stock.
- *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/inventory
- *       description: "Storefront guide: How to retrieve a product variant's inventory details."
+ *     description: The variant's manage inventory.
  *   inventory_quantity:
  *     type: number
  *     title: inventory_quantity
- *     description: The variant's inventory quantity. This property is only available if you pass `+variants.inventory_quantity` in the `fields` query parameter.
- *     externalDocs:
- *       url: https://docs.medusajs.com/v2/resources/storefront-development/products/inventory
- *       description: "Storefront guide: How to retrieve a product variant's inventory details."
+ *     description: The variant's inventory quantity.
  *   variant_rank:
  *     type: number
  *     title: variant_rank
- *     description: The variant's rank among its siblings.
+ *     description: The variant's variant rank.
  *   calculated_price:
  *     $ref: "#/components/schemas/BaseCalculatedPriceSet"
  * required:
  *   - options
- *   - id
- *   - created_at
- *   - updated_at
+ *   - length
  *   - title
- *   - deleted_at
+ *   - id
  *   - width
  *   - weight
- *   - length
  *   - height
  *   - origin_country
  *   - hs_code
  *   - mid_code
  *   - material
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
  *   - sku
  *   - barcode
  *   - ean

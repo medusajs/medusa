@@ -86,3 +86,8 @@ properties:
       the option's value.
     example:
       Color: Black
+  inventory_items:
+    type: array
+    description: The variant's inventory items.
+    items:
+      $ref: ./AdminCreateProductVariantInventoryKit.yaml

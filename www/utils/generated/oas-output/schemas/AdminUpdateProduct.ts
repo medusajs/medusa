@@ -46,13 +46,20 @@
  *     title: handle
  *     description: The product's unique handle.
  *   status:
- *     type: string
+ *     oneOf:
+ *       - type: string
+ *         title: status
+ *         description: The update's status.
+ *       - type: string
+ *         title: status
+ *         description: The update's status.
+ *       - type: string
+ *         title: status
+ *         description: The update's status.
+ *       - type: string
+ *         title: status
+ *         description: The update's status.
  *     description: The product's status.
- *     enum:
- *       - draft
- *       - proposed
- *       - published
- *       - rejected
  *   type_id:
  *     type: string
  *     title: type_id

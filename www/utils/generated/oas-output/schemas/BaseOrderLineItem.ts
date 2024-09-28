@@ -60,7 +60,7 @@
  *     title: thumbnail
  *     description: The URL of the item's thumbnail.
  *   variant:
- *     $ref: "#/components/schemas/AdminProductVariant"
+ *     $ref: "#/components/schemas/BaseProductVariant"
  *   variant_id:
  *     type: string
  *     title: variant_id
@@ -215,3 +215,4 @@
  *     description: The total refundable amount of the item's total for a single quantity.
  * 
 */
+

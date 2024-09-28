@@ -36,6 +36,8 @@
  *     description: The ID of the user that created the refund.
  *   payment:
  *     $ref: "#/components/schemas/BasePayment"
+ *   refund_reason:
+ *     $ref: "#/components/schemas/RefundReason"
  * 
 */
 

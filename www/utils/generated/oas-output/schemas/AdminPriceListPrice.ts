@@ -71,7 +71,7 @@
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description:  The date the price was deleted.
+ *     description: The date the price was deleted.
  * 
 */
 

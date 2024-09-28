@@ -6,6 +6,8 @@ required:
   - claim
 properties:
   order:
-    $ref: ./Order.yaml
+    type: string
+    title: order
+    description: The order change's order.
   claim:
     $ref: ./AdminClaim.yaml

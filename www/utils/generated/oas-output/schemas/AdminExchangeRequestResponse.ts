@@ -9,11 +9,9 @@
  *   - exchange
  * properties:
  *   return:
- *     description: The associated return's details.
  *     $ref: "#/components/schemas/AdminReturn"
  *   order_preview:
- *     description: A preview of the order once the exchange is applied.
- *     $ref: "#/components/schemas/OrderPreview"
+ *     $ref: "#/components/schemas/AdminOrderPreview"
  *   exchange:
  *     $ref: "#/components/schemas/AdminExchange"
  * 

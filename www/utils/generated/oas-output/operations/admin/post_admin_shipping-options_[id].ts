@@ -50,13 +50,18 @@
  *             externalDocs:
  *               url: https://docs.medusajs.com/v2/resources/commerce-modules/fulfillment/shipping-option#data-property
  *           price_type:
- *             type: string
+ *             oneOf:
+ *               - type: string
+ *                 description: The shipping option's price type.
+ *                 enum:
+ *                   - CALCULATED
+ *               - type: string
+ *                 description: The shipping option's price type.
+ *                 enum:
+ *                   - FLAT
  *             description: >
  *               The type of the shipping option's price. If `calculated`, its price is retrieved by the  associated fulfillment provider during checkout. If `flat`, its price is set in the `prices`
  *               property.
- *             enum:
- *               - calculated
- *               - flat
  *           provider_id:
  *             type: string
  *             title: provider_id
@@ -69,9 +74,9 @@
  *             type: object
  *             description: The shipping option's type.
  *             required:
- *               - label
- *               - description
  *               - code
+ *               - description
+ *               - label
  *             properties:
  *               label:
  *                 type: string
