@@ -155,6 +155,12 @@ export function EditShippingOptionsPricingForm({
           return undefined
         }
 
+        // Check if the region_id exists in the regions array
+        const regionExists = regions?.some(region => region.id === region_id)
+        if (!regionExists) {
+          return undefined
+        }
+
         const amount = castNumber(value)
 
         const priceRecord: PriceRecord = {
