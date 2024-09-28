@@ -11,10 +11,12 @@ export const validateShippingOptionPricesStepId =
 export const validateShippingOptionPricesStep = createStep(
   validateShippingOptionPricesStepId,
   async (
-    input: FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput[],
+    options: {
+      prices?: FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput["prices"]
+    }[],
     { container }
   ) => {
-    const allPrices = input.flatMap((option) => {
+    const allPrices = options.flatMap((option) => {
       if (!option.prices) {
         return []
       }
