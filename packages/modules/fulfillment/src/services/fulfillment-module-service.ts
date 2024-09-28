@@ -170,11 +170,17 @@ export default class FulfillmentModuleService
       config
     )
 
+    console.log(context)
+    console.log(JSON.stringify(normalizedConfig, null, 2))
+    console.log(JSON.stringify(normalizedFilters, null, 2))
+
     let shippingOptions = await this.shippingOptionService_.list(
       normalizedFilters,
       normalizedConfig,
       sharedContext
     )
+
+    console.log(shippingOptions)
 
     if (context) {
       shippingOptions = shippingOptions.filter((shippingOption) => {

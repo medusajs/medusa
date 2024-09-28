@@ -82,10 +82,14 @@ export function isContextValid(
     const { attribute, operator, value } = rule
     const contextValue = pickValueFromObject(attribute, context)
 
-    return operatorsPredicate[operator](
-      contextValue,
+    const result = operatorsPredicate[operator](
+      `${contextValue}`,
       value as string & string[]
     )
+
+    console.log(rule, result)
+
+    return result
   }
 
   return loopComparator.apply(rules, [predicate])

@@ -16,7 +16,7 @@ export interface CreateFulfillmentDTO {
   /**
    * The associated location's data.
    */
-  location: StockLocationDTO
+  location?: StockLocationDTO
 
   /**
    * The date the fulfillment was packed.

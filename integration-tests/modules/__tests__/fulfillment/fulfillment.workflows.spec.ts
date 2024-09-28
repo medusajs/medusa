@@ -92,7 +92,6 @@ medusaIntegrationTestRunner({
                 provider_id: providerId,
                 service_zone_id: serviceZone.id,
                 shipping_profile_id: shippingProfile.id,
-                location_id: location.id,
               })
             )
 
