@@ -1,7 +1,7 @@
 /**
  * @schema StoreOrderResponse
  * type: object
- * description: SUMMARY
+ * description: The order's details.
  * x-schemaName: StoreOrderResponse
  * required:
  *   - order
