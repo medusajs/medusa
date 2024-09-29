@@ -16,20 +16,19 @@ export const validateShippingOptionPricesStep = createStep(
     }[],
     { container }
   ) => {
-    const allPrices = options.flatMap((option) => {
-      if (!option.prices) {
-        return []
-      }
-      return option.prices
-    })
+    const allPrices = options.flatMap((option) => option.prices ?? [])
 
     const regionIdSet = new Set<string>()
 
-    allPrices.forEach((p) => {
-      if ("region_id" in p && p.region_id) {
-        regionIdSet.add(p.region_id)
+    allPrices.forEach((price) => {
+      if ("region_id" in price && price.region_id) {
+        regionIdSet.add(price.region_id)
       }
     })
+
+    if (regionIdSet.size === 0) {
+      return new StepResponse(void 0)
+    }
 
     const regionService = container.resolve(Modules.REGION)
     const regionList = await regionService.listRegions({
