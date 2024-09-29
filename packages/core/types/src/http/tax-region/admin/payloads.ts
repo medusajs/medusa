@@ -4,7 +4,7 @@ export interface AdminCreateTaxRegion {
   parent_id?: string
   default_tax_rate?: {
     rate?: number
-    code?: string
+    code: string
     name: string
     is_combinable?: boolean
     metadata?: Record<string, unknown>
