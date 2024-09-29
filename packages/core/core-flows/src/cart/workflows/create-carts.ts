@@ -10,6 +10,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
@@ -97,8 +98,18 @@ export const createCartWorkflow = createWorkflow(
       context: pricingContext,
     })
 
+    // If there is only one country in the region, we prepare a shipping address with that country's code.
+    //   This is useful for other operations, such as tax line calculations.
+    const shippingAddress = when({ region }, (data) => {
+      return data.region?.countries.length === 1
+    }).then(() => {
+      return {
+        country_code: region?.countries[0].iso_2,
+      }
+    })
+
     const cartInput = transform(
-      { input, region, customerData, salesChannel },
+      { input, region, customerData, salesChannel, shippingAddress },
       (data) => {
         if (!data.region) {
           throw new MedusaError(MedusaError.Types.NOT_FOUND, "No regions found")
@@ -117,6 +128,10 @@ export const createCartWorkflow = createWorkflow(
 
         if (data.salesChannel?.id) {
           data_.sales_channel_id = data.salesChannel.id
+        }
+
+        if (data.shippingAddress && !data.input.shipping_address) {
+          data_.shipping_address = data.shippingAddress
         }
 
         return data_

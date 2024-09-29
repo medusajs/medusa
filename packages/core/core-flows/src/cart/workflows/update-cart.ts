@@ -1,5 +1,7 @@
 import {
   AdditionalData,
+  CartDTO,
+  RegionDTO,
   UpdateCartWorkflowInputDTO,
 } from "@medusajs/framework/types"
 import {
@@ -8,12 +10,15 @@ import {
   isPresent,
 } from "@medusajs/framework/utils"
 import {
+  StepResponse,
   WorkflowData,
   WorkflowResponse,
   createHook,
+  createStep,
   createWorkflow,
   parallelize,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {
@@ -27,6 +32,56 @@ import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
+
+/*
+ * When changing the region on the cartyou are changing the set of countries that your
+ * cart can be shipped to so we need to make sure that the current shipping
+ * address adheres to the new country set.
+ */
+const setShippingAddress = createStep(
+  "set-shipping-address",
+  async (data: { region: RegionDTO; cart: CartDTO }) => {
+    const { region, cart } = data
+
+    const countryCode = cart.shipping_address?.country_code
+
+    let shippingAddress = cart.shipping_address ?? {}
+
+    if (countryCode) {
+      const countryNotInRegion = region.countries.find(
+        (c) => c.iso_2 !== countryCode
+      )
+
+      if (countryNotInRegion) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Country ${countryCode} not found in region ${region.name}`
+        )
+      }
+
+      shippingAddress = {
+        ...shippingAddress,
+        country_code: countryCode,
+      }
+    }
+
+    if (!countryCode) {
+      if (region.countries.length === 1) {
+        shippingAddress = {
+          ...shippingAddress,
+          country_code: region.countries[0].iso_2,
+        }
+      } else {
+        shippingAddress = {
+          ...shippingAddress,
+          country_code: undefined,
+        }
+      }
+    }
+
+    return new StepResponse(shippingAddress)
+  }
+)
 
 export const updateCartWorkflowId = "update-cart"
 /**
@@ -48,11 +103,27 @@ export const updateCartWorkflow = createWorkflow(
       })
     )
 
+    const cartToUpdate = useRemoteQueryStep({
+      entry_point: "cart",
+      variables: { id: input.id },
+      fields: ["id", "shipping_address.*", "region_id"],
+    })
+
+    // If the input region id is the same as the cart's region id, we don't need to do anything about the shipping address
+    const shippingAddress = when({ cartToUpdate, input }, (data) => {
+      return data.input.region_id !== data.cartToUpdate.region_id
+    }).then(() => {
+      return setShippingAddress({ region, cart: cartToUpdate })
+    })
+
     const cartInput = transform(
-      { input, region, customerData, salesChannel },
+      { input, region, customerData, salesChannel, shippingAddress },
       (data) => {
         const { promo_codes, ...updateCartData } = data.input
-        const data_ = { ...updateCartData }
+        const data_ = {
+          ...updateCartData,
+          shipping_address: data.shippingAddress,
+        }
 
         if (isPresent(updateCartData.region_id)) {
           if (!data.region) {

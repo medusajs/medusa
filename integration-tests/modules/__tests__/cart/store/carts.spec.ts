@@ -316,6 +316,49 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it.only("should create cart with shipping address country code when there is only one country assigned to the region", async () => {
+          const region = await regionModule.createRegions({
+            name: "US",
+            currency_code: "usd",
+            countries: ["us"],
+          })
+
+          const response = await api.post(
+            `/store/carts`,
+            {
+              email: "tony@stark.com",
+              currency_code: "usd",
+              region_id: region.id,
+            },
+            storeHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "usd",
+              email: "tony@stark.com",
+              region: expect.objectContaining({
+                id: region.id,
+              }),
+              shipping_address: {
+                id: expect.any(String),
+                country_code: "us",
+                first_name: null,
+                last_name: null,
+                company: null,
+                address_1: null,
+                address_2: null,
+                city: null,
+                province: null,
+                postal_code: null,
+                phone: null,
+              },
+            })
+          )
+        })
+
         it("should create cart with default store sales channel", async () => {
           const sc = await scModule.createSalesChannels({
             name: "Webshop",
