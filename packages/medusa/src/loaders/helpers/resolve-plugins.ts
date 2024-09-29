@@ -101,6 +101,17 @@ function resolvePlugin(pluginName: string): {
       })
     }
 
+    // Find the plugin in the node_modules folder
+    resolvedPath = path.resolve(`./node_modules/${pluginName}`)
+    const doesExistsInNodeModules = existsSync(resolvedPath)
+
+    if (doesExistsInNodeModules) {
+      return loadPluginDetails({
+        pluginName,
+        resolvedPath
+      })
+    }
+
     throw new Error(`Unable to find the plugin "${pluginName}".`)
   }
 
