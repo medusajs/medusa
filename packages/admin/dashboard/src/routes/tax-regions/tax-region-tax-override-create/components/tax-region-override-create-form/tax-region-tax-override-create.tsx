@@ -408,7 +408,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
                       render={({ field }) => {
                         return (
                           <Form.Item>
-                            <Form.Label optional>
+                            <Form.Label>
                               {t("taxRegions.fields.taxCode")}
                             </Form.Label>
                             <Form.Control>
