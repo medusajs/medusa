@@ -48,9 +48,9 @@
  *               type: object
  *               description: A target rule's details.
  *               required:
+ *                 - values
  *                 - operator
  *                 - attribute
- *                 - values
  *               properties:
  *                 operator:
  *                   type: string
@@ -76,15 +76,33 @@
  *                   oneOf:
  *                     - type: string
  *                       title: values
- *                       description: The attribute's value.
- *                       example: prod_123
+ *                       description: The create's values.
  *                     - type: array
- *                       description: The allowed attribute values.
+ *                       description: The create's values.
  *                       items:
  *                         type: string
  *                         title: values
- *                         description: An attribute value.
- *                         example: prod_123
+ *                         description: The value's values.
+ *                     - allOf:
+ *                         - type: string
+ *                           title: values
+ *                           description: The create's values.
+ *                         - type: array
+ *                           description: The create's values.
+ *                           items:
+ *                             type: string
+ *                             title: values
+ *                             description: The value's values.
+ *                     - allOf:
+ *                         - type: array
+ *                           description: The create's values.
+ *                           items:
+ *                             type: string
+ *                             title: values
+ *                             description: The value's values.
+ *                         - type: string
+ *                           title: values
+ *                           description: The create's values.
  *           update:
  *             type: array
  *             description: The target rules to update.
@@ -92,24 +110,44 @@
  *               type: object
  *               description: The properties to update in a target rule.
  *               required:
- *                 - id
  *                 - values
+ *                 - id
  *               properties:
  *                 id:
  *                   type: string
  *                   title: id
  *                   description: The target rule's ID.
  *                 operator:
- *                   type: string
+ *                   oneOf:
+ *                     - type: string
+ *                       description: The update's operator.
+ *                       enum:
+ *                         - GTE
+ *                     - type: string
+ *                       description: The update's operator.
+ *                       enum:
+ *                         - LTE
+ *                     - type: string
+ *                       description: The update's operator.
+ *                       enum:
+ *                         - GT
+ *                     - type: string
+ *                       description: The update's operator.
+ *                       enum:
+ *                         - LT
+ *                     - type: string
+ *                       description: The update's operator.
+ *                       enum:
+ *                         - EQ
+ *                     - type: string
+ *                       description: The update's operator.
+ *                       enum:
+ *                         - NE
+ *                     - type: string
+ *                       description: The update's operator.
+ *                       enum:
+ *                         - IN
  *                   description: The operator used to check whether the target rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
- *                   enum:
- *                     - gte
- *                     - lte
- *                     - gt
- *                     - lt
- *                     - eq
- *                     - ne
- *                     - in
  *                 description:
  *                   type: string
  *                   title: description
@@ -123,15 +161,33 @@
  *                   oneOf:
  *                     - type: string
  *                       title: values
- *                       description: The attribute's value.
- *                       example: prod_123
+ *                       description: The update's values.
  *                     - type: array
- *                       description: The allowed attribute values.
+ *                       description: The update's values.
  *                       items:
  *                         type: string
  *                         title: values
- *                         description: An attribute value.
- *                         example: prod_123
+ *                         description: The value's values.
+ *                     - allOf:
+ *                         - type: string
+ *                           title: values
+ *                           description: The update's values.
+ *                         - type: array
+ *                           description: The update's values.
+ *                           items:
+ *                             type: string
+ *                             title: values
+ *                             description: The value's values.
+ *                     - allOf:
+ *                         - type: array
+ *                           description: The update's values.
+ *                           items:
+ *                             type: string
+ *                             title: values
+ *                             description: The value's values.
+ *                         - type: string
+ *                           title: values
+ *                           description: The update's values.
  *           delete:
  *             type: array
  *             description: The target rules to delete.

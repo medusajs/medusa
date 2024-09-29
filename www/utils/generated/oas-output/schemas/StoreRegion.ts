@@ -1,7 +1,7 @@
 /**
  * @schema StoreRegion
  * type: object
- * description: The region's details.
+ * description: The parent's region.
  * x-schemaName: StoreRegion
  * required:
  *   - id
@@ -20,11 +20,10 @@
  *     type: string
  *     title: currency_code
  *     description: The region's currency code.
- *     example: usd
  *   automatic_taxes:
  *     type: boolean
  *     title: automatic_taxes
- *     description: Whether taxes are calculated automatically during checkout for carts that belong to this region.
+ *     description: The region's automatic taxes.
  *   countries:
  *     type: array
  *     description: The region's countries.
@@ -37,17 +36,17 @@
  *       $ref: "#/components/schemas/AdminPaymentProvider"
  *   metadata:
  *     type: object
- *     description: The region's metadata, can hold custom key-value pairs.
+ *     description: The region's metadata.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The date the region was created.
+ *     description: The region's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The date the region was updated.
+ *     description: The region's updated at.
  * 
 */
 

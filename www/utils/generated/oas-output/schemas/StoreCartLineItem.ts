@@ -4,26 +4,26 @@
  * description: The item's details.
  * x-schemaName: StoreCartLineItem
  * required:
- *   - id
- *   - title
- *   - quantity
- *   - requires_shipping
- *   - is_discountable
- *   - is_tax_inclusive
- *   - unit_price
  *   - cart
- *   - cart_id
- *   - original_total
- *   - original_subtotal
- *   - original_tax_total
+ *   - title
+ *   - id
  *   - item_total
  *   - item_subtotal
  *   - item_tax_total
+ *   - original_total
+ *   - original_subtotal
+ *   - original_tax_total
  *   - total
  *   - subtotal
  *   - tax_total
  *   - discount_total
  *   - discount_tax_total
+ *   - requires_shipping
+ *   - is_discountable
+ *   - is_tax_inclusive
+ *   - unit_price
+ *   - quantity
+ *   - cart_id
  * properties:
  *   id:
  *     type: string
@@ -76,7 +76,7 @@
  *     title: product_handle
  *     description: The item's product handle.
  *   variant:
- *     $ref: "#/components/schemas/BaseProductVariant"
+ *     $ref: "#/components/schemas/StoreProductVariant"
  *   variant_id:
  *     type: string
  *     title: variant_id

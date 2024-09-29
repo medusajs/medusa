@@ -656,9 +656,9 @@ get:
                 properties:
                   reservations:
                     type: array
-                    description: The list of reservations`.
+                    description: The list of reservations.
                     items:
-                      $ref: ../components/schemas/ReservationResponse.yaml
+                      $ref: ../components/schemas/AdminReservation.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

@@ -28,6 +28,13 @@
  *     description: The price's rules.
  *     example:
  *       region_id: reg_123
+ *     properties:
+ *       region_id:
+ *         type: string
+ *         title: region_id
+ *         description: The rule's region id.
+ *     required:
+ *       - region_id
  * 
 */
 

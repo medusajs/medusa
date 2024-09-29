@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateShippingOption
  * type: object
- * description: The shipping option's details.
+ * description: The shipping option's type.
  * x-schemaName: AdminCreateShippingOption
  * required:
  *   - label

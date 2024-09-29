@@ -119,10 +119,13 @@
  *     required: false
  *     description: Filter by whether the tax rate is a default in its tax region.
  *     schema:
- *       type: string
- *       enum:
- *         - "true"
- *         - "false"
+ *       oneOf:
+ *         - type: string
+ *           title: is_default
+ *           description: The tax rate's is default.
+ *         - type: string
+ *           title: is_default
+ *           description: The tax rate's is default.
  *   - name: created_at
  *     in: query
  *     description: Filter by a tax rate's creation date.

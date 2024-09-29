@@ -12,11 +12,6 @@
  *   - returned_total
  *   - return_request_total
  *   - write_off_total
- *   - projected_total
- *   - net_total
- *   - net_subtotal
- *   - net_total_tax
- *   - balance
  *   - paid_total
  *   - refunded_total
  * properties:
@@ -52,26 +47,6 @@
  *     type: number
  *     title: write_off_total
  *     description: The total of the items removed from the order.
- *   projected_total:
- *     type: number
- *     title: projected_total
- *     description: The summary's projected total.
- *   net_total:
- *     type: number
- *     title: net_total
- *     description: The summary's net total.
- *   net_subtotal:
- *     type: number
- *     title: net_subtotal
- *     description: The summary's net subtotal.
- *   net_total_tax:
- *     type: number
- *     title: net_total_tax
- *     description: The summary's net total tax.
- *   balance:
- *     type: number
- *     title: balance
- *     description: The summary's balance.
  *   paid_total:
  *     type: number
  *     title: paid_total

@@ -5,4 +5,4 @@ required:
   - order_change
 properties:
   order_change:
-    $ref: ./OrderChange.yaml
+    $ref: ./AdminOrderChange.yaml

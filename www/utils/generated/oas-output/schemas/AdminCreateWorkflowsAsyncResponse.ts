@@ -20,11 +20,16 @@
  *   compensate_input:
  *     description: Sets the compensation function's input. It accepts any response.
  *   action:
- *     type: string
+ *     oneOf:
+ *       - type: string
+ *         description: The workflows execution's action.
+ *         enum:
+ *           - INVOKE
+ *       - type: string
+ *         description: The workflows execution's action.
+ *         enum:
+ *           - COMPENSATE
  *     description: Whether to invoke or compensate the step.
- *     enum:
- *       - invoke
- *       - compensate
  * 
 */
 

@@ -3,7 +3,8 @@
  * operationId: PostPaymentCollectionsIdPaymentSessions
  * summary: Initialize Payment Session of a Payment Collection
  * x-sidebar-summary: Initialize Payment Session
- * description: Initialize and add a payment session to a payment collection. This is used during checkout, where you create a payment collection for the cart, then initialize a payment session for the payment provider that the customer chooses.
+ * description: Initialize and add a payment session to a payment collection. This is used during checkout, where you create a payment collection for the cart, then initialize a payment session for the
+ *   payment provider that the customer chooses.
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment
  *   description: "Storefront guide: How to implement payment during checkout."

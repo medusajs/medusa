@@ -5,4 +5,4 @@ required:
   - order_preview
 properties:
   order_preview:
-    $ref: ./OrderPreview.yaml
+    $ref: ./AdminOrderPreview.yaml

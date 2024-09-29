@@ -86,8 +86,8 @@ properties:
     type: array
     description: The details of payment refunds.
     items:
-      $ref: ./BaseRefund.yaml
+      $ref: ./AdminRefund.yaml
   payment_collection:
-    $ref: ./BasePaymentCollection.yaml
+    $ref: ./AdminPaymentCollection.yaml
   payment_session:
-    $ref: ./BasePaymentSession.yaml
+    $ref: ./AdminPaymentSession.yaml

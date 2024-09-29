@@ -6,6 +6,8 @@ required:
   - return
 properties:
   order:
-    $ref: ./Order.yaml
+    type: string
+    title: order
+    description: The order change's order.
   return:
     $ref: ./AdminReturn.yaml

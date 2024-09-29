@@ -87,11 +87,11 @@
  *     type: array
  *     description: The details of payment refunds.
  *     items:
- *       $ref: "#/components/schemas/BaseRefund"
+ *       $ref: "#/components/schemas/AdminRefund"
  *   payment_collection:
- *     $ref: "#/components/schemas/BasePaymentCollection"
+ *     $ref: "#/components/schemas/AdminPaymentCollection"
  *   payment_session:
- *     $ref: "#/components/schemas/BasePaymentSession"
+ *     $ref: "#/components/schemas/AdminPaymentSession"
  * 
 */
 

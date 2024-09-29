@@ -26,17 +26,27 @@
  *     description: The date and time the price list ends at.
  *     format: date-time
  *   status:
- *     type: string
+ *     oneOf:
+ *       - type: string
+ *         description: The price list's status.
+ *         enum:
+ *           - ACTIVE
+ *       - type: string
+ *         description: The price list's status.
+ *         enum:
+ *           - DRAFT
  *     description: The price list's status.
- *     enum:
- *       - active
- *       - draft
  *   type:
- *     type: string
+ *     oneOf:
+ *       - type: string
+ *         description: The price list's type.
+ *         enum:
+ *           - SALE
+ *       - type: string
+ *         description: The price list's type.
+ *         enum:
+ *           - OVERRIDE
  *     description: The price list's type.
- *     enum:
- *       - sale
- *       - override
  *   rules:
  *     type: object
  *     description: The price list's rules.
@@ -50,8 +60,8 @@
  *       description: A price's details.
  *       required:
  *         - currency_code
- *         - amount
  *         - variant_id
+ *         - amount
  *       properties:
  *         currency_code:
  *           type: string
