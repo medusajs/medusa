@@ -10,7 +10,7 @@ export function LocationServiceZoneShippingOptionPricing() {
   if (!so_id) {
     throw json({
       message: "Shipping Option ID paramater is missing",
-      status: 422
+      status: 404,
     })
   }
 
