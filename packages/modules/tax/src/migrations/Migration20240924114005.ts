@@ -3,16 +3,16 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20240924114005 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'update "tax_rate" set code = default where code is null;'
+      `UPDATE "tax_rate" SET code = 'default' WHERE code IS NULL;`
     )
     this.addSql(
-      'alter table if exists "tax_rate" alter column "code" set not null;'
+      `ALTER TABLE IF EXISTS "tax_rate" ALTER COLUMN "code" SET NOT NULL;`
     )
   }
 
   async down(): Promise<void> {
     this.addSql(
-      'alter table if exists "tax_rate" alter column "code" drop not null;'
+      `ALTER TABLE IF EXISTS "tax_rate" ALTER COLUMN "code" DROP NOT NULL;`
     )
   }
 }
