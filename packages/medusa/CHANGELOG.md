@@ -1,5 +1,20 @@
 # Change Log
 
+## 2.0.0-rc.0
+
+### Major Changes
+
+- [#7341](https://github.com/medusajs/medusa/pull/7341) [`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Medusa 2.0 release changeset
+
+### Patch Changes
+
+- Updated dependencies [[`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e)]:
+  - @medusajs/core-flows@1.0.0-rc.0
+  - medusa-telemetry@1.0.0-rc.0
+  - @medusajs/link-modules@1.0.0-rc.0
+  - @medusajs/admin-bundler@1.0.0-rc.0
+  - @medusajs/framework@1.0.0-rc.0
+
 ## 1.20.5
 
 ### Patch Changes

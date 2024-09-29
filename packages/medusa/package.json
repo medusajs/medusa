@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.20.5",
+  "version": "2.0.0-rc.0",
   "description": "Building blocks for digital commerce",
   "main": "dist/index.js",
   "repository": {
@@ -30,7 +30,7 @@
     "test": "jest --silent --bail --maxWorkers=50% --forceExit"
   },
   "devDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^1.0.0-rc.0",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/instrumentation": "^0.53.0",
     "@opentelemetry/instrumentation-pg": "^0.44.0",
@@ -50,9 +50,9 @@
   "dependencies": {
     "@inquirer/checkbox": "^2.3.11",
     "@inquirer/input": "^2.2.9",
-    "@medusajs/admin-bundler": "0.0.1",
-    "@medusajs/core-flows": "^0.0.9",
-    "@medusajs/link-modules": "^0.2.11",
+    "@medusajs/admin-bundler": "1.0.0-rc.0",
+    "@medusajs/core-flows": "^1.0.0-rc.0",
+    "@medusajs/link-modules": "^1.0.0-rc.0",
     "@swc/core": "1.5.7",
     "@swc/helpers": "^0.5.11",
     "boxen": "^5.0.1",
@@ -63,7 +63,7 @@
     "fs-exists-cached": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
-    "medusa-telemetry": "^0.0.17",
+    "medusa-telemetry": "^1.0.0-rc.0",
     "multer": "^1.4.5-lts.1",
     "node-schedule": "^2.1.1",
     "qs": "^6.11.2",
@@ -73,7 +73,7 @@
     "zod": "3.22.4"
   },
   "peerDependencies": {
-    "@medusajs/framework": "^0.0.1",
+    "@medusajs/framework": "^1.0.0-rc.0",
     "awilix": "^8.0.1"
   },
   "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"

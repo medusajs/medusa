@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "1.2.8",
+  "version": "2.0.0-rc.0",
   "description": "Create a Medusa project using a single command.",
   "type": "module",
   "exports": "./dist/index.js",
@@ -13,12 +13,12 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.9",
+    "@medusajs/utils": "^2.0.0-rc.0",
     "boxen": "^5",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
     "inquirer": "^9.2.2",
-    "medusa-telemetry": "^0.0.17",
+    "medusa-telemetry": "^1.0.0-rc.0",
     "nanoid": "^4.0.2",
     "node-emoji": "^2.0.2",
     "node-fetch": "^3.3.1",

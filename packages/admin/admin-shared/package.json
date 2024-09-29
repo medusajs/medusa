@@ -1,7 +1,7 @@
 {
   "name": "@medusajs/admin-shared",
   "description": "Shared code for Medusa admin packages.",
-  "version": "0.0.1",
+  "version": "1.0.0-rc.0",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
