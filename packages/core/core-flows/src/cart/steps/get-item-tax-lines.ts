@@ -116,7 +116,6 @@ export const getItemTaxLinesStep = createStep(
       forceTaxCalculation,
       isReturn
     )
-    console.log("taxContext", JSON.stringify(taxContext, null, 2))
 
     if (!taxContext) {
       return new StepResponse({
@@ -134,8 +133,6 @@ export const getItemTaxLinesStep = createStep(
       normalizeLineItemsForShipping(cart, shippingMethods),
       taxContext
     )) as ShippingTaxLineDTO[]
-
-    console.log("taxLineItems", JSON.stringify(lineItemTaxLines, null, 2))
 
     return new StepResponse({
       lineItemTaxLines,

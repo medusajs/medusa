@@ -100,8 +100,8 @@ export const createCartWorkflow = createWorkflow(
 
     // If there is only one country in the region, we prepare a shipping address with that country's code.
     //   This is useful for other operations, such as tax line calculations.
-    const shippingAddress = when({ region }, (data) => {
-      return data.region?.countries.length === 1
+    const shippingAddress = when({ region, input }, (data) => {
+      return data.region?.countries.length === 1 && !data.input.shipping_address
     }).then(() => {
       return {
         country_code: region?.countries[0].iso_2,
