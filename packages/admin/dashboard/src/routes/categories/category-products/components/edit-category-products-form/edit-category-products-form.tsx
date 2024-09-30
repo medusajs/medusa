@@ -25,7 +25,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 
 type EditCategoryProductsFormProps = {
   categoryId: string
-  products?: HttpTypes.AdminProduct[]
+  products?: Pick<HttpTypes.AdminProduct, "id">[]
 }
 
 const EditCategoryProductsSchema = z.object({
@@ -83,7 +83,6 @@ export const EditCategoryProductsForm = ({
     error,
   } = useProducts({
     ...searchParams,
-    category_id: [categoryId],
   })
 
   const columns = useColumns()

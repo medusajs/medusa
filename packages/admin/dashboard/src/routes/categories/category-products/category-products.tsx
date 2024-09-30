@@ -9,7 +9,7 @@ export const CategoryProducts = () => {
   const { product_category, isPending, isError, error } = useProductCategory(
     id!,
     {
-      fields: "*products",
+      fields: "products.id",
     }
   )
 
