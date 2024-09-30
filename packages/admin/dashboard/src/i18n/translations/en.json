@@ -738,7 +738,7 @@
       "deleteSuccessToast": "Reservation was successfully deleted.",
       "errors": {
         "noAvaliableQuantity": "Stock location doesn't have availabile quantity.",
-        "quantityOutOfRange": "Minimal quantity is 1 and maximal quantity is {{max}}"
+        "quantityOutOfRange": "Minimum quantity is 1 and maximum quantity is {{max}}"
       }
     },
     "toast": {
