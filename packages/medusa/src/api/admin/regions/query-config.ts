@@ -5,6 +5,7 @@ export const defaultAdminRegionFields = [
   "created_at",
   "updated_at",
   "deleted_at",
+  "automatic_taxes",
   "metadata",
   "*countries",
 ]

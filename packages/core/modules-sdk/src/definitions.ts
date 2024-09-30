@@ -7,31 +7,31 @@ import {
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 export const MODULE_PACKAGE_NAMES = {
-  [Modules.AUTH]: "@medusajs/auth",
-  [Modules.CACHE]: "@medusajs/cache-inmemory",
-  [Modules.CART]: "@medusajs/cart",
-  [Modules.CUSTOMER]: "@medusajs/customer",
-  [Modules.EVENT_BUS]: "@medusajs/event-bus-local",
-  [Modules.INVENTORY]: "@medusajs/inventory-next", // TODO: To be replaced when current `@medusajs/inventory` is deprecated
-  [Modules.LINK]: "@medusajs/link-modules",
-  [Modules.PAYMENT]: "@medusajs/payment",
-  [Modules.PRICING]: "@medusajs/pricing",
-  [Modules.PRODUCT]: "@medusajs/product",
-  [Modules.PROMOTION]: "@medusajs/promotion",
-  [Modules.SALES_CHANNEL]: "@medusajs/sales-channel",
-  [Modules.FULFILLMENT]: "@medusajs/fulfillment",
-  [Modules.STOCK_LOCATION]: "@medusajs/stock-location-next", // TODO: To be replaced when current `@medusajs/stock-location` is deprecated
-  [Modules.TAX]: "@medusajs/tax",
-  [Modules.USER]: "@medusajs/user",
-  [Modules.WORKFLOW_ENGINE]: "@medusajs/workflow-engine-inmemory",
-  [Modules.REGION]: "@medusajs/region",
-  [Modules.ORDER]: "@medusajs/order",
-  [Modules.API_KEY]: "@medusajs/api-key",
-  [Modules.STORE]: "@medusajs/store",
-  [Modules.CURRENCY]: "@medusajs/currency",
-  [Modules.FILE]: "@medusajs/file",
-  [Modules.NOTIFICATION]: "@medusajs/notification",
-  [Modules.INDEX]: "@medusajs/index",
+  [Modules.AUTH]: "@medusajs/medusa/auth",
+  [Modules.CACHE]: "@medusajs/medusa/cache-inmemory",
+  [Modules.CART]: "@medusajs/medusa/cart",
+  [Modules.CUSTOMER]: "@medusajs/medusa/customer",
+  [Modules.EVENT_BUS]: "@medusajs/medusa/event-bus-local",
+  [Modules.INVENTORY]: "@medusajs/medusa/inventory-next", // TODO: To be replaced when current `@medusajs/inventory` is deprecated
+  [Modules.LINK]: "@medusajs/medusa/link-modules",
+  [Modules.PAYMENT]: "@medusajs/medusa/payment",
+  [Modules.PRICING]: "@medusajs/medusa/pricing",
+  [Modules.PRODUCT]: "@medusajs/medusa/product",
+  [Modules.PROMOTION]: "@medusajs/medusa/promotion",
+  [Modules.SALES_CHANNEL]: "@medusajs/medusa/sales-channel",
+  [Modules.FULFILLMENT]: "@medusajs/medusa/fulfillment",
+  [Modules.STOCK_LOCATION]: "@medusajs/medusa/stock-location-next", // TODO: To be replaced when current `@medusajs/stock-location` is deprecated
+  [Modules.TAX]: "@medusajs/medusa/tax",
+  [Modules.USER]: "@medusajs/medusa/user",
+  [Modules.WORKFLOW_ENGINE]: "@medusajs/medusa/workflow-engine-inmemory",
+  [Modules.REGION]: "@medusajs/medusa/region",
+  [Modules.ORDER]: "@medusajs/medusa/order",
+  [Modules.API_KEY]: "@medusajs/medusa/api-key",
+  [Modules.STORE]: "@medusajs/medusa/store",
+  [Modules.CURRENCY]: "@medusajs/medusa/currency",
+  [Modules.FILE]: "@medusajs/medusa/file",
+  [Modules.NOTIFICATION]: "@medusajs/medusa/notification",
+  [Modules.INDEX]: "@medusajs/medusa/index-module",
 }
 
 export const ModulesDefinition: {
