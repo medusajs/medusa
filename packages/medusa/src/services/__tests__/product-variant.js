@@ -811,6 +811,7 @@ describe("ProductVariantService", () => {
         { id: IdMap.getId("dkk") },
         {
           amount: 850,
+          currency_code: "dkk",
         }
       )
     })
