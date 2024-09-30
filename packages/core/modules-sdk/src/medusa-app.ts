@@ -206,8 +206,16 @@ async function initializeLinks({
   moduleExports,
 }) {
   try {
-    const { initialize, getMigrationPlanner } =
-      moduleExports ?? (await dynamicImport(LinkModulePackage))
+    let resources = moduleExports
+    if (!resources) {
+      const module = await dynamicImport(LinkModulePackage)
+      if ("discoveryPath" in module) {
+        const reExportedLoadedModule = await dynamicImport(module.discoveryPath)
+        resources = reExportedLoadedModule.default ?? reExportedLoadedModule
+      }
+    }
+
+    const { initialize, getMigrationPlanner } = resources
 
     const linkResolution = await initialize(
       config,
