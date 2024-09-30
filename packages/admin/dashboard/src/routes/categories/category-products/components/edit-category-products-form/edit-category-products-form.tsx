@@ -116,8 +116,8 @@ export const EditCategoryProductsForm = ({
       {
         onSuccess: () => {
           toast.success(
-            t("categories.products.add.disabledTooltip", {
-              count: data.product_ids.length,
+            t("categories.products.add.successToast", {
+              count: data.product_ids.length - products.length,
             })
           )
 
