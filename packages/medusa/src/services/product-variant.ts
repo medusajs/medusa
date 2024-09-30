@@ -658,6 +658,7 @@ class ProductVariantService extends TransactionBaseService {
           // No need to update if the amount is the same
           if (moneyAmount.amount !== price.amount) {
             dataToUpdate.push({
+              ...price,
               id: moneyAmount.id,
               amount: price.amount,
             })
