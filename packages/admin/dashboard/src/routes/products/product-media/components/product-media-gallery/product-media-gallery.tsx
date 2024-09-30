@@ -89,7 +89,7 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
 
     const mediaToKeep = product.images
       .filter((i) => i.id !== current.id)
-      .map((i) => i.url)
+      .map((i) => ({ url: i.url }))
 
     if (curr === media.length - 1) {
       setCurr((prev) => prev - 1)
