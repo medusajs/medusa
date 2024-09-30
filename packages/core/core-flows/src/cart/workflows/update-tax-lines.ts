@@ -57,10 +57,10 @@ const cartFields = [
 ]
 
 export type UpdateTaxLinesWorkflowInput = {
-  cartId: string
+  cart_id: string
   items?: CartLineItemDTO[]
-  shippingMethods?: CartShippingMethodDTO[]
-  forceTaxCalculation?: boolean
+  shipping_methods?: CartShippingMethodDTO[]
+  force_tax_calculation?: boolean
 }
 
 export const updateTaxLinesWorkflowId = "update-tax-lines"
@@ -74,7 +74,7 @@ export const updateTaxLinesWorkflow = createWorkflow(
       entry_point: "cart",
       fields: cartFields,
       variables: {
-        id: input.cartId,
+        id: input.cart_id,
       },
       list: false,
     })
@@ -83,8 +83,8 @@ export const updateTaxLinesWorkflow = createWorkflow(
       transform({ input, cart }, (data) => ({
         cart: data.cart,
         items: data.input.items || data.cart.items,
-        shipping_methods: data.input.shippingMethods || data.cart.shipping_methods,
-        force_tax_calculation: data.input.forceTaxCalculation,
+        shipping_methods: data.input.shipping_methods || data.cart.shipping_methods,
+        force_tax_calculation: data.input.force_tax_calculation,
       }))
     )
 

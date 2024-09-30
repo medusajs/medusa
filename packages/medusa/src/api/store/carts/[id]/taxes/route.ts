@@ -9,8 +9,8 @@ export const POST = async (
 ) => {
   await updateTaxLinesWorkflow(req.scope).run({
     input: {
-      cartId: req.params.id,
-      forceTaxCalculation: true,
+      cart_id: req.params.id,
+      force_tax_calculation: true,
     },
   })
 
