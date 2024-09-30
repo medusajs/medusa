@@ -1,6 +1,7 @@
 import { FulfillmentWorkflow } from "@medusajs/framework/types"
 import {
   createWorkflow,
+  parallelize,
   transform,
   WorkflowData,
   WorkflowResponse,
@@ -10,6 +11,7 @@ import {
   upsertShippingOptionsStep,
 } from "../steps"
 import { validateFulfillmentProvidersStep } from "../steps/validate-fulfillment-providers"
+import { validateShippingOptionPricesStep } from "../steps/validate-shipping-option-prices"
 
 export const updateShippingOptionsWorkflowId =
   "update-shipping-options-workflow"
@@ -23,7 +25,10 @@ export const updateShippingOptionsWorkflow = createWorkflow(
       FulfillmentWorkflow.UpdateShippingOptionsWorkflowInput[]
     >
   ): WorkflowResponse<FulfillmentWorkflow.UpdateShippingOptionsWorkflowOutput> => {
-    validateFulfillmentProvidersStep(input)
+    parallelize(
+      validateFulfillmentProvidersStep(input),
+      validateShippingOptionPricesStep(input)
+    )
 
     const data = transform(input, (data) => {
       const shippingOptionsIndexToPrices = data.map((option, index) => {
