@@ -134,7 +134,7 @@ module.exports = {
           "./packages/modules/providers/fulfillment-manual/tsconfig.spec.json",
           "./packages/modules/providers/payment-stripe/tsconfig.spec.json",
 
-          "./packages/framework/framework/tsconfig.json",
+          "./packages/framework/tsconfig.json",
         ],
       },
       rules: {

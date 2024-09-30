@@ -1,10 +1,10 @@
-import { BatchWorkflowInput, LinkDefinition } from "@medusajs/types"
+import { BatchWorkflowInput, LinkDefinition } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   parallelize,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep } from "../steps/create-remote-links"
 import { dismissRemoteLinkStep } from "../steps/dismiss-remote-links"
 import { updateRemoteLinksStep } from "../steps/update-remote-links"

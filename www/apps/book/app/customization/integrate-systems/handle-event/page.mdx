@@ -176,7 +176,7 @@ import { syncBrandToSystemWorkflow } from "../workflows/sync-brand-to-system"
 export default async function brandCreatedHandler({
   event: { data },
   container,
-}: SubscriberArgs<Record<string, string>>) {
+}: SubscriberArgs<{ id: string }>) {
   await syncBrandToSystemWorkflow(container).run({
     input: data,
   })

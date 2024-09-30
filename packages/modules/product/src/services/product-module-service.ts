@@ -6,7 +6,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   ProductTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   Image as ProductImage,
   Product,
@@ -37,7 +37,7 @@ import {
   promiseAll,
   removeUndefined,
   toHandle,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   ProductCollectionEventData,
   ProductCollectionEvents,
@@ -203,7 +203,6 @@ export default class ProductModuleService
         product_id: [...new Set<string>(data.map((v) => v.product_id!))],
       },
       {
-        take: null,
         relations: ["values"],
       },
       sharedContext
@@ -341,7 +340,7 @@ export default class ProductModuleService
     const variantIdsToUpdate = data.map(({ id }) => id)
     const variants = await this.productVariantService_.list(
       { id: variantIdsToUpdate },
-      { take: null },
+      {},
       sharedContext
     )
 
@@ -376,7 +375,7 @@ export default class ProductModuleService
           new Set(variantsWithProductId.map((v) => v.product_id!))
         ),
       },
-      { take: null, relations: ["values"] },
+      { relations: ["values"] },
       sharedContext
     )
 
@@ -821,7 +820,7 @@ export default class ProductModuleService
 
     const dbOptions = await this.productOptionService_.list(
       { id: data.map(({ id }) => id) },
-      { take: null, relations: ["values"] },
+      { relations: ["values"] },
       sharedContext
     )
 
@@ -1583,7 +1582,7 @@ export default class ProductModuleService
           if (product.variants?.length) {
             allOptions = await this.productOptionService_.list(
               { product_id: upsertedProduct.id },
-              { take: null, relations: ["values"] },
+              { relations: ["values"] },
               sharedContext
             )
           }
@@ -1704,7 +1703,7 @@ export default class ProductModuleService
     if (productData.options?.length) {
       const dbOptions = await this.productOptionService_.list(
         { product_id: productData.id },
-        { take: null, relations: ["values"] },
+        { relations: ["values"] },
         sharedContext
       )
 

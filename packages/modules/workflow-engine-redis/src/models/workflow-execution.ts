@@ -1,5 +1,5 @@
-import { TransactionState } from "@medusajs/orchestration"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { TransactionState } from "@medusajs/framework/orchestration"
+import { DALUtils, generateEntityId } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,

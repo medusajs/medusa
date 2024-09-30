@@ -1,12 +1,15 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig, ModuleJoinerRelationship } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import {
+  ModuleJoinerConfig,
+  ModuleJoinerRelationship,
+} from "@medusajs/framework/types"
 import {
   camelToSnakeCase,
   composeTableName,
   isString,
   lowerCaseFirst,
   toPascalCase,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export function generateGraphQLSchema(
   joinerConfig: ModuleJoinerConfig,
@@ -83,7 +86,7 @@ export function generateGraphQLSchema(
           ? extend.relationship.isList
           : config.isList ?? extend.relationship.isList
 
-        const pathSegments = path.split(",").reverse()
+        // const pathSegments = path.split(",").reverse()
 
         /*const relationshipMarkerIndex = pathSegments.findIndex((segment) => {
           return !!joinerConfig.relationships!.find(

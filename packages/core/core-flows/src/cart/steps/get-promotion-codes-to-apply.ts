@@ -1,6 +1,6 @@
-import { IPromotionModuleService } from "@medusajs/types"
-import { Modules, PromotionActions } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IPromotionModuleService } from "@medusajs/framework/types"
+import { Modules, PromotionActions } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface GetPromotionCodesToApplyStepInput {
   cart: {
@@ -42,7 +42,7 @@ export const getPromotionCodesToApply = createStep(
       (
         await promotionService.listPromotions(
           { code: adjustmentCodes },
-          { select: ["code"], take: null }
+          { select: ["code"] }
         )
       ).map((p) => p.code!)
     )

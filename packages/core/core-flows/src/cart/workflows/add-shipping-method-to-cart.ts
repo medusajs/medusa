@@ -1,8 +1,9 @@
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   addShippingMethodToCartStep,
@@ -73,6 +74,13 @@ export const addShippingMethodToWorkflow = createWorkflow(
           const shippingOption = data.shippingOptions.find(
             (so) => so.id === option.id
           )!
+
+          if (!shippingOption?.calculated_price) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Shipping option with ID ${shippingOption.id} do not have a price`
+            )
+          }
 
           return {
             shipping_option_id: shippingOption.id,

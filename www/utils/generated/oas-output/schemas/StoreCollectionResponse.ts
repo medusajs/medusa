@@ -1,7 +1,7 @@
 /**
  * @schema StoreCollectionResponse
  * type: object
- * description: SUMMARY
+ * description: The collection's details.
  * x-schemaName: StoreCollectionResponse
  * required:
  *   - collection

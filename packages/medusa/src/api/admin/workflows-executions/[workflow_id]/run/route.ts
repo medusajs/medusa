@@ -2,8 +2,8 @@ import {
   HttpTypes,
   IWorkflowEngineService,
   WorkflowOrchestratorRunDTO,
-} from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

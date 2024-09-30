@@ -1,4 +1,4 @@
-import { IEventBusModuleService, Logger } from "@medusajs/types"
+import { IEventBusModuleService, Logger } from "@medusajs/framework/types"
 
 export * from "./address"
 export * from "./line-item"
@@ -12,6 +12,7 @@ export * from "./shipping-method-adjustment"
 export * from "./shipping-method-tax-line"
 export * from "./transaction"
 export * from "./utils"
+export * from "./return-reason"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger

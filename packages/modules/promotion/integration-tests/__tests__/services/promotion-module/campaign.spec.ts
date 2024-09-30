@@ -1,5 +1,5 @@
-import { IPromotionModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { IPromotionModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { CampaignBudgetType } from "../../../../../../core/utils/src/promotion/index"
 import { createCampaigns } from "../../../__fixtures__/campaigns"

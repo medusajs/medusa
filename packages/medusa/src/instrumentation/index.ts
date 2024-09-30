@@ -1,8 +1,10 @@
 import { snakeCase } from "lodash"
-import { Query, RoutesLoader, Tracer } from "@medusajs/framework"
+import { Query } from "@medusajs/framework"
+import { RoutesLoader } from "@medusajs/framework/http"
+import { Tracer } from "@medusajs/framework/telemetry"
 import type { SpanExporter } from "@opentelemetry/sdk-trace-node"
 import type { Instrumentation } from "@opentelemetry/instrumentation"
-import { TransactionOrchestrator } from "@medusajs/orchestration"
+import { TransactionOrchestrator } from "@medusajs/framework/orchestration"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -202,7 +204,10 @@ export function instrumentRemoteQuery() {
  * Instrument the workflows and steps execution
  */
 export function instrumentWorkflows() {
-  const WorkflowsTracer = new Tracer("@medusajs/workflows-sdk", "2.0.0")
+  const WorkflowsTracer = new Tracer(
+    "@medusajs/framework/workflows-sdk",
+    "2.0.0"
+  )
 
   TransactionOrchestrator.traceTransaction = async (
     transactionResumeFn,

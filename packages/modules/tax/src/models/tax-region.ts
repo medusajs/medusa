@@ -1,10 +1,10 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   DALUtils,
   Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -37,6 +37,11 @@ const countryCodeProvinceIndexStatement = createPsqlIndexStatementHelper({
   columns: ["country_code", "province_code"],
   unique: true,
   where: "deleted_at IS NULL",
+})
+const deletedAtIndexStatement = createPsqlIndexStatementHelper({
+  tableName: TABLE_NAME,
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 const countryCodeNullableProvinceIndexStatement =
@@ -132,11 +137,7 @@ export default class TaxRegion {
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null
 
-  @createPsqlIndexStatementHelper({
-    tableName: TABLE_NAME,
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @deletedAtIndexStatement.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

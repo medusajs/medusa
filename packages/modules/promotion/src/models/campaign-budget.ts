@@ -2,14 +2,14 @@ import {
   BigNumberRawValue,
   CampaignBudgetTypeValues,
   DAL,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   BigNumber,
   DALUtils,
   MikroOrmBigNumberProperty,
   PromotionUtils,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,

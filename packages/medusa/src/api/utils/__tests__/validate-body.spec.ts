@@ -1,5 +1,5 @@
 import zod from "zod"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { createLinkBody } from "../validators"
 import { validateAndTransformBody } from "../validate-body"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"

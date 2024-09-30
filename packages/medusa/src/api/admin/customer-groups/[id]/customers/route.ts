@@ -4,7 +4,7 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 
-import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
+import { HttpTypes, LinkMethodRequest } from "@medusajs/framework/types"
 import { refetchCustomerGroup } from "../../helpers"
 
 export const POST = async (

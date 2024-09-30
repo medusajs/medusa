@@ -1,5 +1,8 @@
-import { FileTypes, LocalFileServiceOptions } from "@medusajs/types"
-import { AbstractFileProviderService, MedusaError } from "@medusajs/utils"
+import { FileTypes, LocalFileServiceOptions } from "@medusajs/framework/types"
+import {
+  AbstractFileProviderService,
+  MedusaError,
+} from "@medusajs/framework/utils"
 import fs from "fs/promises"
 import path from "path"
 
@@ -39,7 +42,7 @@ export class LocalFileService extends AbstractFileProviderService {
     const parsedFilename = path.parse(file.filename)
     const baseDir =
       file.access === "public" ? this.uploadDir_ : this.privateUploadDir_
-    const dir = await this.ensureDirExists(baseDir, parsedFilename.dir)
+    await this.ensureDirExists(baseDir, parsedFilename.dir)
 
     const fileKey = path.join(
       parsedFilename.dir,

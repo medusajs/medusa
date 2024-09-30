@@ -1,7 +1,7 @@
 /**
  * @schema StoreShippingOptionListResponse
  * type: object
- * description: SUMMARY
+ * description: The shipping option's details.
  * x-schemaName: StoreShippingOptionListResponse
  * required:
  *   - shipping_options

@@ -2,8 +2,8 @@ import {
   deleteLineItemsWorkflow,
   updateLineItemInCartWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { HttpTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../../types/routing"
 import { prepareListQuery } from "../../../../../../utils/get-query-config"
 import { refetchCart } from "../../../helpers"

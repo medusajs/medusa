@@ -1,4 +1,4 @@
-import { MiddlewareFunction } from "@medusajs/framework"
+import { MiddlewareFunction } from "@medusajs/framework/http"
 import { NextFunction } from "express"
 import { MedusaRequest, MedusaResponse } from "../../types/routing"
 

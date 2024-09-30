@@ -1,5 +1,3 @@
-import { mergeTypeDefs } from "@graphql-tools/merge"
-import { makeExecutableSchema } from "@graphql-tools/schema"
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   ConfigModule,
@@ -18,27 +16,28 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  dynamicImport,
+  GraphQLUtils,
+  isObject,
+  isString,
   MedusaError,
   Modules,
   ModulesSdkUtils,
-  createMedusaContainer,
-  isObject,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
-import { GraphQLSchema } from "graphql/type"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {
   MedusaModule,
   MigrationOptions,
+  ModuleBootstrapOptions,
   RegisterModuleJoinerConfig,
 } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
-import { RemoteQuery, createQuery } from "./remote-query"
+import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
-import { cleanGraphQLSchema } from "./utils"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
 
@@ -85,81 +84,118 @@ export type SharedResources = {
   }
 }
 
-export async function loadModules(
-  modulesConfig,
-  sharedContainer,
-  migrationOnly = false,
-  loaderOnly = false,
-  workerMode: "shared" | "worker" | "server" = "server"
-) {
-  const allModules = {}
+export async function loadModules(args: {
+  modulesConfig: MedusaModuleConfig
+  sharedContainer: MedusaContainer
+  sharedResourcesConfig?: SharedResources
+  migrationOnly?: boolean
+  loaderOnly?: boolean
+  workerMode?: "shared" | "worker" | "server"
+}) {
+  const {
+    modulesConfig,
+    sharedContainer,
+    sharedResourcesConfig,
+    migrationOnly = false,
+    loaderOnly = false,
+    workerMode = "server" as ModuleBootstrapOptions["workerMode"],
+  } = args
 
-  await Promise.all(
-    Object.keys(modulesConfig).map(async (moduleName) => {
-      const mod = modulesConfig[moduleName]
-      let path: string
-      let moduleExports: ModuleExports | undefined = undefined
-      let declaration: any = {}
-      let definition: Partial<ModuleDefinition> | undefined = undefined
+  const allModules = {} as any
 
-      // Skip disabled modules
-      if (mod === false) {
-        return
+  const modulesToLoad: {
+    moduleKey: string
+    defaultPath: string
+    declaration: InternalModuleDeclaration | ExternalModuleDeclaration
+    sharedContainer: MedusaContainer
+    moduleDefinition: ModuleDefinition
+    moduleExports?: ModuleExports
+  }[] = []
+
+  for (const moduleName of Object.keys(modulesConfig)) {
+    const mod = modulesConfig[moduleName]
+    let path: string
+    let moduleExports: ModuleExports | undefined = undefined
+    let declaration: any = {}
+    let definition: Partial<ModuleDefinition> | undefined = undefined
+
+    if (mod === false) {
+      continue
+    }
+
+    if (isObject(mod)) {
+      const mod_ = mod as unknown as InternalModuleDeclaration
+      path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
+      definition = mod_.definition
+      moduleExports = !isString(mod_.resolve)
+        ? (mod_.resolve as ModuleExports)
+        : undefined
+      declaration = { ...mod }
+      delete declaration.definition
+    } else {
+      path = MODULE_PACKAGE_NAMES[moduleName]
+    }
+
+    declaration.scope ??= MODULE_SCOPE.INTERNAL
+    if (declaration.scope === MODULE_SCOPE.INTERNAL && !declaration.resources) {
+      declaration.resources = MODULE_RESOURCE_TYPE.SHARED
+    }
+
+    if (
+      declaration.scope === MODULE_SCOPE.INTERNAL &&
+      declaration.resources === MODULE_RESOURCE_TYPE.SHARED
+    ) {
+      declaration.options ??= {}
+      declaration.options.database ??= {
+        ...sharedResourcesConfig?.database,
       }
+      declaration.options.database.debug ??=
+        sharedResourcesConfig?.database?.debug
+    }
 
-      if (isObject(mod)) {
-        const mod_ = mod as unknown as InternalModuleDeclaration
-        path = mod_.resolve ?? MODULE_PACKAGE_NAMES[moduleName]
-        definition = mod_.definition
-        moduleExports = !isString(mod_.resolve)
-          ? (mod_.resolve as ModuleExports)
-          : undefined
-        declaration = { ...mod }
-        delete declaration.definition
-      } else {
-        path = MODULE_PACKAGE_NAMES[moduleName]
-      }
-
-      declaration.scope ??= MODULE_SCOPE.INTERNAL
-      if (
-        declaration.scope === MODULE_SCOPE.INTERNAL &&
-        !declaration.resources
-      ) {
-        declaration.resources = MODULE_RESOURCE_TYPE.SHARED
-      }
-
-      const loaded = (await MedusaModule.bootstrap({
-        moduleKey: moduleName,
-        defaultPath: path,
-        declaration,
-        sharedContainer,
-        moduleDefinition: definition as ModuleDefinition,
-        moduleExports,
-        migrationOnly,
-        loaderOnly,
-        workerMode,
-      })) as LoadedModule
-
-      if (loaderOnly) {
-        return
-      }
-
-      const service = loaded[moduleName]
-      sharedContainer.register({
-        [service.__definition.key]: asValue(service),
-      })
-
-      if (allModules[moduleName] && !Array.isArray(allModules[moduleName])) {
-        allModules[moduleName] = []
-      }
-
-      if (allModules[moduleName]) {
-        ;(allModules[moduleName] as LoadedModule[]).push(loaded[moduleName])
-      } else {
-        allModules[moduleName] = loaded[moduleName]
-      }
+    modulesToLoad.push({
+      moduleKey: moduleName,
+      defaultPath: path,
+      declaration,
+      sharedContainer,
+      moduleDefinition: definition as ModuleDefinition,
+      moduleExports,
     })
-  )
+  }
+
+  const loaded = (await MedusaModule.bootstrapAll(modulesToLoad, {
+    migrationOnly,
+    loaderOnly,
+    workerMode,
+  })) as LoadedModule[]
+
+  if (loaderOnly) {
+    return allModules
+  }
+
+  for (const { moduleKey } of modulesToLoad) {
+    const service = loaded.find((loadedModule) => loadedModule[moduleKey])?.[
+      moduleKey
+    ]
+    if (!service) {
+      throw new Error(`Module ${moduleKey} could not be loaded.`)
+    }
+
+    sharedContainer.register({
+      [service.__definition.key]: asValue(service),
+    })
+
+    if (allModules[moduleKey] && !Array.isArray(allModules[moduleKey])) {
+      allModules[moduleKey] = []
+    }
+
+    if (allModules[moduleKey]) {
+      ;(allModules[moduleKey] as LoadedModule[]).push(service)
+    } else {
+      allModules[moduleKey] = service
+    }
+  }
+
   return allModules
 }
 
@@ -170,8 +206,16 @@ async function initializeLinks({
   moduleExports,
 }) {
   try {
-    const { initialize, getMigrationPlanner } =
-      moduleExports ?? (await import(LinkModulePackage))
+    let resources = moduleExports
+    if (!resources) {
+      const module = await dynamicImport(LinkModulePackage)
+      if ("discoveryPath" in module) {
+        const reExportedLoadedModule = await dynamicImport(module.discoveryPath)
+        resources = reExportedLoadedModule.default ?? reExportedLoadedModule
+      }
+    }
+
+    const { initialize, getMigrationPlanner } = resources
 
     const linkResolution = await initialize(
       config,
@@ -203,11 +247,14 @@ function cleanAndMergeSchema(loadedSchema) {
     scalar DateTime
     scalar JSON
   `
-  const { schema: cleanedSchema, notFound } = cleanGraphQLSchema(
+  const { schema: cleanedSchema, notFound } = GraphQLUtils.cleanGraphQLSchema(
     defaultMedusaSchema + loadedSchema
   )
-  const mergedSchema = mergeTypeDefs(cleanedSchema)
-  return { schema: makeExecutableSchema({ typeDefs: mergedSchema }), notFound }
+  const mergedSchema = GraphQLUtils.mergeTypeDefs(cleanedSchema)
+  return {
+    schema: GraphQLUtils.makeExecutableSchema({ typeDefs: mergedSchema }),
+    notFound,
+  }
 }
 
 function getLoadedSchema(): string {
@@ -231,7 +278,7 @@ export type MedusaAppOutput = {
   link: RemoteLink | undefined
   query: RemoteQueryFunction
   entitiesMap?: Record<string, any>
-  gqlSchema?: GraphQLSchema
+  gqlSchema?: GraphQLUtils.GraphQLSchema
   notFound?: Record<string, Record<string, string>>
   runMigrations: RunMigrationFn
   revertMigrations: RevertMigrationFn
@@ -298,9 +345,9 @@ async function MedusaApp_({
   const modules: MedusaModuleConfig =
     modulesConfig ??
     (
-      await import(
-        modulesConfigPath ??
-          process.cwd() + (modulesConfigFileName ?? "/modules-config")
+      await dynamicImport(
+        await (modulesConfigPath ??
+          process.cwd() + (modulesConfigFileName ?? "/modules-config"))
       )
     ).default
 
@@ -348,13 +395,14 @@ async function MedusaApp_({
     })
   }
 
-  const allModules = await loadModules(
-    modules,
-    sharedContainer_,
+  const allModules = await loadModules({
+    modulesConfig: modules,
+    sharedContainer: sharedContainer_,
+    sharedResourcesConfig: { database: dbData },
     migrationOnly,
     loaderOnly,
-    workerMode
-  )
+    workerMode,
+  })
 
   if (loaderOnly) {
     async function query(...args: any[]) {
@@ -457,11 +505,18 @@ async function MedusaApp_({
     }
 
     for (const { resolution: moduleResolution } of moduleResolutions) {
-      if (!moduleResolution.options?.database) {
+      if (
+        !moduleResolution.options?.database &&
+        moduleResolution.moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
+        moduleResolution.moduleDeclaration?.resources ===
+          MODULE_RESOURCE_TYPE.SHARED
+      ) {
         moduleResolution.options ??= {}
         moduleResolution.options.database = {
           ...(sharedResourcesConfig?.database ?? {}),
         }
+        ;(moduleResolution as any).options.database.debug ??=
+          sharedResourcesConfig?.database?.debug
       }
 
       const migrationOptions: MigrationOptions = {
@@ -517,6 +572,7 @@ async function MedusaApp_({
     options.database ??= {
       ...sharedResourcesConfig?.database,
     }
+    options.database.debug ??= sharedResourcesConfig?.database?.debug
 
     return getMigrationPlanner(options, linkModules)
   }

@@ -1,6 +1,6 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
-import { ILinkModule, ModuleJoinerConfig } from "@medusajs/types"
-import { Modules, defineLink, isObject } from "@medusajs/utils"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
+import { ILinkModule, ModuleJoinerConfig } from "@medusajs/framework/types"
+import { Modules, defineLink, isObject } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { MigrationsExecutionPlanner } from "../../src"
 import {

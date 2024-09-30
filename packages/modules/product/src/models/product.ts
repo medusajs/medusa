@@ -20,7 +20,7 @@ import {
   ProductUtils,
   Searchable,
   toHandle,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
 import ProductImage from "./product-image"

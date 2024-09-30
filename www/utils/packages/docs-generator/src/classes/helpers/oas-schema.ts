@@ -10,6 +10,10 @@ import formatOas from "../../utils/format-oas.js"
 import pluralize from "pluralize"
 import { capitalize, wordsToPascal } from "utils"
 import { OasArea } from "../kinds/oas.js"
+import {
+  isLevelExceeded,
+  maybeIncrementLevel,
+} from "../../utils/level-utils.js"
 
 export type ParsedSchema = {
   schema: OpenApiSchema
@@ -27,7 +31,7 @@ class OasSchemaHelper {
   private schemas: Map<string, OpenApiSchema>
   protected schemaRefPrefix = "#/components/schemas/"
   protected formatter: Formatter
-  private MAX_LEVEL = 4
+  private MAX_LEVEL = 5
   /**
    * The path to the directory holding the base YAML files.
    */
@@ -56,9 +60,9 @@ class OasSchemaHelper {
    */
   namedSchemaToReference(
     schema: OpenApiSchema,
-    level = 0
+    level = 1
   ): OpenAPIV3.ReferenceObject | undefined {
-    if (level > this.MAX_LEVEL) {
+    if (isLevelExceeded(level, this.MAX_LEVEL)) {
       return
     }
 
@@ -91,8 +95,10 @@ class OasSchemaHelper {
           !("$ref" in propertySchema.items)
         ) {
           propertySchema.items =
-            this.namedSchemaToReference(propertySchema.items, level + 1) ||
-            propertySchema.items
+            this.namedSchemaToReference(
+              propertySchema.items,
+              maybeIncrementLevel(level, "array")
+            ) || propertySchema.items
         } else if (
           propertySchema.oneOf ||
           propertySchema.allOf ||
@@ -108,14 +114,17 @@ class OasSchemaHelper {
             }
 
             schemaTarget![index] =
-              this.namedSchemaToReference(item, level + 1) || item
+              this.namedSchemaToReference(
+                item,
+                maybeIncrementLevel(level, "allOf")
+              ) || item
           })
         }
 
         properties![property] =
           this.namedSchemaToReference(
             propertySchema as OpenApiSchema,
-            level + 1
+            maybeIncrementLevel(level, "object")
           ) || propertySchema
       })
     }
@@ -129,8 +138,8 @@ class OasSchemaHelper {
     }
   }
 
-  schemaChildrenToRefs(schema: OpenApiSchema, level = 0): OpenApiSchema {
-    if (level > this.MAX_LEVEL) {
+  schemaChildrenToRefs(schema: OpenApiSchema, level = 1): OpenApiSchema {
+    if (isLevelExceeded(level, this.MAX_LEVEL)) {
       return schema
     }
 
@@ -142,7 +151,10 @@ class OasSchemaHelper {
           return item
         }
 
-        const transformChildItems = this.schemaChildrenToRefs(item, level + 1)
+        const transformChildItems = this.schemaChildrenToRefs(
+          item,
+          maybeIncrementLevel(level, "allOf")
+        )
         return (
           this.namedSchemaToReference(transformChildItems) ||
           transformChildItems
@@ -154,7 +166,10 @@ class OasSchemaHelper {
           return item
         }
 
-        const transformChildItems = this.schemaChildrenToRefs(item, level + 1)
+        const transformChildItems = this.schemaChildrenToRefs(
+          item,
+          maybeIncrementLevel(level, "oneOf")
+        )
         return (
           this.namedSchemaToReference(transformChildItems) ||
           transformChildItems
@@ -166,7 +181,7 @@ class OasSchemaHelper {
     ) {
       const transformedChildItems = this.schemaChildrenToRefs(
         clonedSchema.items,
-        level
+        maybeIncrementLevel(level, "array")
       )
       clonedSchema.items =
         this.namedSchemaToReference(transformedChildItems) ||
@@ -179,7 +194,7 @@ class OasSchemaHelper {
 
         const transformedProperty = this.schemaChildrenToRefs(
           property,
-          level + 1
+          maybeIncrementLevel(level, "object")
         )
         schema.properties![key] =
           this.namedSchemaToReference(transformedProperty) ||
@@ -200,7 +215,7 @@ class OasSchemaHelper {
 
           const transformedProperty = this.schemaChildrenToRefs(
             property,
-            level + 1
+            maybeIncrementLevel(level, "object")
           )
           additionalProps.properties![key] =
             this.namedSchemaToReference(transformedProperty) ||
@@ -272,13 +287,14 @@ class OasSchemaHelper {
    */
   getSchemaByName(
     name: string,
-    shouldNormalizeName = true
+    shouldNormalizeName = true,
+    isUpdating = false
   ): ParsedSchema | undefined {
     const schemaName = shouldNormalizeName
       ? this.normalizeSchemaName(name)
       : name
     // check if it already exists in the schemas map
-    if (this.schemas.has(schemaName)) {
+    if (this.schemas.has(schemaName) && !isUpdating) {
       return {
         schema: JSON.parse(JSON.stringify(this.schemas.get(schemaName)!)),
         schemaPrefix: `@schema ${schemaName}`,

@@ -4,9 +4,9 @@ import {
   generateEntityId,
   Searchable,
   ShippingOptionPriceType,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   BeforeCreate,
   Cascade,

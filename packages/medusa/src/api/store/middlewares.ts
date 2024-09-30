@@ -1,4 +1,4 @@
-import { MiddlewareRoute } from "@medusajs/framework"
+import { MiddlewareRoute } from "@medusajs/framework/http"
 import { ensurePublishableApiKey } from "../../utils/middlewares/ensure-publishable-api-key"
 
 export const storeRoutesMiddlewares: MiddlewareRoute[] = [
