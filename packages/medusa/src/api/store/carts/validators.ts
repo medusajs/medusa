@@ -46,6 +46,7 @@ export type StoreUpdateCartType = z.infer<typeof UpdateCart>
 export const UpdateCart = z
   .object({
     region_id: z.string().nullish(),
+    customer_id: z.string().nullish(),
     email: z.string().email().nullish(),
     billing_address: z.union([AddressPayload, z.string()]).optional(),
     shipping_address: z.union([AddressPayload, z.string()]).optional(),
