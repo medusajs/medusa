@@ -1,4 +1,4 @@
-import { IFulfillmentModuleService } from "@medusajs/types"
+import { IFulfillmentModuleService, StockLocationDTO } from "@medusajs/types"
 import { Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../helpers/create-admin-user"
@@ -21,6 +21,7 @@ medusaIntegrationTestRunner({
   testSuite: ({ getContainer, api, dbConnection }) => {
     let service: IFulfillmentModuleService
     let container
+    let location: StockLocationDTO
 
     beforeAll(() => {
       container = getContainer()
@@ -29,6 +30,20 @@ medusaIntegrationTestRunner({
 
     beforeEach(async () => {
       await createAdminUser(dbConnection, adminHeaders, container)
+      const stockLocationService = container.resolve(Modules.STOCK_LOCATION)
+
+      location = await stockLocationService.createStockLocations({
+        name: "Test Location",
+        address: {
+          address_1: "Test Address",
+          address_2: "tttest",
+          city: "Test City",
+          country_code: "us",
+          postal_code: "12345",
+          metadata: { email: "test@mail.com" },
+        },
+        metadata: { custom_location: "yes" },
+      })
     })
 
     /**
@@ -38,7 +53,10 @@ medusaIntegrationTestRunner({
      */
     describe("Fulfillment module migrations backward compatibility", () => {
       it("should allow to create a full data structure after the backward compatible migration have run on top of the medusa v1 database", async () => {
-        await setupFullDataFulfillmentStructure(service, { providerId })
+        await setupFullDataFulfillmentStructure(service, {
+          providerId,
+          locationId: location.id,
+        })
 
         const fulfillmentSets = await service.listFulfillmentSets(
           {},
@@ -92,7 +110,10 @@ medusaIntegrationTestRunner({
       })
 
       it("should cancel a fulfillment", async () => {
-        await setupFullDataFulfillmentStructure(service, { providerId })
+        await setupFullDataFulfillmentStructure(service, {
+          providerId,
+          locationId: location.id,
+        })
 
         const [fulfillment] = await service.listFulfillments()
 
@@ -138,6 +159,7 @@ medusaIntegrationTestRunner({
         )
 
         const data = generateCreateFulfillmentData({
+          location_id: location.id,
           provider_id: providerId,
           shipping_option_id: shippingOption.id,
           order_id: "order_123",
@@ -151,7 +173,7 @@ medusaIntegrationTestRunner({
         expect(response.data.fulfillment).toEqual(
           expect.objectContaining({
             id: expect.any(String),
-            location_id: "test-location",
+            location_id: location.id,
             packed_at: null,
             shipped_at: null,
             delivered_at: null,
@@ -218,7 +240,10 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a fulfillment to be shipped", async () => {
-        await setupFullDataFulfillmentStructure(service, { providerId })
+        await setupFullDataFulfillmentStructure(service, {
+          providerId,
+          locationId: location.id,
+        })
 
         const [fulfillment] = await service.listFulfillments()
 
@@ -255,7 +280,10 @@ medusaIntegrationTestRunner({
       })
 
       it("should throw error when already shipped", async () => {
-        await setupFullDataFulfillmentStructure(service, { providerId })
+        await setupFullDataFulfillmentStructure(service, {
+          providerId,
+          locationId: location.id,
+        })
 
         const [fulfillment] = await service.listFulfillments()
 

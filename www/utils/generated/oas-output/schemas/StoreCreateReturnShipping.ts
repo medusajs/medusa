@@ -1,7 +1,7 @@
 /**
  * @schema StoreCreateReturnShipping
  * type: object
- * description: The return's return shipping.
+ * description: The return's shipping details.
  * x-schemaName: StoreCreateReturnShipping
  * required:
  *   - option_id
@@ -9,11 +9,11 @@
  *   option_id:
  *     type: string
  *     title: option_id
- *     description: The return shipping's option id.
+ *     description: The ID of the shipping option to use.
  *   price:
  *     type: number
  *     title: price
- *     description: The return shipping's price.
+ *     description: The shipping's price.
  * 
 */
 
