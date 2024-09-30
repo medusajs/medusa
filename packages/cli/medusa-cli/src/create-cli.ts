@@ -207,6 +207,7 @@ function buildLocalCommands(cli, isLocalProject) {
       desc: "Rollback last batch of executed migrations for a given module",
       builder: {
         modules: {
+          type: "array",
           description: "Modules for which to rollback migrations",
           demand: true,
         },
@@ -223,6 +224,7 @@ function buildLocalCommands(cli, isLocalProject) {
       desc: "Generate migrations for a given module",
       builder: {
         modules: {
+          type: "array",
           description: "Modules for which to generate migration files",
           demand: true,
         },
