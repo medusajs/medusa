@@ -9,11 +9,13 @@ type ProductCellProps = {
 
 export const ProductCell = ({ product }: ProductCellProps) => {
   return (
-    <div className="flex h-full w-full items-center gap-x-3 overflow-hidden">
+    <div className="flex h-full w-full items-center gap-x-3 overflow-hidden max-w-[250px]">
       <div className="w-fit flex-shrink-0">
         <Thumbnail src={product.thumbnail} />
       </div>
-      <span className="truncate">{product.title}</span>
+      <span title={product.title} className="truncate">
+        {product.title}
+      </span>
     </div>
   )
 }

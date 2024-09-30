@@ -39,9 +39,7 @@ function buildLocalCommands(cli, isLocalProject) {
     }
 
     try {
-      const cmdPath = resolveCwd.silent(
-        `@medusajs/medusa/dist/commands/${command}`
-      )!
+      const cmdPath = resolveCwd.silent(`@medusajs/medusa/commands/${command}`)!
       return require(cmdPath).default
     } catch (err) {
       console.error(err)

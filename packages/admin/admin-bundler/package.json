@@ -21,7 +21,7 @@
     "@medusajs/types": "^1.11.16",
     "@types/compression": "^1.7.5",
     "copyfiles": "^2.4.1",
-    "express": "^4.18.2",
+    "express": "^4.21.0",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
@@ -37,7 +37,7 @@
     "vite": "^5.2.11"
   },
   "peerDependencies": {
-    "express": "^4.18.2",
+    "express": "^4.21.0",
     "react-dom": "^18.0.0"
   },
   "packageManager": "yarn@3.2.1"

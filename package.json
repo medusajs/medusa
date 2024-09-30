@@ -4,6 +4,7 @@
   "workspaces": {
     "packages": [
       "packages/medusa",
+      "packages/medusa-test-utils",
       "packages/modules/*",
       "packages/modules/providers/*",
       "packages/core/*",
