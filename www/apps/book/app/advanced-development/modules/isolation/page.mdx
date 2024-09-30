@@ -88,7 +88,9 @@ const createBrandsInCmsStep = createStep(
       "cmsModuleService"
     )
 
-    await cmsModuleService.deleteBrands(brands)
+    await cmsModuleService.deleteBrands(
+      brands.map((brand) => brand.id)
+    )
   }
 )
 ```
