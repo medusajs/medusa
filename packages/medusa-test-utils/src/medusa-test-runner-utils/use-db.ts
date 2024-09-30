@@ -54,10 +54,9 @@ export async function syncLinks(
 
 async function loadCustomLinks(directory: string, container: MedusaContainer) {
   // TODO: move to framework once settle down
-  const { getResolvedPlugins } = await import(
-    // @ts-expect-error
-    "@medusajs/medusa/dist/loaders/helpers/resolve-plugins"
-  )
+  const {
+    getResolvedPlugins,
+  } = require("@medusajs/medusa/loaders/helpers/resolve-plugins")
 
   const configModule = container.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
