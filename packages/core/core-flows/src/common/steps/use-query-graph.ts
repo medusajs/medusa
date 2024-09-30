@@ -4,12 +4,7 @@ import {
   RemoteQueryFunction,
   RemoteQueryInput,
 } from "@medusajs/framework/types"
-import {
-  createStep,
-  createWorkflow,
-  StepFunction,
-  StepResponse,
-} from "@medusajs/workflows-sdk"
+import { createStep, StepFunction, StepResponse } from "@medusajs/workflows-sdk"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 type EntryStepInput<TEntry extends string> = RemoteQueryInput<TEntry> & {
@@ -34,4 +29,4 @@ const step = createStep(
 export const useQueryGraphStep = <const TEntry extends string>(
   input: EntryStepInput<TEntry>
 ): ReturnType<StepFunction<EntryStepInput<TEntry>, GraphResultSet<TEntry>>> =>
-  step(input)
+  step(input as any) as unknown as ReturnType<StepFunction<EntryStepInput<TEntry>, GraphResultSet<TEntry>>>
