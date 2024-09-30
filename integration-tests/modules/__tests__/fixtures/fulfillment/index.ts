@@ -9,12 +9,13 @@ export function generateCreateFulfillmentData(
     provider_id: string
     shipping_option_id: string
     order_id: string
+    location_id: string
   }
 ) {
   const randomString = Math.random().toString(36).substring(7)
 
   return {
-    location_id: "test-location",
+    location_id: data.location_id,
     packed_at: null,
     shipped_at: null,
     delivered_at: null,
@@ -97,8 +98,10 @@ export async function setupFullDataFulfillmentStructure(
   service: IFulfillmentModuleService,
   {
     providerId,
+    locationId,
   }: {
     providerId: string
+    locationId: string
   }
 ) {
   const randomString = Math.random().toString(36).substring(7)
@@ -133,6 +136,8 @@ export async function setupFullDataFulfillmentStructure(
 
   await service.createFulfillment(
     generateCreateFulfillmentData({
+      order_id: "fake-order",
+      location_id: locationId,
       provider_id: providerId,
       shipping_option_id: shippingOption.id,
     })

@@ -35,7 +35,10 @@ describe("load internal - load resources", () => {
         (ModuleService.prototype as IModuleService).__joinerConfig
       ).toBeUndefined()
 
-      const resources = await loadResources(moduleResolution)
+      const resources = await loadResources({
+        moduleResolution,
+        discoveryPath: moduleResolution.resolutionPath as string,
+      })
 
       expect(resources).toBeDefined()
       expect(resources.services).toHaveLength(1)
@@ -115,7 +118,10 @@ describe("load internal - load resources", () => {
         (ModuleService.prototype as IModuleService).__joinerConfig
       ).toBeUndefined()
 
-      const resources = await loadResources(moduleResolution)
+      const resources = await loadResources({
+        moduleResolution,
+        discoveryPath: moduleResolution.resolutionPath as string,
+      })
 
       expect(resources).toBeDefined()
       expect(resources.services).toHaveLength(1)
@@ -195,7 +201,10 @@ describe("load internal - load resources", () => {
         (ModuleService.prototype as IModuleService).__joinerConfig
       ).toBeUndefined()
 
-      const resources = await loadResources(moduleResolution)
+      const resources = await loadResources({
+        moduleResolution,
+        discoveryPath: moduleResolution.resolutionPath as string,
+      })
 
       expect(resources).toBeDefined()
       expect(resources.services).toHaveLength(1)
@@ -274,7 +283,10 @@ describe("load internal - load resources", () => {
         (ModuleService.prototype as IModuleService).__joinerConfig
       ).toBeDefined()
 
-      const resources = await loadResources(moduleResolution)
+      const resources = await loadResources({
+        moduleResolution,
+        discoveryPath: moduleResolution.resolutionPath as string,
+      })
 
       expect(resources).toBeDefined()
       expect(resources.services).toHaveLength(1)
