@@ -8410,7 +8410,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/admin-ui@^2.1.16, @medusajs/admin-ui@workspace:packages/admin-ui":
+"@medusajs/admin-ui@^2.1.18, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
@@ -8521,7 +8521,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
-    "@medusajs/admin-ui": ^2.1.16
+    "@medusajs/admin-ui": ^2.1.18
     "@medusajs/medusa": ^1.20.9
     "@rollup/plugin-alias": 5.0.0
     "@rollup/plugin-commonjs": 24.1.0
