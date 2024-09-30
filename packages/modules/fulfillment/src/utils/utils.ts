@@ -83,7 +83,7 @@ export function isContextValid(
     const contextValue = pickValueFromObject(attribute, context)
 
     return operatorsPredicate[operator](
-      contextValue,
+      `${contextValue}`,
       value as string & string[]
     )
   }
