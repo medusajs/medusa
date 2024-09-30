@@ -12,7 +12,7 @@ async function bootstrapApp({
   const app = express()
   applyEnvVarsToProcess(env)
 
-  const loaders = require("@medusajs/medusa/dist/loaders").default
+  const loaders = require("@medusajs/medusa/loaders/index").default
 
   const { container, shutdown } = await loaders({
     directory: resolve(cwd || process.cwd()),
