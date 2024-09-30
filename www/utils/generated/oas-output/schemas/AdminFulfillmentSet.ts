@@ -26,7 +26,9 @@
  *     title: type
  *     description: The fulfillment set's type.
  *   location:
- *     $ref: "#/components/schemas/AdminStockLocation"
+ *     type: object
+ *     description: The stock location's details.
+ *     x-schemaName: AdminStockLocation
  *   service_zones:
  *     type: array
  *     description: The fulfillment set's service zones.

@@ -3,47 +3,47 @@
  * type: object
  * description: The product option's details.
  * x-schemaName: AdminProductOption
- * required:
- *   - id
- *   - title
  * properties:
  *   id:
  *     type: string
  *     title: id
- *     description: The product option's ID.
+ *     description: The option's ID.
  *   title:
  *     type: string
  *     title: title
- *     description: The product option's title.
+ *     description: The option's title.
  *   product:
  *     $ref: "#/components/schemas/AdminProduct"
  *   product_id:
  *     type: string
  *     title: product_id
- *     description: The ID of the product this option belongs to.
+ *     description: The option's product id.
  *   values:
  *     type: array
- *     description: The product option's values.
+ *     description: The option's values.
  *     items:
- *       $ref: "#/components/schemas/BaseProductOptionValue"
+ *       $ref: "#/components/schemas/AdminProductOptionValue"
  *   metadata:
  *     type: object
- *     description: The product option's metadata, can hold custom key-value pairs.
+ *     description: The option's metadata.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The date the product option was created.
+ *     description: The option's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The date the product option was updated.
+ *     description: The option's updated at.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The date the product option was deleted.
+ *     description: The option's deleted at.
+ * required:
+ *   - id
+ *   - title
  * 
 */
 

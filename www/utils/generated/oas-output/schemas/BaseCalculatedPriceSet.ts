@@ -52,9 +52,63 @@
  *   calculated_price:
  *     type: object
  *     description: The calculated price's details.
+ *     properties:
+ *       id:
+ *         type: string
+ *         title: id
+ *         description: The calculated price's ID.
+ *       price_list_id:
+ *         type: string
+ *         title: price_list_id
+ *         description: The calculated price's price list id.
+ *       price_list_type:
+ *         type: string
+ *         title: price_list_type
+ *         description: The calculated price's price list type.
+ *       min_quantity:
+ *         type: number
+ *         title: min_quantity
+ *         description: The calculated price's min quantity.
+ *       max_quantity:
+ *         type: number
+ *         title: max_quantity
+ *         description: The calculated price's max quantity.
+ *     required:
+ *       - id
+ *       - price_list_id
+ *       - price_list_type
+ *       - min_quantity
+ *       - max_quantity
  *   original_price:
  *     type: object
  *     description: The calculated price's original price.
+ *     properties:
+ *       id:
+ *         type: string
+ *         title: id
+ *         description: The original price's ID.
+ *       price_list_id:
+ *         type: string
+ *         title: price_list_id
+ *         description: The original price's price list id.
+ *       price_list_type:
+ *         type: string
+ *         title: price_list_type
+ *         description: The original price's price list type.
+ *       min_quantity:
+ *         type: number
+ *         title: min_quantity
+ *         description: The original price's min quantity.
+ *       max_quantity:
+ *         type: number
+ *         title: max_quantity
+ *         description: The original price's max quantity.
+ *     required:
+ *       - id
+ *       - price_list_id
+ *       - price_list_type
+ *       - min_quantity
+ *       - max_quantity
  * 
 */
 

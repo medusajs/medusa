@@ -77,36 +77,36 @@
  *     title: updated_at
  *     description: The date the shipping method was updated.
  *   original_total:
- *     type: string
+ *     type: number
  *     title: original_total
  *     description: The shipping method's total including taxes, excluding promotions.
  *   original_subtotal:
- *     type: string
+ *     type: number
  *     title: original_subtotal
  *     description: The shipping method's total excluding taxes, including promotions.
  *   original_tax_total:
- *     type: string
+ *     type: number
  *     title: original_tax_total
  *     description: The total taxes applied on the shipping method's amount including promotions.
  *   total:
- *     type: string
+ *     type: number
  *     title: total
  *     description: The shipping method's total amount including taxes and promotions.
  *   subtotal:
- *     type: string
+ *     type: number
  *     title: subtotal
  *     description: The shipping method's total amount excluding taxes, including promotions.
  *   tax_total:
- *     type: string
+ *     type: number
  *     title: tax_total
  *     description: The total taxes applied on the shipping method's amount including promotions.
  *   discount_total:
- *     type: string
+ *     type: number
  *     title: discount_total
  *     description: The total amount discounted.
  *   discount_tax_total:
- *     type: string
- *     title: discount_total
+ *     type: number
+ *     title: discount_tax_total
  *     description: The taxes applied on the discounted amount.
  * 
 */

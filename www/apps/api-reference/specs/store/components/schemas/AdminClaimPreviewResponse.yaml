@@ -8,6 +8,6 @@ required:
   - claim
 properties:
   order_preview:
-    $ref: ./OrderPreview.yaml
+    $ref: ./AdminOrderPreview.yaml
   claim:
     $ref: ./AdminClaim.yaml

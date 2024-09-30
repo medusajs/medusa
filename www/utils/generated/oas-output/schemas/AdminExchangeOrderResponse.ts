@@ -8,8 +8,9 @@
  *   - exchange
  * properties:
  *   order:
- *     description: The details of the associated order.
- *     $ref: "#/components/schemas/Order"
+ *     type: string
+ *     title: order
+ *     description: The order change's order.
  *   exchange:
  *     $ref: "#/components/schemas/AdminExchange"
  * 

@@ -1,9 +1,14 @@
 type: object
-description: The promotion's details.
+description: The application method's promotion.
 x-schemaName: AdminPromotion
-required:
-  - id
 properties:
+  application_method:
+    $ref: ./AdminApplicationMethod.yaml
+  rules:
+    type: array
+    description: The promotion's rules.
+    items:
+      $ref: ./AdminPromotionRule.yaml
   id:
     type: string
     title: id
@@ -13,25 +18,22 @@ properties:
     title: code
     description: The promotion's code.
   type:
-    type: string
-    description: The promotion's type.
-    enum:
-      - standard
-      - buyget
+    oneOf:
+      - type: string
+        title: type
+        description: The promotion's type.
+      - type: string
+        title: type
+        description: The promotion's type.
   is_automatic:
     type: boolean
     title: is_automatic
     description: The promotion's is automatic.
-  application_method:
-    $ref: ./BaseApplicationMethod.yaml
-  rules:
-    type: array
-    description: The promotion's rules.
-    items:
-      $ref: ./BasePromotionRule.yaml
   campaign_id:
     type: string
     title: campaign_id
     description: The promotion's campaign id.
   campaign:
     $ref: ./AdminCampaign.yaml
+required:
+  - id

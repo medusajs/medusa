@@ -31,7 +31,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/CreateOrderReturnReason"
+ *         $ref: "#/components/schemas/AdminCreateReturnReason"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

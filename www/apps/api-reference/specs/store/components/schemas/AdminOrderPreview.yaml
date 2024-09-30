@@ -7,19 +7,18 @@ required:
   - return_requested_total
   - order_change
   - currency_code
-  - version
   - id
+  - created_at
+  - updated_at
+  - email
+  - version
   - region_id
   - customer_id
   - sales_channel_id
-  - email
   - payment_collections
   - payment_status
   - fulfillment_status
   - summary
-  - metadata
-  - created_at
-  - updated_at
   - original_item_total
   - original_item_subtotal
   - original_item_tax_total
@@ -48,7 +47,7 @@ properties:
     title: return_requested_total
     description: The total of the requested return.
   order_change:
-    $ref: ./BaseOrderChange.yaml
+    $ref: ./AdminOrderChange.yaml
   items:
     type: array
     description: The order's items.
@@ -120,7 +119,7 @@ properties:
               title: variant_id
               description: The ID of the associated variant.
             product:
-              $ref: ./BaseProduct.yaml
+              $ref: ./AdminProduct.yaml
             product_id:
               type: string
               title: product_id
@@ -519,7 +518,7 @@ properties:
     type: array
     description: The order's fulfillments.
     items:
-      $ref: ./BaseOrderFulfillment.yaml
+      $ref: ./AdminOrderFulfillment.yaml
   fulfillment_status:
     type: string
     description: The order's fulfillment status.

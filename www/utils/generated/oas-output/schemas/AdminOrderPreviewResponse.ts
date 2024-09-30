@@ -7,7 +7,9 @@
  *   - order
  * properties:
  *   order:
- *     $ref: "#/components/schemas/AdminOrderPreview"
+ *     type: string
+ *     title: order
+ *     description: A preview of an order if a change, such as exchange, return, edit, or claim is applied on it.
  * 
 */
 

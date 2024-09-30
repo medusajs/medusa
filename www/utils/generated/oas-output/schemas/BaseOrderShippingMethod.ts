@@ -111,6 +111,8 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the shipping method was updated.
+ *   detail:
+ *     $ref: "#/components/schemas/BaseOrderShippingDetail"
  * 
 */
 

@@ -2,10 +2,9 @@
  * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
  * summary: List Shipping Options for Cart
- * description: >
+ * description: |
  *   Retrieve a list of shipping options for a cart. The cart's ID is set in the required `cart_id` query parameter.
  * 
- *   
  *   The shipping options also be sorted or paginated.
  * externalDocs:
  *   url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping

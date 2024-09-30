@@ -1,13 +1,11 @@
 type: object
-description: The category's categories.
+description: The category's details.
 x-schemaName: StoreProductCategory
 required:
   - id
   - name
   - description
   - handle
-  - is_active
-  - is_internal
   - rank
   - parent_category_id
   - parent_category
@@ -37,14 +35,6 @@ properties:
     type: string
     title: handle
     description: The category's handle.
-  is_active:
-    type: boolean
-    title: is_active
-    description: The category's is active.
-  is_internal:
-    type: boolean
-    title: is_internal
-    description: The category's is internal.
   rank:
     type: number
     title: rank
@@ -52,29 +42,29 @@ properties:
   parent_category_id:
     type: string
     title: parent_category_id
-    description: The category's parent category id.
+    description: The ID of the category's parent.
   parent_category:
-    $ref: ./BaseProductCategory.yaml
+    $ref: ./StoreProductCategory.yaml
   category_children:
     type: array
-    description: The category's category children.
+    description: The category's children.
     items:
-      $ref: ./BaseProductCategory.yaml
+      $ref: ./StoreProductCategory.yaml
   metadata:
     type: object
-    description: The category's metadata.
+    description: The category's metadata, can hold custom key-value pairs.
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The category's created at.
+    description: The date the category was created.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The category's updated at.
+    description: The date the category was updated.
   deleted_at:
     type: string
     format: date-time
     title: deleted_at
-    description: The category's deleted at.
+    description: The date the category was deleted.

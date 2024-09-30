@@ -37,7 +37,8 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminArchiveOrder"
+ *         type: object
+ *         description: SUMMARY
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

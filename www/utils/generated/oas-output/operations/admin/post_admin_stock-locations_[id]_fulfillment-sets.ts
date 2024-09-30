@@ -41,8 +41,8 @@
  *         type: object
  *         description: The fulfillment set to create.
  *         required:
- *           - name
  *           - type
+ *           - name
  *         properties:
  *           name:
  *             type: string

@@ -1,7 +1,7 @@
 /**
  * @schema BasePromotionRuleValue
  * type: object
- * description: The rule value's details.
+ * description: The value's values.
  * x-schemaName: BasePromotionRuleValue
  * required:
  *   - id
@@ -13,7 +13,7 @@
  *   value:
  *     type: string
  *     title: value
- *     description: The value.
+ *     description: The value's details.
  * 
 */
 

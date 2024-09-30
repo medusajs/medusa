@@ -21,22 +21,33 @@
  *     title: ends_at
  *     description: The date the price list ends.
  *   status:
- *     type: string
+ *     oneOf:
+ *       - type: string
+ *         description: The price list's status.
+ *         enum:
+ *           - ACTIVE
+ *       - type: string
+ *         description: The price list's status.
+ *         enum:
+ *           - DRAFT
  *     description: The price list's status.
- *     enum:
- *       - active
- *       - draft
  *   type:
- *     type: string
+ *     oneOf:
+ *       - type: string
+ *         description: The price list's type.
+ *         enum:
+ *           - SALE
+ *       - type: string
+ *         description: The price list's type.
+ *         enum:
+ *           - OVERRIDE
  *     description: The price list's type.
- *     enum:
- *       - sale
- *       - override
  *   rules:
  *     type: object
  *     description: The price list's rules.
  *     example:
  *       customer_group_id:
- *         - "cusgrp_123"
+ *         - cusgrp_123
+ * 
 */
 

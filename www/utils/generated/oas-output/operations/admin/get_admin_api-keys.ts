@@ -102,10 +102,13 @@
  *     description: Filter by the API key's type.
  *     required: false
  *     schema:
- *       type: string
- *       enum:
- *         - secret
- *         - publishable
+ *       oneOf:
+ *         - type: string
+ *           title: type
+ *           description: The api key's type.
+ *         - type: string
+ *           title: type
+ *           description: The api key's type.
  *   - name: created_at
  *     in: query
  *     description: Filter by the API key's creation date.

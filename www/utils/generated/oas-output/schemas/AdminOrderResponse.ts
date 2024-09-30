@@ -7,7 +7,9 @@
  *   - order
  * properties:
  *   order:
- *     $ref: "#/components/schemas/AdminOrder"
+ *     type: string
+ *     title: order
+ *     description: The order's details.
  * 
 */
 
