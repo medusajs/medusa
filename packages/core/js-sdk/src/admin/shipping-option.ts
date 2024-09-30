@@ -24,6 +24,21 @@ export class ShippingOption {
     )
   }
 
+  async retrieve(
+    id: string,
+    query?: HttpTypes.SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<HttpTypes.AdminShippingOptionResponse>(
+      `/admin/shipping-options/${id}`,
+      {
+        method: "GET",
+        headers,
+        query,
+      }
+    )
+  }
+
   async update(
     id: string,
     body: HttpTypes.AdminUpdateShippingOption,
