@@ -13,7 +13,6 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {
-  findOneOrAnyRegionStep,
   findOrCreateCustomerStep,
   findSalesChannelStep,
   refreshCartShippingMethodsStep,
@@ -42,8 +41,11 @@ export const updateCartWorkflow = createWorkflow(
       findSalesChannelStep({
         salesChannelId: input.sales_channel_id,
       }),
-      findOneOrAnyRegionStep({
-        regionId: input.region_id ?? cartToUpdate.region_id,
+      useRemoteQueryStep({
+        entry_point: "region",
+        variables: { id: input.region_id ?? cartToUpdate.region_id },
+        fields: ["id", "countries"],
+        list: false,
       }),
       findOrCreateCustomerStep({
         customerId: input.customer_id,
@@ -62,11 +64,12 @@ export const updateCartWorkflow = createWorkflow(
         const data_ = {
           ...updateCartData,
           currency_code: data.region.currency_code,
-          region_id: data.region.id,
+          region_id: data.region.id, // This is either the region from the input or the region from the cart
         }
 
-        // When the region is updated, we clear the shipping address
-        //   If the region has only one country, we also set the shipping address to that country
+        // When the region is updated, we do one of two things:
+        //   - Clear the shipping address if the region has more than one country
+        //   - Set the country code of the shipping address if the region has only one country
         if (input.region_id !== data.region.id) {
           data_.shipping_address =
             data.region.countries.length === 1
