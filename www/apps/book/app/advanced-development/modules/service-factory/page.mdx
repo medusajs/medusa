@@ -34,7 +34,7 @@ export const highlights = [
 ]
 
 ```ts title="src/modules/hello/service.ts" highlights={highlights}
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
 class HelloModuleService extends MedusaService({
@@ -284,7 +284,7 @@ If you implement the `constructor` of your service, make sure to call `super` pa
 For example:
 
 ```ts highlights={[["8"]]}
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
 class HelloModuleService extends MedusaService({

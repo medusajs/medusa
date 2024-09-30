@@ -15,8 +15,8 @@ In this guide, you’ll find common examples of how you can use the Sales Channe
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ISalesChannelModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ISalesChannelModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
@@ -41,7 +41,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeSalesChannelModule } from "@medusajs/sales-channel"
+import { initialize as initializeSalesChannelModule } from "@medusajs/medusa/sales-channel"
 
 export async function POST(request: Request) {
   const salesChannelModuleService = await initializeSalesChannelModule()
@@ -66,8 +66,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ISalesChannelModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ISalesChannelModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
@@ -88,7 +88,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeSalesChannelModule } from "@medusajs/sales-channel"
+import { initialize as initializeSalesChannelModule } from "@medusajs/medusa/sales-channel"
 
 export async function GET(request: Request) {
   const salesChannelModuleService = await initializeSalesChannelModule()
@@ -111,8 +111,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ISalesChannelModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ISalesChannelModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   request: MedusaRequest,
@@ -137,7 +137,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeSalesChannelModule } from "@medusajs/sales-channel"
+import { initialize as initializeSalesChannelModule } from "@medusajs/medusa/sales-channel"
 
 export async function GET(request: Request) {
   const salesChannelModuleService = await initializeSalesChannelModule()
@@ -162,8 +162,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ISalesChannelModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ISalesChannelModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: MedusaRequest,
@@ -189,7 +189,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeSalesChannelModule } from "@medusajs/sales-channel"
+import { initialize as initializeSalesChannelModule } from "@medusajs/medusa/sales-channel"
 
 export async function POST(request: Request) {
   const salesChannelModuleService = await initializeSalesChannelModule()
@@ -215,8 +215,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ISalesChannelModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ISalesChannelModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   request: MedusaRequest,
@@ -237,7 +237,7 @@ export async function DELETE(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeSalesChannelModule } from "@medusajs/sales-channel"
+import { initialize as initializeSalesChannelModule } from "@medusajs/medusa/sales-channel"
 
 export async function DELETE(request: Request) {
   const salesChannelModuleService = await initializeSalesChannelModule()

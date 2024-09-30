@@ -51,9 +51,9 @@ Learn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/adva
 ### Example
 
 ```ts
-import { createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep } from "@medusajs/core-flows"
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 const helloWorldWorkflow = createWorkflow("hello-world", () => {
   createRemoteLinkStep([
@@ -90,13 +90,13 @@ Learn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/adva
 ```ts
 import {
   createWorkflow
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   dismissRemoteLinkStep
 } from "@medusajs/core-flows"
 import {
   Modules
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 const helloWorldWorkflow = createWorkflow(
   "hello-world",
@@ -132,7 +132,7 @@ Emit an event.
 ```ts
 import {
   createWorkflow
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   emitEventStep
 } from "@medusajs/core-flows"
@@ -167,13 +167,13 @@ Learn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advan
 ```ts
 import { 
   createWorkflow
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   removeRemoteLinkStep
 } from "@medusajs/core-flows"
 import {
   Modules
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 const helloWorldWorkflow = createWorkflow(
   "hello-world",
@@ -222,7 +222,7 @@ To retrieve a list of records of a data model:
 ```ts
 import {
   createWorkflow
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   useRemoteQueryStep
 } from "@medusajs/core-flows"
@@ -246,7 +246,7 @@ To retrieve a single item instead of a an array:
 ```ts
 import {
   createWorkflow
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   useRemoteQueryStep
 } from "@medusajs/core-flows"
@@ -276,7 +276,7 @@ To throw an error if a record isn't found matching the specified ID:
 ```ts
 import {
   createWorkflow
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   useRemoteQueryStep
 } from "@medusajs/core-flows"

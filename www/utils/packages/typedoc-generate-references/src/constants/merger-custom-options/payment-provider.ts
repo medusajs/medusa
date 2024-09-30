@@ -23,10 +23,10 @@ const paymentProviderOptions: FormattingOptionsType = {
 Start by creating a new directory for your module. For example, \`src/modules/my-payment\`.`,
       `## 2. Create the Payment Provider Service
 
-Create the file \`src/modules/my-payment/service.ts\` that holds the module's main service. It must extend the \`AbstractPaymentProvider\` class imported from \`@medusajs/utils\`:
+Create the file \`src/modules/my-payment/service.ts\` that holds the module's main service. It must extend the \`AbstractPaymentProvider\` class imported from \`@medusajs/framework/utils\`:
 
 \`\`\`ts title="src/modules/my-payment/service.ts"
-import { AbstractPaymentProvider } from "@medusajs/utils"
+import { AbstractPaymentProvider } from "@medusajs/framework/utils"
 
 type Options = {
   apiKey: string
@@ -60,7 +60,7 @@ This exports the module's definition, indicating that the \`MyPaymentProviderSer
 To use your Payment Module Provider, add it to the \`providers\` array of the Payment Module:
 
 \`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -68,7 +68,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.PAYMENT]: {
-      resolve: "@medusajs/payment",
+      resolve: "@medusajs/framework/payment",
       options: {
         providers: [
           {
