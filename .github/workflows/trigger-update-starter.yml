@@ -1,16 +1,15 @@
 name: Trigger Starter Update
 
 on:
-  workflow_run:
-    workflows: [Trigger Release and Publish]
-    types:
-      - completed
+  release:
+    types: [published]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - if: ${{ contains(github.event.release.tag_name, 'rc') }}
+        run: |
           curl -X POST \
           -H "Authorization: Bearer ${{ secrets.STARTER_ACCESS_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" \
