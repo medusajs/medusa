@@ -5,6 +5,7 @@ import { scheduleJob } from "node-schedule"
 
 import {
   dynamicImport,
+  FileSystem,
   gqlSchemaToTypes,
   GracefulShutdownServer,
 } from "@medusajs/framework/utils"
@@ -23,23 +24,19 @@ const CRON_SCHEDULE = EVERY_SIXTH_HOUR
  * of this file is optional, hence we ignore "ENOENT"
  * errors.
  */
-async function registerInstrumentation(directory: string) {
-  try {
-    const instrumentation = await dynamicImport(
-      path.join(directory, "instrumentation.js")
-    )
-    if (typeof instrumentation.register === "function") {
-      logger.info("OTEL registered")
-      instrumentation.register()
-    }
-  } catch (error) {
-    if (
-      !["ENOENT", "MODULE_NOT_FOUND", "ERR_MODULE_NOT_FOUND"].includes(
-        error.code
-      )
-    ) {
-      throw error
-    }
+export async function registerInstrumentation(directory: string) {
+  const fileSystem = new FileSystem(directory)
+  const exists = await fileSystem.exists("instrumentation.js")
+  if (!exists) {
+    return
+  }
+
+  const instrumentation = await dynamicImport(
+    path.join(directory, "instrumentation.js")
+  )
+  if (typeof instrumentation.register === "function") {
+    logger.info("OTEL registered")
+    instrumentation.register()
   }
 }
 
