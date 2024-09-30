@@ -17,6 +17,7 @@ import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
+const INSTRUMENTATION_FILE = "instrumentation.js"
 
 /**
  * Imports the "instrumentation.js" file from the root of the
@@ -26,17 +27,21 @@ const CRON_SCHEDULE = EVERY_SIXTH_HOUR
  */
 export async function registerInstrumentation(directory: string) {
   const fileSystem = new FileSystem(directory)
-  const exists = await fileSystem.exists("instrumentation.js")
+  const exists = await fileSystem.exists(INSTRUMENTATION_FILE)
   if (!exists) {
     return
   }
 
   const instrumentation = await dynamicImport(
-    path.join(directory, "instrumentation.js")
+    path.join(directory, INSTRUMENTATION_FILE)
   )
   if (typeof instrumentation.register === "function") {
     logger.info("OTEL registered")
     instrumentation.register()
+  } else {
+    logger.info(
+      "Skipping instrumentation registration. No register function found."
+    )
   }
 }
 
