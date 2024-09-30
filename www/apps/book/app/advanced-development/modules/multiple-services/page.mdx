@@ -79,7 +79,7 @@ Resolve dependencies from your module's container in the constructor of your int
 For example:
 
 ```ts
-import { Logger } from "@medusajs/types"
+import { Logger } from "@medusajs/framework/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -105,7 +105,7 @@ To retrieve the module's options, use the `configModule` registered in the modul
 For example:
 
 ```ts
-import { ConfigModule } from "@medusajs/types"
+import { ConfigModule } from "@medusajs/framework/types"
 import { HELLO_MODULE } from ".."
 
 export type InjectedDependencies = {
