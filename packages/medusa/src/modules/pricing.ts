@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/pricing"
+import PricingModule from "@medusajs/pricing"
 
 export * from "@medusajs/pricing"
 
-export default moduleService
+export default PricingModule
 export const discoveryPath = require.resolve("@medusajs/pricing")

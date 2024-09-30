@@ -1,5 +1,5 @@
-import moduleService from "@medusajs/api-key"
+import ApiKeyModule from "@medusajs/api-key"
 
 export * from "@medusajs/api-key"
-export default moduleService
+export default ApiKeyModule
 export const discoveryPath = require.resolve("@medusajs/api-key")

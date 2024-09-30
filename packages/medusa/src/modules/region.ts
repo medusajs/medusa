@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/region"
+import RegionModule from "@medusajs/region"
 
 export * from "@medusajs/region"
 
-export default moduleService
+export default RegionModule
 export const discoveryPath = require.resolve("@medusajs/region")

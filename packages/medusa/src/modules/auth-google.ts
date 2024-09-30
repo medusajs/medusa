@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/auth-google"
+import GoogleAuthProvider from "@medusajs/auth-google"
 
 export * from "@medusajs/auth-google"
 
-export default moduleService
+export default GoogleAuthProvider
 export const discoveryPath = require.resolve("@medusajs/auth-google")

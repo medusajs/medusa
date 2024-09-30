@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/inventory-next"
+import InventoryModule from "@medusajs/inventory-next"
 
 export * from "@medusajs/inventory-next"
 
-export default moduleService
+export default InventoryModule
 export const discoveryPath = require.resolve("@medusajs/inventory-next")

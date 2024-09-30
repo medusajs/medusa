@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/file"
+import FileModule from "@medusajs/file"
 
 export * from "@medusajs/file"
 
-export default moduleService
+export default FileModule
 export const discoveryPath = require.resolve("@medusajs/file")

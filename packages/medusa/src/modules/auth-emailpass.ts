@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/auth-emailpass"
+import EmailPassAuthProvider from "@medusajs/auth-emailpass"
 
 export * from "@medusajs/auth-emailpass"
 
-export default moduleService
+export default EmailPassAuthProvider
 export const discoveryPath = require.resolve("@medusajs/auth-emailpass")

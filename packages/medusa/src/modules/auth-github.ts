@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/auth-github"
+import GithubAuthProvider from "@medusajs/auth-github"
 
 export * from "@medusajs/auth-github"
 
-export default moduleService
+export default GithubAuthProvider
 export const discoveryPath = require.resolve("@medusajs/auth-github")

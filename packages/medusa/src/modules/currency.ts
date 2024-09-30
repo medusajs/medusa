@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/currency"
+import CurrencyModule from "@medusajs/currency"
 
 export * from "@medusajs/currency"
 
-export default moduleService
+export default CurrencyModule
 export const discoveryPath = require.resolve("@medusajs/currency")

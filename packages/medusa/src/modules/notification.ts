@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/notification"
+import NotificationModule from "@medusajs/notification"
 
 export * from "@medusajs/notification"
 
-export default moduleService
+export default NotificationModule
 export const discoveryPath = require.resolve("@medusajs/notification")

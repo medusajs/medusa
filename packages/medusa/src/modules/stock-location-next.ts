@@ -1,6 +1,6 @@
-import moduleService from "@medusajs/stock-location-next"
+import StockLocationModule from "@medusajs/stock-location-next"
 
 export * from "@medusajs/stock-location-next"
 
-export default moduleService
+export default StockLocationModule
 export const discoveryPath = require.resolve("@medusajs/stock-location-next")
