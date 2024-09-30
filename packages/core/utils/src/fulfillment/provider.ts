@@ -20,8 +20,8 @@ import {
  * #### Example
  *
  * ```ts
- * import { AbstractFulfillmentProviderService } from "@medusajs/utils"
- * import { Logger } from "@medusajs/types"
+ * import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
+ * import { Logger } from "@medusajs/framework/types"
  * 
  * type InjectedDependencies = {
  *   logger: Logger
@@ -104,7 +104,7 @@ export class AbstractFulfillmentProviderService
    * 
    * @example
    * // other imports...
-   * import { FulfillmentOption } from "@medusajs/types"
+   * import { FulfillmentOption } from "@medusajs/framework/types"
    * 
    * class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
    *   // ...
