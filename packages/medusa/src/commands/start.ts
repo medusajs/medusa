@@ -4,6 +4,7 @@ import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
 import {
+  dynamicImport,
   gqlSchemaToTypes,
   GracefulShutdownServer,
 } from "@medusajs/framework/utils"
@@ -24,7 +25,7 @@ const CRON_SCHEDULE = EVERY_SIXTH_HOUR
  */
 async function registerInstrumentation(directory: string) {
   try {
-    const instrumentation = await import(
+    const instrumentation = await dynamicImport(
       path.join(directory, "instrumentation.js")
     )
     if (typeof instrumentation.register === "function") {

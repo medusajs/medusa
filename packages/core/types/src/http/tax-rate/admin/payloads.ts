@@ -7,7 +7,7 @@ export interface AdminCreateTaxRate {
   name: string
   tax_region_id: string
   rate?: number
-  code?: string
+  code: string
   rules?: AdminCreateTaxRateRule[]
   is_default?: boolean
   is_combinable?: boolean
@@ -17,7 +17,7 @@ export interface AdminCreateTaxRate {
 export interface AdminUpdateTaxRate {
   name?: string
   rate?: number
-  code?: string | null
+  code: string
   rules?: AdminCreateTaxRateRule[]
   is_default?: boolean
   is_combinable?: boolean

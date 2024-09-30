@@ -61,8 +61,8 @@ export default class TaxRate {
   rate: number | null = null
 
   @Searchable()
-  @Property({ columnType: "text", nullable: true })
-  code: string | null = null
+  @Property({ columnType: "text" })
+  code: string
 
   @Searchable()
   @Property({ columnType: "text" })
