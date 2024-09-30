@@ -19,7 +19,7 @@ function shouldExcludeResource(resource: string) {
  * OpenTelemetry
  */
 export function instrumentHttpLayer() {
-  const start = require("../commands/start")
+  const start = require("../commands/start").default
   const HTTPTracer = new Tracer("@medusajs/http", "2.0.0")
   const { SpanStatusCode } = require("@opentelemetry/api")
 
