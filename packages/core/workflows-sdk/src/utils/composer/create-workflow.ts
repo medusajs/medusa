@@ -96,7 +96,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     input: WorkflowData<TData>
   ) => void | WorkflowResponse<TResult, THooks>
 ): ReturnWorkflow<TData, TResult, THooks> {
-  const fileSourcePath = getCallerFilePath()
+  const fileSourcePath = getCallerFilePath() as string
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
   const options = isString(nameOrConfig) ? {} : nameOrConfig
 
