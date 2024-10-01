@@ -9,7 +9,7 @@ import {
   gqlSchemaToTypes,
   GracefulShutdownServer,
 } from "@medusajs/framework/utils"
-import http, { IncomingMessage, ServerResponse } from "http"
+import http from "http"
 import { logger } from "@medusajs/framework/logger"
 
 import loaders from "../loaders"
@@ -45,6 +45,13 @@ export async function registerInstrumentation(directory: string) {
   }
 }
 
+/**
+ * Wrap request handler inside custom implementation to enabled
+ * instrumentation.
+ */
+// eslint-disable-next-line no-var
+export var traceRequestHandler: (...args: any[]) => Promise<any> = void 0 as any
+
 async function start({ port, directory, types }) {
   async function internalStart() {
     track("CLI_START")
@@ -53,16 +60,20 @@ async function start({ port, directory, types }) {
     const app = express()
 
     const http_ = http.createServer(async (req, res) => {
-      await start.traceRequestHandler(
-        async () => {
-          return new Promise((resolve) => {
-            res.on("finish", resolve)
-            app(req, res)
-          })
-        },
-        req,
-        res
-      )
+      if (traceRequestHandler) {
+        await traceRequestHandler(
+          async () => {
+            return new Promise((resolve) => {
+              res.on("finish", resolve)
+              app(req, res)
+            })
+          },
+          req,
+          res
+        )
+      } else {
+        app(req, res)
+      }
     })
 
     try {
@@ -121,18 +132,6 @@ async function start({ port, directory, types }) {
   }
 
   await internalStart()
-}
-
-/**
- * Wrap request handler inside custom implementation to enabled
- * instrumentation.
- */
-start.traceRequestHandler = async (
-  requestHandler: () => Promise<void>,
-  _: IncomingMessage,
-  __: ServerResponse
-) => {
-  return await requestHandler()
 }
 
 export default start
