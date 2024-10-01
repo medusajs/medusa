@@ -4,9 +4,11 @@ import {
 } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
+  StepResponse,
   WorkflowData,
   WorkflowResponse,
   createHook,
+  createStep,
   createWorkflow,
   parallelize,
   transform,
@@ -27,9 +29,6 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
-
-// TODO: The createCartWorkflow are missing the following steps:
-// - Refresh/delete shipping methods (fulfillment module)
 
 export const createCartWorkflowId = "create-cart"
 /**
@@ -102,15 +101,22 @@ export const createCartWorkflow = createWorkflow(
     //   This is useful for other operations, such as tax line calculations.
     // That is if the shipping address is not provided in the input.
     const shippingAddress = when({ region, input }, (data) => {
-      return data.region?.countries.length === 1 && !data.input.shipping_address
+      return !!(
+        data.region?.countries.length === 1 && !data.input.shipping_address
+      )
     }).then(() => {
-      return {
-        country_code: region?.countries[0].iso_2,
-      }
+      // TODO: If I don't use the createStep function here, but instead a direct return statment e.g.:
+      //    return { country_code: data.region?.countries[0].iso_2 }
+      // The value of shippingAddress will be that return value regardless of the `when`.
+      return createStep("assign-country-code", async (data: any) => {
+        return new StepResponse({
+          country_code: data.region?.countries[0].iso_2,
+        })
+      })({ region })
     })
 
     const cartInput = transform(
-      { input, region, customerData, salesChannel, shippingAddress },
+      { input, region, customerData, salesChannel, shippingAddress, test },
       (data) => {
         if (!data.region) {
           throw new MedusaError(MedusaError.Types.NOT_FOUND, "No regions found")

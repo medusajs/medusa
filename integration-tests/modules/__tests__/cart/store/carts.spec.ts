@@ -605,7 +605,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.only("POST /store/carts/:id", () => {
+      describe("POST /store/carts/:id", () => {
         it("should update a cart with promo codes with a replace action", async () => {
           await setupTaxStructure(taxModule)
 
@@ -1054,6 +1054,138 @@ medusaIntegrationTestRunner({
             currency_code: "dkk",
             countries: ["dk"],
           })
+
+          const salesChannel = await scModule.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const [productWithDefaultTax] = await productModule.createProducts([
+            {
+              title: "Test product default tax",
+              variants: [
+                { title: "Test variant default tax", manage_inventory: false },
+              ],
+            },
+          ])
+
+          const [priceSetDefaultTax] = await pricingModule.createPriceSets([
+            {
+              prices: [{ amount: 2000, currency_code: "usd" }],
+            },
+          ])
+
+          await remoteLink.create([
+            {
+              Product: {
+                variant_id: productWithDefaultTax.variants[0].id,
+              },
+              Pricing: { price_set_id: priceSetDefaultTax.id },
+            },
+          ])
+
+          await api.post(
+            "/admin/price-preferences",
+            {
+              attribute: "currency_code",
+              value: "usd",
+              is_tax_inclusive: true,
+            },
+            adminHeaders
+          )
+
+          let response = await api.post(
+            `/store/carts`,
+            {
+              sales_channel_id: salesChannel.id,
+              shipping_address: {
+                country_code: "us",
+              },
+              region_id: region.id,
+              items: [
+                {
+                  variant_id: productWithDefaultTax.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            storeHeaders
+          )
+
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "usd",
+              region_id: region.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 2000,
+                  quantity: 1,
+                  title: "Test variant default tax",
+                  tax_lines: [
+                    // Uses the california default rate
+                    expect.objectContaining({
+                      description: "US Default Rate",
+                      code: "US_DEF",
+                      rate: 2,
+                      provider_id: "system",
+                    }),
+                  ],
+                }),
+              ]),
+            })
+          )
+
+          response = await api.post(
+            `/store/carts/${response.data.cart.id}`,
+            {
+              region_id: otherRegion.id,
+              shipping_address: {
+                country_code: "dk",
+              },
+            },
+            storeHeaders
+          )
+
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "dkk",
+              region_id: otherRegion.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 2000,
+                  quantity: 1,
+                  title: "Test variant default tax",
+                  tax_lines: [
+                    // Uses the danish default rate
+                    expect.objectContaining({
+                      description: "Denmark Default Rate",
+                      code: "DK_DEF",
+                      rate: 25,
+                      provider_id: "system",
+                    }),
+                  ],
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("should update tax inclusivity on cart items when region changes", async () => {
+          await setupTaxStructure(taxModule)
+
+          const [region, otherRegion] = await regionModule.createRegions([
+            {
+              name: "us",
+              currency_code: "usd",
+              countries: ["us"],
+            },
+            {
+              name: "dk",
+              currency_code: "dkk",
+              countries: ["dk"],
+            },
+          ])
 
           const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
