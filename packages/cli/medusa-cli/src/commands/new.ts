@@ -9,19 +9,23 @@ import fs from "fs-extra"
 import hostedGitInfo from "hosted-git-info"
 import isValid from "is-valid-path"
 import sysPath from "path"
+import path from "path"
 import prompts from "prompts"
 import { Pool } from "pg"
 import url from "url"
+// @ts-ignore
+import inquirer from "inquirer"
 import { createDatabase } from "pg-god"
 import { track } from "medusa-telemetry"
-import inquirer from "inquirer"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 import { PanicId } from "../reporter/panic-handler"
 import { clearProject } from "../util/clear-project"
-import path from "path"
-import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
+import {
+  getNodeVersion,
+  MIN_SUPPORTED_NODE_VERSION,
+} from "@medusajs/utils"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
@@ -180,7 +184,10 @@ const clone = async (hostInfo, rootPath, v2 = false, inputBranch) => {
     url = hostInfo.https({ noCommittish: true, noGitPlus: true })
   }
 
-  let branch = (inputBranch || hostInfo.committish ? [`-b`, inputBranch || hostInfo.committish] : [])
+  let branch =
+    inputBranch || hostInfo.committish
+      ? [`-b`, inputBranch || hostInfo.committish]
+      : []
 
   if (v2) {
     branch = [`-b`, inputBranch || "feat/v2"]
@@ -213,24 +220,6 @@ const clone = async (hostInfo, rootPath, v2 = false, inputBranch) => {
   if (!isGit) await gitInit(rootPath)
   await maybeCreateGitIgnore(rootPath)
   if (!isGit) await createInitialGitCommit(rootPath, url)
-}
-
-const getMedusaConfig = (rootPath) => {
-  try {
-    const configPath = sysPath.join(rootPath, "medusa-config.js")
-    if (existsSync(configPath)) {
-      const resolved = sysPath.resolve(configPath)
-      const configModule = require(resolved)
-      return configModule
-    }
-    throw Error()
-  } catch (err) {
-    console.log(err)
-    reporter.warn(
-      `Couldn't find a medusa-config.js file; please double check that you have the correct starter installed`
-    )
-  }
-  return {}
 }
 
 const getPaths = async (starterPath, rootPath, v2 = false) => {
@@ -515,7 +504,9 @@ const attemptSeed = async (rootPath) => {
 export const newStarter = async (args) => {
   const nodeVersion = getNodeVersion()
   if (nodeVersion < MIN_SUPPORTED_NODE_VERSION) {
-    reporter.error(`Medusa requires at least v20 of Node.js. You're using v${nodeVersion}. Please install at least v20 and try again: https://nodejs.org/en/download`)
+    reporter.error(
+      `Medusa requires at least v20 of Node.js. You're using v${nodeVersion}. Please install at least v20 and try again: https://nodejs.org/en/download`
+    )
     process.exit(1)
   }
   track("CLI_NEW")
@@ -534,7 +525,7 @@ export const newStarter = async (args) => {
     dbPort,
     dbHost,
     v2,
-    branch
+    branch,
   } = args
 
   const dbCredentials = removeUndefined({
@@ -656,7 +647,7 @@ medusa new ${rootPath} [url-to-starter]
     // remove demo files
     clearProject(rootPath)
     // remove .git directory
-    fs.rmSync(path.join(rootPath, '.git'), {
+    fs.rmSync(path.join(rootPath, ".git"), {
       recursive: true,
       force: true,
     })

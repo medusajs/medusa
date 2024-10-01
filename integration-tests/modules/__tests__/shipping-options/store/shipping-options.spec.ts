@@ -200,6 +200,7 @@ medusaIntegrationTestRunner({
           )
 
           const shippingOptions = resp.data.shipping_options
+
           expect(shippingOptions).toHaveLength(1)
           expect(shippingOptions[0]).toEqual(
             expect.objectContaining({

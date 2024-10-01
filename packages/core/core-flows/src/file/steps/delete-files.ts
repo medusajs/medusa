@@ -1,6 +1,6 @@
-import { IFileModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { IFileModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const deleteFilesStepId = "delete-files"
 /**

@@ -93,7 +93,7 @@ This runs your Medusa application and runs the tests available under the `src/in
 Suppose you have a `hello` module whose main service extends the service factory, and that has the following model:
 
 ```ts title="src/modules/hello/models/my-custom.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),

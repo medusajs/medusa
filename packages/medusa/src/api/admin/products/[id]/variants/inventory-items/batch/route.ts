@@ -5,7 +5,7 @@ import {
 } from "../../../../../../../types/routing"
 import { buildBatchVariantInventoryData } from "../../../../helpers"
 import { AdminBatchVariantInventoryItemsType } from "../../../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminBatchVariantInventoryItemsType>,

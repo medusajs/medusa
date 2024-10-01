@@ -4,7 +4,7 @@ import {
   InternalModuleDeclaration,
   ModulesSdkTypes,
   UserTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   arrayDifference,
   CommonEvents,
@@ -15,7 +15,7 @@ import {
   MedusaError,
   MedusaService,
   UserEvents,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import crypto from "node:crypto"
 

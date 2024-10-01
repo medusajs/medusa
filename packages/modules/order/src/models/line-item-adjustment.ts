@@ -1,7 +1,7 @@
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { BeforeCreate, Entity, ManyToOne, OnInit, Rel } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import OrderLineItem from "./line-item"

@@ -22,7 +22,7 @@ In this chapter, find an example of writing an integration test for a module usi
 Consider a `hello` module with a `HelloModuleService` that has a `getMessage` method:
 
 ```ts title="src/modules/hello/service.ts"
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
 class HelloModuleService extends MedusaService({

@@ -1,7 +1,7 @@
-import { IPaymentModuleService } from "@medusajs/types"
+import { IPaymentModuleService } from "@medusajs/framework/types"
 
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 jest.setTimeout(30000)
 

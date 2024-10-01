@@ -6,8 +6,8 @@ import {
   OrderLineItemDTO,
   OrderWorkflow,
   ReservationItemDTO,
-} from "@medusajs/types"
-import { MathBN, MedusaError, Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MathBN, MedusaError, Modules } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -16,7 +16,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"
@@ -144,6 +144,7 @@ function prepareFulfillmentData({
       location_id: locationId,
       provider_id: shippingOption.provider_id,
       shipping_option_id: shippingOption.id,
+      order: order,
       data: shippingMethod.data,
       items: fulfillmentItems,
       requires_shipping: someItemsRequireShipping,

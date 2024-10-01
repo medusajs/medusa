@@ -6,7 +6,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   PromotionTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
@@ -25,7 +25,7 @@ import {
   MedusaService,
   PromotionType,
   transformPropertiesToBigNumber,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   ApplicationMethod,
   Campaign,

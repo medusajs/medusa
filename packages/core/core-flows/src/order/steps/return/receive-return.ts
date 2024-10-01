@@ -1,6 +1,9 @@
-import { IOrderModuleService, ReceiveOrderReturnDTO } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  IOrderModuleService,
+  ReceiveOrderReturnDTO,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const receiveReturnStepId = "receive-return"
 /**

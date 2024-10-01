@@ -1,7 +1,10 @@
-import { RemoteLink } from "@medusajs/modules-sdk"
-import { LinkDefinition } from "@medusajs/types"
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { RemoteLink } from "@medusajs/framework/modules-sdk"
+import { LinkDefinition } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const updateRemoteLinksStepId = "update-remote-links-step"
 export const updateRemoteLinksStep = createStep(

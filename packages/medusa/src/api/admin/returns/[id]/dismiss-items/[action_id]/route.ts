@@ -5,13 +5,13 @@ import {
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { AdminPostReturnsDismissItemsActionReqSchemaType } from "../../../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminPostReturnsDismissItemsActionReqSchemaType>,

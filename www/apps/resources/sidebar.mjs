@@ -2200,7 +2200,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       {
         type: "link",
         path: "/medusa-container-resources",
-        title: "Medusa Container Resources",
+        title: "Container Dependencies",
       },
       {
         type: "link",

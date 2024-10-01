@@ -4,7 +4,7 @@ import {
   IndexTypes,
   RemoteQueryFunction,
   Subscriber,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   InjectManager,
@@ -12,7 +12,7 @@ import {
   isDefined,
   MedusaContext,
   MikroOrmBaseRepository as BaseRepository,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { EntityManager, SqlEntityManager } from "@mikro-orm/postgresql"
 import { IndexData, IndexRelation } from "@models"
 import { createPartitions, QueryBuilder } from "../utils"

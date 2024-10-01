@@ -1,4 +1,4 @@
-import { TransactionHandlerType } from "@medusajs/utils"
+import { TransactionHandlerType } from "@medusajs/framework/utils"
 import { z } from "zod"
 import { createFindParams, createSelectParams } from "../../utils/validators"
 

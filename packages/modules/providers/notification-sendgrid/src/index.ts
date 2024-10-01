@@ -1,4 +1,4 @@
-import { ModuleProviderExports } from "@medusajs/types"
+import { ModuleProviderExports } from "@medusajs/framework/types"
 import { SendgridNotificationService } from "./services/sendgrid"
 
 const services = [SendgridNotificationService]

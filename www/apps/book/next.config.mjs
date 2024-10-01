@@ -131,12 +131,37 @@ const nextConfig = {
     return [
       {
         source: "/advanced-development/modules/remote-query",
-        destination: "/advanced-development/modules/query",
+        destination: "/advanced-development/module-links/query",
+        permanent: true,
+      },
+      {
+        source: "/advanced-development/modules/query",
+        destination: "/advanced-development/module-links/query",
+        permanent: true,
+      },
+      {
+        source: "/advanced-development/modules/module-links",
+        destination: "/advanced-development/module-links",
+        permanent: true,
+      },
+      {
+        source: "/advanced-development/modules/module-link-directions",
+        destination: "/advanced-development/module-links/directions",
+        permanent: true,
+      },
+      {
+        source: "/advanced-development/modules/remote-link",
+        destination: "/advanced-development/module-links/remote-link",
         permanent: true,
       },
       {
         source: "/cheatsheet",
         destination: "/more-resources/cheatsheet",
+        permanent: true,
+      },
+      {
+        source: "/architectural-modules",
+        destination: "/advanced-development/architecture/architectural-modules",
         permanent: true,
       },
     ]

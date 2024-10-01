@@ -1,7 +1,7 @@
 /**
  * @schema StoreCurrencyResponse
  * type: object
- * description: SUMMARY
+ * description: The currency's details.
  * x-schemaName: StoreCurrencyResponse
  * required:
  *   - currency

@@ -1,9 +1,8 @@
-import { FileSystem, toCamelCase } from "@medusajs/utils"
-import { GraphQLSchema } from "graphql/type"
-import { parse, printSchema } from "graphql"
 import { codegen } from "@graphql-codegen/core"
+import { type GraphQLSchema, parse, printSchema } from "graphql"
 import * as typescriptPlugin from "@graphql-codegen/typescript"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { FileSystem } from "../common"
 
 function buildEntryPointsTypeMap({
   schema,
@@ -43,23 +42,24 @@ function buildEntryPointsTypeMap({
 async function generateTypes({
   outputDir,
   filename,
+  interfaceName,
   config,
   joinerConfigs,
 }: {
   outputDir: string
   filename: string
+  interfaceName: string
   config: Parameters<typeof codegen>[0]
   joinerConfigs: ModuleJoinerConfig[]
 }) {
   const fileSystem = new FileSystem(outputDir)
 
-  let output = await codegen(config)
+  let output = 'import "@medusajs/framework/types\n'
+  output += await codegen(config)
   const entryPoints = buildEntryPointsTypeMap({ schema: output, joinerConfigs })
 
-  const interfaceName = toCamelCase(filename)
-
   const remoteQueryEntryPoints = `
-declare module '@medusajs/types' {
+declare module '@medusajs/framework/types' {
   interface ${interfaceName} {
 ${entryPoints
   .map((entry) => `    ${entry.entryPoint}: ${entry.entityType}`)
@@ -69,19 +69,20 @@ ${entryPoints
 
   output += remoteQueryEntryPoints
 
+  const barrelFileName = "index.d.ts"
   await fileSystem.create(filename + ".d.ts", output)
 
-  const doesBarrelExists = await fileSystem.exists("index.d.ts")
+  const doesBarrelExists = await fileSystem.exists(barrelFileName)
   if (!doesBarrelExists) {
     await fileSystem.create(
-      "index.d.ts",
+      barrelFileName,
       `export * as ${interfaceName}Types from './${filename}'`
     )
   } else {
-    const content = await fileSystem.contents("index.d.ts")
+    const content = await fileSystem.contents(barrelFileName)
     if (!content.includes(`${interfaceName}Types`)) {
       const newContent = `export * as ${interfaceName}Types from './${filename}'\n${content}`
-      await fileSystem.create("index.d.ts", newContent)
+      await fileSystem.create(barrelFileName, newContent)
     }
   }
 }
@@ -92,11 +93,13 @@ export async function gqlSchemaToTypes({
   outputDir,
   filename,
   joinerConfigs,
+  interfaceName,
 }: {
   schema: GraphQLSchema
   outputDir: string
   filename: string
   joinerConfigs: ModuleJoinerConfig[]
+  interfaceName: string
 }) {
   const config = {
     documents: [],
@@ -122,5 +125,11 @@ export async function gqlSchemaToTypes({
     },
   }
 
-  await generateTypes({ outputDir, filename, config, joinerConfigs })
+  await generateTypes({
+    outputDir,
+    filename,
+    config,
+    joinerConfigs,
+    interfaceName,
+  })
 }

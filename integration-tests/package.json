@@ -13,7 +13,22 @@
     "dotenv": "^10.0.0"
   },
   "dependencies": {
-    "@faker-js/faker": "^5.5.3",
-    "testcontainers": "^8.10.1"
+    "express": "^4.21.0",
+    "get-port": "^7.1.0",
+    "@medusajs/medusa": "^1.20.10",
+    "@medusajs/core-flows": "^0.0.10",
+    "axios": "^1.7.7",
+    "scrypt-kdf": "^2.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "@medusajs/framework": "^0.0.1",
+    "@mikro-orm/core": "5.9.7",
+    "@mikro-orm/knex": "5.9.7",
+    "@mikro-orm/migrations": "5.9.7",
+    "@mikro-orm/postgresql": "5.9.7",
+    "awilix": "^8.0.1",
+    "ioredis": "^5.4.1",
+    "pg": "^8.13.0",
+    "pg-god": "^1.0.12",
+    "glob": "^11.0.0"
   }
 }
