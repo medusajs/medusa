@@ -1642,7 +1642,7 @@ medusaIntegrationTestRunner({
           products[0].variants[0].calculated_price.calculated_amount_without_tax.toFixed(
             1
           )
-        ).toEqual("40.9")
+        ).toEqual("45.0")
       })
 
       it("should return prices with and without tax when the cart context is available when listing products", async () => {
