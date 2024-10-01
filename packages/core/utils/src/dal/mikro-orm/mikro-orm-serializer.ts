@@ -8,8 +8,8 @@ import {
   Platform,
   Reference,
   ReferenceType,
-  SerializeOptions,
   SerializationContext,
+  SerializeOptions,
   Utils,
 } from "@mikro-orm/core"
 
@@ -367,34 +367,36 @@ export const mikroOrmSerializer = <TOutput extends object>(
   options?: Parameters<typeof EntitySerializer.serialize>[1] & {
     preventCircularRef?: boolean
   }
-): TOutput => {
-  options ??= {}
+): Promise<TOutput> => {
+  return new Promise<TOutput>((resolve) => {
+    options ??= {}
 
-  const data_ = (Array.isArray(data) ? data : [data]).filter(Boolean)
+    const data_ = (Array.isArray(data) ? data : [data]).filter(Boolean)
 
-  const forSerialization: unknown[] = []
-  const notForSerialization: unknown[] = []
+    const forSerialization: unknown[] = []
+    const notForSerialization: unknown[] = []
 
-  data_.forEach((object) => {
-    if (object.__meta) {
-      return forSerialization.push(object)
+    data_.forEach((object) => {
+      if (object.__meta) {
+        return forSerialization.push(object)
+      }
+
+      return notForSerialization.push(object)
+    })
+
+    let result: any = forSerialization.map((entity) =>
+      EntitySerializer.serialize(entity, {
+        forceObject: true,
+        populate: true,
+        preventCircularRef: true,
+        ...options,
+      } as SerializeOptions<any, any>)
+    ) as TOutput[]
+
+    if (notForSerialization.length) {
+      result = result.concat(notForSerialization)
     }
 
-    return notForSerialization.push(object)
+    resolve(Array.isArray(data) ? result : result[0])
   })
-
-  let result: any = forSerialization.map((entity) =>
-    EntitySerializer.serialize(entity, {
-      forceObject: true,
-      populate: true,
-      preventCircularRef: true,
-      ...options,
-    } as SerializeOptions<any, any>)
-  ) as TOutput[]
-
-  if (notForSerialization.length) {
-    result = result.concat(notForSerialization)
-  }
-
-  return Array.isArray(data) ? result : result[0]
 }
