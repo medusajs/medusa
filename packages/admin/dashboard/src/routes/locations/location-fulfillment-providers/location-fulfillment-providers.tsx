@@ -6,12 +6,10 @@ import { LocationEditFulfillmentProvidersForm } from "./components/edit-fulfillm
 
 export const LocationFulfillmentProviders = () => {
   const { location_id } = useParams()
-  const { stock_location, isPending, isError, error } = useStockLocation(
-    location_id!,
-    { fields: "id,*fulfillment_providers" }
-  )
+  const { stock_location, isPending, isFetching, isError, error } =
+    useStockLocation(location_id!, { fields: "id,*fulfillment_providers" })
 
-  const ready = !isPending && !!stock_location
+  const ready = !isPending && !isFetching && !!stock_location
 
   if (isError) {
     throw error
