@@ -21,18 +21,18 @@ When the Medusa application starts, these providers are registered and can be us
 For example:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
 module.exports = defineConfig({
   // ...
   modules: {
-    resolve: "@medusajs/auth",
+    resolve: "@medusajs/medusa/auth",
     options: {
       providers: [
         {
-          resolve: "@medusajs/auth-emailpass",
+          resolve: "@medusajs/medusa/auth-emailpass",
           id: "emailpass",
           options: {
             // provider options...
