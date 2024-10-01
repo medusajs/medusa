@@ -34,8 +34,11 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
  * @returns The created workflow. You can later execute the workflow by invoking it, then using its `run` method.
  *
  * @example
- * import { createWorkflow } from "@medusajs/workflows-sdk"
- * import { MedusaRequest, MedusaResponse, Product } from "@medusajs/medusa"
+ * import { 
+ *   createWorkflow,
+ *   WorkflowResponse
+ * } from "@medusajs/framework/workflows-sdk"
+ * import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
  * import {
  *   createProductStep,
  *   getProductStep,
@@ -46,16 +49,15 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
  *  title: string
  * }
  *
- * const myWorkflow = createWorkflow<
- *     WorkflowInput,
- *     Product
- *   >("my-workflow", (input) => {
+ * const myWorkflow = createWorkflow(
+ *   "my-workflow", 
+ *   (input: WorkflowInput) => {
  *    // Everything here will be executed and resolved later
  *    // during the execution. Including the data access.
  *
  *     const product = createProductStep(input)
  *     const prices = createPricesStep(product)
- *     return getProductStep(product.id)
+ *     return new WorkflowResponse(getProductStep(product.id))
  *   }
  * )
  *

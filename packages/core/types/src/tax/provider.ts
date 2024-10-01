@@ -48,7 +48,7 @@ export type ItemTaxCalculationLine = {
  * ## How to Create a Tax Provider
  *
  * A tax provider class is defined in a TypeScript or JavaScript file. The class must implement the
- * `ITaxProvider` interface imported from `@medusajs/types`.
+ * `ITaxProvider` interface imported from `@medusajs/framework/types`.
  *
  * The file can be defined in a plugin, a provider module, or under the `src/services` directory of your Medusa application. You can later pass the package's name or the
  * path to the file in the `providers` option of the Tax Module.
@@ -56,7 +56,7 @@ export type ItemTaxCalculationLine = {
  * For example:
  *
  * ```ts title="src/services/my-tax.ts"
- * import { ITaxProvider } from "@medusajs/types"
+ * import { ITaxProvider } from "@medusajs/framework/types"
  *
  * export default class MyTaxProvider implements ITaxProvider {
  *   // ...
