@@ -35,7 +35,7 @@ export type Hook<Name extends string, Input> = {
  *   createHook,
  *   createWorkflow,
  *   WorkflowResponse,
- * } from "@medusajs/workflows-sdk"
+ * } from "@medusajs/framework/workflows-sdk"
  * import { createProductStep } from "./steps/create-product"
  *
  * export const myWorkflow = createWorkflow(

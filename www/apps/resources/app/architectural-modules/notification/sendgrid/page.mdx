@@ -10,7 +10,7 @@ The SendGrid Notification Module Provider integrates [SendGrid](https://sendgrid
 
 ---
 
-## Install the SendGrid Notification Module
+## Register the SendGrid Notification Module
 
 <Prerequisites
   items={[
@@ -29,19 +29,7 @@ The SendGrid Notification Module Provider integrates [SendGrid](https://sendgrid
   ]}
 />
 
-To install the SendGrid Notification Module Provider, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/notification-sendgrid@preview
-```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
-
-Next, add the module into the `providers` array of the Notification Module:
+Add the module into the `providers` array of the Notification Module:
 
 <Note>
 
@@ -50,7 +38,7 @@ Only one provider can be defined for a channel.
 </Note>
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -58,12 +46,12 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.NOTIFICATION]: {
-      resolve: "@medusajs/notification",
+      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           // ...
           {
-            resolve: "@medusajs/notification-sendgrid",
+            resolve: "@medusajs/medusa/notification-sendgrid",
             id: "sendgrid",
             options: {
               channels: ["email"],
@@ -144,8 +132,8 @@ import type {
   SubscriberArgs,
   SubscriberConfig,
 } from "@medusajs/medusa"
-import { Modules } from "@medusajs/utils"
-import { INotificationModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/framework/utils"
+import { INotificationModuleService } from "@medusajs/framework/types"
 
 export default async function productCreateHandler({
   event: { data },
