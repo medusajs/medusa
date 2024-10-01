@@ -32,6 +32,8 @@
  *       title: fields
  *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
  *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: #select-fields-and-relations
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -56,7 +58,7 @@
  *                 type:
  *                   type: string
  *                   title: type
- *                   description: The type of the returned object.
+ *                   description: The type of the returned object. In this case, the order is returned because the cart was completed successfully.
  *                   default: order
  *                 order:
  *                   $ref: "#/components/schemas/StoreOrder"
@@ -70,7 +72,7 @@
  *                 type:
  *                   type: string
  *                   title: type
- *                   description: The type of the returned object.
+ *                   description: The type of the returned object. In this case, the cart is returned because an error has occurred.
  *                   default: cart
  *                 cart:
  *                   $ref: "#/components/schemas/StoreCart"
