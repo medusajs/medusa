@@ -134,7 +134,7 @@ export const useUpdateProductCategoryProducts = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: categoriesQueryKeys.lists() })
       queryClient.invalidateQueries({
-        queryKey: categoriesQueryKeys.detail(id),
+        queryKey: categoriesQueryKeys.details(),
       })
       /**
        * Invalidate products list query to ensure that the products collections are updated.
