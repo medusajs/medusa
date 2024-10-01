@@ -38,7 +38,7 @@ Learn more about why you can't manipulate variables [in this chapter](../conditi
 
 </Note>
 
-Instead, use the `transform` utility function imported from `@medusajs/workflows-sdk`:
+Instead, use the `transform` utility function imported from `@medusajs/framework/workflows-sdk`:
 
 export const highlights = [
   ["9", "", "Don't manipulate variables directly."],
@@ -89,7 +89,7 @@ Learn more about why you can't use if-conditions [in this chapter](../conditions
 
 </Note>
 
-Instead, use the when-then utility function imported from `@medusajs/workflows-sdk`:
+Instead, use the when-then utility function imported from `@medusajs/framework/workflows-sdk`:
 
 ```ts
 // Don't
@@ -129,7 +129,7 @@ Values of other types, such as Maps, aren't allowed.
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",
@@ -148,7 +148,7 @@ const step1 = createStep(
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",

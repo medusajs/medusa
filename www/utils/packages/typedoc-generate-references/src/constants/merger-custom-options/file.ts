@@ -20,10 +20,10 @@ const fileOptions: FormattingOptionsType = {
 Start by creating a new directory for your module. For example, \`src/modules/my-file\`.`,
       `## 2. Create the File Provider Service
 
-Create the file \`src/modules/my-file/service.ts\` that holds the implementation of the module's main service. It must extend the \`AbstractFileProviderService\` class imported from \`@medusajs/utils\`:
+Create the file \`src/modules/my-file/service.ts\` that holds the implementation of the module's main service. It must extend the \`AbstractFileProviderService\` class imported from \`@medusajs/framework/utils\`:
 
 \`\`\`ts title="src/modules/my-file/service.ts"
-import { AbstractFileProviderService } from "@medusajs/utils"
+import { AbstractFileProviderService } from "@medusajs/framework/utils"
 
 class MyFileProviderService extends AbstractFileProviderService {
   // TODO implement methods
@@ -57,7 +57,7 @@ The File Module accepts one provider only.
 </Note>
 
 \`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -65,7 +65,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.FILE]: {
-      resolve: "@medusajs/file",
+      resolve: "@medusajs/framework/file",
       options: {
         providers: [
           {

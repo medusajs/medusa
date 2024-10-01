@@ -75,6 +75,10 @@ export const normalizeVariants = (
       .filter(Boolean),
     prices: Object.entries(variant.prices || {})
       .map(([key, value]: any) => {
+        if (value === "" || value === undefined) {
+          return undefined
+        }
+
         if (key.startsWith("reg_")) {
           return {
             currency_code: regionsCurrencyMap[key],

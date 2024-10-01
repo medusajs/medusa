@@ -13,7 +13,7 @@ Medusa wraps adds wrappers around your service's methods and executes them as as
 So, make sure your service's methods are always async to avoid unexpected errors or behavior.
 
 ```ts highlights={[["8", "", "Method must be async."], ["13", "async", "Correct way of defining the method."]]}
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
 class HelloModuleService extends MedusaService({

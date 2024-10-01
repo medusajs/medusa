@@ -19,7 +19,7 @@ export const dismissRemoteLinkStepId = "dismiss-remote-links"
  * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   dismissRemoteLinkStep
- * } from "@medusajs/core-flows"
+ * } from "@medusajs/medusa/core-flows"
  * import {
  *   Modules
  * } from "@medusajs/framework/utils"

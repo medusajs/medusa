@@ -25,7 +25,7 @@ export const searchableHighlights = [
 ]
 
 ```ts highlights={searchableHighlights}
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
   name: model.text().searchable(),
