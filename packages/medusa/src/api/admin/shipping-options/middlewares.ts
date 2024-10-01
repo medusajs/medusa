@@ -36,6 +36,16 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
+    method: ["GET"],
+    matcher: "/admin/shipping-options/:id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetShippingOptionParams,
+        retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
     method: ["POST"],
     matcher: "/admin/shipping-options",
     middlewares: [

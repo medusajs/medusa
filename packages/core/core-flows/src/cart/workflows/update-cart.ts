@@ -96,7 +96,7 @@ export const updateCartWorkflow = createWorkflow(
       refreshCartShippingMethodsStep({ cart }),
       updateTaxLinesWorkflow.runAsStep({
         input: {
-          cart_or_cart_id: carts[0].id,
+          cart_id: carts[0].id,
         },
       })
     )

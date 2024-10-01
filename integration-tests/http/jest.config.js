@@ -1,9 +1,8 @@
 process.chdir(__dirname)
-
-module.exports = {
+const defineJestConfig = require("../../define_jest_config")
+module.exports = defineJestConfig({
   testEnvironment: `node`,
   rootDir: "./",
-  transformIgnorePatterns: ["/dist", "/node_modules/"],
   testPathIgnorePatterns: [
     `/examples/`,
     `/www/`,
@@ -15,17 +14,5 @@ module.exports = {
     `.cache`,
     "__fixtures__",
   ],
-  transform: {
-    "^.+\\.[jt]s$": [
-      "@swc/jest",
-      {
-        jsc: {
-          parser: { syntax: "typescript", decorators: true },
-          transform: { decoratorMetadata: true },
-          target: "es2021",
-        },
-      },
-    ],
-  },
   setupFiles: ["../setup-env.js"],
-}
+})

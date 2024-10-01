@@ -159,7 +159,7 @@ export class JobLoader {
 
             const input = {
               config: module_.config,
-              handler: module_.default.default,
+              handler: module_.default,
             }
 
             this.validateConfig(input.config)

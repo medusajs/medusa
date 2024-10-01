@@ -144,6 +144,7 @@ function prepareFulfillmentData({
       location_id: locationId,
       provider_id: shippingOption.provider_id,
       shipping_option_id: shippingOption.id,
+      order: order,
       data: shippingMethod.data,
       items: fulfillmentItems,
       requires_shipping: someItemsRequireShipping,
