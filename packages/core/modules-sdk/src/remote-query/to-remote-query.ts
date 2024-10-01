@@ -4,7 +4,7 @@ import {
   RemoteQueryGraph,
   RemoteQueryObjectConfig,
 } from "@medusajs/types"
-import { QueryContext, QueryFilter, isObject } from "@medusajs/utils"
+import { isObject, QueryContext } from "@medusajs/utils"
 import { parseAndAssignFilters } from "./parse-filters"
 
 const FIELDS = "__fields"
@@ -62,11 +62,11 @@ export function toRemoteQuery<const TEntity extends string>(
         continue
       }
 
-      if (QueryContext.isQueryContext(src) || QueryFilter.isQueryFilter(src)) {
+      if (QueryContext.isQueryContext(src)) {
         const normalizedFilters = { ...src } as any
         delete normalizedFilters.__type
 
-        const prop = QueryFilter.isQueryFilter(src) ? "filters" : "context"
+        const prop = "context"
 
         if (topLevel) {
           target[ARGUMENTS] ??= {}
