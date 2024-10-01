@@ -549,6 +549,12 @@ export class TransactionOrchestrator extends EventEmitter {
 
     step.changeState(TransactionStepState.TIMEOUT)
 
+    if (error?.message) {
+      const workflowId = transaction.modelId
+      const stepAction = step.definition.action
+      error.message = `Error originated from [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]\n${error.message}`
+    }
+
     transaction.addError(
       step.definition.action!,
       TransactionHandlerType.INVOKE,
@@ -602,13 +608,17 @@ export class TransactionOrchestrator extends EventEmitter {
       step.changeStatus(TransactionStepStatus.PERMANENT_FAILURE)
 
       if (!isTimeout) {
-        transaction.addError(
-          step.definition.action!,
-          step.isCompensating()
-            ? TransactionHandlerType.COMPENSATE
-            : TransactionHandlerType.INVOKE,
-          error
-        )
+        const handlerType = step.isCompensating()
+          ? TransactionHandlerType.COMPENSATE
+          : TransactionHandlerType.INVOKE
+
+        if (error?.message) {
+          const workflowId = transaction.modelId
+          const stepAction = step.definition.action
+          error.message = `Error originated from [${workflowId} -> ${stepAction} (${handlerType})]\n${error.message}`
+        }
+
+        transaction.addError(step.definition.action!, handlerType, error)
       }
 
       if (!step.isCompensating()) {
