@@ -6,19 +6,19 @@ import {
 } from "@medusajs/orchestration"
 import { IEventBusModuleService } from "@medusajs/types"
 import {
-  Modules,
   composeMessage,
   createMedusaContainer,
+  Modules,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
-  StepResponse,
-  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
+  StepResponse,
   transform,
+  WorkflowResponse,
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
 import { createHook } from "../create-hook"
@@ -992,7 +992,8 @@ describe("Workflow composer", function () {
         action: "step1",
         handlerType: "invoke",
         error: expect.objectContaining({
-          message: "fail permanently",
+          message:
+            "Error originated from [workflow1 -> step1 (invoke)]\nfail permanently",
         }),
       })
     })
@@ -1903,7 +1904,8 @@ describe("Workflow composer", function () {
       action: "step1",
       handlerType: "invoke",
       error: expect.objectContaining({
-        message: "invoke fail",
+        message:
+          "Error originated from [workflow1 -> step1 (invoke)]\ninvoke fail",
       }),
     })
 
