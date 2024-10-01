@@ -3,7 +3,7 @@ import {
   WorkflowResponse,
   createHook,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { deleteCustomerAddressesStep } from "../steps"
 
 export type DeleteCustomerAddressesWorkflowInput = { ids: string[] }

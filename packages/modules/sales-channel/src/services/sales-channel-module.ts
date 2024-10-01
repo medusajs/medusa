@@ -10,7 +10,7 @@ import {
   SalesChannelDTO,
   UpdateSalesChannelDTO,
   UpsertSalesChannelDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -18,7 +18,7 @@ import {
   MedusaContext,
   MedusaService,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import { SalesChannel } from "@models"
 import { UpdateSalesChanneInput } from "@types"

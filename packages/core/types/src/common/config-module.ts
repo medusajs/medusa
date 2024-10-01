@@ -12,7 +12,7 @@ import type { InlineConfig } from "vite"
  *
  * Admin dashboard configurations.
  */
-export type AdminOptions = {
+export interface AdminOptions {
   /**
    * Whether to disable the admin dashboard. If set to `true`, the admin dashboard is disabled,
    * in both development and production environments. The default value is `false`.

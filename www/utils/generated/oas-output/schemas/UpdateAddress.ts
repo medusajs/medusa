@@ -1,7 +1,7 @@
 /**
  * @schema UpdateAddress
  * type: object
- * description: The cart's shipping address.
+ * description: The details to update in the address.
  * x-schemaName: UpdateAddress
  * required:
  *   - id
@@ -9,54 +9,55 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The shipping address's ID.
+ *     description: The ID of an existing address to update.
  *   customer_id:
  *     type: string
  *     title: customer_id
- *     description: The shipping address's customer id.
+ *     description: The ID of the customer that this address belongs to.
  *   company:
  *     type: string
  *     title: company
- *     description: The shipping address's company.
+ *     description: The address's company.
  *   first_name:
  *     type: string
  *     title: first_name
- *     description: The shipping address's first name.
+ *     description: The address's first name.
  *   last_name:
  *     type: string
  *     title: last_name
- *     description: The shipping address's last name.
+ *     description: The address's last name.
  *   address_1:
  *     type: string
  *     title: address_1
- *     description: The shipping address's address 1.
+ *     description: The address's first line.
  *   address_2:
  *     type: string
  *     title: address_2
- *     description: The shipping address's address 2.
+ *     description: The address's second line.
  *   city:
  *     type: string
  *     title: city
- *     description: The shipping address's city.
+ *     description: The address's city.
  *   country_code:
  *     type: string
  *     title: country_code
- *     description: The shipping address's country code.
+ *     description: The address's country code.
+ *     example: usd
  *   province:
  *     type: string
  *     title: province
- *     description: The shipping address's province.
+ *     description: The address's province.
  *   postal_code:
  *     type: string
  *     title: postal_code
- *     description: The shipping address's postal code.
+ *     description: The address's postal code.
  *   phone:
  *     type: string
  *     title: phone
- *     description: The shipping address's phone.
+ *     description: The address's phone.
  *   metadata:
  *     type: object
- *     description: The shipping address's metadata.
+ *     description: The address's metadata, can hold custom key-value pairs.
  * 
 */
 

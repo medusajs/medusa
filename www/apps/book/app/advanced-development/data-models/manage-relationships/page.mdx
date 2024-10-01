@@ -160,7 +160,7 @@ export const updateAssociationHighlights = [
 const product = await helloModuleService.retrieveProduct(
   "123",
   {
-    relations: ["orders"]
+    relations: ["orders"],
   }
 )
 
@@ -169,7 +169,7 @@ const updatedProduct = await helloModuleService.updateProducts({
   // other properties...
   orders: [
     ...product.orders.map((order) => order.id),
-    "321"
+    "321",
   ],
 })
 ```

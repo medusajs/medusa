@@ -1,4 +1,4 @@
-import { FlagSettings } from "@medusajs/framework"
+import { FlagSettings } from "@medusajs/framework/feature-flags"
 
 const TaxInclusivePricingFeatureFlag: FlagSettings = {
   key: "tax_inclusive_pricing",

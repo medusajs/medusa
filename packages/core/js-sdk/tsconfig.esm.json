@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "target": "ES6",
+    "outDir": "./dist/esm",
+    "esModuleInterop": true,
+    "declarationMap": true,
+    "declaration": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "allowJs": true,
+    "skipLibCheck": true
+  },
+  "include": ["./src/**/*"],
+  "exclude": [
+    "./dist/**/*",
+    "./src/**/__tests__",
+    "./src/**/__mocks__",
+    "node_modules"
+  ]
+}

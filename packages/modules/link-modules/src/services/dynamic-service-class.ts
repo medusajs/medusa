@@ -1,5 +1,9 @@
-import { Constructor, ILinkModule, ModuleJoinerConfig } from "@medusajs/types"
-import { isDefined } from "@medusajs/utils"
+import {
+  Constructor,
+  ILinkModule,
+  ModuleJoinerConfig,
+} from "@medusajs/framework/types"
+import { isDefined } from "@medusajs/framework/utils"
 import { LinkModuleService } from "@services"
 
 export function getModuleService(

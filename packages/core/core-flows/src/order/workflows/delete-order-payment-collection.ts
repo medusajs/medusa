@@ -1,10 +1,14 @@
-import { PaymentCollectionDTO } from "@medusajs/types"
-import { MedusaError, Modules, PaymentCollectionStatus } from "@medusajs/utils"
+import { PaymentCollectionDTO } from "@medusajs/framework/types"
+import {
+  MedusaError,
+  Modules,
+  PaymentCollectionStatus,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { removeRemoteLinkStep, useRemoteQueryStep } from "../../common"
 
 /**

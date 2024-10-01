@@ -1,5 +1,5 @@
-import { IProductModuleService } from "@medusajs/types"
-import { CommonEvents, Modules, ProductStatus } from "@medusajs/utils"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { CommonEvents, Modules, ProductStatus } from "@medusajs/framework/utils"
 import { Product, ProductCollection } from "@models"
 import {
   MockEventBusService,

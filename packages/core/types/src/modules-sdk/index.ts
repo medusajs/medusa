@@ -264,6 +264,11 @@ export type ModuleExports<T = Constructor<any>> = {
     options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
+  /**
+   * Explicitly set the the true location of the module resources.
+   * Can be used to re-export the module from a different location and specify its original location.
+   */
+  discoveryPath?: string
 }
 
 export interface ModuleServiceInitializeOptions {

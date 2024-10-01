@@ -1,6 +1,6 @@
-import { IProductModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export type GetProductsStepInput = {
   ids?: string[]

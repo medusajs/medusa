@@ -1,10 +1,10 @@
-import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/types"
-import { OrderChangeStatus } from "@medusajs/utils"
+import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/framework/types"
+import { OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import { deleteOrderChangesStep } from "../../steps"
 import {

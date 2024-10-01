@@ -1,6 +1,12 @@
-import { IOrderModuleService, UpdateOrderClaimDTO } from "@medusajs/types"
-import { Modules, getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  IOrderModuleService,
+  UpdateOrderClaimDTO,
+} from "@medusajs/framework/types"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const updateOrderClaimsStepId = "update-order-claim"
 /**

@@ -4,12 +4,12 @@ import {
   IndexTypes,
   InternalModuleDeclaration,
   RemoteQueryFunction,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MikroOrmBaseRepository as BaseRepository,
   Modules,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { schemaObjectRepresentationPropertiesToOmit } from "@types"
 import { buildSchemaObjectRepresentation } from "../utils/build-config"
 import { defaultSchema } from "../utils/default-schema"

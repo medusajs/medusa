@@ -2,7 +2,7 @@ import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 
 import { refreshInviteTokensWorkflow } from "@medusajs/core-flows"
 import { refetchInvite } from "../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: MedusaRequest,

@@ -1,6 +1,6 @@
 import { orderEditAddNewItemWorkflow } from "@medusajs/core-flows"
 
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

@@ -1,6 +1,6 @@
 import { PriceRule } from "@models"
 
-import { CreatePriceRuleDTO } from "@medusajs/types"
+import { CreatePriceRuleDTO } from "@medusajs/framework/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { defaultPriceRuleData } from "./data"
 

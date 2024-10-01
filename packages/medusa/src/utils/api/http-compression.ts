@@ -1,4 +1,7 @@
-import { HttpCompressionOptions, ProjectConfigOptions } from "@medusajs/types"
+import {
+  HttpCompressionOptions,
+  ProjectConfigOptions,
+} from "@medusajs/framework/types"
 import compression from "compression"
 import { Request, Response } from "express"
 
