@@ -32,7 +32,7 @@ export const serviceHighlights = [
 ]
 
 ```ts title="src/modules/brand/services/client.ts" highlights={serviceHighlights}
-import { Logger, ConfigModule } from "@medusajs/types"
+import { Logger, ConfigModule } from "@medusajs/framework/types"
 import { BRAND_MODULE } from ".."
 
 export type BrandClientOptions = {
@@ -88,7 +88,7 @@ export const methodsHighlights = [
 
 ```ts title="src/modules/brand/services/client.ts" highlights={methodsHighlights}
 // other imports...
-import { InferTypeOf } from "@medusajs/types"
+import { InferTypeOf } from "@medusajs/framework/types"
 import { Brand } from "../models/brand"
 
 export class BrandClient {
@@ -125,7 +125,7 @@ The `sendRequest` method is a dummy method to simulate sending a request to a th
 
 You also add three methods that use the `sendRequest` method:
 
-- `createBrand` that creates a brand in the third-party system. To reference a brand's type, you use the `InferTypeOf` utility imported from `@medusajs/types`. This transforms a data model, which is a variable, to its equivalent type.
+- `createBrand` that creates a brand in the third-party system. To reference a brand's type, you use the `InferTypeOf` utility imported from `@medusajs/framework/types`. This transforms a data model, which is a variable, to its equivalent type.
 - `deleteBrand` that deletes the brand in the third-party system.
 - `retrieveBrands` to retrieve a brand from the third-party system.
 

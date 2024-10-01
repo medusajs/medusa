@@ -23,8 +23,8 @@ import {
  * #### Example
  *
  * ```ts
- * import { AbstractAuthModuleProvider } from "@medusajs/utils"
- * import { Logger } from "@medusajs/types"
+ * import { AbstractAuthModuleProvider } from "@medusajs/framework/utils"
+ * import { Logger } from "@medusajs/framework/types"
  *
  * type InjectedDependencies = {
  *   logger: Logger
@@ -136,7 +136,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *   AuthIdentityProviderService,
    *   AuthenticationInput,
    *   AuthenticationResponse
-   * } from "@medusajs/types"
+   * } from "@medusajs/framework/types"
    * // ...
    *
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -179,7 +179,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *   AuthIdentityProviderService,
    *   AuthenticationInput,
    *   AuthenticationResponse
-   * } from "@medusajs/types"
+   * } from "@medusajs/framework/types"
    * // ...
    *
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -238,8 +238,8 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *   AuthIdentityProviderService,
    *   AuthenticationInput,
    *   AuthenticationResponse
-   * } from "@medusajs/types"
-   * import { MedusaError } from "@medusajs/utils"
+   * } from "@medusajs/framework/types"
+   * import { MedusaError } from "@medusajs/framework/utils"
    * // ...
    *
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -305,8 +305,8 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *   AuthIdentityProviderService,
    *   AuthenticationInput,
    *   AuthenticationResponse
-   * } from "@medusajs/types"
-   * import { MedusaError } from "@medusajs/utils"
+   * } from "@medusajs/framework/types"
+   * import { MedusaError } from "@medusajs/framework/utils"
    * // ...
    *
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -371,7 +371,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *   AuthIdentityProviderService,
    *   AuthenticationInput,
    *   AuthenticationResponse
-   * } from "@medusajs/types"
+   * } from "@medusajs/framework/types"
    * // ...
    *
    * class MyAuthProviderService extends AbstractAuthModuleProvider {

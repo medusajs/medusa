@@ -59,7 +59,7 @@ Create the directory `src/modules/marketplace`.
 Create the file `src/modules/marketplace/models/vendor.ts` with the following content:
 
 ```ts title="src/modules/marketplace/models/vendor.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import VendorAdmin from "./vendor-admin"
 
 const Vendor = model.define("vendor", {
@@ -80,7 +80,7 @@ Notice that the `Vendor` has many admins whose data model you’ll create next.
 Create the file `src/modules/marketplace/models/vendor-admin.ts` with the following content:
 
 ```ts title="src/modules/marketplace/models/vendor-admin.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import Vendor from "./vendor"
 
 const VendorAdmin = model.define("vendor_admin", {
@@ -103,7 +103,7 @@ This creates a `VendorAdmin` data model, which represents an admin of a vendor.
 Next, create the main service of the module at `src/modules/marketplace/service.ts` with the following content:
 
 ```ts title="src/modules/marketplace/service.ts"
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import Vendor from "./models/vendor"
 import VendorAdmin from "./models/vendor-admin"
 
@@ -123,7 +123,7 @@ The service extends the [service factory](!docs!/advanced-development/modules/se
 After that, create the module definition at `src/modules/marketplace/index.ts` with the following content:
 
 ```ts title="src/modules/marketplace/index.ts"
-import { Module } from "@medusajs/utils"
+import { Module } from "@medusajs/framework/utils"
 import MarketplaceModuleService from "./service"
 
 export const MARKETPLACE_MODULE = "marketplaceModuleService"
@@ -168,9 +168,9 @@ If your use case requires linking the vendor to other data models, such as `Sale
 Create the file `src/links/vendor-product.ts` with the following content:
 
 ```ts title="src/links/vendor-product.ts"
-import { defineLink } from "@medusajs/utils"
+import { defineLink } from "@medusajs/framework/utils"
 import MarketplaceModule from "../modules/marketplace"
-import ProductModule from "@medusajs/product"
+import ProductModule from "@medusajs/medusa/product"
 
 export default defineLink(
   MarketplaceModule.linkable.vendor,
@@ -186,9 +186,9 @@ This adds a list link between the `Vendor` and `Product` data models, indicating
 Then, create the file `src/links/vendor-order.ts` with the following content:
 
 ```ts title="src/links/vendor-order.ts"
-import { defineLink } from "@medusajs/utils"
+import { defineLink } from "@medusajs/framework/utils"
 import MarketplaceModule from "../modules/marketplace"
-import OrderModule from "@medusajs/order"
+import OrderModule from "@medusajs/medusa/order"
 
 export default defineLink(
   MarketplaceModule.linkable.vendor,
@@ -203,7 +203,7 @@ This adds a list link between the `Vendor` and `Order` data models, indicating t
 
 ### Further Read
 
-- [How to Define Module Links](!docs!/advanced-development/modules/module-links)
+- [How to Define Module Links](!docs!/advanced-development/module-links)
 
 ---
 
@@ -244,7 +244,7 @@ export const createVendorAdminStepHighlights = [
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { CreateVendorAdminWorkflowInput } from ".."
 import MarketplaceModuleService from "../../../../modules/marketplace/service"
 import { MARKETPLACE_MODULE } from "../../../../modules/marketplace"
@@ -286,17 +286,17 @@ Then, create the workflow at `src/workflows/marketplace/create-vendor-admin/inde
 
 export const vendorAdminWorkflowHighlights = [
   ["23", "createVendorAdminStep", "Create the vendor admin."],
-  ["27", "setAuthAppMetadataStep", "Step is imported from `@medusajs/core-flows`."]
+  ["27", "setAuthAppMetadataStep", "Step is imported from `@medusajs/medusa/core-flows`."]
 ]
 
 ```ts title="src/workflows/marketplace/create-vendor-admin/index.ts" highlights={vendorAdminWorkflowHighlights}
 import { 
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   setAuthAppMetadataStep,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import createVendorAdminStep from "./steps/create-vendor-admin"
 
 export type CreateVendorAdminWorkflowInput = {
@@ -332,7 +332,7 @@ export default createVendorAdminWorkflow
 In this workflow, you run the following steps:
 
 1. `createVendorAdminStep` to create the vendor admin.
-2. `setAuthAppMetadataStep` to create the `vendor` actor type. This step is provided by Medusa in the `@medusajs/core-flows` package.
+2. `setAuthAppMetadataStep` to create the `vendor` actor type. This step is provided by Medusa in the `@medusajs/medusa/core-flows` package.
 
 You return the created vendor admin.
 
@@ -360,7 +360,7 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/medusa"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/framework/utils"
 import { z } from "zod"
 import MarketplaceModuleService from "../../modules/marketplace/service"
 import createVendorAdminWorkflow from "../../workflows/marketplace/create-vendor-admin"
@@ -570,7 +570,7 @@ export const retrieveProductHighlights = [
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { 
   ContainerRegistrationKeys,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import MarketplaceModuleService from "../../../modules/marketplace/service"
 import { MARKETPLACE_MODULE } from "../../../modules/marketplace"
 
@@ -614,16 +614,16 @@ export const createProducts1Highlights = [
 
 ```ts title="src/api/vendors/products/route.ts" highlights={createProducts1Highlights}
 // other imports...
-import { createProductsWorkflow } from "@medusajs/core-flows"
+import { createProductsWorkflow } from "@medusajs/medusa/core-flows"
 import { 
   CreateProductWorkflowInputDTO,
   IProductModuleService,
   ISalesChannelModuleService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { 
   Modules, 
   Modules,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 // GET method...
 
@@ -712,10 +712,10 @@ import {
 } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
-} from "@medusajs/medusa/dist/api/utils/validate-body"
+} from "@medusajs/medusa/api/utils/validate-body"
 import { 
   AdminCreateProduct,
-} from "@medusajs/medusa/dist/api/admin/products/validators"
+} from "@medusajs/medusa/api/admin/products/validators"
 
 export default defineMiddlewares({
   routes: [
@@ -778,8 +778,8 @@ curl 'http://localhost:9000/vendors/products' \
 
 ### Further Reads
 
-- [How to use Query](!docs!/advanced-development/modules/query)
-- [How to use the Remote Link](!docs!/advanced-development/modules/remote-link)
+- [How to use Query](!docs!/advanced-development/module-links/query)
+- [How to use the Remote Link](!docs!/advanced-development/module-links/remote-link)
 
 ---
 
@@ -795,11 +795,11 @@ graph TD
   createVendorOrdersStep --> createRemoteLinkStep["Create Links (createRemoteLinkStep from Medusa)"]
 ```
 
-1. Retrieve the cart using its ID. Medusa provides a `useRemoteQueryStep` in the `@medusajs/core-flows` package that you can use.
-2. Create a parent order for the cart and its items. Medusa also has a `completeCartWorkflow` in the `@medusajs/core-flows` package that you can use as a step.
+1. Retrieve the cart using its ID. Medusa provides a `useRemoteQueryStep` in the `@medusajs/medusa/core-flows` package that you can use.
+2. Create a parent order for the cart and its items. Medusa also has a `completeCartWorkflow` in the `@medusajs/medusa/core-flows` package that you can use as a step.
 3. Group the cart items by their product’s associated vendor.
 4. For each vendor, create a child order with the cart items of their products, and return the orders with the links to be created.
-5. Create the links created by the previous step. Medusa provides a `createRemoteLinkStep` in the `@medusajs/core-flows` package that you can use.
+5. Create the links created by the previous step. Medusa provides a `createRemoteLinkStep` in the `@medusajs/medusa/core-flows` package that you can use.
 
 You'll implement the third and fourth steps.
 
@@ -811,9 +811,9 @@ Create the third step in the file `src/workflows/marketplace/create-vendor-order
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
-import { CartDTO, CartLineItemDTO } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+} from "@medusajs/framework/workflows-sdk"
+import { CartDTO, CartLineItemDTO } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 type StepInput = {
   cart: CartDTO
@@ -870,18 +870,18 @@ export const vendorOrder1Highlights = [
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   CartLineItemDTO, 
   OrderDTO,
   LinkDefinition,
   InferTypeOf,
-} from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import { 
   createOrdersWorkflow,
   cancelOrderWorkflow,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import MarketplaceModuleService from "../../../../modules/marketplace/service"
 import { MARKETPLACE_MODULE } from "../../../../modules/marketplace"
 import Vendor from "../../../../modules/marketplace/models/vendor"
@@ -1036,7 +1036,7 @@ try {
 
 In this snippet, you create multiple child orders for each vendor and link the orders to the vendors.
 
-If an error occurs, the created orders in the `createdOrders` array are canceled using Medusa's `cancelOrderWorkflow` from the `@medusajs/core-flows` package.
+If an error occurs, the created orders in the `createdOrders` array are canceled using Medusa's `cancelOrderWorkflow` from the `@medusajs/medusa/core-flows` package.
 
 The order's data is formatted using the `prepareOrderData` function. Replace its definition with the following:
 
@@ -1112,7 +1112,7 @@ await Promise.all(created_orders.map((createdOrder) => {
 }))
 ```
 
-The compensation function cancels all child orders received from the step. It uses the `cancelOrderWorkflow` that Medusa provides in the `@medusajs/core-flows` package.
+The compensation function cancels all child orders received from the step. It uses the `cancelOrderWorkflow` that Medusa provides in the `@medusajs/medusa/core-flows` package.
 
 ### Create Workflow
 
@@ -1130,13 +1130,13 @@ export const createVendorOrdersWorkflowHighlights = [
 import { 
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   useRemoteQueryStep,
   createRemoteLinkStep,
   completeCartWorkflow,
-} from "@medusajs/core-flows"
-import { CartDTO } from "@medusajs/types"
+} from "@medusajs/medusa/core-flows"
+import { CartDTO } from "@medusajs/framework/types"
 import groupVendorItemsStep from "./steps/group-vendor-items"
 import createVendorOrdersStep from "./steps/create-vendor-orders"
 
@@ -1250,8 +1250,8 @@ export const getOrderHighlights = [
 
 ```ts title="src/api/vendors/orders/route.ts" highlights={getOrderHighlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { getOrdersListWorkflow } from "@medusajs/core-flows"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { getOrdersListWorkflow } from "@medusajs/medusa/core-flows"
 import MarketplaceModuleService from "../../../modules/marketplace/service"
 import { MARKETPLACE_MODULE } from "../../../modules/marketplace"
 
@@ -1361,7 +1361,7 @@ For example, you can link sales channels to vendors or other settings.
 
 <Note>
 
-[Learn more about module links](!docs!/advanced-development/modules/module-links).
+[Learn more about module links](!docs!/advanced-development/module-links).
 
 </Note>
 
