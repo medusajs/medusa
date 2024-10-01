@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "exports": {
     ".": "./dist/index.js",
+    "./types": "./dist/types/index.js",
+    "./utils": "./dist/utils/index.js",
     "./api/*": "./dist/api/*.js",
     "./subscribers/*": "./dist/subscribers/*.js",
     "./jobs/*": "./dist/jobs/*.js",
