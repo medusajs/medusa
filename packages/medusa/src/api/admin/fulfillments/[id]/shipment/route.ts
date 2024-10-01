@@ -3,7 +3,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchFulfillment } from "../../helpers"
 import { AdminCreateShipmentType } from "../../validators"
 

@@ -2,7 +2,7 @@ import { batchPromotionRulesWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
 import {
   AdminCreatePromotionRuleType,

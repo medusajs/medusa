@@ -11,8 +11,8 @@ import {
 } from "./validators"
 
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformBody } from "../../utils/validate-body"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { validateAndTransformBody } from "@medusajs/framework"
+import { validateAndTransformQuery } from "@medusajs/framework"
 
 export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {

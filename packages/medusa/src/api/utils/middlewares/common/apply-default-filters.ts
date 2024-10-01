@@ -1,6 +1,6 @@
 import { isObject, isPresent } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
-import { MedusaRequest } from "../../../../types/routing"
+import { MedusaRequest } from "@medusajs/framework/http"
 
 export function applyDefaultFilters<TFilter extends object>(
   filtersToApply: TFilter

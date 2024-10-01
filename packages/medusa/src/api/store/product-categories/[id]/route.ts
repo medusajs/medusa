@@ -3,7 +3,7 @@ import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchEntity } from "../../../utils/refetch-entity"
 import { StoreProductCategoryParamsType } from "../validators"
 

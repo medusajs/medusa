@@ -10,7 +10,7 @@ import {
   setTaxContext,
 } from "../../utils/middlewares"
 import { setContext } from "../../utils/middlewares/common/set-context"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { validateAndTransformQuery } from "@medusajs/framework"
 import { maybeApplyStockLocationId } from "./helpers"
 import * as QueryConfig from "./query-config"
 import {

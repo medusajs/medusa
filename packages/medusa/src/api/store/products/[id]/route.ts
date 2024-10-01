@@ -1,5 +1,5 @@
 import { MedusaError, isPresent } from "@medusajs/framework/utils"
-import { MedusaResponse } from "../../../../types/routing"
+import { MedusaResponse } from "@medusajs/framework/http"
 import { wrapVariantsWithInventoryQuantity } from "../../../utils/middlewares"
 import {
   RequestWithContext,

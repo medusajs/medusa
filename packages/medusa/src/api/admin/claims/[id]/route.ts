@@ -1,7 +1,7 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { refetchEntity } from "../../../utils/refetch-entity"
 import { AdminClaimResponse } from "@medusajs/framework/types"

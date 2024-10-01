@@ -7,7 +7,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchRegion } from "./helpers"
 
 export const GET = async (

@@ -4,7 +4,7 @@ import {
   isString,
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
-import { MedusaRequest } from "../../types/routing"
+import { MedusaRequest } from "@medusajs/framework/http"
 
 export const refetchEntities = async (
   entryPoint: string,

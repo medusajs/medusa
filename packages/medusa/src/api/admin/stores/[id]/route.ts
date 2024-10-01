@@ -7,7 +7,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminGetStoreParamsType, AdminUpdateStoreType } from "../validators"
 import { refetchStore } from "../helpers"
 import { HttpTypes } from "@medusajs/framework/types"

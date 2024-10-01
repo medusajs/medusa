@@ -1,7 +1,7 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 
 import { createProductTagsWorkflow } from "@medusajs/core-flows"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"

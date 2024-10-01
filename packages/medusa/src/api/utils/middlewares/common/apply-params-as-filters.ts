@@ -1,5 +1,5 @@
 import { NextFunction } from "express"
-import { MedusaRequest } from "../../../../types/routing"
+import { MedusaRequest } from "@medusajs/framework/http"
 
 export function applyParamsAsFilters<TFilter extends object>(mappings: {
   [param: string]: string

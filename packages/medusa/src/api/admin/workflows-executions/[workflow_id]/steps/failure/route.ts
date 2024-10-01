@@ -3,7 +3,7 @@ import { StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "@medusajs/framework/http"
 
 import { IWorkflowEngineService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"

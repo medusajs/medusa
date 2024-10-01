@@ -9,7 +9,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchEntities } from "../../../utils/refetch-entity"
 import {
   AdminProductCategoryParamsType,

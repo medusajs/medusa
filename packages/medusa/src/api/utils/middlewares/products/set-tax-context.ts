@@ -3,7 +3,7 @@ import { NextFunction } from "express"
 import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchEntity } from "../../refetch-entity"
 import { MedusaError } from "@medusajs/framework/utils"
 import { RequestWithContext } from "../../../store/products/helpers"

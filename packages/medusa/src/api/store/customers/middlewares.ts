@@ -12,8 +12,8 @@ import {
 
 import { MiddlewareRoute } from "@medusajs/framework/http"
 import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
-import { validateAndTransformBody } from "../../utils/validate-body"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { validateAndTransformBody } from "@medusajs/framework"
+import { validateAndTransformQuery } from "@medusajs/framework"
 
 export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {

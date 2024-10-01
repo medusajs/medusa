@@ -1,5 +1,5 @@
 import { NextFunction } from "express"
-import { MedusaRequest } from "../../../../types/routing"
+import { MedusaRequest } from "@medusajs/framework/http"
 
 export function clearFiltersByKey(keys: string[]) {
   return async (req: MedusaRequest, _, next: NextFunction) => {

@@ -2,7 +2,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
 import { createPricePreferencesWorkflow } from "@medusajs/core-flows"
 

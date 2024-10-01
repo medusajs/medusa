@@ -1,14 +1,14 @@
 import * as QueryConfig from "./query-config"
 
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { validateAndTransformQuery } from "@medusajs/framework"
 import {
   AdminCreateReservation,
   AdminGetReservationParams,
   AdminGetReservationsParams,
   AdminUpdateReservation,
 } from "./validators"
-import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformBody } from "@medusajs/framework"
 
 export const adminReservationRoutesMiddlewares: MiddlewareRoute[] = [
   {
