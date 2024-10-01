@@ -43,7 +43,7 @@ import {
   createWorkflow,
   WorkflowResponse,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 // step imports...
 
 const myWorkflow = createWorkflow(
@@ -62,7 +62,7 @@ const myWorkflow = createWorkflow(
 )
 ```
 
-The `transform` utility function is imported from `@medusajs/workflows-sdk`. It accepts two parameters:
+The `transform` utility function is imported from `@medusajs/framework/workflows-sdk`. It accepts two parameters:
 
 1. The first parameter is an object of variables to manipulate. The object is passed as a parameter to `transform`'s second parameter function.
 2. The second parameter is the function performing the variable manipulation.
@@ -84,7 +84,7 @@ import {
   createWorkflow,
   WorkflowResponse,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 // step imports...
 
 type WorkflowInput = {

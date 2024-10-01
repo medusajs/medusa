@@ -12,30 +12,18 @@ For production, it’s recommended to use modules like [Redis Event Bus Module](
 
 ---
 
-## Install the Local Event Bus Module
+## Register the Local Event Bus Module
 
 <Note>
 
-The Local Event Bus Module is installed by default in your application.
+The Local Event Bus Module is registered by default in your application.
 
 </Note>
 
-To install Local Event Bus Module, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/event-bus-local@preview
-```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
-
-Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 

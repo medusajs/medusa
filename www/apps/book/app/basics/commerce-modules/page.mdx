@@ -26,8 +26,8 @@ For example, you saw this code snippet in the [Medusa container chapter](../medu
 
 ```ts highlights={[["10"]]}
 import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { IProductModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: MedusaRequest, 
@@ -50,6 +50,6 @@ When you resolve the `Modules.PRODUCT` (or `productModuleService`) registration 
 
 <Note title="Tip">
 
-To resolve the main service of any commerce module, use the registration name defined in the `Modules` enum imported from `@medusajs/utils`.
+To resolve the main service of any commerce module, use the registration name defined in the `Modules` enum imported from `@medusajs/framework/utils`.
 
 </Note>
