@@ -10,6 +10,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
+  when,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {
@@ -38,42 +39,50 @@ export const updateCartWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "get-cart" })
 
-    const [salesChannel, region, customerData] = parallelize(
+    const regionId = transform(
+      { input, cartToUpdate },
+      (data) => data.input.region_id || data.cartToUpdate.region_id
+    )
+
+    const [salesChannel, customerData] = parallelize(
       findSalesChannelStep({
         salesChannelId: input.sales_channel_id,
       }),
-      useRemoteQueryStep({
-        entry_point: "region",
-        variables: { id: input.region_id ?? cartToUpdate.region?.id },
-        fields: ["id", "countries.*", "currency_code"],
-        list: false,
-      }).config({ name: "get-region" }),
       findOrCreateCustomerStep({
         customerId: input.customer_id,
         email: input.email,
       })
     )
 
+    const region = when({ regionId }, (data) => {
+      return !!data.regionId
+    }).then(() => {
+      return useRemoteQueryStep({
+        entry_point: "region",
+        variables: { id: regionId },
+        fields: ["id", "countries.*", "currency_code", "name"],
+        list: false,
+        throw_if_key_not_found: true,
+      }).config({ name: "get-region" })
+    })
+
     const cartInput = transform(
-      { input, region, customerData, salesChannel, cartToUpdate },
+      { input, region, customerData, salesChannel, cartToUpdate, regionId },
       (data) => {
         const { promo_codes, ...updateCartData } = data.input
-        if (!data.region) {
-          throw new MedusaError(MedusaError.Types.NOT_FOUND, "Region not found")
-        }
 
         const data_ = {
           ...updateCartData,
-          currency_code: data.region.currency_code,
-          region_id: data.region.id, // This is either the region from the input or the region from the cart or null
+          currency_code: data.region?.currency_code,
+          region_id: data.region?.id, // This is either the region from the input or the region from the cart or null
         }
 
         // When the region is updated, we do a few things:
-        // - If the shipping address is provided, we need to make sure the country is in the region
+        // - If the shipping address country code is provided, we need to make sure the country is in the region
+        //   - If not, we throw
         // - If the shipping address is not provided
         //   - Clear the shipping address if the region has more than one country
-        //   - Set the country code of the shipping address if the region has only one country
-        // - If the country code of shipping address is provided, we need to make sure the country is in the region
+        //   - Set the country code if the region has only one country
         const regionIsNew = !!(
           data.cartToUpdate.region?.id &&
           data.region.id !== data.cartToUpdate.region?.id
@@ -83,18 +92,18 @@ export const updateCartWorkflow = createWorkflow(
         if (shippingAddress?.country_code) {
           // If shipping address with country is provided, we need to make sure the country is in the region
           const country = data.region.countries.find(
-            (c) => c.iso_2 === data.input.shipping_address?.country_code
+            (c) => c.iso_2 === shippingAddress.country_code
           )
 
           if (!country) {
             throw new MedusaError(
               MedusaError.Types.INVALID_DATA,
-              `Country ${data.input.shipping_address?.country_code} not in region ${data.region.id}`
+              `Country with code ${shippingAddress.country_code} is not within region ${data.region.name}`
             )
           }
 
           data_.shipping_address = {
-            ...data.input.shipping_address,
+            ...shippingAddress,
             country_code: country.iso_2,
           }
         }
@@ -102,10 +111,11 @@ export const updateCartWorkflow = createWorkflow(
         if (regionIsNew) {
           if (data.region.countries.length === 1) {
             data_.shipping_address = {
-              ...data.input.shipping_address,
               country_code: data.region.countries[0].iso_2,
             }
-          } else {
+          }
+
+          if (!data_.shipping_address?.country_code) {
             data_.shipping_address = null
           }
         }
