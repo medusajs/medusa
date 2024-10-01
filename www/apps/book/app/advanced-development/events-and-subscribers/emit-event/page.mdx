@@ -8,7 +8,7 @@ In this chapter, you'll learn how to emit an event in a workflow.
 
 ## Emit Event Step
 
-Medusa provides an `emitEventStep` helper step in the `@medusajs/core-flows` package that emits an event.
+Medusa provides an `emitEventStep` helper step in the `@medusajs/medusa/core-flows` package that emits an event.
 
 When you emit an event, you specify the event's name and data payload to pass with the event.
 
@@ -23,10 +23,10 @@ export const highlights = [
 ```ts highlights={highlights}
 import { 
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   emitEventStep,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 
 const helloWorldWorkflow = createWorkflow(
   "hello-world",

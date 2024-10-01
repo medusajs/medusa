@@ -8,7 +8,7 @@ In this chapter, you’ll learn how to run workflow steps in parallel.
 
 ## parallelize Utility Function
 
-If your workflow has steps that don’t rely on one another’s results, run them in parallel using the `parallelize` utility function imported from the `@medusajs/workflows-sdk`.
+If your workflow has steps that don’t rely on one another’s results, run them in parallel using the `parallelize` utility function imported from the `@medusajs/framework/workflows-sdk`.
 
 The workflow waits until all steps passed to the `parallelize` function finish executing before continuing to the next step.
 
@@ -24,7 +24,7 @@ import {
   createWorkflow,
   WorkflowResponse,
   parallelize,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   createProductStep,
   getProductStep,

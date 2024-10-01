@@ -11,8 +11,8 @@ import { INotificationProvider, NotificationTypes } from "@medusajs/types"
  * #### Example
  *
  * ```ts
- * import { AbstractNotificationProviderService } from "@medusajs/utils"
- * import { Logger } from "@medusajs/types"
+ * import { AbstractNotificationProviderService } from "@medusajs/framework/utils"
+ * import { Logger } from "@medusajs/framework/types"
  *
  * type InjectedDependencies = {
  *   logger: Logger
@@ -67,7 +67,7 @@ export class AbstractNotificationProviderService
    * import {
    *   ProviderSendNotificationDTO,
    *   ProviderSendNotificationResultsDTO
-   * } from "@medusajs/types"
+   * } from "@medusajs/framework/types"
    *
    * class MyNotificationProviderService extends AbstractNotificationProviderService {
    *   // ...

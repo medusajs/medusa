@@ -16,12 +16,12 @@ A data model is created in a module, and its record are managed in the database 
 
 ## How to Create a Data Model?
 
-A data model is created in a TypeScript or JavaScript file under a module's `models` directory. It's defined using the `model` utility imported from `@medusajs/utils`.
+A data model is created in a TypeScript or JavaScript file under a module's `models` directory. It's defined using the `model` utility imported from `@medusajs/framework/utils`.
 
 For example, create the file `src/modules/hello/models/my-custom.ts` with the following content:
 
 ```ts title="src/modules/hello/models/my-custom.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),

@@ -57,7 +57,7 @@ export type PriceListCreateProductsSchema = z.infer<
 >
 
 export const PriceListUpdateCurrencyPriceSchema = z.object({
-  amount: z.string().nullish(),
+  amount: z.string().or(z.number()).optional(),
   id: z.string().nullish(),
 })
 
@@ -66,7 +66,7 @@ export type PriceListUpdateCurrencyPrice = z.infer<
 >
 
 export const PriceListUpdateRegionPriceSchema = z.object({
-  amount: z.string().nullish(),
+  amount: z.string().or(z.number()).optional(),
   id: z.string().nullish(),
 })
 
