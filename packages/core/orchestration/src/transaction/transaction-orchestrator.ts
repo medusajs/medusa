@@ -549,10 +549,14 @@ export class TransactionOrchestrator extends EventEmitter {
 
     step.changeState(TransactionStepState.TIMEOUT)
 
-    if (error?.message) {
+    if (error?.stack) {
       const workflowId = transaction.modelId
       const stepAction = step.definition.action
-      error.message = `Error originated from [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]\n${error.message}`
+      const sourcePath = transaction.getFlow().metadata?.sourcePath
+      const sourceStack = sourcePath
+        ? `\n    at ${sourcePath}: [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+        : `\n    at [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+      error.stack += sourceStack
     }
 
     transaction.addError(
@@ -612,10 +616,14 @@ export class TransactionOrchestrator extends EventEmitter {
           ? TransactionHandlerType.COMPENSATE
           : TransactionHandlerType.INVOKE
 
-        if (error?.message) {
+        if (error?.stack) {
           const workflowId = transaction.modelId
           const stepAction = step.definition.action
-          error.message = `Error originated from [${workflowId} -> ${stepAction} (${handlerType})]\n${error.message}`
+          const sourcePath = transaction.getFlow().metadata?.sourcePath
+          const sourceStack = sourcePath
+            ? `\n    at ${sourcePath}: [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+            : `\n    at [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+          error.stack += sourceStack
         }
 
         transaction.addError(step.definition.action!, handlerType, error)

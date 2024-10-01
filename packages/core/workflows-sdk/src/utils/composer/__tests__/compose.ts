@@ -992,8 +992,7 @@ describe("Workflow composer", function () {
         action: "step1",
         handlerType: "invoke",
         error: expect.objectContaining({
-          message:
-            "Error originated from [workflow1 -> step1 (invoke)]\nfail permanently",
+          message: "fail permanently",
         }),
       })
     })
@@ -1904,8 +1903,7 @@ describe("Workflow composer", function () {
       action: "step1",
       handlerType: "invoke",
       error: expect.objectContaining({
-        message:
-          "Error originated from [workflow1 -> step1 (invoke)]\ninvoke fail",
+        message:  "invoke fail",
       }),
     })
 
