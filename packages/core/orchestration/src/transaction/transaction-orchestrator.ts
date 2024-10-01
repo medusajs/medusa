@@ -554,8 +554,8 @@ export class TransactionOrchestrator extends EventEmitter {
       const stepAction = step.definition.action
       const sourcePath = transaction.getFlow().metadata?.sourcePath
       const sourceStack = sourcePath
-        ? `\n    at ${sourcePath}: [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
-        : `\n    at [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+        ? `\n⮑ \sat ${sourcePath}: [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+        : `\n⮑ \sat [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
       error.stack += sourceStack
     }
 
@@ -621,8 +621,8 @@ export class TransactionOrchestrator extends EventEmitter {
           const stepAction = step.definition.action
           const sourcePath = transaction.getFlow().metadata?.sourcePath
           const sourceStack = sourcePath
-            ? `\n    at ${sourcePath}: [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
-            : `\n    at [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+            ? `\n⮑ \sat ${sourcePath}: [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+            : `\n⮑ \sat [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
           error.stack += sourceStack
         }
 
