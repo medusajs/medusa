@@ -1,6 +1,6 @@
 import { generateCreateShippingOptionsData } from "./shipping-options"
 import { generateCreateFulfillmentData } from "./fulfillment"
-import { IFulfillmentModuleService } from "@medusajs/types"
+import { IFulfillmentModuleService } from "@medusajs/framework/types"
 
 export * from "./shipping-options"
 export * from "./fulfillment"

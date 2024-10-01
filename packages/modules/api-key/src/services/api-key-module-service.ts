@@ -8,7 +8,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   ApiKeyType,
   InjectManager,
@@ -20,7 +20,7 @@ import {
   MedusaError,
   MedusaService,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { ApiKey } from "@models"
 import {
   CreateApiKeyDTO,
@@ -79,7 +79,7 @@ export class ApiKeyModuleService
             { revoked_at: { $gt: new Date() } },
           ],
         },
-        { take: null, select: ["id"] },
+        { select: ["id"] },
         sharedContext
       )
     ).map((apiKey) => apiKey.id)
@@ -445,7 +445,7 @@ export class ApiKeyModuleService
           { revoked_at: { $gt: new Date() } },
         ],
       },
-      { take: null },
+      {},
       sharedContext
     )
 
@@ -500,7 +500,7 @@ export class ApiKeyModuleService
           { revoked_at: { $gt: new Date() } },
         ],
       },
-      { take: null },
+      {},
       sharedContext
     )
 

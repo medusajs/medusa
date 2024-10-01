@@ -25,6 +25,7 @@ export const defaultStoreCartFields = [
   "original_shipping_tax_total",
   "original_shipping_subtotal",
   "original_shipping_total",
+  "metadata",
   "promotions.id",
   "promotions.code",
   "promotions.is_automatic",

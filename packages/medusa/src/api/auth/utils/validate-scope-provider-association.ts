@@ -2,9 +2,12 @@ import {
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework"
-import { ConfigModule } from "@medusajs/types"
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { ConfigModule } from "@medusajs/framework/types"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+} from "@medusajs/framework/utils"
 
 // Middleware to validate that a scope is associated with a provider
 export const validateScopeProviderAssociation = () => {

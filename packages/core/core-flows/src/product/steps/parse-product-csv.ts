@@ -2,9 +2,9 @@ import {
   IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
-} from "@medusajs/types"
-import { MedusaError, Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { normalizeForImport } from "../helpers/normalize-for-import"
 import { normalizeV1Products } from "../helpers/normalize-v1-import"
 import { convertCsvToJson } from "../utlils"
@@ -30,9 +30,9 @@ export const parseProductCsvStep = createStep(
 
     const [productTypes, productCollections, salesChannels] = await Promise.all(
       [
-        productService.listProductTypes({}, { take: null }),
-        productService.listProductCollections({}, { take: null }),
-        salesChannelService.listSalesChannels({}, { take: null }),
+        productService.listProductTypes({}, {}),
+        productService.listProductCollections({}, {}),
+        salesChannelService.listSalesChannels({}, {}),
       ]
     )
 
@@ -55,12 +55,9 @@ export const parseProductCsvStep = createStep(
     const [allRegions, allTags] = await Promise.all([
       regionService.listRegions(
         {},
-        { select: ["id", "name", "currency_code"], take: null }
+        { select: ["id", "name", "currency_code"] }
       ),
-      productService.listProductTags(
-        {},
-        { select: ["id", "value"], take: null }
-      ),
+      productService.listProductTags({}, { select: ["id", "value"] }),
     ])
 
     const normalizedData = normalizeForImport(v1Normalized, {

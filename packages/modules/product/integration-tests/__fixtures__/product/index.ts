@@ -1,4 +1,4 @@
-import { ProductStatus } from "@medusajs/utils"
+import { ProductStatus } from "@medusajs/framework/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   Image,

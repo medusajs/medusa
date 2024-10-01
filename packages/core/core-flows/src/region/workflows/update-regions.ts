@@ -1,5 +1,5 @@
-import { WorkflowTypes } from "@medusajs/types"
-import { RegionWorkflowEvents } from "@medusajs/utils"
+import { WorkflowTypes } from "@medusajs/framework/types"
+import { RegionWorkflowEvents } from "@medusajs/framework/utils"
 import {
   createWorkflow,
   parallelize,
@@ -7,7 +7,7 @@ import {
   when,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { updatePricePreferencesWorkflow } from "../../pricing"
 import { updateRegionsStep } from "../steps"

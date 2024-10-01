@@ -1,7 +1,7 @@
 /**
  * @schema StoreCustomerAddress
  * type: object
- * description: The customer's address.
+ * description: The customer address's details
  * x-schemaName: StoreCustomerAddress
  * required:
  *   - id
@@ -30,19 +30,19 @@
  *   address_name:
  *     type: string
  *     title: address_name
- *     description: The address's address name.
+ *     description: The address's name.
  *   is_default_shipping:
  *     type: boolean
  *     title: is_default_shipping
- *     description: The address's is default shipping.
+ *     description: Whether the address is used for shipping by default.
  *   is_default_billing:
  *     type: boolean
  *     title: is_default_billing
- *     description: The address's is default billing.
+ *     description: Whether the address is used for billing by default.
  *   customer_id:
  *     type: string
  *     title: customer_id
- *     description: The address's customer id.
+ *     description: The ID of the customer the address belongs to.
  *   company:
  *     type: string
  *     title: company
@@ -58,11 +58,11 @@
  *   address_1:
  *     type: string
  *     title: address_1
- *     description: The address's address 1.
+ *     description: The address's first line.
  *   address_2:
  *     type: string
  *     title: address_2
- *     description: The address's address 2.
+ *     description: The address's second line.
  *   city:
  *     type: string
  *     title: city
@@ -71,6 +71,7 @@
  *     type: string
  *     title: country_code
  *     description: The address's country code.
+ *     example: usd
  *   province:
  *     type: string
  *     title: province
@@ -85,17 +86,17 @@
  *     description: The address's phone.
  *   metadata:
  *     type: object
- *     description: The address's metadata.
+ *     description: The address's metadata, can hold custom key-value pairs. 
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The address's created at.
+ *     description: The date the address was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The address's updated at.
+ *     description: The date the address was updated.
  * 
 */
 

@@ -6,14 +6,12 @@ import { EditCategoryProductsForm } from "./components/edit-category-products-fo
 export const CategoryProducts = () => {
   const { id } = useParams()
 
-  const { product_category, isPending, isError, error } = useProductCategory(
-    id!,
-    {
-      fields: "*products",
-    }
-  )
+  const { product_category, isPending, isFetching, isError, error } =
+    useProductCategory(id!, {
+      fields: "products.id",
+    })
 
-  const ready = !isPending && !!product_category
+  const ready = !isPending && !isFetching && !!product_category
 
   if (isError) {
     throw error

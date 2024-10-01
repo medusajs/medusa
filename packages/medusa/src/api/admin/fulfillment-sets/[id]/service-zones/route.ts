@@ -2,7 +2,7 @@ import { createServiceZonesWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 import { AdminCreateFulfillmentSetServiceZonesType } from "../../validators"
 import { refetchFulfillmentSet } from "../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: MedusaRequest<AdminCreateFulfillmentSetServiceZonesType>,

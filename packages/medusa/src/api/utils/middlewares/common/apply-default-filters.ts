@@ -1,4 +1,4 @@
-import { isObject, isPresent } from "@medusajs/utils"
+import { isObject, isPresent } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
 import { MedusaRequest } from "../../../../types/routing"
 

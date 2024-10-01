@@ -1,5 +1,5 @@
-import { IAuthModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import { IAuthModuleService } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

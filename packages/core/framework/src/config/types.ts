@@ -290,7 +290,7 @@ export type ProjectConfigOptions = {
    * })
    * ```
    */
-  databaseDriverOptions?: Record<string, unknown> & {
+  databaseDriverOptions?: Record<string, any> & {
     connection?: {
       /**
        * Configure support for TLS/SSL connection

@@ -1,11 +1,11 @@
-import { InviteDTO, InviteWorkflow } from "@medusajs/types"
-import { InviteWorkflowEvents } from "@medusajs/utils"
+import { InviteDTO, InviteWorkflow } from "@medusajs/framework/types"
+import { InviteWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
 import { createInviteStep } from "../steps"
 export const createInvitesWorkflowId = "create-invite-step"

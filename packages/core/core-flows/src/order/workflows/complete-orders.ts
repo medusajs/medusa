@@ -3,9 +3,9 @@ import {
   WorkflowResponse,
   createHook,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { completeOrdersStep } from "../steps"
-import { AdditionalData } from "@medusajs/types"
+import { AdditionalData } from "@medusajs/framework/types"
 
 export type CompleteOrdersWorkflowInput = {
   orderIds: string[]

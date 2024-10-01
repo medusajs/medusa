@@ -1,8 +1,8 @@
-import { RemoteQueryFunction } from "@medusajs/types"
+import { RemoteQueryFunction } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { NextFunction } from "express"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 

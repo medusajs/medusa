@@ -69,17 +69,17 @@
  *     description: The product's ID.
  *   metadata:
  *     type: object
- *     description: The product's metadata.
+ *     description: The product's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The product's created at.
+ *     description: The date the product was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The product's updated at.
+ *     description: The date the product was updated.
  *   variants:
  *     type: array
  *     description: The product's variants.
@@ -96,11 +96,11 @@
  *   is_giftcard:
  *     type: boolean
  *     title: is_giftcard
- *     description: The product's is giftcard.
+ *     description: Whether the product is a gift card.
  *   thumbnail:
  *     type: string
  *     title: thumbnail
- *     description: The product's thumbnail.
+ *     description: The product's thumbnail URL.
  *   width:
  *     type: number
  *     title: width
@@ -120,48 +120,48 @@
  *   hs_code:
  *     type: string
  *     title: hs_code
- *     description: The product's hs code.
+ *     description: The product's HS code.
  *   mid_code:
  *     type: string
  *     title: mid_code
- *     description: The product's mid code.
+ *     description: The product's MID code.
  *   material:
  *     type: string
  *     title: material
  *     description: The product's material.
  *   collection:
- *     $ref: "#/components/schemas/BaseCollection"
+ *     $ref: "#/components/schemas/StoreCollection"
  *   collection_id:
  *     type: string
  *     title: collection_id
- *     description: The product's collection id.
+ *     description: The ID of the collection that the product belongs to.
  *   type_id:
  *     type: string
  *     title: type_id
- *     description: The product's type id.
+ *     description: The ID of the product's type.
  *   tags:
  *     type: array
  *     description: The product's tags.
  *     items:
- *       $ref: "#/components/schemas/BaseProductTag"
+ *       $ref: "#/components/schemas/StoreProductTag"
  *   images:
  *     type: array
  *     description: The product's images.
  *     items:
- *       $ref: "#/components/schemas/BaseProductImage"
+ *       $ref: "#/components/schemas/StoreProductImage"
  *   discountable:
  *     type: boolean
  *     title: discountable
- *     description: The product's discountable.
+ *     description: Whether the product can be discounted.
  *   external_id:
  *     type: string
  *     title: external_id
- *     description: The product's external id.
+ *     description: The ID of the product in an external service or system.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The product's deleted at.
+ *     description: The date the product was deleted.
  * 
 */
 

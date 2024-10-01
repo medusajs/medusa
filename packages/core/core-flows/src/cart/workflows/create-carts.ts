@@ -1,5 +1,8 @@
-import { AdditionalData, CreateCartWorkflowInputDTO } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import {
+  AdditionalData,
+  CreateCartWorkflowInputDTO,
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -7,7 +10,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   createCartsStep,
@@ -126,9 +129,11 @@ export const createCartWorkflow = createWorkflow(
 
         return prepareLineItemData({
           variant: variant,
-          unitPrice: item.unit_price || 
+          unitPrice:
+            item.unit_price ||
             data.priceSets[item.variant_id].calculated_amount,
-          isTaxInclusive: item.is_tax_inclusive ||
+          isTaxInclusive:
+            item.is_tax_inclusive ||
             data.priceSets[item.variant_id].is_calculated_price_tax_inclusive,
           quantity: item.quantity,
           metadata: item?.metadata ?? {},
@@ -150,7 +155,7 @@ export const createCartWorkflow = createWorkflow(
 
     updateTaxLinesWorkflow.runAsStep({
       input: {
-        cart_or_cart_id: cart.id,
+        cart_id: cart.id,
       },
     })
 

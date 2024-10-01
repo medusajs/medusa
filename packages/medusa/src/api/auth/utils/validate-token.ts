@@ -3,10 +3,10 @@ import {
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework"
-import { ConfigModule, IAuthModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
-import { JwtPayload, decode, verify } from "jsonwebtoken"
+} from "@medusajs/framework/http"
+import { ConfigModule, IAuthModuleService } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { decode, JwtPayload, verify } from "jsonwebtoken"
 
 // Middleware to validate that a token is valid
 export const validateToken = () => {
@@ -31,7 +31,7 @@ export const validateToken = () => {
 
     const authModule = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
 
-    let decoded = decode(token as string) as JwtPayload
+    const decoded = decode(token as string) as JwtPayload
 
     const [providerIdentity] = await authModule.listProviderIdentities(
       {

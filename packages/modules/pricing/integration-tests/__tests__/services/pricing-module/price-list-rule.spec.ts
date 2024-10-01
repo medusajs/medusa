@@ -1,9 +1,9 @@
-import { IPricingModuleService } from "@medusajs/types"
+import { IPricingModuleService } from "@medusajs/framework/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 jest.setTimeout(30000)
 

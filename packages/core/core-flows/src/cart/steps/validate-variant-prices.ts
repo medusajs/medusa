@@ -1,6 +1,6 @@
-import { BigNumberInput } from "@medusajs/types"
-import { MedusaError, isPresent } from "@medusajs/utils"
-import { createStep } from "@medusajs/workflows-sdk"
+import { BigNumberInput } from "@medusajs/framework/types"
+import { MedusaError, isPresent } from "@medusajs/framework/utils"
+import { createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface ValidateVariantPricesStepInput {
   variants: {

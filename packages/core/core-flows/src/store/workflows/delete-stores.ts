@@ -1,4 +1,4 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { WorkflowData, createWorkflow } from "@medusajs/framework/workflows-sdk"
 import { deleteStoresStep } from "../steps"
 
 export type DeleteStoresWorkflowInput = { ids: string[] }

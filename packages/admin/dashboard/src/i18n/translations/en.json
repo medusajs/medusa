@@ -534,7 +534,8 @@
     },
     "variant": {
       "edit": {
-        "header": "Edit Variant"
+        "header": "Edit Variant",
+        "success": "Product variant edited sucessfully"
       },
       "create": {
         "header": "Variant details"
@@ -734,7 +735,11 @@
       "descriptionPlaceholder": "What type of reservation is this?",
       "successToast": "Reservation was successfully created.",
       "updateSuccessToast": "Reservation was successfully updated.",
-      "deleteSuccessToast": "Reservation was successfully deleted."
+      "deleteSuccessToast": "Reservation was successfully deleted.",
+      "errors": {
+        "noAvaliableQuantity": "Stock location doesn't have available quantity.",
+        "quantityOutOfRange": "Minimum quantity is 1 and maximum quantity is {{max}}"
+      }
     },
     "toast": {
       "updateLocations": "Locations updated successfully.",

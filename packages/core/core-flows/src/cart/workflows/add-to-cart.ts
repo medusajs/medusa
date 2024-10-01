@@ -1,14 +1,14 @@
 import {
   AddToCartWorkflowInputDTO,
   CreateLineItemForCartDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
   createLineItemsStep,
@@ -124,7 +124,7 @@ export const addToCartWorkflow = createWorkflow(
       refreshCartShippingMethodsStep({ cart }),
       updateTaxLinesWorkflow.runAsStep({
         input: {
-          cart_or_cart_id: input.cart.id,
+          cart_id: input.cart.id,
           items,
         },
       })

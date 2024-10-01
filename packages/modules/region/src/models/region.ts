@@ -1,4 +1,4 @@
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import RegionCountry from "./country"
 
 export default model.define("region", {

@@ -25,7 +25,7 @@ import { useDataTable } from "../../../../../hooks/use-data-table"
 
 type EditCategoryProductsFormProps = {
   categoryId: string
-  products?: HttpTypes.AdminProduct[]
+  products?: Pick<HttpTypes.AdminProduct, "id">[]
 }
 
 const EditCategoryProductsSchema = z.object({
@@ -83,7 +83,6 @@ export const EditCategoryProductsForm = ({
     error,
   } = useProducts({
     ...searchParams,
-    category_id: [categoryId],
   })
 
   const columns = useColumns()
@@ -117,8 +116,8 @@ export const EditCategoryProductsForm = ({
       {
         onSuccess: () => {
           toast.success(
-            t("categories.products.add.disabledTooltip", {
-              count: data.product_ids.length,
+            t("categories.products.add.successToast", {
+              count: data.product_ids.length - products.length,
             })
           )
 

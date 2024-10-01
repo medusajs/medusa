@@ -1,8 +1,8 @@
-import { IPromotionModuleService } from "@medusajs/types"
+import { IPromotionModuleService } from "@medusajs/framework/types"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createDefaultPromotion } from "../../../__fixtures__/promotion"
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 jest.setTimeout(30000)
 

@@ -1,5 +1,5 @@
 import { getOrdersListWorkflow } from "@medusajs/core-flows"
-import { HttpTypes, OrderDTO } from "@medusajs/types"
+import { HttpTypes, OrderDTO } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

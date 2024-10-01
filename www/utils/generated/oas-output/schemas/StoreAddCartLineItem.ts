@@ -1,7 +1,7 @@
 /**
  * @schema StoreAddCartLineItem
  * type: object
- * description: SUMMARY
+ * description: The details of the line item to add.
  * x-schemaName: StoreAddCartLineItem
  * required:
  *   - variant_id
@@ -10,14 +10,14 @@
  *   variant_id:
  *     type: string
  *     title: variant_id
- *     description: The cart's variant id.
+ *     description: The ID of the product variant to add to the cart.
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The cart's quantity.
+ *     description: The item's quantity.
  *   metadata:
  *     type: object
- *     description: The cart's metadata.
+ *     description: The item's metadata, can hold custom key-value pairs.
  * 
 */
 

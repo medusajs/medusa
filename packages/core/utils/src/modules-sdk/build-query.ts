@@ -1,5 +1,5 @@
 import { DAL, FindConfig } from "@medusajs/types"
-import { deduplicate, isDefined, isObject } from "../common"
+import { deduplicate, isObject } from "../common"
 
 import { SoftDeletableFilterKey } from "../dal/mikro-orm/mikro-orm-soft-deletable-filter"
 
@@ -18,33 +18,13 @@ export function buildQuery<T = any, TDto = any>(
   const filterFlags: FilterFlags = {}
   buildWhere(filters, where, filterFlags)
 
-  const primaryKeyFieldArray = isDefined(config.primaryKeyFields)
-    ? !Array.isArray(config.primaryKeyFields)
-      ? [config.primaryKeyFields]
-      : config.primaryKeyFields
-    : ["id"]
-
-  const whereHasPrimaryKeyFields = primaryKeyFieldArray.some(
-    (pkField) => !!where[pkField]
-  )
-
-  const defaultLimit = whereHasPrimaryKeyFields ? undefined : 15
-
   delete config.primaryKeyFields
 
   const findOptions: DAL.OptionsQuery<T, any> = {
     populate: deduplicate(config.relations ?? []),
     fields: config.select as string[],
-    limit:
-      (Number.isSafeInteger(config.take) && config.take! >= 0) ||
-      null === config.take
-        ? config.take ?? undefined
-        : defaultLimit,
-    offset:
-      (Number.isSafeInteger(config.skip) && config.skip! >= 0) ||
-      null === config.skip
-        ? config.skip ?? undefined
-        : 0,
+    limit: (Number.isSafeInteger(config.take) && config.take) || undefined,
+    offset: (Number.isSafeInteger(config.skip) && config.skip) || undefined,
   }
 
   if (config.order) {
