@@ -1,282 +1,108 @@
 {
-  "description": "This component is based on the [react-date-picker](https://www.npmjs.com/package/react-date-picker) package.",
+  "description": "",
   "methods": [],
   "displayName": "Calendar",
   "props": {
-    "mode": {
-      "defaultValue": {
-        "value": "\"single\"",
-        "computed": false
-      },
-      "description": "The calendar's mode.",
-      "tsType": {
-        "name": "union",
-        "raw": "\"single\" \\| \"range\"",
-        "elements": [
-          {
-            "name": "literal",
-            "value": "\"single\""
-          },
-          {
-            "name": "literal",
-            "value": "\"range\""
-          }
-        ]
-      },
-      "required": false
-    },
-    "showOutsideDays": {
-      "defaultValue": {
-        "value": "true",
-        "computed": false
-      },
-      "description": "Whether to show days of previous and next months.",
+    "autoFocus": {
+      "description": "Whether to automatically focus the calendar when it mounts.",
+      "required": false,
       "tsType": {
         "name": "boolean"
-      },
-      "required": false
+      }
     },
-    "locale": {
-      "description": "The locale to use for formatting dates. To change the locale pass a date-fns locale object.",
+    "defaultFocusedValue": {
+      "description": "The date that is focused when the calendar first mounts (uncountrolled).",
+      "required": false,
       "tsType": {
-        "name": "Locale",
-        "elements": [
-          {
-            "name": "signature",
-            "type": "object",
-            "raw": "&#123; code?: string ; formatDistance?: (...args: any[]) => any ; formatLong?: &#123; date: (...args: any[]) => any ; dateTime: (...args: any[]) => any ; time: (...args: any[]) => any  &#125; ; formatRelative?: (...args: any[]) => any ; localize?: &#123; day: (...args: any[]) => any ; dayPeriod: (...args: any[]) => any ; era: (...args: any[]) => any ; month: (...args: any[]) => any ; ordinalNumber: (...args: any[]) => any ; quarter: (...args: any[]) => any  &#125; ; match?: &#123; day: (...args: any[]) => any ; dayPeriod: (...args: any[]) => any ; era: (...args: any[]) => any ; month: (...args: any[]) => any ; ordinalNumber: (...args: any[]) => any ; quarter: (...args: any[]) => any  &#125; ; options?: &#123; firstWeekContainsDate?: 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 7 ; weekStartsOn?: 0 \\| 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6  &#125;  &#125;",
-            "signature": {
-              "properties": [
-                {
-                  "key": "code",
-                  "value": {
-                    "name": "string"
-                  },
-                  "description": ""
-                },
-                {
-                  "key": "formatDistance",
-                  "value": {
-                    "name": "signature",
-                    "type": "function",
-                    "raw": "(...args: any[]) => any",
-                    "signature": {
-                      "arguments": [
-                        {
-                          "name": "args",
-                          "type": {
-                            "name": "any[]"
-                          },
-                          "rest": true
-                        }
-                      ],
-                      "return": {
-                        "name": "any"
-                      }
-                    }
-                  },
-                  "description": ""
-                },
-                {
-                  "key": "formatLong",
-                  "value": {
-                    "name": "signature",
-                    "type": "object",
-                    "raw": "&#123; date: (...args: any[]) => any ; dateTime: (...args: any[]) => any ; time: (...args: any[]) => any  &#125;",
-                    "signature": {
-                      "properties": [
-                        {
-                          "key": "date",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "dateTime",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "time",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        }
-                      ]
-                    }
-                  },
-                  "description": ""
-                },
-                {
-                  "key": "formatRelative",
-                  "value": {
-                    "name": "signature",
-                    "type": "function",
-                    "raw": "(...args: any[]) => any",
-                    "signature": {
-                      "arguments": [
-                        {
-                          "name": "args",
-                          "type": {
-                            "name": "any[]"
-                          },
-                          "rest": true
-                        }
-                      ],
-                      "return": {
-                        "name": "any"
-                      }
-                    }
-                  },
-                  "description": ""
-                },
-                {
-                  "key": "localize",
-                  "value": {
-                    "name": "signature",
-                    "type": "object",
-                    "raw": "&#123; day: (...args: any[]) => any ; dayPeriod: (...args: any[]) => any ; era: (...args: any[]) => any ; month: (...args: any[]) => any ; ordinalNumber: (...args: any[]) => any ; quarter: (...args: any[]) => any  &#125;",
-                    "signature": {
-                      "properties": [
-                        {
-                          "key": "day",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "dayPeriod",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "era",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "month",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "ordinalNumber",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "quarter",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        }
-                      ]
-                    }
-                  },
-                  "description": ""
-                },
-                {
-                  "key": "match",
-                  "value": {
-                    "name": "signature",
-                    "type": "object",
-                    "raw": "&#123; day: (...args: any[]) => any ; dayPeriod: (...args: any[]) => any ; era: (...args: any[]) => any ; month: (...args: any[]) => any ; ordinalNumber: (...args: any[]) => any ; quarter: (...args: any[]) => any  &#125;",
-                    "signature": {
-                      "properties": [
-                        {
-                          "key": "day",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "dayPeriod",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "era",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "month",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "ordinalNumber",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "quarter",
-                          "value": {
-                            "name": "(...args: any[]) => any"
-                          },
-                          "description": ""
-                        }
-                      ]
-                    }
-                  },
-                  "description": ""
-                },
-                {
-                  "key": "options",
-                  "value": {
-                    "name": "signature",
-                    "type": "object",
-                    "raw": "&#123; firstWeekContainsDate?: 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 7 ; weekStartsOn?: 0 \\| 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6  &#125;",
-                    "signature": {
-                      "properties": [
-                        {
-                          "key": "firstWeekContainsDate",
-                          "value": {
-                            "name": "1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 7"
-                          },
-                          "description": ""
-                        },
-                        {
-                          "key": "weekStartsOn",
-                          "value": {
-                            "name": "0 \\| 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6"
-                          },
-                          "description": ""
-                        }
-                      ]
-                    }
-                  },
-                  "description": ""
-                }
-              ]
+        "name": "DateValue",
+        "elements": [],
+        "raw": "DateValue"
+      }
+    },
+    "errorMessage": {
+      "description": "An error message to display when the selected value is invalid.",
+      "required": false,
+      "tsType": {
+        "name": "ReactNode",
+        "elements": [],
+        "raw": "ReactNode"
+      }
+    },
+    "focusedValue": {
+      "description": "Controls the currently focused date within the calendar.",
+      "required": false,
+      "tsType": {
+        "name": "DateValue",
+        "elements": [],
+        "raw": "DateValue"
+      }
+    },
+    "isDisabled": {
+      "description": "Whether the calendar is disabled.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "isInvalid": {
+      "description": "Whether the current selection is invalid according to application logic.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "isReadOnly": {
+      "description": "Whether the calendar value is immutable.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
+      }
+    },
+    "onFocusChange": {
+      "description": "Handler that is called when the focused date changes.",
+      "required": false,
+      "tsType": {
+        "name": "signature",
+        "type": "function",
+        "raw": "(date: CalendarDate) => void",
+        "signature": {
+          "arguments": [
+            {
+              "name": "date",
+              "type": {
+                "name": "CalendarDate",
+                "elements": [],
+                "raw": "CalendarDate"
+              },
+              "rest": false
             }
+          ],
+          "return": {
+            "name": "void"
           }
-        ],
-        "raw": "Locale"
+        }
+      }
+    },
+    "pageBehavior": {
+      "description": "Controls the behavior of paging. Pagination either works by advancing the visible page by visibleDuration (default) or one unit of visibleDuration.",
+      "required": false,
+      "tsType": {
+        "name": "PageBehavior",
+        "elements": [],
+        "raw": "PageBehavior"
+      }
+    },
+    "validationState": {
+      "description": "Whether the current selection is valid or invalid according to application logic.",
+      "required": false,
+      "tsType": {
+        "name": "ValidationState",
+        "elements": [],
+        "raw": "ValidationState"
       }
     }
-  }
+  },
+  "composes": [
+    "Omit"
+  ]
 }
