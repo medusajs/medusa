@@ -1,4 +1,4 @@
-name: Trigger Starter Update
+name: Update on RC Release
 
 on:
   release:
@@ -15,3 +15,5 @@ jobs:
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/medusajs/medusa-starter-default/actions/workflows/update-preview-deps.yml/dispatches \
           -d '{"ref":"master"}'
+  generate-references:
+    uses: ./.github/workflows/generate-preview-references.yml
