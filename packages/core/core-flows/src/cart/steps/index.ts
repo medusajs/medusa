@@ -27,5 +27,5 @@ export * from "./update-carts"
 export * from "./update-line-items"
 export * from "./validate-cart-payments"
 export * from "./validate-cart-shipping-options"
+export * from "./validate-cart"
 export * from "./validate-variant-prices"
-
