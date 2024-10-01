@@ -134,29 +134,29 @@ For example, add the following dependencies in `package.json` for the Cache, Eve
 ```json
 "dependencies": {
   // ...
-  "@medusajs/cache-redis": "preview",
-  "@medusajs/event-bus-redis": "preview",
-  "@medusajs/workflow-engine-redis": "preview"
+  "@medusajs/medusa/cache-redis": "rc",
+  "@medusajs/medusa/event-bus-redis": "rc",
+  "@medusajs/workflow-engine-redis": "rc"
 }
 ```
 
 Then, add these modules in `medusa-config.js`:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 module.exports = defineConfig({
   // ...
   modules: {
     // ...
     [Modules.CACHE]: {
-      resolve: "@medusajs/cache-redis",
+      resolve: "@medusajs/medusa/cache-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },
     },
     [Modules.EVENT_BUS]: {
-      resolve: "@medusajs/event-bus-redis",
+      resolve: "@medusajs/medusa/event-bus-redis",
       options: {
         redisUrl: process.env.REDIS_URL,
       },

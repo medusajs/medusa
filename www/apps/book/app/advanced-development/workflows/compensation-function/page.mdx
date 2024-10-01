@@ -26,7 +26,7 @@ For example, create the file `src/workflows/hello-world.ts` with the following c
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",
@@ -66,7 +66,7 @@ Then, create a workflow that uses the steps:
 import {
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 // other imports...
 
 // steps...
@@ -135,7 +135,7 @@ export const inputHighlights = [
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",
@@ -172,8 +172,8 @@ export const containerHighlights = [
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+} from "@medusajs/framework/workflows-sdk"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 const step1 = createStep(
   "step-1",

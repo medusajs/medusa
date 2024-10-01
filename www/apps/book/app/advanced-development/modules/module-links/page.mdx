@@ -32,7 +32,7 @@ You want to create a relationship between data models in the same module. Use da
 
 ### 1. Create Link File
 
-Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/utils` and exports it.
+Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/framework/utils` and exports it.
 
 For example:
 
@@ -43,8 +43,8 @@ export const highlights = [
 
 ```ts title="src/links/hello-product.ts" highlights={highlights}
 import HelloModule from "../modules/hello"
-import ProductModule from "@medusajs/product"
-import { defineLink } from "@medusajs/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   ProductModule.linkable.product,
@@ -84,8 +84,8 @@ For example:
 
 ```ts
 import HelloModule from "../modules/hello"
-import ProductModule from "@medusajs/product"
-import { defineLink } from "@medusajs/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   ProductModule.linkable.product,
@@ -130,8 +130,8 @@ For example:
 
 ```ts
 import HelloModule from "../modules/hello"
-import ProductModule from "@medusajs/product"
-import { defineLink } from "@medusajs/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   ProductModule.linkable.product,
