@@ -64,7 +64,6 @@ import {
 import {
   CreateOrderChangeDTO,
   CreateOrderItemDTO,
-  UpdateReturnReasonDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemTaxLineDTO,
   CreateOrderShippingMethodDTO,
@@ -73,6 +72,7 @@ import {
   UpdateOrderLineItemDTO,
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderShippingMethodTaxLineDTO,
+  UpdateReturnReasonDTO,
 } from "@types"
 import { joinerConfig } from "../joiner-config"
 import {
@@ -1991,7 +1991,10 @@ export default class OrderModuleService<
     for (const item of calculated.order.items) {
       const isExistingItem = item.id === item.detail?.item_id
       if (!isExistingItem) {
-        addedItems[item.id] = item
+        addedItems[item.id] = {
+          ...item,
+          unit_price: item.detail?.unit_price ?? item.unit_price,
+        }
       }
     }
 
@@ -2021,11 +2024,14 @@ export default class OrderModuleService<
         delete item.actions
 
         const newItem = itemsToUpsert.find((d) => d.item_id === item.id)!
+        const unitPrice = newItem?.unit_price ?? item.unit_price
 
         calculated.order.items[idx] = {
           ...lineItem,
           actions,
           quantity: newItem.quantity,
+          unit_price: unitPrice,
+          raw_unit_price: new BigNumber(unitPrice),
           detail: {
             ...newItem,
             ...item,
