@@ -1,0 +1,174 @@
+export const metadata = {
+  title: `${pageNumber} Add Columns to a Link`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to add custom columns to a link definition and manage them.
+
+## How to Add Custom Columns to a Link's Table?
+
+The `defineLink` function used to define a link accepts a third paramter, which is an object of options.
+
+To add custom columns to a link's table, pass in the third parameter of `defineLink` a `database` property:
+
+export const linkHighlights = [
+  ["10", "extraColumns", "Custom columns to add to the created link's table."],
+  ["11", "metadata", "The column's name."],
+  ["12", "type", "The column's type."]
+]
+
+```ts highlights={linkHighlights}
+import HelloModule from "../modules/hello"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
+
+export default defineLink(
+  ProductModule.linkable.product,
+  HelloModule.linkable.myCustom,
+  {
+    database: {
+      extraColumns: {
+        metadata: {
+          type: "json",
+        }
+      }
+    }
+  }
+)
+```
+
+This adds to the table created for the link between `product` and `myCustom` a `metadata` column of type `json`.
+
+### Database Options
+
+The `database` property defines configuration for the table created in the database.
+
+Its `extraColumns` property defines custom columns to create in the link's table.
+
+`extraColumns`'s value is an object whose keys are the names of the columns, and values are the column's configurations as an object.
+
+### Column Configurations
+
+The column's configurations object accepts the following properties:
+
+- `type`: The column's type. Possible values are:
+    - `string`
+    - `text`
+    - `integer`
+    - `boolean`
+    - `date`
+    - `time`
+    - `datetime`
+    - `enum`
+    - `json`
+    - `array`
+    - `enumArray`
+    - `float`
+    - `double`
+    - `decimal`
+    - `bigint`
+    - `mediumint`
+    - `smallint`
+    - `tinyint`
+    - `blob`
+    - `uuid`
+    - `uint8array`
+- `defaultValue`: The column's default value.
+- `nullable`: Whether the column can have `null` values.
+
+---
+
+## Set Custom Column when Creating Link
+
+The object you pass to the remote link's `create` method accepts a `data` property. Its value is an object whose keys are custom column names, and values are the value of the custom column for this link.
+
+For example:
+
+<Note>
+
+Learn more about the remote link, how to resolve it, and its methods in [this chapter](../remote-link/page.mdx).
+
+</Note>
+
+```ts
+await remoteLink.create({
+  [Modules.PRODUCT]: {
+    product_id: "123"
+  },
+  HELLO_MODULE: {
+    my_custom_id: "321"
+  },
+  data: {
+    metadata: {
+      test: true
+    }
+  }
+})
+```
+
+---
+
+## Retrieve Custom Column with Link
+
+To retrieve linked records with their custom columns, use Query and pass the link definition as the `entity` property's value.
+
+For example:
+
+<Note>
+
+Learn more about Query and how to resolve use it [this chapter](../remote-link/page.mdx).
+
+</Note>
+
+export const retrieveHighlights = [
+  ["1", "productHelloLink", "Import the exported link definition."],
+  ["6", "entity", "Pass the link definition to retrieve its data."],
+  ["7", `"metadata"`, "Retrieve the `metadata` column."],
+  ["7", `"product.*"`, "Retrieve the linked product's details."],
+  ["7", `"my_custom.*"`, "Retrieve the linked `myCustom` record's details."],
+]
+
+```ts highlights={retrieveHighlights}
+import productHelloLink from "../links/product-hello"
+
+// ...
+
+const { data } = await query.graph({
+  entity: productHelloLink.entryPoint,
+  fields: ["metadata", "product.*", "my_custom.*"],
+  filters: {
+    product_id: "prod_123"
+  }
+})
+```
+
+This retrieves the product of id `prod_123` and its linked `my_custom` records.
+
+In the `fields` array you pass `metadata`, which is the custom column to retrieve of the link.
+
+---
+
+## Update Custom Column's Value
+
+The remote link's `create` method updates a link's data if the link between the specified records already exists.
+
+So, to update the value of a custom column in a created link, use the `create` method again passing it a new value for the custom column.
+
+For example:
+
+```ts
+await remoteLink.create({
+  [Modules.PRODUCT]: {
+    product_id: "123"
+  },
+  HELLO_MODULE: {
+    my_custom_id: "321"
+  },
+  data: {
+    metadata: {
+      test: false
+    }
+  }
+})
+```

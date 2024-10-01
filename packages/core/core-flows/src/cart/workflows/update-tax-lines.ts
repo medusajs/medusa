@@ -1,18 +1,14 @@
 import {
   CartLineItemDTO,
   CartShippingMethodDTO,
-  CartWorkflowDTO,
 } from "@medusajs/framework/types"
 import {
   WorkflowData,
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import {
-  getItemTaxLinesStep,
-  retrieveCartWithLinksStep,
-  setTaxLinesForItemsStep,
-} from "../steps"
+import { useRemoteQueryStep } from "../../common"
+import { getItemTaxLinesStep, setTaxLinesForItemsStep } from "../steps"
 
 const cartFields = [
   "id",
@@ -61,7 +57,7 @@ const cartFields = [
 ]
 
 export type UpdateTaxLinesWorkflowInput = {
-  cart_or_cart_id: string | CartWorkflowDTO
+  cart_id: string
   items?: CartLineItemDTO[]
   shipping_methods?: CartShippingMethodDTO[]
   force_tax_calculation?: boolean
@@ -74,17 +70,20 @@ export const updateTaxLinesWorkflowId = "update-tax-lines"
 export const updateTaxLinesWorkflow = createWorkflow(
   updateTaxLinesWorkflowId,
   (input: WorkflowData<UpdateTaxLinesWorkflowInput>): WorkflowData<void> => {
-    const cart = retrieveCartWithLinksStep({
-      cart_or_cart_id: input.cart_or_cart_id,
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
       fields: cartFields,
+      variables: {
+        id: input.cart_id,
+      },
+      list: false,
     })
 
     const taxLineItems = getItemTaxLinesStep(
       transform({ input, cart }, (data) => ({
         cart: data.cart,
         items: data.input.items || data.cart.items,
-        shipping_methods:
-          data.input.shipping_methods || data.cart.shipping_methods,
+        shipping_methods: data.input.shipping_methods || data.cart.shipping_methods,
         force_tax_calculation: data.input.force_tax_calculation,
       }))
     )

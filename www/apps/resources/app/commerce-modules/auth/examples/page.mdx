@@ -24,9 +24,9 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   import {
     IAuthModuleService,
     AuthenticationInput,
-  } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
-  import { MedusaError } from "@medusajs/utils"
+  } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
+  import { MedusaError } from "@medusajs/framework/utils"
   import jwt from "jsonwebtoken"
 
 export async function POST(
@@ -69,7 +69,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 export async function POST(request: Request) {
   const authModuleService = await initializeAuthModule()
@@ -127,9 +127,9 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   import {
     IAuthModuleService,
     AuthenticationInput,
-  } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
-  import { MedusaError } from "@medusajs/utils"
+  } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
+  import { MedusaError } from "@medusajs/framework/utils"
   import jwt from "jsonwebtoken"
 
 export async function POST(
@@ -174,7 +174,7 @@ export async function POST(
 ```ts collapsibleLines="1-7" expandButtonLabel="Show Imports"
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 export async function POST(request: Request) {
   const authModuleService = await initializeAuthModule()
@@ -226,8 +226,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IAuthModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -253,7 +253,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 export async function POST(request: Request) {
   const authModuleService = await initializeAuthModule()
@@ -282,8 +282,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IAuthModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -305,7 +305,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 export async function GET(request: Request) {
   const authModuleService = await initializeAuthModule()
@@ -328,8 +328,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IAuthModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -358,7 +358,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 type ContextType = {
   params: {
@@ -394,8 +394,8 @@ export async function POST(request: Request, { params }: ContextType) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IAuthModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
@@ -417,7 +417,7 @@ export async function DELETE(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeAuthModule } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/medusa/auth"
 
 type ContextType = {
   params: {

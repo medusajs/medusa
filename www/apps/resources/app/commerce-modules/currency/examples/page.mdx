@@ -15,8 +15,8 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICurrencyModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -38,7 +38,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCurrencyModule } from "@medusajs/currency"
+import { initialize as initializeCurrencyModule } from "@medusajs/medusa/currency"
 
 export async function GET(request: Request) {
   const currencyModuleService = await initializeCurrencyModule()
@@ -61,8 +61,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICurrencyModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -86,7 +86,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCurrencyModule } from "@medusajs/currency"
+import { initialize as initializeCurrencyModule } from "@medusajs/medusa/currency"
 
 export async function GET(request: Request) {
   const currencyModuleService = await initializeCurrencyModule()

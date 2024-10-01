@@ -15,8 +15,8 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -51,7 +51,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -89,8 +89,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -112,7 +112,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function GET(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -137,8 +137,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -167,7 +167,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -197,8 +197,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -226,7 +226,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -255,8 +255,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -284,7 +284,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -313,8 +313,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -343,7 +343,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function POST(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -373,8 +373,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
@@ -396,7 +396,7 @@ export async function DELETE(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeCartModule } from "@medusajs/cart"
+import { initialize as initializeCartModule } from "@medusajs/medusa/cart"
 
 export async function DELETE(request: Request) {
   const cartModuleService = await initializeCartModule()
@@ -417,8 +417,8 @@ export async function DELETE(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
@@ -439,8 +439,8 @@ export async function DELETE(
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICartModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICartModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
