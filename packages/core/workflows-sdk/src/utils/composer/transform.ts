@@ -30,32 +30,27 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
  * @example
  * import {
  *   createWorkflow,
- *   transform
- * } from "@medusajs/workflows-sdk"
+ *   transform,
+ *   WorkflowResponse
+ * } from "@medusajs/framework/workflows-sdk"
  * import { step1, step2 } from "./steps"
  *
  * type WorkflowInput = {
  *   name: string
  * }
  *
- * type WorkflowOutput = {
- *   message: string
- * }
- *
- * const myWorkflow = createWorkflow<
- *     WorkflowInput,
- *     WorkflowOutput
- *   >
- *   ("hello-world", (input) => {
+ * const myWorkflow = createWorkflow(
+ *   "hello-world", 
+ *   (input: WorkflowInput) => {
  *     const str1 = step1(input)
  *     const str2 = step2(input)
  *
- *     return transform({
+ *     const message = transform({
  *       str1,
  *       str2
- *     }, (input) => ({
- *       message: `${input.str1}${input.str2}`
- *     }))
+ *     }, (input) => `${input.str1}${input.str2}`)
+ * 
+ *     return new WorkflowResponse(message)
  * })
  */
 // prettier-ignore

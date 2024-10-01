@@ -45,7 +45,7 @@ The module’s main service receives the module options as a second parameter.
 For example:
 
 ```ts title="src/modules/hello/service.ts" highlights={[["12"], ["14", "options?: ModuleOptions"], ["17"], ["18"], ["19"]]}
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
 // recommended to define type in another file
@@ -81,7 +81,7 @@ For example:
 ```ts title="src/modules/hello/loaders/hello-world.ts" highlights={[["11"], ["12", "ModuleOptions", "The type of expected module options."], ["16"]]}
 import {
   LoaderOptions,
-} from "@medusajs/modules-sdk"
+} from "@medusajs/framework/modules-sdk"
 
 // recommended to define type in another file
 type ModuleOptions = {

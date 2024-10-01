@@ -15,8 +15,8 @@ In this guide, you’ll find common examples of how you can use the Payment Modu
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPaymentModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IPaymentModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -46,7 +46,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePaymentModule } from "@medusajs/payment"
+import { initialize as initializePaymentModule } from "@medusajs/medusa/payment"
 
 export async function POST(request: Request) {
   const paymentModuleService = await initializePaymentModule()
@@ -77,8 +77,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPaymentModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IPaymentModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -110,7 +110,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePaymentModule } from "@medusajs/payment"
+import { initialize as initializePaymentModule } from "@medusajs/medusa/payment"
 
 export async function POST(request: Request) {
   const paymentModuleService = await initializePaymentModule()
@@ -143,8 +143,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPaymentModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IPaymentModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -170,7 +170,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePaymentModule } from "@medusajs/payment"
+import { initialize as initializePaymentModule } from "@medusajs/medusa/payment"
 
 export async function POST(request: Request) {
   const paymentModuleService = await initializePaymentModule()
@@ -197,8 +197,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPaymentModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IPaymentModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -225,7 +225,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePaymentModule } from "@medusajs/payment"
+import { initialize as initializePaymentModule } from "@medusajs/medusa/payment"
 
 export async function POST(request: Request) {
   const paymentModuleService = await initializePaymentModule()
@@ -253,8 +253,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPaymentModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IPaymentModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -280,7 +280,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePaymentModule } from "@medusajs/payment"
+import { initialize as initializePaymentModule } from "@medusajs/medusa/payment"
 
 export async function GET(request: Request) {
   const paymentModuleService = await initializePaymentModule()
@@ -307,8 +307,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPaymentModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IPaymentModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -334,7 +334,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializePaymentModule } from "@medusajs/payment"
+import { initialize as initializePaymentModule } from "@medusajs/medusa/payment"
 
 export async function POST(request: Request) {
   const paymentModuleService = await initializePaymentModule()
