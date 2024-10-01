@@ -31,6 +31,7 @@
     "revoked": "Revoked",
     "new": "New",
     "modified": "Modified",
+    "added": "Added",
     "removed": "Removed",
     "admin": "Admin",
     "store": "Store",

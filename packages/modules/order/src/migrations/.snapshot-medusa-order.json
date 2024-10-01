@@ -832,6 +832,24 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "unit_price": {
+          "name": "unit_price",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "decimal"
+        },
+        "raw_unit_price": {
+          "name": "raw_unit_price",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
         "quantity": {
           "name": "quantity",
           "type": "numeric",
@@ -857,7 +875,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
           "mappedType": "decimal"
         },
         "raw_fulfilled_quantity": {
@@ -876,7 +893,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
           "mappedType": "decimal"
         },
         "raw_delivered_quantity": {
@@ -895,7 +911,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
           "mappedType": "decimal"
         },
         "raw_shipped_quantity": {
@@ -914,7 +929,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
           "mappedType": "decimal"
         },
         "raw_return_requested_quantity": {
@@ -933,7 +947,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
           "mappedType": "decimal"
         },
         "raw_return_received_quantity": {
@@ -952,7 +965,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
           "mappedType": "decimal"
         },
         "raw_return_dismissed_quantity": {
@@ -971,7 +983,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "0",
           "mappedType": "decimal"
         },
         "raw_written_off_quantity": {
