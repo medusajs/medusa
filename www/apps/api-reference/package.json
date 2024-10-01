@@ -18,6 +18,7 @@
     "@medusajs/icons": "preview",
     "@medusajs/ui": "^3.0.0",
     "@next/mdx": "14.2.3",
+    "@react-hook/resize-observer": "^2.0.2",
     "@readme/openapi-parser": "^2.5.0",
     "@types/mapbox__rehype-prism": "^0.8.0",
     "@types/mdx": "^2.0.5",

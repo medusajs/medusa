@@ -67,6 +67,14 @@ const TagsOperationDescriptionSection = ({
           workflow={operation["x-workflow"]}
         />
       )}
+      {operation.externalDocs && (
+        <>
+          Related guide:{" "}
+          <Link href={operation.externalDocs.url} target="_blank">
+            {operation.externalDocs.description || "Read More"}
+          </Link>
+        </>
+      )}
       <Feedback
         event="survey_api-ref"
         extraData={{
@@ -79,14 +87,6 @@ const TagsOperationDescriptionSection = ({
         vertical={true}
         question="Did this API Route run successfully?"
       />
-      {operation.externalDocs && (
-        <>
-          Related guide:{" "}
-          <Link href={operation.externalDocs.url} target="_blank">
-            {operation.externalDocs.description || "Read More"}
-          </Link>
-        </>
-      )}
       {operation.security && (
         <TagsOperationDescriptionSectionSecurity
           security={operation.security}
