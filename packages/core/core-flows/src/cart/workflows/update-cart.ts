@@ -33,9 +33,10 @@ export const updateCartWorkflow = createWorkflow(
     const cartToUpdate = useRemoteQueryStep({
       entry_point: "cart",
       variables: { id: input.id },
-      fields: ["id", "shipping_address.*", "region_id"],
+      fields: ["id", "shipping_address.*", "region.*"],
       list: false,
-    })
+      throw_if_key_not_found: true,
+    }).config({ name: "get-cart" })
 
     const [salesChannel, region, customerData] = parallelize(
       findSalesChannelStep({
@@ -43,10 +44,10 @@ export const updateCartWorkflow = createWorkflow(
       }),
       useRemoteQueryStep({
         entry_point: "region",
-        variables: { id: input.region_id ?? cartToUpdate.region_id },
-        fields: ["id", "countries"],
+        variables: { id: input.region_id ?? cartToUpdate.region?.id },
+        fields: ["id", "countries.*", "currency_code"],
         list: false,
-      }),
+      }).config({ name: "get-region" }),
       findOrCreateCustomerStep({
         customerId: input.customer_id,
         email: input.email,
@@ -54,7 +55,7 @@ export const updateCartWorkflow = createWorkflow(
     )
 
     const cartInput = transform(
-      { input, region, customerData, salesChannel },
+      { input, region, customerData, salesChannel, cartToUpdate },
       (data) => {
         const { promo_codes, ...updateCartData } = data.input
         if (!data.region) {
@@ -64,17 +65,49 @@ export const updateCartWorkflow = createWorkflow(
         const data_ = {
           ...updateCartData,
           currency_code: data.region.currency_code,
-          region_id: data.region.id, // This is either the region from the input or the region from the cart
+          region_id: data.region.id, // This is either the region from the input or the region from the cart or null
         }
 
-        // When the region is updated, we do one of two things:
+        // When the region is updated, we do a few things:
+        // - If the shipping address is provided, we need to make sure the country is in the region
+        // - If the shipping address is not provided
         //   - Clear the shipping address if the region has more than one country
         //   - Set the country code of the shipping address if the region has only one country
-        if (input.region_id !== data.region.id) {
-          data_.shipping_address =
-            data.region.countries.length === 1
-              ? { country_code: data.region.countries[0].iso_2 }
-              : null
+        // - If the country code of shipping address is provided, we need to make sure the country is in the region
+        const regionIsNew = !!(
+          data.cartToUpdate.region?.id &&
+          data.region.id !== data.cartToUpdate.region?.id
+        )
+        const shippingAddress = data.input.shipping_address
+
+        if (shippingAddress?.country_code) {
+          // If shipping address with country is provided, we need to make sure the country is in the region
+          const country = data.region.countries.find(
+            (c) => c.iso_2 === data.input.shipping_address?.country_code
+          )
+
+          if (!country) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Country ${data.input.shipping_address?.country_code} not in region ${data.region.id}`
+            )
+          }
+
+          data_.shipping_address = {
+            ...data.input.shipping_address,
+            country_code: country.iso_2,
+          }
+        }
+
+        if (regionIsNew) {
+          if (data.region.countries.length === 1) {
+            data_.shipping_address = {
+              ...data.input.shipping_address,
+              country_code: data.region.countries[0].iso_2,
+            }
+          } else {
+            data_.shipping_address = null
+          }
         }
 
         if (
