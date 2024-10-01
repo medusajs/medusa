@@ -16,27 +16,15 @@ The Local File Module Provider is only for development purposes. Use the [S3 Fil
 
 ---
 
-## Install the Local File Module
+## Register the Local File Module
 
 <Note>
 
-The Local File Module is installed by default in your application.
+The Local File Module Provider is registered by default in your application.
 
 </Note>
 
-To install the Local File Module Provider, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/file-local-next@preview
-```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
-
-Next, add the module into the `providers` array of the File Module:
+Add the module into the `providers` array of the File Module:
 
 <Note>
 
@@ -45,7 +33,7 @@ The File Module accepts one provider only.
 </Note>
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -53,11 +41,11 @@ module.exports = {
   // ...
   modules: {
     [Modules.FILE]: {
-      resolve: "@medusajs/file",
+      resolve: "@medusajs/medusa/file",
       options: {
         providers: [
           {
-            resolve: "@medusajs/file-local-next",
+            resolve: "@medusajs/medusa/file-local-next",
             id: "local",
             options: {
               // provider options...

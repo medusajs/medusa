@@ -22,12 +22,12 @@ Start by creating a new directory for your module. For example, \`src/modules/my
 
 Create the file \`src/modules/my-notification/service.ts\` that holds the implementation of the notification service.
 
-The Notification Provider Module's main service must extend the \`AbstractNotificationProviderService\` class imported from \`@medusajs/utils\`:
+The Notification Provider Module's main service must extend the \`AbstractNotificationProviderService\` class imported from \`@medusajs/framework/utils\`:
 
 \`\`\`ts title="src/modules/my-notification/service.ts"
 import { 
   AbstractNotificationProviderService
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 class MyNotificationProviderService extends AbstractNotificationProviderService {
   // TODO add methods
@@ -61,7 +61,7 @@ The Notification Module accepts one provider per channel.
 </Note>
 
 \`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -69,7 +69,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.NOTIFICATION]: {
-      resolve: "@medusajs/notification",
+      resolve: "@medusajs/framework/notification",
       options: {
         providers: [
           {

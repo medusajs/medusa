@@ -12,7 +12,7 @@ const helperStepsOptions: FormattingOptionsType = {
   },
   "^modules/helper_steps/page\\.mdx": {
     reflectionDescription:
-      "This section of the documentation provides a reference to utility steps that you can use in your workflows. These steps are imported from the `@medusajs/core-flows` package.",
+      "This section of the documentation provides a reference to utility steps that you can use in your workflows. These steps are imported from the `@medusajs/medusa/core-flows` package.",
     reflectionGroups: {
       Namespaces: false,
       Enumerations: false,
@@ -35,7 +35,7 @@ const helperStepsOptions: FormattingOptionsType = {
   },
   "^helper_steps/functions": {
     reflectionDescription:
-      "This documentation provides a reference to the `{{alias}}` step. It belongs to the `@medusajs/core-flows` package.",
+      "This documentation provides a reference to the `{{alias}}` step. It belongs to the `@medusajs/medusa/core-flows` package.",
     frontmatterData: {
       slug: "/references/helper-steps/{{alias}}",
       sidebar_label: "{{alias}}",

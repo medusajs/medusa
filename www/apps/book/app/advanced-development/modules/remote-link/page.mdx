@@ -21,10 +21,10 @@ import {
 } from "@medusajs/medusa"
 import { 
   ContainerRegistrationKeys,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { 
   RemoteLink,
-} from "@medusajs/modules-sdk"
+} from "@medusajs/framework/modules-sdk"
 
 export async function POST(
   req: MedusaRequest,
@@ -49,7 +49,7 @@ To create a link between records of two data models, use the `create` method of 
 For example:
 
 ```ts
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
@@ -84,7 +84,7 @@ To remove a link between records of two data models, use the `dismiss` method of
 For example:
 
 ```ts
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
@@ -115,7 +115,7 @@ If a record is deleted, use the `delete` method of the remote link to delete all
 For example:
 
 ```ts
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 
@@ -139,7 +139,7 @@ If a record that was previously soft-deleted is now restored, use the `restore` 
 For example:
 
 ```ts
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 // ...
 

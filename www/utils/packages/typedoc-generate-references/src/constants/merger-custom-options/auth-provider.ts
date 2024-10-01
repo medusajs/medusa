@@ -20,10 +20,10 @@ const authProviderOptions: FormattingOptionsType = {
 Start by creating a new directory for your module. For example, \`src/modules/my-auth\`.`,
       `## 2. Create the Auth Provider Service
 
-Create the file \`src/modules/my-auth/service.ts\` that holds the module's main service. It must extend the \`AbstractAuthModuleProvider\` class imported from \`@medusajs/utils\`:
+Create the file \`src/modules/my-auth/service.ts\` that holds the module's main service. It must extend the \`AbstractAuthModuleProvider\` class imported from \`@medusajs/framework/utils\`:
 
 \`\`\`ts title="src/modules/my-auth/service.ts"
-import { AbstractAuthModuleProvider } from "@medusajs/utils"
+import { AbstractAuthModuleProvider } from "@medusajs/framework/utils"
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
   // TODO implement methods
@@ -51,7 +51,7 @@ This exports the module's definition, indicating that the \`MyAuthProviderServic
 To use your Auth Module Provider, add it to the \`providers\` array of the Auth Module:
 
 \`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -59,7 +59,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.AUTH]: {
-      resolve: "@medusajs/auth",
+      resolve: "@medusajs/framework/auth",
       options: {
         providers: [
           {
