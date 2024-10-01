@@ -15,7 +15,7 @@ export const createLinksStepId = "create-remote-links"
  * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   createRemoteLinkStep
- * } from "@medusajs/core-flows"
+ * } from "@medusajs/medusa/core-flows"
  * import {
  *   Modules
  * } from "@medusajs/framework/utils"

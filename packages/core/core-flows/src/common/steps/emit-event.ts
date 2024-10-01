@@ -46,7 +46,7 @@ export const emitEventStepId = "emit-event-step"
  * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   emitEventStep
- * } from "@medusajs/core-flows"
+ * } from "@medusajs/medusa/core-flows"
  *
  * const helloWorldWorkflow = createWorkflow(
  *   "hello-world",
