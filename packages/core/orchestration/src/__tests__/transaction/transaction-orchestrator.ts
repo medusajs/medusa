@@ -585,7 +585,6 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    console.log(transaction.getErrors())
     expect(mocks.one).toHaveBeenCalledTimes(2)
     expect(transaction.getState()).toBe(TransactionState.FAILED)
   })
