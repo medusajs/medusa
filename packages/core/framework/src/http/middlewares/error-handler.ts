@@ -3,7 +3,6 @@ import { NextFunction, Response } from "express"
 import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
 import { formatException } from "./exception-formatter"
 import { MedusaRequest } from "../types"
-import { logger as logger_ } from "../../logger"
 
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
 const TRANSACTION_STARTED = "TransactionAlreadyStartedError"
@@ -20,7 +19,7 @@ export function errorHandler() {
     res: Response,
     next: NextFunction
   ) => {
-    const logger: typeof logger_ = req.scope.resolve(
+    const logger = req.scope.resolve(
       ContainerRegistrationKeys.LOGGER
     )
 

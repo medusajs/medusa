@@ -1,18 +1,13 @@
 import { createMedusaContainer } from "@medusajs/utils"
 import { AwilixContainer, ResolveOptions } from "awilix"
-import { TransformObjectMethodToAsync } from "@medusajs/types";
-
-/**
- * The following interface acts as a bucket that other modules or the
- * utils package can fill using declaration merging
- */
-export interface ModuleImplementations {}
+import { ModuleImplementations } from "@medusajs/types";
 
 /**
  * The Medusa Container extends [Awilix](https://github.com/jeffijoe/awilix) to
  * provide dependency injection functionalities.
  */
-export type MedusaContainer<Cradle extends object = TransformObjectMethodToAsync<ModuleImplementations>> =
+// export type MedusaContainer<Cradle extends object = TransformObjectMethodToAsync<ModuleImplementations>> =
+export type MedusaContainer<Cradle extends object = ModuleImplementations> =
   Omit<AwilixContainer, "resolve"> & {
     resolve<K extends keyof Cradle>(
       key: K,
