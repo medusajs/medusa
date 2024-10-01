@@ -667,7 +667,7 @@ The route handler imports a validation schema from a `validation-schema` file. S
 ```ts title="src/api/validation-schemas.ts"
 import { 
   AdminCreateProduct,
-} from "@medusajs/medusa/dist/api/admin/products/validators"
+} from "@medusajs/medusa/api/admin/products/validators"
 import { z } from "zod"
 import { MediaType } from "../modules/digital-product/types"
 
@@ -690,7 +690,7 @@ Finally, create the file `src/api/middlewares.ts` with the following content:
 import { defineMiddlewares } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
-} from "@medusajs/medusa/dist/api/utils/validate-body"
+} from "@medusajs/medusa/api/utils/validate-body"
 import { createDigitalProductsSchema } from "./validation-schemas"
 
 export default defineMiddlewares({
@@ -2312,7 +2312,7 @@ In this section, you’ll customize the [Next.js Starter storefront](../../../..
 In `src/types/global.ts`, add the following types that you’ll use in your customizations:
 
 ```ts title="src/types/global.ts"
-import { BaseProductVariant } from "@medusajs/framework/types/dist/http/product/common"
+import { BaseProductVariant } from "@medusajs/framework/types/http/product/common"
 
 // ...
 
