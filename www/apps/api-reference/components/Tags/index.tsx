@@ -88,6 +88,7 @@ const Tags = () => {
             title: tag.name,
             children: childItems,
             loaded: childItems.length > 0,
+            showLoadingIfEmpty: true,
             onOpen: () => {
               history.pushState({}, "", `#${tagPathName}`)
               setActivePath(tagPathName)

@@ -18,6 +18,7 @@ const Section = ({
     rootElm: sectionRef.current || undefined,
     enable: checkActiveOnScroll,
     useDefaultIfNoActive: false,
+    maxLevel: 2,
   })
   const { setActivePath } = useSidebar()
 

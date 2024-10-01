@@ -14,12 +14,14 @@ export type UseActiveOnScrollProps = {
   rootElm?: Document | HTMLElement
   enable?: boolean
   useDefaultIfNoActive?: boolean
+  maxLevel?: number
 }
 
 export const useActiveOnScroll = ({
   rootElm,
   enable = true,
   useDefaultIfNoActive = true,
+  maxLevel = 3,
 }: UseActiveOnScrollProps) => {
   const [items, setItems] = useState<ActiveOnScrollItem[]>([])
   const [activeItemId, setActiveItemId] = useState("")
@@ -40,12 +42,23 @@ export const useActiveOnScroll = ({
 
     return document
   }, [rootElm, isBrowser, enable])
+  const querySelector = useMemo(() => {
+    let selector = ""
+    for (let i = 2; i <= maxLevel; i++) {
+      if (i > 2) {
+        selector += `,`
+      }
+      selector += `h${i}`
+    }
+
+    return selector
+  }, [maxLevel])
   const getHeadingsInElm = useCallback(() => {
     if (!isBrowser || !enable) {
       return []
     }
 
-    return root?.querySelectorAll("h2,h3")
+    return root?.querySelectorAll(querySelector)
   }, [isBrowser, pathname, root, enable])
   const setHeadingItems = useCallback(() => {
     if (!enable) {
