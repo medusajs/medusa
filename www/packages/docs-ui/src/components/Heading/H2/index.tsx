@@ -4,9 +4,10 @@ import { Link } from "@/components"
 
 type H2Props = React.HTMLAttributes<HTMLHeadingElement> & {
   id?: string
+  passRef?: React.RefObject<HTMLHeadingElement>
 }
 
-export const H2 = ({ className, children, ...props }: H2Props) => {
+export const H2 = ({ className, children, passRef, ...props }: H2Props) => {
   return (
     <h2
       className={clsx(
@@ -15,6 +16,7 @@ export const H2 = ({ className, children, ...props }: H2Props) => {
         className
       )}
       {...props}
+      ref={passRef}
     >
       {children}
       {props.id && (
