@@ -32,6 +32,8 @@
  *       title: fields
  *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
  *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: #select-fields-and-relations
  *   - name: region_id
  *     in: query
  *     description: The ID of the region the product is being viewed from. This is required if you're retrieving product variant prices with taxes.
