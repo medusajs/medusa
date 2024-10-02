@@ -1,5 +1,5 @@
 /**
- * Customer wrapper on top of MikroORM CLI to override the issue
+ * Custom wrapper on top of MikroORM CLI to override the issue
  * they have when importing TypeScript files.
  * 
  * They have hardcoded the module system of TypeScript to CommonJS
