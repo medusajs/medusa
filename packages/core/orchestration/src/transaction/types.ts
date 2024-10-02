@@ -243,6 +243,7 @@ export type TransactionFlow = {
   metadata?: {
     eventGroupId?: string
     parentIdempotencyKey?: string
+    sourcePath?: string
     [key: string]: unknown
   }
   hasAsyncSteps: boolean
