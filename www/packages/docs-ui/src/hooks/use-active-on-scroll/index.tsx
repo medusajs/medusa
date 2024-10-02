@@ -86,6 +86,8 @@ export const useActiveOnScroll = ({
       return
     }
     const headings = getHeadingsInElm()
+    let selectedHeadingByHash: HTMLHeadingElement | undefined = undefined
+    const hash = location.hash.replace("#", "")
     let closestPositiveHeading: HTMLHeadingElement | undefined = undefined
     let closestNegativeHeading: HTMLHeadingElement | undefined = undefined
     let closestPositiveDistance = Infinity
@@ -97,6 +99,9 @@ export const useActiveOnScroll = ({
       : 0
 
     headings?.forEach((heading) => {
+      if (heading.id === hash) {
+        selectedHeadingByHash = heading as HTMLHeadingElement
+      }
       const headingDistance = heading.getBoundingClientRect().top
 
       if (headingDistance > 0 && headingDistance < closestPositiveDistance) {
@@ -126,6 +131,8 @@ export const useActiveOnScroll = ({
     setActiveItemId(
       chosenClosest
         ? (chosenClosest as HTMLHeadingElement).id
+        : selectedHeadingByHash
+        ? (selectedHeadingByHash as HTMLHeadingElement).id
         : items.length
         ? useDefaultIfNoActive
           ? items[0].heading.id

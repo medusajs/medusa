@@ -114,9 +114,6 @@ export const SidebarItemLink = ({
             "flex justify-between items-center gap-[6px]",
             className
           )}
-          scroll={true}
-          replace={!item.isPathHref}
-          shallow={!item.isPathHref}
           {...item.linkProps}
         >
           <span
