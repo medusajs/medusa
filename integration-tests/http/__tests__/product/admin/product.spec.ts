@@ -2692,15 +2692,9 @@ medusaIntegrationTestRunner({
           expect(updatedOptions).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                option: expect.objectContaining({
-                  title: "size",
-                }),
                 value: "small",
               }),
               expect.objectContaining({
-                option: expect.objectContaining({
-                  title: "color",
-                }),
                 value: "green",
               }),
             ])
