@@ -351,7 +351,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * 
    * If the callback is verified successfully, the provider creates an auth identity for the user, or updates the auth identity's user information.
    * 
-   * In the auth identity, yuse the following properties to store additional data:
+   * In the auth identity, use the following properties to store additional data:
    * 
    * - `provider_metadata`: Store metadata useful for the provider, such as a password hash.
    * - `user_metadata`: Store metadata of the user's details. For example, if the third-party service returns the user's information such as email
