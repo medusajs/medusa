@@ -1,16 +1,20 @@
 import { Table } from "docs-ui"
 
 export const metadata = {
-  title: `Medusa Container Resources`,
+  title: `Medusa and Module Container Dependencies`,
 }
 
 # {metadata.title}
 
-This documentation page includes the list of resources registered in the Medusa container of your Medusa application.
+This documentation page includes the list of dependencies registered in the container of the Medusa application and a module.
+
+## Medusa Container Dependencies
+
+The following list of dependencies are resources that can be resolved by all resources (such as API route or workflow) except of a module's.
 
 <Note>
 
-Use the `ContainerRegistrationKeys` enum imported from `@medusajs/framework/utils` to resolve these resources' names.
+Use the `ContainerRegistrationKeys` enum imported from `@medusajs/framework/utils` where specified.
 
 </Note>
 
@@ -121,8 +125,134 @@ Use the `ContainerRegistrationKeys` enum imported from `@medusajs/framework/util
       </Table.Cell>
       <Table.Cell>
 
-      - For custom modules, the registration name is the key of the module in the `modules` configuration.
-      - For Medusa's commerce modules, you can use the `Modules` enum imported from `@medusajs/framework/utils`.
+      - For custom modules, the registration name is the key of the module in the `modules` configuration in `medusa-config.js`.
+      - For Medusa's commerce modules, use the `Modules` enum imported from `@medusajs/framework/utils`.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Module Container Dependencies
+
+The following resources are resources that can be resolved by a module's services and loaders.
+
+<Note>
+
+Use the `ContainerRegistrationKeys` enum imported from `@medusajs/framework/utils` where specified.
+
+</Note>
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+
+      Resource
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Description
+
+      </Table.HeaderCell>
+
+      <Table.HeaderCell>
+
+      Registration Name
+
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      Logger
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An instance of Medusa CLI’s logger. You can use it to log messages to the terminal.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `logger` or `ContainerRegistrationKeys.LOGGER`
+
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+
+      Entity Manager
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An instance of [MikroORM's entity manager](https://mikro-orm.io/api/5.9/knex/class/EntityManager).
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `manager` or `ContainerRegistrationKeys.MANAGER`
+
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+
+      Base Repository
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An instance of the base repository, used to run transactions or perform other database operations.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `baseRepository`
+
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+
+      Configurations
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The configurations exported from `medusa-config.js`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `configModule` or `ContainerRegistrationKeys.CONFIG_MODULE`
+
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+
+      Modules' services
+
+      </Table.Cell>
+      <Table.Cell>
+
+      All services exported by the `services/index.ts` file of a module.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Each service is registered by its camel-case name. For example, if the service's class name is `ClientService`, its registration name is `clientService`.
 
       </Table.Cell>
     </Table.Row>
