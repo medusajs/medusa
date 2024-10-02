@@ -1473,7 +1473,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of draft orders.
  *               required:
  *                 - limit
  *                 - offset
@@ -1482,17 +1482,17 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The draft order's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The draft order's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The draft order's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of draft orders.
  *               required:
  *                 - draft_orders
  *               properties:

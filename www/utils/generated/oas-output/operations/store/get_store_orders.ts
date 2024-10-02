@@ -137,7 +137,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of orders.
  *               required:
  *                 - limit
  *                 - offset
@@ -146,17 +146,17 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The order's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The order's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The order's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of orders.
  *               required:
  *                 - orders
  *               properties:

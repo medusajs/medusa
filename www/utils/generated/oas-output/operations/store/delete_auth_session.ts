@@ -19,7 +19,7 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The deletion's details.
  *           required:
  *             - success
  *           properties:

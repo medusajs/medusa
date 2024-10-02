@@ -836,7 +836,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of exchanges.
  *               required:
  *                 - limit
  *                 - offset
@@ -845,22 +845,25 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The exchange's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The exchange's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The exchange's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of exchanges.
  *               required:
  *                 - exchanges
  *               properties:
  *                 exchanges:
- *                   $ref: "#/components/schemas/AdminExchange"
+ *                   type: array
+ *                   description: The exchange's exchanges.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminExchange"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

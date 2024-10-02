@@ -653,7 +653,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of returns.
  *               required:
  *                 - limit
  *                 - offset
@@ -662,17 +662,17 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The return's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The return's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The return's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of returns.
  *               required:
  *                 - returns
  *               properties:
