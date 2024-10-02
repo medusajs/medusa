@@ -1,10 +1,9 @@
 "use client"
 
-import { useIsBrowser } from "@/hooks"
 import { getLearningPath } from "@/utils/learning-paths"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { LearningPathFinishType } from "@/components/LearningPath/Finish"
-import { useAnalytics } from "docs-ui"
+import { useAnalytics, useIsBrowser } from "docs-ui"
 import { usePathname, useRouter } from "next/navigation"
 
 export type LearningPathType = {

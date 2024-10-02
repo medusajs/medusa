@@ -12,7 +12,6 @@ import React, {
 } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { getScrolledTop } from "@/utils"
-import { useIsBrowser } from "@/hooks"
 import {
   SidebarItemSections,
   SidebarItem,
@@ -22,6 +21,7 @@ import {
   SidebarItemCategory,
   SidebarItemLinkWithParent,
 } from "types"
+import { useIsBrowser } from "../BrowserProvider"
 
 export type CurrentItemsState = SidebarSectionItems & {
   previousSidebar?: CurrentItemsState

@@ -76,6 +76,12 @@ export const SidebarItemLink = ({
     newTopCalculator,
   ])
 
+  useEffect(() => {
+    if (active && isMobile) {
+      setSidebarOpen(false)
+    }
+  }, [active, isMobile])
+
   const hasChildren = useMemo(() => {
     return !item.isChildSidebar && (item.children?.length || 0) > 0
   }, [item.children])
@@ -109,11 +115,6 @@ export const SidebarItemLink = ({
             className
           )}
           scroll={true}
-          onClick={() => {
-            if (isMobile) {
-              setSidebarOpen(false)
-            }
-          }}
           replace={!item.isPathHref}
           shallow={!item.isPathHref}
           {...item.linkProps}
