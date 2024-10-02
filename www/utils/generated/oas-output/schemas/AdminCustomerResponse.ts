@@ -1,7 +1,7 @@
 /**
  * @schema AdminCustomerResponse
  * type: object
- * description: SUMMARY
+ * description: The customer's details.
  * x-schemaName: AdminCustomerResponse
  * required:
  *   - customer
