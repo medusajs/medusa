@@ -12,7 +12,7 @@ export const useClickOutside = ({
   elmRef,
   onClickOutside,
 }: UseClickOutsideProps) => {
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
 
   const checkClickOutside = useCallback(
     (e: MouseEvent) => {

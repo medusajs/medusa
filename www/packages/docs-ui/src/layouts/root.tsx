@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import { Sidebar, SidebarProps } from "@/components"
+import { RootProviders, Sidebar, SidebarProps } from "@/components"
 import { MobileNavigation } from "../components/MobileNavigation"
 import { Toc } from "../components/Toc"
 import { MainContentLayout, MainContentLayoutProps } from "./main-content"
@@ -36,14 +36,16 @@ export const RootLayout = ({
           bodyClassName
         )}
       >
-        <ProvidersComponent>
-          <MobileNavigation />
-          <Sidebar {...sidebarProps} />
-          <div className={clsx("relative", "h-screen", "flex")}>
-            <MainContentLayout {...mainProps} />
-            {showToc && <Toc />}
-          </div>
-        </ProvidersComponent>
+        <RootProviders>
+          <ProvidersComponent>
+            <MobileNavigation />
+            <Sidebar {...sidebarProps} />
+            <div className={clsx("relative", "h-screen", "flex")}>
+              <MainContentLayout {...mainProps} />
+              {showToc && <Toc />}
+            </div>
+          </ProvidersComponent>
+        </RootProviders>
       </body>
     </html>
   )
