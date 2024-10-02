@@ -33,21 +33,27 @@ export function ensurePublishableApiKey() {
     }
 
     const query: Query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+    let apiKey
 
-    const {
-      data: [apiKey],
-    } = await query.graph({
-      entity: "api_key",
-      fields: ["id", "token", "sales_channels_link.sales_channel_id"],
-      filters: {
-        token: publishableApiKey,
-        type: ApiKeyType.PUBLISHABLE,
-        $or: [
-          { revoked_at: { $eq: null } },
-          { revoked_at: { $gt: new Date() } },
-        ],
-      },
-    })
+    try {
+      const { data } = await query.graph({
+        entity: "api_key",
+        fields: ["id", "token", "sales_channels_link.sales_channel_id"],
+        filters: {
+          token: publishableApiKey,
+          type: ApiKeyType.PUBLISHABLE,
+          $or: [
+            { revoked_at: { $eq: null } },
+            { revoked_at: { $gt: new Date() } },
+          ],
+        },
+      })
+
+      apiKey = data[0]
+    } catch (e) {
+      console.log("throws an error here - ", e)
+      return next(e)
+    }
 
     if (!apiKey) {
       try {
