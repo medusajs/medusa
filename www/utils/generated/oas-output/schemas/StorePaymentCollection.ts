@@ -4,12 +4,12 @@
  * description: The payment collection's details.
  * x-schemaName: StorePaymentCollection
  * required:
+ *   - payment_providers
  *   - id
  *   - currency_code
  *   - region_id
  *   - amount
  *   - status
- *   - payment_providers
  * properties:
  *   id:
  *     type: string
@@ -19,32 +19,31 @@
  *     type: string
  *     title: currency_code
  *     description: The payment collection's currency code.
- *     example: usd
  *   region_id:
  *     type: string
  *     title: region_id
- *     description: The ID of the associated region.
+ *     description: The ID of the region this payment collection is associated with.
  *   amount:
  *     type: number
  *     title: amount
- *     description: The payment collection's amount.
+ *     description: The total amount to be paid.
  *   authorized_amount:
  *     type: number
  *     title: authorized_amount
- *     description: The payment collection's authorized amount.
+ *     description: The total authorized amount of the collection's payments.
  *   captured_amount:
  *     type: number
  *     title: captured_amount
- *     description: The payment collection's captured amount.
+ *     description: The total captured amount of the collection's payments.
  *   refunded_amount:
  *     type: number
  *     title: refunded_amount
- *     description: The payment collection's refunded amount.
+ *     description: The total refunded amount of the collection's payments.
  *   completed_at:
  *     type: string
+ *     format: date-time
  *     title: completed_at
  *     description: The date the payment collection was completed.
- *     format: date-time
  *   created_at:
  *     type: string
  *     format: date-time
@@ -69,14 +68,14 @@
  *       - partially_authorized
  *   payment_providers:
  *     type: array
- *     description: The payment collection's payment providers.
+ *     description: The payment provider used to process the collection's payments and sessions.
  *     items:
- *       $ref: "#/components/schemas/BasePaymentProvider"
+ *       $ref: "#/components/schemas/StorePaymentProvider"
  *   payment_sessions:
  *     type: array
  *     description: The payment collection's payment sessions.
  *     items:
- *       $ref: "#/components/schemas/BasePaymentSession"
+ *       $ref: "#/components/schemas/StorePaymentSession"
  *   payments:
  *     type: array
  *     description: The payment collection's payments.

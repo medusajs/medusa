@@ -482,7 +482,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of product variants.
  *               required:
  *                 - limit
  *                 - offset
@@ -491,17 +491,17 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The product variant's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The product variant's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The product variant's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of product variants.
  *               required:
  *                 - variants
  *               properties:
