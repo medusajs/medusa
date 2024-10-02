@@ -1,4 +1,4 @@
-import { ModuleProviderExports } from "@medusajs/types"
+import { ModuleProviderExports } from "@medusajs/framework/types"
 import { S3FileService } from "./services/s3-file"
 
 const services = [S3FileService]

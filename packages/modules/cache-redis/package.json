@@ -15,16 +15,20 @@
     "node": ">=20"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.11.16",
-    "cross-env": "^5.2.1",
+    "@medusajs/framework": "^0.0.1",
+    "@swc/core": "^1.7.28",
+    "@swc/jest": "^0.2.36",
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.6.2"
   },
   "scripts": {
     "watch": "tsc --build --watch",
@@ -32,11 +36,10 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.11",
-    "@medusajs/utils": "^1.11.9",
     "ioredis": "^5.4.1"
   },
   "peerDependencies": {
+    "@medusajs/framework": "^0.0.1",
     "awilix": "^8.0.1"
   }
 }

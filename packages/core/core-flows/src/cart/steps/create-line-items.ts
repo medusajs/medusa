@@ -1,6 +1,9 @@
-import { CreateLineItemForCartDTO, ICartModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  CreateLineItemForCartDTO,
+  ICartModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface CreateLineItemsCartStepInput {
   id: string

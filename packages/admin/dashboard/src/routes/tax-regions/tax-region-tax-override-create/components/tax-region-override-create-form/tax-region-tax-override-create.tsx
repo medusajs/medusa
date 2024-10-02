@@ -38,7 +38,7 @@ import { createTaxRulePayload } from "../../../common/utils"
 
 const TaxRegionCreateTaxOverrideSchema = z.object({
   name: z.string().min(1),
-  code: z.string().optional(),
+  code: z.string().min(1),
   rate: z
     .object({
       float: z.number().optional(),
@@ -408,7 +408,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
                       render={({ field }) => {
                         return (
                           <Form.Item>
-                            <Form.Label optional>
+                            <Form.Label>
                               {t("taxRegions.fields.taxCode")}
                             </Form.Label>
                             <Form.Control>

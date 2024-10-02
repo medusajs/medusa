@@ -1,4 +1,4 @@
-import { ITaxModuleService } from "@medusajs/types"
+import { ITaxModuleService } from "@medusajs/framework/types"
 
 /**
  * Setup for this specific test
@@ -27,11 +27,11 @@ export const setupTaxStructure = async (service: ITaxModuleService) => {
   const [us, dk, de, ca] = await service.createTaxRegions([
     {
       country_code: "US",
-      default_tax_rate: { name: "US Default Rate", rate: 2 },
+      default_tax_rate: { name: "US Default Rate", rate: 2, code: "US" },
     },
     {
       country_code: "DK",
-      default_tax_rate: { name: "Denmark Default Rate", rate: 25 },
+      default_tax_rate: { name: "Denmark Default Rate", rate: 25, code: "DK" },
     },
     {
       country_code: "DE",
@@ -43,7 +43,7 @@ export const setupTaxStructure = async (service: ITaxModuleService) => {
     },
     {
       country_code: "CA",
-      default_tax_rate: { name: "Canada Default Rate", rate: 5 },
+      default_tax_rate: { name: "Canada Default Rate", rate: 5, code: "CA" },
     },
   ])
 

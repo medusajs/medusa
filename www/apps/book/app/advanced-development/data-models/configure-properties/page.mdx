@@ -18,7 +18,7 @@ export const defaultHighlights = [
 ]
 
 ```ts highlights={defaultHighlights}
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
   color: model
@@ -48,7 +48,7 @@ export const nullableHighlights = [
 ]
 
 ```ts highlights={nullableHighlights}
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
   price: model.bigNumber().nullable(),
@@ -71,7 +71,7 @@ export const uniqueHighlights = [
 ]
 
 ```ts highlights={uniqueHighlights}
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const User = model.define("user", {
   email: model.text().unique(),

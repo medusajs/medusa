@@ -12,7 +12,7 @@ import {
   SoftDeleteReturn,
   UpdateRegionDTO,
   UpsertRegionDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   arrayDifference,
   getDuplicates,
@@ -24,7 +24,7 @@ import {
   MedusaService,
   promiseAll,
   removeUndefined,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { Country, Region } from "@models"
 import { UpdateRegionInput } from "@types"
 
@@ -323,7 +323,7 @@ export default class RegionModuleService
 
     const countriesInDb = await this.countryService_.list(
       { iso_2: uniqueCountries },
-      { select: ["iso_2", "region_id"], take: null },
+      { select: ["iso_2", "region_id"] },
       sharedContext
     )
     const countryCodesInDb = countriesInDb.map((c) => c.iso_2.toLowerCase())

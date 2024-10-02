@@ -14,30 +14,18 @@ For production, it’s recommended to use modules like [Redis Workflow Engine Mo
 
 ---
 
-## Install the In-Memory Workflow Engine Module
+## Register the In-Memory Workflow Engine Module
 
 <Note>
 
-The In-Memory Workflow Engine Module is installed by default in your application.
+The In-Memory Workflow Engine Module is registered by default in your application.
 
 </Note>
 
-To install the In-Memory Workflow Engine Module, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/workflow-engine-inmemory@preview
-```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
-
-Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+Add the module into the `modules` property of the exported object in `medusa-config.js`:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 

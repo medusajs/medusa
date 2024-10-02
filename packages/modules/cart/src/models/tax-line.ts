@@ -1,4 +1,4 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
 type OptionalTaxLineProps = DAL.SoftDeletableModelDateColumns

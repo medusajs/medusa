@@ -1,9 +1,9 @@
-import { OrderDTO } from "@medusajs/types"
+import { OrderDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { archiveOrdersStep } from "../steps"
 
 export type ArchiveOrdersWorkflowInput = {

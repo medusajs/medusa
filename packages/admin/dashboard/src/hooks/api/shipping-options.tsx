@@ -18,24 +18,24 @@ export const shippingOptionsQueryKeys = queryKeysFactory(
   SHIPPING_OPTIONS_QUERY_KEY
 )
 
-// TODO: Endpoint is not implemented yet
-// export const useShippingOption = (
-//   id: string,
-//   options?: UseQueryOptions<
-//     HttpTypes.AdminShippingOptionResponse,
-//     Error,
-//     HttpTypes.AdminShippingOptionResponse,
-//     QueryKey
-//   >
-// ) => {
-//   const { data, ...rest } = useQuery({
-//     queryFn: () => sdk.admin.shippingOption.retrieve(id),
-//     queryKey: shippingOptionsQueryKeys.retrieve(id),
-//     ...options,
-//   })
+export const useShippingOption = (
+  id: string,
+  query?: Record<string, any>,
+  options?: UseQueryOptions<
+    HttpTypes.AdminShippingOptionResponse,
+    Error,
+    HttpTypes.AdminShippingOptionResponse,
+    QueryKey
+  >
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => sdk.admin.shippingOption.retrieve(id, query),
+    queryKey: shippingOptionsQueryKeys.detail(id),
+    ...options,
+  })
 
-//   return { ...data, ...rest }
-// }
+  return { ...data, ...rest }
+}
 
 export const useShippingOptions = (
   query?: HttpTypes.AdminShippingOptionListParams,

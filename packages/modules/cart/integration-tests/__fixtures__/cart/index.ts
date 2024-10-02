@@ -1,4 +1,4 @@
-import { CreateCartDTO } from "@medusajs/types"
+import { CreateCartDTO } from "@medusajs/framework/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Cart } from "../../../src/models"
 import { defaultCartsData } from "./data"

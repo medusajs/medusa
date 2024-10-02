@@ -9,7 +9,10 @@
     "directory": "packages/modules/providers/auth-emailpass"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__"
   ],
   "engines": {
     "node": ">=20"
@@ -23,14 +26,18 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "cross-env": "^5.2.1",
+    "@medusajs/framework": "^0.0.1",
+    "@swc/core": "^1.7.28",
+    "@swc/jest": "^0.2.36",
     "jest": "^29.7.0",
     "rimraf": "^5.0.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.2"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.9",
     "scrypt-kdf": "^2.0.1"
+  },
+  "peerDependencies": {
+    "@medusajs/framework": "^0.0.1"
   },
   "keywords": [
     "medusa-provider",

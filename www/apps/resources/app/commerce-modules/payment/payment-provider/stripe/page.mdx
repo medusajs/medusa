@@ -20,7 +20,7 @@ These features are also available in a safe test environment, allowing for a con
 
 ---
 
-## Install the Stripe Module Provider
+## Register the Stripe Module Provider
 
 <Prerequisites items={[
   {
@@ -37,22 +37,10 @@ These features are also available in a safe test environment, allowing for a con
   }
 ]} />
 
-To install the Stripe Module Provider, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/payment-stripe@preview
-```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
-
-Next, add the module to the array of providers passed to the Payment Module:
+Add the module to the array of providers passed to the Payment Module:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -60,11 +48,11 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.PAYMENT]: {
-      resolve: "@medusajs/payment",
+      resolve: "@medusajs/medusa/payment",
       options: {
         providers: [
           {
-            resolve: "@medusajs/payment-stripe",
+            resolve: "@medusajs/medusa/payment-stripe",
             id: "stripe",
             options: {
               apiKey: process.env.STRIPE_API_KEY,

@@ -3,8 +3,8 @@ import {
   CreateOrderChangeDTO,
   CreateOrderDTO,
   IOrderModuleService,
-} from "@medusajs/types"
-import { BigNumber, ChangeActionType, Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { BigNumber, ChangeActionType, Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)

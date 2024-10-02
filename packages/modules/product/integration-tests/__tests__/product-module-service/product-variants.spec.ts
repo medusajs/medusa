@@ -4,14 +4,14 @@ import {
   IProductModuleService,
   ProductDTO,
   ProductVariantDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   CommonEvents,
   composeMessage,
   Modules,
   ProductEvents,
   ProductStatus,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import {
   MockEventBusService,

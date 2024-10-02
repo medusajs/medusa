@@ -1,5 +1,5 @@
-import { IRegionModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { IRegionModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { RegionModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
@@ -43,7 +43,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
       })
 
       it("should create countries on application start", async () => {
-        const countries = await service.listCountries({}, { take: null })
+        const countries = await service.listCountries({}, {})
         expect(countries.length).toEqual(250)
       })
 

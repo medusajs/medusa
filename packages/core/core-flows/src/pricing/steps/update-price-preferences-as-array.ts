@@ -1,6 +1,13 @@
-import { IPricingModuleService, PricingWorkflow } from "@medusajs/types"
-import { MedusaError, Modules, arrayDifference } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import {
+  IPricingModuleService,
+  PricingWorkflow,
+} from "@medusajs/framework/types"
+import {
+  MedusaError,
+  Modules,
+  arrayDifference,
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export type UpdatePricePreferencesAsArrayStepInput =
   PricingWorkflow.UpdatePricePreferencesWorkflowInput["update"][]
@@ -16,19 +23,16 @@ export const updatePricePreferencesAsArrayStep = createStep(
     const service = container.resolve<IPricingModuleService>(Modules.PRICING)
 
     const prevData = await service.listPricePreferences({
-      $or: input.map(
-        (entry) => {
-          if (!entry.attribute || !entry.value) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              "Attribute and value must be provided when updating price preferences"
-            )
-          }
+      $or: input.map((entry) => {
+        if (!entry.attribute || !entry.value) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Attribute and value must be provided when updating price preferences"
+          )
+        }
 
-          return { attribute: entry.attribute, value: entry.value }
-        },
-        { take: null }
-      ),
+        return { attribute: entry.attribute, value: entry.value }
+      }, {}),
     })
 
     const toUpsert = input.map((entry) => {

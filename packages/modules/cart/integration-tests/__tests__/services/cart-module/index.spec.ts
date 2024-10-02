@@ -1,5 +1,5 @@
-import { ICartModuleService } from "@medusajs/types"
-import { BigNumber, Module, Modules } from "@medusajs/utils"
+import { ICartModuleService } from "@medusajs/framework/types"
+import { BigNumber, Module, Modules } from "@medusajs/framework/utils"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
 import { CartModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"

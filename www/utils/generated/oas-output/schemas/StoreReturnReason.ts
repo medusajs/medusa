@@ -28,17 +28,17 @@
  *     description: The return reason's description.
  *   metadata:
  *     type: object
- *     description: The return reason's metadata.
+ *     description: The return reason's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The return reason's created at.
+ *     description: The date the return reason was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The return reason's updated at.
+ *     description: The date the return reason was updated.
  * 
 */
 

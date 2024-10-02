@@ -4,7 +4,7 @@ import {
 } from "../../../../../types/routing"
 
 import { linkProductsToSalesChannelWorkflow } from "@medusajs/core-flows"
-import { HttpTypes, LinkMethodRequest } from "@medusajs/types"
+import { HttpTypes, LinkMethodRequest } from "@medusajs/framework/types"
 import { refetchSalesChannel } from "../../helpers"
 
 export const POST = async (

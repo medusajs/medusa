@@ -18,7 +18,7 @@ import {
   PricingTypes,
   UpsertPricePreferenceDTO,
   UpsertPriceSetDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   arrayDifference,
   deduplicate,
@@ -37,7 +37,7 @@ import {
   promiseAll,
   removeNullish,
   simpleHash,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import {
   Price,
@@ -48,9 +48,8 @@ import {
   PriceSet,
 } from "@models"
 
-import { ServiceTypes } from "@types"
 import { eventBuilders, validatePriceListDates } from "@utils"
-import { CreatePriceListDTO, UpsertPriceDTO } from "src/types/services"
+import { ServiceTypes } from "@types"
 import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
@@ -294,7 +293,7 @@ export default class PricingModuleService
     // We use the price rules to get the right preferences for the price
     const priceRulesForPrices = await this.priceRuleService_.list(
       { price_id: priceIds },
-      { take: null }
+      {}
     )
 
     const priceRulesPriceMap = groupBy(priceRulesForPrices, "price_id")
@@ -517,6 +516,11 @@ export default class PricingModuleService
     // We can make the `insert` inside upsertWithReplace do an `upsert` instead to avoid this
     const normalizedData = await this.normalizeUpdateData(data)
 
+    const priceListPrices = await this.priceService_.list({
+      price_set_id: normalizedData.map(({ id }) => id),
+      price_list_id: { $ne: null },
+    })
+
     const prices = normalizedData.flatMap((priceSet) => priceSet.prices || [])
     const { entities: upsertedPrices } =
       await this.priceService_.upsertWithReplace(
@@ -529,13 +533,23 @@ export default class PricingModuleService
       const { prices, ...rest } = priceSet
       return {
         ...rest,
-        prices: upsertedPrices
-          .filter((p) => p.price_set_id === priceSet.id)
-          .map((price) => {
-            // @ts-ignore
-            delete price.price_rules
-            return price
-          }),
+        prices: [
+          ...upsertedPrices
+            .filter((p) => p.price_set_id === priceSet.id)
+            .map((price) => {
+              // @ts-ignore
+              delete price.price_rules
+              return price
+            }),
+          ...priceListPrices
+            .filter((p) => p.price_set_id === priceSet.id)
+            .map((price) => ({
+              id: price.id,
+              amount: price.amount,
+              price_set_id: price.price_set_id,
+              price_list_id: price.price_list_id,
+            })),
+        ],
       }
     })
 
@@ -546,7 +560,13 @@ export default class PricingModuleService
         sharedContext
       )
 
-    return priceSets
+    return priceSets.map((ps) => {
+      if (ps.prices) {
+        ps.prices = (ps.prices as any).filter((p) => !p.price_list_id)
+      }
+
+      return ps
+    })
   }
 
   private async normalizeUpdateData(data: ServiceTypes.UpdatePriceSetInput[]) {
@@ -591,7 +611,7 @@ export default class PricingModuleService
         price_list_id: priceListId,
         price_rules: hasRulesInput ? rules : undefined,
         rules_count: hasRulesInput ? ruleEntries.length : undefined,
-      } as UpsertPriceDTO
+      } as ServiceTypes.UpsertPriceDTO
       delete (entry as CreatePricesDTO).rules
 
       const entryHash = hashPrice(entry)
@@ -949,7 +969,7 @@ export default class PricingModuleService
   ) {
     const priceSets = await this.listPriceSets(
       { id: input.map((d) => d.priceSetId) },
-      { take: null, relations: ["prices", "prices.price_rules"] },
+      { relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
 
@@ -968,7 +988,7 @@ export default class PricingModuleService
         )
       )
       .filter(Boolean)
-      .flat() as UpsertPriceDTO[]
+      .flat() as ServiceTypes.UpsertPriceDTO[]
 
     const priceSetMap = new Map<string, PriceSetDTO>(
       priceSets.map((p) => [p.id, p])
@@ -1026,18 +1046,18 @@ export default class PricingModuleService
   ) {
     const normalized = this.normalizePriceListDate(data)
 
-    const priceListsToCreate: CreatePriceListDTO[] = normalized.map(
-      (priceListData) => {
+    const priceListsToCreate: ServiceTypes.CreatePriceListDTO[] =
+      normalized.map((priceListData) => {
         const entry = {
           ...priceListData,
           rules: undefined,
-        } as CreatePriceListDTO
+        } as ServiceTypes.CreatePriceListDTO
 
         if (priceListData.prices) {
           entry.prices = this.normalizePrices(
             priceListData.prices,
             []
-          ) as UpsertPriceDTO[]
+          ) as ServiceTypes.UpsertPriceDTO[]
         }
 
         if (priceListData.rules) {
@@ -1061,8 +1081,7 @@ export default class PricingModuleService
         }
 
         return entry
-      }
-    )
+      })
 
     const priceLists = await this.priceListService_.create(
       priceListsToCreate,
@@ -1157,7 +1176,7 @@ export default class PricingModuleService
 
     const normalizedData = this.normalizePriceListDate(data).map(
       (priceList) => {
-        const entry: Partial<CreatePriceListDTO> = {
+        const entry: Partial<ServiceTypes.CreatePriceListDTO> = {
           ...priceList,
           rules: undefined,
           price_list_rules: undefined,
@@ -1204,7 +1223,7 @@ export default class PricingModuleService
   ): Promise<Price[]> {
     const priceLists = await this.listPriceLists(
       { id: data.map((p) => p.price_list_id) },
-      { take: null, relations: ["prices", "prices.price_rules"] },
+      { relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
 
@@ -1215,17 +1234,17 @@ export default class PricingModuleService
     const pricesToUpsert = data
       .map((addPrice) =>
         this.normalizePrices(
-          addPrice.prices as UpsertPriceDTO[],
+          addPrice.prices as ServiceTypes.UpsertPriceDTO[],
           existingPrices,
           addPrice.price_list_id
         )
       )
       .filter(Boolean)
-      .flat() as UpsertPriceDTO[]
+      .flat() as ServiceTypes.UpsertPriceDTO[]
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
 
-    for (const { price_list_id: priceListId, prices } of data) {
+    for (const { price_list_id: priceListId } of data) {
       const priceList = priceListMap.get(priceListId)
 
       if (!priceList) {
@@ -1260,7 +1279,7 @@ export default class PricingModuleService
   ): Promise<Price[]> {
     const priceLists = await this.listPriceLists(
       { id: data.map((p) => p.price_list_id) },
-      { take: null, relations: ["prices", "prices.price_rules"] },
+      { relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
 
@@ -1277,7 +1296,7 @@ export default class PricingModuleService
         )
       )
       .filter(Boolean)
-      .flat() as UpsertPriceDTO[]
+      .flat() as ServiceTypes.UpsertPriceDTO[]
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
     pricesToUpsert.forEach((price) => {
@@ -1457,7 +1476,7 @@ export default class PricingModuleService
     data: (
       | ServiceTypes.UpdatePriceListDTO
       | ServiceTypes.CreatePriceListDTO
-      | CreatePriceListDTO
+      | ServiceTypes.CreatePriceListDTO
     )[]
   ) {
     return data.map((priceListData: any) => {

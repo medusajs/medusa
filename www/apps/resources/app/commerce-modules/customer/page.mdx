@@ -6,11 +6,11 @@ export const metadata = {
 
 # {metadata.title}
 
-The Customer Module is the `@medusajs/customer` NPM package that provides customer-related features in your Medusa and Node.js applications.
+The Customer Module is the `@medusajs/medusa/customer` NPM package that provides customer-related features in your Medusa and Node.js applications.
 
 ## How to Use Customer Module's Service
 
-You can use the Customer Module's main service by resolving from the Medusa container the resource `Modules.CUSTOMER` imported from `@medusajs/utils`.
+You can use the Customer Module's main service by resolving from the Medusa container the resource `Modules.CUSTOMER` imported from `@medusajs/framework/utils`.
 
 For example:
 
@@ -19,8 +19,8 @@ For example:
 
   ```ts title="src/api/store/custom/route.ts"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const customerModuleService: ICustomerModuleService = request.scope.resolve(
@@ -38,8 +38,8 @@ export async function GET(request: MedusaRequest, res: MedusaResponse) {
 
   ```ts title="src/subscribers/custom-handler.ts"
   import { SubscriberArgs } from "@medusajs/medusa"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
   const customerModuleService: ICustomerModuleService = container.resolve(
@@ -54,9 +54,9 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
   <CodeTab label="Workflow Step" value="workflow-step">
 
   ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { ICustomerModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { createStep } from "@medusajs/framework/workflows-sdk"
+  import { ICustomerModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 const step1 = createStep("step-1", async (_, { container }) => {
   const customerModuleService: ICustomerModuleService = container.resolve(

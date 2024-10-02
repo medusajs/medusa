@@ -9,14 +9,14 @@ import {
   Rel,
 } from "@mikro-orm/core"
 
-import { BigNumberRawValue } from "@medusajs/types"
+import { BigNumberRawValue } from "@medusajs/framework/types"
 import {
   BigNumber,
   DALUtils,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { InventoryItem } from "./inventory-item"
 
 const ReservationItemDeletedAtIndex = createPsqlIndexStatementHelper({
@@ -111,12 +111,12 @@ export class ReservationItem {
   inventory_item: Rel<InventoryItem>
 
   @BeforeCreate()
-  private beforeCreate(): void {
+  beforeCreate(): void {
     this.id = generateEntityId(this.id, "resitem")
   }
 
   @OnInit()
-  private onInit(): void {
+  onInit(): void {
     this.id = generateEntityId(this.id, "resitem")
   }
 }

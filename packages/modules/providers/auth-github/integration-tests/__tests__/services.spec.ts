@@ -1,4 +1,4 @@
-import { generateJwtToken, MedusaError } from "@medusajs/utils"
+import { generateJwtToken, MedusaError } from "@medusajs/framework/utils"
 import { GithubAuthService } from "../../src/services/github"
 import { http, HttpResponse } from "msw"
 import { setupServer } from "msw/node"

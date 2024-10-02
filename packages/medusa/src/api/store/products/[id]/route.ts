@@ -1,4 +1,4 @@
-import { MedusaError, isPresent } from "@medusajs/utils"
+import { MedusaError, isPresent } from "@medusajs/framework/utils"
 import { MedusaResponse } from "../../../../types/routing"
 import { wrapVariantsWithInventoryQuantity } from "../../../utils/middlewares"
 import {
@@ -7,7 +7,7 @@ import {
   wrapProductsWithTaxPrices,
 } from "../helpers"
 import { StoreGetProductParamsType } from "../validators"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: RequestWithContext<StoreGetProductParamsType>,

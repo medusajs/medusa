@@ -1,9 +1,9 @@
-import { DAL } from "@medusajs/types"
+import { DAL } from "@medusajs/framework/types"
 import {
   DALUtils,
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
   Entity,
@@ -15,6 +15,12 @@ import {
 } from "@mikro-orm/core"
 
 type OptionalAddressProps = DAL.SoftDeletableModelDateColumns
+
+const PgIndex = createPsqlIndexStatementHelper({
+  tableName: "cart_address",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+})
 
 @Entity({ tableName: "cart_address" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
@@ -75,11 +81,7 @@ export default class Address {
   })
   updated_at: Date
 
-  @createPsqlIndexStatementHelper({
-    tableName: "cart_address",
-    columns: "deleted_at",
-    where: "deleted_at IS NOT NULL",
-  }).MikroORMIndex()
+  @PgIndex.MikroORMIndex()
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null = null
 

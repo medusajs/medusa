@@ -1,10 +1,13 @@
-import { CreatePriceListPricesWorkflowDTO, PricingTypes } from "@medusajs/types"
+import {
+  CreatePriceListPricesWorkflowDTO,
+  PricingTypes,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   parallelize,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createPriceListPricesStep } from "../steps/create-price-list-prices"
 import { validatePriceListsStep } from "../steps/validate-price-lists"
 import { validateVariantPriceLinksStep } from "../steps/validate-variant-price-links"
