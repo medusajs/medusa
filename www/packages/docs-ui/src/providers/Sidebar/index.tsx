@@ -350,7 +350,12 @@ export const SidebarProvider = ({
         if (!currentSidebar && item.children?.length) {
           const childSidebar =
             getCurrentSidebar(item.children) ||
-            (activePath ? linksMap.get(activePath) : undefined)
+            (activePath
+              ? findItem(item.children, {
+                  path: activePath || undefined,
+                  type: "link",
+                })
+              : undefined)
 
           if (childSidebar) {
             currentSidebar = childSidebar.isChildSidebar ? childSidebar : item
