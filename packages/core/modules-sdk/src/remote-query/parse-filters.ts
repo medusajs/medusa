@@ -44,13 +44,14 @@ export function parseAndAssignFilters(
     entryAlias = alias
     entryJoinerConfig = joinerConfig
 
-    const entryEntity = entitiesMap[entryAlias.entity!]
-    console.log(entryAlias.entity, entryEntity, entryEntity._fields)
+    // TODO: This check is not used further than to validate the entity is part of the graphql schema
+    // This can't be used right now as we have not migrated the entire code base to DML from which the graphql schema is generated
+    /*const entryEntity = entitiesMap[entryAlias.entity!]
     if (!entryEntity) {
       throw new Error(
         `Entity ${entryAlias.entity} not found in the public schema of the joiner config from ${entryJoinerConfig.serviceName}`
       )
-    }
+    }*/
 
     if (isObject(filterValue)) {
       for (const [nestedFilterKey, nestedFilterValue] of Object.entries(
