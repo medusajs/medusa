@@ -1616,7 +1616,7 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it.only("should return prices with and without tax when the cart is available and a country is passed when listing products", async () => {
+      it("should return prices with and without tax when the cart is available and a country is passed when listing products", async () => {
         const products = (
           await api.get(
             `/store/products?fields=id,*variants.calculated_price&cart_id=${euCart.id}&country_code=it`,
@@ -1645,7 +1645,7 @@ medusaIntegrationTestRunner({
         ).toEqual("40.9")
       })
 
-      it.only("should return prices with and without tax when the cart context is available when listing products", async () => {
+      it("should return prices with and without tax when the cart context is available when listing products", async () => {
         await api.post(
           `/store/carts/${euCart.id}`,
           {

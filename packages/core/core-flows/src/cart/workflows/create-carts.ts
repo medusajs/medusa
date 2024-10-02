@@ -105,9 +105,9 @@ export const createCartWorkflow = createWorkflow(
         data.region?.countries.length === 1 && !data.input.shipping_address
       )
     }).then(() => {
-      // TODO: If I don't use the createStep function here, but instead a direct return statment e.g.:
+      // TODO: If I don't use the createStep function here, but instead use a direct return statement e.g.:
       //    return { country_code: data.region?.countries[0].iso_2 }
-      // The value of shippingAddress will be that return value regardless of the `when`.
+      // The value of shippingAddress will be that return value regardless wether the when condition is met or not
       return createStep("assign-country-code", async (data: any) => {
         return new StepResponse({
           country_code: data.region?.countries[0].iso_2,
