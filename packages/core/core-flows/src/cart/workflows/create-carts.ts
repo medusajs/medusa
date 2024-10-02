@@ -1,19 +1,15 @@
 import {
   AdditionalData,
   CreateCartWorkflowInputDTO,
-  RegionDTO,
 } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
-  StepResponse,
   WorkflowData,
   WorkflowResponse,
   createHook,
-  createStep,
   createWorkflow,
   parallelize,
   transform,
-  when,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
@@ -98,30 +94,8 @@ export const createCartWorkflow = createWorkflow(
       context: pricingContext,
     })
 
-    // If there is only one country in the region, we prepare a shipping address with that country's code.
-    //   This is useful for other operations, such as tax line calculations.
-    // That is if the shipping address is not provided in the input.
-    const shippingAddress = when({ region, input }, (data) => {
-      return !!(
-        data.region?.countries.length === 1 && !data.input.shipping_address
-      )
-    }).then(() => {
-      // TODO: If I don't use the createStep function here, but instead use a direct return statement e.g.:
-      //    return { country_code: data.region?.countries[0].iso_2 }
-      // The value of shippingAddress will be that return value regardless wether the when condition is met or not
-      // TODO: Remove when when-then has been patched
-      return createStep(
-        "assign-country-code",
-        async (stepInput: { region: RegionDTO }) => {
-          return new StepResponse({
-            country_code: stepInput.region?.countries[0].iso_2,
-          })
-        }
-      )({ region })
-    })
-
     const cartInput = transform(
-      { input, region, customerData, salesChannel, shippingAddress },
+      { input, region, customerData, salesChannel },
       (data) => {
         if (!data.region) {
           throw new MedusaError(MedusaError.Types.NOT_FOUND, "No regions found")
@@ -142,8 +116,13 @@ export const createCartWorkflow = createWorkflow(
           data_.sales_channel_id = data.salesChannel.id
         }
 
-        if (data.shippingAddress && !data.input.shipping_address) {
-          data_.shipping_address = data.shippingAddress
+        // If there is only one country in the region, we prepare a shipping address with that country's code.
+        if (!data.input.shipping_address) {
+          if (data.region.countries.length === 1) {
+            data_.shipping_address = {
+              country_code: data.region.countries[0].iso_2,
+            }
+          }
         }
 
         return data_

@@ -64,8 +64,6 @@ export const wrapProductsWithTaxPrices = async <T>(
     return
   }
 
-  console.log("Tax context: ", req.taxContext)
-
   const taxService = req.scope.resolve(Modules.TAX)
 
   const taxRates = (await taxService.getTaxLines(

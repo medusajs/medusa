@@ -78,19 +78,12 @@ export const updateCartWorkflow = createWorkflow(
         }
 
         // When the region is updated, we do a few things:
-        // - If the shipping address country code is provided, we need to make sure the country is in the region
-        //   - If not, we throw
-        // - If the shipping address is not provided
-        //   - Clear the shipping address if the region has more than one country
-        //   - Set the country code if the region has only one country
-        const regionIsNew = !!(
-          data.cartToUpdate.region?.id &&
-          data.region.id !== data.cartToUpdate.region?.id
-        )
+        // - We need to make sure the provided shipping address country code is in the new region
+        // - We clear the shipping address if the new region has more than one country
+        const regionIsNew = data.region?.id !== data.cartToUpdate.region?.id
         const shippingAddress = data.input.shipping_address
 
         if (shippingAddress?.country_code) {
-          // If shipping address with country is provided, we need to make sure the country is in the region
           const country = data.region.countries.find(
             (c) => c.iso_2 === shippingAddress.country_code
           )
