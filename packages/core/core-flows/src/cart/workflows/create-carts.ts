@@ -1,6 +1,7 @@
 import {
   AdditionalData,
   CreateCartWorkflowInputDTO,
+  RegionDTO,
 } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
@@ -108,11 +109,15 @@ export const createCartWorkflow = createWorkflow(
       // TODO: If I don't use the createStep function here, but instead use a direct return statement e.g.:
       //    return { country_code: data.region?.countries[0].iso_2 }
       // The value of shippingAddress will be that return value regardless wether the when condition is met or not
-      return createStep("assign-country-code", async (data: any) => {
-        return new StepResponse({
-          country_code: data.region?.countries[0].iso_2,
-        })
-      })({ region })
+      // TODO: Remove when when-then has been patched
+      return createStep(
+        "assign-country-code",
+        async (stepInput: { region: RegionDTO }) => {
+          return new StepResponse({
+            country_code: stepInput.region?.countries[0].iso_2,
+          })
+        }
+      )({ region })
     })
 
     const cartInput = transform(
