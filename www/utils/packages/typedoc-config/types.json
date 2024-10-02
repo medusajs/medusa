@@ -2,5 +2,10 @@
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
     "../../../../packages/core/types/tsconfig.json"
+  ],
+  "include": ["../../../../packages/core/types/src"],
+  "exclude": [
+    "../../../../packages/core/types/dist", 
+    "../../../../packages/core/types/node_modules"
   ]
 }

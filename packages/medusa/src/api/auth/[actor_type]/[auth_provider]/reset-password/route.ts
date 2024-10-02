@@ -4,13 +4,14 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
+import { ResetPasswordRequestType } from "../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<ResetPasswordRequestType>,
   res: MedusaResponse
 ) => {
   const { auth_provider, actor_type } = req.params
-  const { identifier } = req.body
+  const { identifier } = req.validatedBody
 
   const { http } = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE

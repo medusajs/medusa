@@ -31,7 +31,7 @@ class OasSchemaHelper {
   private schemas: Map<string, OpenApiSchema>
   protected schemaRefPrefix = "#/components/schemas/"
   protected formatter: Formatter
-  private MAX_LEVEL = 5
+  private MAX_LEVEL = 7
   /**
    * The path to the directory holding the base YAML files.
    */
@@ -356,7 +356,10 @@ class OasSchemaHelper {
     return name
       .replace("DTO", "")
       .replace(this.schemaRefPrefix, "")
-      .replace(/(?<!(AdminProduct|CreateProduct))Type$/, "")
+      .replace(
+        /(?<!(AdminProduct|CreateProduct|StoreShippingOption|AdminShippingOption))Type$/,
+        ""
+      )
   }
 
   /**

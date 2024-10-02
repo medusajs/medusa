@@ -12,7 +12,7 @@ const workflowsOptions: FormattingOptionsType = {
   },
   "^modules/workflows/page\\.mdx": {
     reflectionDescription:
-      "This section of the documentation provides a reference to the utility functions of the `@medusajs/workflows-sdk` package.",
+      "This section of the documentation provides a reference to the utility functions of the `@medusajs/framework/workflows-sdk` package.",
     reflectionGroups: {
       Namespaces: false,
       Enumerations: false,
@@ -32,7 +32,7 @@ const workflowsOptions: FormattingOptionsType = {
   "^workflows/functions": {
     maxLevel: 1,
     reflectionDescription:
-      "This documentation provides a reference to the `{{alias}}` {{kind}}. It belongs to the `@medusajs/workflows-sdk` package.",
+      "This documentation provides a reference to the `{{alias}}` {{kind}}. It belongs to the `@medusajs/framework/workflows-sdk` package.",
     frontmatterData: {
       slug: "/references/workflows/{{alias}}",
       sidebar_label: "{{alias}}",

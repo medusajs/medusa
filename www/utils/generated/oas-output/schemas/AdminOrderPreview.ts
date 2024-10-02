@@ -7,19 +7,18 @@
  *   - return_requested_total
  *   - order_change
  *   - currency_code
- *   - version
  *   - id
+ *   - created_at
+ *   - updated_at
+ *   - email
+ *   - version
  *   - region_id
  *   - customer_id
  *   - sales_channel_id
- *   - email
  *   - payment_collections
  *   - payment_status
  *   - fulfillment_status
  *   - summary
- *   - metadata
- *   - created_at
- *   - updated_at
  *   - original_item_total
  *   - original_item_subtotal
  *   - original_item_tax_total
@@ -48,7 +47,7 @@
  *     title: return_requested_total
  *     description: The total of the requested return.
  *   order_change:
- *     $ref: "#/components/schemas/BaseOrderChange"
+ *     $ref: "#/components/schemas/AdminOrderChange"
  *   items:
  *     type: array
  *     description: The order's items.
@@ -178,8 +177,8 @@
  *               description: Whether the item's price includes taxes.
  *             compare_at_unit_price:
  *               type: number
- *               title: The original price of the item before a promotion or sale.
- *               description: The 
+ *               title: compare_at_unit_price
+ *               description: The original price of the item before a promotion or sale.
  *             unit_price:
  *               type: number
  *               title: unit_price
@@ -493,7 +492,7 @@
  *     type: array
  *     description: The order's fulfillments.
  *     items:
- *       $ref: "#/components/schemas/BaseOrderFulfillment"
+ *       $ref: "#/components/schemas/AdminOrderFulfillment"
  *   fulfillment_status:
  *     type: string
  *     description: The order's fulfillment status.

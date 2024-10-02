@@ -2,5 +2,10 @@
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
     "../../../../packages/modules/stock-location-next/tsconfig.json"
+  ],
+  "include": ["../../../../packages/modules/stock-location-next/src"],
+  "exclude": [
+    "../../../../packages/modules/stock-location-next/dist", 
+    "../../../../packages/modules/stock-location-next/node_modules"
   ]
 }

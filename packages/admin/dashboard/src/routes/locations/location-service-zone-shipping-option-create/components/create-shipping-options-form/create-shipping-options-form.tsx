@@ -62,25 +62,29 @@ export function CreateShippingOptionsForm({
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
-        const amount = value ? castNumber(value) : undefined
+        if (value === "" || value === undefined) {
+          return undefined
+        }
 
         return {
           currency_code: code,
-          amount: amount,
+          amount: castNumber(value),
         }
       })
-      .filter((o) => !!o.amount) as { currency_code: string; amount: number }[]
+      .filter((o) => !!o) as { currency_code: string; amount: number }[]
 
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
-        const amount = value ? castNumber(value) : undefined
+        if (value === "" || value === undefined) {
+          return undefined
+        }
 
         return {
           region_id,
-          amount: amount,
+          amount: castNumber(value),
         }
       })
-      .filter((o) => !!o.amount) as { region_id: string; amount: number }[]
+      .filter((o) => !!o) as { region_id: string; amount: number }[]
 
     await mutateAsync(
       {

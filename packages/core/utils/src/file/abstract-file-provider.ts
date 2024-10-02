@@ -11,8 +11,8 @@ import { FileTypes, IFileProvider } from "@medusajs/types"
  * #### Example
  *
  * ```ts
- * import { Logger } from "@medusajs/types"
- * import { AbstractFileProviderService } from "@medusajs/utils"
+ * import { Logger } from "@medusajs/framework/types"
+ * import { AbstractFileProviderService } from "@medusajs/framework/utils"
  *
  * type InjectedDependencies = {
  *   logger: Logger

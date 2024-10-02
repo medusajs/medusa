@@ -311,10 +311,8 @@ function wrapConditionalStep(
  * @example
  * import {
  *   createStep,
- *   StepResponse,
- *   StepExecutionContext,
- *   WorkflowData
- * } from "@medusajs/workflows-sdk"
+ *   StepResponse
+ * } from "@medusajs/framework/workflows-sdk"
  *
  * interface CreateProductInput {
  *   title: string

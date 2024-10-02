@@ -8,7 +8,31 @@ import {
   MedusaResponse,
 } from "../../../../types/routing"
 import { refetchShippingOption } from "../helpers"
-import { AdminUpdateShippingOptionType } from "../validators"
+import {
+  AdminGetShippingOptionParamsType,
+  AdminUpdateShippingOptionType,
+} from "../validators"
+import { MedusaError } from "@medusajs/framework/utils"
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest<AdminGetShippingOptionParamsType>,
+  res: MedusaResponse<HttpTypes.AdminShippingOptionResponse>
+) => {
+  const shippingOption = await refetchShippingOption(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  if (!shippingOption) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Shipping Option with id: ${req.params.id} not found`
+    )
+  }
+
+  res.json({ shipping_option: shippingOption })
+}
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminUpdateShippingOptionType>,

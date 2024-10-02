@@ -1,7 +1,7 @@
 /**
  * @schema AdminArchiveOrder
  * type: object
- * description: SUMMARY
+ * description: The archive details.
  * x-schemaName: AdminArchiveOrder
  * required:
  *   - order_id

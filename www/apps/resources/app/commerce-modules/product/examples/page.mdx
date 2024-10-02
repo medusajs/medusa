@@ -15,8 +15,8 @@ In this guide, you’ll find common examples of how you can use the Product Modu
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IProductModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
@@ -54,7 +54,7 @@ export async function POST(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeProductModule } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/medusa/product"
 
 export async function POST(request: Request) {
   const productModuleService = await initializeProductModule()
@@ -96,8 +96,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IProductModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
@@ -116,7 +116,7 @@ export async function GET(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeProductModule } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/medusa/product"
 
 export async function GET(request: Request) {
   const productModuleService = await initializeProductModule()
@@ -139,8 +139,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IProductModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
@@ -159,7 +159,7 @@ export async function GET(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeProductModule } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/medusa/product"
 
 export async function GET(
   request: Request,
@@ -186,8 +186,8 @@ export async function GET(
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IProductModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
@@ -208,7 +208,7 @@ export async function GET(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeProductModule } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/medusa/product"
 
 export async function GET(request: Request) {
   const productModuleService = await initializeProductModule()
@@ -233,8 +233,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IProductModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
@@ -253,7 +253,7 @@ export async function POST(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeProductModule } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/medusa/product"
 
 export async function GET(request: Request) {
   const productModuleService = await initializeProductModule()
@@ -276,8 +276,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { IProductModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const productModuleService: IProductModuleService = request.scope.resolve(
@@ -298,7 +298,7 @@ export async function POST(request: MedusaRequest, res: MedusaResponse) {
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeProductModule } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/medusa/product"
 
 export async function GET(
   request: Request,

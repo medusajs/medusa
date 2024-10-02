@@ -91,6 +91,31 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
   const { mutateAsync, isPending } = useCreateReservationItem()
 
   const handleSubmit = form.handleSubmit(async (data) => {
+    const min = 1
+    const max = selectedLocationLevel?.available_quantity
+      ? selectedLocationLevel.available_quantity
+      : 0
+
+    if (!selectedLocationLevel?.available_quantity) {
+      form.setError("quantity", {
+        type: "manual",
+        message: t("inventory.reservation.errors.noAvaliableQuantity"),
+      })
+
+      return
+    }
+
+    if (data.quantity < min || data.quantity > max) {
+      form.setError("quantity", {
+        type: "manual",
+        message: t("inventory.reservation.errors.quantityOutOfRange", {
+          max: max,
+        }),
+      })
+
+      return
+    }
+
     await mutateAsync(data, {
       onSuccess: ({ reservation }) => {
         toast.success(t("inventory.reservation.successToast"))
@@ -219,12 +244,6 @@ export const ReservationCreateForm = (props: { inventoryItemId?: string }) => {
                           placeholder={t(
                             "inventory.reservation.quantityPlaceholder"
                           )}
-                          min={1}
-                          max={
-                            selectedLocationLevel?.available_quantity
-                              ? selectedLocationLevel.available_quantity
-                              : 0
-                          }
                           value={value || ""}
                           onChange={(e) => {
                             const value = e.target.value

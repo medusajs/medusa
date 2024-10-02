@@ -10,27 +10,15 @@ The Local Notification Module Provider simulates sending a notification, but onl
 
 ---
 
-## Install the Local Notification Module
+## Register the Local Notification Module
 
 <Note>
 
-The Local Notification Module Provider is installed by default in your application.
+The Local Notification Module Provider is registered by default in your application. It's configured to run on the `feed` channel.
 
 </Note>
 
-To install the Local Notification Module Provider, run the following command in the directory of your Medusa application:
-
-```bash npm2yarn
-npm install @medusajs/notification-local@preview
-```
-
-<Note>
-
-Make sure that the version added in `package.json` is `preview` to avoid errors with installation and updates in the future.
-
-</Note>
-
-Next, add the module into the `providers` array of the Notification Module:
+Add the module into the `providers` array of the Notification Module:
 
 <Note>
 
@@ -39,7 +27,7 @@ Only one provider can be defined for a channel.
 </Note>
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -47,12 +35,12 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.NOTIFICATION]: {
-      resolve: "@medusajs/notification",
+      resolve: "@medusajs/medusa/notification",
       options: {
         providers: [
           // ...
           {
-            resolve: "@medusajs/notification-local",
+            resolve: "@medusajs/medusa/notification-local",
             id: "local",
             options: {
               channels: ["email"],

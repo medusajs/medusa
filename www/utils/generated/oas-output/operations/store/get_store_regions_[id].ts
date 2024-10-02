@@ -43,7 +43,7 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The region's details.
  *           required:
  *             - region
  *           properties:
