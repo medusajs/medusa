@@ -2,13 +2,13 @@ import { useParams } from "react-router-dom"
 
 import { MetadataForm } from "../../../components/forms/metadata-form"
 import { RouteDrawer } from "../../../components/modals"
-import { useUpdateUser, useUser } from "../../../hooks/api"
+import { useRegion, useUpdateRegion } from "../../../hooks/api"
 
-export const UserMetadata = () => {
+export const RegionMetadata = () => {
   const { id } = useParams()
 
-  const { user, isPending, isError, error } = useUser(id)
-  const { mutateAsync, isPending: isMutating } = useUpdateUser(id)
+  const { region, isPending, isError, error } = useRegion(id)
+  const { mutateAsync, isPending: isMutating } = useUpdateRegion(id)
 
   if (isError) {
     throw error
@@ -20,7 +20,7 @@ export const UserMetadata = () => {
         isPending={isPending}
         isMutating={isMutating}
         hook={mutateAsync}
-        metadata={user?.metadata}
+        metadata={region?.metadata}
       />
     </RouteDrawer>
   )

@@ -1,1 +1,1 @@
-export { UserMetadata as Component } from "./user-metadata.tsx"
+export { UserMetadata as Component } from "./user-metadata"
