@@ -170,7 +170,7 @@ class DigitalProductModuleService extends MedusaService({
 export default DigitalProductModuleService
 ```
 
-The service extends the [service factory](https://docs.medusajs.com/v2/advanced-development/modules/service-factory), which provides basic data-management features.
+The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
 
 ### Create Module Definition
 
@@ -255,7 +255,7 @@ This defines a link between `DigitalProductOrder` and the Order Module’s `Orde
 
 ### Further Read
 
-- [How to Define Module Links](!docs!/advanced-development/modules/module-links)
+- [How to Define Module Links](!docs!/advanced-development/module-links)
 
 ---
 
@@ -362,7 +362,7 @@ Make sure to replace `{token}` with the JWT token you retrieved.
 ### Further Reads
 
 - [How to Create an API Route](!docs!/basics/api-routes)
-- [Learn more about Query](!docs!/advanced-development/modules/query)
+- [Learn more about Query](!docs!/advanced-development/module-links/query)
 
 ---
 
@@ -611,7 +611,7 @@ You’ll test out the workflow in the next section.
 
 - [How to Create a Workflow](!docs!/basics/workflows)
 - [What is the Compensation Function](!docs!/advanced-development/workflows/compensation-function)
-- [Learn more about the remote link function](!docs!/advanced-development/modules/remote-link)
+- [Learn more about the remote link function](!docs!/advanced-development/module-links/remote-link)
 
 ---
 
@@ -667,7 +667,7 @@ The route handler imports a validation schema from a `validation-schema` file. S
 ```ts title="src/api/validation-schemas.ts"
 import { 
   AdminCreateProduct,
-} from "@medusajs/medusa/dist/api/admin/products/validators"
+} from "@medusajs/medusa/api/admin/products/validators"
 import { z } from "zod"
 import { MediaType } from "../modules/digital-product/types"
 
@@ -690,7 +690,7 @@ Finally, create the file `src/api/middlewares.ts` with the following content:
 import { defineMiddlewares } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
-} from "@medusajs/medusa/dist/api/utils/validate-body"
+} from "@medusajs/medusa/api/utils/validate-body"
 import { createDigitalProductsSchema } from "./validation-schemas"
 
 export default defineMiddlewares({
@@ -2312,7 +2312,7 @@ In this section, you’ll customize the [Next.js Starter storefront](../../../..
 In `src/types/global.ts`, add the following types that you’ll use in your customizations:
 
 ```ts title="src/types/global.ts"
-import { BaseProductVariant } from "@medusajs/framework/types/dist/http/product/common"
+import { BaseProductVariant } from "@medusajs/framework/types/http/product/common"
 
 // ...
 

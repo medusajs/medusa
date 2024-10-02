@@ -401,7 +401,7 @@ This defines a link between the Delivery Module’s `delivery` data model and th
 
 ### Further Reads
 
-- [How to Define Links](!docs!/advanced-development/modules/module-links)
+- [How to Define Links](!docs!/advanced-development/module-links)
 
 ---
 
@@ -688,7 +688,7 @@ This returns the list of restaurants in the response.
 
 ### Further Reads
 
-- [What is and how to use it](!docs!/advanced-development/modules/query)
+- [What is and how to use it](!docs!/advanced-development/module-links/query)
 - [How to Retrieve Prices for Product Variants](../../../../commerce-modules/product/guides/price/page.mdx)
 
 ---
@@ -1314,7 +1314,7 @@ Create the file `src/api/restaurants/[id]/products/route.ts` with the following 
 import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { 
   AdminCreateProduct,
-} from "@medusajs/medusa/dist/api/admin/products/validators"
+} from "@medusajs/medusa/api/admin/products/validators"
 import { z } from "zod"
 import { 
   createRestaurantProductsWorkflow,
