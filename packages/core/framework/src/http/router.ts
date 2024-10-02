@@ -19,7 +19,7 @@ import { extname, join, parse, sep } from "path"
 import { configManager } from "../config"
 import { logger } from "../logger"
 import { authenticate, AuthType, errorHandler } from "./middlewares"
-import { ensurePublishableApiKey } from "./middlewares/ensure-publishable-api-key"
+import { ensurePublishableApiKeyMiddleware } from "./middlewares/ensure-publishable-api-key"
 import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
@@ -589,16 +589,14 @@ export class ApiRoutesLoader {
    * Applies middleware that checks if a valid publishable key is set on store request
    */
   applyStorePublishableKeyMiddleware(route: string) {
-    let ensurePublishableApiKeyMiddleware = ensurePublishableApiKey()
+    let middleware =
+      ensurePublishableApiKeyMiddleware as unknown as RequestHandler
 
     if (ApiRoutesLoader.traceMiddleware) {
-      ensurePublishableApiKeyMiddleware = ApiRoutesLoader.traceMiddleware(
-        ensurePublishableApiKeyMiddleware,
-        { route: route }
-      )
+      middleware = ApiRoutesLoader.traceMiddleware(middleware, { route: route })
     }
 
-    this.#router.use(route, ensurePublishableApiKeyMiddleware)
+    this.#router.use(route, middleware)
   }
 
   /**
