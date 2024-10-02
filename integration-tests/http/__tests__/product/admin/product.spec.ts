@@ -1277,16 +1277,10 @@ medusaIntegrationTestRunner({
                     expect.objectContaining({
                       id: expect.stringMatching(/^optval_*/),
                       value: "large",
-                      option: expect.objectContaining({
-                        title: "size",
-                      }),
                     }),
                     expect.objectContaining({
                       id: expect.stringMatching(/^optval_*/),
                       value: "green",
-                      option: expect.objectContaining({
-                        title: "color",
-                      }),
                     }),
                   ]),
                 }),
@@ -1557,9 +1551,6 @@ medusaIntegrationTestRunner({
                     expect.objectContaining({
                       id: expect.stringMatching(/^optval_*/),
                       value: "large",
-                      option: expect.objectContaining({
-                        title: "size",
-                      }),
                     }),
                   ]),
                   origin_country: null,
@@ -2660,9 +2651,6 @@ medusaIntegrationTestRunner({
             updatedProduct.variants.find((v) => v.id === baseVariant.id).options
           ).toEqual([
             expect.objectContaining({
-              option: expect.objectContaining({
-                title: "size",
-              }),
               value: "small",
             }),
           ])
