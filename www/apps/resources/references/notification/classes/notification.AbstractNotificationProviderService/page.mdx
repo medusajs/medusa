@@ -44,8 +44,8 @@ If you're creating a client or establishing a connection with a third-party serv
 #### Example
 
 ```ts
-import { AbstractNotificationProviderService } from "@medusajs/framework/utils"
-import { Logger } from "@medusajs/framework/types"
+import { AbstractNotificationProviderService } from "@medusajs/utils"
+import { Logger } from "@medusajs/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -103,7 +103,7 @@ This method is used to send a notification using the third-party provider or you
 import {
   ProviderSendNotificationDTO,
   ProviderSendNotificationResultsDTO
-} from "@medusajs/framework/types"
+} from "@medusajs/types"
 
 class MyNotificationProviderService extends AbstractNotificationProviderService {
   // ...
@@ -167,7 +167,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.NOTIFICATION]: {
-      resolve: "@medusajs/notification",
+      resolve: "@medusajs/framework/notification",
       options: {
         providers: [
           {

@@ -20,6 +20,7 @@ function LocationsFulfillmentProvidersSection({
   const { fulfillment_providers } = useFulfillmentProviders({
     stock_location_id: location.id,
     fields: "id",
+    is_enabled: true,
   })
 
   return (
