@@ -11,36 +11,21 @@
  *       $ref: "#/components/schemas/StoreProductOptionValue"
  *   product:
  *     $ref: "#/components/schemas/StoreProduct"
- *   id:
- *     type: string
- *     title: id
- *     description: The variant's ID.
- *   metadata:
- *     type: object
- *     description: The variant's metadata, can hold custom key-value pairs.
- *   created_at:
- *     type: string
- *     format: date-time
- *     title: created_at
- *     description: The date the variant was created.
- *   updated_at:
- *     type: string
- *     format: date-time
- *     title: updated_at
- *     description: The date the variant was updated.
+ *   length:
+ *     type: number
+ *     title: length
+ *     description: The variant's length.
  *   title:
  *     type: string
  *     title: title
  *     description: The variant's title.
- *   product_id:
+ *   metadata:
+ *     type: object
+ *     description: The variant's metadata, can hold custom key-value pairs.
+ *   id:
  *     type: string
- *     title: product_id
- *     description: The ID of the product that the variant belongs to.
- *   deleted_at:
- *     type: string
- *     format: date-time
- *     title: deleted_at
- *     description: The date the variant was deleted.
+ *     title: id
+ *     description: The variant's ID.
  *   width:
  *     type: number
  *     title: width
@@ -49,10 +34,6 @@
  *     type: number
  *     title: weight
  *     description: The variant's weight.
- *   length:
- *     type: number
- *     title: length
- *     description: The variant's length.
  *   height:
  *     type: number
  *     title: height
@@ -73,6 +54,25 @@
  *     type: string
  *     title: material
  *     description: The variant's material.
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *     title: created_at
+ *     description: The date the variant was created.
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *     title: updated_at
+ *     description: The date the variant was updated.
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *     title: deleted_at
+ *     description: The date the variant was deleted.
+ *   product_id:
+ *     type: string
+ *     title: product_id
+ *     description: The ID of the product this variant belongs to.
  *   sku:
  *     type: string
  *     title: sku
@@ -115,19 +115,19 @@
  *     $ref: "#/components/schemas/BaseCalculatedPriceSet"
  * required:
  *   - options
- *   - id
- *   - created_at
- *   - updated_at
+ *   - length
  *   - title
- *   - deleted_at
+ *   - id
  *   - width
  *   - weight
- *   - length
  *   - height
  *   - origin_country
  *   - hs_code
  *   - mid_code
  *   - material
+ *   - created_at
+ *   - updated_at
+ *   - deleted_at
  *   - sku
  *   - barcode
  *   - ean

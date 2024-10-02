@@ -1,7 +1,7 @@
 /**
  * @schema AdminFulfillmentSetResponse
  * type: object
- * description: SUMMARY
+ * description: The fulfillment set's details.
  * x-schemaName: AdminFulfillmentSetResponse
  * required:
  *   - fulfillment_set

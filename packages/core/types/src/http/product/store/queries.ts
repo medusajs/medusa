@@ -11,6 +11,6 @@ export interface StoreProductParams extends Omit<BaseProductListParams, "tags" |
   // The region ID and currency_code are not params, but are used for the pricing context. Maybe move to separate type definition.
   region_id?: string
   currency_code?: string
-  variants?: StoreProductVariantParams
+  variants?: Pick<StoreProductVariantParams, "options">
   province?: string
 }

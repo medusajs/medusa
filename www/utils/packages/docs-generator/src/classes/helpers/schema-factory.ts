@@ -98,6 +98,41 @@ class SchemaFactory {
       },
     },
   }
+
+  /**
+   * Schemas used only for query types
+   */
+  private schemasForQuery: Record<string, OpenApiSchema> = {
+    expand: {
+      type: "string",
+      title: "expand",
+      description:
+        "Comma-separated relations that should be expanded in the returned data.",
+    },
+    fields: {
+      type: "string",
+      title: "fields",
+      description:
+        "Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.",
+    },
+    offset: {
+      type: "number",
+      title: "offset",
+      description: "The number of items to skip when retrieving a list.",
+    },
+    limit: {
+      type: "number",
+      title: "limit",
+      description: "Limit the number of items returned in the list.",
+    },
+    order: {
+      type: "string",
+      title: "order",
+      description:
+        "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+    },
+  }
+
   /**
    * Schemas used only for response types.
    */
@@ -131,7 +166,9 @@ class SchemaFactory {
     const schemasFactory =
       type === "response"
         ? this.mergeSchemas(this.schemasForResponse, this.schemas)
-        : this.cloneSchema(this.schemas)
+        : type === "query"
+          ? this.mergeSchemas(this.schemasForQuery, this.schemas)
+          : this.cloneSchema(this.schemas)
     const key = Object.hasOwn(schemasFactory, name)
       ? name
       : additionalData?.title || ""

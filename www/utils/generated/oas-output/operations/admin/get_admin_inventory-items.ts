@@ -402,7 +402,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of inventory items.
  *               required:
  *                 - limit
  *                 - offset
@@ -411,17 +411,17 @@
  *                 limit:
  *                   type: number
  *                   title: limit
- *                   description: The inventory item's limit.
+ *                   description: The maximum number of items returned.
  *                 offset:
  *                   type: number
  *                   title: offset
- *                   description: The inventory item's offset.
+ *                   description: The number of items skipped before retrieving the returned items.
  *                 count:
  *                   type: number
  *                   title: count
- *                   description: The inventory item's count.
+ *                   description: The total number of items.
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of inventory items.
  *               required:
  *                 - inventory_items
  *               properties:
