@@ -1,23 +1,25 @@
+import { Query } from "@medusajs/types"
+import {
+  ApiKeyType,
+  ContainerRegistrationKeys,
+  isPresent,
+  MedusaError,
+  PUBLISHABLE_KEY_HEADER,
+} from "@medusajs/utils"
+import { RequestHandler } from "express"
 import {
   MedusaNextFunction,
   MedusaResponse,
   MedusaStoreRequest,
-} from "@medusajs/framework/http"
-import {
-  ApiKeyType,
-  isPresent,
-  MedusaError,
-  PUBLISHABLE_KEY_HEADER,
-} from "@medusajs/framework/utils"
-import { refetchEntity } from "../../api/utils/refetch-entity"
+} from "../types"
 
 export function ensurePublishableApiKey() {
-  return async (
+  const middleware = async (
     req: MedusaStoreRequest,
     _res: MedusaResponse,
     next: MedusaNextFunction
   ) => {
-    const publishableApiKey = req.get("x-publishable-api-key")
+    const publishableApiKey = req.get(PUBLISHABLE_KEY_HEADER)
 
     if (!isPresent(publishableApiKey)) {
       try {
@@ -30,10 +32,14 @@ export function ensurePublishableApiKey() {
       }
     }
 
-    // TODO: Replace this with the fancy new gql fetch
-    const apiKey = await refetchEntity(
-      "api_key",
-      {
+    const query: Query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+    const {
+      data: [apiKey],
+    } = await query.graph({
+      entity: "api_key",
+      fields: ["id", "token", "sales_channels_link.sales_channel_id"],
+      filters: {
         token: publishableApiKey,
         type: ApiKeyType.PUBLISHABLE,
         $or: [
@@ -41,9 +47,7 @@ export function ensurePublishableApiKey() {
           { revoked_at: { $gt: new Date() } },
         ],
       },
-      req.scope,
-      ["id", "token", "sales_channels_link.sales_channel_id"]
-    )
+    })
 
     if (!apiKey) {
       try {
@@ -65,4 +69,6 @@ export function ensurePublishableApiKey() {
 
     return next()
   }
+
+  return middleware as unknown as RequestHandler
 }
