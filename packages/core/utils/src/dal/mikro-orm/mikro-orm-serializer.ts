@@ -64,20 +64,28 @@ function isPopulated<T extends object>(
 }
 
 /**
- * Customer property filtering for the serialization which takes into account the parent entity to filter out circular references if configured for.
+ * Custom property filtering for the serialization which takes into account circular references to not return them.
+ * @param entity
  * @param propName
  * @param meta
  * @param options
- * @param parent
+ * @param serializedContext
  */
-function filterEntityPropToSerialize(
-  propName: string,
-  meta: EntityMetadata,
+function filterEntityPropToSerialize({
+  entity,
+  propName,
+  meta,
+  options,
+  serializedContext,
+}: {
+  entity: any
+  propName: string
+  meta: EntityMetadata
   options: SerializeOptions<object, any> & {
     preventCircularRef?: boolean
-  } = {},
-  parent?: object
-): boolean {
+  }
+  serializedContext: SerializationContext<any>
+}): boolean {
   const isVisibleRes = isVisible(meta, propName, options)
   const prop = meta.properties[propName]
 
@@ -86,20 +94,19 @@ function filterEntityPropToSerialize(
     prop &&
     options.preventCircularRef &&
     isVisibleRes &&
-    parent &&
     prop.reference !== ReferenceType.SCALAR
   ) {
     // mapToPk would represent a foreign key and we want to keep them
-    return !!prop.mapToPk || parent.constructor.name !== prop.type
+    return !!prop.mapToPk || !serializedContext.visited.has(entity[propName])
   }
+
   return isVisibleRes
 }
 
 export class EntitySerializer {
   static serialize<T extends object, P extends string = never>(
     entity: T,
-    options: SerializeOptions<T, P> & { preventCircularRef?: boolean } = {},
-    parent?: object
+    options: SerializeOptions<T, P> & { preventCircularRef?: boolean } = {}
   ): EntityDTO<Loaded<T, P>> {
     const wrapped = helper(entity)
     const meta = wrapped.__meta
@@ -129,7 +136,13 @@ export class EntitySerializer {
     ;[...keys]
       /** Medusa Custom properties filtering **/
       .filter((prop) =>
-        filterEntityPropToSerialize(prop, meta, options, parent)
+        filterEntityPropToSerialize({
+          entity,
+          propName: prop,
+          meta,
+          options,
+          serializedContext: root,
+        })
       )
       .map((prop) => {
         const cycle = root.visit(meta.className, prop)
@@ -325,9 +338,7 @@ export class EntitySerializer {
     if (expand) {
       return this.serialize(
         child,
-        this.extractChildOptions(options, prop),
-        /** passing the entity as the parent for circular filtering **/
-        entity
+        this.extractChildOptions(options, prop)
       ) as T[keyof T]
     }
 
@@ -349,12 +360,7 @@ export class EntitySerializer {
 
     return col.getItems(false).map((item) => {
       if (isPopulated(item, prop, options)) {
-        return this.serialize(
-          item,
-          this.extractChildOptions(options, prop),
-          /** passing the entity as the parent for circular filtering **/
-          entity
-        )
+        return this.serialize(item, this.extractChildOptions(options, prop))
       }
 
       return helper(item).getPrimaryKey()
