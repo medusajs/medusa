@@ -62,7 +62,7 @@ const TagOperationParametersDescription = ({
     default:
       typeDescription = (
         <>
-          {schema.type}
+          {!schema.type ? "any" : schema.type}
           {schema.nullable ? ` or null` : ""}
           {schema.format ? ` <${schema.format}>` : ""}
         </>
