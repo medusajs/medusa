@@ -143,6 +143,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/commerce-modules/auth/reset-password",
                 title: "Handle Password Reset Event",
               },
+              {
+                type: "link",
+                path: "/references/auth/provider",
+                title: "Create Auth Provider Module",
+              },
             ],
           },
           {
@@ -170,11 +175,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "sub-category",
             title: "References",
             children: [
-              {
-                type: "link",
-                path: "/references/auth/provider",
-                title: "Create Auth Provider Module",
-              },
               {
                 type: "link",
                 path: "/references/auth",
@@ -465,13 +465,19 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "sub-category",
-            title: "References",
+            title: "Guides",
             children: [
               {
                 type: "link",
                 path: "/references/fulfillment/provider",
                 title: "Create Fulfillment Provider Module",
               },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "References",
+            children: [
               {
                 type: "link",
                 path: "/references/fulfillment",
@@ -752,17 +758,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/commerce-modules/payment/payment-flow",
                 title: "Accept Payment Flow",
               },
+              {
+                type: "link",
+                path: "/references/payment/provider",
+                title: "Create Payment Provider",
+              },
             ],
           },
           {
             type: "sub-category",
             title: "References",
             children: [
-              {
-                type: "link",
-                path: "/references/payment/provider",
-                title: "Payment Provider Reference",
-              },
               {
                 type: "link",
                 path: "/references/payment",
@@ -1344,13 +1350,19 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
           {
             type: "sub-category",
-            title: "References",
+            title: "Guides",
             children: [
               {
                 type: "link",
                 path: "/references/tax/provider",
                 title: "Tax Provider Reference",
               },
+            ],
+          },
+          {
+            type: "sub-category",
+            title: "References",
+            children: [
               {
                 type: "link",
                 path: "/references/tax",

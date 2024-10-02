@@ -1391,31 +1391,33 @@ class OasKindGenerator extends FunctionKindGenerator {
       case itemType.isUnion():
         // if it's a union of literal types,
         // consider it an enum
-        const allLiteral = (itemType as ts.UnionType).types.every((unionType) =>
+        const cleanedUpTypes = this.typesHelper.cleanUpTypes(
+          (itemType as ts.UnionType).types
+        )
+        const allLiteral = cleanedUpTypes.every((unionType) =>
           unionType.isLiteral()
         )
+
         if (allLiteral) {
           return {
             type: "string",
             description,
-            enum: (itemType as ts.UnionType).types.map(
+            enum: cleanedUpTypes.map(
               (unionType) => (unionType as ts.LiteralType).value
             ),
           }
         }
 
-        const oneOfItems = this.typesHelper
-          .cleanUpTypes((itemType as ts.UnionType).types)
-          .map((unionType) =>
-            this.typeToSchema({
-              itemType: unionType,
-              level: maybeIncrementLevel(level, "oneOf"),
-              title,
-              descriptionOptions,
-              saveSchema,
-              ...rest,
-            })
-          )
+        const oneOfItems = cleanedUpTypes.map((unionType) =>
+          this.typeToSchema({
+            itemType: unionType,
+            level: maybeIncrementLevel(level, "oneOf"),
+            title,
+            descriptionOptions,
+            saveSchema,
+            ...rest,
+          })
+        )
 
         if (oneOfItems.length === 1) {
           return oneOfItems[0]
@@ -1967,7 +1969,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
-    } else if (!newSchemaObj || !Object.keys(newSchemaObj)) {
+    } else if (!newSchemaObj || !Object.keys(newSchemaObj).length) {
       return undefined
     }
 
