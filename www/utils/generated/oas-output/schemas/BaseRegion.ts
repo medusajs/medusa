@@ -1,7 +1,7 @@
 /**
  * @schema BaseRegion
  * type: object
- * description: The parent's region.
+ * description: The region's details.
  * x-schemaName: BaseRegion
  * required:
  *   - id
