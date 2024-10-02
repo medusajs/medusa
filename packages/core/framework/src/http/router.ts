@@ -19,6 +19,7 @@ import { extname, join, parse, sep } from "path"
 import { configManager } from "../config"
 import { logger } from "../logger"
 import { authenticate, AuthType, errorHandler } from "./middlewares"
+import { ensurePublishableApiKey } from "./middlewares/ensure-publishable-api-key"
 import {
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
@@ -585,6 +586,22 @@ export class ApiRoutesLoader {
   }
 
   /**
+   * Applies middleware that checks if a valid publishable key is set on store request
+   */
+  applyStorePublishableKeyMiddleware(route: string) {
+    let ensurePublishableApiKeyMiddleware = ensurePublishableApiKey()
+
+    if (ApiRoutesLoader.traceMiddleware) {
+      ensurePublishableApiKeyMiddleware = ApiRoutesLoader.traceMiddleware(
+        ensurePublishableApiKeyMiddleware,
+        { route: route }
+      )
+    }
+
+    this.#router.use(route, ensurePublishableApiKeyMiddleware)
+  }
+
+  /**
    * Applies the route middleware on a route. Encapsulates the logic
    * needed to pass the middleware via the trace calls
    */
@@ -670,6 +687,10 @@ export class ApiRoutesLoader {
             credentials: true,
           })
         )
+      }
+
+      if (config.routeType === "store") {
+        this.applyStorePublishableKeyMiddleware(descriptor.route)
       }
 
       // We only apply the auth middleware to store routes to populate the auth context. For actual authentication, users can just reapply the middleware.

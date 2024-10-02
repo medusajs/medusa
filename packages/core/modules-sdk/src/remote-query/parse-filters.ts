@@ -1,8 +1,4 @@
-import {
-  JoinerServiceConfig,
-  JoinerServiceConfigAlias,
-  ModuleJoinerConfig,
-} from "@medusajs/types"
+import { JoinerServiceConfig, ModuleJoinerConfig } from "@medusajs/types"
 import { isObject, isString } from "@medusajs/utils"
 import { MedusaModule } from "../medusa-module"
 
@@ -33,23 +29,23 @@ export function parseAndAssignFilters(
   const joinerConfigs = MedusaModule.getAllJoinerConfigs()
 
   for (const [filterKey, filterValue] of Object.entries(filters)) {
-    let entryAlias!: JoinerServiceConfigAlias
+    // let entryAlias!: JoinerServiceConfigAlias
     let entryJoinerConfig!: JoinerServiceConfig
 
-    const { joinerConfig, alias } = retrieveJoinerConfigFromPropertyName({
+    const { joinerConfig } = retrieveJoinerConfigFromPropertyName({
       entryPoint: entryPoint,
       joinerConfigs,
     })
 
-    entryAlias = alias
+    // entryAlias = alias
     entryJoinerConfig = joinerConfig
 
-    const entryEntity = entitiesMap[entryAlias.entity!]
-    if (!entryEntity) {
-      throw new Error(
-        `Entity ${entryAlias.entity} not found in the public schema of the joiner config from ${entryJoinerConfig.serviceName}`
-      )
-    }
+    // const entryEntity = entitiesMap[entryAlias.entity!]
+    // if (!entryEntity) {
+    //   throw new Error(
+    //     `Entity ${entryAlias.entity} not found in the public schema of the joiner config from ${entryJoinerConfig.serviceName}`
+    //   )
+    // }
 
     if (isObject(filterValue)) {
       for (const [nestedFilterKey, nestedFilterValue] of Object.entries(
