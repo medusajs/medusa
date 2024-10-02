@@ -116,7 +116,7 @@ export const createCartWorkflow = createWorkflow(
     })
 
     const cartInput = transform(
-      { input, region, customerData, salesChannel, shippingAddress, test },
+      { input, region, customerData, salesChannel, shippingAddress },
       (data) => {
         if (!data.region) {
           throw new MedusaError(MedusaError.Types.NOT_FOUND, "No regions found")
