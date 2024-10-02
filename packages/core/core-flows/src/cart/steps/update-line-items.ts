@@ -1,15 +1,17 @@
 import {
+  CartLineItemDTO,
   ICartModuleService,
   UpdateLineItemWithSelectorDTO,
 } from "@medusajs/framework/types"
 import {
-  Modules,
   getSelectsAndRelationsFromObjectArray,
+  Modules,
 } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export interface UpdateLineItemsStepInput {
   id: string
+  existingItems?: CartLineItemDTO[]
   items: UpdateLineItemWithSelectorDTO[]
 }
 
@@ -32,10 +34,12 @@ export const updateLineItemsStep = createStep(
       items.map((item) => item.data)
     )
 
-    const itemsBeforeUpdate = await cartModule.listLineItems(
-      { id: items.map((d) => d.selector.id!) },
-      { select: selects, relations }
-    )
+    const itemsBeforeUpdate =
+      input.existingItems ??
+      (await cartModule.listLineItems(
+        { id: items.map((d) => d.selector.id!) },
+        { select: selects, relations }
+      ))
 
     const updatedItems = items.length
       ? await cartModule.updateLineItems(items)

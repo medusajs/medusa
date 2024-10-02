@@ -3,11 +3,11 @@ import {
   CreateLineItemForCartDTO,
 } from "@medusajs/framework/types"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
@@ -86,6 +86,7 @@ export const addToCartWorkflow = createWorkflow(
 
     const { itemsToCreate = [], itemsToUpdate = [] } = getLineItemActionsStep({
       id: input.cart.id,
+      existingItems: input.cart.items,
       items: lineItems,
     })
 
@@ -105,13 +106,17 @@ export const addToCartWorkflow = createWorkflow(
       }),
       updateLineItemsStep({
         id: input.cart.id,
+        existingItems: input.cart.items,
         items: itemsToUpdate,
       })
     )
 
-    const items = transform({ createdItems, updatedItems }, (data) => {
-      return [...(data.createdItems || []), ...(data.updatedItems || [])]
-    })
+    const items = transform(
+      { createdItems, updatedItems },
+      ({ createdItems = [], updatedItems = [] }) => {
+        return [...createdItems, ...updatedItems]
+      }
+    )
 
     const cart = useRemoteQueryStep({
       entry_point: "cart",
@@ -120,15 +125,16 @@ export const addToCartWorkflow = createWorkflow(
       list: false,
     }).config({ name: "refetch–cart" })
 
-    parallelize(
-      refreshCartShippingMethodsStep({ cart }),
-      updateTaxLinesWorkflow.runAsStep({
-        input: {
-          cart_id: input.cart.id,
-          items,
-        },
-      })
-    )
+    const shippingMethodsLeft = refreshCartShippingMethodsStep({ cart })
+
+    updateTaxLinesWorkflow.runAsStep({
+      input: {
+        cart_id: input.cart.id,
+        cart,
+        shipping_methods: shippingMethodsLeft,
+        items,
+      },
+    })
 
     updateCartPromotionsWorkflow.runAsStep({
       input: {

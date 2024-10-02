@@ -5,15 +5,16 @@ import {
   UpdateLineItemWithSelectorDTO,
 } from "@medusajs/framework/types"
 import {
-  MathBN,
-  Modules,
   deepEqualObj,
   isPresent,
+  MathBN,
+  Modules,
 } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import {createStep, StepResponse} from "@medusajs/framework/workflows-sdk"
 
 export interface GetLineItemActionsStepInput {
   id: string
+  existingItems?: CartLineItemDTO[]
   items: CreateLineItemForCartDTO[]
 }
 
@@ -27,7 +28,7 @@ export const getLineItemActionsStep = createStep(
   async (data: GetLineItemActionsStepInput, { container }) => {
     const cartModule = container.resolve<ICartModuleService>(Modules.CART)
 
-    const existingVariantItems = await cartModule.listLineItems({
+    const existingVariantItems = data.existingItems ?? await cartModule.listLineItems({
       cart_id: data.id,
       variant_id: data.items.map((d) => d.variant_id!),
     })

@@ -3,8 +3,8 @@ import {
   ICartModuleService,
   IFulfillmentModuleService,
 } from "@medusajs/framework/types"
-import { Modules, arrayDifference } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { arrayDifference, Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export interface RefreshCartShippingMethodsStepInput {
   cart: CartDTO
@@ -38,6 +38,8 @@ export const refreshCartShippingMethodsStep = createStep(
       await fulfillmentModule.listShippingOptionsForContext(
         {
           id: shippingOptionIds,
+          // TODO: do we really need to pass all the cart data? in most cases it wont be necessary and it is performance destruction to
+          // fetch everything for nothing in most cases. Maybe we should find a way to be more granular
           context: { ...cart, is_return: "false", enabled_in_store: "true" },
           address: {
             country_code: cart.shipping_address?.country_code,
@@ -61,7 +63,11 @@ export const refreshCartShippingMethodsStep = createStep(
 
     await cartModule.softDeleteShippingMethods(shippingMethodsToDelete)
 
-    return new StepResponse(void 0, shippingMethodsToDelete)
+    const shippingMethodsLeft = shippingMethods.filter(
+      (sm) => !shippingMethodsToDelete.includes(sm.id)
+    )
+
+    return new StepResponse(shippingMethodsLeft, shippingMethodsToDelete)
   },
   async (shippingMethodsToRestore, { container }) => {
     if (shippingMethodsToRestore?.length) {
