@@ -871,6 +871,13 @@ export const RouteMap: RouteObject[] = [
                         "../../routes/sales-channels/sales-channel-add-products"
                       ),
                   },
+                  {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/sales-channels/sales-channel-metadata"
+                      ),
+                  },
                 ],
               },
             ],
