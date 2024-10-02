@@ -5,10 +5,9 @@ import {
   MedusaResponse,
 } from "../../../../../../../types/routing"
 import { refetchEntity } from "../../../../../../utils/refetch-entity"
-import { AdminMarkOrderFulfillmentDeliveredType } from "../../../../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminMarkOrderFulfillmentDeliveredType>,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminOrderResponse>
 ) => {
   const { id: orderId, fulfillment_id: fulfillmentId } = req.params

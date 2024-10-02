@@ -2,5 +2,10 @@
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
     "../../../../packages/modules/currency/tsconfig.json"
+  ],
+  "include": ["../../../../packages/modules/currency/src"],
+  "exclude": [
+    "../../../../packages/modules/currency/dist", 
+    "../../../../packages/modules/currency/node_modules"
   ]
 }

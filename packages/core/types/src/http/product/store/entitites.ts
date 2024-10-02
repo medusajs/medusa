@@ -11,7 +11,7 @@ import {
   ProductStatus,
 } from "../common"
 
-export interface StoreProduct extends Omit<BaseProduct, "categories" | "sales_channels" | "variants" | "options"> {
+export interface StoreProduct extends Omit<BaseProduct, "categories" | "sales_channels" | "variants" | "options" | "collection"> {
   collection?: StoreCollection | null
   categories?: StoreProductCategory[] | null
   variants: StoreProductVariant[] | null
