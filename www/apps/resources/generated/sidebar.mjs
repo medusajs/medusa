@@ -8761,7 +8761,7 @@ export const generatedSidebar = [
         "isPathHref": true,
         "type": "link",
         "path": "/medusa-container-resources",
-        "title": "Medusa Container Resources",
+        "title": "Container Dependencies",
         "children": []
       },
       {

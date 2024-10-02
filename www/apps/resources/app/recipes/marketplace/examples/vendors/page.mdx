@@ -203,7 +203,7 @@ This adds a list link between the `Vendor` and `Order` data models, indicating t
 
 ### Further Read
 
-- [How to Define Module Links](!docs!/advanced-development/modules/module-links)
+- [How to Define Module Links](!docs!/advanced-development/module-links)
 
 ---
 
@@ -712,10 +712,10 @@ import {
 } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
-} from "@medusajs/medusa/dist/api/utils/validate-body"
+} from "@medusajs/medusa/api/utils/validate-body"
 import { 
   AdminCreateProduct,
-} from "@medusajs/medusa/dist/api/admin/products/validators"
+} from "@medusajs/medusa/api/admin/products/validators"
 
 export default defineMiddlewares({
   routes: [
@@ -778,8 +778,8 @@ curl 'http://localhost:9000/vendors/products' \
 
 ### Further Reads
 
-- [How to use Query](!docs!/advanced-development/modules/query)
-- [How to use the Remote Link](!docs!/advanced-development/modules/remote-link)
+- [How to use Query](!docs!/advanced-development/module-links/query)
+- [How to use the Remote Link](!docs!/advanced-development/module-links/remote-link)
 
 ---
 
@@ -1361,7 +1361,7 @@ For example, you can link sales channels to vendors or other settings.
 
 <Note>
 
-[Learn more about module links](!docs!/advanced-development/modules/module-links).
+[Learn more about module links](!docs!/advanced-development/module-links).
 
 </Note>
 
