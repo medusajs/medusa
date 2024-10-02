@@ -1,7 +1,7 @@
 /**
  * @schema AdminCustomerGroupResponse
  * type: object
- * description: SUMMARY
+ * description: The customer group's details.
  * x-schemaName: AdminCustomerGroupResponse
  * required:
  *   - customer_group

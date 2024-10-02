@@ -180,7 +180,7 @@ function getBodyParserMiddleware(args?: ParserConfigArgs) {
 
 // TODO this router would need a proper rework, but it is out of scope right now
 
-class ApiRoutesLoader {
+export class ApiRoutesLoader {
   /**
    * Map of router path and its descriptor
    * @private
@@ -909,27 +909,6 @@ export class RoutesLoader {
    * @private
    */
   readonly #sourceDir: string | string[]
-
-  static instrument: {
-    /**
-     * Instrument middleware function calls by wrapping the original
-     * middleware handler inside a custom implementation
-     */
-    middleware: (callback: (typeof ApiRoutesLoader)["traceMiddleware"]) => void
-
-    /**
-     * Instrument route handler function calls by wrapping the original
-     * middleware handler inside a custom implementation
-     */
-    route: (callback: (typeof ApiRoutesLoader)["traceRoute"]) => void
-  } = {
-    middleware(callback) {
-      ApiRoutesLoader.traceMiddleware = callback
-    },
-    route(callback) {
-      ApiRoutesLoader.traceRoute = callback
-    },
-  }
 
   constructor({
     app,

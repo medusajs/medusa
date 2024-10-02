@@ -1,30 +1,16 @@
-import { BetaBadge } from "docs-ui"
-
 export const metadata = {
   title: `${pageNumber} Module Link`,
 }
 
-# {metadata.title} <BetaBadge text="Beta" tooltipText="Module links are in active development." />
+# {metadata.title}
 
 In this chapter, you’ll learn what a module link is.
 
 ## What is a Module Link?
 
-A module link forms an association between two data models of different modules, while maintaining module isolation.
+Since modules are isolated, you can't access another module's data models to add a relation to it or extend it.
 
-You can then retrieve data across the linked modules, and manage their linked records.
-
-<Note title="Use module links when" type="success">
-
-You want to create a relation between data models from different modules.
-
-</Note>
-
-<Note title="Don't use module links if" type="error">
-
-You want to create a relationship between data models in the same module. Use data model relationships instead.
-
-</Note>
+Instead, you use a module link. A module link forms an association between two data models of different modules, while maintaining module isolation.
 
 ---
 
@@ -32,7 +18,7 @@ You want to create a relationship between data models in the same module. Use da
 
 ### 1. Create Link File
 
-Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/utils` and exports it.
+Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/framework/utils` and exports it.
 
 For example:
 
@@ -43,8 +29,8 @@ export const highlights = [
 
 ```ts title="src/links/hello-product.ts" highlights={highlights}
 import HelloModule from "../modules/hello"
-import ProductModule from "@medusajs/product"
-import { defineLink } from "@medusajs/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   ProductModule.linkable.product,
@@ -58,17 +44,46 @@ In this example, you define a module link between the `hello` module's `MyCustom
 
 ### 2. Sync Links
 
-Medusa stores links as pivot tables in the database. So, to reflect your link in the database, run the `db:sync-links` command:
+After defining the link, run the `db:sync-links` command:
 
 ```bash
 npx medusa db:sync-links
 ```
+
+The Medusa application creates a new table for your link to store the IDs of linked records.
 
 Use this command whenever you make changes to your links. For example, run this command if you remove your link definition file.
 
 <Note title="Tip">
 
 You can also use the `db:migrate` command, which both runs the migrations and syncs the links.
+
+</Note>
+
+---
+
+## How Module Links Work?
+
+When you define a module link, the Medusa application creates a table in the database for that link.
+
+Then, when you create links between records of the data models, the IDs of these data models are stored as a new record in the link's table.
+
+![Diagram illustration for links](https://res.cloudinary.com/dza7lstvk/image/upload/v1726482168/Medusa%20Book/Custom_Link_Illustration_fsisfa.jpg)
+
+---
+
+## When to Use Module Links
+
+<Note title="Use module links when" type="success">
+
+- You want to create a relation between data models from different modules.
+- You want to extend the data model of another module.
+
+</Note>
+
+<Note title="Don't use module links if" type="error">
+
+You want to create a relationship between data models in the same module. Use data model relationships instead.
 
 </Note>
 
@@ -84,8 +99,8 @@ For example:
 
 ```ts
 import HelloModule from "../modules/hello"
-import ProductModule from "@medusajs/product"
-import { defineLink } from "@medusajs/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   ProductModule.linkable.product,
@@ -105,23 +120,6 @@ In this example, a record of `product` can be linked to more than one record of 
 
 ---
 
-## Extend Data Models with Module Links
-
-Module links are most useful when you want to add properties to a data model of another module.
-
-For example, to add custom properties to the `Product` data model of the Product Module, you:
-
-1. Create a module.
-2. Create in the module a data model that holds the custom properties you want to add to the `Product` data model.
-2. Define a module link that links your module to the Product Module.
-
-Then, in the next chapters, you'll learn how to:
-
-- Link each product to a record of your data model.
-- Retrieve your data model's properties when you retrieve products.
-
----
-
 ## Set Delete Cascades on Link
 
 To enable delete cascade on a link so that when a record is deleted, its linked records are also deleted, pass the `deleteCascades` property in the object passed to `defineLink`.
@@ -130,8 +128,8 @@ For example:
 
 ```ts
 import HelloModule from "../modules/hello"
-import ProductModule from "@medusajs/product"
-import { defineLink } from "@medusajs/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   ProductModule.linkable.product,

@@ -21,4 +21,18 @@ class Medusa {
 }
 
 export default Medusa
-export { FetchError } from "./client"
+
+export { FetchError, Client } from "./client"
+export { Admin } from "./admin"
+export { Auth } from "./auth"
+export { Store } from "./store"
+export {
+  Config,
+  ClientHeaders,
+  ClientFetch,
+  FetchArgs,
+  FetchInput,
+  FetchStreamResponse,
+  Logger,
+  ServerSentEventMessage,
+} from "./types"

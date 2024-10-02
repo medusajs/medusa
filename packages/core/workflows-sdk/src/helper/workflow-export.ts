@@ -44,6 +44,7 @@ function createContextualWorkflowRunner<
   dataPreparation?: (data: TData) => Promise<unknown>
   options?: {
     wrappedInput?: boolean
+    sourcePath?: string
   }
   container?: LoadedModule[] | MedusaContainer
 }): Omit<
@@ -93,6 +94,7 @@ function createContextualWorkflowRunner<
     const flowMetadata = {
       eventGroupId,
       parentStepIdempotencyKey,
+      sourcePath: options?.sourcePath,
     }
 
     const args = [
@@ -334,6 +336,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   dataPreparation?: (data: TData) => Promise<unknown>,
   options?: {
     wrappedInput?: boolean
+    sourcePath?: string
   }
 ): MainExportedWorkflow<TData, TResult> => {
   function exportedWorkflow<
