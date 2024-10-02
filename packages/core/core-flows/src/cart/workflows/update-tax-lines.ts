@@ -96,13 +96,17 @@ export const updateTaxLinesWorkflow = createWorkflow(
     )
 
     const taxLineItems = getItemTaxLinesStep(
-      transform({ input, cart }, (data) => ({
-        cart: data.cart,
-        items: data.input.items || data.cart.items,
-        shipping_methods:
-          data.input.shipping_methods || data.cart.shipping_methods,
-        force_tax_calculation: data.input.force_tax_calculation,
-      }))
+      transform({ input, cart }, (data) => {
+        console.log(">>>>>>>>>>>>>>>>>>>>", JSON.stringify(data, null, 4))
+        return {
+          // TODO: Should validate that items and sm are really present or throw
+          cart: data.cart,
+          items: (data.input.items || data.cart.items) as CartLineItemDTO[],
+          shipping_methods: (data.input.shipping_methods ||
+            data.cart.shipping_methods) as CartShippingMethodDTO[],
+          force_tax_calculation: data.input.force_tax_calculation,
+        }
+      })
     )
 
     setTaxLinesForItemsStep({

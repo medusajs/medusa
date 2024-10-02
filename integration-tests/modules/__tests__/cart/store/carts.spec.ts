@@ -210,7 +210,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it("should create cart with customer from email and tax lines", async () => {
+        it.only("should create cart with customer from email and tax lines", async () => {
           await setupTaxStructure(taxModule)
 
           const [product] = await productModule.createProducts([
@@ -262,6 +262,10 @@ medusaIntegrationTestRunner({
           )
 
           expect(created.status).toEqual(200)
+          console.log(
+            ">>>>>>>>>>>>>>>>>>>>",
+            JSON.stringify(created.data.cart, null, 4)
+          )
           expect(created.data.cart).toEqual(
             expect.objectContaining({
               id: created.data.cart.id,
