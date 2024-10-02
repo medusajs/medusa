@@ -3,7 +3,6 @@
 export const defaultStoreOrderFields = [
   "id",
   "status",
-  "version",
   "summary",
   "display_id",
   "total",
@@ -16,7 +15,6 @@ export const defaultStoreOrderFields = [
 export const defaultStoreRetrieveOrderFields = [
   "id",
   "status",
-  "version",
   "summary",
   "currency_code",
   "display_id",

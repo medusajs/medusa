@@ -4,18 +4,14 @@ import {
   MedusaResponse,
 } from "../../../../../../types/routing"
 import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
-import {
-  AdminCreatePromotionRuleType,
-  AdminUpdatePromotionRuleType,
-} from "../../../validators"
 import { RuleType } from "@medusajs/framework/utils"
 import { refetchBatchRules } from "../../../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     BatchMethodRequest<
-      AdminCreatePromotionRuleType,
-      AdminUpdatePromotionRuleType
+      HttpTypes.AdminCreatePromotionRule,
+      HttpTypes.AdminUpdatePromotionRule
     >
   >,
   res: MedusaResponse<HttpTypes.AdminPromotionRuleBatchResponse>
