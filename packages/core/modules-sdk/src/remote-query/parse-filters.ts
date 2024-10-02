@@ -45,6 +45,7 @@ export function parseAndAssignFilters(
     entryJoinerConfig = joinerConfig
 
     const entryEntity = entitiesMap[entryAlias.entity!]
+    console.log(entryAlias.entity, entryEntity, entryEntity._fields)
     if (!entryEntity) {
       throw new Error(
         `Entity ${entryAlias.entity} not found in the public schema of the joiner config from ${entryJoinerConfig.serviceName}`
@@ -58,6 +59,7 @@ export function parseAndAssignFilters(
         const { joinerConfig: filterKeyJoinerConfig } =
           retrieveJoinerConfigFromPropertyName({
             entryPoint: nestedFilterKey,
+            parentJoinerConfig: joinerConfig,
             joinerConfigs,
           })
 
@@ -85,7 +87,7 @@ export function parseAndAssignFilters(
           parseAndAssignFilters(
             {
               entryPoint: nestedFilterKey,
-              filters: nestedFilterValue,
+              filters: nestedFilterValue as object,
               remoteQueryObject: remoteQueryObject[entryPoint][filterKey],
               isFieldAliasNestedRelation: isFieldAliasNestedRelation_,
             },
@@ -107,16 +109,36 @@ export function parseAndAssignFilters(
   }
 }
 
-function retrieveJoinerConfigFromPropertyName({ entryPoint, joinerConfigs }) {
+function retrieveJoinerConfigFromPropertyName({
+  entryPoint,
+  parentJoinerConfig,
+  joinerConfigs,
+}: {
+  entryPoint: string
+  parentJoinerConfig?: ModuleJoinerConfig
+  joinerConfigs: ModuleJoinerConfig[]
+}) {
+  if (parentJoinerConfig) {
+    const res = findAliasFromJoinerConfig({
+      joinerConfig: parentJoinerConfig,
+      entryPoint,
+    })
+    if (res) {
+      return res
+    }
+  }
+
   if (joinerConfigMapCache.has(entryPoint)) {
     return joinerConfigMapCache.get(entryPoint)!
   }
 
   for (const joinerConfig of joinerConfigs) {
-    const aliases = joinerConfig.alias
+    const aliases = Array.isArray(joinerConfig.alias)
+      ? joinerConfig.alias
+      : [joinerConfig.alias]
     const entryPointAlias = aliases.find((alias) => {
       const aliasNames = Array.isArray(alias.name) ? alias.name : [alias.name]
-      return aliasNames.includes(entryPoint)
+      return aliasNames.some((alias) => alias === entryPoint)
     })
 
     if (entryPointAlias) {
@@ -130,6 +152,31 @@ function retrieveJoinerConfigFromPropertyName({ entryPoint, joinerConfigs }) {
   }
 
   return {}
+}
+
+function findAliasFromJoinerConfig({
+  joinerConfig,
+  entryPoint,
+}: {
+  joinerConfig: ModuleJoinerConfig
+  entryPoint: string
+}) {
+  const aliases = Array.isArray(joinerConfig.alias)
+    ? joinerConfig.alias
+    : [joinerConfig.alias]
+  const entryPointAlias = aliases.find((alias) => {
+    const aliasNames = Array.isArray(alias.name) ? alias.name : [alias.name]
+    return aliasNames.some((alias) => alias === entryPoint)
+  })
+
+  if (entryPointAlias) {
+    joinerConfigMapCache.set(entryPoint, {
+      joinerConfig,
+      alias: entryPointAlias,
+    })
+
+    return { joinerConfig, alias: entryPointAlias }
+  }
 }
 
 function assignRemoteQueryObject({
