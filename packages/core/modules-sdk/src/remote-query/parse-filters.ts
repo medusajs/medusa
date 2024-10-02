@@ -1,8 +1,4 @@
-import {
-  JoinerServiceConfig,
-  JoinerServiceConfigAlias,
-  ModuleJoinerConfig,
-} from "@medusajs/types"
+import { JoinerServiceConfig, ModuleJoinerConfig } from "@medusajs/types"
 import { isObject, isString } from "@medusajs/utils"
 import { MedusaModule } from "../medusa-module"
 
@@ -33,15 +29,15 @@ export function parseAndAssignFilters(
   const joinerConfigs = MedusaModule.getAllJoinerConfigs()
 
   for (const [filterKey, filterValue] of Object.entries(filters)) {
-    let entryAlias!: JoinerServiceConfigAlias
+    /*let entryAlias!: JoinerServiceConfigAlias*/
     let entryJoinerConfig!: JoinerServiceConfig
 
-    const { joinerConfig, alias } = retrieveJoinerConfigFromPropertyName({
+    const { joinerConfig /*alias*/ } = retrieveJoinerConfigFromPropertyName({
       entryPoint: entryPoint,
       joinerConfigs,
     })
 
-    entryAlias = alias
+    /*JoinerServiceConfigentryAlias = alias!*/
     entryJoinerConfig = joinerConfig
 
     // TODO: This check is not used further than to validate the entity is part of the graphql schema
@@ -134,9 +130,11 @@ function retrieveJoinerConfigFromPropertyName({
   }
 
   for (const joinerConfig of joinerConfigs) {
-    const aliases = Array.isArray(joinerConfig.alias)
-      ? joinerConfig.alias
-      : [joinerConfig.alias]
+    const joinerConfigAlias = joinerConfig.alias ?? []
+    const aliases = Array.isArray(joinerConfigAlias)
+      ? joinerConfigAlias
+      : [joinerConfigAlias]
+
     const entryPointAlias = aliases.find((alias) => {
       const aliasNames = Array.isArray(alias.name) ? alias.name : [alias.name]
       return aliasNames.some((alias) => alias === entryPoint)
@@ -162,9 +160,11 @@ function findAliasFromJoinerConfig({
   joinerConfig: ModuleJoinerConfig
   entryPoint: string
 }) {
-  const aliases = Array.isArray(joinerConfig.alias)
-    ? joinerConfig.alias
-    : [joinerConfig.alias]
+  const joinerConfigAlias = joinerConfig.alias ?? []
+  const aliases = Array.isArray(joinerConfigAlias)
+    ? joinerConfigAlias
+    : [joinerConfigAlias]
+
   const entryPointAlias = aliases.find((alias) => {
     const aliasNames = Array.isArray(alias.name) ? alias.name : [alias.name]
     return aliasNames.some((alias) => alias === entryPoint)
@@ -178,6 +178,8 @@ function findAliasFromJoinerConfig({
 
     return { joinerConfig, alias: entryPointAlias }
   }
+
+  return
 }
 
 function assignRemoteQueryObject({
