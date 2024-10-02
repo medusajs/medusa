@@ -22,19 +22,19 @@ For example:
   import { IPromotionModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 
-export async function GET(
-  request: MedusaRequest,
-  res: MedusaResponse
-): Promise<void> {
-  const promotionModuleService: IPromotionModuleService = request.scope.resolve(
-    Modules.PROMOTION
-  )
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const promotionModuleService: IPromotionModuleService = request.scope.resolve(
+      Modules.PROMOTION
+    )
 
-  res.json({
-    promotions: await promotionModuleService.listPromotions(),
-  })
-}
-```
+    res.json({
+      promotions: await promotionModuleService.listPromotions(),
+    })
+  }
+  ```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -44,14 +44,14 @@ export async function GET(
   import { IPromotionModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 
-export default async function subscriberHandler({ container }: SubscriberArgs) {
-  const promotionModuleService: IPromotionModuleService = container.resolve(
-    Modules.PROMOTION
-  )
+  export default async function subscriberHandler({ container }: SubscriberArgs) {
+    const promotionModuleService: IPromotionModuleService = container.resolve(
+      Modules.PROMOTION
+    )
 
-  const promotions = await promotionModuleService.listPromotions()
-}
-```
+    const promotions = await promotionModuleService.listPromotions()
+  }
+  ```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -61,14 +61,14 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
   import { IPromotionModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 
-const step1 = createStep("step-1", async (_, { container }) => {
-  const promotionModuleService: IPromotionModuleService = container.resolve(
-    Modules.PROMOTION
-  )
+  const step1 = createStep("step-1", async (_, { container }) => {
+    const promotionModuleService: IPromotionModuleService = container.resolve(
+      Modules.PROMOTION
+    )
 
-  const promotions = await promotionModuleService.listPromotions()
-})
-```
+    const promotions = await promotionModuleService.listPromotions()
+  })
+  ```
 
   </CodeTab>
 </CodeTabs>
