@@ -40,8 +40,8 @@ If you're creating a client or establishing a connection with a third-party serv
 #### Example
 
 ```ts
-import { Logger } from "@medusajs/framework/types"
-import { AbstractFileProviderService } from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/types"
+import { AbstractFileProviderService } from "@medusajs/utils"
 
 type InjectedDependencies = {
   logger: Logger
@@ -214,7 +214,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.FILE]: {
-      resolve: "@medusajs/file",
+      resolve: "@medusajs/framework/file",
       options: {
         providers: [
           {

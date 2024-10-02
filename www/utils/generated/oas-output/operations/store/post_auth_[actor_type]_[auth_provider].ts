@@ -37,14 +37,10 @@
  *         "email": "customer@gmail.com",
  *         "password": "supersecret"
  *       }'
- *   - lang: Shell
+ *   - lang: Bash
  *     label: Google Provider
  *     source:  |-
  *       curl -X POST '{backend_url}/auth/customer/google'
- *   - lang: Shell
- *     label: GitHub Provider
- *     source:  |-
- *       curl -X POST '{backend_url}/auth/customer/github'
  * tags:
  *   - Auth
  * responses:
