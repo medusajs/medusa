@@ -173,6 +173,7 @@ describe("manyToMany - manyToMany", () => {
     )
 
     expect(serializedUser.squads).toHaveLength(1)
+    console.log(JSON.stringify(serializedUser, null, 4))
     expect(serializedUser).toEqual({
       id: user1.id,
       username: "User 1",

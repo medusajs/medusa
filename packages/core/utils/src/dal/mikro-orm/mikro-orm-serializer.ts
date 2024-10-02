@@ -77,6 +77,7 @@ function filterEntityPropToSerialize({
   meta,
   options,
   serializedContext,
+  parent,
 }: {
   entity: any
   propName: string
@@ -85,6 +86,7 @@ function filterEntityPropToSerialize({
     preventCircularRef?: boolean
   }
   serializedContext: SerializationContext<any>
+  parent?: object
 }): boolean {
   const isVisibleRes = isVisible(meta, propName, options)
   const prop = meta.properties[propName]
@@ -97,7 +99,14 @@ function filterEntityPropToSerialize({
     prop.reference !== ReferenceType.SCALAR
   ) {
     // mapToPk would represent a foreign key and we want to keep them
-    return !!prop.mapToPk || !serializedContext.visited.has(entity[propName])
+    if (!!prop.mapToPk) {
+      return true
+    }
+
+    return (
+      !serializedContext.visited.has(entity[propName]) &&
+      (!parent || parent.constructor.name !== prop.type)
+    )
   }
 
   return isVisibleRes
@@ -106,7 +115,8 @@ function filterEntityPropToSerialize({
 export class EntitySerializer {
   static serialize<T extends object, P extends string = never>(
     entity: T,
-    options: SerializeOptions<T, P> & { preventCircularRef?: boolean } = {}
+    options: SerializeOptions<T, P> & { preventCircularRef?: boolean } = {},
+    parent?: object
   ): EntityDTO<Loaded<T, P>> {
     const wrapped = helper(entity)
     const meta = wrapped.__meta
@@ -142,6 +152,7 @@ export class EntitySerializer {
           meta,
           options,
           serializedContext: root,
+          parent,
         })
       )
       .map((prop) => {
@@ -338,7 +349,8 @@ export class EntitySerializer {
     if (expand) {
       return this.serialize(
         child,
-        this.extractChildOptions(options, prop)
+        this.extractChildOptions(options, prop),
+        entity
       ) as T[keyof T]
     }
 
@@ -360,7 +372,11 @@ export class EntitySerializer {
 
     return col.getItems(false).map((item) => {
       if (isPopulated(item, prop, options)) {
-        return this.serialize(item, this.extractChildOptions(options, prop))
+        return this.serialize(
+          item,
+          this.extractChildOptions(options, prop),
+          entity
+        )
       }
 
       return helper(item).getPrimaryKey()
