@@ -15,7 +15,7 @@ type FeedbackProps = Omit<UiFeedbackProps, "event" | "pathName">
 
 export const Feedback = (props: FeedbackProps) => {
   const pathname = usePathname()
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
 
   const feedbackPathname = useMemo(() => basePathUrl(pathname), [pathname])
   const reportLink = useMemo(

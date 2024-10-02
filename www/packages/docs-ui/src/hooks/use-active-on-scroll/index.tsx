@@ -24,7 +24,7 @@ export const useActiveOnScroll = ({
   const [items, setItems] = useState<ActiveOnScrollItem[]>([])
   const [activeItemId, setActiveItemId] = useState("")
   const { scrollableElement } = useScrollController()
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const pathname = usePathname()
   const root = useMemo(() => {
     if (!enable) {

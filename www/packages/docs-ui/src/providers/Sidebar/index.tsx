@@ -276,7 +276,7 @@ export const SidebarProvider = ({
 
   const pathname = usePathname()
   const router = useRouter()
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const getResolvedScrollableElement = useCallback(() => {
     return scrollableElement || window
   }, [scrollableElement])
