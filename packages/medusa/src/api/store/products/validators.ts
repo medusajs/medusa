@@ -1,7 +1,6 @@
 import { z } from "zod"
 import {
   GetProductsParams,
-  ProductStatusEnum,
   transformProductParams,
 } from "../../utils/common-validators"
 import {
@@ -32,7 +31,6 @@ export const StoreGetProductVariantsParams = createFindParams({
   z.object({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    status: ProductStatusEnum.array().optional(),
     options: z.object({ value: z.string(), option_id: z.string() }).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
@@ -58,7 +56,6 @@ export const StoreGetProductsParams = createFindParams({
 
         variants: z
           .object({
-            status: ProductStatusEnum.array().optional(),
             options: z
               .object({ value: z.string(), option_id: z.string() })
               .optional(),

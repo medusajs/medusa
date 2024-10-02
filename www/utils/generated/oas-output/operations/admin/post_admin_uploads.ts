@@ -14,7 +14,7 @@
  *       schema:
  *         oneOf:
  *           - type: object
- *             description: SUMMARY
+ *             description: The files to upload
  *             required:
  *               - files
  *             properties:
