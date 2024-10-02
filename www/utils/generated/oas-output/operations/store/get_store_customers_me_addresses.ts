@@ -54,31 +54,52 @@
  *   - name: city
  *     in: query
  *     description: Filter by the address's city.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: city
- *       description: Filter by the address's city.
+ *       oneOf:
+ *         - type: string
+ *           title: city
+ *           description: Filter by a city.
+ *         - type: array
+ *           description: Filter by cities.
+ *           items:
+ *             type: string
+ *             title: city
+ *             description: A city.
  *   - name: postal_code
  *     in: query
  *     description: Filter by the address's postal code.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: postal_code
- *       description: Filter by the address's postal code.
+ *       oneOf:
+ *         - type: string
+ *           title: postal_code
+ *           description: Filter by a postal code.
+ *         - type: array
+ *           description: Filter by postal codes.
+ *           items:
+ *             type: string
+ *             title: postal_code
+ *             description: A postal code.
  *   - name: country_code
  *     in: query
  *     description: Filter by the address's country code.
- *     required: true
+ *     required: false
  *     schema:
- *       type: string
- *       title: country_code
- *       description: Filter by the address's country code.
+ *       oneOf:
+ *         - type: string
+ *           title: country_code
+ *           description: Filter by a country code.
+ *         - type: array
+ *           description: Filter by country codes.
+ *           items:
+ *             type: string
+ *             title: country_code
+ *             description: A country code.
  *   - name: q
  *     in: query
  *     description: Search term to filter the address's searchable properties.
- *     required: true
+ *     required: false
  *     schema:
  *       type: string
  *       title: q
