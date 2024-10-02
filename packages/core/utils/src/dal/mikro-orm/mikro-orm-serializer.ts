@@ -65,29 +65,25 @@ function isPopulated<T extends object>(
 
 /**
  * Custom property filtering for the serialization which takes into account circular references to not return them.
- * @param entity
  * @param propName
  * @param meta
  * @param options
- * @param serializedContext
+ * @param parents
  */
 function filterEntityPropToSerialize({
-  entity,
   propName,
   meta,
   options,
-  serializedContext,
-  parent,
+  parents,
 }: {
-  entity: any
   propName: string
   meta: EntityMetadata
   options: SerializeOptions<object, any> & {
     preventCircularRef?: boolean
   }
-  serializedContext: SerializationContext<any>
-  parent?: object
+  parents?: string[]
 }): boolean {
+  parents ??= []
   const isVisibleRes = isVisible(meta, propName, options)
   const prop = meta.properties[propName]
 
@@ -103,10 +99,7 @@ function filterEntityPropToSerialize({
       return true
     }
 
-    return (
-      !serializedContext.visited.has(entity[propName]) &&
-      (!parent || parent.constructor.name !== prop.type)
-    )
+    return !parents.some((parent) => parent === prop.type)
   }
 
   return isVisibleRes
@@ -116,8 +109,10 @@ export class EntitySerializer {
   static serialize<T extends object, P extends string = never>(
     entity: T,
     options: SerializeOptions<T, P> & { preventCircularRef?: boolean } = {},
-    parent?: object
+    parents: string[] = []
   ): EntityDTO<Loaded<T, P>> {
+    const parents_ = Array.from(new Set(parents))
+
     const wrapped = helper(entity)
     const meta = wrapped.__meta
     let contextCreated = false
@@ -133,26 +128,38 @@ export class EntitySerializer {
       contextCreated = true
     }
 
-    const root = wrapped.__serializationContext.root!
+    const root = wrapped.__serializationContext
+      .root! as SerializationContext<any> & {
+      visitedSerialized?: Map<string, any>
+    }
+
     const ret = {} as EntityDTO<Loaded<T, P>>
     const keys = new Set<string>(meta.primaryKeys)
     Object.keys(entity).forEach((prop) => keys.add(prop))
-    const visited = root.visited.has(entity)
 
+    const visited = root.visited.has(entity)
     if (!visited) {
       root.visited.add(entity)
+    }
+
+    // Virtually augment the serialization context
+    root.visitedSerialized ??= new Map()
+    const primaryKeysValues = Array.from(keys)
+      .map((key) => entity[key])
+      .join("-")
+
+    if (root.visitedSerialized.has(primaryKeysValues)) {
+      return root.visitedSerialized.get(primaryKeysValues)
     }
 
     ;[...keys]
       /** Medusa Custom properties filtering **/
       .filter((prop) =>
         filterEntityPropToSerialize({
-          entity,
           propName: prop,
           meta,
           options,
-          serializedContext: root,
-          parent,
+          parents: parents_,
         })
       )
       .map((prop) => {
@@ -165,7 +172,8 @@ export class EntitySerializer {
         const val = this.processProperty<T>(
           prop as keyof T & string,
           entity,
-          options
+          options,
+          parents_
         )
 
         if (!cycle) {
@@ -213,7 +221,7 @@ export class EntitySerializer {
       .forEach(
         (prop) =>
           (ret[this.propertyName(meta, prop.name, wrapped.__platform)] =
-            this.processProperty(prop.name, entity, options))
+            this.processProperty(prop.name, entity, options, parents_))
       )
 
     // decorated get methods
@@ -230,10 +238,11 @@ export class EntitySerializer {
             this.processProperty(
               prop.getterName as keyof T & string,
               entity,
-              options
+              options,
+              parents_
             ))
       )
-
+    root.visitedSerialized.set(primaryKeysValues, ret)
     return ret
   }
 
@@ -257,8 +266,11 @@ export class EntitySerializer {
   private static processProperty<T extends object>(
     prop: keyof T & string,
     entity: T,
-    options: SerializeOptions<T, any>
+    options: SerializeOptions<T, any>,
+    parents: string[] = []
   ): T[keyof T] | undefined {
+    const parents_ = [...parents, entity.constructor.name]
+
     const parts = prop.split(".")
     prop = parts[0] as string & keyof T
     const wrapped = helper(entity)
@@ -282,11 +294,17 @@ export class EntitySerializer {
     }
 
     if (Utils.isCollection(entity[prop])) {
-      return this.processCollection(prop, entity, options)
+      return this.processCollection(prop, entity, options, parents_)
     }
 
     if (Utils.isEntity(entity[prop], true)) {
-      return this.processEntity(prop, entity, wrapped.__platform, options)
+      return this.processEntity(
+        prop,
+        entity,
+        wrapped.__platform,
+        options,
+        parents_
+      )
     }
 
     /* istanbul ignore next */
@@ -338,8 +356,11 @@ export class EntitySerializer {
     prop: keyof T & string,
     entity: T,
     platform: Platform,
-    options: SerializeOptions<T, any>
+    options: SerializeOptions<T, any>,
+    parents: string[] = []
   ): T[keyof T] | undefined {
+    const parents_ = [...parents, entity.constructor.name]
+
     const child = Reference.unwrapReference(entity[prop] as T)
     const wrapped = helper(child)
     const populated =
@@ -350,7 +371,7 @@ export class EntitySerializer {
       return this.serialize(
         child,
         this.extractChildOptions(options, prop),
-        entity
+        parents_
       ) as T[keyof T]
     }
 
@@ -362,8 +383,10 @@ export class EntitySerializer {
   private static processCollection<T extends object>(
     prop: keyof T & string,
     entity: T,
-    options: SerializeOptions<T, any>
+    options: SerializeOptions<T, any>,
+    parents: string[] = []
   ): T[keyof T] | undefined {
+    const parents_ = [...parents, entity.constructor.name]
     const col = entity[prop] as unknown as Collection<T>
 
     if (!col.isInitialized()) {
@@ -375,7 +398,7 @@ export class EntitySerializer {
         return this.serialize(
           item,
           this.extractChildOptions(options, prop),
-          entity
+          parents_
         )
       }
 
