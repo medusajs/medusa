@@ -128,7 +128,7 @@ const findItem = (
 const getLinksMap = (
   items: SidebarItem[],
   initMap?: LinksMap,
-  parentItem?: SidebarItemLinkWithParent
+  parentItem?: InteractiveSidebarItem
 ): LinksMap => {
   const map: LinksMap = initMap || new Map()
 
@@ -144,7 +144,7 @@ const getLinksMap = (
       })
     }
     if (item.children?.length) {
-      getLinksMap(item.children, map, parentItem)
+      getLinksMap(item.children, map, item)
     }
   })
 
