@@ -51,7 +51,7 @@
  *             description: Any additional data relevant for the third-party fulfillment provider to process the shipment.
  *             externalDocs:
  *               url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping#data-request-body-parameter
- *               description: Learn more about the `data` parameter.
+ *               description: Learn more about the data parameter.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
