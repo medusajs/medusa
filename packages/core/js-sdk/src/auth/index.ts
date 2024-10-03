@@ -103,6 +103,7 @@ export class Auth {
     await this.client.fetch(`/auth/${actor}/${provider}/reset-password`, {
       method: "POST",
       body,
+      headers: { accept: "text/plain" }, // 201 Created response
     })
   }
 

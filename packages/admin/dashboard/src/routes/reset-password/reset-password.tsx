@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Alert, Button, Heading, Input, Text } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useSearchParams } from "react-router-dom"
@@ -46,7 +46,9 @@ type DecodedResetPasswordToken = {
   jti: any
   exp: string
   iat: number
-  email: string
+
+  entity_id: string // -> email in here
+  provider: string
 }
 
 const validateDecodedResetPasswordToken = (
@@ -55,10 +57,44 @@ const validateDecodedResetPasswordToken = (
   return ResetPasswordTokenSchema.safeParse(decoded).success
 }
 
+const InvalidResetToken = () => {
+  const { t } = useTranslation()
+
+  return (
+    <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
+      <div className="m-4 flex w-full max-w-[300px] flex-col items-center">
+        <LogoBox className="mb-4" />
+        <div className="mb-6 flex flex-col items-center">
+          <Heading>{t("resetPassword.invalidLinkTitle")}</Heading>
+          <Text size="small" className="text-ui-fg-subtle text-center">
+            {t("resetPassword.invalidLinkHint")}
+          </Text>
+        </div>
+        <div className="flex w-full flex-col gap-y-3">
+          <Button className="w-full" type="submit">
+            {t("resetPassword.goToResetPassword")}
+          </Button>
+        </div>
+        <span className="txt-small my-6">
+          <Trans
+            i18nKey="resetPassword.backToLogin"
+            components={[
+              <Link
+                key="login-link"
+                to="/login"
+                className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover outline-none"
+              />,
+            ]}
+          />
+        </span>
+      </div>
+    </div>
+  )
+}
+
 const ChooseNewPassword = ({ token }: { token: string }) => {
   const { t } = useTranslation()
 
-  const [searchParams] = useSearchParams()
   const [showAlert, setShowAlert] = useState(false)
 
   const invite: DecodedResetPasswordToken | null = token
@@ -83,8 +119,19 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
       await mutateAsync({
         password,
       })
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
+
+    form.setValue("password", "")
+    form.setValue("repeat_password", "")
+
+    setShowAlert(true)
   })
+
+  if (!isValidResetPasswordToken) {
+    return <InvalidResetToken />
+  }
 
   return (
     <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
@@ -103,7 +150,7 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
               className="flex w-full flex-col gap-y-6"
             >
               <div className="flex flex-col gap-y-4">
-                <Input type="email" disabled value={invite.email} />
+                <Input type="email" disabled value={invite?.entity_id} />
                 <Form.Field
                   control={form.control}
                   name="password"
@@ -143,20 +190,20 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
                   }}
                 />
               </div>
+              {showAlert && (
+                <Alert dismissible variant="success">
+                  <div className="flex flex-col">
+                    <span className="text-ui-fg-base mb-1">
+                      {t("resetPassword.successfulResetTitle")}
+                    </span>
+                    <span>{t("resetPassword.successfulReset")}</span>
+                  </div>
+                </Alert>
+              )}
               <Button className="w-full" type="submit" isLoading={isPending}>
                 {t("resetPassword.resetPassword")}
               </Button>
             </form>
-            {showAlert && (
-              <Alert dismissible variant="success">
-                <div className="flex flex-col">
-                  <span className="text-ui-fg-base mb-1">
-                    {t("resetPassword.successfulRequestTitle")}
-                  </span>
-                  <span>{t("resetPassword.successfulRequest")}</span>
-                </div>
-              </Alert>
-            )}
           </Form>
         </div>
         <span className="txt-small my-6">
@@ -197,11 +244,11 @@ export const ResetPassword = () => {
       await mutateAsync({
         email,
       })
+      form.setValue("email", "")
+      setShowAlert(true)
     } catch (error) {
-      // todo: trying to parse response which is not JSON but plain text
+      toast.error(error.message)
     }
-    form.setValue("email", "")
-    setShowAlert(true)
   })
 
   if (token) {

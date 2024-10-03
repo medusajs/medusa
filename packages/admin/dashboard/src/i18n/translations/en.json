@@ -2384,7 +2384,12 @@
     "repeatNewPassword": "Repeat new password",
     "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
     "successfulRequestTitle": "Successfully sent you an email",
-    "successfulRequest": "We've sent you an email which you can use to reset your password. Check your spam folder if you haven't received it after a few minutes."
+    "successfulRequest": "We've sent you an email which you can use to reset your password. Check your spam folder if you haven't received it after a few minutes.",
+    "successfulResetTitle": "Password reset successful",
+    "successfulReset": "Please login in on the login page.",
+    "passwordMismatch": "Passwords do no match",
+    "invalidLinkTitle": "Your reset link is invalid",
+    "invalidLinkHint": "Try resetting your password again."
   },
   "workflowExecutions": {
     "domain": "Workflows",
