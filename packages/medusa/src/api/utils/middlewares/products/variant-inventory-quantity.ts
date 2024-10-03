@@ -3,7 +3,7 @@ import {
   LINKS,
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
-import { MedusaRequest } from "../../../../types/routing"
+import { MedusaRequest } from "@medusajs/framework/http"
 
 export async function getVariantInventoryItems({
   req,

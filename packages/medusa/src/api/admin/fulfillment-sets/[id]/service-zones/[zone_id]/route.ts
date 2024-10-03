@@ -18,7 +18,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminUpdateFulfillmentSetServiceZonesType } from "../../../validators"
 
 export const GET = async (

@@ -16,7 +16,7 @@ import { TocMenu } from "./Menu"
 export const Toc = () => {
   const [items, setItems] = useState<ToCItemUi[]>([])
   const [showMenu, setShowMenu] = useState(false)
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const { items: headingItems, activeItemId } = useActiveOnScroll({})
   const [maxHeight, setMaxHeight] = useState(0)
   const { scrollableElement } = useScrollController()

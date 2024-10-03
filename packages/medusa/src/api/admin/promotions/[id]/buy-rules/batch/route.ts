@@ -2,20 +2,16 @@ import { batchPromotionRulesWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
-import {
-  AdminCreatePromotionRuleType,
-  AdminUpdatePromotionRuleType,
-} from "../../../validators"
 import { RuleType } from "@medusajs/framework/utils"
 import { refetchBatchRules } from "../../../helpers"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<
     BatchMethodRequest<
-      AdminCreatePromotionRuleType,
-      AdminUpdatePromotionRuleType
+      HttpTypes.AdminCreatePromotionRule,
+      HttpTypes.AdminUpdatePromotionRule
     >
   >,
   res: MedusaResponse<HttpTypes.AdminPromotionRuleBatchResponse>

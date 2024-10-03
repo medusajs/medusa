@@ -96,7 +96,7 @@ export default MyPaymentProviderService
 
 #### Parameters
 
-<TypeList types={[{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"The module's container used to resolve resources.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"TConfig","description":"The options passed to the payment module provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="new AbstractPaymentProvider"/>
+<TypeList types={[{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"The module's container used to resolve resources.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"registerAdd","type":"`<T>`(`name`: `string`, `registration`: T) => [MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"createScope","type":"() => [MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config","type":"TConfig","description":"The options passed to the payment module provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="new AbstractPaymentProvider"/>
 
 ### validateOptions
 
@@ -704,7 +704,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.PAYMENT]: {
-      resolve: "@medusajs/payment",
+      resolve: "@medusajs/framework/payment",
       options: {
         providers: [
           {

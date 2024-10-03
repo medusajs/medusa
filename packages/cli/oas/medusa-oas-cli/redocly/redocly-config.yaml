@@ -22,6 +22,7 @@ decorators:
         - AdminProduct
       BaseProduct:
         - BaseProduct
+        - BaseProductVariant
       StoreProduct:
         - StoreProductCategory
         - StoreProduct
@@ -29,10 +30,12 @@ decorators:
         - AdminProduct
       AdminProduct:
         - AdminProduct
+        - BaseProductOption
       AdminStockLocation:
         - AdminFulfillmentSet
       OrderChange:
         - Order
+        - Return
       StoreShippingOption:
         - StoreShippingOption
       AdminServiceZone:
@@ -44,6 +47,90 @@ decorators:
         - AdminTaxRate
       AdminInventoryLevel:
         - AdminInventoryItem
+      AdminCustomerGroup:
+        - AdminCustomer
+      AdminOrderLineItem:
+        - BaseOrderItemDetail
+      AdminProductVariant:
+        - AdminProduct
+      BaseCapture:
+        - BasePayment
+      BaseCartLineItem:
+        - BaseLineItemTaxLine
+      BaseLineItemAdjustment:
+        - BaseCartLineItem
+      BaseOrderChangeAction:
+        - AdminOrderChange
+      BaseOrderLineItemTaxLine:
+        - BaseOrderLineItem
+      BaseOrderShippingMethodTaxLine:
+        - BaseOrderShippingMethod
+      BasePayment:
+        - BasePaymentSession
+        - BasePaymentCollection
+      BasePaymentSession:
+        - BasePaymentCollection
+      BaseProductOptionValue:
+        - BaseProductOption
+      BaseShippingMethodTaxLine:
+        - BaseCartShippingMethod
+      OrderChangeAction:
+        - OrderChange
+      OrderLineItemTaxLine:
+        - OrderLineItem
+      OrderShippingMethodTaxLine:
+        - OrderShippingMethod
+      StoreCartLineItem:
+        - StoreCart
+      StoreCollection:
+        - StoreProduct
+      StoreProductCategory:
+        - StoreProductCategory
+      BaseCart:
+        - BaseCartLineItem
+      BaseOrderLineItemAdjustment:
+        - BaseOrderLineItem
+      BaseOrderShippingMethodAdjustment:
+        - BaseOrderShippingMethod
+      BaseRefund:
+        - BasePayment
+      BaseShippingMethodAdjustment:
+        - BaseCartShippingMethod
+      Order:
+        - OrderChange
+      OrderClaim:
+        - Return
+      OrderLineItemAdjustment:
+        - OrderLineItem
+      OrderShippingMethodAdjustment:
+        - OrderShippingMethod
+      BaseProductOption:
+        - BaseProduct
+      OrderItem:
+        - OrderLineItem
+      AdminOrderChangeAction:
+        - AdminOrderChange
+      AdminPaymentSession:
+        - AdminPaymentCollection
+      AdminProductOption:
+        - AdminProduct
+        - AdminProductOptionValue
+      AdminPromotion:
+        - AdminApplicationMethod
+      BaseOrderItemDetail:
+        - BaseOrderLineItem
+      BaseOrderShippingDetail:
+        - BaseOrderShippingMethod
+      StorePaymentSession:
+        - StorePaymentCollection
+      StoreProductOption:
+        - StoreProduct
+      StoreProductOptionValue:
+        - StoreProductOption
+      AdminPayment:
+        - AdminPaymentCollection
+      StoreProductVariant:
+        - StoreProduct
 theme:
   openapi:
     theme:

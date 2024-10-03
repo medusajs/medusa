@@ -37,6 +37,7 @@
  *     description: The price list's rules.
  *     example:
  *       customer_group_id:
- *         - "cusgrp_123"
+ *         - cusgrp_123
+ * 
 */
 

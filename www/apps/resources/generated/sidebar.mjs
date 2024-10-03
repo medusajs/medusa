@@ -278,6 +278,14 @@ export const generatedSidebar = [
                 "path": "/commerce-modules/auth/create-actor-type",
                 "title": "Create an Actor Type",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/auth/provider",
+                "title": "Create Auth Provider Module",
+                "children": []
               }
             ]
           },
@@ -319,14 +327,6 @@ export const generatedSidebar = [
             "type": "sub-category",
             "title": "References",
             "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/references/auth/provider",
-                "title": "Create Auth Provider Module",
-                "children": []
-              },
               {
                 "loaded": true,
                 "isPathHref": true,
@@ -1601,7 +1601,7 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "sub-category",
-            "title": "References",
+            "title": "Guides",
             "children": [
               {
                 "loaded": true,
@@ -1610,7 +1610,15 @@ export const generatedSidebar = [
                 "path": "/references/fulfillment/provider",
                 "title": "Create Fulfillment Provider Module",
                 "children": []
-              },
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "sub-category",
+            "title": "References",
+            "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
@@ -4144,6 +4152,14 @@ export const generatedSidebar = [
                 "path": "/commerce-modules/payment/payment-flow",
                 "title": "Accept Payment Flow",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/references/payment/provider",
+                "title": "Create Payment Provider",
+                "children": []
               }
             ]
           },
@@ -4153,14 +4169,6 @@ export const generatedSidebar = [
             "type": "sub-category",
             "title": "References",
             "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
-                "path": "/references/payment/provider",
-                "title": "Payment Provider Reference",
-                "children": []
-              },
               {
                 "loaded": true,
                 "isPathHref": true,
@@ -7004,7 +7012,7 @@ export const generatedSidebar = [
             "loaded": true,
             "isPathHref": true,
             "type": "sub-category",
-            "title": "References",
+            "title": "Guides",
             "children": [
               {
                 "loaded": true,
@@ -7013,7 +7021,15 @@ export const generatedSidebar = [
                 "path": "/references/tax/provider",
                 "title": "Tax Provider Reference",
                 "children": []
-              },
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "sub-category",
+            "title": "References",
+            "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
@@ -9668,14 +9684,6 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/retrieveCartStep",
                     "title": "retrieveCartStep",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/references/medusa-workflows/steps/retrieveCartWithLinksStep",
-                    "title": "retrieveCartWithLinksStep",
                     "children": []
                   },
                   {

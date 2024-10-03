@@ -17,7 +17,7 @@ on:
 jobs:
   references:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || (startsWith(github.head_ref, 'chore/generate-tsdocs') && github.event.pull_request.merged == true)
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'release' || (startsWith(github.head_ref, 'chore/generate-tsdocs') && github.event.pull_request.merged == true)
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0

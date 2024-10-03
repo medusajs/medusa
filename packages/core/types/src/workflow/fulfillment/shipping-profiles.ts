@@ -1,4 +1,7 @@
-import { FilterableShippingProfileProps, ShippingProfileDTO } from "../../fulfillment"
+import {
+  FilterableShippingProfileProps,
+  ShippingProfileDTO,
+} from "../../fulfillment"
 
 interface CreateShippingProfile {
   name: string

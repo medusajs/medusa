@@ -1,3 +1,3 @@
-import { BaseFulfillmentProvider } from "../common";
+import { BaseFulfillmentProvider } from "../common"
 
 export interface AdminFulfillmentProvider extends BaseFulfillmentProvider {}
