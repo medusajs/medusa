@@ -32,7 +32,7 @@ const facts = [
   "The event bus module is responsible for triggering events and relaying them to subscribers.",
   "The cache module is responsible for caching data that requires heavy computation.",
   "A workflow is a series of steps that are defined once and executed anywhere. Workflows are created under the src/workflows directory.",
-  "A workflow's steps can be retried or rolled back in case of an error."
+  "A workflow's steps can be retried or rolled back in case of an error.",
 ]
 
 export const getFact = () => {

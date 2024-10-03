@@ -2,7 +2,7 @@ import {
   AuthenticationInput,
   AuthenticationResponse,
   AuthIdentityProviderService,
-  IAuthProvider
+  IAuthProvider,
 } from "@medusajs/types"
 
 /**
@@ -118,7 +118,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *
    * The authentication happens either by directly authenticating or returning a redirect URL to continue
    * the authentication with a third party provider.
-   * 
+   *
    * Related Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route).
    *
    * @param {AuthenticationInput} data - The details of the authentication request.
@@ -217,22 +217,22 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   /**
    * This method receives credentails to create a new auth identity. It performs any validation necessary
    * before creating the auth identity.
-   * 
+   *
    * For example, in the `emailpass` provider, this method ensures that the provided email doesn't exist
    * before creating the auth identity.
-   * 
+   *
    * This method is only used in a basic authentication flow, such as when using an email and password
    * to register and authenticate a user.
-   * 
+   *
    * Related Read: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route).
-   * 
-   * @param {AuthenticationInput} data - The details of the authentication request. 
+   *
+   * @param {AuthenticationInput} data - The details of the authentication request.
    * @param {AuthIdentityProviderService} authIdentityProviderService - The service used to retrieve or
    * create an auth identity. It has two methods: `create` to create an auth identity,
    * and `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity
    * using this service.
    * @returns The created authentication identity if no errors occur.
-   * 
+   *
    * @example
    * import {
    *   AuthIdentityProviderService,
@@ -252,7 +252,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *       await authIdentityService.retrieve({
    *         entity_id: data.body.email, // email or some ID
    *       })
-   *     
+   *
    *       return {
    *         success: false,
    *         error: "Identity with email already exists",
@@ -266,13 +266,13 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *             // can include password or any other relevant information
    *           }
    *         })
-   *     
+   *
    *         return {
    *           success: true,
    *           authIdentity: createdAuthIdentity,
    *         }
    *       }
-   *     
+   *
    *       return { success: false, error: error.message }
    *     }
    *   }
@@ -289,9 +289,9 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
 
   /**
    * This method is used to update an auth identity's details.
-   * 
+   *
    * For example, the `emailpass` provider's implementation of this method updates a user's password.
-   * 
+   *
    * @param data - Data relevant to identify the auth identity and what to update in it. For example,
    * the `emailpass` provider expects in this object an `email` and `password` properties.
    * @param authIdentityProviderService - The service used to retrieve or
@@ -299,7 +299,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * and `retrieve` to retrieve an auth identity. When you authenticate the user, you can create an auth identity
    * using this service.
    * @returns The updated authentication identity if no errors occur.
-   * 
+   *
    * @example
    * import {
    *   AuthIdentityProviderService,
@@ -322,7 +322,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *           user: data.user // example
    *         }
    *       )
-   *     
+   *
    *       return { success: true, authIdentity }
    *     } catch (error) {
    *       return { success: false, error: error.message }
@@ -348,15 +348,15 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    * Then, the third-party service redirects to a frontend URL passing it a `code` query parameter.
    * The frontend should then send a request to the Medusa application's validate callback API route, passing it the code.
    * That route uses this method to verify the callback's code.
-   * 
+   *
    * If the callback is verified successfully, the provider creates an auth identity for the user, or updates the auth identity's user information.
-   * 
+   *
    * In the auth identity, use the following properties to store additional data:
-   * 
+   *
    * - `provider_metadata`: Store metadata useful for the provider, such as a password hash.
    * - `user_metadata`: Store metadata of the user's details. For example, if the third-party service returns the user's information such as email
    * or name, you store this data in this property.
-   * 
+   *
    * Related Guide: [Learn about the different authentication flows in Medusa](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route).
    *
    * @param {AuthenticationInput} data - The details of the authentication request.

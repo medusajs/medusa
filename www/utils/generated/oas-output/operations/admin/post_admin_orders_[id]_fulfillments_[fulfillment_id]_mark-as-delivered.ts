@@ -42,11 +42,6 @@
  *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         $ref: "#/components/schemas/AdminMarkOrderFulfillmentDelivered"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

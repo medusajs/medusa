@@ -7,25 +7,23 @@
  *   - id
  *   - value
  *   - label
- *   - field_type
- *   - required
  *   - operators
  * properties:
  *   id:
  *     type: string
  *     title: id
  *     description: The rule attribute's ID, which is a rule's `attribute` it refers to.
- *     example: "customer_group"
+ *     example: customer_group
  *   value:
  *     type: string
  *     title: value
  *     description: The rule attribute's value.
- *     example: "customer.groups.id"
+ *     example: customer.groups.id
  *   label:
  *     type: string
  *     title: label
  *     description: The rule attribute option's label.
- *     example: "Customer Group"
+ *     example: Customer Group
  *   operators:
  *     type: array
  *     description: The attribute's operators.

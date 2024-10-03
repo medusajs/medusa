@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -134,9 +132,7 @@
       "indexes": [
         {
           "keyName": "IDX_stock_location_address_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -144,9 +140,7 @@
         },
         {
           "keyName": "stock_location_address_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -231,9 +225,7 @@
       "indexes": [
         {
           "keyName": "IDX_stock_location_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -241,9 +233,7 @@
         },
         {
           "keyName": "stock_location_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -253,13 +243,9 @@
       "foreignKeys": {
         "stock_location_address_id_foreign": {
           "constraintName": "stock_location_address_id_foreign",
-          "columnNames": [
-            "address_id"
-          ],
+          "columnNames": ["address_id"],
           "localTableName": "public.stock_location",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.stock_location_address",
           "deleteRule": "set null",
           "updateRule": "cascade"

@@ -36,14 +36,10 @@ post:
       label: EmailPass Provider
       source:
         $ref: ../code_samples/Shell/auth_customer_{auth_provider}/post.sh
-    - lang: Shell
+    - lang: Bash
       label: Google Provider
       source:
-        $ref: ../code_samples/Shell/auth_customer_{auth_provider}/post.sh
-    - lang: Shell
-      label: GitHub Provider
-      source:
-        $ref: ../code_samples/Shell/auth_customer_{auth_provider}/post.sh
+        $ref: ../code_samples/Bash/auth_customer_{auth_provider}/post.sh
   tags:
     - Auth
   responses:

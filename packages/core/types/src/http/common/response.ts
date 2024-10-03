@@ -15,14 +15,15 @@ export type DeleteResponse<TObject extends string> = {
   deleted: boolean
 }
 
-export type DeleteResponseWithParent<TObject extends string, TParent = {}> = 
-  DeleteResponse<TObject> & 
-  {
-    /**
-     * The parent resource of the item that was deleted, if applicable.
-     */
-    parent?: TParent
-  }
+export type DeleteResponseWithParent<
+  TObject extends string,
+  TParent = {}
+> = DeleteResponse<TObject> & {
+  /**
+   * The parent resource of the item that was deleted, if applicable.
+   */
+  parent?: TParent
+}
 
 export type PaginatedResponse<T> = {
   limit: number

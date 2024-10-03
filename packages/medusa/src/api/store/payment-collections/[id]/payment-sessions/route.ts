@@ -2,7 +2,7 @@ import { createPaymentSessionsWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { StoreCreatePaymentSessionType } from "../../validators"
 import { refetchPaymentCollection } from "../../helpers"
 import { HttpTypes } from "@medusajs/framework/types"

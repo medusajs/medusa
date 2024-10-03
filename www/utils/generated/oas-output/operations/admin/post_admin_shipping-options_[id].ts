@@ -71,9 +71,9 @@
  *             type: object
  *             description: The shipping option's type.
  *             required:
- *               - label
- *               - description
  *               - code
+ *               - description
+ *               - label
  *             properties:
  *               label:
  *                 type: string

@@ -1,4 +1,4 @@
-import { StoreReturn } from "./entities";
+import { StoreReturn } from "./entities"
 
 export interface StoreReturnResponse {
   return: StoreReturn
