@@ -110,8 +110,9 @@ export const generatedEditDates = {
   "app/customization/next-steps/page.mdx": "2024-09-12T10:50:04.873Z",
   "app/customization/page.mdx": "2024-09-12T11:16:18.504Z",
   "app/more-resources/cheatsheet/page.mdx": "2024-07-11T16:11:26.480Z",
-  "app/more-resources/examples/page.mdx": "2024-09-27T07:17:16.892Z",
+  "app/more-resources/examples/page.mdx": "2024-10-03T11:12:50.956Z",
   "app/architecture/architectural-modules/page.mdx": "2024-09-23T12:51:04.520Z",
   "app/architecture/overview/page.mdx": "2024-09-23T12:55:01.339Z",
-  "app/advanced-development/data-models/infer-type/page.mdx": "2024-09-30T08:43:53.123Z"
+  "app/advanced-development/data-models/infer-type/page.mdx": "2024-09-30T08:43:53.123Z",
+  "app/advanced-development/custom-cli-scripts/seed-data/page.mdx": "2024-10-03T11:11:07.181Z"
 }
