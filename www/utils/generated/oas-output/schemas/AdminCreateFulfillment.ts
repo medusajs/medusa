@@ -4,15 +4,14 @@
  * description: The filfillment's details.
  * x-schemaName: AdminCreateFulfillment
  * required:
+ *   - data
+ *   - order_id
+ *   - metadata
+ *   - items
  *   - location_id
  *   - provider_id
  *   - delivery_address
- *   - items
  *   - labels
- *   - order
- *   - order_id
- *   - data
- *   - metadata
  * properties:
  *   location_id:
  *     type: string
@@ -77,8 +76,8 @@
  *       description: An item to fulfill.
  *       required:
  *         - title
- *         - sku
  *         - quantity
+ *         - sku
  *         - barcode
  *       properties:
  *         title:

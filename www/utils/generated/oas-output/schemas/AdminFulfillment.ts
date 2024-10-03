@@ -39,10 +39,8 @@
  *     title: shipping_option_id
  *     description: The ID of the shipping option this fulfillment is created for.
  *   provider:
- *     description: The details of the fulfillment provider using to handle this fulfillment.
  *     $ref: "#/components/schemas/AdminFulfillmentProvider"
  *   delivery_address:
- *     description: The address to deliver the item to.
  *     $ref: "#/components/schemas/AdminFulfillmentAddress"
  *   items:
  *     type: array

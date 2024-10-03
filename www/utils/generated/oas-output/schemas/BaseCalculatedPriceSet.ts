@@ -20,7 +20,7 @@
  *   is_calculated_price_tax_inclusive:
  *     type: boolean
  *     title: is_calculated_price_tax_inclusive
- *     description: Whether the calculated price is tax inclusive. 
+ *     description: Whether the calculated price is tax inclusive.
  *   calculated_amount:
  *     type: number
  *     title: calculated_amount

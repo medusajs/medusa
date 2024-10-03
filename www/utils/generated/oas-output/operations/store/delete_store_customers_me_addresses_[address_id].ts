@@ -69,7 +69,7 @@
  *                   type: string
  *                   title: object
  *                   description: The name of the deleted object.
- *                   default: "address"
+ *                   default: address
  *                 deleted:
  *                   type: boolean
  *                   title: deleted

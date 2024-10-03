@@ -4,8 +4,8 @@
  * description: The cart's details.
  * x-schemaName: StoreCart
  * required:
- *   - id
  *   - currency_code
+ *   - id
  *   - original_item_total
  *   - original_item_subtotal
  *   - original_item_tax_total
@@ -34,7 +34,7 @@
  *     title: id
  *     description: The cart's ID.
  *   region:
- *     $ref: "#/components/schemas/BaseRegion"
+ *     $ref: "#/components/schemas/StoreRegion"
  *   region_id:
  *     type: string
  *     title: region_id
@@ -70,9 +70,9 @@
  *     type: array
  *     description: The cart's shipping methods.
  *     items:
- *       $ref: "#/components/schemas/BaseCartShippingMethod"
+ *       $ref: "#/components/schemas/StoreCartShippingMethod"
  *   payment_collection:
- *     $ref: "#/components/schemas/BasePaymentCollection"
+ *     $ref: "#/components/schemas/StorePaymentCollection"
  *   metadata:
  *     type: object
  *     description: The cart's metadata, can hold custom key-value pairs.

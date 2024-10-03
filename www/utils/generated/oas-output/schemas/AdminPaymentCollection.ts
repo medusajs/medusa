@@ -4,12 +4,12 @@
  * description: The payment collection's details.
  * x-schemaName: AdminPaymentCollection
  * required:
+ *   - payment_providers
  *   - id
  *   - currency_code
  *   - region_id
  *   - amount
  *   - status
- *   - payment_providers
  * properties:
  *   id:
  *     type: string
@@ -70,17 +70,17 @@
  *     type: array
  *     description: The payment provider used to process the collection's payments and sessions.
  *     items:
- *       $ref: "#/components/schemas/BasePaymentProvider"
+ *       $ref: "#/components/schemas/AdminPaymentProvider"
  *   payment_sessions:
  *     type: array
  *     description: The payment collection's payment sessions.
  *     items:
- *       $ref: "#/components/schemas/BasePaymentSession"
+ *       $ref: "#/components/schemas/AdminPaymentSession"
  *   payments:
  *     type: array
  *     description: The payment collection's payments.
  *     items:
- *       $ref: "#/components/schemas/BasePayment"
+ *       $ref: "#/components/schemas/AdminPayment"
  * 
 */
 
