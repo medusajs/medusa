@@ -4,7 +4,7 @@ import CurrencyModule from "@medusajs/currency"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import ProductModule from "@medusajs/product"
 import RegionModule from "@medusajs/region"
-import { defineLink } from "@medusajs/utils"
+import { defineLink, defineReadOnlyLink, Modules } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -399,6 +399,218 @@ medusaIntegrationTestRunner({
           ],
         })
       })
+    })
+
+    it("should define read-only links", async () => {
+      defineReadOnlyLink(
+        CurrencyModule.linkable.currency,
+        RegionModule.linkable.region
+      )
+      defineReadOnlyLink(
+        {
+          linkable: CurrencyModule.linkable.currency,
+          field: "my_custom_currency_code",
+        },
+        RegionModule.linkable.region
+      )
+      defineReadOnlyLink(
+        {
+          linkable: CurrencyModule.linkable.currency,
+          field: "my_custom_id",
+        },
+        {
+          module: Modules.REGION,
+          entity: "Country",
+          field: "region_country_code_id",
+          alias: "my_custom_region",
+        }
+      )
+      defineReadOnlyLink(
+        {
+          linkable: CurrencyModule.linkable.currency,
+          field: "custom_currency_id",
+        },
+        {
+          linkable: CurrencyModule.linkable.currency,
+          field: "country_code",
+          alias: "custom_region_code",
+        }
+      )
+      defineReadOnlyLink(
+        {
+          linkable: CurrencyModule.linkable.currency,
+          field: "my_custom_id",
+        },
+        {
+          module: Modules.REGION,
+          entity: "Country",
+          field: "region_country_code_id",
+          alias: "my_custom_region",
+        }
+      )
+      defineReadOnlyLink(
+        {
+          module: Modules.REGION,
+          entity: "Country",
+          field: "country_code",
+        },
+        {
+          module: "Weather",
+          field: "country_code_id",
+          alias: "weather_forecast",
+          isList: true,
+        }
+      )
+      defineReadOnlyLink(
+        {
+          module: Modules.PRODUCT,
+          field: "season_id",
+        },
+        {
+          module: "Weather",
+          field: "season_id",
+          alias: "season_forecast",
+        }
+      )
+
+      const linkDefinition = MedusaModule.getCustomLinks()
+        .map((linkDefinition: any) => {
+          const mods = MedusaModule.getAllJoinerConfigs()
+          mods.push({
+            serviceName: "Weather",
+            primaryKeys: ["id"],
+          })
+          return linkDefinition(mods)
+        })
+        .filter((a) => a.isReadOnlyLink)
+
+      const expectReadOnlyLinks = [
+        expect.objectContaining({
+          isLink: true,
+          isReadOnlyLink: true,
+          extends: [
+            {
+              serviceName: "Currency",
+              entity: "Currency",
+              relationship: expect.objectContaining({
+                serviceName: "Region",
+                entity: "Region",
+                primaryKey: "id",
+                foreignKey: "currency",
+                alias: "region",
+                isList: false,
+              }),
+            },
+          ],
+        }),
+        expect.objectContaining({
+          isLink: true,
+          isReadOnlyLink: true,
+          extends: [
+            {
+              serviceName: "Currency",
+              entity: "Currency",
+              relationship: expect.objectContaining({
+                serviceName: "Region",
+                entity: "Region",
+                primaryKey: "id",
+                foreignKey: "my_custom_currency_code",
+                alias: "region",
+                isList: false,
+              }),
+            },
+          ],
+        }),
+        expect.objectContaining({
+          isLink: true,
+          isReadOnlyLink: true,
+          extends: [
+            {
+              serviceName: "Currency",
+              entity: "Currency",
+              relationship: expect.objectContaining({
+                serviceName: "Region",
+                entity: "Country",
+                primaryKey: "region_country_code_id",
+                foreignKey: "my_custom_id",
+                alias: "my_custom_region",
+                isList: false,
+              }),
+            },
+          ],
+        }),
+        expect.objectContaining({
+          isLink: true,
+          isReadOnlyLink: true,
+          extends: [
+            {
+              serviceName: "Currency",
+              entity: "Currency",
+              relationship: expect.objectContaining({
+                serviceName: "Currency",
+                entity: "Currency",
+                primaryKey: "code",
+                foreignKey: "custom_currency_id",
+                alias: "custom_region_code",
+                isList: false,
+              }),
+            },
+          ],
+        }),
+        expect.objectContaining({
+          isLink: true,
+          isReadOnlyLink: true,
+          extends: [
+            {
+              serviceName: "Currency",
+              entity: "Currency",
+              relationship: expect.objectContaining({
+                serviceName: "Region",
+                entity: "Country",
+                primaryKey: "region_country_code_id",
+                foreignKey: "my_custom_id",
+                alias: "my_custom_region",
+                isList: false,
+              }),
+            },
+          ],
+        }),
+        expect.objectContaining({
+          isLink: true,
+          isReadOnlyLink: true,
+          extends: [
+            {
+              serviceName: "Region",
+              entity: "Country",
+              relationship: expect.objectContaining({
+                serviceName: "Weather",
+                primaryKey: "country_code_id",
+                foreignKey: "country_code",
+                alias: "weather_forecast",
+                isList: true,
+              }),
+            },
+          ],
+        }),
+        expect.objectContaining({
+          isLink: true,
+          isReadOnlyLink: true,
+          extends: [
+            {
+              serviceName: "Product",
+              relationship: expect.objectContaining({
+                serviceName: "Weather",
+                primaryKey: "season_id",
+                foreignKey: "season_id",
+                alias: "season_forecast",
+                isList: false,
+              }),
+            },
+          ],
+        }),
+      ]
+
+      expect(linkDefinition).toEqual(expectReadOnlyLinks)
     })
   },
 })
