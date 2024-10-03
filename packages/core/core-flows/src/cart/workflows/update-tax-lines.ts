@@ -77,7 +77,7 @@ export const updateTaxLinesWorkflow = createWorkflow(
       if (!cart_id && !cart) {
         throw new Error("Either cart_id or cart must be provided")
       }
-      return true
+      return !cart
     }).then(() => {
       return useRemoteQueryStep({
         entry_point: "cart",
