@@ -376,7 +376,7 @@ function buildLocalCommands(cli, isLocalProject) {
     })
     .command({
       command: `start`,
-      desc: `Start development server.`,
+      desc: `Start server.`,
       builder: (_) =>
         _.option("types", {
           type: "boolean",
