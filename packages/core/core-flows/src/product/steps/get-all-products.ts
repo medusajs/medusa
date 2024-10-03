@@ -36,6 +36,7 @@ export const getAllProductsStep = createStep(
         },
         fields: data.select,
       })
+
       allProducts.push(...products)
 
       if (products.length < pageSize) {
