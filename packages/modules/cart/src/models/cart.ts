@@ -1,7 +1,7 @@
 import { DAL } from "@medusajs/framework/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/framework/utils"
 import {
@@ -11,8 +11,8 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,

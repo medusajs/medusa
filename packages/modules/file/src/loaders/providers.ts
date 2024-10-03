@@ -9,7 +9,7 @@ import {
   FileProviderIdentifierRegistrationName,
   FileProviderRegistrationPrefix,
 } from "@types"
-import { Lifetime, asFunction, asValue } from "awilix"
+import { asFunction, asValue, Lifetime } from "awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
   const key = FileProviderService.getRegistrationIdentifier(

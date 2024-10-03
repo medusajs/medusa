@@ -26,7 +26,7 @@ import { OrchestrationUtils } from "@medusajs/utils"
  * }
  *
  * const myWorkflow = createWorkflow(
- *   "my-workflow", 
+ *   "my-workflow",
  *   (input: WorkflowInput) => {
  *    const product = createProductStep(input)
  *

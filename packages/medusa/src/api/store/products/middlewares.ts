@@ -1,23 +1,25 @@
 import { isPresent, ProductStatus } from "@medusajs/framework/utils"
-import { MiddlewareRoute } from "@medusajs/framework/http"
-import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import {
   applyDefaultFilters,
+  applyParamsAsFilters,
   clearFiltersByKey,
+  maybeApplyLinkFilter,
+  MiddlewareRoute,
+  setContext,
+} from "@medusajs/framework/http"
+import {
   filterByValidSalesChannels,
   normalizeDataForContext,
   setPricingContext,
   setTaxContext,
 } from "../../utils/middlewares"
-import { setContext } from "../../utils/middlewares/common/set-context"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { validateAndTransformQuery } from "@medusajs/framework"
 import { maybeApplyStockLocationId } from "./helpers"
 import * as QueryConfig from "./query-config"
 import {
   StoreGetProductsParams,
   StoreGetProductsParamsType,
 } from "./validators"
-import { applyParamsAsFilters } from "../../utils/middlewares/common/apply-params-as-filters"
 
 export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
   {

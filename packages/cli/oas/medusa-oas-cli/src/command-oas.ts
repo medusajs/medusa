@@ -15,9 +15,7 @@ import { isFile } from "./utils/fs-utils"
  * Constants
  */
 // Medusa core package directory
-const medusaPackagePath = path.dirname(
-  require.resolve("@medusajs/medusa")
-)
+const medusaPackagePath = path.dirname(require.resolve("@medusajs/medusa"))
 const basePath = path.resolve(__dirname, "../")
 
 /**
@@ -48,7 +46,7 @@ export const commandOptions: Option[] = [
   new Option(
     "--local",
     "Generate OAS from local files rather than public OAS. This is useful for generating references in the Medusa monorepo."
-  )
+  ),
 ]
 
 export function getCommand() {
@@ -105,11 +103,17 @@ export async function execute(cliParams: OptionValues) {
   console.log(`🟣 Generating OAS - ${apiType}`)
 
   if (apiType === "combined") {
-    const adminOAS = !local ? await getPublicOas("admin") :  await getOASFromCodebase("admin")
-    const storeOAS = !local ? await getPublicOas("store") :  await getOASFromCodebase("store")
+    const adminOAS = !local
+      ? await getPublicOas("admin")
+      : await getOASFromCodebase("admin")
+    const storeOAS = !local
+      ? await getPublicOas("store")
+      : await getOASFromCodebase("store")
     oas = await combineOAS(adminOAS, storeOAS)
   } else {
-    oas = !local ? await getPublicOas(apiType) :  await getOASFromCodebase(apiType)
+    oas = !local
+      ? await getPublicOas(apiType)
+      : await getOASFromCodebase(apiType)
   }
 
   if (additionalPaths.length || baseFile) {
@@ -133,14 +137,21 @@ export async function execute(cliParams: OptionValues) {
 /**
  * Methods
  */
-async function getOASFromCodebase(
-  apiType: ApiType
-): Promise<OpenAPIObject> {
+async function getOASFromCodebase(apiType: ApiType): Promise<OpenAPIObject> {
   /**
    * OAS output directory
    */
   const oasOutputPath = path.resolve(
-    __dirname, "..", "..", "..", "..", "..", "www", "utils", "generated", "oas-output"
+    __dirname,
+    "..",
+    "..",
+    "..",
+    "..",
+    "..",
+    "www",
+    "utils",
+    "generated",
+    "oas-output"
   )
   const gen = await swaggerInline(
     [
@@ -158,11 +169,9 @@ async function getOASFromCodebase(
   return (await OpenAPIParser.parse(JSON.parse(gen))) as OpenAPIObject
 }
 
-async function getPublicOas(
-  apiType: ApiType,
-) {
+async function getPublicOas(apiType: ApiType) {
   const url = `https://docs.medusajs.com/v2/api/api/download/${apiType}`
-  return await OpenAPIParser.parse(url) as OpenAPIObject
+  return (await OpenAPIParser.parse(url)) as OpenAPIObject
 }
 
 async function getOASFromPaths(

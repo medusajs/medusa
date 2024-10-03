@@ -6,6 +6,13 @@
  * required:
  *   - id
  * properties:
+ *   application_method:
+ *     $ref: "#/components/schemas/AdminApplicationMethod"
+ *   rules:
+ *     type: array
+ *     description: The promotion's rules.
+ *     items:
+ *       $ref: "#/components/schemas/AdminPromotionRule"
  *   id:
  *     type: string
  *     title: id
@@ -25,13 +32,6 @@
  *     type: boolean
  *     title: is_automatic
  *     description: Whether the promotion is applied on a cart automatically if it matches the promotion's rules.
- *   application_method:
- *     $ref: "#/components/schemas/BaseApplicationMethod"
- *   rules:
- *     type: array
- *     description: The promotion's rules.
- *     items:
- *       $ref: "#/components/schemas/BasePromotionRule"
  *   campaign_id:
  *     type: string
  *     title: campaign_id

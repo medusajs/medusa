@@ -1,6 +1,10 @@
 import { OperatorMap } from "../../dal"
 import { FindParams } from "../common"
-import { BaseOrder, BaseOrderShippingMethod, BaseOrderTransaction } from "../order/common"
+import {
+  BaseOrder,
+  BaseOrderShippingMethod,
+  BaseOrderTransaction,
+} from "../order/common"
 import { AdminReturn, AdminReturnItem } from "../return"
 
 export interface BaseExchangeItem {

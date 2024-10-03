@@ -4,9 +4,9 @@
  * description: The customer group's details.
  * x-schemaName: AdminCustomerGroup
  * required:
+ *   - customers
  *   - id
  *   - name
- *   - customers
  *   - metadata
  *   - created_at
  *   - updated_at
