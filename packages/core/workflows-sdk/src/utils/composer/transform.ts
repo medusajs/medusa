@@ -168,7 +168,6 @@ export function transform(
   const ret = {
     __id: uniqId,
     __type: OrchestrationUtils.SymbolWorkflowStepTransformer,
-    __resolver: undefined,
   }
 
   const returnFn = async function (

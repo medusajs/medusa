@@ -29,7 +29,7 @@ export function deepCopy<
         copy[attr] = deepCopy(obj[attr] as T)
       }
     }
-    return copy
+    return copy as TOutput
   }
 
   return obj
