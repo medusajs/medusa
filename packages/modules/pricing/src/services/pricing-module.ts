@@ -27,7 +27,6 @@ import {
   groupBy,
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   isPresent,
   isString,
   MedusaContext,
@@ -1184,7 +1183,7 @@ export default class PricingModuleService
 
         if (typeof priceList.rules === "object") {
           const cleanRules = priceList.rules
-            ? this.removeNullishRules(priceList.rules)
+            ? removeNullish(priceList.rules)
             : {}
           const rules = Object.entries(cleanRules)
           const numberOfRules = rules.length
@@ -1503,25 +1502,6 @@ export default class PricingModuleService
       },
       ...config,
     }
-  }
-
-  protected removeNullishRules(rules: Record<string, string[]>) {
-    return Object.entries(rules).reduce(
-      (resultObject, [currentKey, currentValue]) => {
-        if (
-          !isDefined(currentValue) ||
-          currentValue === null ||
-          (Array.isArray(currentValue) && !currentValue.length)
-        ) {
-          return resultObject
-        }
-
-        resultObject[currentKey] = currentValue
-
-        return resultObject
-      },
-      {}
-    )
   }
 }
 
