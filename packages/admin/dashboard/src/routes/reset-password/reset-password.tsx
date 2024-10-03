@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Alert, Button, Heading, Input, Text } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useSearchParams } from "react-router-dom"
@@ -64,6 +64,7 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
   const invite: DecodedResetPasswordToken | null = token
     ? decodeToken(token)
     : null
+
   const isValidResetPasswordToken =
     invite && validateDecodedResetPasswordToken(invite)
 
@@ -83,7 +84,7 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
         password,
       })
     } catch (error) {
-      // no op
+      toast.error(error.message)
     }
   })
 
@@ -104,7 +105,6 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
               className="flex w-full flex-col gap-y-6"
             >
               <div className="flex flex-col gap-y-4">
-                
                 <Input type="email" disabled value={"test@test.com"} />
                 <Form.Field
                   control={form.control}
@@ -203,11 +203,11 @@ export const ResetPassword = () => {
       await mutateAsync({
         email,
       })
+      form.setValue("email", "")
+      setShowAlert(true)
     } catch (error) {
-      // no op
+      toast.error(error.message)
     }
-
-    setShowAlert(true)
   })
 
   return (
@@ -226,16 +226,19 @@ export const ResetPassword = () => {
               onSubmit={handleSubmit}
               className="flex w-full flex-col gap-y-6"
             >
-              <div className="flex flex-col gap-y-4">
+              <div className="mt-4 flex flex-col gap-y-3">
                 <Form.Field
                   control={form.control}
                   name="email"
                   render={({ field }) => {
                     return (
                       <Form.Item>
-                        <Form.Label>{t("fields.email")}</Form.Label>
                         <Form.Control>
-                          <Input autoComplete="email" {...field} />
+                          <Input
+                            autoComplete="email"
+                            {...field}
+                            placeholder={t("fields.email")}
+                          />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -243,20 +246,20 @@ export const ResetPassword = () => {
                   }}
                 />
               </div>
+              {showAlert && (
+                <Alert dismissible variant="success">
+                  <div className="flex flex-col">
+                    <span className="text-ui-fg-base mb-1">
+                      {t("resetPassword.successfulRequestTitle")}
+                    </span>
+                    <span>{t("resetPassword.successfulRequest")}</span>
+                  </div>
+                </Alert>
+              )}
               <Button className="w-full" type="submit" isLoading={isPending}>
                 {t("resetPassword.sendResetInstructions")}
               </Button>
             </form>
-            {showAlert && (
-              <Alert dismissible variant="success">
-                <div className="flex flex-col">
-                  <span className="text-ui-fg-base mb-1">
-                    {t("resetPassword.successfulRequestTitle")}
-                  </span>
-                  <span>{t("resetPassword.successfulRequest")}</span>
-                </div>
-              </Alert>
-            )}
           </Form>
         </div>
         <span className="txt-small my-6">
