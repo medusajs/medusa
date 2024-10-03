@@ -2380,8 +2380,10 @@
     "expiredTokenTitle": "Your reset token has expired",
     "goToResetPassword": "Go to Reset Password",
     "resetPassword": "Reset password",
+    "newPassword": "New password",
+    "repeatNewPassword": "Repeat new password",
     "tokenExpiresIn": "Token expires in <0>{{time}}</0> minutes",
-    "successfulRequestTitle": "Succesfully sent you an email",
+    "successfulRequestTitle": "Successfully sent you an email",
     "successfulRequest": "We've sent you an email which you can use to reset your password. Check your spam folder if you haven't received it after a few minutes."
   },
   "workflowExecutions": {

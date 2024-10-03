@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Alert, Button, Heading, Input, Text, toast } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useSearchParams } from "react-router-dom"
@@ -83,16 +83,14 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
       await mutateAsync({
         password,
       })
-    } catch (error) {
-      toast.error(error.message)
-    }
+    } catch (error) {}
   })
 
   return (
     <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
       <div className="m-4 flex w-full max-w-[300px] flex-col items-center">
         <LogoBox className="mb-4" />
-        <div className="mb-4 flex flex-col items-center">
+        <div className="mb-6 flex flex-col items-center">
           <Heading>{t("resetPassword.resetPassword")}</Heading>
           <Text size="small" className="text-ui-fg-subtle text-center">
             {t("resetPassword.newPasswordHint")}
@@ -105,19 +103,19 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
               className="flex w-full flex-col gap-y-6"
             >
               <div className="flex flex-col gap-y-4">
-                <Input type="email" disabled value={"test@test.com"} />
+                <Input type="email" disabled value={invite.email} />
                 <Form.Field
                   control={form.control}
                   name="password"
                   render={({ field }) => {
                     return (
                       <Form.Item>
-                        <Form.Label>{t("fields.password")}</Form.Label>
                         <Form.Control>
                           <Input
                             autoComplete="new-password"
                             type="password"
                             {...field}
+                            placeholder={t("resetPassword.newPassword")}
                           />
                         </Form.Control>
                         <Form.ErrorMessage />
@@ -131,12 +129,12 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
                   render={({ field }) => {
                     return (
                       <Form.Item>
-                        <Form.Label>{t("fields.repeatPassword")}</Form.Label>
                         <Form.Control>
                           <Input
                             autoComplete="off"
                             type="password"
                             {...field}
+                            placeholder={t("resetPassword.repeatNewPassword")}
                           />
                         </Form.Control>
                         <Form.ErrorMessage />
@@ -185,10 +183,6 @@ export const ResetPassword = () => {
 
   const token = searchParams.get("token")
 
-  if (token) {
-    return <ChooseNewPassword token={token} />
-  }
-
   const form = useForm<z.infer<typeof ResetPasswordInstructionsSchema>>({
     resolver: zodResolver(ResetPasswordInstructionsSchema),
     defaultValues: {
@@ -203,12 +197,16 @@ export const ResetPassword = () => {
       await mutateAsync({
         email,
       })
-      form.setValue("email", "")
-      setShowAlert(true)
     } catch (error) {
-      toast.error(error.message)
+      // todo: trying to parse response which is not JSON but plain text
     }
+    form.setValue("email", "")
+    setShowAlert(true)
   })
+
+  if (token) {
+    return <ChooseNewPassword token={token} />
+  }
 
   return (
     <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
