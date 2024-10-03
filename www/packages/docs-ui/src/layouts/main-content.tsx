@@ -16,7 +16,7 @@ export const MainContentLayout = ({
   mainWrapperClasses,
   showBanner = true,
 }: MainContentLayoutProps) => {
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const { desktopSidebarOpen } = useSidebar()
 
   useEffect(() => {
