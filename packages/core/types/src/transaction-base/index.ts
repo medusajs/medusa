@@ -1,2 +1,1 @@
-export * from "./transaction-base";
-
+export * from "./transaction-base"

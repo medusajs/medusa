@@ -1,9 +1,9 @@
-import { MedusaError, isPresent } from "@medusajs/framework/utils"
+import { isPresent, MedusaError } from "@medusajs/framework/utils"
 import { MedusaResponse } from "@medusajs/framework/http"
 import { wrapVariantsWithInventoryQuantity } from "../../../utils/middlewares"
 import {
-  RequestWithContext,
   refetchProduct,
+  RequestWithContext,
   wrapProductsWithTaxPrices,
 } from "../helpers"
 import { StoreGetProductParamsType } from "../validators"

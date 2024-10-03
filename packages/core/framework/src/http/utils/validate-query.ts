@@ -2,11 +2,7 @@ import { z } from "zod"
 import { omit } from "lodash"
 import { NextFunction } from "express"
 import { removeUndefinedProperties, MedusaError } from "@medusajs/utils"
-import {
-  BaseEntity,
-  QueryConfig,
-  RequestQueryFields,
-} from "@medusajs/types"
+import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
 
 import { zodValidator } from "../../zod/zod-helpers"
 import { MedusaRequest, MedusaResponse } from "../types"

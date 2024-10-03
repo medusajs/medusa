@@ -1,11 +1,11 @@
 import { isPresent, ProductStatus } from "@medusajs/framework/utils"
-import { MiddlewareRoute } from "@medusajs/framework/http"
 import {
-  setContext,
-  applyParamsAsFilters,
-  maybeApplyLinkFilter,
   applyDefaultFilters,
+  applyParamsAsFilters,
   clearFiltersByKey,
+  maybeApplyLinkFilter,
+  MiddlewareRoute,
+  setContext,
 } from "@medusajs/framework/http"
 import {
   filterByValidSalesChannels,

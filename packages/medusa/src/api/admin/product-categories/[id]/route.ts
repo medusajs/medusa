@@ -9,8 +9,8 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  refetchEntities,
 } from "@medusajs/framework/http"
-import { refetchEntities } from "@medusajs/framework/http"
 import {
   AdminProductCategoryParamsType,
   AdminUpdateProductCategoryType,

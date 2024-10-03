@@ -5,13 +5,13 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  refetchEntity,
 } from "@medusajs/framework/http"
 
 import {
   AdminGetProductTagParamsType,
   AdminUpdateProductTagType,
 } from "../validators"
-import { refetchEntity } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 

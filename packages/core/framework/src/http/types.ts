@@ -1,7 +1,11 @@
 import type { NextFunction, Request, Response } from "express"
 import { ZodObject } from "zod"
 
-import { FindConfig, MedusaPricingContext, RequestQueryFields } from "@medusajs/types"
+import {
+  FindConfig,
+  MedusaPricingContext,
+  RequestQueryFields,
+} from "@medusajs/types"
 import { MedusaContainer } from "../container"
 
 /**

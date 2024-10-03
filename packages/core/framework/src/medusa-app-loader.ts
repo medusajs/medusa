@@ -107,9 +107,9 @@ export class MedusaAppLoader {
 
   protected prepareSharedResourcesAndDeps() {
     const injectedDependencies = {
-      [ContainerRegistrationKeys.PG_CONNECTION]: this.#container.resolve<Knex<any>>(
-        ContainerRegistrationKeys.PG_CONNECTION
-      ),
+      [ContainerRegistrationKeys.PG_CONNECTION]: this.#container.resolve<
+        Knex<any>
+      >(ContainerRegistrationKeys.PG_CONNECTION),
       [ContainerRegistrationKeys.LOGGER]: this.#container.resolve(
         ContainerRegistrationKeys.LOGGER
       ),

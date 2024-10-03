@@ -9,5 +9,4 @@ export interface AdminCreateReturnReason extends AdminBaseReturnReasonPayload {
   parent_return_reason_id?: string
 }
 
-export interface AdminUpdateReturnReason extends AdminBaseReturnReasonPayload {
-}
+export interface AdminUpdateReturnReason extends AdminBaseReturnReasonPayload {}

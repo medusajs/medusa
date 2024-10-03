@@ -1,8 +1,8 @@
 import { updateStoresWorkflow } from "@medusajs/core-flows"
 import {
-  remoteQueryObjectFromString,
   ContainerRegistrationKeys,
   MedusaError,
+  remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,

@@ -1,4 +1,9 @@
-import { MedusaNextFunction, MedusaRequest, MedusaResponse, MiddlewareFunction } from "../types"
+import {
+  MedusaNextFunction,
+  MedusaRequest,
+  MedusaResponse,
+  MiddlewareFunction,
+} from "../types"
 
 /**
  * Due to how our route loader works, where we load all middlewares before routes, ambiguous routes * end up having all middlewares on different routes executed before the route handler is.

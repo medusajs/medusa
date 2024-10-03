@@ -3,8 +3,8 @@ import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  refetchEntity,
 } from "@medusajs/framework/http"
-import { refetchEntity } from "@medusajs/framework/http"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

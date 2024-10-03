@@ -1,7 +1,7 @@
 import {
-  refetchEntity,
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  refetchEntity,
 } from "@medusajs/framework/http"
 import {
   deleteProductOptionsWorkflow,

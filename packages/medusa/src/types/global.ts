@@ -1,7 +1,7 @@
 import {
+  FindConfig,
   MedusaContainer as coreMedusaContainer,
   RequestQueryFields,
-  FindConfig,
 } from "@medusajs/framework/types"
 
 declare global {

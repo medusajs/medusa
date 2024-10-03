@@ -1,5 +1,5 @@
-import { PaginatedResponse } from "../../common";
-import { StoreOrder } from "./entities";
+import { PaginatedResponse } from "../../common"
+import { StoreOrder } from "./entities"
 
 export interface StoreOrderResponse {
   order: StoreOrder

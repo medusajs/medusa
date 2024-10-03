@@ -3,8 +3,8 @@ import { NextFunction } from "express"
 import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
+  refetchEntity,
 } from "@medusajs/framework/http"
-import { refetchEntity } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { RequestWithContext } from "../../../store/products/helpers"
 

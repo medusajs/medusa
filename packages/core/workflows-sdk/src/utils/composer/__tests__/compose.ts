@@ -1903,7 +1903,7 @@ describe("Workflow composer", function () {
       action: "step1",
       handlerType: "invoke",
       error: expect.objectContaining({
-        message:  "invoke fail",
+        message: "invoke fail",
       }),
     })
 

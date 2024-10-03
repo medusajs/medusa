@@ -6,8 +6,8 @@ import { HttpTypes, RefundReasonResponse } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  refetchEntity,
 } from "@medusajs/framework/http"
-import { refetchEntity } from "@medusajs/framework/http"
 import { AdminUpdatePaymentRefundReasonType } from "../validators"
 
 export const GET = async (

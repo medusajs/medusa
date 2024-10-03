@@ -354,7 +354,7 @@ export class EntityBuilder {
    *
    * @example
    * import { model } from "@medusajs/framework/utils"
-   * 
+   *
    * const Product = model.define("product", {
    *   id: model.id(),
    *   store: model.belongsTo(() => Store, {

@@ -242,14 +242,19 @@ export default async ({
     )
 
     if (apiKeys.rowCount) {
-      const nextjsEnvPath = path.join(nextjsDirectory, fs.existsSync(path.join(nextjsDirectory, ".env.local")) ? ".env.local" : ".env.template")
+      const nextjsEnvPath = path.join(
+        nextjsDirectory,
+        fs.existsSync(path.join(nextjsDirectory, ".env.local"))
+          ? ".env.local"
+          : ".env.template"
+      )
 
       const originalContent = fs.readFileSync(nextjsEnvPath, "utf-8")
 
       fs.writeFileSync(
-        nextjsEnvPath, 
+        nextjsEnvPath,
         originalContent.replace(
-          "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_test", 
+          "NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_test",
           `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=${apiKeys.rows[0].token}`
         )
       )

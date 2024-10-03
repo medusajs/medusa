@@ -1,6 +1,6 @@
-import { removeUndefinedProperties } from "../remove-undefined-properties";
+import { removeUndefinedProperties } from "../remove-undefined-properties"
 
-describe("removeUndefinedProperties", ()  => {
+describe("removeUndefinedProperties", () => {
   it("should remove all undefined properties from an input object", () => {
     const inputObj = {
       test: undefined,
@@ -20,8 +20,8 @@ describe("removeUndefinedProperties", ()  => {
           test4_1: undefined,
           test4_2: "test4_2",
           test4_3: null,
-        }
-      ]
+        },
+      ],
     }
 
     const cleanObject = removeUndefinedProperties(inputObj)
@@ -39,9 +39,9 @@ describe("removeUndefinedProperties", ()  => {
         [1, 2],
         {
           test4_2: "test4_2",
-          test4_3: null
-        }
-      ]
+          test4_3: null,
+        },
+      ],
     })
   })
 })

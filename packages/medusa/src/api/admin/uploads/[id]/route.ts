@@ -7,8 +7,8 @@ import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
-import { remoteQueryObjectFromString } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

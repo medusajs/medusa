@@ -1,15 +1,17 @@
 import compression from "compression"
 import type { ConfigModule } from "@medusajs/types"
-import { ContainerRegistrationKeys } from '@medusajs/utils'
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
-import {
-  HttpCompressionOptions,
-  ProjectConfigOptions,
-} from "../../config"
+import { HttpCompressionOptions, ProjectConfigOptions } from "../../config"
 import type { MedusaRequest, MedusaResponse } from "../types"
 
-export function shouldCompressResponse(req: MedusaRequest, res: MedusaResponse) {
-  const { projectConfig } = req.scope.resolve<ConfigModule>(ContainerRegistrationKeys.CONFIG_MODULE)
+export function shouldCompressResponse(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { projectConfig } = req.scope.resolve<ConfigModule>(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  )
   const { enabled } = compressionOptions(projectConfig)
 
   if (!enabled) {

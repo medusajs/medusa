@@ -11,7 +11,11 @@ export function maybeApplyLinkFilter({
   filterableField,
   filterByField = "id",
 }) {
-  return async function linkFilter(req: MedusaRequest, _, next: MedusaNextFunction) {
+  return async function linkFilter(
+    req: MedusaRequest,
+    _,
+    next: MedusaNextFunction
+  ) {
     const filterableFields = req.filterableFields
 
     if (!filterableFields?.[filterableField]) {

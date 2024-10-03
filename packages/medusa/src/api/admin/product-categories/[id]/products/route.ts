@@ -6,8 +6,8 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  refetchEntity,
 } from "@medusajs/framework/http"
-import { refetchEntity } from "@medusajs/framework/http"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<LinkMethodRequest>,

@@ -1,6 +1,6 @@
 import { createMedusaContainer } from "@medusajs/utils"
 import { AwilixContainer, ResolveOptions } from "awilix"
-import { ModuleImplementations } from "@medusajs/types";
+import { ModuleImplementations } from "@medusajs/types"
 
 /**
  * The Medusa Container extends [Awilix](https://github.com/jeffijoe/awilix) to

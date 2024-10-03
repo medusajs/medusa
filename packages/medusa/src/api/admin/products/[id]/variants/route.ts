@@ -5,10 +5,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { wrapVariantsWithInventoryQuantity } from "../../../../utils/middlewares"
-import {
-  refetchEntities,
-  refetchEntity,
-} from "@medusajs/framework/http"
+import { refetchEntities, refetchEntity } from "@medusajs/framework/http"
 import {
   remapKeysForProduct,
   remapKeysForVariant,

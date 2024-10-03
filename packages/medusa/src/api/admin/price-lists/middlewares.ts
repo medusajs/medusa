@@ -1,6 +1,8 @@
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformBody } from "@medusajs/framework"
-import { validateAndTransformQuery } from "@medusajs/framework"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import { createBatchBody } from "../../utils/validators"
 import * as QueryConfig from "./query-config"
 import {

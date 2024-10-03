@@ -1,6 +1,9 @@
 import * as QueryConfig from "./query-config"
-import { MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformQuery } from "@medusajs/framework"
+import { MiddlewareRoute, unlessPath } from "@medusajs/framework/http"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import {
   AdminCreateInventoryItem,
   AdminCreateInventoryLocationLevel,
@@ -11,9 +14,7 @@ import {
   AdminUpdateInventoryItem,
   AdminUpdateInventoryLocationLevel,
 } from "./validators"
-import { validateAndTransformBody } from "@medusajs/framework"
 import { createBatchBody } from "../../utils/validators"
-import { unlessPath } from "@medusajs/framework/http"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
