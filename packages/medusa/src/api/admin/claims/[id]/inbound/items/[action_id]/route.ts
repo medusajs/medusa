@@ -9,8 +9,8 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../../types/routing"
-import { refetchEntity } from "../../../../../../utils/refetch-entity"
+  refetchEntity,
+} from "@medusajs/framework/http"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostReturnsRequestItemsActionReqSchemaType } from "../../../../../returns/validators"
 import { HttpTypes } from "@medusajs/framework/types"

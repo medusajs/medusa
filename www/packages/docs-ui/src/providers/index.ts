@@ -1,5 +1,6 @@
 export * from "./AiAssistant"
 export * from "./Analytics"
+export * from "./BrowserProvider"
 export * from "./ColorMode"
 export * from "./LearningPath"
 export * from "./MainNav"

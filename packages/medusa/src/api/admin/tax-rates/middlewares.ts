@@ -1,6 +1,9 @@
 import * as QueryConfig from "./query-config"
 
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import {
   AdminCreateTaxRate,
   AdminCreateTaxRateRule,
@@ -10,7 +13,6 @@ import {
 } from "./validators"
 
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminTaxRateRoutesMiddlewares: MiddlewareRoute[] = [
   {

@@ -8,8 +8,8 @@ import {
 } from "./validators"
 
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformQuery } from "../../utils/validate-query"
-import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "@medusajs/framework"
+import { validateAndTransformBody } from "@medusajs/framework"
 
 export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
   {

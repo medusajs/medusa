@@ -4,10 +4,24 @@
  * description: The item's details.
  * x-schemaName: AdminOrderLineItem
  * required:
- *   - id
  *   - title
+ *   - metadata
+ *   - id
  *   - subtitle
  *   - thumbnail
+ *   - created_at
+ *   - updated_at
+ *   - item_total
+ *   - item_subtotal
+ *   - item_tax_total
+ *   - original_total
+ *   - original_subtotal
+ *   - original_tax_total
+ *   - total
+ *   - subtotal
+ *   - tax_total
+ *   - discount_total
+ *   - discount_tax_total
  *   - variant_id
  *   - product_id
  *   - product_title
@@ -26,20 +40,6 @@
  *   - unit_price
  *   - quantity
  *   - detail
- *   - created_at
- *   - updated_at
- *   - metadata
- *   - original_total
- *   - original_subtotal
- *   - original_tax_total
- *   - item_total
- *   - item_subtotal
- *   - item_tax_total
- *   - total
- *   - subtotal
- *   - tax_total
- *   - discount_total
- *   - discount_tax_total
  *   - refundable_total
  *   - refundable_total_per_unit
  * properties:
@@ -66,7 +66,7 @@
  *     title: variant_id
  *     description: The ID of the associated variant.
  *   product:
- *     $ref: "#/components/schemas/BaseProduct"
+ *     $ref: "#/components/schemas/AdminProduct"
  *   product_id:
  *     type: string
  *     title: product_id

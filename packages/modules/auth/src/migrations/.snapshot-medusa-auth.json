@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -52,9 +50,7 @@
       "indexes": [
         {
           "keyName": "auth_identity_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -163,9 +159,7 @@
         },
         {
           "keyName": "provider_identity_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -175,13 +169,9 @@
       "foreignKeys": {
         "provider_identity_auth_identity_id_foreign": {
           "constraintName": "provider_identity_auth_identity_id_foreign",
-          "columnNames": [
-            "auth_identity_id"
-          ],
+          "columnNames": ["auth_identity_id"],
           "localTableName": "public.provider_identity",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.auth_identity",
           "deleteRule": "cascade",
           "updateRule": "cascade"

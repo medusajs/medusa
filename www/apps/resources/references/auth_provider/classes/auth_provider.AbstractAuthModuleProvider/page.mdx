@@ -47,8 +47,8 @@ In the constructor, you must pass to the parent constructor two parameters:
 #### Example
 
 ```ts
-import { AbstractAuthModuleProvider } from "@medusajs/utils"
-import { Logger } from "@medusajs/types"
+import { AbstractAuthModuleProvider } from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/framework/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -119,7 +119,7 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -162,7 +162,7 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -220,8 +220,8 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -282,8 +282,8 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {
@@ -329,7 +329,7 @@ That route uses this method to verify the callback's code.
 
 If the callback is verified successfully, the provider creates an auth identity for the user, or updates the auth identity's user information.
 
-In the auth identity, yuse the following properties to store additional data:
+In the auth identity, use the following properties to store additional data:
 
 - `provider_metadata`: Store metadata useful for the provider, such as a password hash.
 - `user_metadata`: Store metadata of the user's details. For example, if the third-party service returns the user's information such as email
@@ -344,7 +344,7 @@ import {
   AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 // ...
 
 class MyAuthProviderService extends AbstractAuthModuleProvider {

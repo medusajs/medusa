@@ -60,20 +60,20 @@ async function start({ port, directory, types }) {
     const app = express()
 
     const http_ = http.createServer(async (req, res) => {
-      if (traceRequestHandler) {
-        await traceRequestHandler(
-          async () => {
-            return new Promise((resolve) => {
-              res.on("finish", resolve)
+      await new Promise((resolve) => {
+        res.on("finish", resolve)
+        if (traceRequestHandler) {
+          void traceRequestHandler(
+            async () => {
               app(req, res)
-            })
-          },
-          req,
-          res
-        )
-      } else {
-        app(req, res)
-      }
+            },
+            req,
+            res
+          )
+        } else {
+          app(req, res)
+        }
+      })
     })
 
     try {

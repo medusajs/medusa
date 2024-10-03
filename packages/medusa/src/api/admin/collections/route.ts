@@ -1,7 +1,7 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 
 import { createCollectionsWorkflow } from "@medusajs/core-flows"
 import {

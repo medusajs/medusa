@@ -26,6 +26,8 @@
  *       title: fields
  *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
  *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * requestBody:
  *   content:
  *     application/json:
@@ -68,6 +70,9 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createCustomerAccountWorkflow
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
  * 
 */
 

@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -161,9 +159,7 @@
       "indexes": [
         {
           "keyName": "IDX_cart_address_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -171,9 +167,7 @@
         },
         {
           "keyName": "cart_address_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -302,27 +296,21 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "sales_channel_id"
-          ],
+          "columnNames": ["sales_channel_id"],
           "composite": false,
           "keyName": "IDX_cart_sales_channel_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "currency_code"
-          ],
+          "columnNames": ["currency_code"],
           "composite": false,
           "keyName": "IDX_cart_curency_code",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "billing_address_id"
-          ],
+          "columnNames": ["billing_address_id"],
           "composite": false,
           "keyName": "IDX_cart_billing_address_id",
           "primary": false,
@@ -330,9 +318,7 @@
         },
         {
           "keyName": "IDX_cart_region_id",
-          "columnNames": [
-            "region_id"
-          ],
+          "columnNames": ["region_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -340,9 +326,7 @@
         },
         {
           "keyName": "IDX_cart_customer_id",
-          "columnNames": [
-            "customer_id"
-          ],
+          "columnNames": ["customer_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -350,9 +334,7 @@
         },
         {
           "keyName": "IDX_cart_sales_channel_id",
-          "columnNames": [
-            "sales_channel_id"
-          ],
+          "columnNames": ["sales_channel_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -360,9 +342,7 @@
         },
         {
           "keyName": "IDX_cart_shipping_address_id",
-          "columnNames": [
-            "shipping_address_id"
-          ],
+          "columnNames": ["shipping_address_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -370,9 +350,7 @@
         },
         {
           "keyName": "IDX_cart_billing_address_id",
-          "columnNames": [
-            "billing_address_id"
-          ],
+          "columnNames": ["billing_address_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -380,9 +358,7 @@
         },
         {
           "keyName": "IDX_cart_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -390,9 +366,7 @@
         },
         {
           "keyName": "cart_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -402,26 +376,18 @@
       "foreignKeys": {
         "cart_shipping_address_id_foreign": {
           "constraintName": "cart_shipping_address_id_foreign",
-          "columnNames": [
-            "shipping_address_id"
-          ],
+          "columnNames": ["shipping_address_id"],
           "localTableName": "public.cart",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.cart_address",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "cart_billing_address_id_foreign": {
           "constraintName": "cart_billing_address_id_foreign",
-          "columnNames": [
-            "billing_address_id"
-          ],
+          "columnNames": ["billing_address_id"],
           "localTableName": "public.cart",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.cart_address",
           "deleteRule": "set null",
           "updateRule": "cascade"
@@ -705,9 +671,7 @@
       "indexes": [
         {
           "keyName": "IDX_line_item_cart_id",
-          "columnNames": [
-            "cart_id"
-          ],
+          "columnNames": ["cart_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -715,9 +679,7 @@
         },
         {
           "keyName": "IDX_line_item_variant_id",
-          "columnNames": [
-            "variant_id"
-          ],
+          "columnNames": ["variant_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -725,9 +687,7 @@
         },
         {
           "keyName": "IDX_line_item_product_id",
-          "columnNames": [
-            "product_id"
-          ],
+          "columnNames": ["product_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -735,9 +695,7 @@
         },
         {
           "keyName": "IDX_cart_line_item_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -745,9 +703,7 @@
         },
         {
           "keyName": "cart_line_item_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -757,13 +713,9 @@
       "foreignKeys": {
         "cart_line_item_cart_id_foreign": {
           "constraintName": "cart_line_item_cart_id_foreign",
-          "columnNames": [
-            "cart_id"
-          ],
+          "columnNames": ["cart_id"],
           "localTableName": "public.cart_line_item",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.cart",
           "updateRule": "cascade"
         }
@@ -890,9 +842,7 @@
       "indexes": [
         {
           "keyName": "IDX_adjustment_item_id",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -900,9 +850,7 @@
         },
         {
           "keyName": "IDX_line_item_adjustment_promotion_id",
-          "columnNames": [
-            "promotion_id"
-          ],
+          "columnNames": ["promotion_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -910,9 +858,7 @@
         },
         {
           "keyName": "IDX_cart_line_item_adjustment_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -920,9 +866,7 @@
         },
         {
           "keyName": "cart_line_item_adjustment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1049,9 +993,7 @@
       "indexes": [
         {
           "keyName": "IDX_tax_line_item_id",
-          "columnNames": [
-            "item_id"
-          ],
+          "columnNames": ["item_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1059,9 +1001,7 @@
         },
         {
           "keyName": "IDX_line_item_tax_line_tax_rate_id",
-          "columnNames": [
-            "tax_rate_id"
-          ],
+          "columnNames": ["tax_rate_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1069,9 +1009,7 @@
         },
         {
           "keyName": "IDX_cart_line_item_tax_line_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1079,9 +1017,7 @@
         },
         {
           "keyName": "cart_line_item_tax_line_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1221,9 +1157,7 @@
       "indexes": [
         {
           "keyName": "IDX_shipping_method_cart_id",
-          "columnNames": [
-            "cart_id"
-          ],
+          "columnNames": ["cart_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1231,9 +1165,7 @@
         },
         {
           "keyName": "IDX_shipping_method_option_id",
-          "columnNames": [
-            "shipping_option_id"
-          ],
+          "columnNames": ["shipping_option_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1241,9 +1173,7 @@
         },
         {
           "keyName": "IDX_cart_shipping_method_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1251,9 +1181,7 @@
         },
         {
           "keyName": "cart_shipping_method_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1269,13 +1197,9 @@
       "foreignKeys": {
         "cart_shipping_method_cart_id_foreign": {
           "constraintName": "cart_shipping_method_cart_id_foreign",
-          "columnNames": [
-            "cart_id"
-          ],
+          "columnNames": ["cart_id"],
           "localTableName": "public.cart_shipping_method",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.cart",
           "updateRule": "cascade"
         }
@@ -1402,9 +1326,7 @@
       "indexes": [
         {
           "keyName": "IDX_adjustment_shipping_method_id",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1412,9 +1334,7 @@
         },
         {
           "keyName": "IDX_shipping_method_adjustment_promotion_id",
-          "columnNames": [
-            "promotion_id"
-          ],
+          "columnNames": ["promotion_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1422,9 +1342,7 @@
         },
         {
           "keyName": "IDX_cart_shipping_method_adjustment_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1432,9 +1350,7 @@
         },
         {
           "keyName": "cart_shipping_method_adjustment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1555,9 +1471,7 @@
       "indexes": [
         {
           "keyName": "IDX_tax_line_shipping_method_id",
-          "columnNames": [
-            "shipping_method_id"
-          ],
+          "columnNames": ["shipping_method_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1565,9 +1479,7 @@
         },
         {
           "keyName": "IDX_shipping_method_tax_line_tax_rate_id",
-          "columnNames": [
-            "tax_rate_id"
-          ],
+          "columnNames": ["tax_rate_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1575,9 +1487,7 @@
         },
         {
           "keyName": "IDX_cart_shipping_method_tax_line_deleted_at",
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -1585,9 +1495,7 @@
         },
         {
           "keyName": "cart_shipping_method_tax_line_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true

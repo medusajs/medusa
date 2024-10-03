@@ -7,7 +7,7 @@
  *   - order_change
  * properties:
  *   order_change:
- *     $ref: "#/components/schemas/OrderChange"
+ *     $ref: "#/components/schemas/AdminOrderChange"
  * 
 */
 

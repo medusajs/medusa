@@ -10,13 +10,23 @@ import execa from "execa"
 
 /**
  * OAS output directory
- * 
+ *
  * @privateRemarks
  * This should be the only directory OAS is loaded from for Medusa V2.
  * For now, we only use it if the --v2 flag it passed to the CLI tool.
  */
 const oasOutputPath = path.resolve(
-  __dirname, "..", "..", "..", "..", "..", "..", "www", "utils", "generated", "oas-output"
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "..",
+  "..",
+  "..",
+  "www",
+  "utils",
+  "generated",
+  "oas-output"
 )
 const basePath = path.resolve(__dirname, `../../`)
 
@@ -128,7 +138,13 @@ describe("command oas", () => {
 
     beforeAll(async () => {
       const outDir = path.resolve(tmpDir, uid())
-      await runCLI("oas", ["--type", "combined", "--out-dir", outDir, "--local"])
+      await runCLI("oas", [
+        "--type",
+        "combined",
+        "--out-dir",
+        outDir,
+        "--local",
+      ])
       const generatedFilePath = path.resolve(outDir, "combined.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
     })
@@ -227,7 +243,7 @@ describe("command oas", () => {
         outDir,
         "--paths",
         additionalPath,
-        "--local"
+        "--local",
       ])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
@@ -363,7 +379,7 @@ components:
         outDir,
         "--base",
         filePath,
-        "--local"
+        "--local",
       ])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
@@ -473,7 +489,7 @@ components:
       const routes = Object.keys(oas.paths)
       expect(routes.includes("/admin/products")).toBeTruthy()
       expect(routes.includes("/store/products")).toBeFalsy()
-    })    
+    })
   })
 
   describe("public OAS with base", () => {
@@ -579,7 +595,7 @@ components:
       ])
       const generatedFilePath = path.resolve(outDir, "store.oas.json")
       oas = (await readJson(generatedFilePath)) as OpenAPIObject
-    })   
+    })
 
     it("should add new path to existing paths", async () => {
       const routes = Object.keys(oas.paths)
