@@ -2115,9 +2115,10 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
+          expect(response.data.cart.items).toHaveLength(2)
           expect(response.data.cart).toEqual(
             expect.objectContaining({
-              items: [
+              items: expect.arrayContaining([
                 expect.objectContaining({
                   unit_price: 1500,
                   quantity: 2,
@@ -2128,7 +2129,7 @@ medusaIntegrationTestRunner({
                   quantity: 1,
                   title: "S / Black",
                 }),
-              ],
+              ]),
               subtotal: 4500,
             })
           )
