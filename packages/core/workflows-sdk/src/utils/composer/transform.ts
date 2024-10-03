@@ -2,6 +2,11 @@ import { resolveValue } from "./helpers"
 import { StepExecutionContext, WorkflowData } from "./type"
 import { proxify } from "./helpers/proxy"
 import { OrchestrationUtils } from "@medusajs/utils"
+import { ulid } from "ulid"
+import {
+  TransactionContext,
+  WorkflowStepHandlerArguments,
+} from "@medusajs/orchestration"
 
 type Func1<T extends object | WorkflowData, U> = (
   input: T extends WorkflowData<infer U>
@@ -158,12 +163,26 @@ export function transform(
   values: any | any[],
   ...functions: Function[]
 ): unknown {
+  const uniqId = ulid()
+
   const ret = {
+    __id: uniqId,
     __type: OrchestrationUtils.SymbolWorkflowStepTransformer,
     __resolver: undefined,
   }
 
-  const returnFn = async function (transactionContext): Promise<any> {
+  const returnFn = async function (
+    // If a transformer is returned as the result of a workflow, then at this point the workflow is entirely done, in that case we have a TransactionContext
+    transactionContext: WorkflowStepHandlerArguments | TransactionContext
+  ): Promise<any> {
+    if ("transaction" in transactionContext) {
+      const temporaryDataKey = `${transactionContext.transaction.modelId}_${transactionContext.transaction.transactionId}_${uniqId}`
+
+      if (transactionContext.transaction.hasTemporaryData(temporaryDataKey)) {
+        return transactionContext.transaction.getTemporaryData(temporaryDataKey)
+      }
+    }
+
     const allValues = await resolveValue(values, transactionContext)
     const stepValue = allValues
       ? JSON.parse(JSON.stringify(allValues))
@@ -175,6 +194,15 @@ export function transform(
       const arg = i === 0 ? stepValue : finalResult
 
       finalResult = await fn.apply(fn, [arg, transactionContext])
+    }
+
+    if ("transaction" in transactionContext) {
+      const temporaryDataKey = `${transactionContext.transaction.modelId}_${transactionContext.transaction.transactionId}_${uniqId}`
+
+      transactionContext.transaction.setTemporaryData(
+        temporaryDataKey,
+        finalResult
+      )
     }
 
     return finalResult

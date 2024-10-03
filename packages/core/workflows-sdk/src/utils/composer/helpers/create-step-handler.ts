@@ -1,5 +1,5 @@
 import { WorkflowStepHandlerArguments } from "@medusajs/orchestration"
-import { OrchestrationUtils, deepCopy } from "@medusajs/utils"
+import { deepCopy, OrchestrationUtils } from "@medusajs/utils"
 import { ApplyStepOptions } from "../create-step"
 import {
   CreateWorkflowComposerContext,
@@ -8,6 +8,37 @@ import {
 } from "../type"
 import { resolveValue } from "./resolve-value"
 import { StepResponse } from "./step-response"
+
+function buildStepContext({
+  action,
+  stepArguments,
+}: {
+  action: StepExecutionContext["action"]
+  stepArguments: WorkflowStepHandlerArguments
+}) {
+  const metadata = stepArguments.metadata
+  const idempotencyKey = metadata.idempotency_key
+
+  stepArguments.context!.idempotencyKey = idempotencyKey
+
+  const flowMetadata = stepArguments.transaction.getFlow()?.metadata
+  const executionContext: StepExecutionContext = {
+    workflowId: metadata.model_id,
+    stepName: metadata.action,
+    action,
+    idempotencyKey,
+    attempt: metadata.attempt,
+    container: stepArguments.container,
+    metadata,
+    eventGroupId:
+      flowMetadata?.eventGroupId ?? stepArguments.context!.eventGroupId,
+    parentStepIdempotencyKey: flowMetadata?.parentStepIdempotencyKey as string,
+    transactionId: stepArguments.context!.transactionId,
+    context: stepArguments.context!,
+  }
+
+  return executionContext
+}
 
 export function createStepHandler<
   TInvokeInput,
@@ -32,27 +63,10 @@ export function createStepHandler<
 ) {
   const handler = {
     invoke: async (stepArguments: WorkflowStepHandlerArguments) => {
-      const metadata = stepArguments.metadata
-      const idempotencyKey = metadata.idempotency_key
-
-      stepArguments.context!.idempotencyKey = idempotencyKey
-
-      const flowMetadata = stepArguments.transaction.getFlow()?.metadata
-      const executionContext: StepExecutionContext = {
-        workflowId: metadata.model_id,
-        stepName: metadata.action,
+      const executionContext = buildStepContext({
         action: "invoke",
-        idempotencyKey,
-        attempt: metadata.attempt,
-        container: stepArguments.container,
-        metadata,
-        eventGroupId:
-          flowMetadata?.eventGroupId ?? stepArguments.context!.eventGroupId,
-        parentStepIdempotencyKey:
-          flowMetadata?.parentStepIdempotencyKey as string,
-        transactionId: stepArguments.context!.transactionId,
-        context: stepArguments.context!,
-      }
+        stepArguments,
+      })
 
       const argInput = input ? await resolveValue(input, stepArguments) : {}
       const stepResponse: StepResponse<any, any> = await invokeFn.apply(this, [
@@ -72,24 +86,10 @@ export function createStepHandler<
     },
     compensate: compensateFn
       ? async (stepArguments: WorkflowStepHandlerArguments) => {
-          const metadata = stepArguments.metadata
-          const idempotencyKey = metadata.idempotency_key
-
-          stepArguments.context!.idempotencyKey = idempotencyKey
-
-          const flowMetadata = stepArguments.transaction.getFlow()?.metadata
-          const executionContext: StepExecutionContext = {
-            workflowId: metadata.model_id,
-            stepName: metadata.action,
+          const executionContext = buildStepContext({
             action: "compensate",
-            idempotencyKey,
-            parentStepIdempotencyKey:
-              flowMetadata?.parentStepIdempotencyKey as string,
-            attempt: metadata.attempt,
-            container: stepArguments.container,
-            metadata,
-            context: stepArguments.context!,
-          }
+            stepArguments,
+          })
 
           const stepOutput = (stepArguments.invoke[stepName] as any)?.output
           const invokeResult =

@@ -114,22 +114,55 @@ export const addToCartWorkflow = createWorkflow(
       }
     )
 
+    const createdItemIds = transform({ createdItems }, ({ createdItems }) => {
+      return createdItems.map((item) => item.id)
+    })
+
+    /**
+     * Fetch newly created items to gather additional data
+     */
+    const createItemsData = useRemoteQueryStep({
+      entry_point: "line_items",
+      fields: [
+        "id",
+        "product.id",
+        "product.collection.id",
+        "product.categories.id",
+        "product.tags.id",
+      ],
+      variables: {
+        id: createdItemIds,
+      },
+      list: true,
+    }).config({ name: "created-items-data" })
+
     /**
      * Assign created and updated items to the cart to maintain sync
      */
     const cartWithUpdatedItems = transform(
-      { cart: input.cart, createdItems, updatedItems },
-      ({ cart, createdItems, updatedItems }) => {
-        cart.items = (cart.items ?? []).concat(createdItems, updatedItems)
-        cart.items = (cart.items ?? []).map((item) => {
+      { cart: input.cart, createdItems, createItemsData, updatedItems },
+      ({ cart, createdItems, createItemsData, updatedItems }) => {
+        cart.items ??= []
+        cart.items = cart.items.map((item) => {
           const updatedItem = updatedItems.find(
             (updatedItem) => updatedItem.id === item.id
           )
+
           if (updatedItem) {
-            return updatedItem
+            return Object.assign(item, updatedItem)
           }
+
           return item
         })
+
+        const fullCreatedItems = (createdItems ?? []).map((item) => {
+          return Object.assign(
+            item,
+            createItemsData.find((data) => data.id === item.id)
+          )
+        })
+        cart.items = cart.items.concat(fullCreatedItems)
+
         return cart as CartDTO & { items: CartDTO["items"] }
       }
     )
@@ -138,10 +171,30 @@ export const addToCartWorkflow = createWorkflow(
       cart: cartWithUpdatedItems,
     })
 
+    /**
+     * Once the shipping are refreshed, we need to remove the ones that are no longer valid
+     * from the cart
+     */
     const cartWithFreshShippingMethods = transform(
       { cart: cartWithUpdatedItems, refreshedShippingMethods },
       (data) => {
-        data.cart.shipping_methods = data.refreshedShippingMethods
+        if (!data.refreshedShippingMethods?.length) {
+          data.cart.shipping_methods = []
+          return data.cart
+        }
+
+        const shippingMethodIdsLeft = new Set(
+          data.refreshedShippingMethods?.map((shippingMethod) => {
+            return shippingMethod.id
+          })
+        )
+
+        data.cart.shipping_methods = (data.cart.shipping_methods ?? []).filter(
+          (shippingMethod) => {
+            return !shippingMethodIdsLeft.has(shippingMethod.id)
+          }
+        )
+
         return data.cart as CartDTO
       }
     )

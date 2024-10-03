@@ -50,7 +50,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
           id: input.cart_id,
         },
         list: false,
-      })
+      }) as CartDTO
     })
 
     const cart = transform({ potentialCart, input }, (data) => {
@@ -67,7 +67,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
 
     const promotionCodesToApply = getPromotionCodesToApply({
       cart,
-      promo_codes: promo_codes,
+      promo_codes: promo_codes as string[],
       action: action as PromotionActions,
     })
 
