@@ -10,7 +10,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { refetchEntity } from "../../../../../../utils/refetch-entity"
+import { refetchEntity } from "@medusajs/framework/http"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostReturnsRequestItemsActionReqSchemaType } from "../../../../../returns/validators"
 import { HttpTypes } from "@medusajs/framework/types"

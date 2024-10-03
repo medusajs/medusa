@@ -2,9 +2,8 @@ import {
   arrayIntersection,
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/framework/utils"
-import { NextFunction } from "express"
-import { MedusaRequest } from "@medusajs/framework/http"
+} from "@medusajs/utils"
+import { MedusaNextFunction, MedusaRequest } from "../types"
 
 export function maybeApplyLinkFilter({
   entryPoint,
@@ -12,7 +11,7 @@ export function maybeApplyLinkFilter({
   filterableField,
   filterByField = "id",
 }) {
-  return async function linkFilter(req: MedusaRequest, _, next: NextFunction) {
+  return async function linkFilter(req: MedusaRequest, _, next: MedusaNextFunction) {
     const filterableFields = req.filterableFields
 
     if (!filterableFields?.[filterableField]) {

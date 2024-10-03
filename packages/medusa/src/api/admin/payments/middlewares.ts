@@ -1,5 +1,5 @@
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { unlessPath } from "../../utils/unless-path"
+import { unlessPath } from "@medusajs/framework/http"
 import { validateAndTransformBody } from "@medusajs/framework"
 import { validateAndTransformQuery } from "@medusajs/framework"
 import * as queryConfig from "./query-config"

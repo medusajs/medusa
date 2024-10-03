@@ -10,7 +10,7 @@ import {
   RefundReasonResponse,
   RefundReasonsResponse,
 } from "@medusajs/framework/types"
-import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+import { refetchEntities, refetchEntity } from "@medusajs/framework/http"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.RefundReasonFilters>,

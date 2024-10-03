@@ -1,7 +1,7 @@
 import { MedusaError } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
 import { AuthenticatedMedusaRequest } from "@medusajs/framework/http"
-import { refetchEntities, refetchEntity } from "../../refetch-entity"
+import { refetchEntities, refetchEntity } from "@medusajs/framework/http"
 
 export function normalizeDataForContext() {
   return async (req: AuthenticatedMedusaRequest, _, next: NextFunction) => {

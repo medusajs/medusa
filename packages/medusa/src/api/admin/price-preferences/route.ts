@@ -3,7 +3,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+import { refetchEntities, refetchEntity } from "@medusajs/framework/http"
 import { createPricePreferencesWorkflow } from "@medusajs/core-flows"
 
 export const GET = async (

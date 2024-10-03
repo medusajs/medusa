@@ -4,7 +4,7 @@ import {
 } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
 import { wrapVariantsWithInventoryQuantity } from "../../utils/middlewares"
-import { refetchEntities } from "../../utils/refetch-entity"
+import { refetchEntities } from "@medusajs/framework/http"
 import { remapKeysForVariant, remapVariantResponse } from "../products/helpers"
 
 export const GET = async (

@@ -13,7 +13,7 @@ import {
 } from "./validators"
 import { validateAndTransformBody } from "@medusajs/framework"
 import { createBatchBody } from "../../utils/validators"
-import { unlessPath } from "../../utils/unless-path"
+import { unlessPath } from "@medusajs/framework/http"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {

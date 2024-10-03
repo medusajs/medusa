@@ -7,7 +7,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { refetchEntity } from "../../../utils/refetch-entity"
+import { refetchEntity } from "@medusajs/framework/http"
 import { AdminUpdatePaymentRefundReasonType } from "../validators"
 
 export const GET = async (

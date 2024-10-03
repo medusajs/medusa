@@ -4,7 +4,7 @@ import {
 } from "@medusajs/framework/http"
 
 import { createProductTagsWorkflow } from "@medusajs/core-flows"
-import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+import { refetchEntities, refetchEntity } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (

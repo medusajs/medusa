@@ -1,5 +1,5 @@
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
+import { maybeApplyLinkFilter } from "@medusajs/framework/http"
 import { validateAndTransformQuery } from "@medusajs/framework"
 import * as QueryConfig from "./query-config"
 import { AdminFulfillmentProvidersParams } from "./validators"

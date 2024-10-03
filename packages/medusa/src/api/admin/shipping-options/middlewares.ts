@@ -1,5 +1,5 @@
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
+import { maybeApplyLinkFilter } from "@medusajs/framework/http"
 import { validateAndTransformBody } from "@medusajs/framework"
 import { validateAndTransformQuery } from "@medusajs/framework"
 import { createBatchBody } from "../../utils/validators"

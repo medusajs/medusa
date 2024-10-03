@@ -3,7 +3,7 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
-import { refetchEntity } from "../../../utils/refetch-entity"
+import { refetchEntity } from "@medusajs/framework/http"
 import { AdminClaimResponse } from "@medusajs/framework/types"
 
 export const GET = async (

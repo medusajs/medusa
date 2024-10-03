@@ -4,7 +4,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaRequest,
 } from "@medusajs/framework/http"
-import { refetchEntity } from "../../refetch-entity"
+import { refetchEntity } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { RequestWithContext } from "../../../store/products/helpers"
 

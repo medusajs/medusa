@@ -8,7 +8,7 @@ import { wrapVariantsWithInventoryQuantity } from "../../../../utils/middlewares
 import {
   refetchEntities,
   refetchEntity,
-} from "../../../../utils/refetch-entity"
+} from "@medusajs/framework/http"
 import {
   remapKeysForProduct,
   remapKeysForVariant,

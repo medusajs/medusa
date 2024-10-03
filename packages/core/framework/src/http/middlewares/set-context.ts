@@ -1,8 +1,7 @@
-import { NextFunction } from "express"
-import { MedusaRequest } from "@medusajs/framework/http"
+import { MedusaNextFunction, MedusaRequest } from "../types"
 
 export function setContext(context: Record<string, any>) {
-  return async (req: MedusaRequest, _, next: NextFunction) => {
+  return async (req: MedusaRequest, _, next: MedusaNextFunction) => {
     const ctx: Record<string, any> = { ...(req.context || {}) }
 
     for (const [contextKey, contextValue] of Object.entries(context || {})) {

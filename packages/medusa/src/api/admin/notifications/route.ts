@@ -2,7 +2,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { refetchEntities } from "../../utils/refetch-entity"
+import { refetchEntities } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
