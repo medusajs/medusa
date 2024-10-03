@@ -11928,7 +11928,7 @@ components:
           items:
             $ref: '#/components/schemas/AdminRefund'
         payment_collection:
-          $ref: '#/components/schemas/AdminPaymentCollection'
+          type: object
         payment_session:
           $ref: '#/components/schemas/AdminPaymentSession'
     AdminPaymentCollection:
@@ -25714,7 +25714,7 @@ components:
           items:
             $ref: '#/components/schemas/StoreProductOptionValue'
         product:
-          $ref: '#/components/schemas/StoreProduct'
+          type: object
         length:
           type: number
           title: length

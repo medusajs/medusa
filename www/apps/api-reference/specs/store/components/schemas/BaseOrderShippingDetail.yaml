@@ -17,7 +17,7 @@ properties:
     title: shipping_method_id
     description: The ID of the shipping method.
   shipping_method:
-    $ref: ./BaseOrderShippingMethod.yaml
+    type: object
   claim_id:
     type: string
     title: claim_id

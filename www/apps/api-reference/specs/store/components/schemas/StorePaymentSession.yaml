@@ -49,7 +49,7 @@ properties:
     description: The date the payment session was authorized.
     format: date-time
   payment_collection:
-    $ref: ./StorePaymentCollection.yaml
+    type: object
   payment:
     $ref: ./BasePayment.yaml
 required:

@@ -5,7 +5,7 @@ required:
   - id
 properties:
   application_method:
-    $ref: ./AdminApplicationMethod.yaml
+    type: object
   rules:
     type: array
     description: The promotion's rules.

@@ -26,7 +26,7 @@ properties:
     title: id
     description: the ID of the associated line item.
   item:
-    $ref: ./BaseOrderLineItem.yaml
+    type: object
   quantity:
     type: number
     title: quantity

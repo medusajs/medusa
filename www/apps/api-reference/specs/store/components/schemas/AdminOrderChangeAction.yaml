@@ -27,7 +27,7 @@ properties:
     title: order_change_id
     description: The ID of the order change that the action belongs to.
   order_change:
-    $ref: ./AdminOrderChange.yaml
+    type: object
   order_id:
     type: string
     title: order_id

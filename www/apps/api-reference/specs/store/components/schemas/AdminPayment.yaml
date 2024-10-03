@@ -88,6 +88,6 @@ properties:
     items:
       $ref: ./AdminRefund.yaml
   payment_collection:
-    $ref: ./AdminPaymentCollection.yaml
+    type: object
   payment_session:
     $ref: ./AdminPaymentSession.yaml
