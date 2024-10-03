@@ -1,9 +1,9 @@
 import {
-    ApplicationMethodAllocationValues,
-    ApplicationMethodTargetTypeValues,
-    ApplicationMethodTypeValues,
-    PromotionRuleOperatorValues,
-    PromotionTypeValues,
+  ApplicationMethodAllocationValues,
+  ApplicationMethodTargetTypeValues,
+  ApplicationMethodTypeValues,
+  PromotionRuleOperatorValues,
+  PromotionTypeValues,
 } from "../../../promotion"
 import { AdminCreateCampaign } from "../../campaign"
 

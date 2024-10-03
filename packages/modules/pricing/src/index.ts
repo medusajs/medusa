@@ -1,4 +1,4 @@
-import { Module, Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { PricingModuleService } from "@services"
 
 export default Module(Modules.PRICING, {

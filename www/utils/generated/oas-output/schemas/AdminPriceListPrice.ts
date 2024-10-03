@@ -1,7 +1,7 @@
 /**
  * @schema AdminPriceListPrice
  * type: object
- * description: The price's prices.
+ * description: The details of a price list's price.
  * x-schemaName: AdminPriceListPrice
  * required:
  *   - variant_id
@@ -21,7 +21,7 @@
  *   variant_id:
  *     type: string
  *     title: variant_id
- *     description: The price's variant id.
+ *     description: The ID of the product variant this price list is for.
  *   rules:
  *     type: object
  *     description: The price's rules.
@@ -37,6 +37,7 @@
  *     type: string
  *     title: currency_code
  *     description: The price's currency code.
+ *     example: usd
  *   amount:
  *     type: number
  *     title: amount
@@ -47,30 +48,30 @@
  *   min_quantity:
  *     type: number
  *     title: min_quantity
- *     description: The price's min quantity.
+ *     description: The minimum quantity that must be available in the cart for the price to be applied.
  *   max_quantity:
  *     type: number
  *     title: max_quantity
- *     description: The price's max quantity.
+ *     description: The maximum quantity allowed to be available in the cart for the price to be applied.
  *   price_set_id:
  *     type: string
  *     title: price_set_id
- *     description: The price's price set id.
+ *     description: The ID of the price set this price belongs to.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The price's created at.
+ *     description: The date the price was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The price's updated at.
+ *     description: The date the price was updated.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The price's deleted at.
+ *     description: The date the price was deleted.
  * 
 */
 

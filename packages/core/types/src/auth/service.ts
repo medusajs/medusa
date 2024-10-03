@@ -2,9 +2,9 @@ import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
-  AuthIdentityDTO,
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityDTO,
   CreateAuthIdentityDTO,
   CreateProviderIdentityDTO,
   FilterableAuthIdentityProps,

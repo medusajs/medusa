@@ -17,16 +17,20 @@ type MainNavProviderProps = {
 }
 
 export const MainNavProvider = ({ children }: MainNavProviderProps) => {
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const pathname = usePathname()
   const navigationDropdownItems = useMemo(
     () =>
       getNavDropdownItems({
         basePath: config.baseUrl,
-        activePath: basePathUrl(),
+        activePath: basePathUrl(
+          pathname.startsWith("/commerce-modules")
+            ? "/commerce-modules"
+            : undefined
+        ),
         version: "v2",
       }),
-    []
+    [pathname]
   )
 
   const reportLink = useMemo(

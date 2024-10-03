@@ -1,4 +1,5 @@
 import { OrderDTO } from "../../order"
+import { StockLocationDTO } from "../../stock-location"
 import { CreateFulfillmentAddressDTO } from "./fulfillment-address"
 import { CreateFulfillmentItemDTO } from "./fulfillment-item"
 import { CreateFulfillmentLabelDTO } from "./fulfillment-label"
@@ -11,6 +12,11 @@ export interface CreateFulfillmentDTO {
    * The associated location's ID.
    */
   location_id: string
+
+  /**
+   * The associated location's data.
+   */
+  location?: StockLocationDTO
 
   /**
    * The date the fulfillment was packed.
@@ -51,6 +57,11 @@ export interface CreateFulfillmentDTO {
    * The associated shipping option's ID.
    */
   shipping_option_id?: string | null
+
+  /**
+   * Flag to indicate whether shipping is required
+   */
+  requires_shipping?: boolean
 
   /**
    * Holds custom data in key-value pairs.

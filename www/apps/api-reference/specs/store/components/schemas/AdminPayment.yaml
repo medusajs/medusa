@@ -12,29 +12,13 @@ properties:
     title: id
     description: The payment's ID.
   amount:
-    oneOf:
-      - type: string
-        title: amount
-        description: The payment's amount.
-      - type: number
-        title: amount
-        description: The payment's amount.
-      - type: string
-        title: amount
-        description: The payment's amount.
-      - $ref: ./IBigNumber.yaml
+    type: number
+    title: amount
+    description: The payment's amount.
   authorized_amount:
-    oneOf:
-      - type: string
-        title: authorized_amount
-        description: The payment's authorized amount.
-      - type: number
-        title: authorized_amount
-        description: The payment's authorized amount.
-      - type: string
-        title: authorized_amount
-        description: The payment's authorized amount.
-      - $ref: ./IBigNumber.yaml
+    type: number
+    title: authorized_amount
+    description: The amount authorized of the payment.
   currency_code:
     type: string
     title: currency_code
@@ -42,89 +26,68 @@ properties:
   provider_id:
     type: string
     title: provider_id
-    description: The payment's provider id.
+    description: The ID of the payment provider used to process this payment.
   cart_id:
     type: string
     title: cart_id
-    description: The payment's cart id.
+    description: The ID of the associated cart.
   order_id:
     type: string
     title: order_id
-    description: The payment's order id.
+    description: The ID of the associated order.
   order_edit_id:
     type: string
     title: order_edit_id
-    description: The payment's order edit id.
+    description: The ID of the associated order edit.
   customer_id:
     type: string
     title: customer_id
-    description: The payment's customer id.
+    description: ID of the associated customer.
   data:
     type: object
-    description: The payment's data.
+    description: The payment's data, useful for processing by the payment provider.
+    externalDocs:
+      url: >-
+        https://docs.medusajs.com/v2/resources/commerce-modules/payment/payment#whats-a-payment
   created_at:
     type: string
     format: date-time
     title: created_at
-    description: The payment's created at.
+    description: The date the payment was created.
   updated_at:
     type: string
     format: date-time
     title: updated_at
-    description: The payment's updated at.
+    description: The date the payment was updated.
   captured_at:
-    oneOf:
-      - type: string
-        title: captured_at
-        description: The payment's captured at.
-      - type: string
-        title: captured_at
-        description: The payment's captured at.
-        format: date-time
+    type: string
+    format: date-time
+    title: captured_at
+    description: The date the payment was captured.
   canceled_at:
-    oneOf:
-      - type: string
-        title: canceled_at
-        description: The payment's canceled at.
-      - type: string
-        title: canceled_at
-        description: The payment's canceled at.
-        format: date-time
+    type: string
+    format: date-time
+    title: canceled_at
+    description: The date the payment was canceled.
   captured_amount:
-    oneOf:
-      - type: string
-        title: captured_amount
-        description: The payment's captured amount.
-      - type: number
-        title: captured_amount
-        description: The payment's captured amount.
-      - type: string
-        title: captured_amount
-        description: The payment's captured amount.
-      - $ref: ./IBigNumber.yaml
+    type: number
+    title: captured_amount
+    description: The captured amount of the payment.
   refunded_amount:
-    oneOf:
-      - type: string
-        title: refunded_amount
-        description: The payment's refunded amount.
-      - type: number
-        title: refunded_amount
-        description: The payment's refunded amount.
-      - type: string
-        title: refunded_amount
-        description: The payment's refunded amount.
-      - $ref: ./IBigNumber.yaml
+    type: number
+    title: captured_amount
+    description: The refunded amount of the payment.
   captures:
     type: array
-    description: The payment's captures.
+    description: The details of payment captures.
     items:
       $ref: ./BaseCapture.yaml
   refunds:
     type: array
-    description: The payment's refunds.
+    description: The details of payment refunds.
     items:
-      $ref: ./BaseRefund.yaml
+      $ref: ./AdminRefund.yaml
   payment_collection:
-    $ref: ./BasePaymentCollection.yaml
+    type: object
   payment_session:
-    $ref: ./BasePaymentSession.yaml
+    $ref: ./AdminPaymentSession.yaml

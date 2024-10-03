@@ -1,5 +1,9 @@
-import { DAL, InferEntityType, NotificationTypes } from "@medusajs/types"
-import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
+import {
+  DAL,
+  InferEntityType,
+  NotificationTypes,
+} from "@medusajs/framework/types"
+import { MedusaError, ModulesSdkUtils } from "@medusajs/framework/utils"
 import { NotificationProvider } from "@models"
 import { NotificationProviderRegistrationPrefix } from "@types"
 

@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2021"],
+    "target": "ES2021",
+    "outDir": "${configDir}/dist",
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noUnusedLocals": true,
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "incremental": false
+  },
+  "include": ["${configDir}/src"],
+  "exclude": ["${configDir}/dist", "${configDir}/node_modules"]
+}

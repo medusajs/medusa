@@ -1,8 +1,8 @@
 get:
   operationId: GetOrdersId
-  summary: Get a Order
+  summary: Get an Order
   description: >-
-    Retrieve a order by its ID. You can expand the order's relations or select
+    Retrieve an order by its ID. You can expand the order's relations or select
     the fields that should be returned.
   x-authenticated: false
   parameters:
@@ -38,6 +38,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   x-codeSamples:
     - lang: Shell
       label: cURL

@@ -2,15 +2,15 @@ import {
   cancelReturnRequestWorkflow,
   confirmReturnRequestWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminPostReturnsConfirmRequestReqSchemaType } from "../../validators"
 
 export const POST = async (

@@ -5,6 +5,7 @@
  * x-schemaName: AdminCustomer
  * required:
  *   - has_account
+ *   - addresses
  *   - id
  *   - email
  *   - default_billing_address_id
@@ -12,7 +13,6 @@
  *   - company_name
  *   - first_name
  *   - last_name
- *   - addresses
  * properties:
  *   id:
  *     type: string
@@ -56,7 +56,7 @@
  *     type: array
  *     description: The customer's addresses.
  *     items:
- *       $ref: "#/components/schemas/BaseCustomerAddress"
+ *       $ref: "#/components/schemas/AdminCustomerAddress"
  *   phone:
  *     type: string
  *     title: phone

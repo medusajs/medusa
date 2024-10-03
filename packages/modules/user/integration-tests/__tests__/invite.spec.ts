@@ -1,5 +1,5 @@
-import { IUserModuleService } from "@medusajs/types/dist/user"
-import { Modules, UserEvents } from "@medusajs/utils"
+import { IUserModuleService } from "@medusajs/framework/types/dist/user"
+import { Modules, UserEvents } from "@medusajs/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -220,6 +220,29 @@ moduleIntegrationTestRunner<IUserModuleService>({
             expect.objectContaining({
               id: "1",
             })
+          )
+        })
+
+        it("should throw if there is an existing user with the invite email", async () => {
+          let error
+          await service.createUsers([
+            {
+              email: "existing@email.com",
+            },
+          ])
+
+          try {
+            await service.createInvites([
+              {
+                email: "existing@email.com",
+              },
+            ])
+          } catch (e) {
+            error = e
+          }
+
+          expect(error.message).toBe(
+            `User account for following email(s) already exist: existing@email.com`
           )
         })
 

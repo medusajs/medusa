@@ -1,6 +1,5 @@
 import { access, lstat, mkdtemp } from "fs/promises"
-import path from "path"
-import { sep } from "path"
+import path, { sep } from "path"
 import { tmpdir } from "os"
 
 export async function isFile(filePath: string): Promise<boolean> {

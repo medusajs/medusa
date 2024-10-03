@@ -1,6 +1,8 @@
-import { MiddlewareRoute } from "@medusajs/framework"
-import { validateAndTransformBody } from "../../utils/validate-body"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import {
   listTransformQueryConfig,
   retrieveTransformQueryConfig,

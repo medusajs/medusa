@@ -22,12 +22,12 @@ By using a workflow, you can track its execution's progress, provide roll-back l
 
 ### 1. Create the Steps
 
-A workflow is made of a series of steps. A step is created using the `createStep` utility function imported from `@medusajs/workflows-sdk`.
+A workflow is made of a series of steps. A step is created using the `createStep` utility function imported from `@medusajs/framework/workflows-sdk`.
 
 Create the file `src/workflows/hello-world.ts` with the following content:
 
 ```ts title="src/workflows/hello-world.ts"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep("step-1", async () => {
   return new StepResponse(`Hello from step one!`)
@@ -59,7 +59,7 @@ import {
   // other imports...
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 // ...
 
@@ -127,8 +127,8 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
       type SubscriberArgs,
     } from "@medusajs/medusa"
     import myWorkflow from "../workflows/hello-world"
-    import { Modules } from "@medusajs/utils"
-    import { IUserModuleService } from "@medusajs/types"
+    import { Modules } from "@medusajs/framework/utils"
+    import { IUserModuleService } from "@medusajs/framework/types"
 
     export default async function handleCustomerCreate({
       event: { data },
@@ -160,7 +160,7 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
   <CodeTab label="Scheduled Job" value="scheduled-job">
     
     ```ts title="src/jobs/message-daily.ts" highlights={[["7"], ["8"], ["9"], ["10"], ["11"], ["12"]]}
-    import { MedusaContainer } from "@medusajs/types"
+    import { MedusaContainer } from "@medusajs/framework/types"
     import myWorkflow from "../workflows/hello-world"
 
     export default async function myCustomJob(
@@ -213,9 +213,7 @@ You’ll receive the following response:
 
 <Note title="Use workflows when" type="success">
 
-- You're defining a flow with interactions across multiple systems and services.
-- You're defining flows to be used across different resources. For example, if you want to invoke the flow manually through an API Router, but also want to automate its running through a scheduled job.
-- You want to maintain data consistency and handle errors gracefully by rolling-back steps. This is explained more in later chapters.
+You're implementing a custom feature exposed by an API route, or used in subscribers or scheduled jobs.
 
 </Note>
 
@@ -232,7 +230,7 @@ export const highlights = [
   [
     "12",
     "Modules.PRODUCT",
-    "The resource registration name imported from `@medusajs/utils`.",
+    "The resource registration name imported from `@medusajs/framework/utils`.",
   ],
 ]
 
@@ -242,9 +240,9 @@ import {
   StepResponse,
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
-import { IProductModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+} from "@medusajs/framework/workflows-sdk"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 
 const step1 = createStep("step-1", async (_, context) => {
   const productModuleService: IProductModuleService =

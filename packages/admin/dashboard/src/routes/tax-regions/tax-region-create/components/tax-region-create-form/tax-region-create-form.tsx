@@ -21,12 +21,10 @@ type TaxRegionCreateFormProps = {
 const TaxRegionCreateSchema = z.object({
   name: z.string().optional(),
   code: z.string().optional(),
-  rate: z
-    .object({
-      float: z.number().optional(),
-      value: z.string().optional(),
-    })
-    .optional(),
+  rate: z.object({
+    float: z.number().optional(),
+    value: z.string().optional(),
+  }),
   country_code: z.string().min(1),
 })
 
@@ -49,14 +47,16 @@ export const TaxRegionCreateForm = ({ parentId }: TaxRegionCreateFormProps) => {
   const { mutateAsync, isPending } = useCreateTaxRegion()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    const defaultRate =
-      values.name && values.rate?.float
-        ? {
-            name: values.name,
-            rate: values.rate.float,
-            code: values.code,
-          }
-        : undefined
+    const defaultRate = values.name
+      ? {
+          name: values.name,
+          rate:
+            values.rate?.value === ""
+              ? undefined
+              : parseFloat(values.rate.value!),
+          code: values.code,
+        }
+      : undefined
 
     await mutateAsync(
       {

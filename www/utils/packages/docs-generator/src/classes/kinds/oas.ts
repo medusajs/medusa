@@ -26,6 +26,11 @@ import FunctionKindGenerator, {
   VariableNode,
 } from "./function.js"
 import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
+import TypesHelper from "../helpers/types.js"
+import {
+  isLevelExceeded,
+  maybeIncrementLevel,
+} from "../../utils/level-utils.js"
 
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 
@@ -55,7 +60,7 @@ type AuthRequests = {
 class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
-  private MAX_LEVEL = 5
+  private MAX_LEVEL = 7
   readonly REQUEST_TYPE_NAMES = [
     "MedusaRequest",
     "RequestWithContext",
@@ -89,6 +94,7 @@ class OasKindGenerator extends FunctionKindGenerator {
   protected oasExamplesGenerator: OasExamplesGenerator
   protected oasSchemaHelper: OasSchemaHelper
   protected schemaFactory: SchemaFactory
+  protected typesHelper: TypesHelper
 
   constructor(options: GeneratorOptions) {
     super(options)
@@ -99,6 +105,9 @@ class OasKindGenerator extends FunctionKindGenerator {
     this.tags = new Map()
     this.oasSchemaHelper = new OasSchemaHelper()
     this.schemaFactory = new SchemaFactory()
+    this.typesHelper = new TypesHelper({
+      checker: this.checker,
+    })
     this.init()
 
     this.generatorEventManager.listen(
@@ -1047,7 +1056,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 itemType: propertyType,
                 title: propertyName,
                 descriptionOptions,
-                context: "request",
+                context: "query",
                 saveSchema: !forUpdate,
               }),
             })
@@ -1063,6 +1072,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           typeReferenceNode: node.parameters[0].type,
           itemType: requestTypeArguments[0],
         })
+        const isQuery = methodName === "get"
         const parameterSchema = this.typeToSchema({
           itemType: requestTypeArguments[0],
           descriptionOptions: {
@@ -1070,13 +1080,13 @@ class OasKindGenerator extends FunctionKindGenerator {
             rawParentName: this.checker.typeToString(requestTypeArguments[0]),
           },
           zodObjectTypeName: zodObjectTypeName,
-          context: "request",
+          context: isQuery ? "query" : "request",
           saveSchema: !forUpdate,
         })
 
         // If function is a GET function, add the type parameter to the
         // query parameters instead of request parameters.
-        if (methodName === "get") {
+        if (isQuery) {
           if (parameterSchema.type === "object" && parameterSchema.properties) {
             Object.entries(parameterSchema.properties).forEach(
               ([key, propertySchema]) => {
@@ -1244,13 +1254,13 @@ class OasKindGenerator extends FunctionKindGenerator {
     /**
      * Whether the type is in a request / response
      */
-    context?: "request" | "response"
+    context?: "request" | "response" | "query"
     /**
      * Whether to save object schemas. Useful when only getting schemas to update.
      */
     saveSchema?: boolean
   }): OpenApiSchema {
-    if (level > this.MAX_LEVEL) {
+    if (isLevelExceeded(level, this.MAX_LEVEL)) {
       return {}
     }
 
@@ -1346,7 +1356,9 @@ class OasKindGenerator extends FunctionKindGenerator {
             name: title,
           }),
         }
-      case "intrinsicName" in itemType && itemType.intrinsicName === "boolean":
+      case ("intrinsicName" in itemType &&
+        itemType.intrinsicName === "boolean") ||
+        itemType.flags === ts.TypeFlags.BooleanLiteral:
         return {
           type: "boolean",
           title: title || typeAsString,
@@ -1363,9 +1375,7 @@ class OasKindGenerator extends FunctionKindGenerator {
             itemType: this.checker.getTypeArguments(
               itemType as ts.TypeReference
             )[0],
-            // can't increment level because
-            // array must have items in it
-            level,
+            level: maybeIncrementLevel(level, "array"),
             title,
             descriptionOptions:
               descriptionOptions || title
@@ -1381,28 +1391,27 @@ class OasKindGenerator extends FunctionKindGenerator {
       case itemType.isUnion():
         // if it's a union of literal types,
         // consider it an enum
-        const allLiteral = (itemType as ts.UnionType).types.every((unionType) =>
+        const cleanedUpTypes = this.typesHelper.cleanUpTypes(
+          (itemType as ts.UnionType).types
+        )
+        const allLiteral = cleanedUpTypes.every((unionType) =>
           unionType.isLiteral()
         )
+
         if (allLiteral) {
           return {
             type: "string",
             description,
-            enum: (itemType as ts.UnionType).types.map(
+            enum: cleanedUpTypes.map(
               (unionType) => (unionType as ts.LiteralType).value
             ),
           }
         }
 
-        const oneOfItems = this.removeStringRegExpTypeOverlaps(
-          (itemType as ts.UnionType).types
-        ).map((unionType) =>
+        const oneOfItems = cleanedUpTypes.map((unionType) =>
           this.typeToSchema({
             itemType: unionType,
-            // not incrementing considering the
-            // current schema isn't actually a
-            // schema
-            level,
+            level: maybeIncrementLevel(level, "oneOf"),
             title,
             descriptionOptions,
             saveSchema,
@@ -1418,21 +1427,18 @@ class OasKindGenerator extends FunctionKindGenerator {
           oneOf: oneOfItems,
         }
       case itemType.isIntersection():
-        const allOfItems = this.removeStringRegExpTypeOverlaps(
-          (itemType as ts.IntersectionType).types
-        ).map((intersectionType) => {
-          return this.typeToSchema({
-            itemType: intersectionType,
-            // not incrementing considering the
-            // current schema isn't actually a
-            // schema
-            level,
-            title,
-            descriptionOptions,
-            saveSchema,
-            ...rest,
+        const allOfItems = this.typesHelper
+          .cleanUpTypes((itemType as ts.IntersectionType).types)
+          .map((intersectionType) => {
+            return this.typeToSchema({
+              itemType: intersectionType,
+              level: maybeIncrementLevel(level, "allOf"),
+              title,
+              descriptionOptions,
+              saveSchema,
+              ...rest,
+            })
           })
-        })
 
         if (allOfItems.length === 1) {
           return allOfItems[0]
@@ -1451,9 +1457,9 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
         const pickedProperties = pickTypeArgs[1].isUnion()
           ? pickTypeArgs[1].types.map((unionType) =>
-              this.getTypeName(unionType)
+              this.typesHelper.getTypeName(unionType)
             )
-          : [this.getTypeName(pickTypeArgs[1])]
+          : [this.typesHelper.getTypeName(pickTypeArgs[1])]
         return this.typeToSchema({
           itemType: pickTypeArgs[0],
           title,
@@ -1473,9 +1479,9 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
         const omitProperties = omitTypeArgs[1].isUnion()
           ? omitTypeArgs[1].types.map((unionType) =>
-              this.getTypeName(unionType)
+              this.typesHelper.getTypeName(unionType)
             )
-          : [this.getTypeName(omitTypeArgs[1])]
+          : [this.typesHelper.getTypeName(omitTypeArgs[1])]
         return this.typeToSchema({
           itemType: omitTypeArgs[0],
           title,
@@ -1511,10 +1517,6 @@ class OasKindGenerator extends FunctionKindGenerator {
       case itemType.isClassOrInterface() ||
         itemType.isTypeParameter() ||
         (itemType as ts.Type).flags === ts.TypeFlags.Object:
-        const properties: Record<
-          string,
-          OpenApiSchema | OpenAPIV3.ReferenceObject
-        > = {}
         const requiredProperties: string[] = []
 
         const baseType = itemType.getBaseTypes()?.[0]
@@ -1534,14 +1536,50 @@ class OasKindGenerator extends FunctionKindGenerator {
           required: undefined,
         }
 
-        if (level + 1 <= this.MAX_LEVEL) {
-          itemType.getProperties().forEach((property) => {
+        const properties: Record<
+          string,
+          OpenApiSchema | OpenAPIV3.ReferenceObject
+        > = {}
+        let isAdditionalProperties = false
+
+        if (!isLevelExceeded(level + 1, this.MAX_LEVEL)) {
+          let itemProperties = itemType.getProperties()
+
+          if (
+            !itemProperties.length &&
+            itemType.aliasTypeArguments?.length === 2 &&
+            itemType.aliasTypeArguments[0].flags === ts.TypeFlags.String
+          ) {
+            const isValueObj =
+              itemType.aliasTypeArguments[1].isClassOrInterface() ||
+              itemType.aliasTypeArguments[1].isTypeParameter() ||
+              ((itemType.aliasTypeArguments[1] as ts.Type).flags ===
+                ts.TypeFlags.Object &&
+                !this.checker.isArrayType(itemType.aliasTypeArguments[1]))
+
+            if (isValueObj) {
+              // object has dynamic keys, so put the properties under additionalProperties
+              itemProperties = itemType.aliasTypeArguments[1].getProperties()
+              isAdditionalProperties = true
+            }
+          }
+
+          itemProperties.forEach((property) => {
             if (
               (allowedChildren && !allowedChildren.includes(property.name)) ||
               (disallowedChildren && disallowedChildren.includes(property.name))
             ) {
               return
             }
+
+            const shouldIgnore = property
+              .getJsDocTags()
+              .some((tag) => tag.name === "ignore")
+
+            if (shouldIgnore) {
+              return
+            }
+
             if (this.isRequired(property)) {
               requiredProperties.push(property.name)
             }
@@ -1550,14 +1588,17 @@ class OasKindGenerator extends FunctionKindGenerator {
             // if property's type is same as parent's property,
             // create a reference to the parent
             const arrHasParentType =
+              rest.context !== "query" &&
               this.checker.isArrayType(propertyType) &&
-              this.areTypesEqual(
+              this.typesHelper.areTypesEqual(
                 itemType,
                 this.checker.getTypeArguments(
                   propertyType as ts.TypeReference
                 )[0]
               )
-            const isParentType = this.areTypesEqual(itemType, propertyType)
+            const isParentType =
+              rest.context !== "query" &&
+              this.typesHelper.areTypesEqual(itemType, propertyType)
 
             if (isParentType && objSchema["x-schemaName"]) {
               properties[property.name] = {
@@ -1583,7 +1624,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
             properties[property.name] = this.typeToSchema({
               itemType: propertyType,
-              level: level + 1,
+              level: maybeIncrementLevel(level, "object"),
               title: property.name,
               descriptionOptions: {
                 ...descriptionOptions,
@@ -1611,7 +1652,14 @@ class OasKindGenerator extends FunctionKindGenerator {
         }
 
         if (Object.values(properties).length) {
-          objSchema.properties = properties
+          if (isAdditionalProperties) {
+            objSchema.additionalProperties = {
+              type: "object",
+              properties,
+            }
+          } else {
+            objSchema.properties = properties
+          }
         }
 
         objSchema.required =
@@ -1683,7 +1731,7 @@ class OasKindGenerator extends FunctionKindGenerator {
    * @param level - The current recursion level to avoid max-stack error
    * @returns Whether the symbol is required.
    */
-  isRequired(symbol: ts.Symbol, level = 0): boolean {
+  isRequired(symbol: ts.Symbol, level = 1): boolean {
     let isRequired = true
     const checkNode = (node: ts.Node) => {
       switch (node.kind) {
@@ -1715,11 +1763,11 @@ class OasKindGenerator extends FunctionKindGenerator {
       !symbol.valueDeclaration &&
       symbol.declarations?.length &&
       "symbol" in symbol.declarations[0] &&
-      level < this.MAX_LEVEL
+      !isLevelExceeded(level, this.MAX_LEVEL)
     ) {
       return this.isRequired(
         symbol.declarations[0].symbol as ts.Symbol,
-        level + 1
+        maybeIncrementLevel(level, "object")
       )
     }
 
@@ -1751,25 +1799,6 @@ class OasKindGenerator extends FunctionKindGenerator {
       case name?.includes("password"):
         return "password"
     }
-  }
-
-  /**
-   * Retrieve the name of a type. This is useful when retrieving allowed/disallowed
-   * properties in an Omit/Pick type.
-   *
-   * @param itemType - The type to retrieve its name.
-   * @returns The type's name.
-   */
-  getTypeName(itemType: ts.Type): string {
-    if (itemType.symbol || itemType.aliasSymbol) {
-      return (itemType.aliasSymbol || itemType.symbol).name
-    }
-
-    if (itemType.isLiteral()) {
-      return itemType.value.toString()
-    }
-
-    return this.checker.typeToString(itemType)
   }
 
   /**
@@ -1922,13 +1951,14 @@ class OasKindGenerator extends FunctionKindGenerator {
      */
     level?: number
   }): OpenApiSchema | undefined {
-    if (level > this.MAX_LEVEL) {
+    if (isLevelExceeded(level, this.MAX_LEVEL)) {
       return
     }
 
     let oldSchemaObj = (
       oldSchema && "$ref" in oldSchema
-        ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref)?.schema
+        ? this.oasSchemaHelper.getSchemaByName(oldSchema.$ref, true, true)
+            ?.schema
         : oldSchema
     ) as OpenApiSchema | undefined
     const newSchemaObj = (
@@ -1939,7 +1969,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (!oldSchemaObj && newSchemaObj) {
       return newSchemaObj
-    } else if (!newSchemaObj) {
+    } else if (!newSchemaObj || !Object.keys(newSchemaObj).length) {
       return undefined
     }
 
@@ -1950,6 +1980,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       oldSchemaObj = {
         ...newSchemaObj,
         description: oldSchemaObj?.description,
+        example: oldSchemaObj?.example || newSchemaObj.example,
       }
     } else if (
       oldSchemaObj?.allOf &&
@@ -1974,6 +2005,26 @@ class OasKindGenerator extends FunctionKindGenerator {
         oldSchemaObj!.properties = newSchemaObj.properties
       } else if (!newSchemaObj?.properties) {
         delete oldSchemaObj!.properties
+
+        // check if additionalProperties should be updated
+        if (
+          !oldSchemaObj!.additionalProperties &&
+          newSchemaObj.additionalProperties
+        ) {
+          oldSchemaObj!.additionalProperties = newSchemaObj.additionalProperties
+        } else if (!newSchemaObj.additionalProperties) {
+          delete oldSchemaObj!.additionalProperties
+        } else if (
+          typeof oldSchemaObj!.additionalProperties !== "boolean" &&
+          typeof newSchemaObj!.additionalProperties !== "boolean"
+        ) {
+          oldSchemaObj!.additionalProperties =
+            this.updateSchema({
+              oldSchema: oldSchemaObj!.additionalProperties,
+              newSchema: newSchemaObj.additionalProperties,
+              level: maybeIncrementLevel(level, "object"),
+            }) || oldSchemaObj!.additionalProperties
+        }
       } else {
         // update existing properties
         Object.entries(oldSchemaObj!.properties!).forEach(
@@ -1993,7 +2044,7 @@ class OasKindGenerator extends FunctionKindGenerator {
                 newSchema: newSchemaObj!.properties![
                   propertyName
                 ] as OpenApiSchema,
-                level: level + 1,
+                level: maybeIncrementLevel(level, "object"),
               }) || propertySchema
           }
         )
@@ -2016,7 +2067,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         this.updateSchema({
           oldSchema: oldSchemaObj.items as OpenApiSchema,
           newSchema: newSchemaObj!.items as OpenApiSchema,
-          level: level + 1,
+          level: maybeIncrementLevel(level, "array"),
         }) || oldSchemaObj.items
     }
 
@@ -2237,27 +2288,6 @@ class OasKindGenerator extends FunctionKindGenerator {
     return Object.keys(responseContent).some((responseType) =>
       fnText.includes(responseType)
     )
-  }
-
-  private removeStringRegExpTypeOverlaps(types: ts.Type[]): ts.Type[] {
-    return types.filter((itemType) => {
-      // remove overlapping string / regexp types
-      if (this.checker.typeToString(itemType) === "RegExp") {
-        const hasString = types.some((t) => {
-          return (
-            t.flags === ts.TypeFlags.String ||
-            t.flags === ts.TypeFlags.StringLiteral
-          )
-        })
-        return !hasString
-      }
-
-      return true
-    })
-  }
-
-  private areTypesEqual(type1: ts.Type, type2: ts.Type): boolean {
-    return "id" in type1 && "id" in type2 && type1.id === type2.id
   }
 }
 

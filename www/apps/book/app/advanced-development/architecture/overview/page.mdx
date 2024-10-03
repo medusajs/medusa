@@ -1,0 +1,58 @@
+export const metadata = {
+  title: `${pageNumber} Medusa's Architecture`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about the architectural layers in Medusa.
+
+## HTTP, Workflow, and Module Layers
+
+Medusa is a headless commerce platform. So, storefronts, admin dashboards, and other clients consume Medusa's functionalities through its API routes.
+
+In a common Medusa application, requests go through four layers in the stack. In order of entry, those are:
+
+1. API Routes (HTTP): Our API Routes are the typical entry point.
+2. Workflows: API Routes consume workflows that hold the opinionated business logic of your application.
+3. Modules: Workflows use domain-specific modules for resource management.
+3. Data store: Modules query the underlying datastore, which is a PostgreSQL database in common cases.
+
+![Diagram illustrating the HTTP layer](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175296/Medusa%20Book/http-layer_sroafr.jpg)
+
+---
+
+## Database Layer
+
+The Medusa application injects into each module a connection to the configured PostgreSQL database.
+
+Modules use that connection to read and write data to the database.
+
+![Diagram illustrating the database layer](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175379/Medusa%20Book/db-layer_pi7tix.jpg)
+
+---
+
+## Service Integrations
+
+Third-party services are integrated through commerce and architectural modules.
+
+You also create custom third-party integrations through a custom module.
+
+### Commerce Modules
+
+Commerce modules integrate third-party services relevant for commerce or user-facing features. For example, you integrate Stripe through a payment module provider.
+
+![Diagram illustrating the commerce modules integration to third-party services](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175357/Medusa%20Book/service-commerce_qcbdsl.jpg)
+
+### Architectural Modules
+
+Architectural modules integrate third-party services and systems for architectural features. For example, you integrate Redis as a pub/sub service to send events, or SendGrid to send notifications.
+
+![Diagram illustrating the architectural modules integration to third-party services and systems](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175342/Medusa%20Book/service-arch_ozvryw.jpg)
+
+---
+
+## Full Diagram of Medusa's Architecture
+
+The following diagram illustrates Medusa's architecture over the three layers.
+
+![Full diagram illustrating Medusa's architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1727174897/Medusa%20Book/architectural-diagram-full.jpg)

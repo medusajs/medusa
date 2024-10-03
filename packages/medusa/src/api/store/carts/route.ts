@@ -3,11 +3,11 @@ import {
   AdditionalData,
   CreateCartWorkflowInputDTO,
   HttpTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchCart } from "./helpers"
 
 export const POST = async (

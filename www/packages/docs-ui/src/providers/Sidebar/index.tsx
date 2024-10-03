@@ -6,13 +6,13 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useReducer,
   useRef,
   useState,
 } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { getScrolledTop } from "@/utils"
-import { useIsBrowser } from "@/hooks"
 import {
   SidebarItemSections,
   SidebarItem,
@@ -20,7 +20,9 @@ import {
   SidebarItemLink,
   InteractiveSidebarItem,
   SidebarItemCategory,
+  SidebarItemLinkWithParent,
 } from "types"
+import { useIsBrowser } from "../BrowserProvider"
 
 export type CurrentItemsState = SidebarSectionItems & {
   previousSidebar?: CurrentItemsState
@@ -34,7 +36,7 @@ export type SidebarContextType = {
   items: SidebarSectionItems
   currentItems: CurrentItemsState | undefined
   activePath: string | null
-  getActiveItem: () => SidebarItemLink | undefined
+  activeItem: SidebarItemLinkWithParent | undefined
   setActivePath: (path: string | null) => void
   isLinkActive: (item: SidebarItem, checkChildren?: boolean) => boolean
   isChildrenActive: (item: SidebarItemCategory) => boolean
@@ -85,6 +87,8 @@ export type ActionType =
       replacementItems: SidebarSectionItems
     }
 
+type LinksMap = Map<string, SidebarItemLinkWithParent>
+
 const areItemsEqual = (itemA: SidebarItem, itemB: SidebarItem): boolean => {
   if (itemA.type === "separator" || itemB.type === "separator") {
     return false
@@ -100,8 +104,8 @@ const findItem = (
   section: SidebarItem[],
   item: Partial<SidebarItem>,
   checkChildren = true
-): SidebarItemLink | undefined => {
-  let foundItem: SidebarItemLink | undefined
+): SidebarItemLinkWithParent | undefined => {
+  let foundItem: SidebarItemLinkWithParent | undefined
   section.some((i) => {
     if (i.type === "separator") {
       return false
@@ -110,12 +114,41 @@ const findItem = (
       foundItem = i
     } else if (checkChildren && i.children) {
       foundItem = findItem(i.children, item)
+      if (foundItem && !foundItem.parentItem) {
+        foundItem.parentItem = i
+      }
     }
 
     return foundItem !== undefined
   })
 
   return foundItem
+}
+
+const getLinksMap = (
+  items: SidebarItem[],
+  initMap?: LinksMap,
+  parentItem?: InteractiveSidebarItem
+): LinksMap => {
+  const map: LinksMap = initMap || new Map()
+
+  items.forEach((item) => {
+    if (item.type === "separator") {
+      return
+    }
+
+    if (item.type === "link") {
+      map.set(item.path, {
+        ...item,
+        parentItem,
+      })
+    }
+    if (item.children?.length) {
+      getLinksMap(item.children, map, item)
+    }
+  })
+
+  return map
 }
 
 export const reducer = (state: SidebarSectionItems, actionData: ActionType) => {
@@ -222,6 +255,20 @@ export const SidebarProvider = ({
     CurrentItemsState | undefined
   >()
   const [activePath, setActivePath] = useState<string | null>("")
+  const linksMap: LinksMap = useMemo(() => {
+    return new Map([
+      ...getLinksMap(items.mobile),
+      ...getLinksMap(items.default),
+    ])
+  }, [items])
+  const findItemInSection = useCallback(findItem, [])
+  const activeItem = useMemo(() => {
+    if (activePath === null) {
+      return undefined
+    }
+
+    return linksMap.get(activePath)
+  }, [activePath, linksMap])
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
   const [sidebarTopHeight, setSidebarTopHeight] = useState(0)
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true)
@@ -229,34 +276,19 @@ export const SidebarProvider = ({
 
   const pathname = usePathname()
   const router = useRouter()
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const getResolvedScrollableElement = useCallback(() => {
     return scrollableElement || window
   }, [scrollableElement])
 
-  const findItemInSection = useCallback(findItem, [])
-
   const isItemLoaded = useCallback(
     (path: string) => {
-      const item =
-        findItemInSection(items.mobile, { path, type: "link" }) ||
-        findItemInSection(items.default, { path, type: "link" })
+      const item = linksMap.get(path)
 
       return item?.loaded || false
     },
-    [items]
+    [items, linksMap]
   )
-
-  const getActiveItem = useCallback(() => {
-    if (activePath === null) {
-      return undefined
-    }
-
-    return (
-      findItemInSection(items.mobile, { path: activePath, type: "link" }) ||
-      findItemInSection(items.default, { path: activePath, type: "link" })
-    )
-  }, [activePath, items, findItemInSection])
 
   const addItems = (newItems: SidebarItem[], options?: ActionOptionsType) => {
     dispatch({
@@ -318,10 +350,12 @@ export const SidebarProvider = ({
         if (!currentSidebar && item.children?.length) {
           const childSidebar =
             getCurrentSidebar(item.children) ||
-            findItem(item.children, {
-              path: activePath || undefined,
-              type: "link",
-            })
+            (activePath
+              ? findItem(item.children, {
+                  path: activePath || undefined,
+                  type: "link",
+                })
+              : undefined)
 
           if (childSidebar) {
             currentSidebar = childSidebar.isChildSidebar ? childSidebar : item
@@ -381,10 +415,16 @@ export const SidebarProvider = ({
 
     const handleScroll = () => {
       if (getScrolledTop(resolvedScrollableElement) === 0) {
-        setActivePath("")
-        // can't use next router as it doesn't support
-        // changing url without scrolling
-        history.replaceState({}, "", location.pathname)
+        const firstItemPath =
+          items.default.length && items.default[0].type === "link"
+            ? items.default[0].path
+            : ""
+        setActivePath(firstItemPath)
+        if (firstItemPath) {
+          router.push(`#${firstItemPath}`, {
+            scroll: false,
+          })
+        }
       }
     }
 
@@ -536,7 +576,7 @@ export const SidebarProvider = ({
         setMobileSidebarOpen,
         desktopSidebarOpen,
         setDesktopSidebarOpen,
-        getActiveItem,
+        activeItem,
         staticSidebarItems,
         disableActiveTransition,
         shouldHandleHashChange,

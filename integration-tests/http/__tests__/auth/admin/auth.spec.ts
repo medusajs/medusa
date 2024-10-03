@@ -139,15 +139,23 @@ medusaIntegrationTestRunner({
     describe("Reset password flows", () => {
       it("should generate a reset password token", async () => {
         const response = await api.post("/auth/user/emailpass/reset-password", {
-          email: "admin@medusa.js",
+          identifier: "admin@medusa.js",
         })
 
         expect(response.status).toEqual(201)
       })
 
+      it("should fail if identifier is not provided", async () => {
+        const errResponse = await api
+          .post("/auth/user/emailpass/reset-password", {})
+          .catch((e) => e)
+
+        expect(errResponse.response.status).toEqual(400)
+      })
+
       it("should fail to generate token for non-existing user, but still respond with 201", async () => {
         const response = await api.post("/auth/user/emailpass/reset-password", {
-          email: "non-existing-user@medusa.js",
+          identifier: "non-existing-user@medusa.js",
         })
 
         expect(response.status).toEqual(201)
@@ -156,7 +164,7 @@ medusaIntegrationTestRunner({
       it("should fail to generate token for existing user but no provider, but still respond with 201", async () => {
         const response = await api.post(
           "/auth/user/non-existing-provider/reset-password",
-          { email: "admin@medusa.js" }
+          { identifier: "admin@medusa.js" }
         )
 
         expect(response.status).toEqual(201)
@@ -165,7 +173,7 @@ medusaIntegrationTestRunner({
       it("should fail to generate token for existing user but no provider, but still respond with 201", async () => {
         const response = await api.post(
           "/auth/user/non-existing-provider/reset-password",
-          { email: "admin@medusa.js" }
+          { identifier: "admin@medusa.js" }
         )
 
         expect(response.status).toEqual(201)
@@ -184,6 +192,7 @@ medusaIntegrationTestRunner({
         ).run({
           input: {
             entityId: "test@medusa-commerce.com",
+            actorType: "user",
             provider: "emailpass",
             secret: "test",
           },
@@ -236,6 +245,7 @@ medusaIntegrationTestRunner({
         ).run({
           input: {
             entityId: "test@medusa-commerce.com",
+            actorType: "user",
             provider: "emailpass",
             secret: "test",
           },

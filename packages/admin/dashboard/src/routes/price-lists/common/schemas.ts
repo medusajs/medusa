@@ -14,7 +14,7 @@ export const PriceListRulesSchema = z.object({
 })
 
 const PriceListCreateCurrencyPriceSchema = z.object({
-  amount: z.string().optional(),
+  amount: z.string().or(z.number()).optional(),
 })
 
 export type PriceListCreateCurrencyPrice = z.infer<
@@ -22,7 +22,7 @@ export type PriceListCreateCurrencyPrice = z.infer<
 >
 
 const PriceListCreateRegionPriceSchema = z.object({
-  amount: z.string().optional(),
+  amount: z.string().or(z.number()).optional(),
 })
 
 export type PriceListCreateRegionPriceSchema = z.infer<
@@ -57,7 +57,7 @@ export type PriceListCreateProductsSchema = z.infer<
 >
 
 export const PriceListUpdateCurrencyPriceSchema = z.object({
-  amount: z.string().nullish(),
+  amount: z.string().or(z.number()).optional(),
   id: z.string().nullish(),
 })
 
@@ -66,7 +66,7 @@ export type PriceListUpdateCurrencyPrice = z.infer<
 >
 
 export const PriceListUpdateRegionPriceSchema = z.object({
-  amount: z.string().nullish(),
+  amount: z.string().or(z.number()).optional(),
   id: z.string().nullish(),
 })
 

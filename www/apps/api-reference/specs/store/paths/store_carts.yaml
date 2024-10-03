@@ -30,14 +30,16 @@ post:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   requestBody:
     content:
       application/json:
         schema:
           allOf:
-            - $ref: ../components/schemas/CreateCartWorkflowInput.yaml
+            - $ref: ../components/schemas/StoreCreateCart.yaml
             - type: object
-              description: SUMMARY
+              description: The cart's details.
               properties:
                 additional_data:
                   type: object
@@ -45,7 +47,7 @@ post:
                     Pass additional custom data to the API route. This data is
                     passed to the underlying workflow under the
                     `additional_data` parameter.
-          description: SUMMARY
+          description: The cart's details.
   x-codeSamples:
     - lang: Shell
       label: cURL

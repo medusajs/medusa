@@ -20,10 +20,10 @@ export const workflowsHighlights = [
 ```ts highlights={workflowsHighlights} collapsibleLines="1-7" expandMoreButton="Show Imports"
 import {
   createWorkflow,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   createProductsWorkflow,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 
 const workflow = createWorkflow(
   "hello-world",
@@ -41,13 +41,21 @@ const workflow = createWorkflow(
 )
 ```
 
-Instead of invoking the workflow, passing it the container, you instead use its `runAsStep` method and pass it an object as a parameter. The object has an `input` property to pass input to the workflow.
+Instead of invoking the workflow, passing it the container, you use its `runAsStep` method and pass it an object as a parameter.
+
+The object has an `input` property to pass input to the workflow.
 
 ---
 
 ## Preparing Input Data
 
-If you need to perform some data manipulation to prepare the other workflow's input data, use the `transform` utility function imported from `@medusajs/workflows-sdk`.
+If you need to perform some data manipulation to prepare the other workflow's input data, use the `transform` utility function imported from `@medusajs/framework/workflows-sdk`.
+
+<Note>
+
+Learn about the transform utility in [this chapter](../variable-manipulation/page.mdx).
+
+</Note>
 
 For example:
 
@@ -60,10 +68,10 @@ export const transformHighlights = [
 import {
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   createProductsWorkflow,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 
 type WorkflowInput = {
   title: string
@@ -91,13 +99,19 @@ const workflow = createWorkflow(
 )
 ```
 
-In this example, you use the `transform` function to prepend `Hello` to the title of the product. Then, you pass the variable created through `transform` as an input to the `createProductsWorkflow`.
+In this example, you use the `transform` function to prepend `Hello` to the title of the product. Then, you pass the result as an input to the `createProductsWorkflow`.
 
 ---
 
 ## Run Workflow Conditionally
 
-To run a workflow in another based on a condition, use the `when` utility function imported from `@medusajs/workflows-sdk`.
+To run a workflow in another based on a condition, use the when-then utility functions imported from `@medusajs/framework/workflows-sdk`.
+
+<Note>
+
+Learn about the when-then utility in [this chapter](../conditions/page.mdx).
+
+</Note>
 
 For example:
 
@@ -110,13 +124,13 @@ export const whenHighlights = [
 import {
   createWorkflow,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   createProductsWorkflow,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import { 
   CreateProductWorkflowInputDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 type WorkflowInput = {
   product?: CreateProductWorkflowInputDTO

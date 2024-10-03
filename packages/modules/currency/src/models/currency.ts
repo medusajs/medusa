@@ -1,4 +1,4 @@
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 export default model.define("currency", {
   code: model.text().searchable().primaryKey(),

@@ -1,11 +1,11 @@
-import { promiseAll } from "@medusajs/utils"
+import { promiseAll } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { listPrices } from "../../../queries"
 import { adminPriceListPriceRemoteQueryFields } from "../../../query-config"
-import { BatchMethodRequest, HttpTypes } from "@medusajs/types"
+import { BatchMethodRequest, HttpTypes } from "@medusajs/framework/types"
 import {
   AdminCreatePriceListPriceType,
   AdminUpdatePriceListPriceType,

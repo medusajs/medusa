@@ -1,11 +1,11 @@
 /**
  * @schema StoreCart
  * type: object
- * description: The cart's parent.
+ * description: The cart's details.
  * x-schemaName: StoreCart
  * required:
- *   - id
  *   - currency_code
+ *   - id
  *   - original_item_total
  *   - original_item_subtotal
  *   - original_item_tax_total
@@ -32,323 +32,148 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The parent's ID.
+ *     description: The cart's ID.
  *   region:
- *     $ref: "#/components/schemas/BaseRegion"
+ *     $ref: "#/components/schemas/StoreRegion"
  *   region_id:
  *     type: string
  *     title: region_id
- *     description: The parent's region id.
+ *     description: The ID of the region the cart belongs to.
  *   customer_id:
  *     type: string
  *     title: customer_id
- *     description: The parent's customer id.
+ *     description: The ID of the customer the cart belongs to.
  *   sales_channel_id:
  *     type: string
  *     title: sales_channel_id
- *     description: The parent's sales channel id.
+ *     description: The ID of the cart's sales channel. Only products that belong to the same sales channel can be added to the cart. The created order will be associated with the same sales channel.
  *   email:
  *     type: string
  *     title: email
- *     description: The parent's email.
+ *     description: The email of the customer the cart belongs to.
  *     format: email
  *   currency_code:
  *     type: string
  *     title: currency_code
- *     description: The parent's currency code.
+ *     description: The cart's currency code.
+ *     example: usd
  *   shipping_address:
- *     $ref: "#/components/schemas/BaseCartAddress"
+ *     $ref: "#/components/schemas/StoreCartAddress"
  *   billing_address:
- *     $ref: "#/components/schemas/BaseCartAddress"
+ *     $ref: "#/components/schemas/StoreCartAddress"
  *   items:
  *     type: array
- *     description: The parent's items.
+ *     description: The cart's items.
  *     items:
- *       $ref: "#/components/schemas/BaseCartLineItem"
+ *       $ref: "#/components/schemas/StoreCartLineItem"
  *   shipping_methods:
  *     type: array
- *     description: The parent's shipping methods.
+ *     description: The cart's shipping methods.
  *     items:
- *       $ref: "#/components/schemas/BaseCartShippingMethod"
+ *       $ref: "#/components/schemas/StoreCartShippingMethod"
  *   payment_collection:
- *     $ref: "#/components/schemas/BasePaymentCollection"
+ *     $ref: "#/components/schemas/StorePaymentCollection"
  *   metadata:
  *     type: object
- *     description: The parent's metadata.
+ *     description: The cart's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The parent's created at.
+ *     description: The date the cart was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The parent's updated at.
+ *     description: The date the cart was updated.
  *   original_item_total:
- *     oneOf:
- *       - type: string
- *         title: original_item_total
- *         description: The parent's original item total.
- *       - type: number
- *         title: original_item_total
- *         description: The parent's original item total.
- *       - type: string
- *         title: original_item_total
- *         description: The parent's original item total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_item_total
+ *     description: The cart items' total including taxes, excluding promotions.
  *   original_item_subtotal:
- *     oneOf:
- *       - type: string
- *         title: original_item_subtotal
- *         description: The parent's original item subtotal.
- *       - type: number
- *         title: original_item_subtotal
- *         description: The parent's original item subtotal.
- *       - type: string
- *         title: original_item_subtotal
- *         description: The parent's original item subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_item_subtotal
+ *     description: The cart items' total excluding taxes, including promotions.
  *   original_item_tax_total:
- *     oneOf:
- *       - type: string
- *         title: original_item_tax_total
- *         description: The parent's original item tax total.
- *       - type: number
- *         title: original_item_tax_total
- *         description: The parent's original item tax total.
- *       - type: string
- *         title: original_item_tax_total
- *         description: The parent's original item tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_item_tax_total
+ *     description: The cart items' tax total excluding promotions.
  *   item_total:
- *     oneOf:
- *       - type: string
- *         title: item_total
- *         description: The parent's item total.
- *       - type: number
- *         title: item_total
- *         description: The parent's item total.
- *       - type: string
- *         title: item_total
- *         description: The parent's item total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: item_total
+ *     description: The cart items' total including taxes and promotions.
  *   item_subtotal:
- *     oneOf:
- *       - type: string
- *         title: item_subtotal
- *         description: The parent's item subtotal.
- *       - type: number
- *         title: item_subtotal
- *         description: The parent's item subtotal.
- *       - type: string
- *         title: item_subtotal
- *         description: The parent's item subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: item_subtotal
+ *     description: The cart items' total excluding taxes, including promotions.
  *   item_tax_total:
- *     oneOf:
- *       - type: string
- *         title: item_tax_total
- *         description: The parent's item tax total.
- *       - type: number
- *         title: item_tax_total
- *         description: The parent's item tax total.
- *       - type: string
- *         title: item_tax_total
- *         description: The parent's item tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: item_tax_total
+ *     description: The cart items' tax total including promotions.
  *   original_total:
- *     oneOf:
- *       - type: string
- *         title: original_total
- *         description: The parent's original total.
- *       - type: number
- *         title: original_total
- *         description: The parent's original total.
- *       - type: string
- *         title: original_total
- *         description: The parent's original total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_total
+ *     description: The cart's total including taxes, excluding promotions.
  *   original_subtotal:
- *     oneOf:
- *       - type: string
- *         title: original_subtotal
- *         description: The parent's original subtotal.
- *       - type: number
- *         title: original_subtotal
- *         description: The parent's original subtotal.
- *       - type: string
- *         title: original_subtotal
- *         description: The parent's original subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_subtotal
+ *     description: The cart's total excluding taxes, including promotions.
  *   original_tax_total:
- *     oneOf:
- *       - type: string
- *         title: original_tax_total
- *         description: The parent's original tax total.
- *       - type: number
- *         title: original_tax_total
- *         description: The parent's original tax total.
- *       - type: string
- *         title: original_tax_total
- *         description: The parent's original tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_tax_total
+ *     description: The cart's tax total excluding promotions.
  *   total:
- *     oneOf:
- *       - type: string
- *         title: total
- *         description: The parent's total.
- *       - type: number
- *         title: total
- *         description: The parent's total.
- *       - type: string
- *         title: total
- *         description: The parent's total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: total
+ *     description: The cart's total including taxes and promotions.
  *   subtotal:
- *     oneOf:
- *       - type: string
- *         title: subtotal
- *         description: The parent's subtotal.
- *       - type: number
- *         title: subtotal
- *         description: The parent's subtotal.
- *       - type: string
- *         title: subtotal
- *         description: The parent's subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: subtotal
+ *     description: The cart's total excluding taxes, including promotions.
  *   tax_total:
- *     oneOf:
- *       - type: string
- *         title: tax_total
- *         description: The parent's tax total.
- *       - type: number
- *         title: tax_total
- *         description: The parent's tax total.
- *       - type: string
- *         title: tax_total
- *         description: The parent's tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: tax_total
+ *     description: The cart's tax total including promotions.
  *   discount_total:
- *     oneOf:
- *       - type: string
- *         title: discount_total
- *         description: The parent's discount total.
- *       - type: number
- *         title: discount_total
- *         description: The parent's discount total.
- *       - type: string
- *         title: discount_total
- *         description: The parent's discount total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: discount_total
+ *     description: The cart's discount total.
  *   discount_tax_total:
- *     oneOf:
- *       - type: string
- *         title: discount_tax_total
- *         description: The parent's discount tax total.
- *       - type: number
- *         title: discount_tax_total
- *         description: The parent's discount tax total.
- *       - type: string
- *         title: discount_tax_total
- *         description: The parent's discount tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: discount_tax_total
+ *     description: The tax total applied on the discounted amount.
  *   gift_card_total:
- *     oneOf:
- *       - type: string
- *         title: gift_card_total
- *         description: The parent's gift card total.
- *       - type: number
- *         title: gift_card_total
- *         description: The parent's gift card total.
- *       - type: string
- *         title: gift_card_total
- *         description: The parent's gift card total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: gift_card_total
+ *     description: The total gift card amount applied on the cart.
  *   gift_card_tax_total:
- *     oneOf:
- *       - type: string
- *         title: gift_card_tax_total
- *         description: The parent's gift card tax total.
- *       - type: number
- *         title: gift_card_tax_total
- *         description: The parent's gift card tax total.
- *       - type: string
- *         title: gift_card_tax_total
- *         description: The parent's gift card tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: gift_card_tax_total
+ *     description: The total taxes applied on the gift card amount.
  *   shipping_total:
- *     oneOf:
- *       - type: string
- *         title: shipping_total
- *         description: The parent's shipping total.
- *       - type: number
- *         title: shipping_total
- *         description: The parent's shipping total.
- *       - type: string
- *         title: shipping_total
- *         description: The parent's shipping total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: shipping_total
+ *     description: The cart's shipping total including taxes and promotions.
  *   shipping_subtotal:
- *     oneOf:
- *       - type: string
- *         title: shipping_subtotal
- *         description: The parent's shipping subtotal.
- *       - type: number
- *         title: shipping_subtotal
- *         description: The parent's shipping subtotal.
- *       - type: string
- *         title: shipping_subtotal
- *         description: The parent's shipping subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: shipping_subtotal
+ *     description: The cart's shipping total excluding taxes, including promotions.
  *   shipping_tax_total:
- *     oneOf:
- *       - type: string
- *         title: shipping_tax_total
- *         description: The parent's shipping tax total.
- *       - type: number
- *         title: shipping_tax_total
- *         description: The parent's shipping tax total.
- *       - type: string
- *         title: shipping_tax_total
- *         description: The parent's shipping tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: shipping_tax_total
+ *     description: The total taxes applied on the cart's shipping amount.
  *   original_shipping_total:
- *     oneOf:
- *       - type: string
- *         title: original_shipping_total
- *         description: The parent's original shipping total.
- *       - type: number
- *         title: original_shipping_total
- *         description: The parent's original shipping total.
- *       - type: string
- *         title: original_shipping_total
- *         description: The parent's original shipping total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_shipping_total
+ *     description: The cart's shipping total including taxes, excluding promotions.
  *   original_shipping_subtotal:
- *     oneOf:
- *       - type: string
- *         title: original_shipping_subtotal
- *         description: The parent's original shipping subtotal.
- *       - type: number
- *         title: original_shipping_subtotal
- *         description: The parent's original shipping subtotal.
- *       - type: string
- *         title: original_shipping_subtotal
- *         description: The parent's original shipping subtotal.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_shipping_subtotal
+ *     description: The cart's shipping total excluding taxes, including promotions.
  *   original_shipping_tax_total:
- *     oneOf:
- *       - type: string
- *         title: original_shipping_tax_total
- *         description: The parent's original shipping tax total.
- *       - type: number
- *         title: original_shipping_tax_total
- *         description: The parent's original shipping tax total.
- *       - type: string
- *         title: original_shipping_tax_total
- *         description: The parent's original shipping tax total.
- *       - $ref: "#/components/schemas/IBigNumber"
+ *     type: number
+ *     title: original_shipping_tax_total
+ *     description: The total taxes applied on the cart's shipping amount.
  * 
 */
 

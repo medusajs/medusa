@@ -1,11 +1,12 @@
-import { moduleProviderLoader } from "@medusajs/modules-sdk"
+import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
 import {
   CreatePaymentProviderDTO,
   LoaderOptions,
   ModuleProvider,
   ModulesSdkTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { Lifetime, asFunction, asValue } from "awilix"
+import { MedusaError } from "@medusajs/utils"
 
 import { PaymentProviderService } from "@services"
 import * as providers from "../providers"
@@ -13,6 +14,13 @@ import * as providers from "../providers"
 const PROVIDER_REGISTRATION_KEY = "payment_providers"
 
 const registrationFn = async (klass, container, pluginOptions) => {
+  if (!klass?.PROVIDER) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      `Trying to register a payment provider without a provider identifier.`
+    )
+  }
+
   const key = `pp_${klass.PROVIDER}_${pluginOptions.id}`
 
   container.register({
@@ -57,7 +65,7 @@ const registerProvidersInDb = async ({
 
   const existingProviders = await paymentProviderService.list(
     { id: providersToLoad },
-    { take: null }
+    {}
   )
 
   const upsertData: CreatePaymentProviderDTO[] = []

@@ -1,4 +1,4 @@
-import { EntityMetadata, FindOptions, wrap } from "@mikro-orm/core"
+import { Collection, EntityMetadata, FindOptions, wrap } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { buildQuery } from "../../modules-sdk/build-query"
 
@@ -92,28 +92,29 @@ async function performCascadingSoftDeletion<T>(
       )
     }
 
+    entityRelation = await retrieveEntity()
+    entityRelation = entityRelation[relation.name]
     if (!entityRelation) {
-      // Fixes the case of many to many through pivot table
-      entityRelation = await retrieveEntity()
-      if (!entityRelation) {
-        continue
-      }
+      continue
     }
 
     const isCollection = "toArray" in entityRelation
     let relationEntities: any[] = []
 
     if (isCollection) {
-      if (!entityRelation.isInitialized()) {
+      if (!(entityRelation as Collection<any, any>).isInitialized()) {
         entityRelation = await retrieveEntity()
         entityRelation = entityRelation[relation.name]
       }
       relationEntities = entityRelation.getItems()
     } else {
       const wrappedEntity = wrap(entityRelation)
-      const initializedEntityRelation = wrappedEntity.isInitialized()
-        ? entityRelation
-        : await wrap(entityRelation).init()
+
+      let initializedEntityRelation = entityRelation
+      if (!wrappedEntity.isInitialized()) {
+        initializedEntityRelation = await wrap(entityRelation).init()
+      }
+
       relationEntities = [initializedEntityRelation]
     }
 

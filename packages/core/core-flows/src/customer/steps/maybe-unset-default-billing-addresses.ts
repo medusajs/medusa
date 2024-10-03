@@ -3,9 +3,9 @@ import {
   FilterableCustomerAddressProps,
   ICustomerModuleService,
   UpdateCustomerAddressDTO,
-} from "@medusajs/types"
-import { Modules, isDefined } from "@medusajs/utils"
-import { createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/types"
+import { Modules, isDefined } from "@medusajs/framework/utils"
+import { createStep } from "@medusajs/framework/workflows-sdk"
 import { unsetForCreate, unsetForUpdate } from "./utils"
 
 export type MaybeUnsetDefaultBillingAddressStepInput = {

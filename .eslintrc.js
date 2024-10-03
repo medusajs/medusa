@@ -111,6 +111,7 @@ module.exports = {
           "./packages/modules/auth/tsconfig.spec.json",
           "./packages/modules/cart/tsconfig.spec.json",
           "./packages/modules/currency/tsconfig.spec.json",
+          "./packages/modules/index/tsconfig.spec.json",
           "./packages/modules/customer/tsconfig.spec.json",
           "./packages/modules/file/tsconfig.spec.json",
           "./packages/modules/inventory-next/tsconfig.spec.json",
@@ -133,7 +134,7 @@ module.exports = {
           "./packages/modules/providers/fulfillment-manual/tsconfig.spec.json",
           "./packages/modules/providers/payment-stripe/tsconfig.spec.json",
 
-          "./packages/framework/framework/tsconfig.json",
+          "./packages/framework/tsconfig.json",
         ],
       },
       rules: {

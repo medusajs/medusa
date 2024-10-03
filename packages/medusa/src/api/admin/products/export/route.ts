@@ -1,13 +1,13 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
-import { HttpTypes } from "@medusajs/types"
+} from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
 import { remapKeysForProduct } from "../helpers"
 import { exportProductsWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminExportProductRequest>,
+  req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminExportProductResponse>
 ) => {
   const selectFields = remapKeysForProduct(req.remoteQueryConfig.fields ?? [])

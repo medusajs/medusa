@@ -1,18 +1,29 @@
+export type FulfillmentOption = {
+  /**
+   * The option's ID.
+   *
+   * @example express
+   */
+  id: string
+  /**
+   * Whether the option can be used to return items.
+   */
+  is_return?: boolean
+  [k: string]: unknown
+}
+
 export interface IFulfillmentProvider {
   /**
-   * @ignore
    *
    * Return a unique identifier to retrieve the fulfillment plugin provider
    */
   getIdentifier(): string
   /**
-   * @ignore
    *
    * Return the available fulfillment options for the given data.
    */
-  getFulfillmentOptions(): Promise<Record<string, unknown>[]>
+  getFulfillmentOptions(): Promise<FulfillmentOption[]>
   /**
-   * @ignore
    *
    * Validate the given fulfillment data.
    */
@@ -22,19 +33,16 @@ export interface IFulfillmentProvider {
     context: Record<string, unknown>
   ): Promise<any>
   /**
-   * @ignore
    *
    * Validate the given option.
    */
   validateOption(data: Record<string, unknown>): Promise<boolean>
   /**
-   * @ignore
    *
    * Check if the provider can calculate the fulfillment price.
    */
   canCalculate(data: Record<string, unknown>): Promise<any>
   /**
-   * @ignore
    *
    * Calculate the price for the given fulfillment option.
    */
@@ -44,7 +52,6 @@ export interface IFulfillmentProvider {
     context: Record<string, unknown>
   ): Promise<any>
   /**
-   * @ignore
    *
    * Create a fulfillment for the given data.
    */
@@ -55,25 +62,21 @@ export interface IFulfillmentProvider {
     fulfillment: Record<string, unknown>
   ): Promise<Record<string, unknown>>
   /**
-   * @ignore
    *
    * Cancel the given fulfillment.
    */
   cancelFulfillment(fulfillment: Record<string, unknown>): Promise<any>
   /**
-   * @ignore
    *
    * Get the documents for the given fulfillment data.
    */
   getFulfillmentDocuments(data: Record<string, unknown>): Promise<any>
   /**
-   * @ignore
    *
    * Create a return for the given data.
    */
   createReturnFulfillment(fromData: Record<string, unknown>): Promise<any>
   /**
-   * @ignore
    *
    * Get the documents for the given return data.
    */
@@ -82,13 +85,11 @@ export interface IFulfillmentProvider {
     documentType: string
   ): Promise<any>
   /**
-   * @ignore
    *
    * Get the documents for the given return data.
    */
   getReturnDocuments(data: Record<string, unknown>): Promise<any>
   /**
-   * @ignore
    *
    * Get the documents for the given shipment data.
    */

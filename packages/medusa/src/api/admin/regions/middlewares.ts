@@ -1,13 +1,15 @@
 import * as QueryConfig from "./query-config"
-import { MiddlewareRoute } from "@medusajs/framework"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import {
   AdminCreateRegion,
   AdminGetRegionParams,
   AdminGetRegionsParams,
   AdminUpdateRegion,
 } from "./validators"
-import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {

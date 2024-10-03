@@ -1,5 +1,5 @@
-import { ICurrencyModuleService } from "@medusajs/types"
-import { Module, Modules } from "@medusajs/utils"
+import { ICurrencyModuleService } from "@medusajs/framework/types"
+import { Module, Modules } from "@medusajs/framework/utils"
 import { CurrencyModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
@@ -35,10 +35,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
 
       describe("list", () => {
         it("list currencies", async () => {
-          const currenciesResult = await service.listCurrencies(
-            {},
-            { take: null }
-          )
+          const currenciesResult = await service.listCurrencies({}, {})
           expect(currenciesResult).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -58,7 +55,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
         it("list currencies by code", async () => {
           const currenciesResult = await service.listCurrencies(
             { code: ["usd"] },
-            { take: null }
+            {}
           )
 
           expect(currenciesResult).toEqual([
@@ -72,7 +69,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
         it("list currencies by code regardless of case-sensitivity", async () => {
           const currenciesResult = await service.listCurrencies(
             { code: ["Usd"] },
-            { take: null }
+            {}
           )
 
           expect(currenciesResult).toEqual([
@@ -87,7 +84,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
       describe("listAndCountCurrenciesCurrencies", () => {
         it("should return currencies and count", async () => {
           const [currenciesResult, count] =
-            await service.listAndCountCurrencies({}, { take: null })
+            await service.listAndCountCurrencies({}, {})
 
           expect(count).toEqual(120)
           expect(currenciesResult).toEqual(
@@ -110,7 +107,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
               {
                 code: ["usd"],
               },
-              { take: null }
+              {}
             )
 
           expect(count).toEqual(1)

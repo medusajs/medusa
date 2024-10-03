@@ -11,7 +11,7 @@ import {
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import AuthIdentity from "./auth-identity"
 
 const providerEntityIdIndexName = "IDX_provider_identity_provider_entity_id"

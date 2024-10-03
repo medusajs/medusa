@@ -3,8 +3,12 @@ import {
   DAL,
   FulfillmentTypes,
   IFulfillmentProvider,
-} from "@medusajs/types"
-import { MedusaError, ModulesSdkUtils, promiseAll } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import {
+  MedusaError,
+  ModulesSdkUtils,
+  promiseAll,
+} from "@medusajs/framework/utils"
 import { FulfillmentProvider } from "@models"
 
 type InjectedDependencies = {
@@ -29,6 +33,12 @@ export default class FulfillmentProviderService extends ModulesSdkUtils.MedusaIn
     providerClass: Constructor<IFulfillmentProvider>,
     optionName?: string
   ) {
+    if (!(providerClass as any).identifier) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        `Trying to register a fulfillment provider without an identifier.`
+      )
+    }
     return `${(providerClass as any).identifier}_${optionName}`
   }
 

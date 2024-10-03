@@ -1,11 +1,11 @@
-import { IPaymentModuleService } from "@medusajs/types"
-import { Module, Modules, promiseAll } from "@medusajs/utils"
+import { IPaymentModuleService } from "@medusajs/framework/types"
+import { Module, Modules, promiseAll } from "@medusajs/framework/utils"
 import { PaymentModuleService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPaymentCollections,
-  createPaymentSessions,
   createPayments,
+  createPaymentSessions,
 } from "../../../__fixtures__"
 
 jest.setTimeout(30000)
@@ -519,9 +519,6 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
                   data: {},
                   status: "authorized",
                   authorized_at: expect.any(Date),
-                  payment_collection: expect.objectContaining({
-                    id: expect.any(String),
-                  }),
                   payment_collection_id: expect.any(String),
                 }),
               })

@@ -7,7 +7,7 @@
  *   - order_preview
  * properties:
  *   order_preview:
- *     $ref: "#/components/schemas/OrderPreview"
+ *     $ref: "#/components/schemas/AdminOrderPreview"
  * 
 */
 

@@ -23,9 +23,9 @@
   "devDependencies": {
     "@types/node": "^20.12.10",
     "copyfiles": "^2.4.1",
-    "typedoc": "^0.26.2",
+    "typedoc": "^0.26.7",
     "types": "*",
-    "typescript": "5.5"
+    "typescript": "^5.6.2"
   },
   "keywords": [
     "typedocplugin",

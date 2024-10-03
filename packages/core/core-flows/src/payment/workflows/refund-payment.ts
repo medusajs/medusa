@@ -1,5 +1,5 @@
-import { BigNumberInput, OrderDTO, PaymentDTO } from "@medusajs/types"
-import { MathBN, MedusaError, PaymentEvents } from "@medusajs/utils"
+import { BigNumberInput, OrderDTO, PaymentDTO } from "@medusajs/framework/types"
+import { MathBN, MedusaError, PaymentEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -7,7 +7,7 @@ import {
   createWorkflow,
   transform,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { refundPaymentStep } from "../steps/refund-payment"

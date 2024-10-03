@@ -1,24 +1,24 @@
 /**
  * @schema AdminPostReturnsRequestItemsActionReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details to update in the item.
  * x-schemaName: AdminPostReturnsRequestItemsActionReqSchema
  * properties:
  *   quantity:
  *     type: number
  *     title: quantity
- *     description: The claim's quantity.
+ *     description: The item's quantity.
  *   internal_note:
  *     type: string
  *     title: internal_note
- *     description: The claim's internal note.
+ *     description: A note viewed only by admin users.
  *   reason_id:
  *     type: string
  *     title: reason_id
- *     description: The claim's reason id.
+ *     description: The ID of the associated return reason.
  *   metadata:
  *     type: object
- *     description: The claim's metadata.
+ *     description: The claim's metadata, can hold custom key-value pairs.
  * 
 */
 

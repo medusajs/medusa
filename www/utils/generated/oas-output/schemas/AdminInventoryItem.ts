@@ -1,7 +1,7 @@
 /**
  * @schema AdminInventoryItem
  * type: object
- * description: The inventory item's details.
+ * description: The reservation's inventory item.
  * x-schemaName: AdminInventoryItem
  * required:
  *   - id
@@ -14,7 +14,7 @@
  *   sku:
  *     type: string
  *     title: sku
- *     description: The inventory item's SKU.
+ *     description: The inventory item's sku.
  *   origin_country:
  *     type: string
  *     title: origin_country
@@ -22,15 +22,15 @@
  *   hs_code:
  *     type: string
  *     title: hs_code
- *     description: The inventory item's HS code.
+ *     description: The inventory item's hs code.
  *   requires_shipping:
  *     type: boolean
  *     title: requires_shipping
- *     description: Whether the inventory item requires shipping.
+ *     description: The inventory item's requires shipping.
  *   mid_code:
  *     type: string
  *     title: mid_code
- *     description: The inventory item's MID code.
+ *     description: The inventory item's mid code.
  *   material:
  *     type: string
  *     title: material
@@ -62,13 +62,13 @@
  *   thumbnail:
  *     type: string
  *     title: thumbnail
- *     description: The URL of the inventory item's thumbnail.
+ *     description: The inventory item's thumbnail.
  *   metadata:
  *     type: object
- *     description: The inventory item's metadata, can hold custom key-value pairs.
+ *     description: The inventory item's metadata.
  *   location_levels:
  *     type: array
- *     description: The inventory item's associated inventory levels.
+ *     description: The inventory item's location levels.
  *     items:
  *       $ref: "#/components/schemas/AdminInventoryLevel"
  * 

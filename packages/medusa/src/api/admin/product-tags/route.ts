@@ -1,11 +1,12 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+  refetchEntities,
+  refetchEntity,
+} from "@medusajs/framework/http"
 
 import { createProductTagsWorkflow } from "@medusajs/core-flows"
-import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductTagListParams>,

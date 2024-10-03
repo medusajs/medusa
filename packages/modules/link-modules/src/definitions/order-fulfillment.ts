@@ -1,5 +1,5 @@
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS, Modules } from "@medusajs/utils"
+import { ModuleJoinerConfig } from "@medusajs/framework/types"
+import { LINKS, Modules } from "@medusajs/framework/utils"
 
 export const OrderFulfillment: ModuleJoinerConfig = {
   serviceName: LINKS.OrderFulfillment,
@@ -56,6 +56,9 @@ export const OrderFulfillment: ModuleJoinerConfig = {
     },
     {
       serviceName: Modules.FULFILLMENT,
+      fieldAlias: {
+        order: "order_link.order",
+      },
       relationship: {
         serviceName: LINKS.OrderFulfillment,
         primaryKey: "fulfillment_id",

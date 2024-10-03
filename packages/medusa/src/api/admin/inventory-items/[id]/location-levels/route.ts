@@ -1,8 +1,8 @@
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+} from "@medusajs/framework/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 import { createInventoryLevelsWorkflow } from "@medusajs/core-flows"
 import {
@@ -10,7 +10,7 @@ import {
   AdminGetInventoryLocationLevelsParamsType,
 } from "../../validators"
 import { refetchInventoryItem } from "../../helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: MedusaRequest<AdminCreateInventoryLocationLevelType>,

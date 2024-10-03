@@ -1,10 +1,14 @@
-import { WorkflowManager } from "@medusajs/orchestration"
+import { WorkflowManager } from "@medusajs/framework/orchestration"
 import {
   Context,
   IWorkflowEngineService,
   RemoteQueryFunction,
-} from "@medusajs/types"
-import { Module, Modules, TransactionHandlerType } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import {
+  Module,
+  Modules,
+  TransactionHandlerType,
+} from "@medusajs/framework/utils"
 import { WorkflowsModuleService } from "@services"
 import { asFunction } from "awilix"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"

@@ -1,0 +1,157 @@
+import { Prerequisites, TypeList } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Configure Instrumentation`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about observability in Medusa and how to configure instrumentation with OpenTelemetry.
+
+## Observability with OpenTelemtry
+
+Medusa uses [OpenTelemetry](https://opentelemetry.io/) for instrumentation and reporting. When configured, it reports traces for:
+
+- HTTP requests
+- Workflow executions
+- Query usages
+- Database queries and operations
+
+---
+
+## How to Configure Instrumentation in Medusa?
+
+<Prerequisites
+  items={[
+    {
+      text: "An exporter to visualize your application's traces, such as Zipkin.",
+      link: "https://zipkin.io/pages/quickstart.html"
+    }
+  ]}
+/>
+
+### Install Dependencies
+
+Start by installing the following OpenTelemetry dependencies in your Medusa project:
+
+```bash npm2yarn
+npm install @opentelemetry/sdk-node @opentelemetry/resources @opentelemetry/sdk-trace-node @opentelemetry/instrumentation-pg
+```
+
+Also, install the dependencies relevant for the exporter you use. If you're using Zipkin, install the following dependencies:
+
+```bash npm2yarn
+npm install @opentelemetry/exporter-zipkin
+```
+
+### Add instrumentation.js
+
+Next, create the file `instrumentation.js` with the following content:
+
+```js title="instrumentation.js"
+const { registerOtel } = require("@medusajs/medusa")
+// If using an exporter other than Zipkin, require it here.
+const { ZipkinExporter } = require("@opentelemetry/exporter-zipkin")
+
+// If using an exporter other than Zipkin, initialize it here.
+const exporter = new ZipkinExporter({
+  serviceName: "my-medusa-project",
+})
+
+export function register() {
+  registerOtel({
+    serviceName: "medusajs",
+    // pass exporter
+    exporter,
+    instrument: {
+      http: true,
+      workflows: true,
+      query: true,
+    },
+  })
+}
+```
+
+In the `instrumentation.js` file, you export a `register` function that uses Medusa's `registerOtel` utility function.
+
+You also initialize an instance of the exporter, such as Zipkin, and pass it to the `registerOtel` function.
+
+The `registerOtel` utility function accepts an object having the following properties:
+
+<TypeList
+  types={[
+    {
+      name: "serviceName",
+      type: "`string`",
+      description: "The name of the service traced.",
+      optional: false
+    },
+    {
+      name: "exporter",
+      type: "[SpanExporter](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_sdk_trace_base.SpanExporter.html)",
+      description: "An instance of an exporter, such as Zipkin."
+    },
+    {
+      name: "instrument",
+      type: "`object`",
+      description: "Options specifying what to trace.",
+      optional: true,
+      children: [
+        {
+          name: "http",
+          type: "`boolean`",
+          description: "Whether to trace HTTP requests."
+        },
+        {
+          name: "query",
+          type: "`boolean`",
+          description: "Whether to trace Query usages."
+        },
+        {
+          name: "workflows",
+          type: "`boolean`",
+          description: "Whether to trace Workflow executions."
+        },
+        {
+          name: "db",
+          type: "`boolean`",
+          description: "Whether to trace database queries and operations."
+        }
+      ]
+    },
+    {
+      name: "instrumentations",
+      type: "[Instrumentation[]](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_instrumentation.Instrumentation.html)",
+      description: "Additional instrumentation options that OpenTelemetry accepts.",
+      optional: true
+    }
+  ]}
+/>
+
+---
+
+## Test it Out
+
+To test it out, start your exporter, such as Zipkin.
+
+Then, start your Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Try to open the Medusa Admin or send a request to an API route.
+
+If you check traces in your exporter, you'll find new traces reported.
+
+### Trace Span Names
+
+Trace span names start with the following keywords based on what it's reporting:
+
+- `{methodName} {URL}` when reporting HTTP requests, where `{methodName}` is the HTTP method, and `{URL}` is the URL the request is sent to.
+- `route:` when reporting route handlers running on an HTTP requests.
+- `middleware:` when reporting a middleware running on an HTTP request.
+- `workflow:` when reporting a workflow execution.
+- `step:` when reporting a step in a workflow execution.
+- `query.graph:` when reporting Query usages.
+- `pg.query:` when reporting database queries and operations.

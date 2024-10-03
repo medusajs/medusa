@@ -55,9 +55,17 @@ medusaIntegrationTestRunner({
         expect(response.data.regions).toEqual([
           expect.objectContaining({
             name: "United Kingdom",
+            id: region1.id,
+            currency_code: "gbp",
+            automatic_taxes: region1.automatic_taxes,
+            countries: [],
           }),
           expect.objectContaining({
             name: "United States",
+            id: region2.id,
+            currency_code: "usd",
+            automatic_taxes: region2.automatic_taxes,
+            countries: [],
           }),
         ])
       })

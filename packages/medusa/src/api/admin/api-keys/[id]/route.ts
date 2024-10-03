@@ -5,12 +5,12 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 
 import { refetchApiKey } from "../helpers"
 import { AdminUpdateApiKeyType } from "../validators"
-import { MedusaError } from "@medusajs/utils"
-import { HttpTypes } from "@medusajs/types"
+import { MedusaError } from "@medusajs/framework/utils"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

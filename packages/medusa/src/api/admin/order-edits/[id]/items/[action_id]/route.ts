@@ -2,11 +2,11 @@ import {
   removeItemOrderEditActionWorkflow,
   updateOrderEditAddItemWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminPostOrderEditsItemsActionReqSchemaType } from "../../../validators"
 
 export const POST = async (
@@ -24,7 +24,7 @@ export const POST = async (
   })
 
   res.json({
-    order_preview: result,
+    order_preview: result as unknown as HttpTypes.AdminOrderPreview,
   })
 }
 
@@ -44,6 +44,6 @@ export const DELETE = async (
   })
 
   res.json({
-    order_preview: orderPreview,
+    order_preview: orderPreview as unknown as HttpTypes.AdminOrderPreview,
   })
 }

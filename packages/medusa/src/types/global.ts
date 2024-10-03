@@ -1,8 +1,8 @@
 import {
+  FindConfig,
   MedusaContainer as coreMedusaContainer,
   RequestQueryFields,
-} from "@medusajs/types"
-import { FindConfig } from "./common"
+} from "@medusajs/framework/types"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

@@ -1,84 +1,84 @@
 /**
  * @schema AdminUpdateProductVariant
  * type: object
- * description: The update's details.
+ * description: The properties to update of a product variant.
  * x-schemaName: AdminUpdateProductVariant
  * properties:
  *   title:
  *     type: string
  *     title: title
- *     description: The update's title.
+ *     description: The product variant's title.
  *   sku:
  *     type: string
  *     title: sku
- *     description: The update's sku.
+ *     description: The product variant's SKU.
  *   ean:
  *     type: string
  *     title: ean
- *     description: The update's ean.
+ *     description: The product variant's EAN.
  *   upc:
  *     type: string
  *     title: upc
- *     description: The update's upc.
+ *     description: The product variant's UPC.
  *   barcode:
  *     type: string
  *     title: barcode
- *     description: The update's barcode.
+ *     description: The product variant's barcode.
  *   hs_code:
  *     type: string
  *     title: hs_code
- *     description: The update's hs code.
+ *     description: The product variant's HS code.
  *   mid_code:
  *     type: string
  *     title: mid_code
- *     description: The update's mid code.
+ *     description: The product variant's MID code.
  *   allow_backorder:
  *     type: boolean
  *     title: allow_backorder
- *     description: The update's allow backorder.
+ *     description: Whether customers can order the variant even if it's not in stock.
  *   manage_inventory:
  *     type: boolean
  *     title: manage_inventory
- *     description: The update's manage inventory.
+ *     description: Whether the Medusa application manages the variant's inventory. If disabled, the product variant is always considered in stock.
  *   variant_rank:
  *     type: number
  *     title: variant_rank
- *     description: The update's variant rank.
+ *     description: The product variant's rank among its siblings.
  *   weight:
  *     type: number
  *     title: weight
- *     description: The update's weight.
+ *     description: The product variant's weight.
  *   length:
  *     type: number
  *     title: length
- *     description: The update's length.
+ *     description: The product variant's length.
  *   height:
  *     type: number
  *     title: height
- *     description: The update's height.
+ *     description: The product variant's height.
  *   width:
  *     type: number
  *     title: width
- *     description: The update's width.
+ *     description: The product variant's width.
  *   origin_country:
  *     type: string
  *     title: origin_country
- *     description: The update's origin country.
+ *     description: The product variant's origin country.
  *   material:
  *     type: string
  *     title: material
- *     description: The update's material.
+ *     description: The product variant's material.
  *   metadata:
  *     type: object
- *     description: The update's metadata.
+ *     description: The product variant's metadata, can hold custom key-value pairs.
  *   prices:
  *     type: array
- *     description: The update's prices.
+ *     description: The product variant's prices.
  *     items:
  *       $ref: "#/components/schemas/AdminCreateProductVariantPrice"
  *   options:
  *     type: object
- *     description: The update's options.
+ *     description: The product variant's options.
  * 
 */
 

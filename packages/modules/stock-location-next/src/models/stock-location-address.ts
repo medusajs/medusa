@@ -8,7 +8,7 @@ import {
 import {
   createPsqlIndexStatementHelper,
   generateEntityId,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 const StockLocationAddressDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "stock_location_address",
@@ -68,12 +68,12 @@ export class StockLocationAddress {
   metadata: Record<string, unknown> | null
 
   @BeforeCreate()
-  private beforeCreate(): void {
+  beforeCreate(): void {
     this.id = generateEntityId(this.id, "laddr")
   }
 
   @OnInit()
-  private onInit(): void {
+  onInit(): void {
     this.id = generateEntityId(this.id, "laddr")
   }
 }

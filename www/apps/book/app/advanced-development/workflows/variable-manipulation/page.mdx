@@ -1,0 +1,116 @@
+export const metadata = {
+  title: `${pageNumber} Variable Manipulation in Workflows with transform`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to manipulate variables in a workflow using the transform utility.
+
+## Why Variable Manipulation isn't Allowed in Worflows?
+
+Medusa creates an internal representation of the workflow definition you pass to `createWorkflow` to track and store its steps.
+
+At that point, variables in the workflow don't have any values. They only do when you execute the workflow.
+
+So, you can only pass variables as parameters to steps. But, in a workflow, you can't change a variable's value or, if the variable is an array, loop over its items.
+
+Instead, use the transform utility.
+
+---
+
+## What is the transform Utility?
+
+The `transform` utility function creates a new variable as the result of manipulating other variables.
+
+For example, consider you have two strings as the output of two steps:
+
+```ts
+const str1 = step1()
+const str2 = step2()
+```
+
+To concatinate the strings, you create a new variable `str3` using the `transform` function:
+
+export const highlights = [
+  ["14", "str3", "Holds the result returned by `transform`'s second parameter function."],
+  ["15", "", "Specify the data to pass as a parameter to the function in the second parameter."],
+  ["16", "data", "The data passed in the first parameter of `transform`."],
+  ["16", "`${data.str1}${data.str2}`", "Return the concatenated strings."]
+]
+
+```ts highlights={highlights}
+import { 
+  createWorkflow,
+  WorkflowResponse,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+// step imports...
+
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function (input) {
+    const str1 = step1(input)
+    const str2 = step2(input)
+
+    const str3 = transform(
+      { str1, str2 },
+      (data) => `${data.str1}${data.str2}`
+    )
+
+    return new WorkflowResponse(str3)
+  }
+)
+```
+
+The `transform` utility function is imported from `@medusajs/framework/workflows-sdk`. It accepts two parameters:
+
+1. The first parameter is an object of variables to manipulate. The object is passed as a parameter to `transform`'s second parameter function.
+2. The second parameter is the function performing the variable manipulation.
+
+The value returned by the second parameter function is returned by `transform`. So, the `str3` variable holds the concatenated string.
+
+You can use the returned value in the rest of the workflow, either to pass it as an input to other steps or to return it in the workflow's response.
+
+---
+
+## Example: Looping Over Array
+
+Use `transform` to loop over arrays to create another variable from the array's items.
+
+For example:
+
+```ts collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import { 
+  createWorkflow,
+  WorkflowResponse,
+  transform,
+} from "@medusajs/framework/workflows-sdk"
+// step imports...
+
+type WorkflowInput = {
+  items: {
+    id: string
+    name: string
+  }[]
+}
+
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  function ({ items }: WorkflowInput) {
+    const ids = transform(
+      { items },
+      (data) => data.items.map((item) => item.id)
+    )
+    
+    doSomethingStep(ids)
+
+    // ...
+  }
+)
+```
+
+This workflow receives an `items` array in its input.
+
+You use the `transform` utility to create an `ids` variable, which is an array of strings holding the `id` of each item in the `items` array.
+
+You then pass the `ids` variable as a parameter to the `doSomethingStep`.

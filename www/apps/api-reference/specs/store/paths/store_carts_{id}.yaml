@@ -38,6 +38,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -67,7 +69,9 @@ get:
 post:
   operationId: PostCartsId
   summary: Update a Cart
-  description: Update a cart's details.
+  description: >-
+    Update a cart's details. This unsets the shipping an payment methods chosen
+    before, and the customer would have to choose them again.
   x-authenticated: false
   parameters:
     - name: id
@@ -102,6 +106,8 @@ post:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   requestBody:
     content:
       application/json:
@@ -109,7 +115,7 @@ post:
           allOf:
             - $ref: ../components/schemas/UpdateCartData.yaml
             - type: object
-              description: SUMMARY
+              description: The properties to update in the cart item.
               properties:
                 additional_data:
                   type: object
@@ -117,7 +123,7 @@ post:
                     Pass additional custom data to the API route. This data is
                     passed to the underlying workflow under the
                     `additional_data` parameter.
-          description: SUMMARY
+          description: The properties to update in the cart item.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -132,7 +138,7 @@ post:
         application/json:
           schema:
             type: object
-            description: SUMMARY
+            description: The updated cart's details.
             required:
               - cart
             properties:

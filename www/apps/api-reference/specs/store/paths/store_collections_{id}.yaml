@@ -5,6 +5,10 @@ get:
     Retrieve a collection by its ID. You can expand the collection's relations
     or select the fields that should be returned.
   x-authenticated: false
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/products/collections/retrieve
+    description: 'Storefront guide: How to retrieve a collection.'
   parameters:
     - name: id
       in: path
@@ -38,6 +42,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   x-codeSamples:
     - lang: Shell
       label: cURL

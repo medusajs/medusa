@@ -1,27 +1,35 @@
 export const metadata = {
-  title: `${pageNumber} Conditions in Workflow with When-Then`,
+  title: `${pageNumber} Conditions in Workflows with When-Then`,
 }
 
 # {metadata.title}
 
 In this chapter, you'll learn how to execute an action based on a condition in a workflow using the when-then utility.
 
-## What is the When-Then Utility?
+## Why If-Conditions Aren't Allowed in Workflows?
 
-The when-then utility executes an action if a condition is satisfied.
+Medusa creates an internal representation of the workflow definition you pass to `createWorkflow` to track and store its steps.
 
-Since if-conditions aren't allowed in the workflow constructor function, use the when-then utility if you want to execute a step based on a condition.
+At that point, variables in the workflow don't have any values. They only do when you execute the workflow.
+
+So, you can't use an if-condition that checks a variable's value, as the condition will be evaluated when Medusa creates the internal representation of the workflow, rather than during execution.
+
+Instead, use the when-then utility.
 
 ---
 
-## How to Use the When-Then Utility?
+## What is the When-Then Utility?
+
+The when-then utility functions execute an action if a condition is satisfied.
+
+The `when` function accepts as a parameter a function that returns a boolean value, and the `then` function is chained to `when`. `then` accepts as a parameter a function that's executed if `when`'s parameter function returns a `true` value.
 
 For example:
 
 export const highlights = [
-  ["16", "input", "The data to pass as a parameter to the function in the second parameter"],
-  ["18", "return", "The function must return a boolean value indicating whether\nthe callback function passed to `then` should be executed."],
-  ["20", "() => {", "The function to execute if `when`'s second parameter returns a `true` value."]
+  ["15", "input", "The data to pass as a parameter to the function in the second parameter"],
+  ["17", "return", "The function must return a boolean value indicating whether\nthe callback function passed to `then` should be executed."],
+  ["19", "() => {", "The function to execute if `when`'s second parameter returns a `true` value."]
 ]
 
 ```ts highlights={highlights}
@@ -29,16 +37,15 @@ import {
   createWorkflow,
   WorkflowResponse,
   when,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 // step imports...
-
-type WorkflowInput = {
-  is_active: boolean
-}
 
 const workflow = createWorkflow(
   "workflow", 
-  function (input: WorkflowInput) {
+  function (input: {
+    is_active: boolean
+  }) {
+
     const result = when(
       input, 
       (input) => {
@@ -59,9 +66,17 @@ const workflow = createWorkflow(
 )
 ```
 
-Then `when` utility is a function imported from `@medusajs/workflows-sdk`. It accepts the following parameters:
+In this code snippet, you execute the `isActiveStep` only if the `input.is_active`'s value is `true`.
 
-1. An object or the workflow's input. This data is passed as a parameter to the function in `when`'s second parameter.
-2. A function that returns a boolean indicating whether to execute the action.
+### When Parameters
 
-To specify the action to perform if the condition is satisfied, chain a `then` function to `when` and pass it a callback function. The callback function is only executed if `when`'s second parameter function returns a `true` value.
+`when` utility is a function imported from `@medusajs/framework/workflows-sdk`. It accepts the following parameters:
+
+1. The first parameter is either an object or the workflow's input. This data is passed as a parameter to the function in `when`'s second parameter.
+2. The second parameter is a function that returns a boolean indicating whether to execute the action in `then`.
+
+### Then Parameters
+
+To specify the action to perform if the condition is satisfied, chain a `then` function to `when` and pass it a callback function.
+
+The callback function is only executed if `when`'s second parameter function returns a `true` value.

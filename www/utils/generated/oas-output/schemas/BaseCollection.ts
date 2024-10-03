@@ -1,7 +1,7 @@
 /**
  * @schema BaseCollection
  * type: object
- * description: The product's collection.
+ * description: The collection's details.
  * x-schemaName: BaseCollection
  * 
 */

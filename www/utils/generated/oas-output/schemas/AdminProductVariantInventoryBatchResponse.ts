@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductVariantInventoryBatchResponse
  * type: object
- * description: SUMMARY
+ * description: The created, updated, and deleted associations between variants and inventory items.
  * x-schemaName: AdminProductVariantInventoryBatchResponse
  * required:
  *   - created
@@ -12,10 +12,10 @@
  *     oneOf:
  *       - $ref: "#/components/schemas/AdminProductVariantInventoryLink"
  *       - type: array
- *         description: The product's created.
+ *         description: The created associations between product variants and inventory items.
  *         items:
  *           type: object
- *           description: The created's details.
+ *           description: A created association between a product variant and an inventory item.
  *           x-schemaName: AdminProductVariantInventoryLink
  *           required:
  *             - productService
@@ -23,32 +23,32 @@
  *           properties:
  *             productService:
  *               type: object
- *               description: The created's productservice.
+ *               description: The product variant's details.
  *               required:
  *                 - variant_id
  *               properties:
  *                 variant_id:
  *                   type: string
  *                   title: variant_id
- *                   description: The productservice's variant id.
+ *                   description: The ID of the product variant.
  *             inventoryService:
  *               type: object
- *               description: The created's inventoryservice.
+ *               description: The inventory item's details.
  *               required:
  *                 - inventory_item_id
  *               properties:
  *                 inventory_item_id:
  *                   type: string
  *                   title: inventory_item_id
- *                   description: The inventoryservice's inventory item id.
+ *                   description: The ID of the inventory item.
  *   updated:
  *     oneOf:
  *       - $ref: "#/components/schemas/AdminProductVariantInventoryLink"
  *       - type: array
- *         description: The product's updated.
+ *         description: The updated associations between product variants and inventory items.
  *         items:
  *           type: object
- *           description: The updated's details.
+ *           description: An updated association between a product variant and an inventory item.
  *           x-schemaName: AdminProductVariantInventoryLink
  *           required:
  *             - productService
@@ -56,32 +56,32 @@
  *           properties:
  *             productService:
  *               type: object
- *               description: The updated's productservice.
+ *               description: The product variant's details.
  *               required:
  *                 - variant_id
  *               properties:
  *                 variant_id:
  *                   type: string
  *                   title: variant_id
- *                   description: The productservice's variant id.
+ *                   description: The ID of the product variant.
  *             inventoryService:
  *               type: object
- *               description: The updated's inventoryservice.
+ *               description: The inventory item's details.
  *               required:
  *                 - inventory_item_id
  *               properties:
  *                 inventory_item_id:
  *                   type: string
  *                   title: inventory_item_id
- *                   description: The inventoryservice's inventory item id.
+ *                   description: The ID of the inventory item.
  *   deleted:
  *     oneOf:
  *       - $ref: "#/components/schemas/AdminProductVariantInventoryLink"
  *       - type: array
- *         description: SUMMARY
+ *         description: The deleted associations between product variants and inventory items.
  *         items:
  *           type: object
- *           description: SUMMARY
+ *           description: An deleted association between a product variant and an inventory item.
  *           x-schemaName: AdminProductVariantInventoryLink
  *           required:
  *             - productService
@@ -89,24 +89,24 @@
  *           properties:
  *             productService:
  *               type: object
- *               description: The deleted's productservice.
+ *               description: The product variant's details.
  *               required:
  *                 - variant_id
  *               properties:
  *                 variant_id:
  *                   type: string
  *                   title: variant_id
- *                   description: The productservice's variant id.
+ *                   description: The ID of the product variant.
  *             inventoryService:
  *               type: object
- *               description: The deleted's inventoryservice.
+ *               description: The inventory item's details.
  *               required:
  *                 - inventory_item_id
  *               properties:
  *                 inventory_item_id:
  *                   type: string
  *                   title: inventory_item_id
- *                   description: The inventoryservice's inventory item id.
+ *                   description: The ID of the inventory item.
  * 
 */
 

@@ -36,18 +36,6 @@ type OrderSummary {
   raw_pending_difference: JSON
 }
 
-type OrderAdjustmentLine {
-  id: ID!
-  code: String
-  amount: Float
-  order_id: String!
-  description: String
-  promotion_id: String
-  provider_id: String
-  created_at: DateTime
-  updated_at: DateTime
-}
-
 type OrderShippingMethodAdjustment {
   id: ID!
   code: String
@@ -76,16 +64,6 @@ type OrderLineItemAdjustment {
   item_id: String!
 }
 
-type OrderTaxLine {
-  id: ID!
-  description: String
-  tax_rate_id: String
-  code: String!
-  rate: Float
-  provider_id: String
-  created_at: DateTime
-  updated_at: DateTime
-}
 
 type OrderShippingMethodTaxLine {
   id: ID!
@@ -367,6 +345,7 @@ type OrderClaimItem {
   item_id: String!
   quantity: Int!
   reason: ClaimReason!
+  images: [OrderClaimItemImage]
   raw_quantity: JSON
   metadata: JSON
   created_at: DateTime
@@ -376,6 +355,7 @@ type OrderClaimItem {
 type OrderClaimItemImage {
   id: ID!
   claim_item_id: String!
+  item: OrderClaimItem!
   url: String
   metadata: JSON
   created_at: DateTime
@@ -408,7 +388,7 @@ type OrderClaim {
 type OrderExchange {
   order_id: String!
   return_items: [OrderReturnItem]!
-  additional_items: [OrderClaimItem]!
+  additional_items: [OrderExchangeItem]!
   no_notification: Boolean
   difference_due: Float
   return: Return

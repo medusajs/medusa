@@ -8,9 +8,9 @@ In this chapter, you’ll learn how to run workflow steps in parallel.
 
 ## parallelize Utility Function
 
-If your workflow has steps that don’t rely on one another’s results, run them in parallel using the `parallelize` utility function imported from the `@medusajs/workflows-sdk`.
+If your workflow has steps that don’t rely on one another’s results, run them in parallel using the `parallelize` utility function imported from the `@medusajs/framework/workflows-sdk`.
 
-The workflow waits until all steps passed to the `parallelize` function finish executing before continuing with the rest of its implementation.
+The workflow waits until all steps passed to the `parallelize` function finish executing before continuing to the next step.
 
 For example:
 
@@ -24,7 +24,7 @@ import {
   createWorkflow,
   WorkflowResponse,
   parallelize,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   createProductStep,
   getProductStep,
@@ -56,4 +56,6 @@ const myWorkflow = createWorkflow(
 
 The `parallelize` function accepts the steps to run in parallel as a parameter.
 
-It returns an array of the steps' results. The results are ordered based on the `parallelize` parameters' order.
+It returns an array of the steps' results in the same order they're passed to the `parallelize` function.
+
+So, `prices` is the result of `createPricesStep`, and `productSalesChannel` is the result of `attachProductToSalesChannelStep`.

@@ -105,7 +105,7 @@ For example:
 ```ts
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import HelloModuleService from "../service"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const DummyModel = model.define("dummy_model", {
   id: model.id().primaryKey(),
@@ -121,7 +121,7 @@ moduleIntegrationTestRunner<HelloModuleService>({
 
 ### Other Options and Inputs
 
-Refer to [this reference in the Learning Resources documentation](!resources!/test-tools-reference/moduleIntegrationTestRunner) for other available parameter options and inputs of the `testSuite` function.
+Refer to [this reference in the Development Resources documentation](!resources!/test-tools-reference/moduleIntegrationTestRunner) for other available parameter options and inputs of the `testSuite` function.
 
 ---
 
@@ -129,4 +129,4 @@ Refer to [this reference in the Learning Resources documentation](!resources!/te
 
 The `moduleIntegrationTestRunner` function creates a database with a random name before running the tests. Then, it drops that database after all the tests end.
 
-To manage that database, such as changing its name or perform operations on it in your tests, refer to the [references in the Learning Resources documentation](!resources!/test-tools-reference/moduleIntegrationTestRunner).
+To manage that database, such as changing its name or perform operations on it in your tests, refer to the [references in the Development Resources documentation](!resources!/test-tools-reference/moduleIntegrationTestRunner).

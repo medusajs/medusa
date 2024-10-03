@@ -1,4 +1,4 @@
-import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import { PriceListStatus, PriceListType } from "@medusajs/framework/utils"
 import { z } from "zod"
 import {
   createFindParams,

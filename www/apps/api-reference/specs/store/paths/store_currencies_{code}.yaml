@@ -2,7 +2,7 @@ get:
   operationId: GetCurrenciesCode
   summary: Get a Currency
   description: >-
-    Retrieve a currency by its ID. You can expand the currency's relations or
+    Retrieve a currency by its code. You can expand the currency's relations or
     select the fields that should be returned.
   x-authenticated: false
   parameters:
@@ -38,6 +38,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   x-codeSamples:
     - lang: Shell
       label: cURL

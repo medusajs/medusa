@@ -1,10 +1,13 @@
-import { IPaymentModuleService, UpdateRefundReasonDTO } from "@medusajs/types"
+import {
+  IPaymentModuleService,
+  UpdateRefundReasonDTO,
+} from "@medusajs/framework/types"
 import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const updateRefundReasonStepId = "update-refund-reasons"
 /**

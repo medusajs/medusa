@@ -2,16 +2,15 @@
  * @oas [get] /admin/promotions/rule-attribute-options/{rule_type}
  * operationId: GetPromotionsRuleAttributeOptionsRule_type
  * summary: List Rule Attribute Options of a Rule Type
- * x-sidebar-summary: List Rule Attribute Options
- * description: >
- *   Retrieve a list of attributes for the promotion and application method types specified in the query parameters.
- * 
+ * x-sidebar-summary: List Potential Rule Attributes
+ * description: |
+ *   Retrieve a list of potential rule attributes for the promotion and application method types specified in the query parameters.
  *   Only the attributes of the rule type specified in the path parameter are retrieved:
- * 
  *   - If `rule_type` is `rules`, the attributes of the promotion's type are retrieved.
  * 
- *   
- *   - If `rule_type` is `target-rules`, the target rules' attributes of the application method's type are retrieved. - If `rule_type` is `buy-rules`, the buy rules' attributes of the application method's type are retrieved.
+ *   - If `rule_type` is `target-rules`, the target rules' attributes of the application method's type are retrieved.
+ * 
+ *   - If `rule_type` is `buy-rules`, the buy rules' attributes of the application method's type are retrieved.
  * x-authenticated: true
  * parameters:
  *   - name: rule_type

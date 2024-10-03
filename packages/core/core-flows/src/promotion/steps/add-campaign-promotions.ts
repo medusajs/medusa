@@ -1,6 +1,13 @@
-import { IPromotionModuleService, LinkWorkflowInput } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
-import { StepResponse, WorkflowData, createStep } from "@medusajs/workflows-sdk"
+import {
+  IPromotionModuleService,
+  LinkWorkflowInput,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+import {
+  StepResponse,
+  WorkflowData,
+  createStep,
+} from "@medusajs/framework/workflows-sdk"
 
 export const addCampaignPromotionsStepId = "add-campaign-promotions"
 /**

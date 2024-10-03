@@ -1,7 +1,7 @@
 /**
  * @schema AdminUpdatePriceList
  * type: object
- * description: SUMMARY
+ * description: the details to update in a price list.
  * x-schemaName: AdminUpdatePriceList
  * properties:
  *   title:
@@ -15,11 +15,11 @@
  *   starts_at:
  *     type: string
  *     title: starts_at
- *     description: The price list's starts at.
+ *     description: The date the price list starts.
  *   ends_at:
  *     type: string
  *     title: ends_at
- *     description: The price list's ends at.
+ *     description: The date the price list ends.
  *   status:
  *     type: string
  *     description: The price list's status.
@@ -35,6 +35,9 @@
  *   rules:
  *     type: object
  *     description: The price list's rules.
+ *     example:
+ *       customer_group_id:
+ *         - cusgrp_123
  * 
 */
 

@@ -1,15 +1,15 @@
 /**
  * @schema AdminPostClaimItemsReqSchema
  * type: object
- * description: SUMMARY
+ * description: The details of the order items to add to the claim.
  * x-schemaName: AdminPostClaimItemsReqSchema
  * properties:
  *   items:
  *     type: array
- *     description: The claim's items.
+ *     description: The item's details.
  *     items:
  *       type: object
- *       description: The item's items.
+ *       description: An item's details.
  *       required:
  *         - id
  *         - quantity
@@ -17,14 +17,14 @@
  *         id:
  *           type: string
  *           title: id
- *           description: The item's ID.
+ *           description: The ID of the order's item.
  *         quantity:
  *           type: number
  *           title: quantity
- *           description: The item's quantity.
+ *           description: The quantity of the order's item to add to the claim.
  *         reason:
  *           type: string
- *           description: The item's reason.
+ *           description: The reason the item is claimed.
  *           enum:
  *             - missing_item
  *             - wrong_item
@@ -37,7 +37,7 @@
  *         internal_note:
  *           type: string
  *           title: internal_note
- *           description: The item's internal note.
+ *           description: A note that's only viewed by admin users.
  * 
 */
 

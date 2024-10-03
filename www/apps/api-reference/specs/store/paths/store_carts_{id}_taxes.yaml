@@ -1,7 +1,8 @@
 post:
   operationId: PostCartsIdTaxes
-  summary: Add Taxes to Cart
-  description: Add a list of taxes to a cart.
+  summary: Calculate Cart Taxes
+  x-sidebar-summary: Calculate Taxes
+  description: Calculate the cart's tax lines and amounts.
   x-authenticated: false
   parameters:
     - name: id
@@ -36,11 +37,8 @@ post:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/StoreCalculateCartTaxes.yaml
+        externalDocs:
+          url: '#select-fields-and-relations'
   x-codeSamples:
     - lang: Shell
       label: cURL

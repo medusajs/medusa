@@ -1,5 +1,5 @@
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS, Modules } from "@medusajs/utils"
+import { ModuleJoinerConfig } from "@medusajs/framework/types"
+import { LINKS, Modules } from "@medusajs/framework/utils"
 
 export const ProductVariantPriceSet: ModuleJoinerConfig = {
   serviceName: LINKS.ProductVariantPriceSet,
@@ -46,6 +46,7 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
         prices: {
           path: "price_set_link.price_set.prices",
           isList: true,
+          forwardArgumentsOnPath: ["price_set_link.price_set"],
         },
         calculated_price: {
           path: "price_set_link.price_set.calculated_price",

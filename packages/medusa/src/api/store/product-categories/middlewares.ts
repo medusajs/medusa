@@ -1,5 +1,5 @@
-import { MiddlewareRoute } from "@medusajs/framework"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import { MiddlewareRoute } from "@medusajs/framework/http"
+import { validateAndTransformQuery } from "@medusajs/framework"
 import { applyCategoryFilters } from "./helpers"
 import * as QueryConfig from "./query-config"
 import {

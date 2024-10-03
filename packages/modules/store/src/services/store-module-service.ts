@@ -5,7 +5,7 @@ import {
   IStoreModuleService,
   ModulesSdkTypes,
   StoreTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   getDuplicates,
   InjectManager,
@@ -16,7 +16,7 @@ import {
   MedusaService,
   promiseAll,
   removeUndefined,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 import { Store, StoreCurrency } from "@models"
 import { UpdateStoreInput } from "@types"
@@ -55,7 +55,7 @@ export default class StoreModuleService
     data: StoreTypes.CreateStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO>
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createStores(
     data: StoreTypes.CreateStoreDTO | StoreTypes.CreateStoreDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -69,7 +69,7 @@ export default class StoreModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async create_(
     data: StoreTypes.CreateStoreDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -94,7 +94,7 @@ export default class StoreModuleService
     data: StoreTypes.UpsertStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO>
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async upsertStores(
     data: StoreTypes.UpsertStoreDTO | StoreTypes.UpsertStoreDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -133,7 +133,7 @@ export default class StoreModuleService
     data: StoreTypes.UpdateStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO[]>
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updateStores(
     idOrSelector: string | StoreTypes.FilterableStoreProps,
     data: StoreTypes.UpdateStoreDTO,
@@ -164,7 +164,7 @@ export default class StoreModuleService
     return isString(idOrSelector) ? stores[0] : stores
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   protected async update_(
     data: UpdateStoreInput[],
     @MedusaContext() sharedContext: Context = {}

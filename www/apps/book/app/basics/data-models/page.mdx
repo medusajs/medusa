@@ -16,20 +16,12 @@ A data model is created in a module, and its record are managed in the database 
 
 ## How to Create a Data Model?
 
-<Note title="Steps Summary">
-
-1. Create a data model in a module.
-2. Generate migration for the data model.
-4. Run migration to add the data model's table in the database.
-
-</Note>
-
-A data model is created in a TypeScript or JavaScript file under a module's `models` directory. It's defined using the `model` utility imported from `@medusajs/utils`.
+A data model is created in a TypeScript or JavaScript file under a module's `models` directory. It's defined using the `model` utility imported from `@medusajs/framework/utils`.
 
 For example, create the file `src/modules/hello/models/my-custom.ts` with the following content:
 
 ```ts title="src/modules/hello/models/my-custom.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
@@ -48,7 +40,7 @@ The example above defines the data model `MyCustom` with the properties `id` and
 
 ### Generate a Migration
 
-A migration is a TypeScript or JavaScript file that defines changes to be made in the database, such as create or update tables.
+A migration is a TypeScript or JavaScript file that defines changes to be made in the database, such as creating a new table or updating it.
 
 To generate a migration for the data models in your module, run the following command:
 
@@ -56,7 +48,9 @@ To generate a migration for the data models in your module, run the following co
 npx medusa db:generate helloModuleService
 ```
 
-The `db:generate` command of the Medusa CLI accepts one or more module names (for example, `helloModuleService`) to generate the migration for.
+The `db:generate` command of the Medusa CLI accepts one or more module names to generate the migration for.
+
+The module name (for example, `helloModuleService`) is the key used when registering the module in the `modules` configuration in `medusa-config.js`.
 
 The above command creates a migration file at the directory `src/modules/hello/migrations` similar to the following:
 
@@ -77,6 +71,12 @@ export class Migration20240702105919 extends Migration {
 ```
 
 In the migration class, the `up` method creates the table `my_custom` and defines its columns. The `down` method drops the table.
+
+<Note>
+
+Data models automatically have the date properties `created_at`, `updated_at`, and `deleted_at`.
+
+</Note>
 
 ### Run Migration
 

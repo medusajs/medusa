@@ -10,7 +10,7 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 import {
   InjectManager,
@@ -18,7 +18,7 @@ import {
   isString,
   MedusaContext,
   MedusaService,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { EntityManager } from "@mikro-orm/core"
 import {
   Customer,
@@ -91,7 +91,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createCustomers(
     dataOrArray:
       | CustomerTypes.CreateCustomerDTO
@@ -109,7 +109,7 @@ export default class CustomerModuleService
     return Array.isArray(dataOrArray) ? serialized : serialized[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createCustomers_(
     dataOrArray:
       | CustomerTypes.CreateCustomerDTO
@@ -158,7 +158,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async updateCustomers(
     idsOrSelector: string | string[] | CustomerTypes.FilterableCustomerProps,
     data: CustomerTypes.CustomerUpdatableFields,
@@ -214,7 +214,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createCustomerGroups(
     dataOrArrayOfData:
       | CustomerTypes.CreateCustomerGroupDTO
@@ -250,7 +250,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerGroupDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async updateCustomerGroups(
     groupIdOrSelector:
       | string
@@ -309,7 +309,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<{ id: string }[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async addCustomerToGroup(
     data: CustomerTypes.GroupCustomerPair | CustomerTypes.GroupCustomerPair[],
     @MedusaContext() sharedContext: Context = {}
@@ -338,7 +338,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createCustomerAddresses(
     data:
       | CustomerTypes.CreateCustomerAddressDTO
@@ -360,7 +360,7 @@ export default class CustomerModuleService
     return serialized[0]
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async createCustomerAddresses_(
     data:
       | CustomerTypes.CreateCustomerAddressDTO
@@ -390,7 +390,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<CustomerTypes.CustomerAddressDTO[]>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async updateCustomerAddresses(
     addressIdOrSelector:
       | string
@@ -451,7 +451,7 @@ export default class CustomerModuleService
     sharedContext?: Context
   ): Promise<void>
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async removeCustomerFromGroup(
     data: CustomerTypes.GroupCustomerPair | CustomerTypes.GroupCustomerPair[],
     @MedusaContext() sharedContext: Context = {}

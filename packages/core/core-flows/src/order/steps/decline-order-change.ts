@@ -2,13 +2,13 @@ import {
   DeclineOrderChangeDTO,
   IOrderModuleService,
   UpdateOrderChangeDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   Modules,
   deduplicate,
   getSelectsAndRelationsFromObjectArray,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const declineOrderChangeStepId = "decline-order-change"
 /**

@@ -1,18 +1,30 @@
-import { QueryContext, QueryFilter } from "@medusajs/utils"
+import { QueryContext } from "@medusajs/utils"
+import { MedusaModule } from "../../medusa-module"
+import { getEntitiesMap } from "../__fixtures__/get-entities-map"
+import "../__fixtures__/parse-filters"
 import "../__fixtures__/remote-query-type"
 import { toRemoteQuery } from "../to-remote-query"
 
+const entitiesMap = getEntitiesMap(
+  MedusaModule.getAllJoinerConfigs()
+    .map((m) => m.schema)
+    .join("\n")
+)
+
 describe("toRemoteQuery", () => {
   it("should transform a query with top level filtering", () => {
-    const format = toRemoteQuery({
-      entity: "product",
-      fields: ["id", "handle", "description"],
-      filters: QueryFilter<"product">({
-        handle: {
-          $ilike: "abc%",
+    const format = toRemoteQuery(
+      {
+        entity: "product",
+        fields: ["id", "handle", "description"],
+        filters: {
+          handle: {
+            $ilike: "abc%",
+          },
         },
-      }),
-    })
+      },
+      entitiesMap
+    )
 
     expect(format).toEqual({
       product: {
@@ -29,14 +41,17 @@ describe("toRemoteQuery", () => {
   })
 
   it("should transform a query with pagination", () => {
-    const format = toRemoteQuery({
-      entity: "product",
-      fields: ["id", "handle", "description"],
-      pagination: {
-        skip: 5,
-        take: 10,
+    const format = toRemoteQuery(
+      {
+        entity: "product",
+        fields: ["id", "handle", "description"],
+        pagination: {
+          skip: 5,
+          take: 10,
+        },
       },
-    })
+      entitiesMap
+    )
 
     expect(format).toEqual({
       product: {
@@ -50,19 +65,22 @@ describe("toRemoteQuery", () => {
   })
 
   it("should transform a query with top level filtering and pagination", () => {
-    const format = toRemoteQuery({
-      entity: "product",
-      fields: ["id", "handle", "description"],
-      pagination: {
-        skip: 5,
-        take: 10,
-      },
-      filters: QueryFilter<"product">({
-        handle: {
-          $ilike: "abc%",
+    const format = toRemoteQuery(
+      {
+        entity: "product",
+        fields: ["id", "handle", "description"],
+        pagination: {
+          skip: 5,
+          take: 10,
         },
-      }),
-    })
+        filters: {
+          handle: {
+            $ilike: "abc%",
+          },
+        },
+      },
+      entitiesMap
+    )
 
     expect(format).toEqual({
       product: {
@@ -81,43 +99,47 @@ describe("toRemoteQuery", () => {
   })
 
   it("should transform a query with filters and context into remote query input [1]", () => {
-    const format = toRemoteQuery({
-      entity: "product",
-      fields: [
-        "id",
-        "description",
-        "variants.title",
-        "variants.calculated_price",
-        "variants.options.*",
-      ],
-      filters: {
-        variants: QueryFilter<"variants">({
-          sku: {
-            $ilike: "abc%",
+    const format = toRemoteQuery(
+      {
+        entity: "product",
+        fields: [
+          "id",
+          "description",
+          "variants.title",
+          "variants.calculated_price",
+        ],
+        filters: {
+          variants: {
+            sku: {
+              $ilike: "abc%",
+            },
           },
-        }),
-      },
-      context: {
-        variants: {
-          calculated_price: QueryContext({
-            region_id: "reg_123",
-            currency_code: "usd",
-          }),
+        },
+        context: {
+          variants: {
+            calculated_price: QueryContext({
+              region_id: "reg_123",
+              currency_code: "usd",
+            }),
+          },
         },
       },
-    })
+      entitiesMap
+    )
 
     expect(format).toEqual({
       product: {
         __fields: ["id", "description"],
-        variants: {
-          __args: {
-            filters: {
+        __args: {
+          filters: {
+            variants: {
               sku: {
                 $ilike: "abc%",
               },
             },
           },
+        },
+        variants: {
           calculated_price: {
             __args: {
               context: {
@@ -127,9 +149,6 @@ describe("toRemoteQuery", () => {
             },
           },
           __fields: ["title", "calculated_price"],
-          options: {
-            __fields: ["*"],
-          },
         },
       },
     })
@@ -142,31 +161,34 @@ describe("toRemoteQuery", () => {
       },
     })
 
-    const format = toRemoteQuery({
-      entity: "product",
-      fields: [
-        "id",
-        "title",
-        "description",
-        "product_translation.*",
-        "categories.*",
-        "categories.category_translation.*",
-        "variants.*",
-        "variants.variant_translation.*",
-      ],
-      filters: QueryFilter<"product">({
-        id: "prod_01J742X0QPFW3R2ZFRTRC34FS8",
-      }),
-      context: {
-        product_translation: langContext,
-        categories: {
-          category_translation: langContext,
+    const format = toRemoteQuery(
+      {
+        entity: "product",
+        fields: [
+          "id",
+          "title",
+          "description",
+          "translation.*",
+          "categories.*",
+          "categories.translation.*",
+          "variants.*",
+          "variants.translation.*",
+        ],
+        filters: {
+          id: "prod_01J742X0QPFW3R2ZFRTRC34FS8",
         },
-        variants: {
-          variant_translation: langContext,
+        context: {
+          translation: langContext,
+          categories: {
+            translation: langContext,
+          },
+          variants: {
+            translation: langContext,
+          },
         },
       },
-    })
+      entitiesMap
+    )
 
     expect(format).toEqual({
       product: {
@@ -176,7 +198,7 @@ describe("toRemoteQuery", () => {
             id: "prod_01J742X0QPFW3R2ZFRTRC34FS8",
           },
         },
-        product_translation: {
+        translation: {
           __args: {
             context: {
               context: {
@@ -187,7 +209,7 @@ describe("toRemoteQuery", () => {
           __fields: ["*"],
         },
         categories: {
-          category_translation: {
+          translation: {
             __args: {
               context: {
                 context: {
@@ -200,7 +222,7 @@ describe("toRemoteQuery", () => {
           __fields: ["*"],
         },
         variants: {
-          variant_translation: {
+          translation: {
             __args: {
               context: {
                 context: {

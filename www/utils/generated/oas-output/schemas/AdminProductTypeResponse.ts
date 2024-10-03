@@ -1,7 +1,7 @@
 /**
  * @schema AdminProductTypeResponse
  * type: object
- * description: SUMMARY
+ * description: The product type's details.
  * x-schemaName: AdminProductTypeResponse
  * required:
  *   - product_type

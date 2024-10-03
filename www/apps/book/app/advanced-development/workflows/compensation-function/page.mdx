@@ -4,20 +4,29 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn how to add a compensation function to a step.
+In this chapter, you'll learn what a compensation function is and how to add it to a step.
 
-## Compensation Function
+## What is a Compensation Function
 
-To avoid data inconsistency when an error is thrown in a workflow, define a function (called a compensation function) and pass it as a second parameter to the `createStep` function.
+A compensation function rolls back or undoes changes made by a step when an error occurs in the workflow.
 
-For example:
+For example, if a step creates a record, the compensation function deletes the record when an error occurs later in the workflow.
 
-```ts title="src/workflows/hello-world.ts" highlights={[["16"], ["17"], ["18"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
-// other imports...
+By using compensation functions, you provide a mechanism that guarantees data consistency in your application and across systems.
+
+---
+
+## How to add a Compensation Function?
+
+A compensation function is passed as a second parameter to the `createStep` function.
+
+For example, create the file `src/workflows/hello-world.ts` with the following content:
+
+```ts title="src/workflows/hello-world.ts" highlights={[["15"], ["16"], ["17"]]} collapsibleLines="1-5" expandButtonLabel="Show Imports"
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",
@@ -34,16 +43,15 @@ const step1 = createStep(
 )
 ```
 
-Each step can have a compensation function. The compensation function only runs if an error occurs throughout the workflow. It’s useful to undo or roll back actions you’ve performed in a step.
+Each step can have a compensation function. The compensation function only runs if an error occurs throughout the workflow.
 
 ---
 
 ## Test the Compensation Function
 
-1. Add another step that throws an error:
+Create a step in the same `src/workflows/hello-world.ts` file that throws an error:
 
 ```ts title="src/workflows/hello-world.ts"
-// ...
 const step2 = createStep(
   "step-2",
   async () => {
@@ -52,16 +60,16 @@ const step2 = createStep(
 )
 ```
 
-2. Use the steps in a workflow. For example:
+Then, create a workflow that uses the steps:
 
 ```ts title="src/workflows/hello-world.ts" collapsibleLines="1-8" expandButtonLabel="Show Imports"
 import {
-  // other imports...
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
+// other imports...
 
-// ...
+// steps...
 
 const myWorkflow = createWorkflow(
   "hello-world", 
@@ -77,7 +85,7 @@ const myWorkflow = createWorkflow(
 export default myWorkflow
 ```
 
-3. Execute the workflow from a resource, such as an API route:
+Finally, execute the workflow from an API route:
 
 ```ts title="src/api/workflow/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import type {
@@ -97,13 +105,7 @@ export async function GET(
 }
 ```
 
-4. Run the Medusa application:
-
-```bash npm2yarn
-npm run dev
-```
-
-5. Send a `GET` request to `/workflow`:
+Run the Medusa application and send a `GET` request to `/workflow`:
 
 ```bash
 curl http://localhost:9000/workflow
@@ -113,3 +115,84 @@ In the console, you'll see:
 
 - `Hello from step one!` logged in the terminal, indicating that the first step ran successfully.
 - `Oops! Rolling back my changes...` logged in the terminal, indicating that the second step failed and the compensation function of the first step ran consequently.
+
+---
+
+## Pass Input to Compensation Function
+
+If a step creates a record, the compensation function must receive the ID of the record to remove it.
+
+To pass input to the compensation function, pass a second parameter in the `StepResponse` returned by the step.
+
+For example:
+
+export const inputHighlights = [
+  ["11", "", "The data to pass as an input to the compensation function."],
+  ["14", "{ message }", "The data received as an input from `StepResponse`'s second parameter."]
+]
+
+```ts highlights={inputHighlights}
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  async () => {
+    return new StepResponse(
+      `Hello from step one!`, 
+      { message: "Oops! Rolling back my changes..." }
+    )
+  },
+  async ({ message }) => {
+    console.log(message)
+  }
+)
+```
+
+In this example, the step passes an object as a second parameter to `StepResponse`.
+
+The compensation function receives the object and uses its `message` property to log a message.
+
+---
+
+## Resolve Resources from the Medusa Container
+
+The compensation function receives an object second parameter. The object has a `container` property that you use to resolve resources from the Medusa container.
+
+For example:
+
+export const containerHighlights = [
+  ["15", "container", "Access the container in the second parameter object."],
+  ["16", "resolve", "Use the container to resolve resources."]
+]
+
+```ts
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+
+const step1 = createStep(
+  "step-1",
+  async () => {
+    return new StepResponse(
+      `Hello from step one!`, 
+      { message: "Oops! Rolling back my changes..." }
+    )
+  },
+  async ({ message }, { container }) => {
+    const logger = container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    )
+
+    logger.info(message)
+  }
+)
+```
+
+In this example, you use the `container` property in the second object parameter of the compensation function to resolve the logger.
+
+You then use the logger to log a message.

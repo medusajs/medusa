@@ -4,13 +4,13 @@ export const metadata = {
 
 # {metadata.title}
 
-This chapter lists some constraints to keep in mind when defining a workflow or its steps.
+This chapter lists constraints of defining a workflow or its steps.
 
 ## Workflow Constraints
 
 ### No Async Functions
 
-The function passed to the `createWorkflow` can’t be an async function:
+The function passed to `createWorkflow` can’t be an async function:
 
 ```ts highlights={[["4", "async", "Function can't be async."], ["11", "", "Correct way of defining the function."]]}
 // Don't
@@ -28,13 +28,21 @@ const myWorkflow = createWorkflow(
 })
 ```
 
-### No Direct Data Manipulation
+### No Direct Variable Manipulation
 
-Since the constructor function only defines how the workflow works, you can’t directly manipulate data within the function. Instead, use the `transform` function:
+You can’t directly manipulate variables within the workflow's constructor function.
+
+<Note>
+
+Learn more about why you can't manipulate variables [in this chapter](../conditions/page.mdx#why-if-conditions-arent-allowed-in-workflows)
+
+</Note>
+
+Instead, use the `transform` utility function imported from `@medusajs/framework/workflows-sdk`:
 
 export const highlights = [
-  ["9", "", "Don't manipulate data directly."],
-  ["20", "transform", "Use the `transform` function to manipulate data."]
+  ["9", "", "Don't manipulate variables directly."],
+  ["20", "transform", "Use the `transform` function to manipulate variables."]
 ]
 
 ```ts  highlights={highlights}
@@ -45,9 +53,9 @@ const myWorkflow = createWorkflow(
   const str1 = step1(input)
   const str2 = step2(input)
 
-  return {
+  return new WorkflowResponse({
     message: `${str1}${str2}`,
-  }
+  })
 })
 
 // Do
@@ -67,13 +75,21 @@ const myWorkflow = createWorkflow(
     })
   )
 
-  return result
+  return new WorkflowResponse(result)
 })
 ```
 
 ### No If Conditions
 
-You can't use if-conditions in a workflow. Instead, use the when-then utility function explained in the next chapter:
+You can't use if-conditions in a workflow.
+
+<Note>
+
+Learn more about why you can't use if-conditions [in this chapter](../conditions/page.mdx#why-if-conditions-arent-allowed-in-workflows)
+
+</Note>
+
+Instead, use the when-then utility function imported from `@medusajs/framework/workflows-sdk`:
 
 ```ts
 // Don't
@@ -104,14 +120,16 @@ const myWorkflow = createWorkflow(
 
 ### Returned Values
 
-A step must only return [primitive values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values) or an object. Values of other types, such as Maps, aren't allowed.
+A step must only return serializable values, such as [primitive values](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#primitive_values) or an object.
+
+Values of other types, such as Maps, aren't allowed.
 
 ```ts
 // Don't
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",
@@ -130,7 +148,7 @@ const step1 = createStep(
 import { 
   createStep,
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
 const step1 = createStep(
   "step-1",

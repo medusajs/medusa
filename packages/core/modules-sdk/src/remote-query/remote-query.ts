@@ -21,6 +21,7 @@ export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
   private modulesMap: Map<string, LoadedModule> = new Map()
   private customRemoteFetchData?: RemoteFetchDataCallback
+  private entitiesMap: Map<string, any> = new Map()
 
   static traceFetchRemoteData?: (
     fetcher: () => Promise<any>,
@@ -33,12 +34,15 @@ export class RemoteQuery {
     modulesLoaded,
     customRemoteFetchData,
     servicesConfig = [],
+    entitiesMap,
   }: {
     modulesLoaded?: LoadedModule[]
     customRemoteFetchData?: RemoteFetchDataCallback
     servicesConfig?: ModuleJoinerConfig[]
+    entitiesMap: Map<string, any>
   }) {
     const servicesConfig_ = [...servicesConfig]
+    this.entitiesMap = entitiesMap
 
     if (!modulesLoaded?.length) {
       modulesLoaded = MedusaModule.getLoadedModules().map(
@@ -68,8 +72,15 @@ export class RemoteQuery {
     this.remoteJoiner = new RemoteJoiner(
       servicesConfig_ as JoinerServiceConfig[],
       this.remoteFetchData.bind(this),
-      { autoCreateServiceNameAlias: false }
+      {
+        autoCreateServiceNameAlias: false,
+        entitiesMap,
+      }
     )
+  }
+
+  public getEntitiesMap() {
+    return this.entitiesMap
   }
 
   public setFetchDataCallback(

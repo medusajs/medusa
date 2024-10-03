@@ -2,12 +2,12 @@ import {
   deleteShippingProfileWorkflow,
   updateShippingProfilesWorkflow,
 } from "@medusajs/core-flows"
-import { HttpTypes, IFulfillmentModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { HttpTypes, IFulfillmentModuleService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchShippingProfile } from "../helpers"
 import {
   AdminGetShippingProfileParamsType,

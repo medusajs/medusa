@@ -1,13 +1,17 @@
 import { createRefundReasonsWorkflow } from "@medusajs/core-flows"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+  refetchEntities,
+  refetchEntity,
+} from "@medusajs/framework/http"
 import {
   AdminCreateRefundReason,
   HttpTypes,
   PaginatedResponse,
   RefundReasonResponse,
   RefundReasonsResponse,
-} from "@medusajs/types"
-import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+} from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.RefundReasonFilters>,

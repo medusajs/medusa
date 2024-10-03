@@ -1,12 +1,16 @@
-import { OrderChangeDTO, OrderDTO, OrderExchangeDTO } from "@medusajs/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/utils"
+import {
+  OrderChangeDTO,
+  OrderDTO,
+  OrderExchangeDTO,
+} from "@medusajs/framework/types"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   createStep,
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 import {
   deleteExchangesStep,
@@ -79,7 +83,11 @@ export const cancelBeginOrderExchangeWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order-change-query" })
 
-    cancelBeginOrderExchangeValidationStep({ order, orderExchange, orderChange })
+    cancelBeginOrderExchangeValidationStep({
+      order,
+      orderExchange,
+      orderChange,
+    })
 
     const shippingToRemove = transform(
       { orderChange, input },

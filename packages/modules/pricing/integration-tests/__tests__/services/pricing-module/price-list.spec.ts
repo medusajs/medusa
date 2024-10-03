@@ -1,10 +1,10 @@
-import { IPricingModuleService } from "@medusajs/types"
+import { IPricingModuleService } from "@medusajs/framework/types"
 import {
   CommonEvents,
   composeMessage,
   Modules,
   PricingEvents,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,

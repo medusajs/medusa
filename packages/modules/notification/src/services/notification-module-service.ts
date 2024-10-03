@@ -6,7 +6,7 @@ import {
   InternalModuleDeclaration,
   ModulesSdkTypes,
   NotificationTypes,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   EmitEvents,
   generateEntityId,
@@ -16,7 +16,7 @@ import {
   MedusaService,
   NotificationStatus,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import { Notification } from "@models"
 import { eventBuilders } from "@utils"
 import NotificationProviderService from "./notification-provider"
@@ -66,7 +66,7 @@ export default class NotificationModuleService
     sharedContext?: Context
   ): Promise<NotificationTypes.NotificationDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   @EmitEvents()
   async createNotifications(
     data:
@@ -95,7 +95,7 @@ export default class NotificationModuleService
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   protected async createNotifications_(
     data: NotificationTypes.CreateNotificationDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -121,7 +121,7 @@ export default class NotificationModuleService
           {
             idempotency_key: idempotencyKeys,
           },
-          { take: null },
+          {},
           context
         )
 

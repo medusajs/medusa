@@ -1,0 +1,108 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Show Brand of Product in Admin`,
+}
+
+# {metadata.title}
+
+<Note title="Example Chapter">
+
+This chapter covers how to show the brand of a product in the Medusa Admin using a widget as a step of the ["Customize Admin" chapter](../page.mdx).
+
+</Note>
+
+## Widget to Show Brand in Product Details
+
+<Prerequisites
+  items={[
+    {
+      text: "Retrieve Brand of Product API Route",
+      link: "/customization/extend-models/query-linked-records"
+    }
+  ]}
+/>
+
+To create a widget that shows a product's brand in its details page, create the file `src/admin/widgets/product-brand.tsx` with the following content:
+
+export const highlights = [
+  ["7", "data", "Receive the product's details as a prop"],
+  ["9", "brand", "A state variable to store the brand"],
+  ["19", "fetch", "Retrieve the brand of a product using the custom API route"],
+  ["39", "zone", "Show the widget at the top of the product details page."]
+]
+
+```tsx title="src/admin/widgets/product-brand.tsx" highlights={highlights}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { DetailWidgetProps, AdminProduct } from "@medusajs/framework/types"
+import { useEffect, useState } from "react"
+import { Container, Heading } from "@medusajs/ui"
+
+const ProductBrandWidget = ({ 
+  data,
+}: DetailWidgetProps<AdminProduct>) => {
+  const [brand, setBrand] = useState<
+    Record<string, string> | undefined
+  >()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!loading) {
+      return
+    }
+
+    fetch(`/admin/products/${data.id}/brand`, {
+      credentials: "include",
+    })
+    .then((res) => res.json())
+    .then(({ brand }) => {
+      setBrand(brand)
+      setLoading(false)
+    })
+  }, [loading])
+  
+  return (
+    <Container>
+      <Heading level="h2">Brand</Heading>
+      {loading && <span>Loading...</span>}
+      {brand && <span>Name: {brand.name}</span>}
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductBrandWidget
+```
+
+This adds a widget at the top of the product's details page. 
+
+<Note>
+
+Learn more about widgets [in this guide](../../../basics/admin-customizations/page.mdx).
+
+</Note>
+
+Widgets created in a details page receive the targetted item in a `data` prop. So, the `ProductBrandWidget` receives the product's details in the `data` prop.
+
+In the widget, you fetch the product's brand from the `/admin/products/:id/brand` API route and display it.
+
+<Note>
+
+Admin customizations can use the [Medusa UI package](!ui!) to align your customizations with the admin's design.
+
+</Note>
+
+---
+
+## Test it Out
+
+Start your Medusa application and go to a product's details page in the Medusa Admin, you'll find a new block at the top of the page showing the product's brand.
+
+---
+
+## Next Chapter: Add List of Brands Page
+
+In the next chapter, you'll add a new page or UI route that displays the list of brands in your application.

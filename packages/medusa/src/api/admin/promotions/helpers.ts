@@ -1,10 +1,14 @@
-import { BatchMethodResponse, BatchResponse } from "@medusajs/types"
-import { PromotionRuleDTO, MedusaContainer } from "@medusajs/types"
 import {
-  promiseAll,
+  BatchMethodResponse,
+  BatchResponse,
+  MedusaContainer,
+  PromotionRuleDTO,
+} from "@medusajs/framework/types"
+import {
   ContainerRegistrationKeys,
+  promiseAll,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const refetchPromotion = async (
   promotionId: string,

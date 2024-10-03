@@ -27,7 +27,7 @@ import {
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
   UpsertPaymentCollectionDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import {
   BigNumber,
   InjectManager,
@@ -41,7 +41,7 @@ import {
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   Capture,
   Payment,
@@ -131,7 +131,7 @@ export default class PaymentModuleService
     data: CreatePaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createPaymentCollections(
     data: CreatePaymentCollectionDTO | CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
@@ -151,7 +151,7 @@ export default class PaymentModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createPaymentCollections_(
     data: CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
@@ -171,7 +171,7 @@ export default class PaymentModuleService
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updatePaymentCollections(
     idOrSelector: string | FilterablePaymentCollectionProps,
     data: PaymentCollectionUpdatableFields,
@@ -212,7 +212,7 @@ export default class PaymentModuleService
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updatePaymentCollections_(
     data: UpdatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
@@ -229,7 +229,7 @@ export default class PaymentModuleService
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async upsertPaymentCollections(
     data: UpsertPaymentCollectionDTO | UpsertPaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
@@ -267,7 +267,7 @@ export default class PaymentModuleService
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async completePaymentCollections(
     paymentCollectionId: string | string[],
     @MedusaContext() sharedContext?: Context
@@ -292,7 +292,7 @@ export default class PaymentModuleService
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async createPaymentSession(
     paymentCollectionId: string,
     input: CreatePaymentSessionDTO,
@@ -345,7 +345,7 @@ export default class PaymentModuleService
     })
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async createPaymentSession_(
     paymentCollectionId: string,
     data: CreatePaymentSessionDTO,
@@ -366,7 +366,7 @@ export default class PaymentModuleService
     return paymentSession
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updatePaymentSession(
     data: UpdatePaymentSessionDTO,
     @MedusaContext() sharedContext?: Context
@@ -390,7 +390,7 @@ export default class PaymentModuleService
     return await this.baseRepository_.serialize(updated[0], { populate: true })
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async deletePaymentSession(
     id: string,
     @MedusaContext() sharedContext?: Context
@@ -409,7 +409,7 @@ export default class PaymentModuleService
     await this.paymentSessionService_.delete(id, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async authorizePaymentSession(
     id: string,
     context: Record<string, unknown>,
@@ -488,7 +488,7 @@ export default class PaymentModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   async authorizePaymentSession_(
     session: PaymentSession,
     data: Record<string, unknown>,
@@ -534,7 +534,7 @@ export default class PaymentModuleService
     return payment
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   // @ts-expect-error
   async retrievePaymentSession(
     id: string,
@@ -550,7 +550,7 @@ export default class PaymentModuleService
     return await this.baseRepository_.serialize(session)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   // @ts-expect-error
   async listPaymentSessions(
     filters?: FilterablePaymentSessionProps,
@@ -566,7 +566,7 @@ export default class PaymentModuleService
     return await this.baseRepository_.serialize<PaymentSessionDTO[]>(sessions)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async updatePayment(
     data: UpdatePaymentDTO,
     @MedusaContext() sharedContext?: Context
@@ -579,7 +579,7 @@ export default class PaymentModuleService
     })
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async capturePayment(
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -612,7 +612,7 @@ export default class PaymentModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async capturePayment_(
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -689,7 +689,7 @@ export default class PaymentModuleService
 
     return [payment, isFullyCaptured]
   }
-  @InjectManager("baseRepository_")
+  @InjectManager()
   private async capturePaymentFromProvider_(
     payment: Payment,
     isFullyCaptured: boolean,
@@ -712,7 +712,7 @@ export default class PaymentModuleService
     return payment
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async refundPayment(
     data: CreateRefundDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -753,7 +753,7 @@ export default class PaymentModuleService
     )
   }
 
-  @InjectTransactionManager("baseRepository_")
+  @InjectTransactionManager()
   private async refundPayment_(
     payment: Payment,
     data: CreateRefundDTO,
@@ -794,7 +794,7 @@ export default class PaymentModuleService
     return refund
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   private async refundPaymentFromProvider_(
     payment: Payment,
     refund: Refund,
@@ -816,7 +816,7 @@ export default class PaymentModuleService
     return payment
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async cancelPayment(
     paymentId: string,
     @MedusaContext() sharedContext?: Context
@@ -848,7 +848,7 @@ export default class PaymentModuleService
     return await this.retrievePayment(payment.id, {}, sharedContext)
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async processEvent(
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
@@ -890,7 +890,7 @@ export default class PaymentModuleService
     }
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async listPaymentProviders(
     filters: FilterablePaymentProviderProps = {},
     config: FindConfig<PaymentProviderDTO> = {},
@@ -910,7 +910,7 @@ export default class PaymentModuleService
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   async listAndCountPaymentProviders(
     filters: FilterablePaymentProviderProps = {},
     config: FindConfig<PaymentProviderDTO> = {},
@@ -930,7 +930,7 @@ export default class PaymentModuleService
     ]
   }
 
-  @InjectManager("baseRepository_")
+  @InjectManager()
   private async maybeUpdatePaymentCollection_(
     paymentCollectionId: string,
     sharedContext?: Context

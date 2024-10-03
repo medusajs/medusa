@@ -1,5 +1,5 @@
-import { Constructor, FileTypes } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { Constructor, FileTypes } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { FileProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {

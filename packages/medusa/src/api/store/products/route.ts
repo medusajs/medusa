@@ -2,11 +2,11 @@ import {
   ContainerRegistrationKeys,
   isPresent,
   remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import { MedusaResponse } from "../../../types/routing"
+} from "@medusajs/framework/utils"
+import { MedusaResponse } from "@medusajs/framework/http"
 import { wrapVariantsWithInventoryQuantity } from "../../utils/middlewares"
 import { RequestWithContext, wrapProductsWithTaxPrices } from "./helpers"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductParams>,

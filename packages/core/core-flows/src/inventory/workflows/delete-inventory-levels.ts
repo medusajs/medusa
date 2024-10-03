@@ -4,10 +4,10 @@ import {
   transform,
   WorkflowData,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 
-import { FilterableInventoryLevelProps } from "@medusajs/types"
-import { deduplicate, MedusaError, Modules } from "@medusajs/utils"
+import { FilterableInventoryLevelProps } from "@medusajs/framework/types"
+import { deduplicate, MedusaError, Modules } from "@medusajs/framework/utils"
 import { useRemoteQueryStep } from "../../common"
 import { deleteEntitiesStep } from "../../common/steps/delete-entities"
 

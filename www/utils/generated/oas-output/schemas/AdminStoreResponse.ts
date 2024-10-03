@@ -1,7 +1,7 @@
 /**
  * @schema AdminStoreResponse
  * type: object
- * description: SUMMARY
+ * description: The store's details.
  * x-schemaName: AdminStoreResponse
  * required:
  *   - store

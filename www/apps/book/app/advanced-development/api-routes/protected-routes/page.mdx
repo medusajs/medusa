@@ -108,6 +108,12 @@ To access the authentication details in an API route, such as the logged-in user
 
 The `auth_context.actor_id` property of `AuthenticatedMedusaRequest` holds the ID of the authenticated user or customer. If there isn't any authenticated user or customer, `auth_context` is `undefined`.
 
+<Note>
+
+If you opt-out of authentication in a route as mentioned in the [previous section](#authentication-opt-out), you can't access the authenticated user or customer anymore. Use the [authenticate middleware](#protect-custom-api-routes) instead.
+
+</Note>
+
 ### Retrieve Logged-In Customer's Details
 
 You can access the logged-in customer’s ID in all API routes starting with `/store` using the `auth_context.actor_id` property of the `AuthenticatedMedusaRequest` object.
@@ -119,8 +125,8 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa"
-import { Modules } from "@medusajs/utils"
-import { ICustomerModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/framework/utils"
+import { ICustomerModuleService } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -154,8 +160,8 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa"
-import { Modules } from "@medusajs/utils"
-import { IUserModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/framework/utils"
+import { IUserModuleService } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

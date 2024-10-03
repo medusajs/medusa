@@ -1,7 +1,7 @@
 /**
  * @schema StoreUpdateCustomer
  * type: object
- * description: SUMMARY
+ * description: The details to update in the customer.
  * x-schemaName: StoreUpdateCustomer
  * properties:
  *   company_name:

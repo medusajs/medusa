@@ -1,15 +1,15 @@
 /**
  * @schema AdminPostReturnsRequestItemsReqSchema
  * type: object
- * description: SUMMARY
+ * description: The items' details.
  * x-schemaName: AdminPostReturnsRequestItemsReqSchema
  * properties:
  *   items:
  *     type: array
- *     description: The claim's items.
+ *     description: The items' details.
  *     items:
  *       type: object
- *       description: The item's items.
+ *       description: An item's details.
  *       required:
  *         - id
  *         - quantity
@@ -29,14 +29,14 @@
  *         internal_note:
  *           type: string
  *           title: internal_note
- *           description: The item's internal note.
+ *           description: A note viewed only by admin users.
  *         reason_id:
  *           type: string
  *           title: reason_id
- *           description: The item's reason id.
+ *           description: The ID of the associated return reason.
  *         metadata:
  *           type: object
- *           description: The item's metadata.
+ *           description: The item's metadata, can hold custom key-value pairs.
  * 
 */
 

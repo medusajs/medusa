@@ -1,15 +1,15 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+  refetchEntity,
+} from "@medusajs/framework/http"
 import {
   deleteProductOptionsWorkflow,
   updateProductOptionsWorkflow,
 } from "@medusajs/core-flows"
 
 import { remapKeysForProduct, remapProductResponse } from "../../../helpers"
-import { AdditionalData, HttpTypes } from "@medusajs/types"
-import { refetchEntity } from "../../../../../utils/refetch-entity"
+import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

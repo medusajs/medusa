@@ -2,10 +2,13 @@ get:
   operationId: GetPaymentProviders
   summary: List Payment Providers
   description: >-
-    Retrieve a list of payment providers. The payment providers can be filtered
-    by fields such as `id`. The payment providers can also be sorted or
-    paginated.
+    Retrieve a list of payment providers. You must provide the `region_id` query
+    parameter to retrieve the payment providers enabled in that region.
   x-authenticated: false
+  externalDocs:
+    url: >-
+      https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment
+    description: 'Storefront guide: How to implement payment during checkout.'
   parameters:
     - name: expand
       in: query
@@ -33,6 +36,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
     - name: offset
       in: query
       description: The number of items to skip when retrieving a list.
@@ -41,6 +46,8 @@ get:
         type: number
         title: offset
         description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -49,6 +56,8 @@ get:
         type: number
         title: limit
         description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
     - name: order
       in: query
       description: >-
@@ -64,12 +73,14 @@ get:
           with `-`.
     - name: region_id
       in: query
-      description: The payment provider's region id.
+      description: >-
+        Filter by a region ID to get the payment providers enabled in that
+        region.
       required: true
       schema:
         type: string
         title: region_id
-        description: The payment provider's region id.
+        description: Filter by a region ID.
   x-codeSamples:
     - lang: Shell
       label: cURL
@@ -85,7 +96,7 @@ get:
           schema:
             allOf:
               - type: object
-                description: SUMMARY
+                description: The list of payment providers.
                 required:
                   - limit
                   - offset
@@ -94,23 +105,25 @@ get:
                   limit:
                     type: number
                     title: limit
-                    description: The payment provider's limit.
+                    description: The maximum number of items returned.
                   offset:
                     type: number
                     title: offset
-                    description: The payment provider's offset.
+                    description: >-
+                      The number of items skipped before retrieving the returned
+                      items.
                   count:
                     type: number
                     title: count
-                    description: The payment provider's count.
+                    description: The total number of items.
               - type: object
-                description: SUMMARY
+                description: The list of payment providers.
                 required:
                   - payment_providers
                 properties:
                   payment_providers:
                     type: array
-                    description: The payment provider's payment providers.
+                    description: The list of payment providers.
                     items:
                       $ref: ../components/schemas/StorePaymentProvider.yaml
     '400':

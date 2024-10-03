@@ -791,6 +791,9 @@ paths:
     $ref: paths/admin_orders_{id}_fulfillments.yaml
   /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_cancel.yaml
+  /admin/orders/{id}/fulfillments/{fulfillment_id}/mark-as-delivered:
+    $ref: >-
+      paths/admin_orders_{id}_fulfillments_{fulfillment_id}_mark-as-delivered.yaml
   /admin/orders/{id}/fulfillments/{fulfillment_id}/shipments:
     $ref: paths/admin_orders_{id}_fulfillments_{fulfillment_id}_shipments.yaml
   /admin/orders/{id}/preview:
@@ -1000,6 +1003,8 @@ paths:
       paths/admin_workflows-executions_{workflow_id}_{transaction_id}_{step_id}_subscribe.yaml
   /auth/session:
     $ref: paths/auth_session.yaml
+  /auth/token/refresh:
+    $ref: paths/auth_token_refresh.yaml
   /auth/user/{auth_provider}:
     $ref: paths/auth_user_{auth_provider}.yaml
   /auth/user/{auth_provider}/callback:

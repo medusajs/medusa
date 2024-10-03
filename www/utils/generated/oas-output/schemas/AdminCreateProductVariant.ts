@@ -84,5 +84,11 @@
  *     description: The variant's options, where the key is an option's name, and the value is the option's value.
  *     example:
  *       Color: Black
+ *   inventory_items:
+ *     type: array
+ *     description: The variant's inventory items to create.
+ *     items:
+ *       $ref: "#/components/schemas/AdminCreateProductVariantInventoryKit"
+ * 
 */
 

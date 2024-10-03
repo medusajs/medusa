@@ -2,13 +2,13 @@ import {
   BeforeCreate,
   Collection,
   Entity,
-  OnInit,
   OneToMany,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/framework/utils"
 import ProviderIdentity from "./provider-identity"
 
 @Entity()

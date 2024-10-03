@@ -1,10 +1,10 @@
-import { CreateTaxRateRuleDTO, TaxRateRuleDTO } from "@medusajs/types"
+import { CreateTaxRateRuleDTO, TaxRateRuleDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
   createWorkflow,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import {
   createTaxRateRulesStep,
   deleteTaxRateRulesStep,
@@ -22,7 +22,9 @@ export const setTaxRateRulesWorkflowId = "set-tax-rate-rules"
  */
 export const setTaxRateRulesWorkflow = createWorkflow(
   setTaxRateRulesWorkflowId,
-  (input: WorkflowData<SetTaxRatesRulesWorkflowInput>): WorkflowResponse<TaxRateRuleDTO[]> => {
+  (
+    input: WorkflowData<SetTaxRatesRulesWorkflowInput>
+  ): WorkflowResponse<TaxRateRuleDTO[]> => {
     const ruleIds = listTaxRateRuleIdsStep({
       selector: { tax_rate_id: input.tax_rate_ids },
     })

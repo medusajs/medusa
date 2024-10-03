@@ -15,8 +15,8 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ITaxModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ITaxModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -46,7 +46,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeTaxModule } from "@medusajs/tax"
+import { initialize as initializeTaxModule } from "@medusajs/medusa/tax"
 
 export async function POST(request: Request) {
   const taxModuleService = await initializeTaxModule()
@@ -77,8 +77,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ITaxModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ITaxModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -100,7 +100,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeTaxModule } from "@medusajs/tax"
+import { initialize as initializeTaxModule } from "@medusajs/medusa/tax"
 
 export async function GET(request: Request) {
   const taxModuleService = await initializeTaxModule()
@@ -123,8 +123,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ITaxModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ITaxModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
@@ -162,7 +162,7 @@ export async function POST(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeTaxModule } from "@medusajs/tax"
+import { initialize as initializeTaxModule } from "@medusajs/medusa/tax"
 
 export async function POST(request: Request) {
   const taxModuleService = await initializeTaxModule()
@@ -201,8 +201,8 @@ export async function POST(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ITaxModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ITaxModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -224,7 +224,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeTaxModule } from "@medusajs/tax"
+import { initialize as initializeTaxModule } from "@medusajs/medusa/tax"
 
 export async function GET(request: Request) {
   const taxModuleService = await initializeTaxModule()
@@ -247,8 +247,8 @@ export async function GET(request: Request) {
 
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ITaxModuleService } from "@medusajs/types"
-  import { Modules } from "@medusajs/utils"
+  import { ITaxModuleService } from "@medusajs/framework/types"
+  import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
@@ -296,7 +296,7 @@ export async function GET(
 ```ts
 import { NextResponse } from "next/server"
 
-import { initialize as initializeTaxModule } from "@medusajs/tax"
+import { initialize as initializeTaxModule } from "@medusajs/medusa/tax"
 
 export async function GET(request: Request) {
   const taxModuleService = await initializeTaxModule()

@@ -1,11 +1,11 @@
 import { completeCartWorkflow } from "@medusajs/core-flows"
-import { MedusaError } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
-import { prepareRetrieveQuery } from "../../../../../utils/get-query-config"
+import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { prepareRetrieveQuery } from "@medusajs/framework"
 import { refetchOrder } from "../../../orders/helpers"
 import { refetchCart } from "../../helpers"
 import { defaultStoreCartFields } from "../../query-config"
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 
 export const POST = async (
   req: MedusaRequest,

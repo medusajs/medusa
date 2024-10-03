@@ -1,13 +1,12 @@
 import { PaginatedResponse } from "../../common"
-import { BaseOrderChange } from "../common"
-import { AdminOrder, AdminOrderPreview } from "./entities"
+import { AdminOrder, AdminOrderChange, AdminOrderPreview } from "./entities"
 
 export interface AdminOrderResponse {
   order: AdminOrder
 }
 
 export interface AdminOrderChangesResponse {
-  order_changes: BaseOrderChange[]
+  order_changes: AdminOrderChange[]
 }
 
 export type AdminOrderListResponse = PaginatedResponse<{
@@ -23,5 +22,5 @@ export interface AdminDraftOrderResponse {
 }
 
 export type AdminDraftOrderListResponse = PaginatedResponse<{
-  draft_orders: AdminOrder
+  draft_orders: AdminOrder[]
 }>

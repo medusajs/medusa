@@ -1,9 +1,9 @@
-import { 
-  ApplicationMethodAllocationValues, 
-  ApplicationMethodTargetTypeValues, 
-  ApplicationMethodTypeValues, 
-  PromotionRuleOperatorValues, 
-  PromotionTypeValues
+import {
+  ApplicationMethodAllocationValues,
+  ApplicationMethodTargetTypeValues,
+  ApplicationMethodTypeValues,
+  PromotionRuleOperatorValues,
+  PromotionTypeValues,
 } from "../../promotion"
 import { AdminCampaign } from "../campaign"
 
@@ -50,9 +50,22 @@ export interface BaseRuleAttributeOptions {
   id: string
   value: string
   label: string
+  /**
+   * @ignore
+   */
   field_type: string
+  /**
+   * @ignore
+   */
   required: boolean
-  disguised: boolean
+  /**
+   * @ignore
+   */
+  disguised?: boolean
+  /**
+   * @ignore
+   */
+  hydrate?: boolean
   operators: BaseRuleOperatorOptions[]
 }
 
@@ -63,7 +76,6 @@ export interface BaseRuleOperatorOptions {
 }
 
 export interface BaseRuleValueOptions {
-  id: string
   value: string
   label: string
 }

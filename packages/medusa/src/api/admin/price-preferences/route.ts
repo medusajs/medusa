@@ -1,9 +1,10 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
-import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+  refetchEntities,
+  refetchEntity,
+} from "@medusajs/framework/http"
 import { createPricePreferencesWorkflow } from "@medusajs/core-flows"
 
 export const GET = async (

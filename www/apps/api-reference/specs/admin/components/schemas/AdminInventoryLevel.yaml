@@ -9,11 +9,8 @@ required:
   - inventory_item_id
   - location_id
   - stocked_quantity
-  - raw_stocked_quantity
   - reserved_quantity
-  - raw_reserved_quantity
   - incoming_quantity
-  - raw_incoming_quantity
   - metadata
   - available_quantity
 properties:
@@ -48,23 +45,14 @@ properties:
     type: number
     title: stocked_quantity
     description: The location level's stocked quantity.
-  raw_stocked_quantity:
-    type: object
-    description: The location level's raw stocked quantity.
   reserved_quantity:
     type: number
     title: reserved_quantity
     description: The location level's reserved quantity.
-  raw_reserved_quantity:
-    type: object
-    description: The location level's raw reserved quantity.
   incoming_quantity:
     type: number
     title: incoming_quantity
     description: The location level's incoming quantity.
-  raw_incoming_quantity:
-    type: object
-    description: The location level's raw incoming quantity.
   metadata:
     type: object
     description: The location level's metadata.

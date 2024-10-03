@@ -1,9 +1,10 @@
 get:
   operationId: GetOrders
-  summary: List Orders
+  summary: List Logged-in Customer's Orders
+  x-sidebar-summary: List Orders
   description: >-
-    Retrieve a list of orders. The orders can be filtered by fields such as
-    `id`. The orders can also be sorted or paginated.
+    Retrieve the orders of the logged-in customer. The orders can be filtered by
+    fields such as `id`. The orders can also be sorted or paginated.
   x-authenticated: true
   parameters:
     - name: expand
@@ -32,6 +33,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
     - name: offset
       in: query
       description: The number of items to skip when retrieving a list.
@@ -40,6 +43,8 @@ get:
         type: number
         title: offset
         description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -48,6 +53,8 @@ get:
         type: number
         title: limit
         description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
     - name: order
       in: query
       description: >-
@@ -68,13 +75,13 @@ get:
         oneOf:
           - type: string
             title: id
-            description: The order's ID.
+            description: Filter by an order ID.
           - type: array
-            description: The order's ID.
+            description: Filter by order IDs.
             items:
               type: string
               title: id
-              description: The id's ID.
+              description: An order ID.
     - name: $and
       in: query
       required: false
@@ -143,7 +150,7 @@ get:
           schema:
             allOf:
               - type: object
-                description: SUMMARY
+                description: The paginated list of orders.
                 required:
                   - limit
                   - offset
@@ -152,17 +159,19 @@ get:
                   limit:
                     type: number
                     title: limit
-                    description: The order's limit.
+                    description: The maximum number of items returned.
                   offset:
                     type: number
                     title: offset
-                    description: The order's offset.
+                    description: >-
+                      The number of items skipped before retrieving the returned
+                      items.
                   count:
                     type: number
                     title: count
-                    description: The order's count.
+                    description: The total number of items.
               - type: object
-                description: SUMMARY
+                description: The paginated list of orders.
                 required:
                   - orders
                 properties:

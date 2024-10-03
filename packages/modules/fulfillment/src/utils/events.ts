@@ -7,160 +7,160 @@ import {
   ShippingOptionRule,
   ShippingOptionType,
 } from "@models"
-import { Context } from "@medusajs/types"
+import { Context } from "@medusajs/framework/types"
 import {
   CommonEvents,
-  eventBuilderFactory,
   FulfillmentEvents,
+  moduleEventBuilderFactory,
   Modules,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 
 export const eventBuilders = {
-  createdFulfillment: eventBuilderFactory({
+  createdFulfillment: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "fulfillment",
     eventsEnum: FulfillmentEvents,
   }),
-  updatedFulfillment: eventBuilderFactory({
+  updatedFulfillment: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "fulfillment",
     eventsEnum: FulfillmentEvents,
   }),
-  createdFulfillmentAddress: eventBuilderFactory({
+  createdFulfillmentAddress: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "fulfillment_address",
     eventsEnum: FulfillmentEvents,
   }),
-  createdFulfillmentItem: eventBuilderFactory({
+  createdFulfillmentItem: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "fulfillment_item",
     eventsEnum: FulfillmentEvents,
   }),
-  createdFulfillmentLabel: eventBuilderFactory({
+  createdFulfillmentLabel: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "fulfillment_label",
     eventsEnum: FulfillmentEvents,
   }),
-  updatedFulfillmentLabel: eventBuilderFactory({
+  updatedFulfillmentLabel: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "fulfillment_label",
     eventsEnum: FulfillmentEvents,
   }),
-  deletedFulfillmentLabel: eventBuilderFactory({
+  deletedFulfillmentLabel: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.DELETED,
     object: "fulfillment_label",
     eventsEnum: FulfillmentEvents,
   }),
-  createdShippingProfile: eventBuilderFactory({
+  createdShippingProfile: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "shipping_profile",
     eventsEnum: FulfillmentEvents,
   }),
-  createdShippingOptionType: eventBuilderFactory({
+  createdShippingOptionType: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "shipping_option_type",
     eventsEnum: FulfillmentEvents,
   }),
-  updatedShippingOptionType: eventBuilderFactory({
+  updatedShippingOptionType: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "shipping_option_type",
     eventsEnum: FulfillmentEvents,
   }),
-  deletedShippingOptionType: eventBuilderFactory({
+  deletedShippingOptionType: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.DELETED,
     object: "shipping_option_type",
     eventsEnum: FulfillmentEvents,
   }),
-  createdShippingOptionRule: eventBuilderFactory({
+  createdShippingOptionRule: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "shipping_option_rule",
     eventsEnum: FulfillmentEvents,
   }),
-  updatedShippingOptionRule: eventBuilderFactory({
+  updatedShippingOptionRule: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "shipping_option_rule",
     eventsEnum: FulfillmentEvents,
   }),
-  deletedShippingOptionRule: eventBuilderFactory({
+  deletedShippingOptionRule: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.DELETED,
     object: "shipping_option_rule",
     eventsEnum: FulfillmentEvents,
   }),
-  createdShippingOption: eventBuilderFactory({
+  createdShippingOption: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "shipping_option",
     eventsEnum: FulfillmentEvents,
   }),
-  updatedShippingOption: eventBuilderFactory({
+  updatedShippingOption: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "shipping_option",
     eventsEnum: FulfillmentEvents,
   }),
-  createdFulfillmentSet: eventBuilderFactory({
+  createdFulfillmentSet: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "fulfillment_set",
     eventsEnum: FulfillmentEvents,
   }),
-  updatedFulfillmentSet: eventBuilderFactory({
+  updatedFulfillmentSet: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "fulfillment_set",
     eventsEnum: FulfillmentEvents,
   }),
-  deletedFulfillmentSet: eventBuilderFactory({
+  deletedFulfillmentSet: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.DELETED,
     object: "fulfillment_set",
     eventsEnum: FulfillmentEvents,
   }),
-  createdServiceZone: eventBuilderFactory({
+  createdServiceZone: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "service_zone",
     eventsEnum: FulfillmentEvents,
   }),
-  updatedServiceZone: eventBuilderFactory({
+  updatedServiceZone: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "service_zone",
     eventsEnum: FulfillmentEvents,
   }),
-  deletedServiceZone: eventBuilderFactory({
+  deletedServiceZone: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.DELETED,
     object: "service_zone",
     eventsEnum: FulfillmentEvents,
   }),
-  createdGeoZone: eventBuilderFactory({
+  createdGeoZone: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "geo_zone",
     eventsEnum: FulfillmentEvents,
   }),
-  updatedGeoZone: eventBuilderFactory({
+  updatedGeoZone: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "geo_zone",
     eventsEnum: FulfillmentEvents,
   }),
-  deletedGeoZone: eventBuilderFactory({
+  deletedGeoZone: moduleEventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.DELETED,
     object: "geo_zone",

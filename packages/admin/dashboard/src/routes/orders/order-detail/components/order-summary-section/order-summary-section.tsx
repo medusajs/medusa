@@ -19,7 +19,6 @@ import {
   AdminOrderLineItem,
   AdminOrderPreview,
   AdminReturn,
-  ReservationItemDTO,
 } from "@medusajs/types"
 import {
   Badge,
@@ -55,6 +54,7 @@ import { getReturnableQuantity } from "../../../../../lib/rma"
 import { CopyPaymentLink } from "../copy-payment-link/copy-payment-link"
 import ReturnInfoPopover from "./return-info-popover"
 import ShippingInfoPopover from "./shipping-info-popover"
+import { AdminReservation } from "@medusajs/types/src/http"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -171,7 +171,7 @@ export const OrderSummarySection = ({ order }: OrderSummarySectionProps) => {
   return (
     <Container className="divide-y divide-dashed p-0">
       <Header order={order} orderPreview={orderPreview} />
-      <ItemBreakdown order={order} />
+      <ItemBreakdown order={order} reservations={reservations!} />
       <CostBreakdown order={order} />
       <Total order={order} />
 
@@ -317,11 +317,6 @@ const Header = ({
           },
           {
             actions: [
-              // {
-              //   label: t("orders.summary.allocateItems"),
-              //   to: "#", // TODO: Open modal to allocate items
-              //   icon: <Buildings />,
-              // },
               {
                 label: t("orders.returns.create"),
                 to: `/orders/${order.id}/returns`,
@@ -380,15 +375,17 @@ const Item = ({
 }: {
   item: AdminOrderLineItem
   currencyCode: string
-  reservation?: ReservationItemDTO | null
+  reservation?: AdminReservation
   returns: AdminReturn[]
   claims: AdminClaim[]
   exchanges: AdminExchange[]
 }) => {
   const { t } = useTranslation()
+
   const isInventoryManaged = item.variant?.manage_inventory
   const hasInventoryKit =
     isInventoryManaged && (item.variant?.inventory_items?.length || 0) > 1
+  const hasUnfulfilledItems = item.quantity - item.detail.fulfilled_quantity > 0
 
   return (
     <>
@@ -435,7 +432,7 @@ const Item = ({
             </div>
 
             <div className="overflow-visible">
-              {isInventoryManaged && (
+              {isInventoryManaged && hasUnfulfilledItems && (
                 <StatusBadge
                   color={reservation ? "green" : "orange"}
                   className="text-nowrap"
@@ -477,11 +474,13 @@ const Item = ({
   )
 }
 
-const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
-  const { reservations } = useReservationItems({
-    line_item_id: order.items.map((i) => i.id),
-  })
-
+const ItemBreakdown = ({
+  order,
+  reservations,
+}: {
+  order: AdminOrder
+  reservations?: AdminReservation[]
+}) => {
   const { claims = [] } = useClaims({
     order_id: order.id,
     fields: "*additional_items",
@@ -497,12 +496,15 @@ const ItemBreakdown = ({ order }: { order: AdminOrder }) => {
     fields: "*items,*items.reason",
   })
 
+  const reservationsMap = useMemo(
+    () => new Map((reservations || []).map((r) => [r.line_item_id, r])),
+    [reservations]
+  )
+
   return (
     <div>
       {order.items?.map((item) => {
-        const reservation = reservations
-          ? reservations.find((r) => r.line_item_id === item.id)
-          : null
+        const reservation = reservationsMap.get(item.id)
 
         return (
           <Item
@@ -573,9 +575,8 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
         )
         .map((sm, i) => {
           return (
-            <div>
+            <div key={sm.id}>
               <Cost
-                key={sm.id}
                 label={
                   sm.detail.return_id
                     ? t("fields.returnShipping")

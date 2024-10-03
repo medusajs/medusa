@@ -1,7 +1,7 @@
 /**
  * @schema RefundReasonResponse
  * type: object
- * description: SUMMARY
+ * description: The refund reason's details.
  * x-schemaName: RefundReasonResponse
  * required:
  *   - refund_reason

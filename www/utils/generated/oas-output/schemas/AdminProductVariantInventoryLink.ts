@@ -1,32 +1,32 @@
 /**
  * @schema AdminProductVariantInventoryLink
  * type: object
- * description: The product's ID.
+ * description: The details of an association between a product variant and an inventory item.
  * x-schemaName: AdminProductVariantInventoryLink
  * required:
- *   - productService
- *   - inventoryService
+ *   - Product
+ *   - Inventory
  * properties:
- *   productService:
+ *   Product:
  *     type: object
- *     description: The id's productservice.
+ *     description: The product variant's details.
  *     required:
  *       - variant_id
  *     properties:
  *       variant_id:
  *         type: string
  *         title: variant_id
- *         description: The productservice's variant id.
- *   inventoryService:
+ *         description: The ID of the product variant.
+ *   Inventory:
  *     type: object
- *     description: The id's inventoryservice.
+ *     description: The inventory item's details.
  *     required:
  *       - inventory_item_id
  *     properties:
  *       inventory_item_id:
  *         type: string
  *         title: inventory_item_id
- *         description: The inventoryservice's inventory item id.
+ *         description: The ID of the inventory item.
  * 
 */
 

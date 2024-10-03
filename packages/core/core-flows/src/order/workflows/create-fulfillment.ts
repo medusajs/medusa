@@ -6,8 +6,8 @@ import {
   OrderLineItemDTO,
   OrderWorkflow,
   ReservationItemDTO,
-} from "@medusajs/types"
-import { MathBN, MedusaError, Modules } from "@medusajs/utils"
+} from "@medusajs/framework/types"
+import { MathBN, MedusaError, Modules } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -16,7 +16,7 @@ import {
   createWorkflow,
   parallelize,
   transform,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"
@@ -26,6 +26,7 @@ import {
 } from "../../reservation"
 import { registerOrderFulfillmentStep } from "../steps"
 import {
+  throwIfItemsAreNotGroupedByShippingRequirement,
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderIsCancelled,
 } from "../utils/order-validation"
@@ -35,18 +36,16 @@ import {
  */
 export const createFulfillmentValidateOrder = createStep(
   "create-fulfillment-validate-order",
-  (
-    {
-      order,
-      inputItems,
-    }: {
-      order: OrderDTO
-      inputItems: OrderWorkflow.CreateOrderFulfillmentWorkflowInput["items"]
-    },
-    context
-  ) => {
+  ({
+    order,
+    inputItems,
+  }: {
+    order: OrderDTO
+    inputItems: OrderWorkflow.CreateOrderFulfillmentWorkflowInput["items"]
+  }) => {
     throwIfOrderIsCancelled({ order })
     throwIfItemsDoesNotExistsInOrder({ order, inputItems })
+    throwIfItemsAreNotGroupedByShippingRequirement({ order, inputItems })
   }
 )
 
@@ -91,16 +90,29 @@ function prepareFulfillmentData({
   reservations: ReservationItemDTO[]
   itemsList?: OrderLineItemDTO[]
 }) {
-  const inputItems = input.items
+  const fulfillableItems = input.items
   const orderItemsMap = new Map<string, Required<OrderDTO>["items"][0]>(
     (itemsList ?? order.items)!.map((i) => [i.id, i])
   )
+
   const reservationItemMap = new Map<string, ReservationItemDTO>(
     reservations.map((r) => [r.line_item_id as string, r])
   )
-  const fulfillmentItems = inputItems.map((i) => {
+
+  // Note: If any of the items require shipping, we enable fulfillment
+  // unless explicitly set to not require shipping by the item in the request
+  const someItemsRequireShipping = fulfillableItems.length
+    ? fulfillableItems.some((item) => {
+        const orderItem = orderItemsMap.get(item.id)!
+
+        return orderItem.requires_shipping
+      })
+    : true
+
+  const fulfillmentItems = fulfillableItems.map((i) => {
     const orderItem = orderItemsMap.get(i.id)!
     const reservation = reservationItemMap.get(i.id)!
+
     return {
       line_item_id: i.id,
       inventory_item_id: reservation?.inventory_item_id,
@@ -132,8 +144,10 @@ function prepareFulfillmentData({
       location_id: locationId,
       provider_id: shippingOption.provider_id,
       shipping_option_id: shippingOption.id,
+      order: order,
       data: shippingMethod.data,
       items: fulfillmentItems,
+      requires_shipping: someItemsRequireShipping,
       labels: input.labels ?? [],
       delivery_address: shippingAddress as any,
       packed_at: new Date(),

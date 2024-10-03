@@ -1,17 +1,10 @@
-import { Query, RoutesLoader, Tracer } from "@medusajs/framework"
-import { SpanStatusCode } from "@opentelemetry/api"
-import type { Instrumentation } from "@opentelemetry/instrumentation"
-import { PgInstrumentation } from "@opentelemetry/instrumentation-pg"
-import { Resource } from "@opentelemetry/resources"
-import { NodeSDK } from "@opentelemetry/sdk-node"
-import {
-  SimpleSpanProcessor,
-  type SpanExporter,
-} from "@opentelemetry/sdk-trace-node"
 import { snakeCase } from "lodash"
-
-import start from "../commands/start"
-import { TransactionOrchestrator } from "@medusajs/orchestration"
+import { Query } from "@medusajs/framework"
+import { ApiRoutesLoader } from "@medusajs/framework/http"
+import { Tracer } from "@medusajs/framework/telemetry"
+import type { SpanExporter } from "@opentelemetry/sdk-trace-node"
+import type { Instrumentation } from "@opentelemetry/instrumentation"
+import { TransactionOrchestrator } from "@medusajs/framework/orchestration"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -26,9 +19,11 @@ function shouldExcludeResource(resource: string) {
  * OpenTelemetry
  */
 export function instrumentHttpLayer() {
+  const startCommand = require("../commands/start")
   const HTTPTracer = new Tracer("@medusajs/http", "2.0.0")
+  const { SpanStatusCode } = require("@opentelemetry/api")
 
-  start.traceRequestHandler = async (requestHandler, req, res) => {
+  startCommand.traceRequestHandler = async (requestHandler, req, res) => {
     if (shouldExcludeResource(req.url!)) {
       return await requestHandler()
     }
@@ -60,15 +55,13 @@ export function instrumentHttpLayer() {
    * Instrumenting the route handler to report traces to
    * OpenTelemetry
    */
-  RoutesLoader.instrument.route((handler) => {
-    const traceName = `route: ${
-      handler.name ? snakeCase(handler.name) : `anonymous`
-    }`
-
+  ApiRoutesLoader.traceRoute = (handler) => {
     return async (req, res) => {
       if (shouldExcludeResource(req.originalUrl)) {
         return await handler(req, res)
       }
+
+      const traceName = `route: ${req.method} ${req.originalUrl}`
 
       await HTTPTracer.trace(traceName, async (span) => {
         try {
@@ -84,21 +77,21 @@ export function instrumentHttpLayer() {
         }
       })
     }
-  })
+  }
 
   /**
    * Instrumenting the middleware handler to report traces to
    * OpenTelemetry
    */
-  RoutesLoader.instrument.middleware((handler) => {
-    const traceName = `middleware: ${
-      handler.name ? snakeCase(handler.name) : `anonymous`
-    }`
-
+  ApiRoutesLoader.traceMiddleware = (handler) => {
     return async (req, res, next) => {
       if (shouldExcludeResource(req.originalUrl)) {
         return handler(req, res, next)
       }
+
+      const traceName = `middleware: ${
+        handler.name ? snakeCase(handler.name) : `anonymous`
+      }`
 
       await HTTPTracer.trace(traceName, async (span) => {
         return new Promise<void>((resolve, reject) => {
@@ -122,7 +115,7 @@ export function instrumentHttpLayer() {
         .catch(next)
         .then(next)
     }
-  })
+  }
 }
 
 /**
@@ -130,6 +123,7 @@ export function instrumentHttpLayer() {
  */
 export function instrumentRemoteQuery() {
   const QueryTracer = new Tracer("@medusajs/query", "2.0.0")
+  const { SpanStatusCode } = require("@opentelemetry/api")
 
   Query.instrument.graphQuery(async function (queryFn, queryOptions) {
     return await QueryTracer.trace(
@@ -208,7 +202,10 @@ export function instrumentRemoteQuery() {
  * Instrument the workflows and steps execution
  */
 export function instrumentWorkflows() {
-  const WorkflowsTracer = new Tracer("@medusajs/workflows-sdk", "2.0.0")
+  const WorkflowsTracer = new Tracer(
+    "@medusajs/framework/workflows-sdk",
+    "2.0.0"
+  )
 
   TransactionOrchestrator.traceTransaction = async (
     transactionResumeFn,
@@ -262,33 +259,41 @@ export function registerOtel(options: {
   exporter: SpanExporter
   instrument?: Partial<{
     http: boolean
-    remoteQuery: boolean
+    query: boolean
     workflows: boolean
+    db: boolean
   }>
   instrumentations?: Instrumentation[]
 }) {
+  const { Resource } = require("@opentelemetry/resources")
+  const { NodeSDK } = require("@opentelemetry/sdk-node")
+  const { SimpleSpanProcessor } = require("@opentelemetry/sdk-trace-node")
+
+  const instrument = options.instrument || {}
+  const instrumentations = options.instrumentations || []
+
+  if (instrument.db) {
+    const { PgInstrumentation } = require("@opentelemetry/instrumentation-pg")
+    instrumentations.push(new PgInstrumentation())
+  }
+  if (instrument.http) {
+    instrumentHttpLayer()
+  }
+  if (instrument.query) {
+    instrumentRemoteQuery()
+  }
+  if (instrument.workflows) {
+    instrumentWorkflows()
+  }
+
   const sdk = new NodeSDK({
     serviceName: options.serviceName,
     resource: new Resource({
       "service.name": options.serviceName,
     }),
     spanProcessor: new SimpleSpanProcessor(options.exporter),
-    instrumentations: [
-      new PgInstrumentation(),
-      ...(options.instrumentations || []),
-    ],
+    instrumentations: instrumentations,
   })
-
-  const instrument = options.instrument || {}
-  if (instrument.http) {
-    instrumentHttpLayer()
-  }
-  if (instrument.remoteQuery) {
-    instrumentRemoteQuery()
-  }
-  if (instrument.workflows) {
-    instrumentWorkflows()
-  }
 
   sdk.start()
   return sdk

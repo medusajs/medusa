@@ -1,8 +1,8 @@
-import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
+import { createWorkflow, WorkflowData } from "@medusajs/framework/workflows-sdk"
 
 import { deleteShippingProfilesStep } from "../steps"
 import { removeRemoteLinkStep } from "../../common"
-import { Modules } from "@medusajs/utils"
+import { Modules } from "@medusajs/framework/utils"
 
 export const deleteShippingProfileWorkflowId =
   "delete-shipping-profile-workflow"

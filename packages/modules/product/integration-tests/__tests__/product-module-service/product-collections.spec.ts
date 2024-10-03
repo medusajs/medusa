@@ -1,5 +1,5 @@
-import { IProductModuleService } from "@medusajs/types"
-import { Modules, ProductStatus } from "@medusajs/utils"
+import { IProductModuleService } from "@medusajs/framework/types"
+import { CommonEvents, Modules, ProductStatus } from "@medusajs/framework/utils"
 import { Product, ProductCollection } from "@models"
 import {
   MockEventBusService,
@@ -281,12 +281,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith(
             [
               {
-                name: "product-collection.deleted",
+                name: "Product.product-collection.deleted",
                 data: { id: collectionId },
                 metadata: {
-                  action: "",
-                  object: "",
-                  source: "",
+                  action: CommonEvents.DELETED,
+                  object: "product_collection",
+                  source: Modules.PRODUCT,
                 },
               },
             ],

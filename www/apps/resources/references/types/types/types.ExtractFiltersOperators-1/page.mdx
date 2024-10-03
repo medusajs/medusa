@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# ExtractFiltersOperators
+
+ **ExtractFiltersOperators**: &#123; [Key in keyof T]?: Key extends Exclusion[number] ? never : Key extends ExcludedProps ? never : T[Key] extends string \| number \| boolean \| Date ? T[Key] \| OperatorMap&#60;T[Key] \| T[Key][]&#62; : T[Key] extends (infer R)[] ? TypeOnly&#60;R&#62; extends Object ? RemoteQueryFilters&#60;Key & string, T, [Key & string, ...Exclusion], Depth[Lim]&#62; : R extends object ? CleanupObject&#60;R&#62; : never : T[Key] extends Object ? RemoteQueryFilters&#60;Key & string, T[Key], [Key & string, ...Exclusion], Depth[Lim]&#62; : T[Key] extends object ? CleanupObject&#60;T[Key]&#62; : never &#125;
+
+## Type Parameters
+
+<TypeList types={[{"name":"MaybeT","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"Lim","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"Exclusion","type":"`string`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"T","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="ExtractFiltersOperators"/>

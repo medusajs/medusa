@@ -2,6 +2,7 @@
 
 import clsx from "clsx"
 import { useActiveOnScroll, useSidebar } from "docs-ui"
+import { useRouter } from "next/navigation"
 import { useEffect, useRef } from "react"
 
 export type SectionProps = {
@@ -20,6 +21,7 @@ const Section = ({
     useDefaultIfNoActive: false,
   })
   const { setActivePath } = useSidebar()
+  const router = useRouter()
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -30,7 +32,9 @@ const Section = ({
 
   useEffect(() => {
     if (activeItemId.length) {
-      history.pushState({}, "", `#${activeItemId}`)
+      router.push(`#${activeItemId}`, {
+        scroll: false,
+      })
       setActivePath(activeItemId)
     }
   }, [activeItemId])

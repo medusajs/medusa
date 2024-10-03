@@ -1,10 +1,10 @@
-import { ServiceZoneDTO, ShippingOptionDTO } from "@medusajs/types"
+import { ServiceZoneDTO, ShippingOptionDTO } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
   Modules,
-} from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export type FulfillmentProviderValidationWorkflowInput = {
   id?: string
@@ -36,7 +36,6 @@ export const validateFulfillmentProvidersStep = createStep(
       },
       {
         select: ["id", "service_zone_id", "provider_id"],
-        take: null,
       }
     )
 

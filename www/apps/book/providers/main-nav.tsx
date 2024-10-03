@@ -17,7 +17,7 @@ type MainNavProviderProps = {
 }
 
 export const MainNavProvider = ({ children }: MainNavProviderProps) => {
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const pathname = usePathname()
   const navigationDropdownItems = useMemo(
     () =>
@@ -51,6 +51,9 @@ export const MainNavProvider = ({ children }: MainNavProviderProps) => {
       navItems={navigationDropdownItems}
       reportIssueLink={reportLink}
       editDate={editDate}
+      breadcrumbOptions={{
+        showCategories: false,
+      }}
     >
       {children}
     </UiMainNavProvider>

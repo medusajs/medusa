@@ -5,21 +5,25 @@ import {
   TransactionHandlerType,
   TransactionStep,
   WorkflowScheduler,
-} from "@medusajs/orchestration"
-import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
+} from "@medusajs/framework/orchestration"
+import {
+  ContainerLike,
+  Context,
+  MedusaContainer,
+} from "@medusajs/framework/types"
 import {
   InjectSharedContext,
+  isString,
   MedusaContext,
   MedusaError,
   TransactionState,
-  isString,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
-  MedusaWorkflow,
-  ReturnWorkflow,
-  resolveValue,
   type FlowRunOptions,
-} from "@medusajs/workflows-sdk"
+  MedusaWorkflow,
+  resolveValue,
+  ReturnWorkflow,
+} from "@medusajs/framework/workflows-sdk"
 import { ulid } from "ulid"
 import { InMemoryDistributedTransactionStorage } from "../utils"
 
@@ -166,17 +170,14 @@ export class WorkflowOrchestratorService {
       )
     }
 
-    const flow = exportedWorkflow(
-      (container as MedusaContainer) ?? this.container_
-    )
-
-    const ret = await flow.run({
+    const ret = await exportedWorkflow.run({
       input,
       throwOnError,
       logOnError,
       resultFrom,
       context,
       events,
+      container: container ?? this.container_,
     })
 
     const hasFinished = ret.transaction.hasFinished()
@@ -276,17 +277,13 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(
-      (container as MedusaContainer) ?? this.container_
-    )
-
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,
       transactionId,
       workflowId,
     })
 
-    const ret = await flow.registerStepSuccess({
+    const ret = await exportedWorkflow.registerStepSuccess({
       idempotencyKey: idempotencyKey_,
       context,
       resultFrom,
@@ -294,6 +291,7 @@ export class WorkflowOrchestratorService {
       logOnError,
       events,
       response: stepResponse,
+      container: container ?? this.container_,
     })
 
     if (ret.transaction.hasFinished()) {
@@ -343,17 +341,13 @@ export class WorkflowOrchestratorService {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    const flow = exportedWorkflow(
-      (container as MedusaContainer) ?? this.container_
-    )
-
     const events = this.buildWorkflowEvents({
       customEventHandlers: eventHandlers,
       transactionId,
       workflowId,
     })
 
-    const ret = await flow.registerStepFailure({
+    const ret = await exportedWorkflow.registerStepFailure({
       idempotencyKey: idempotencyKey_,
       context,
       resultFrom,
@@ -361,6 +355,7 @@ export class WorkflowOrchestratorService {
       logOnError,
       events,
       response: stepResponse,
+      container: container ?? this.container_,
     })
 
     if (ret.transaction.hasFinished()) {

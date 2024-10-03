@@ -3,7 +3,7 @@ get:
   summary: List Currencies
   description: >-
     Retrieve a list of currencies. The currencies can be filtered by fields such
-    as `id`. The currencies can also be sorted or paginated.
+    as `code`. The currencies can also be sorted or paginated.
   x-authenticated: false
   parameters:
     - name: expand
@@ -32,6 +32,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
     - name: offset
       in: query
       description: The number of items to skip when retrieving a list.
@@ -40,6 +42,8 @@ get:
         type: number
         title: offset
         description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -48,6 +52,8 @@ get:
         type: number
         title: limit
         description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
     - name: order
       in: query
       description: >-
@@ -63,12 +69,12 @@ get:
           with `-`.
     - name: q
       in: query
-      description: The currency's q.
+      description: Search term to filter the currency's searchable properties.
       required: false
       schema:
         type: string
         title: q
-        description: The currency's q.
+        description: Search term to filter the currency's searchable properties.
     - name: code
       in: query
       required: false
@@ -76,13 +82,13 @@ get:
         oneOf:
           - type: string
             title: code
-            description: The currency's code.
+            description: Filter by a currency code.
           - type: array
-            description: The currency's code.
+            description: Filter by currency codes.
             items:
               type: string
               title: code
-              description: The code's details.
+              description: A currency code.
     - name: $and
       in: query
       description: >-

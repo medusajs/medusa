@@ -2,19 +2,16 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
-  optionalNumericSerializer,
   Searchable,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   BeforeCreate,
-  Cascade,
   Collection,
   Entity,
   Filter,
   Index,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   OnInit,
   PrimaryKey,
   Property,

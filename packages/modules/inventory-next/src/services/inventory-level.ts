@@ -1,5 +1,5 @@
-import { Context } from "@medusajs/types"
-import { BigNumber, ModulesSdkUtils } from "@medusajs/utils"
+import { Context } from "@medusajs/framework/types"
+import { BigNumber, ModulesSdkUtils } from "@medusajs/framework/utils"
 
 import { InventoryLevelRepository } from "@repositories"
 import { InventoryLevel } from "../models/inventory-level"

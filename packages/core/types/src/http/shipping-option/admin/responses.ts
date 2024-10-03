@@ -12,4 +12,5 @@ export type AdminShippingOptionListResponse = PaginatedResponse<{
 export interface AdminShippingOptionDeleteResponse
   extends DeleteResponse<"shipping_option"> {}
 
-export type AdminUpdateShippingOptionRulesResponse = BatchResponse<AdminShippingOptionRule>
+export type AdminUpdateShippingOptionRulesResponse =
+  BatchResponse<AdminShippingOptionRule>

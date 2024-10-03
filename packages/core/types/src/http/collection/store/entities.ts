@@ -1,3 +1,6 @@
-import { BaseCollection, BaseCollectionListParams } from "../common"
+import { StoreProduct } from "../../product"
+import { BaseCollection } from "../common"
 
-export interface StoreCollection extends BaseCollection {}
+export interface StoreCollection extends Omit<BaseCollection, "products"> {
+  products?: StoreProduct[]
+}

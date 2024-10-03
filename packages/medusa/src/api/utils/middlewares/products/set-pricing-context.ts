@@ -1,8 +1,11 @@
-import { MedusaPricingContext } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaPricingContext } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 import { NextFunction } from "express"
-import { AuthenticatedMedusaRequest } from "../../../../types/routing"
-import { refetchEntities, refetchEntity } from "../../refetch-entity"
+import {
+  AuthenticatedMedusaRequest,
+  refetchEntities,
+  refetchEntity,
+} from "@medusajs/framework/http"
 
 export function setPricingContext() {
   return async (req: AuthenticatedMedusaRequest, _, next: NextFunction) => {

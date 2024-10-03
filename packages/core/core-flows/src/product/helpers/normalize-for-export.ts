@@ -1,10 +1,10 @@
 import {
-  RegionTypes,
   BigNumberInput,
   HttpTypes,
   PricingTypes,
-} from "@medusajs/types"
-import { MedusaError, upperCaseFirst } from "@medusajs/utils"
+  RegionTypes,
+} from "@medusajs/framework/types"
+import { MedusaError, upperCaseFirst } from "@medusajs/framework/utils"
 
 // We want to have one row per variant, so we need to normalize the data
 export const normalizeForExport = (
@@ -24,7 +24,7 @@ export const normalizeForExport = (
     variants.forEach((v) => {
       const toPush = {
         ...normalizeProductForExport(product),
-        ...normalizeVariantForExport(v, regionsMap),
+        ...normalizeVariantForExport(v, regionsMap, product),
       } as any
       delete toPush["Product Variants"]
 
@@ -101,7 +101,8 @@ const normalizeVariantForExport = (
   variant: HttpTypes.AdminProductVariant & {
     price_set?: PricingTypes.PriceSetDTO
   },
-  regionsMap: Map<string, RegionTypes.RegionDTO>
+  regionsMap: Map<string, RegionTypes.RegionDTO>,
+  product: HttpTypes.AdminProduct
 ): object => {
   const flattenedPrices = variant.price_set?.prices
     ?.sort((a, b) => b.currency_code!.localeCompare(a.currency_code!))
@@ -133,9 +134,14 @@ const normalizeVariantForExport = (
       return acc
     }, {})
 
+  const options = product.options ?? []
+
   const flattenedOptions = variant.options?.reduce(
     (acc: Record<string, string>, option, idx) => {
-      acc[beautifyKey(`variant_option_${idx + 1}_name`)] = option.option?.title!
+      const prodOptions = options.find(
+        (prodOption) => prodOption.id === option.option_id
+      )
+      acc[beautifyKey(`variant_option_${idx + 1}_name`)] = prodOptions?.title!
       acc[beautifyKey(`variant_option_${idx + 1}_value`)] = option.value
       return acc
     },

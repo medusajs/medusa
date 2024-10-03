@@ -2,5 +2,10 @@
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
     "../../../../packages/medusa/tsconfig.json"
+  ],
+  "include": ["../../../../packages/medusa/src"],
+  "exclude": [
+    "../../../../packages/medusa/dist", 
+    "../../../../packages/medusa/node_modules"
   ]
 }
