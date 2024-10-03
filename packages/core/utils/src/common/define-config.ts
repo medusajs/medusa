@@ -41,7 +41,7 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
    * with the user defined config
    */
   const admin: ConfigModule["admin"] = {
-    backendUrl: DEFAULT_ADMIN_URL,
+    backendUrl: process.env.MEDUSA_BACKEND_URL || DEFAULT_ADMIN_URL,
     ...config.admin,
   }
 
