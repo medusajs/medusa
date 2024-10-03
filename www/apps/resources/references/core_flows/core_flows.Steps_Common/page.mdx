@@ -52,7 +52,7 @@ Learn more in the [Remote Link documentation.](https://docs.medusajs.com/v2/adva
 
 ```ts
 import { createWorkflow } from "@medusajs/framework/workflows-sdk"
-import { createRemoteLinkStep } from "@medusajs/core-flows"
+import { createRemoteLinkStep } from "@medusajs/medusa/core-flows"
 import { Modules } from "@medusajs/framework/utils"
 
 const helloWorldWorkflow = createWorkflow("hello-world", () => {
@@ -93,7 +93,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import {
   dismissRemoteLinkStep
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import {
   Modules
 } from "@medusajs/framework/utils"
@@ -135,7 +135,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import {
   emitEventStep
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 
 const helloWorldWorkflow = createWorkflow(
   "hello-world",
@@ -165,12 +165,12 @@ Learn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advan
 ### Example
 
 ```ts
-import { 
+import {
   createWorkflow
 } from "@medusajs/framework/workflows-sdk"
 import {
   removeRemoteLinkStep
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import {
   Modules
 } from "@medusajs/framework/utils"
@@ -225,7 +225,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import {
   useRemoteQueryStep
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 
 const helloWorldWorkflow = createWorkflow(
   "hello-world",

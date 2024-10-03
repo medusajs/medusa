@@ -4,26 +4,26 @@
  * description: The item's details.
  * x-schemaName: StoreCartLineItem
  * required:
- *   - id
- *   - title
- *   - quantity
- *   - requires_shipping
- *   - is_discountable
- *   - is_tax_inclusive
- *   - unit_price
  *   - cart
- *   - cart_id
- *   - original_total
- *   - original_subtotal
- *   - original_tax_total
+ *   - title
+ *   - id
  *   - item_total
  *   - item_subtotal
  *   - item_tax_total
+ *   - original_total
+ *   - original_subtotal
+ *   - original_tax_total
  *   - total
  *   - subtotal
  *   - tax_total
  *   - discount_total
  *   - discount_tax_total
+ *   - requires_shipping
+ *   - is_discountable
+ *   - is_tax_inclusive
+ *   - unit_price
+ *   - quantity
+ *   - cart_id
  * properties:
  *   id:
  *     type: string
@@ -76,7 +76,7 @@
  *     title: product_handle
  *     description: The item's product handle.
  *   variant:
- *     $ref: "#/components/schemas/BaseProductVariant"
+ *     $ref: "#/components/schemas/StoreProductVariant"
  *   variant_id:
  *     type: string
  *     title: variant_id
@@ -122,12 +122,154 @@
  *     type: array
  *     description: The item's tax lines.
  *     items:
- *       $ref: "#/components/schemas/BaseLineItemTaxLine"
+ *       allOf:
+ *         - type: object
+ *           description: The tax line's details.
+ *           x-schemaName: BaseLineItemTaxLine
+ *           required:
+ *             - item
+ *             - item_id
+ *             - total
+ *             - subtotal
+ *             - id
+ *             - code
+ *             - rate
+ *             - created_at
+ *             - updated_at
+ *           properties:
+ *             item:
+ *               type: object
+ *               title: item
+ *               description: The details of the item that the tax line belongs to.
+ *             item_id:
+ *               type: string
+ *               title: item_id
+ *               description: The ID of the line item this tax line belongs to.
+ *             total:
+ *               type: number
+ *               title: total
+ *               description: The item's total including taxes and promotions.
+ *             subtotal:
+ *               type: number
+ *               title: subtotal
+ *               description: The item's total excluding taxes, including promotions.
+ *             id:
+ *               type: string
+ *               title: id
+ *               description: The tax line's ID.
+ *             description:
+ *               type: string
+ *               title: description
+ *               description: The tax line's description.
+ *             tax_rate_id:
+ *               type: string
+ *               title: tax_rate_id
+ *               description: The ID of the applied tax rate.
+ *             code:
+ *               type: string
+ *               title: code
+ *               description: The code that the tax rate is identified by.
+ *             rate:
+ *               type: number
+ *               title: rate
+ *               description: The charged rate.
+ *             provider_id:
+ *               type: string
+ *               title: provider_id
+ *               description: The ID of the tax provider used to calculate the tax line.
+ *             created_at:
+ *               type: string
+ *               format: date-time
+ *               title: created_at
+ *               description: The date the tax line was created.
+ *             updated_at:
+ *               type: string
+ *               format: date-time
+ *               title: updated_at
+ *               description: The date the tax line was updated.
+ *         - type: object
+ *           description: The tax line's details.
+ *           required:
+ *             - item
+ *           properties:
+ *             item:
+ *               type: object
+ *               title: item
+ *               description: The details of the item that the tax line belongs to.
+ *       description: The tax line's details
  *   adjustments:
  *     type: array
  *     description: The item's adjustments.
  *     items:
- *       $ref: "#/components/schemas/BaseLineItemAdjustment"
+ *       allOf:
+ *         - type: object
+ *           description: The adjustment's details.
+ *           x-schemaName: BaseLineItemAdjustment
+ *           required:
+ *             - item
+ *             - item_id
+ *             - id
+ *             - amount
+ *             - cart_id
+ *             - created_at
+ *             - updated_at
+ *           properties:
+ *             item:
+ *               type: object
+ *               title: item
+ *               description: The details of the item that the adjustment belongs to.
+ *             item_id:
+ *               type: string
+ *               title: item_id
+ *               description: The ID of the item that the adjustment belongs to.
+ *             id:
+ *               type: string
+ *               title: id
+ *               description: The adjustment's ID.
+ *             code:
+ *               type: string
+ *               title: code
+ *               description: The adjustment's code.
+ *             amount:
+ *               type: number
+ *               title: amount
+ *               description: The adjustment's amount.
+ *             cart_id:
+ *               type: string
+ *               title: cart_id
+ *               description: The ID of the associated cart.
+ *             description:
+ *               type: string
+ *               title: description
+ *               description: The adjustment's description.
+ *             promotion_id:
+ *               type: string
+ *               title: promotion_id
+ *               description: The ID of the applied promotion.
+ *             provider_id:
+ *               type: string
+ *               title: provider_id
+ *               description: The adjustment's provider ID.
+ *             created_at:
+ *               type: string
+ *               format: date-time
+ *               title: created_at
+ *               description: The date the adjustment was created.
+ *             updated_at:
+ *               type: string
+ *               format: date-time
+ *               title: updated_at
+ *               description: The date the adjustment was updated.
+ *         - type: object
+ *           description: The adjustment's details.
+ *           required:
+ *             - item
+ *           properties:
+ *             item:
+ *               type: object
+ *               title: item
+ *               description: The details of the item that the adjustment belongs to.
+ *       description: The adjustment's details.
  *   cart:
  *     $ref: "#/components/schemas/StoreCart"
  *   cart_id:

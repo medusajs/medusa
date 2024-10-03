@@ -22,7 +22,7 @@ export const ChildDocs = ({
   hideTitle = false,
   childLevel = 1,
 }: ChildDocsProps) => {
-  const { currentItems, getActiveItem } = useSidebar()
+  const { currentItems, activeItem } = useSidebar()
   const filterType = useMemo(() => {
     return showItems !== undefined
       ? "show"
@@ -75,7 +75,7 @@ export const ChildDocs = ({
           ? Object.assign({}, currentItems)
           : undefined
         : {
-            default: [...(getActiveItem()?.children || [])],
+            default: [...(activeItem?.children || [])],
           }
     if (filterType === "all" || !targetItems) {
       return targetItems
@@ -85,7 +85,7 @@ export const ChildDocs = ({
       ...targetItems,
       default: filterItems(targetItems.default),
     }
-  }, [currentItems, type, getActiveItem, filterItems])
+  }, [currentItems, type, activeItem, filterItems])
 
   const filterNonInteractiveItems = (
     items: SidebarItem[] | undefined

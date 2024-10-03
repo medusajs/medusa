@@ -10,7 +10,7 @@
  *     type: array
  *     description: An order's changes.
  *     items:
- *       $ref: "#/components/schemas/BaseOrderChange"
+ *       $ref: "#/components/schemas/AdminOrderChange"
  * 
 */
 

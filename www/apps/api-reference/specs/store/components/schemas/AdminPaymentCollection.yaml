@@ -2,12 +2,12 @@ type: object
 description: The payment collection's details.
 x-schemaName: AdminPaymentCollection
 required:
+  - payment_providers
   - id
   - currency_code
   - region_id
   - amount
   - status
-  - payment_providers
 properties:
   id:
     type: string
@@ -70,14 +70,14 @@ properties:
       The payment provider used to process the collection's payments and
       sessions.
     items:
-      $ref: ./BasePaymentProvider.yaml
+      $ref: ./AdminPaymentProvider.yaml
   payment_sessions:
     type: array
     description: The payment collection's payment sessions.
     items:
-      $ref: ./BasePaymentSession.yaml
+      $ref: ./AdminPaymentSession.yaml
   payments:
     type: array
     description: The payment collection's payments.
     items:
-      $ref: ./BasePayment.yaml
+      $ref: ./AdminPayment.yaml

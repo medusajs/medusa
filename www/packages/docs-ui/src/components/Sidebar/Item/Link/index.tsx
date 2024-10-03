@@ -76,6 +76,12 @@ export const SidebarItemLink = ({
     newTopCalculator,
   ])
 
+  useEffect(() => {
+    if (active && isMobile) {
+      setSidebarOpen(false)
+    }
+  }, [active, isMobile])
+
   const hasChildren = useMemo(() => {
     return !item.isChildSidebar && (item.children?.length || 0) > 0
   }, [item.children])
@@ -108,11 +114,6 @@ export const SidebarItemLink = ({
             "flex justify-between items-center gap-[6px]",
             className
           )}
-          onClick={() => {
-            if (isMobile) {
-              setSidebarOpen(false)
-            }
-          }}
           {...item.linkProps}
         >
           <span

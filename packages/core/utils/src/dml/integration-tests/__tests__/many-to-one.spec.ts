@@ -104,7 +104,7 @@ describe("manyToOne - belongTo", () => {
       }
     )
 
-    expect(mikroOrmSerializer<InstanceType<typeof Team>>(team)).toEqual({
+    expect(await mikroOrmSerializer<InstanceType<typeof Team>>(team)).toEqual({
       id: team1.id,
       name: "Team 1",
       created_at: expect.any(Date),
@@ -130,7 +130,7 @@ describe("manyToOne - belongTo", () => {
       }
     )
 
-    expect(mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
+    expect(await mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
       id: user1.id,
       username: "User 1",
       created_at: expect.any(Date),
