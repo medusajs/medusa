@@ -482,6 +482,7 @@ ${serviceBObj.module}: {
       extends: [
         {
           serviceName: serviceAObj.module,
+          entity: serviceAObj.entity,
           fieldAlias: buildFieldAlias(readOnlyLinkOptions?.shortcut),
           relationship: {
             serviceName: serviceBObj.module,

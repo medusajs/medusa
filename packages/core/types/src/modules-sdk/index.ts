@@ -22,10 +22,10 @@ export type Constructor<T> = new (...args: any[]) => T | (new () => T)
 export * from "../common/medusa-container"
 export * from "./medusa-internal-service"
 export * from "./module-provider"
+export * from "./query-filter"
 export * from "./remote-query"
 export * from "./remote-query-entry-points"
 export * from "./to-remote-query"
-export * from "./query-filter"
 
 export type LogLevel =
   | "query"
@@ -199,6 +199,7 @@ export type ModuleJoinerConfig = Omit<
   relationships?: ModuleJoinerRelationship[]
   extends?: {
     serviceName: string
+    entity?: string
     fieldAlias?: Record<
       string,
       | string

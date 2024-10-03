@@ -173,13 +173,20 @@ export class RemoteJoiner {
   }
 
   private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
-    const expandedRelationships: Map<
-      string,
+    const expandedRelationships: WeakMap<
+      {
+        serviceName: string
+        entity?: string
+      },
       {
         fieldAlias
         relationships: Map<string, JoinerRelationship | JoinerRelationship[]>
       }
-    > = new Map()
+    > = new WeakMap()
+    const expandedRelationshipsSet = new Set<{
+      serviceName: string
+      entity?: string
+    }>()
 
     for (const service of serviceConfigs) {
       const service_ = service as Omit<ModuleJoinerConfig, "relationships"> & {
@@ -283,14 +290,20 @@ export class RemoteJoiner {
       }
 
       for (const extend of service_.extends) {
-        if (!expandedRelationships.has(extend.serviceName)) {
-          expandedRelationships.set(extend.serviceName, {
+        const extendKey = {
+          serviceName: extend.serviceName,
+          entity: extend.entity,
+        }
+
+        if (!expandedRelationships.has(extendKey)) {
+          expandedRelationships.set(extendKey, {
             fieldAlias: {},
             relationships: new Map(),
           })
+          expandedRelationshipsSet.add(extendKey)
         }
 
-        const service_ = expandedRelationships.get(extend.serviceName)!
+        const service_ = expandedRelationships.get(extendKey)!
 
         const aliasName = extend.relationship.alias
         const rel = extend.relationship
@@ -309,15 +322,27 @@ export class RemoteJoiner {
       }
     }
 
-    for (const [
-      serviceName,
-      { fieldAlias, relationships },
-    ] of expandedRelationships) {
-      if (!this.serviceConfigCache.has(serviceName)) {
+    for (const expandRelKey of expandedRelationshipsSet) {
+      const { serviceName, entity } = expandRelKey
+
+      const { fieldAlias, relationships } =
+        expandedRelationships.get(expandRelKey)!
+
+      const service_ = this.getServiceConfig({
+        serviceName,
+        entity,
+      })
+
+      if (!service_) {
+        if (entity) {
+          throw new Error(
+            `Entity "${entity}" was not found for service "${serviceName}"`
+          )
+        }
+
         throw new Error(`Service "${serviceName}" was not found`)
       }
 
-      const service_ = this.serviceConfigCache.get(serviceName)!
       relationships.forEach((relationship, alias) => {
         const rel = relationship as JoinerRelationship
         if (service_.relationships?.has(alias)) {
