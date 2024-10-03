@@ -5061,6 +5061,7 @@ __metadata:
   resolution: "@medusajs/api-key@workspace:packages/modules/api-key"
   dependencies:
     "@medusajs/framework": ^0.0.1
+    "@mikro-orm/cli": 5.9.7
     "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     jest: ^29.7.0
@@ -5481,7 +5482,7 @@ __metadata:
     vite:
       optional: true
   bin:
-    medusa-db: ./dist/mikro-orm-cli/bin.js
+    medusa-mikro-orm: ./dist/mikro-orm-cli/bin.js
   languageName: unknown
   linkType: soft
 
