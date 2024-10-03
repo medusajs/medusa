@@ -13,7 +13,6 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.9",
     "boxen": "^5",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",

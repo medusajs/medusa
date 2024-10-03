@@ -15,7 +15,7 @@ and have conditions.
 An example of a simple index:
 
 ```ts
-import { model } from "@medusajs/framework/utils"
+import { model } from "@medusajs/utils"
 
 const MyCustom = model.define("my_custom", {
   id: model.id(),
@@ -33,7 +33,7 @@ export default MyCustom
 To add a condition on the index, use the `where` option:
 
 ```ts
-import { model } from "@medusajs/framework/utils"
+import { model } from "@medusajs/utils"
 
 const MyCustom = model.define("my_custom", {
   id: model.id(),
@@ -54,7 +54,7 @@ export default MyCustom
 The condition can also be a negation. For example:
 
 ```ts
-import { model } from "@medusajs/framework/utils"
+import { model } from "@medusajs/utils"
 
 const MyCustom = model.define("my_custom", {
   id: model.id(),

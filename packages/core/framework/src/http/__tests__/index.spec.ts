@@ -6,9 +6,19 @@ import {
   storeGlobalMiddlewareMock,
 } from "../__fixtures__/mocks"
 import { createServer } from "../__fixtures__/server"
-import { RoutesLoader } from "../index"
+import { MedusaNextFunction, RoutesLoader } from "../index"
 
 jest.setTimeout(30000)
+
+jest.mock("../middlewares/ensure-publishable-api-key", () => {
+  return {
+    ensurePublishableApiKeyMiddleware: async (
+      req: any,
+      res: any,
+      next: MedusaNextFunction
+    ) => next(),
+  }
+})
 
 describe("RoutesLoader", function () {
   afterEach(function () {

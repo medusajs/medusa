@@ -7,7 +7,7 @@ import Link from "next/link"
 import { SidebarItemLink } from "types"
 
 export const MainNavBreadcrumbs = () => {
-  const { currentItems, getActiveItem } = useSidebar()
+  const { currentItems, activeItem } = useSidebar()
   const {
     activeItem: mainNavActiveItem,
     breadcrumbOptions: { showCategories },
@@ -63,7 +63,6 @@ export const MainNavBreadcrumbs = () => {
       )
     }
 
-    const activeItem = getActiveItem()
     if (activeItem && !mainNavActiveItem?.path.endsWith(activeItem.path)) {
       if (
         activeItem.parentItem &&
@@ -83,7 +82,7 @@ export const MainNavBreadcrumbs = () => {
     }
 
     return tempBreadcrumbItems
-  }, [currentItems, getActiveItem])
+  }, [currentItems, activeItem])
 
   return (
     <div

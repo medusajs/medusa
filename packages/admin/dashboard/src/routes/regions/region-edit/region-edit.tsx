@@ -50,6 +50,7 @@ export const RegionEdit = () => {
   )
   const { payment_providers: paymentProviders = [] } = usePaymentProviders({
     limit: 999,
+    is_enabled: true,
   })
 
   if (isRegionError) {
