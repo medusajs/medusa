@@ -15,8 +15,8 @@ import {
   prepareAdjustmentsFromPromotionActionsStep,
   removeLineItemAdjustmentsStep,
   removeShippingMethodAdjustmentsStep,
-  updateCartPromotionsStep,
 } from "../steps"
+import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
 import { CartDTO } from "@medusajs/framework/types"
 

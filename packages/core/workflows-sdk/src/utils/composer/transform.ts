@@ -1,10 +1,15 @@
 import { resolveValue } from "./helpers"
-import { StepExecutionContext, WorkflowData, WrapWorkflowData } from "./type"
+import {
+  StepExecutionContext,
+  UnwrapWorkflowData,
+  WorkflowData,
+  WrapWorkflowData,
+} from "./type"
 import { proxify } from "./helpers/proxy"
 import { OrchestrationUtils } from "@medusajs/utils"
 
 type Func<T, U> = (
-  input: T,
+  input: UnwrapWorkflowData<T>,
   context: StepExecutionContext
 ) => WrapWorkflowData<U> | Promise<WrapWorkflowData<U>>
 
