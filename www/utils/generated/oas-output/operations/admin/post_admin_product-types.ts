@@ -33,7 +33,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminCreateProduct"
+ *         $ref: "#/components/schemas/AdminCreateProductType"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

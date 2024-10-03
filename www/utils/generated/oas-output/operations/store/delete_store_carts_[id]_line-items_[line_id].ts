@@ -71,7 +71,7 @@
  *                   type: string
  *                   title: object
  *                   description: The name of the deleted object.
- *                   default: "line-item"
+ *                   default: line-item
  *                 deleted:
  *                   type: boolean
  *                   title: deleted

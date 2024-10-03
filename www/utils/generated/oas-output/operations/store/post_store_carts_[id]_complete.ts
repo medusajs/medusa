@@ -96,8 +96,8 @@
  *                       type: string
  *                       title: type
  *                       description: >
- *                         The error's type. Can be a [MedusaError type](https://docs.medusajs.com/v2/advanced-development/api-routes/errors#medusaerror-types)
- *                         or `payment_authorization_error` or `payment_requires_more_error` for payment-related errors.
+ *                         The error's type. Can be a [MedusaError type](https://docs.medusajs.com/v2/advanced-development/api-routes/errors#medusaerror-types) or `payment_authorization_error` or
+ *                         `payment_requires_more_error` for payment-related errors.
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

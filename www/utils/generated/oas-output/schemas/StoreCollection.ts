@@ -4,13 +4,13 @@
  * description: The collection's details.
  * x-schemaName: StoreCollection
  * required:
- *   - id
  *   - title
+ *   - metadata
+ *   - id
  *   - handle
  *   - created_at
  *   - updated_at
  *   - deleted_at
- *   - metadata
  * properties:
  *   id:
  *     type: string
