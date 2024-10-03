@@ -1,19 +1,12 @@
-import {
-  BaseEntity,
-  QueryConfig,
-  RequestQueryFields,
-} from "@medusajs/framework/types"
-import { NextFunction } from "express"
-import { omit } from "lodash"
 import { z } from "zod"
-import { MedusaRequest, MedusaResponse } from "../../types/routing"
-import { removeUndefinedProperties } from "../../utils"
-import {
-  prepareListQuery,
-  prepareRetrieveQuery,
-} from "../../utils/get-query-config"
-import { zodValidator } from "./zod-helper"
-import { MedusaError } from "@medusajs/framework/utils"
+import { omit } from "lodash"
+import { NextFunction } from "express"
+import { removeUndefinedProperties, MedusaError } from "@medusajs/utils"
+import { BaseEntity, QueryConfig, RequestQueryFields } from "@medusajs/types"
+
+import { zodValidator } from "../../zod/zod-helpers"
+import { MedusaRequest, MedusaResponse } from "../types"
+import { prepareListQuery, prepareRetrieveQuery } from "./get-query-config"
 
 /**
  * Normalize an input query, especially from array like query params to an array type

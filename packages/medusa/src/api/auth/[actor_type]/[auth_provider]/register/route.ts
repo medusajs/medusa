@@ -8,7 +8,7 @@ import {
   MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { generateJwtTokenForAuthIdentity } from "../../../utils/generate-jwt-token"
 
 export const POST = async (req: MedusaRequest, res: MedusaResponse) => {

@@ -1,13 +1,12 @@
-import { RequestQueryFields } from "@medusajs/framework/types"
+import { pick } from "lodash"
+import { RequestQueryFields, FindConfig, QueryConfig } from "@medusajs/types"
 import {
-  getSetDifference,
   isDefined,
   isPresent,
   MedusaError,
+  getSetDifference,
   stringToSelectRelationObject,
-} from "@medusajs/framework/utils"
-import { pick } from "lodash"
-import { FindConfig, QueryConfig } from "../types/common"
+} from "@medusajs/utils"
 
 export function pickByConfig<TModel>(
   obj: TModel | TModel[],

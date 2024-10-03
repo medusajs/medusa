@@ -1,2 +1,1 @@
-export { default as RegionModuleService } from "./region-module";
-
+export { default as RegionModuleService } from "./region-module"

@@ -1,7 +1,7 @@
-import { NextFunction } from "express"
 import { z } from "zod"
-import { MedusaRequest, MedusaResponse } from "../../types/routing"
-import { zodValidator } from "./zod-helper"
+import { NextFunction } from "express"
+import { MedusaRequest, MedusaResponse } from "../types"
+import { zodValidator } from "../../zod/zod-helpers"
 
 export function validateAndTransformBody(
   zodSchema:

@@ -2,12 +2,16 @@ import {
   HttpTypes,
   ItemTaxLineDTO,
   MedusaContainer,
-  TaxCalculationContext,
   TaxableItemDTO,
+  TaxCalculationContext,
 } from "@medusajs/framework/types"
-import { Modules, calculateAmountsWithTax } from "@medusajs/framework/utils"
-import { MedusaRequest } from "../../../types/routing"
-import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+import {
+  MedusaRequest,
+  refetchEntities,
+  refetchEntity,
+} from "@medusajs/framework/http"
+import { calculateAmountsWithTax, Modules } from "@medusajs/framework/utils"
+import { TaxModuleService } from "@medusajs/tax/dist/services"
 
 export type RequestWithContext<T> = MedusaRequest<T> & {
   taxContext: {
@@ -64,7 +68,7 @@ export const wrapProductsWithTaxPrices = async <T>(
     return
   }
 
-  const taxService = req.scope.resolve(Modules.TAX)
+  const taxService = req.scope.resolve<TaxModuleService>(Modules.TAX)
 
   const taxRates = (await taxService.getTaxLines(
     products.map(asTaxItem).flat(),

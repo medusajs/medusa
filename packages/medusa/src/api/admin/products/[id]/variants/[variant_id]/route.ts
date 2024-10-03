@@ -5,10 +5,10 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "@medusajs/framework/http"
 
 import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
-import { refetchEntity } from "../../../../../utils/refetch-entity"
+import { refetchEntity } from "@medusajs/framework/http"
 import {
   remapKeysForProduct,
   remapKeysForVariant,

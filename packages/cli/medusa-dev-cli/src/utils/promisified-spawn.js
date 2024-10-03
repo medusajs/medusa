@@ -5,7 +5,7 @@ const defaultSpawnArgs = {
   stdio: `inherit`,
 }
 
-exports.setDefaultSpawnStdio = stdio => {
+exports.setDefaultSpawnStdio = (stdio) => {
   defaultSpawnArgs.stdio = stdio
 }
 

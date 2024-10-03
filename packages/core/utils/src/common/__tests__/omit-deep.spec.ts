@@ -30,7 +30,7 @@ describe("omitDeep", () => {
         },
       ],
     }
-    
+
     const output = {
       id: 1,
       address: {
@@ -51,9 +51,9 @@ describe("omitDeep", () => {
         },
       ],
     }
-    
-    expect(
-      omitDeep(input, ["createdAt", "updatedAt", "__typename"])
-    ).toEqual(output)
+
+    expect(omitDeep(input, ["createdAt", "updatedAt", "__typename"])).toEqual(
+      output
+    )
   })
 })
