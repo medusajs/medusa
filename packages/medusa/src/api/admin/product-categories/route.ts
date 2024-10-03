@@ -3,8 +3,8 @@ import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
-import { refetchEntities } from "../../utils/refetch-entity"
+  refetchEntities,
+} from "@medusajs/framework/http"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminProductCategoryListParams>,

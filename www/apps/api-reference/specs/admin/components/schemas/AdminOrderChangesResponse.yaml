@@ -8,4 +8,4 @@ properties:
     type: array
     description: An order's changes.
     items:
-      $ref: ./BaseOrderChange.yaml
+      $ref: ./AdminOrderChange.yaml

@@ -1,4 +1,4 @@
-import { StoreShippingOption } from ".";
+import { StoreShippingOption } from "."
 
 export interface StoreShippingOptionListResponse {
   shipping_options: StoreShippingOption[]

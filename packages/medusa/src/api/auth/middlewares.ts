@@ -1,5 +1,8 @@
-import { authenticate, MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformBody } from "../utils/validate-body"
+import {
+  authenticate,
+  MiddlewareRoute,
+  validateAndTransformBody,
+} from "@medusajs/framework/http"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
 import { validateToken } from "./utils/validate-token"
 import { ResetPasswordRequest } from "./validators"

@@ -1,4 +1,3 @@
-import { Query } from "@medusajs/types"
 import {
   ApiKeyType,
   ContainerRegistrationKeys,
@@ -31,7 +30,7 @@ export async function ensurePublishableApiKeyMiddleware(
   }
 
   let apiKey
-  const query: Query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   try {
     const { data } = await query.graph(

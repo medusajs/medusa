@@ -6,6 +6,7 @@
  * required:
  *   - id
  *   - item_id
+ *   - item
  *   - quantity
  *   - fulfilled_quantity
  *   - delivered_quantity
@@ -27,7 +28,7 @@
  *     title: id
  *     description: the ID of the associated line item.
  *   item:
- *     $ref: "#/components/schemas/AdminOrderLineItem"
+ *     $ref: "#/components/schemas/BaseOrderLineItem"
  *   quantity:
  *     type: number
  *     title: quantity
@@ -74,5 +75,6 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the detail was updated.
+ * 
 */
 

@@ -1,7 +1,7 @@
 export type FulfillmentOption = {
   /**
    * The option's ID.
-   * 
+   *
    * @example express
    */
   id: string

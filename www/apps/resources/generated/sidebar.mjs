@@ -8635,14 +8635,6 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "type": "link",
-                "path": "/troubleshooting/pnpm-errors",
-                "title": "pnpm Errors",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "type": "link",
                 "path": "/troubleshooting/general-errors",
                 "title": "General Errors",
                 "children": []
@@ -8669,6 +8661,14 @@ export const generatedSidebar = [
                 "type": "link",
                 "path": "/troubleshooting/database-errors",
                 "title": "Database Errors",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "path": "/troubleshooting/dist-imports",
+                "title": "Importing from /dist",
                 "children": []
               }
             ]
@@ -9684,14 +9684,6 @@ export const generatedSidebar = [
                     "type": "link",
                     "path": "/references/medusa-workflows/steps/retrieveCartStep",
                     "title": "retrieveCartStep",
-                    "children": []
-                  },
-                  {
-                    "loaded": true,
-                    "isPathHref": true,
-                    "type": "link",
-                    "path": "/references/medusa-workflows/steps/retrieveCartWithLinksStep",
-                    "title": "retrieveCartWithLinksStep",
                     "children": []
                   },
                   {

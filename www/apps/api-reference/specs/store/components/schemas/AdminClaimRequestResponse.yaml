@@ -11,6 +11,6 @@ properties:
   return:
     $ref: ./AdminReturn.yaml
   order_preview:
-    $ref: ./OrderPreview.yaml
+    $ref: ./AdminOrderPreview.yaml
   claim:
     $ref: ./AdminClaim.yaml

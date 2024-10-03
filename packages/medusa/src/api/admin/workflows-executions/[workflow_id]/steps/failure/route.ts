@@ -1,12 +1,15 @@
-import { TransactionHandlerType, isDefined } from "@medusajs/framework/utils"
+import {
+  isDefined,
+  Modules,
+  TransactionHandlerType,
+} from "@medusajs/framework/utils"
 import { StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../types/routing"
+} from "@medusajs/framework/http"
 
 import { IWorkflowEngineService } from "@medusajs/framework/types"
-import { Modules } from "@medusajs/framework/utils"
 import { AdminCreateWorkflowsAsyncResponseType } from "../../../validators"
 
 export const POST = async (

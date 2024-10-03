@@ -7,10 +7,8 @@ required:
   - exchange
 properties:
   return:
-    description: The associated return's details.
     $ref: ./AdminReturn.yaml
   order_preview:
-    description: A preview of the order once the exchange is applied.
-    $ref: ./OrderPreview.yaml
+    $ref: ./AdminOrderPreview.yaml
   exchange:
     $ref: ./AdminExchange.yaml

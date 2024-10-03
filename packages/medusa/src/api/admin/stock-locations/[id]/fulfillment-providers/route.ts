@@ -5,7 +5,7 @@ import { Modules } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchStockLocation } from "../../helpers"
 
 const buildLinks = (id, fulfillmentProviderIds: string[]) => {

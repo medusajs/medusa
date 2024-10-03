@@ -6,6 +6,7 @@
  * required:
  *   - name
  *   - tax_region_id
+ *   - code
  * properties:
  *   name:
  *     type: string
