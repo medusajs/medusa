@@ -35,20 +35,17 @@ const ResetPasswordSchema = z
   })
 
 const ResetPasswordTokenSchema = z.object({
-  id: z.string(),
-  jti: z.string(),
+  entity_id: z.string(),
+  provider: z.string(),
   exp: z.number(),
   iat: z.number(),
 })
 
 type DecodedResetPasswordToken = {
-  id: string
-  jti: any
-  exp: string
-  iat: number
-
   entity_id: string // -> email in here
   provider: string
+  exp: string
+  iat: string
 }
 
 const validateDecodedResetPasswordToken = (
@@ -122,16 +119,17 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
   const handleSubmit = form.handleSubmit(async ({ password }) => {
     try {
       await mutateAsync({
+        email: invite.entity_id,
         password,
       })
+
+      form.setValue("password", "")
+      form.setValue("repeat_password", "")
+
+      setShowAlert(true)
     } catch (error) {
-      console.log(error)
+      toast.error(error.message)
     }
-
-    form.setValue("password", "")
-    form.setValue("repeat_password", "")
-
-    setShowAlert(true)
   })
 
   if (!isValidResetPasswordToken) {
@@ -205,9 +203,11 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
                   </div>
                 </Alert>
               )}
-              <Button className="w-full" type="submit" isLoading={isPending}>
-                {t("resetPassword.resetPassword")}
-              </Button>
+              {!showAlert && (
+                <Button className="w-full" type="submit" isLoading={isPending}>
+                  {t("resetPassword.resetPassword")}
+                </Button>
+              )}
             </form>
           </Form>
         </div>
