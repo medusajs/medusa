@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Alert, Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 
 import { Form } from "../../components/common/form"
@@ -59,6 +59,7 @@ const validateDecodedResetPasswordToken = (
 
 const InvalidResetToken = () => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   return (
     <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
@@ -71,7 +72,11 @@ const InvalidResetToken = () => {
           </Text>
         </div>
         <div className="flex w-full flex-col gap-y-3">
-          <Button className="w-full" type="submit">
+          <Button
+            onClick={() => navigate("/reset-password", { replace: true })}
+            className="w-full"
+            type="submit"
+          >
             {t("resetPassword.goToResetPassword")}
           </Button>
         </div>
