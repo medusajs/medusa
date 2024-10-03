@@ -10,15 +10,15 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
+import { useRemoteQueryStep } from "../../common"
 import {
   createLineItemsStep,
   getLineItemActionsStep,
   refreshCartShippingMethodsStep,
   updateLineItemsStep,
+  validateVariantPricesStep,
 } from "../steps"
 import { validateCartStep } from "../steps/validate-cart"
-import { validateVariantPricesStep } from "../steps/validate-variant-prices"
 import { productVariantsFields } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
@@ -130,7 +130,7 @@ export const addToCartWorkflow = createWorkflow(
           }
           return item
         })
-        return cart as CartDTO & { items: CartDTO['items'] }
+        return cart as CartDTO & { items: CartDTO["items"] }
       }
     )
 

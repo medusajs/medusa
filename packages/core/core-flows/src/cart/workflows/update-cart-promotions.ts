@@ -37,11 +37,11 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
 export const updateCartPromotionsWorkflow = createWorkflow(
   updateCartPromotionsWorkflowId,
   (input: WorkflowData<UpdateCartPromotionsWorkflowInput>) => {
-    const potentialCart: CartDTO = when(input, ({ cart_id, cart }) => {
-      if (!cart_id && !cart) {
+    const potentialCart = when({ input }, ({ input }) => {
+      if (!input.cart_id && !input.cart) {
         throw new Error("Either cart_id or cart must be provided")
       }
-      return !cart
+      return !input.cart
     }).then(() => {
       return useRemoteQueryStep({
         entry_point: "cart",

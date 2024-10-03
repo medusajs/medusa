@@ -4,10 +4,10 @@ import {
   CartShippingMethodDTO,
 } from "@medusajs/framework/types"
 import {
-  WorkflowData,
   createWorkflow,
   transform,
   when,
+  WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { getItemTaxLinesStep, setTaxLinesForItemsStep } from "../steps"
@@ -73,11 +73,11 @@ export const updateTaxLinesWorkflowId = "update-tax-lines"
 export const updateTaxLinesWorkflow = createWorkflow(
   updateTaxLinesWorkflowId,
   (input: WorkflowData<UpdateTaxLinesWorkflowInput>): WorkflowData<void> => {
-    const potentialCart = when(input, ({ cart_id, cart }) => {
-      if (!cart_id && !cart) {
+    const potentialCart = when({ input }, ({ input }) => {
+      if (!input.cart_id && !input.cart) {
         throw new Error("Either cart_id or cart must be provided")
       }
-      return !cart
+      return !input.cart
     }).then(() => {
       return useRemoteQueryStep({
         entry_point: "cart",
@@ -90,7 +90,7 @@ export const updateTaxLinesWorkflow = createWorkflow(
     })
 
     const cart = transform({ potentialCart, input }, (data) => {
-      return input.cart || data.potentialCart
+      return data.input.cart || data.potentialCart
     })
 
     const taxLineItems = getItemTaxLinesStep(
