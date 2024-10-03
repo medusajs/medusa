@@ -823,7 +823,7 @@ medusaIntegrationTestRunner({
           )
         })
 
-        it.only("should update a cart's region, sales channel, customer data and tax lines", async () => {
+        it("should update a cart's region, sales channel, customer data and tax lines", async () => {
           await setupTaxStructure(taxModule)
 
           const region = await regionModule.createRegions({

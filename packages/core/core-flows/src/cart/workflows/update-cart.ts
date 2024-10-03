@@ -34,15 +34,10 @@ export const updateCartWorkflow = createWorkflow(
     const cartToUpdate = useRemoteQueryStep({
       entry_point: "cart",
       variables: { id: input.id },
-      fields: ["id", "shipping_address.*", "region.*"],
+      fields: ["id", "shipping_address.*", "region.*", "region.countries.*"],
       list: false,
       throw_if_key_not_found: true,
     }).config({ name: "get-cart" })
-
-    const regionId = transform(
-      { input, cartToUpdate },
-      (data) => data.input.region_id || data.cartToUpdate.region_id
-    )
 
     const [salesChannel, customerData] = parallelize(
       findSalesChannelStep({
@@ -54,20 +49,24 @@ export const updateCartWorkflow = createWorkflow(
       })
     )
 
-    const region = when({ regionId }, (data) => {
-      return !!data.regionId
+    const newRegion = when({ input }, (data) => {
+      return !!data.input.region_id
     }).then(() => {
       return useRemoteQueryStep({
         entry_point: "region",
-        variables: { id: regionId },
+        variables: { id: input.region_id },
         fields: ["id", "countries.*", "currency_code", "name"],
         list: false,
         throw_if_key_not_found: true,
       }).config({ name: "get-region" })
     })
 
+    const region = transform({ cartToUpdate, newRegion }, (data) => {
+      return data.newRegion ?? data.cartToUpdate.region
+    })
+
     const cartInput = transform(
-      { input, region, customerData, salesChannel, cartToUpdate, regionId },
+      { input, region, customerData, salesChannel, cartToUpdate },
       (data) => {
         const { promo_codes, ...updateCartData } = data.input
 
