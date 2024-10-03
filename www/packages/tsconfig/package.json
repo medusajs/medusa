@@ -5,8 +5,5 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "@docusaurus/tsconfig": "latest"
   }
 }

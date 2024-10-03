@@ -912,6 +912,10 @@ export const filesMap = [
     "pathname": "/troubleshooting/deployment"
   },
   {
+    "filePath": "/www/apps/resources/app/troubleshooting/dist-imports/page.mdx",
+    "pathname": "/troubleshooting/dist-imports"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/eaddrinuse/page.mdx",
     "pathname": "/troubleshooting/eaddrinuse"
   },
@@ -934,10 +938,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/troubleshooting/page.mdx",
     "pathname": "/troubleshooting"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/pnpm-errors/page.mdx",
-    "pathname": "/troubleshooting/pnpm-errors"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/s3/page.mdx",
