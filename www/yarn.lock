@@ -7140,7 +7140,7 @@ __metadata:
     react-google-recaptcha: ^3.1.0
     react-instantsearch: ^7.13.0
     react-markdown: ^8.0.7
-    react-medium-image-zoom: ^5.1.10
+    react-medium-image-zoom: ^5.2.10
     react-tooltip: ^5.21.3
     react-transition-group: ^4.4.5
     react-uuid: ^2.0.0
@@ -12713,13 +12713,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-medium-image-zoom@npm:^5.1.10":
-  version: 5.1.10
-  resolution: "react-medium-image-zoom@npm:5.1.10"
+"react-medium-image-zoom@npm:^5.2.10":
+  version: 5.2.10
+  resolution: "react-medium-image-zoom@npm:5.2.10"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 4b7eba8787fe3880f02ccff34956f08fe81bd9025873b1457f1ee18d3c8e238f2658862b831695a0dca09ab0fb21a757f03206357ca390dc5aae2360a26d851a
+  checksum: 80e84ef7a87fea7f82ef93c54ac6cc9811da15f4d7526e99fba6deabfc7b7236cb16c0b0f03d3f0ec3c2626fdbbef59891deb1f8cd16b634cdf0cde22d43a1c3
   languageName: node
   linkType: hard
 
