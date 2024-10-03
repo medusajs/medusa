@@ -12,6 +12,11 @@ import { ExportedWorkflow } from "../../helper"
 import { Hook } from "./create-hook"
 import { CompensateFn, InvokeFn } from "./create-step"
 
+export type UnwrapWorkflowData<T> = T extends WorkflowData<infer W> ? W : T
+export type WrapWorkflowData<T, StopRecursive = false> =
+  | WorkflowData<T, StopRecursive>
+  | T
+
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
 
@@ -72,22 +77,29 @@ export type WorkflowDataProperties<T = unknown> = {
  *
  * @typeParam T - The type of a step's input or result.
  */
-export type WorkflowData<T = unknown> = (T extends Array<infer Item>
-  ? Array<Item | WorkflowData<Item>>
-  : T extends object
-  ? {
-      [Key in keyof T]: T[Key] | WorkflowData<T[Key]>
-    }
-  : T & WorkflowDataProperties<T>) &
-  T &
-  WorkflowDataProperties<T> & {
-    config(
-      config: { name?: string } & Omit<
-        TransactionStepsDefinition,
-        "next" | "uuid" | "action"
-      >
-    ): WorkflowData<T>
-  }
+export type WorkflowData<
+  T = unknown,
+  StopRecursive = false
+> = StopRecursive extends true
+  ? T
+  : (T extends Array<infer Item>
+      ? Array<WrapWorkflowData<Item>>
+      : T extends string
+      ? WrapWorkflowData<string, true>
+      : T extends object
+      ? {
+          [Key in keyof T]: WrapWorkflowData<T[Key]>
+        }
+      : T & WorkflowDataProperties<T>) &
+      T &
+      WorkflowDataProperties<T> & {
+        config(
+          config: { name?: string } & Omit<
+            TransactionStepsDefinition,
+            "next" | "uuid" | "action"
+          >
+        ): WorkflowData<T>
+      }
 
 export type CreateWorkflowComposerContext = {
   __type: string

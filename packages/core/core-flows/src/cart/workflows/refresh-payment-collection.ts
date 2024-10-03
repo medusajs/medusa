@@ -9,9 +9,11 @@ import {
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { updatePaymentCollectionStep } from "../../payment-collection"
 import { deletePaymentSessionsWorkflow } from "../../payment-collection/workflows/delete-payment-sessions"
+import { CartDTO } from "@medusajs/types"
 
 export type RefreshPaymentCollectionForCartWorklowInput = {
-  cart_id: string
+  cart_id?: string
+  cart?: CartDTO
 }
 
 export const refreshPaymentCollectionForCartWorkflowId =
@@ -21,9 +23,7 @@ export const refreshPaymentCollectionForCartWorkflowId =
  */
 export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
   refreshPaymentCollectionForCartWorkflowId,
-  (
-    input: WorkflowData<RefreshPaymentCollectionForCartWorklowInput>
-  ): WorkflowData<void> => {
+  (input: WorkflowData<RefreshPaymentCollectionForCartWorklowInput>) => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: [

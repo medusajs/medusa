@@ -3,8 +3,8 @@ import {
   ICartModuleService,
   IFulfillmentModuleService,
 } from "@medusajs/framework/types"
-import { Modules, arrayDifference } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { arrayDifference, Modules } from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export interface RefreshCartShippingMethodsStepInput {
   cart: CartDTO
@@ -61,7 +61,11 @@ export const refreshCartShippingMethodsStep = createStep(
 
     await cartModule.softDeleteShippingMethods(shippingMethodsToDelete)
 
-    return new StepResponse(void 0, shippingMethodsToDelete)
+    const freshShippingOptions = shippingMethods.filter(
+      (sm) => !shippingMethodsToDelete.includes(sm.shipping_option_id!)
+    )
+
+    return new StepResponse(freshShippingOptions, shippingMethodsToDelete)
   },
   async (shippingMethodsToRestore, { container }) => {
     if (shippingMethodsToRestore?.length) {

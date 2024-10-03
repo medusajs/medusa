@@ -1,9 +1,11 @@
-import { CartDTO, CartWorkflowDTO } from "@medusajs/framework/types"
-import { MedusaError, isPresent } from "@medusajs/framework/utils"
+import { isPresent, MedusaError } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface ValidateCartStepInput {
-  cart: CartWorkflowDTO | CartDTO
+  cart: {
+    id: string
+    completed_at?: string | Date
+  }
 }
 
 export const validateCartStepId = "validate-cart"

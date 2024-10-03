@@ -1,5 +1,6 @@
 import {
   AddToCartWorkflowInputDTO,
+  CartDTO,
   CreateLineItemForCartDTO,
 } from "@medusajs/framework/types"
 import {
@@ -18,10 +19,7 @@ import {
 } from "../steps"
 import { validateCartStep } from "../steps/validate-cart"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
-import {
-  cartFieldsForRefreshSteps,
-  productVariantsFields,
-} from "../utils/fields"
+import { productVariantsFields } from "../utils/fields"
 import { prepareLineItemData } from "../utils/prepare-line-item-data"
 import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
@@ -109,38 +107,64 @@ export const addToCartWorkflow = createWorkflow(
       })
     )
 
-    const items = transform({ createdItems, updatedItems }, (data) => {
-      return [...(data.createdItems || []), ...(data.updatedItems || [])]
+    const newlyCreatedAndUpdatedItems = transform(
+      { createdItems, updatedItems },
+      ({ createdItems, updatedItems }) => {
+        return [...createdItems, ...updatedItems]
+      }
+    )
+
+    /**
+     * Assign created and updated items to the cart to maintain sync
+     */
+    const cartWithUpdatedItems = transform(
+      { cart: input.cart, createdItems, updatedItems },
+      ({ cart, createdItems, updatedItems }) => {
+        cart.items = cart.items.concat(createdItems, updatedItems)
+        cart.items = cart.items.map((item) => {
+          const updatedItem = updatedItems.find(
+            (updatedItem) => updatedItem.id === item.id
+          )
+          if (updatedItem) {
+            return updatedItem
+          }
+          return item
+        })
+        return cart
+      }
+    )
+
+    const refreshedShippingMethods = refreshCartShippingMethodsStep({
+      cart: cartWithUpdatedItems,
     })
 
-    const cart = useRemoteQueryStep({
-      entry_point: "cart",
-      fields: cartFieldsForRefreshSteps,
-      variables: { id: input.cart.id },
-      list: false,
-    }).config({ name: "refetch–cart" })
-
-    refreshCartShippingMethodsStep({ cart })
+    const cartWithFreshShippingMethods = transform(
+      { cart: cartWithUpdatedItems, refreshedShippingMethods },
+      ({ cart, refreshedShippingMethods }) => {
+        cart.shipping_methods = refreshedShippingMethods
+        return cart as CartDTO
+      }
+    )
 
     updateTaxLinesWorkflow.runAsStep({
       input: {
-        cart_id: input.cart.id,
-        items,
+        cart: cartWithFreshShippingMethods,
+        items: newlyCreatedAndUpdatedItems,
       },
     })
 
     updateCartPromotionsWorkflow.runAsStep({
       input: {
-        cart_id: input.cart.id,
+        cart: cartWithFreshShippingMethods,
       },
     })
 
     refreshPaymentCollectionForCartWorkflow.runAsStep({
       input: {
-        cart_id: input.cart.id,
+        cart: cartWithFreshShippingMethods,
       },
     })
 
-    return new WorkflowResponse(items)
+    return new WorkflowResponse(newlyCreatedAndUpdatedItems)
   }
 )
