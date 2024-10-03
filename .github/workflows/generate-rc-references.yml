@@ -1,12 +1,11 @@
-name: Generate Preview Reference [Automated]
+name: Generate RC Reference [Automated]
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
+  workflow_call:
 jobs:
-  preview-references:
+  rc-references:
     uses: ./.github/workflows/generate-resources-reference.yml
-  preview-api:
+  rc-api:
     name: Generate OAS
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +64,7 @@ jobs:
             www/utils/generated/oas-output
           branch: "docs/generate-api-ref"
           branch-suffix: "timestamp"
-  preview-dml:
+  rc-dml:
     name: Generate DML JSON files
     runs-on: ubuntu-latest
     steps:

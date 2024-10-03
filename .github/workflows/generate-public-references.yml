@@ -6,8 +6,9 @@ on:
         description: "Reference to Generate. Use either `all` to generate all references, `api` to generate the API reference, or `ui` to generate UI reference."
         required: false
         default: "all"
-  release:
-    types: [published]
+  # Disable this action until v2 is out of RC
+  # release:
+  #   types: [published]
 
 jobs:
   api-v2:
