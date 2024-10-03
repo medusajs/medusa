@@ -170,7 +170,7 @@ To handle the `brand.created` event, create a subscriber at `src/subscribers/bra
 import type {
   SubscriberConfig,
   SubscriberArgs,
-} from "@medusajs/medusa"
+} from "@medusajs/framework"
 import { syncBrandToSystemWorkflow } from "../workflows/sync-brand-to-system"
 
 export default async function brandCreatedHandler({
