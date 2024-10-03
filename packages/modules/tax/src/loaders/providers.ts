@@ -5,7 +5,7 @@ import {
   ModuleProvider,
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
-import { Lifetime, asFunction } from "awilix"
+import { asFunction, Lifetime } from "awilix"
 
 import * as providers from "../providers"
 

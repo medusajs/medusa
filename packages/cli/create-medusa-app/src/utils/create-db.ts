@@ -1,6 +1,9 @@
 import { EOL } from "os"
 import pg from "pg"
-import postgresClient, { DEFAULT_HOST, DEFAULT_PORT } from "./postgres-client.js"
+import postgresClient, {
+  DEFAULT_HOST,
+  DEFAULT_PORT,
+} from "./postgres-client.js"
 import inquirer from "inquirer"
 import logMessage from "./log-message.js"
 import formatConnectionString from "./format-connection-string.js"
@@ -16,8 +19,13 @@ export default async function createDb({ client, db }: CreateDbOptions) {
   await client.query(`CREATE DATABASE "${db}"`)
 }
 
-async function doesDbExist (client: pg.Client, dbName: string): Promise<boolean> {
-  const result = await client.query(`SELECT datname FROM pg_catalog.pg_database WHERE datname='${dbName}';`)
+async function doesDbExist(
+  client: pg.Client,
+  dbName: string
+): Promise<boolean> {
+  const result = await client.query(
+    `SELECT datname FROM pg_catalog.pg_database WHERE datname='${dbName}';`
+  )
 
   return !!result.rowCount
 }
@@ -75,14 +83,14 @@ async function getForDbName({
 
   const defaultConnectionOptions = {
     host: DEFAULT_HOST,
-    port: DEFAULT_PORT
+    port: DEFAULT_PORT,
   }
 
   try {
     client = await postgresClient({
       user: postgresUsername,
       password: postgresPassword,
-      ...defaultConnectionOptions
+      ...defaultConnectionOptions,
     })
   } catch (e) {
     if (verbose) {
@@ -129,7 +137,7 @@ async function getForDbName({
         user: postgresUsername,
         password: postgresPassword,
         database: userDbName,
-        ...defaultConnectionOptions
+        ...defaultConnectionOptions,
       })
     } catch (e) {
       logMessage({
@@ -148,7 +156,9 @@ async function getForDbName({
         message: `A database already exists with the name ${dbName}, please enter a name for the database:`,
         default: dbName,
         validate: (input) => {
-          return typeof input === "string" && input.length > 0 && input !== dbName
+          return (
+            typeof input === "string" && input.length > 0 && input !== dbName
+          )
         },
       },
     ])
@@ -167,7 +177,7 @@ async function getForDbName({
   return {
     client,
     dbConnectionString,
-    dbName
+    dbName,
   }
 }
 

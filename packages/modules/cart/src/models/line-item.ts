@@ -1,10 +1,10 @@
 import { BigNumberRawValue, DAL } from "@medusajs/framework/types"
 import {
   BigNumber,
-  DALUtils,
-  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/framework/utils"
 import {
   BeforeCreate,
@@ -13,8 +13,8 @@ import {
   Entity,
   Filter,
   ManyToOne,
-  OnInit,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,

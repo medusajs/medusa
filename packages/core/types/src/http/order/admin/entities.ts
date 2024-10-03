@@ -27,8 +27,11 @@ export interface AdminOrder extends Omit<BaseOrder, "items"> {
   shipping_methods: AdminOrderShippingMethod[]
 }
 
-export interface AdminOrderChange extends 
-  Omit<BaseOrderChange, "order" | "claim" | "return_order" | "exchange" | "actions"> {
+export interface AdminOrderChange
+  extends Omit<
+    BaseOrderChange,
+    "order" | "claim" | "return_order" | "exchange" | "actions"
+  > {
   order: AdminOrder
   claim: AdminClaim
   return_order: AdminReturn
@@ -36,14 +39,16 @@ export interface AdminOrderChange extends
   actions: AdminOrderChangeAction[]
 }
 
-export interface AdminOrderChangeAction extends Omit<BaseOrderChangeAction, "order_change" | "order"> {
+export interface AdminOrderChangeAction
+  extends Omit<BaseOrderChangeAction, "order_change" | "order"> {
   order_change: AdminOrderChange
   order: AdminOrder | null
 }
 
 export interface AdminOrderFulfillment extends BaseOrderFulfillment {}
 
-export interface AdminOrderLineItem extends Omit<BaseOrderLineItem, "variant" | "product"> {
+export interface AdminOrderLineItem
+  extends Omit<BaseOrderLineItem, "variant" | "product"> {
   variant?: AdminProductVariant
   product?: AdminProduct
 }

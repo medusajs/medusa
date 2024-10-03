@@ -40,7 +40,7 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
  * }
  *
  * const myWorkflow = createWorkflow(
- *   "hello-world", 
+ *   "hello-world",
  *   (input: WorkflowInput) => {
  *     const str1 = step1(input)
  *     const str2 = step2(input)
@@ -49,7 +49,7 @@ type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
  *       str1,
  *       str2
  *     }, (input) => `${input.str1}${input.str2}`)
- * 
+ *
  *     return new WorkflowResponse(message)
  * })
  */

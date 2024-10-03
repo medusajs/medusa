@@ -12,17 +12,17 @@
  *     type: string
  *     title: id
  *     description: The operator's ID.
- *     example: "in"
+ *     example: in
  *   value:
  *     type: string
  *     title: value
  *     description: The operator's value.
- *     example: "in"
+ *     example: in
  *   label:
  *     type: string
  *     title: label
  *     description: The operator's label.
- *     example: "In"
+ *     example: In
  * 
 */
 

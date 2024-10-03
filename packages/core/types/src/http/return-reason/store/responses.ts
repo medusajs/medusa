@@ -1,5 +1,5 @@
-import { PaginatedResponse } from "../../common";
-import { StoreReturnReason } from "./entities";
+import { PaginatedResponse } from "../../common"
+import { StoreReturnReason } from "./entities"
 
 export interface StoreReturnReasonResponse {
   return_reason: StoreReturnReason

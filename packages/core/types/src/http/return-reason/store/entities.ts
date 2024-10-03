@@ -1,3 +1,3 @@
-import { BaseReturnReason } from "../common";
+import { BaseReturnReason } from "../common"
 
 export interface StoreReturnReason extends BaseReturnReason {}

@@ -1,4 +1,4 @@
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 import { refreshInviteTokensWorkflow } from "@medusajs/core-flows"
 import { refetchInvite } from "../../helpers"

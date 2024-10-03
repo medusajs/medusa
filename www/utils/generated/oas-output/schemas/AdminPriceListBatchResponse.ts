@@ -37,7 +37,7 @@
  *         type: string
  *         title: object
  *         description: The name of the deleted object.
- *         default: "price"
+ *         default: price
  *       deleted:
  *         type: boolean
  *         title: deleted
