@@ -1,17 +1,18 @@
 import { resolveValue } from "./helpers"
-import {
-  StepExecutionContext,
-  UnwrapWorkflowData,
-  WorkflowData,
-  WrapWorkflowData,
-} from "./type"
+import { StepExecutionContext, WorkflowData } from "./type"
 import { proxify } from "./helpers/proxy"
 import { OrchestrationUtils } from "@medusajs/utils"
 
-type Func<T, U> = (
-  input: UnwrapWorkflowData<T>,
+type Func1<T extends object | WorkflowData, U> = (
+  input: T extends WorkflowData<infer U>
+    ? U
+    : T extends object
+    ? { [K in keyof T]: T[K] extends WorkflowData<infer U> ? U : T[K] }
+    : {},
   context: StepExecutionContext
-) => WrapWorkflowData<U> | Promise<WrapWorkflowData<U>>
+) => U | Promise<U>
+
+type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
 
 /**
  *
@@ -62,8 +63,96 @@ export function transform<T extends object | WorkflowData, RFinal>(
   /**
    * The transform function used to perform action on the runtime values of the provided `values`.
    */
-  func: Func<T, RFinal>
-): WrapWorkflowData<RFinal>
+  ...func:
+    | [Func1<T, RFinal>]
+): WorkflowData<RFinal>
+
+/**
+ * @internal
+ */
+// prettier-ignore
+// eslint-disable-next-line max-len
+export function transform<T extends object | WorkflowData, RA, RFinal>(
+  values: T,
+  ...func:
+    | [Func1<T, RFinal>]
+    | [Func1<T, RA>, Func<RA, RFinal>]
+): WorkflowData<RFinal>
+
+/**
+ * @internal
+ */
+// prettier-ignore
+// eslint-disable-next-line max-len
+export function transform<T extends object | WorkflowData, RA, RB, RFinal>(
+  values: T,
+  ...func:
+    | [Func1<T, RFinal>]
+    | [Func1<T, RA>, Func<RA, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
+): WorkflowData<RFinal>
+
+/**
+ * @internal
+ */
+// prettier-ignore
+// eslint-disable-next-line max-len
+export function transform<T extends object | WorkflowData, RA, RB, RC, RFinal>(
+  values: T,
+  ...func:
+    | [Func1<T, RFinal>]
+    | [Func1<T, RA>, Func<RA, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
+): WorkflowData<RFinal>
+
+/**
+ * @internal
+ */
+// prettier-ignore
+// eslint-disable-next-line max-len
+export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RFinal>(
+  values: T,
+  ...func:
+    | [Func1<T, RFinal>]
+    | [Func1<T, RA>, Func<RA, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RFinal>]
+): WorkflowData<RFinal>
+
+/**
+ * @internal
+ */
+// prettier-ignore
+// eslint-disable-next-line max-len
+export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RE, RFinal>(
+  values: T,
+  ...func:
+    | [Func1<T, RFinal>]
+    | [Func1<T, RA>, Func<RA, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RFinal>]
+): WorkflowData<RFinal>
+
+/**
+ * @internal
+ */
+// prettier-ignore
+// eslint-disable-next-line max-len
+export function transform<T extends object | WorkflowData, RA, RB, RC, RD, RE, RF, RFinal>(
+  values: T,
+  ...func:
+    | [Func1<T, RFinal>]
+    | [Func1<T, RA>, Func<RA, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RF>, Func<RF, RFinal>]
+): WorkflowData<RFinal>
 
 export function transform(
   values: any | any[],

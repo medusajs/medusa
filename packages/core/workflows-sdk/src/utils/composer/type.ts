@@ -12,9 +12,6 @@ import { ExportedWorkflow } from "../../helper"
 import { Hook } from "./create-hook"
 import { CompensateFn, InvokeFn } from "./create-step"
 
-export type UnwrapWorkflowData<T> = T extends WorkflowData<infer W> ? W : T
-export type WrapWorkflowData<T> = WorkflowData<T> | T
-
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
   (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
 
@@ -76,10 +73,10 @@ export type WorkflowDataProperties<T = unknown> = {
  * @typeParam T - The type of a step's input or result.
  */
 export type WorkflowData<T = unknown> = (T extends Array<infer Item>
-  ? Array<WrapWorkflowData<Item>>
+  ? Array<Item | WorkflowData<Item>>
   : T extends object
   ? {
-      [Key in keyof T]: WrapWorkflowData<T[Key]>
+      [Key in keyof T]: T[Key] | WorkflowData<T[Key]>
     }
   : T & WorkflowDataProperties<T>) &
   T &

@@ -54,7 +54,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     })
 
     const cart = transform({ potentialCart, input }, (data) => {
-      return input.cart || data.potentialCart
+      return data.input.cart || data.potentialCart
     })
 
     const promo_codes = transform({ input }, (data) => {
@@ -94,7 +94,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
         shippingMethodAdjustmentsToCreate,
       }),
       updateCartPromotionsStep({
-        id: input.cart_id,
+        id: cart.id,
         promo_codes: computedPromotionCodes,
         action: PromotionActions.REPLACE,
       })

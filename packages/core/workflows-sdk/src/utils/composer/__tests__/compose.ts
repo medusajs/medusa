@@ -17,6 +17,7 @@ import {
   createWorkflow,
   parallelize,
   StepResponse,
+  transform,
   WorkflowResponse,
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
@@ -740,7 +741,7 @@ describe("Workflow composer", function () {
       })
     })
 
-    /*it("should transform the values before forward them to the next step", async () => {
+    it("should transform the values before forward them to the next step", async () => {
       const mockStep1Fn = jest.fn().mockImplementation((obj, context) => {
         const ret = {
           property: "property",
@@ -836,7 +837,7 @@ describe("Workflow composer", function () {
       expect(transform1Fn).toHaveBeenCalledTimes(1)
       expect(transform2Fn).toHaveBeenCalledTimes(1)
       expect(transform3Fn).toHaveBeenCalledTimes(1)
-    })*/
+    })
 
     it("should compose a new workflow and access properties from steps", async () => {
       const mockStep1Fn = jest.fn().mockImplementation(({ input }, context) => {
@@ -1682,7 +1683,7 @@ describe("Workflow composer", function () {
       })
     })
 
-    /*it("should transform the values before forward them to the next step", async () => {
+    it("should transform the values before forward them to the next step", async () => {
       const mockStep1Fn = jest.fn().mockImplementation((obj, context) => {
         const ret = new StepResponse({
           property: "property",
@@ -1778,7 +1779,7 @@ describe("Workflow composer", function () {
       expect(transform1Fn).toHaveBeenCalledTimes(1)
       expect(transform2Fn).toHaveBeenCalledTimes(1)
       expect(transform3Fn).toHaveBeenCalledTimes(1)
-    })*/
+    })
 
     it("should compose a new workflow and access properties from steps", async () => {
       const mockStep1Fn = jest.fn().mockImplementation(({ input }, context) => {

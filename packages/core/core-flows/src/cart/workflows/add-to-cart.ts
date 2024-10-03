@@ -120,8 +120,8 @@ export const addToCartWorkflow = createWorkflow(
     const cartWithUpdatedItems = transform(
       { cart: input.cart, createdItems, updatedItems },
       ({ cart, createdItems, updatedItems }) => {
-        cart.items = cart.items.concat(createdItems, updatedItems)
-        cart.items = cart.items.map((item) => {
+        cart.items = (cart.items ?? []).concat(createdItems, updatedItems)
+        cart.items = (cart.items ?? []).map((item) => {
           const updatedItem = updatedItems.find(
             (updatedItem) => updatedItem.id === item.id
           )
@@ -130,7 +130,7 @@ export const addToCartWorkflow = createWorkflow(
           }
           return item
         })
-        return cart
+        return cart as CartDTO & { items: CartDTO['items'] }
       }
     )
 
@@ -140,9 +140,9 @@ export const addToCartWorkflow = createWorkflow(
 
     const cartWithFreshShippingMethods = transform(
       { cart: cartWithUpdatedItems, refreshedShippingMethods },
-      ({ cart, refreshedShippingMethods }) => {
-        cart.shipping_methods = refreshedShippingMethods
-        return cart as CartDTO
+      (data) => {
+        data.cart.shipping_methods = data.refreshedShippingMethods
+        return data.cart as CartDTO
       }
     )
 
