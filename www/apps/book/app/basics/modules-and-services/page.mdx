@@ -102,7 +102,7 @@ Resolving a module's service is essential to use its methods that perform action
 For example, create the API route `src/api/custom/route.ts` with the following content:
 
 ```ts title="src/api/custom/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import HelloModuleService from "../../modules/hello/service"
 import { HELLO_MODULE } from "../../modules/hello"
 
