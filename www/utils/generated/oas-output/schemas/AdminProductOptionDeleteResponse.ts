@@ -16,7 +16,7 @@
  *     type: string
  *     title: object
  *     description: The name of the deleted object.
- *     default: "product_option"
+ *     default: product_option
  *   deleted:
  *     type: boolean
  *     title: deleted

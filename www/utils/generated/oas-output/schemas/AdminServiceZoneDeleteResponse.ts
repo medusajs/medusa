@@ -16,7 +16,7 @@
  *     type: string
  *     title: object
  *     description: The name of the deleted object.
- *     default: "service_zone"
+ *     default: service_zone
  *   deleted:
  *     type: boolean
  *     title: deleted

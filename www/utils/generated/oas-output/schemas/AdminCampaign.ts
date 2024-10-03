@@ -58,8 +58,8 @@
  *       type:
  *         type: string
  *         description: >
- *           The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions; `usage` means the limit is set on the total
- *           number of times the campaign's promotions can be used.
+ *           The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions; `usage` means the limit is set on the total number of times the campaign's
+ *           promotions can be used.
  *         enum:
  *           - spend
  *           - usage
@@ -75,8 +75,8 @@
  *         type: number
  *         title: used
  *         description: >
- *           How much of the budget has been used. If the limit is `spend`, this property holds the total amount discounted so far. If the limit is `usage`, it holds
- *           the number of times the campaign's promotions have been used so far.
+ *           How much of the budget has been used. If the limit is `spend`, this property holds the total amount discounted so far. If the limit is `usage`, it holds the number of times the campaign's
+ *           promotions have been used so far.
  * 
 */
 

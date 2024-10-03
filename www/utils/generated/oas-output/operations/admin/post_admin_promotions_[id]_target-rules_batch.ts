@@ -47,93 +47,12 @@
  *             type: array
  *             description: The target rules to create.
  *             items:
- *               type: object
- *               description: A target rule's details.
- *               required:
- *                 - operator
- *                 - attribute
- *                 - values
- *               properties:
- *                 operator:
- *                   type: string
- *                   description: The operator used to check whether the target rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
- *                   enum:
- *                     - gte
- *                     - lte
- *                     - gt
- *                     - lt
- *                     - eq
- *                     - ne
- *                     - in
- *                 description:
- *                   type: string
- *                   title: description
- *                   description: The target rule's description.
- *                 attribute:
- *                   type: string
- *                   title: attribute
- *                   description: The attribute to compare against when checking whether a promotion can be applied on a cart.
- *                   example: items.product.id
- *                 values:
- *                   oneOf:
- *                     - type: string
- *                       title: values
- *                       description: The attribute's value.
- *                       example: prod_123
- *                     - type: array
- *                       description: The allowed attribute values.
- *                       items:
- *                         type: string
- *                         title: values
- *                         description: An attribute value.
- *                         example: prod_123
+ *               $ref: "#/components/schemas/AdminCreatePromotionRule"
  *           update:
  *             type: array
  *             description: The target rules to update.
  *             items:
- *               type: object
- *               description: The properties to update in a target rule.
- *               required:
- *                 - id
- *                 - values
- *               properties:
- *                 id:
- *                   type: string
- *                   title: id
- *                   description: The target rule's ID.
- *                 operator:
- *                   type: string
- *                   description: The operator used to check whether the target rule applies on a cart. For example, `eq` means that the cart's value for the specified attribute must match the specified value.
- *                   enum:
- *                     - gte
- *                     - lte
- *                     - gt
- *                     - lt
- *                     - eq
- *                     - ne
- *                     - in
- *                 description:
- *                   type: string
- *                   title: description
- *                   description: The target rule's description.
- *                 attribute:
- *                   type: string
- *                   title: attribute
- *                   description: The attribute to compare against when checking whether a promotion can be applied on a cart.
- *                   example: items.product.id
- *                 values:
- *                   oneOf:
- *                     - type: string
- *                       title: values
- *                       description: The attribute's value.
- *                       example: prod_123
- *                     - type: array
- *                       description: The allowed attribute values.
- *                       items:
- *                         type: string
- *                         title: values
- *                         description: An attribute value.
- *                         example: prod_123
+ *               $ref: "#/components/schemas/AdminUpdatePromotionRule"
  *           delete:
  *             type: array
  *             description: The target rules to delete.
