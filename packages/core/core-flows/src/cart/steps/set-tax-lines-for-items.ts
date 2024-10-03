@@ -35,18 +35,15 @@ export const setTaxLinesForItemsStep = createStep(
     })
 
     const itemsTaxLinesData = normalizeItemTaxLinesForCart(item_tax_lines)
-    const setItemTaxLinesPromise = itemsTaxLinesData.length
-      ? cartService.setLineItemTaxLines(cart.id, itemsTaxLinesData)
-      : 0
+    const setItemTaxLinesPromise = cartService.setLineItemTaxLines(
+      cart.id,
+      itemsTaxLinesData
+    )
 
     const shippingTaxLinesData =
       normalizeShippingTaxLinesForCart(shipping_tax_lines)
-    const setShippingTaxLinesPromise = shippingTaxLinesData.length
-      ? await cartService.setShippingMethodTaxLines(
-          cart.id,
-          shippingTaxLinesData
-        )
-      : 0
+    const setShippingTaxLinesPromise =
+      await cartService.setShippingMethodTaxLines(cart.id, shippingTaxLinesData)
 
     const [existingShippingMethodTaxLines, existingLineItemTaxLines] =
       await Promise.all([
