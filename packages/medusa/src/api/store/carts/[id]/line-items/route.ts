@@ -8,10 +8,11 @@ export const POST = async (
   req: MedusaRequest<StoreAddCartLineItemType>,
   res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
-  const cart = await refetchCart(req.params.id, req.scope, [
-    ...req.remoteQueryConfig.fields,
-    "region_id",
-  ])
+  const cart = await refetchCart(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
   const workflowInput = {
     items: [req.validatedBody],
@@ -20,7 +21,7 @@ export const POST = async (
 
   await addToCartWorkflow(req.scope).run({
     input: workflowInput,
-  })
+  } as any)
 
   const updatedCart = await refetchCart(
     req.params.id,

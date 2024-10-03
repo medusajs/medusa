@@ -1,5 +1,6 @@
 export const defaultStoreCartFields = [
   "id",
+  "region_id",
   "currency_code",
   "email",
   "created_at",
@@ -35,6 +36,7 @@ export const defaultStoreCartFields = [
   "items.id",
   "items.variant_id",
   "items.product_id",
+  "items.product.id",
   "items.product.categories.id",
   "items.product.tags.id",
   "items.product.collection_id",
@@ -112,6 +114,8 @@ export const defaultStoreCartFields = [
 
   "payment_collection.id",
   "payment_collection.amount",
+  /* "payment_collection.raw_amount",*/
+  /* "payment_collection.currency_code",*/
   "*payment_collection.payment_sessions",
 ]
 

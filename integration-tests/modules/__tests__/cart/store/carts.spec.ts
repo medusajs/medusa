@@ -1438,7 +1438,7 @@ medusaIntegrationTestRunner({
           })
         })
 
-        it.only("should add item to cart", async () => {
+        it("should add item to cart", async () => {
           const customer = await customerModule.createCustomers({
             email: "tony@stark-industries.com",
           })
@@ -1569,10 +1569,6 @@ medusaIntegrationTestRunner({
 
           expect(response.status).toEqual(200)
 
-          console.log(
-            ">>>>>>>>>>>>>>>>>>>>>>>>",
-            JSON.stringify(response.data.cart.items, null, 2)
-          )
           expect(response.data.cart).toEqual(
             expect.objectContaining({
               id: cart.id,

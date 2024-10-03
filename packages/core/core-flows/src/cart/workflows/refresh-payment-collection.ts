@@ -11,11 +11,9 @@ import {
   deletePaymentSessionsWorkflow,
   updatePaymentCollectionStep,
 } from "../../payment-collection"
-import { CartDTO } from "@medusajs/framework/types"
 
 export type RefreshPaymentCollectionForCartWorklowInput = {
-  cart_id?: string
-  cart?: CartDTO
+  cart_id: string
 }
 
 export const refreshPaymentCollectionForCartWorkflowId =
@@ -36,8 +34,8 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
         "raw_total",
         "payment_collection.id",
         "payment_collection.raw_amount",
-        "payment_collection.amount",
         "payment_collection.currency_code",
+        "payment_collection.amount",
         "payment_collection.payment_sessions.id",
       ],
       variables: { id: input.cart_id },

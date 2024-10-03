@@ -25,6 +25,7 @@ import { confirmVariantInventoryWorkflow } from "./confirm-variant-inventory"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
 import { updateCartPromotionsWorkflow } from "./update-cart-promotions"
 import { updateTaxLinesWorkflow } from "./update-tax-lines"
+import { decorateCartTotals } from "@medusajs/utils"
 
 export const addToCartWorkflowId = "add-to-cart"
 /**
@@ -163,7 +164,7 @@ export const addToCartWorkflow = createWorkflow(
         })
         cart.items = cart.items.concat(fullCreatedItems)
 
-        return cart as CartDTO & { items: CartDTO["items"] }
+        return cart as CartDTO
       }
     )
 
@@ -199,22 +200,46 @@ export const addToCartWorkflow = createWorkflow(
       }
     )
 
-    updateTaxLinesWorkflow.runAsStep({
+    const taxLines = updateTaxLinesWorkflow.runAsStep({
       input: {
         cart: cartWithFreshShippingMethods,
         items: newlyCreatedAndUpdatedItems,
       },
     })
 
+    const cartWithUpdateCalculation = transform(
+      { cart: cartWithFreshShippingMethods, taxLines },
+      (data) => {
+        const { lineItemTaxLines, shippingMethodsTaxLines } = data.taxLines
+        data.cart.items = data.cart.items?.map((item) => {
+          item.tax_lines = lineItemTaxLines.filter((taxLine) => {
+            return taxLine.item_id === item.id
+          })
+          return item
+        })
+
+        data.cart.shipping_methods = data.cart.shipping_methods?.map(
+          (method) => {
+            method.tax_lines = shippingMethodsTaxLines.filter((taxLine) => {
+              return taxLine.shipping_method_id === method.id
+            })
+            return method
+          }
+        )
+
+        return decorateCartTotals(data.cart) as CartDTO
+      }
+    )
+
     updateCartPromotionsWorkflow.runAsStep({
       input: {
-        cart: cartWithFreshShippingMethods,
+        cart: cartWithUpdateCalculation,
       },
     })
 
     refreshPaymentCollectionForCartWorkflow.runAsStep({
       input: {
-        cart: cartWithFreshShippingMethods,
+        cart_id: cartWithUpdateCalculation.id,
       },
     })
 
