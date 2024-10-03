@@ -1,4 +1,8 @@
-import { DeleteResponse, DeleteResponseWithParent, PaginatedResponse } from "../../common"
+import {
+  DeleteResponse,
+  DeleteResponseWithParent,
+  PaginatedResponse,
+} from "../../common"
 import { AdminInventoryItem } from "./entities"
 
 export interface AdminInventoryItemResponse {

@@ -1,8 +1,12 @@
-import { BatchMethodResponse, BatchResponse } from "@medusajs/framework/types"
-import { PromotionRuleDTO, MedusaContainer } from "@medusajs/framework/types"
 import {
-  promiseAll,
+  BatchMethodResponse,
+  BatchResponse,
+  MedusaContainer,
+  PromotionRuleDTO,
+} from "@medusajs/framework/types"
+import {
   ContainerRegistrationKeys,
+  promiseAll,
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 

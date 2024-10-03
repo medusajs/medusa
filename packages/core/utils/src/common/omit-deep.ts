@@ -1,4 +1,4 @@
-import { isObject } from "@medusajs/framework/utils"
+import { isObject } from "./is-object"
 
 export function omitDeep<T extends object = object>(
   input: object,

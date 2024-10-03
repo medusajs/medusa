@@ -1,8 +1,14 @@
 import zod from "zod"
-import { MedusaError } from "@medusajs/framework/utils"
-import { createLinkBody } from "../validators"
-import { validateAndTransformBody } from "../validate-body"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { MedusaError } from "@medusajs/utils"
+import { validateAndTransformBody } from "../utils/validate-body"
+import { MedusaRequest, MedusaResponse } from "../types"
+
+const createLinkBody = () => {
+  return zod.object({
+    add: zod.array(zod.string()).optional(),
+    remove: zod.array(zod.string()).optional(),
+  })
+}
 
 describe("validateAndTransformBody", () => {
   afterEach(() => {

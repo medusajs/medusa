@@ -1,5 +1,5 @@
-import { DeleteResponse } from "../../common";
-import { AdminFile } from "./entities";
+import { DeleteResponse } from "../../common"
+import { AdminFile } from "./entities"
 
 export interface AdminFileResponse {
   file: AdminFile

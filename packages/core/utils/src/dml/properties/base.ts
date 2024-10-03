@@ -31,17 +31,17 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
 
   /**
    * This method indicates that a property's value can be `null`.
-   * 
+   *
    * @example
    * import { model } from "@medusajs/framework/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   price: model.bigNumber().nullable(),
    *   // ...
    * })
-   * 
+   *
    * export default MyCustom
-   * 
+   *
    * @customNamespace Property Configuration Methods
    */
   nullable() {
@@ -50,22 +50,22 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
 
   /**
    * This method defines an index on a property.
-   * 
+   *
    * @param {string} name - The index's name. If not provided,
    * Medusa generates the name.
-   * 
+   *
    * @example
    * import { model } from "@medusajs/framework/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
    *   name: model.text().index(
    *     "IDX_MY_CUSTOM_NAME"
    *   ),
    * })
-   * 
+   *
    * export default MyCustom
-   * 
+   *
    * @customNamespace Property Configuration Methods
    */
   index(name?: string) {
@@ -76,20 +76,20 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
   /**
    * This method indicates that a property's value must be unique in the database.
    * A unique index is created on the property.
-   * 
+   *
    * @param {string} name - The unique index's name. If not provided,
    * Medusa generates the name.
-   * 
+   *
    * @example
    * import { model } from "@medusajs/framework/utils"
-   * 
+   *
    * const User = model.define("user", {
    *   email: model.text().unique(),
    *   // ...
    * })
-   * 
+   *
    * export default User
-   * 
+   *
    * @customNamespace Property Configuration Methods
    */
   unique(name?: string) {
@@ -99,12 +99,12 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
 
   /**
    * This method defines the default value of a property.
-   * 
+   *
    * @param {T} value - The default value.
-   * 
+   *
    * @example
    * import { model } from "@medusajs/framework/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   color: model
    *     .enum(["black", "white"])
@@ -114,9 +114,9 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
    *     .default(0),
    *   // ...
    * })
-   * 
+   *
    * export default MyCustom
-   * 
+   *
    * @customNamespace Property Configuration Methods
    */
   default(value: T) {

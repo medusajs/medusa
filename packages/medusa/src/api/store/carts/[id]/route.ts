@@ -5,7 +5,7 @@ import {
   UpdateCartDataDTO,
 } from "@medusajs/framework/types"
 
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { refetchCart } from "../helpers"
 
 export const GET = async (

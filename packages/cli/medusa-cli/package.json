@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@medusajs/utils": "1.11.9",
+    "@types/express": "^4.17.17",
     "chalk": "^4.0.0",
     "configstore": "5.0.1",
     "dotenv": "^16.4.5",

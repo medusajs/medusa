@@ -1,8 +1,57 @@
-import { MedusaError } from "@medusajs/framework/utils"
-import { NextFunction, Request, Response } from "express"
+import z from "zod"
+import { MedusaError } from "@medusajs/utils"
+import { validateAndTransformQuery } from "../utils/validate-query"
+import { MedusaRequest, MedusaResponse, MedusaNextFunction } from "../types"
 
-import { createFindParams } from "../validators"
-import { validateAndTransformQuery } from "../validate-query"
+export const createSelectParams = () => {
+  return z.object({
+    fields: z.string().optional(),
+  })
+}
+
+const createFindParams = ({
+  offset,
+  limit,
+  order,
+}: {
+  offset?: number
+  limit?: number
+  order?: string
+} = {}) => {
+  const selectParams = createSelectParams()
+
+  return selectParams.merge(
+    z.object({
+      offset: z.preprocess(
+        (val) => {
+          if (val && typeof val === "string") {
+            return parseInt(val)
+          }
+          return val
+        },
+        z
+          .number()
+          .optional()
+          .default(offset ?? 0)
+      ),
+      limit: z.preprocess(
+        (val) => {
+          if (val && typeof val === "string") {
+            return parseInt(val)
+          }
+          return val
+        },
+        z
+          .number()
+          .optional()
+          .default(limit ?? 20)
+      ),
+      order: order
+        ? z.string().optional().default(order)
+        : z.string().optional(),
+    })
+  )
+}
 
 describe("validateAndTransformQuery", () => {
   afterEach(() => {
@@ -12,9 +61,9 @@ describe("validateAndTransformQuery", () => {
   it("should transform the input query", async () => {
     let mockRequest = {
       query: {},
-    } as Request
-    const mockResponse = {} as Response
-    const nextFunction: NextFunction = jest.fn()
+    } as MedusaRequest
+    const mockResponse = {} as MedusaResponse
+    const nextFunction: MedusaNextFunction = jest.fn()
 
     const expectations = ({
       offset,
@@ -104,15 +153,13 @@ describe("validateAndTransformQuery", () => {
       inputOrder: undefined,
     })
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         limit: "10",
         offset: "5",
         order: "created_at",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     middleware = validateAndTransformQuery(createFindParams(), queryConfig)
 
@@ -125,15 +172,13 @@ describe("validateAndTransformQuery", () => {
       transformedOrder: { created_at: "ASC" },
     })
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         limit: "10",
         offset: "5",
         order: "created_at",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaults: [
@@ -166,9 +211,9 @@ describe("validateAndTransformQuery", () => {
       query: {
         fields: "id",
       },
-    } as unknown as Request
-    const mockResponse = {} as Response
-    const nextFunction: NextFunction = jest.fn()
+    } as unknown as MedusaRequest
+    const mockResponse = {} as MedusaResponse
+    const nextFunction: MedusaNextFunction = jest.fn()
 
     let queryConfig: any = {
       defaultFields: [
@@ -200,13 +245,11 @@ describe("validateAndTransformQuery", () => {
       })
     )
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         fields: "+test_prop,-prop-test-something",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaultFields: [
@@ -249,13 +292,11 @@ describe("validateAndTransformQuery", () => {
       })
     )
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         fields: "+test_prop,-updated_at",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaults: [
@@ -296,9 +337,9 @@ describe("validateAndTransformQuery", () => {
       query: {
         fields: "*product.variants,+product.id",
       },
-    } as unknown as Request
-    const mockResponse = {} as Response
-    const nextFunction: NextFunction = jest.fn()
+    } as unknown as MedusaRequest
+    const mockResponse = {} as MedusaResponse
+    const nextFunction: MedusaNextFunction = jest.fn()
 
     let queryConfig: any = {
       defaults: [
@@ -367,13 +408,11 @@ describe("validateAndTransformQuery", () => {
       })
     )
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         fields: "store.name",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaultFields: [
@@ -423,9 +462,9 @@ describe("validateAndTransformQuery", () => {
       query: {
         fields: "+test_prop",
       },
-    } as unknown as Request
-    const mockResponse = {} as Response
-    const nextFunction: NextFunction = jest.fn()
+    } as unknown as MedusaRequest
+    const mockResponse = {} as MedusaResponse
+    const nextFunction: MedusaNextFunction = jest.fn()
 
     let queryConfig: any = {
       defaultFields: [
@@ -468,13 +507,11 @@ describe("validateAndTransformQuery", () => {
       )
     )
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         fields: "product",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaultFields: [
@@ -517,13 +554,11 @@ describe("validateAndTransformQuery", () => {
       )
     )
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         fields: "store",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaultFields: [
@@ -562,13 +597,11 @@ describe("validateAndTransformQuery", () => {
       )
     )
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         fields: "*product",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaults: [
@@ -605,13 +638,11 @@ describe("validateAndTransformQuery", () => {
       )
     )
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         fields: "*product.variants",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaults: [
@@ -649,13 +680,11 @@ describe("validateAndTransformQuery", () => {
       )
     )
 
-    //////////////////////////////
-
     mockRequest = {
       query: {
         fields: "*product",
       },
-    } as unknown as Request
+    } as unknown as MedusaRequest
 
     queryConfig = {
       defaults: [

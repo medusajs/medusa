@@ -1,4 +1,4 @@
-import { isDefined } from "@medusajs/framework/utils"
+import { isDefined } from "./is-defined"
 
 export function removeUndefinedProperties<T extends object>(inputObj: T): T {
   const removeProperties = (obj: T) => {

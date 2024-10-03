@@ -4,7 +4,7 @@ import presets from "./theme-presets"
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [require("@medusajs/ui-preset")],
-  darkMode: ["class", `[data-theme="dark"]`], // hooks into docusaurus' dark mode settings
+  darkMode: ["class", `[data-theme="dark"]`],
   theme: {
     extend: {
       colors: {
