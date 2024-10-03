@@ -36,6 +36,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
     - name: offset
       in: query
       description: The number of items to skip when retrieving a list.
@@ -44,6 +46,8 @@ get:
         type: number
         title: offset
         description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -52,6 +56,8 @@ get:
         type: number
         title: limit
         description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
     - name: order
       in: query
       description: >-
@@ -1020,18 +1026,6 @@ get:
           url: >-
             https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
           description: 'Storefront guide: How to show product variants'' prices with taxes.'
-    - name: country_code
-      in: query
-      description: >-
-        The country code the products are being viewed from. This is required if
-        you're retrieving product variant prices with taxes.
-      required: false
-      schema:
-        type: string
-        title: country_code
-        description: >-
-          The country code the products are being viewed from. This is required
-          if you're retrieving product variant prices with taxes.
     - name: province
       in: query
       description: >-
@@ -1046,20 +1040,6 @@ get:
           The province the products are being viewed from. This is useful to
           narrow down the tax context when calculating product variant prices
           with taxes.
-    - name: cart_id
-      in: query
-      description: >-
-        The ID of the customer's cart. If set, the cart's region and shipping
-        address's country code and province are used instead of the `region_id`,
-        `country_code`, and `province` properties.
-      required: false
-      schema:
-        type: string
-        title: cart_id
-        description: >-
-          The ID of the customer's cart. If set, the cart's region and shipping
-          address's country code and province are used instead of the
-          `region_id`, `country_code`, and `province` properties.
     - name: sales_channel_id
       in: query
       required: false
@@ -1088,6 +1068,38 @@ get:
               type: string
               title: category_id
               description: A product category's ID.
+    - name: currency_code
+      in: query
+      description: The product's currency code.
+      required: false
+      schema:
+        type: string
+        title: currency_code
+        description: The product's currency code.
+    - name: variants
+      in: query
+      description: The product's variants.
+      required: false
+      schema:
+        type: object
+        description: The product's variants.
+        x-schemaName: StoreProductVariantParams
+        properties:
+          options:
+            type: object
+            description: The variant's options.
+            required:
+              - value
+              - option_id
+            properties:
+              value:
+                type: string
+                title: value
+                description: The option's value.
+              option_id:
+                type: string
+                title: option_id
+                description: The option's option id.
   x-codeSamples:
     - lang: Shell
       label: cURL

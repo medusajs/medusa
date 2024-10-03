@@ -1,7 +1,7 @@
 /**
  * @schema StoreShippingOptionType
  * type: object
- * description: The shipping option type's details.
+ * description: The shipping option's details.
  * x-schemaName: StoreShippingOptionType
  * required:
  *   - id
@@ -16,7 +16,7 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The type's ID.
+ *     description: The shipping option's ID.
  *   label:
  *     type: string
  *     title: label
@@ -32,22 +32,22 @@
  *   shipping_option_id:
  *     type: string
  *     title: shipping_option_id
- *     description: The ID of the associated shipping option.
+ *     description: The type's shipping option id.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The date the type was created.
+ *     description: The type's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The date the type was updated.
+ *     description: The type's updated at.
  *   deleted_at:
  *     type: string
  *     format: date-time
  *     title: deleted_at
- *     description: The date the type was deleted.
+ *     description: The type's deleted at.
  * 
 */
 

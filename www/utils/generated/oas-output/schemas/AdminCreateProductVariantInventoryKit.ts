@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateProductVariantInventoryKit
  * type: object
- * description: The details of a variant's inventory item.
+ * description: The inventory item's inventory items.
  * x-schemaName: AdminCreateProductVariantInventoryKit
  * required:
  *   - inventory_item_id
@@ -9,12 +9,11 @@
  *   inventory_item_id:
  *     type: string
  *     title: inventory_item_id
- *     description: The inventory item's ID.
+ *     description: The inventory item's inventory item id.
  *   required_quantity:
  *     type: number
  *     title: required_quantity
- *     description: The number of units a single quantity is equivalent to. For example, if a customer orders one quantity of the variant, Medusa checks the availability of the quantity multiplied by the
- *       value set for `required_quantity`. When the customer orders the quantity, Medusa reserves the ordered quantity multiplied by the value set for `required_quantity`.
+ *     description: The inventory item's required quantity.
  * 
 */
 

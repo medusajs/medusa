@@ -1,7 +1,7 @@
 /**
  * @schema RefundReason
  * type: object
- * description: The refund reason's details.
+ * description: The refund's refund reason.
  * x-schemaName: RefundReason
  * required:
  *   - id
@@ -24,17 +24,17 @@
  *     description: The refund reason's description.
  *   metadata:
  *     type: object
- *     description: The refund reason's metadata, can hold custom key-value pairs.
+ *     description: The refund reason's metadata.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The date the refund reason was created.
+ *     description: The refund reason's created at.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The date the refund reason was updated.
+ *     description: The refund reason's updated at.
  * 
 */
 

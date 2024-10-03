@@ -2,44 +2,18 @@ type: object
 description: The claim's details.
 x-schemaName: AdminClaim
 required:
-  - order_id
-  - claim_items
-  - additional_items
-  - currency_code
+  - order
+  - return
   - id
-  - region_id
-  - customer_id
-  - sales_channel_id
-  - email
-  - shipping_methods
-  - payment_status
-  - fulfillment_status
-  - summary
-  - metadata
+  - type
+  - order_id
+  - display_id
+  - order_version
   - created_at
   - updated_at
-  - original_item_total
-  - original_item_subtotal
-  - original_item_tax_total
-  - item_total
-  - item_subtotal
-  - item_tax_total
-  - original_total
-  - original_subtotal
-  - original_tax_total
-  - total
-  - subtotal
-  - tax_total
-  - discount_total
-  - discount_tax_total
-  - gift_card_total
-  - gift_card_tax_total
-  - shipping_total
-  - shipping_subtotal
-  - shipping_tax_total
-  - original_shipping_total
-  - original_shipping_subtotal
-  - original_shipping_tax_total
+  - canceled_at
+  - additional_items
+  - claim_items
 properties:
   id:
     type: string
@@ -60,7 +34,7 @@ properties:
     items:
       $ref: ./BaseClaimItem.yaml
   return:
-    $ref: ./Return.yaml
+    $ref: ./AdminReturn.yaml
   return_id:
     type: string
     title: return_id
@@ -73,76 +47,15 @@ properties:
     type: number
     title: refund_amount
     description: The amount to be refunded.
-  currency_code:
-    type: string
-    title: currency_code
-    description: The claim's currency code.
-  region_id:
-    type: string
-    title: region_id
-    description: The ID of the region associated with the claim.
-  customer_id:
-    type: string
-    title: customer_id
-    description: The ID of the customer associated with the claim's order.
-  sales_channel_id:
-    type: string
-    title: sales_channel_id
-    description: The ID of the sales channel the claim's order is created in.
-  email:
-    type: string
-    title: email
-    description: The email associated with the claim's order.
-    format: email
   display_id:
     type: number
     title: display_id
     description: The claim's display ID.
-  shipping_address:
-    $ref: ./BaseOrderAddress.yaml
-  billing_address:
-    $ref: ./BaseOrderAddress.yaml
   shipping_methods:
     type: array
     description: The claim's shipping methods.
     items:
-      $ref: ./BaseOrderShippingMethod.yaml
-  payment_collections:
-    type: array
-    description: The claim's payment collections.
-    items:
-      $ref: ./BasePaymentCollection.yaml
-  payment_status:
-    type: string
-    description: The claim's payment status.
-    enum:
-      - canceled
-      - not_paid
-      - awaiting
-      - authorized
-      - partially_authorized
-      - captured
-      - partially_captured
-      - partially_refunded
-      - refunded
-      - requires_action
-  fulfillments:
-    type: array
-    description: The claim's fulfillments.
-    items:
-      $ref: ./BaseOrderFulfillment.yaml
-  fulfillment_status:
-    type: string
-    description: The claim's fulfillment status.
-    enum:
-      - canceled
-      - not_fulfilled
-      - partially_fulfilled
-      - fulfilled
-      - partially_shipped
-      - shipped
-      - partially_delivered
-      - delivered
+      $ref: ./AdminOrderShippingMethod.yaml
   transactions:
     type: array
     description: The claim's transactions.
@@ -152,8 +65,6 @@ properties:
       description: Learn more about transactions of orders and associated models.
     items:
       $ref: ./BaseOrderTransaction.yaml
-  summary:
-    $ref: ./BaseOrderSummary.yaml
   metadata:
     type: object
     description: The claim's metadata, used to store custom key-value pairs.
@@ -167,91 +78,33 @@ properties:
     format: date-time
     title: updated_at
     description: The claim's update date.
-  original_item_total:
-    type: number
-    title: original_item_total
-    description: The total of the original items in the associated order.
-  original_item_subtotal:
-    type: number
-    title: original_item_subtotal
-    description: The subtotal of the original items in the associated order.
-  original_item_tax_total:
-    type: number
-    title: original_item_tax_total
-    description: The tax total of the original items in the associated order.
-  item_total:
-    type: number
-    title: item_total
-    description: The total of the claim's items.
-  item_subtotal:
-    type: number
-    title: item_subtotal
-    description: The subtotal of the claim's items.
-  item_tax_total:
-    type: number
-    title: item_tax_total
-    description: The tax total of the claim's items.
-  original_total:
-    type: number
-    title: original_total
-    description: The associated order's original total.
-  original_subtotal:
-    type: number
-    title: original_subtotal
-    description: The associated order's original subtotal.
-  original_tax_total:
-    type: number
-    title: original_tax_total
-    description: The associated order's original tax total.
-  total:
-    type: number
-    title: total
-    description: The associated order's total.
-  subtotal:
-    type: number
-    title: subtotal
-    description: The claim's subtotal.
-  tax_total:
-    type: number
-    title: tax_total
-    description: The claim's tax total.
-  discount_total:
-    type: number
-    title: discount_total
-    description: The claim's discount total.
-  discount_tax_total:
-    type: number
-    title: discount_tax_total
-    description: The claim's discount tax total.
-  gift_card_total:
-    type: number
-    title: gift_card_total
-    description: The claim's gift card total.
-  gift_card_tax_total:
-    type: number
-    title: gift_card_tax_total
-    description: The claim's gift card tax total.
-  shipping_total:
-    type: number
-    title: shipping_total
-    description: The claim's shipping total.
-  shipping_subtotal:
-    type: number
-    title: shipping_subtotal
-    description: The claim's shipping subtotal.
-  shipping_tax_total:
-    type: number
-    title: shipping_tax_total
-    description: The claim's shipping tax total.
-  original_shipping_total:
-    type: number
-    title: original_shipping_total
-    description: The associated order's original shipping total.
-  original_shipping_subtotal:
-    type: number
-    title: original_shipping_subtotal
-    description: The associated order's original shipping subtotal.
-  original_shipping_tax_total:
-    type: number
-    title: original_shipping_tax_total
-    description: The associated order's original shipping tax total.
+  order:
+    type: string
+    title: order
+    description: The order's details.
+    externalDocs:
+      url: '#pagination'
+  type:
+    type: string
+    description: The claim's type.
+    enum:
+      - replace
+      - refund
+  order_version:
+    type: string
+    title: order_version
+    description: The version of the order when the claim is applied.
+  created_by:
+    type: string
+    title: created_by
+    description: The ID of the user that created the claim.
+  canceled_at:
+    type: string
+    title: canceled_at
+    description: The date the claim was canceled.
+    format: date-time
+  deleted_at:
+    type: string
+    format: date-time
+    title: deleted_at
+    description: The date the claim was deleted.

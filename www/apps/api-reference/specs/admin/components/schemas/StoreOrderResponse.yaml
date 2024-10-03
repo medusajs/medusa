@@ -1,8 +1,12 @@
 type: object
-description: SUMMARY
+description: The order's details.
 x-schemaName: StoreOrderResponse
 required:
   - order
 properties:
   order:
-    $ref: ./StoreOrder.yaml
+    type: string
+    title: order
+    description: The order's details.
+    externalDocs:
+      url: '#pagination'

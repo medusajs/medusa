@@ -86,7 +86,7 @@
  *     description: The address's phone.
  *   metadata:
  *     type: object
- *     description: The address's metadata, can hold custom key-value pairs. 
+ *     description: The address's metadata, can hold custom key-value pairs.
  *   created_at:
  *     type: string
  *     format: date-time

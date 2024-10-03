@@ -883,14 +883,6 @@
  *       externalDocs:
  *         url: https://docs.medusajs.com/v2/resources/storefront-development/products/price/examples/tax-price
  *         description: "Storefront guide: How to show product variants' prices with taxes."
- *   - name: country_code
- *     in: query
- *     description: The country code the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
- *     required: false
- *     schema:
- *       type: string
- *       title: country_code
- *       description: The country code the products are being viewed from. This is required if you're retrieving product variant prices with taxes.
  *   - name: province
  *     in: query
  *     description: The province the products are being viewed from. This is useful to narrow down the tax context when calculating product variant prices with taxes.
@@ -899,14 +891,6 @@
  *       type: string
  *       title: province
  *       description: The province the products are being viewed from. This is useful to narrow down the tax context when calculating product variant prices with taxes.
- *   - name: cart_id
- *     in: query
- *     description: The ID of the customer's cart. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` properties.
- *     required: false
- *     schema:
- *       type: string
- *       title: cart_id
- *       description: The ID of the customer's cart. If set, the cart's region and shipping address's country code and province are used instead of the `region_id`, `country_code`, and `province` properties.
  *   - name: sales_channel_id
  *     in: query
  *     required: false
@@ -935,6 +919,38 @@
  *             type: string
  *             title: category_id
  *             description: A product category's ID.
+ *   - name: currency_code
+ *     in: query
+ *     description: The product's currency code.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: currency_code
+ *       description: The product's currency code.
+ *   - name: variants
+ *     in: query
+ *     description: The product's variants.
+ *     required: false
+ *     schema:
+ *       type: object
+ *       description: The product's variants.
+ *       x-schemaName: StoreProductVariantParams
+ *       properties:
+ *         options:
+ *           type: object
+ *           description: The variant's options.
+ *           required:
+ *             - value
+ *             - option_id
+ *           properties:
+ *             value:
+ *               type: string
+ *               title: value
+ *               description: The option's value.
+ *             option_id:
+ *               type: string
+ *               title: option_id
+ *               description: The option's option id.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateReturnReason
  * type: object
- * description: The details of a return reason to create.
+ * description: The details of the return reason to create.
  * x-schemaName: AdminCreateReturnReason
  * required:
  *   - value
@@ -22,10 +22,10 @@
  *   parent_return_reason_id:
  *     type: string
  *     title: parent_return_reason_id
- *     description: The ID of the parent return reason.
+ *     description: The return reason's parent return reason id.
  *   metadata:
  *     type: object
- *     description: The return reason's metadata, can hold custom key-value pairs.
+ *     description: The return reason's metadata.
  * 
 */
 

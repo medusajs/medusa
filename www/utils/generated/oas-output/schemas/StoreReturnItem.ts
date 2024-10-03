@@ -1,7 +1,7 @@
 /**
  * @schema StoreReturnItem
  * type: object
- * description: The return item's details.
+ * description: The item's items.
  * x-schemaName: StoreReturnItem
  * properties:
  *   id:
@@ -23,22 +23,22 @@
  *   reason_id:
  *     type: string
  *     title: reason_id
- *     description: The ID of the item's reason.
+ *     description: The item's reason id.
  *   note:
  *     type: string
  *     title: note
- *     description: A note with more details on why the item is returned.
+ *     description: The item's note.
  *   item_id:
  *     type: string
  *     title: item_id
- *     description: The ID of the item in the order.
+ *     description: The item's item id.
  *   return_id:
  *     type: string
  *     title: return_id
- *     description: The ID of the return this item belongs to.
+ *     description: The item's return id.
  *   metadata:
  *     type: object
- *     description: The item's metadata, can hold custom key-value pairs.
+ *     description: The item's metadata.
  * required:
  *   - id
  *   - quantity

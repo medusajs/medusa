@@ -38,6 +38,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
@@ -106,6 +108,8 @@ post:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
   security:
     - api_token: []
     - cookie_auth: []
@@ -216,7 +220,7 @@ delete:
         application/json:
           schema:
             type: object
-            description: SUMMARY
+            description: The deletion's details.
             required:
               - id
               - object
@@ -246,4 +250,4 @@ delete:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-  x-workflow: deleteCustomersWorkflow
+  x-workflow: removeCustomerAccountWorkflow
