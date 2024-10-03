@@ -5,6 +5,7 @@ import {
 import {
   WorkflowData,
   WorkflowResponse,
+  createHook,
   createWorkflow,
   parallelize,
   transform,
@@ -89,6 +90,14 @@ export const addToCartWorkflow = createWorkflow(
       items: lineItems,
     })
 
+    const beforeAddToCart = createHook(
+      "beforeAddToCart",
+      {
+        itemsToCreate,
+        itemsToUpdate,
+      }
+    );
+
     confirmVariantInventoryWorkflow.runAsStep({
       input: {
         sales_channel_id: input.cart.sales_channel_id as string,
@@ -142,6 +151,8 @@ export const addToCartWorkflow = createWorkflow(
       },
     })
 
-    return new WorkflowResponse(items)
+    return new WorkflowResponse(items, {
+      hooks: [beforeAddToCart],
+    })
   }
 )
