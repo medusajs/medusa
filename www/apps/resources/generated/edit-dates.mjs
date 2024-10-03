@@ -216,7 +216,6 @@ export const generatedEditDates = {
   "app/troubleshooting/errors-after-upgrading/page.mdx": "2024-07-11T10:29:13+03:00",
   "app/troubleshooting/errors-installing-cli/page.mdx": "2024-05-03T17:36:38+03:00",
   "app/troubleshooting/general-errors/page.mdx": "2024-05-03T17:36:38+03:00",
-  "app/troubleshooting/pnpm-errors/page.mdx": "2024-08-13T09:54:56+03:00",
   "app/troubleshooting/s3/page.mdx": "2024-08-06T09:59:46+03:00",
   "app/troubleshooting/page.mdx": "2024-07-18T08:57:11+02:00",
   "app/upgrade-guides/page.mdx": "2024-07-18T08:57:11+02:00",
@@ -2223,5 +2222,6 @@ export const generatedEditDates = {
   "references/types/types/types.AdminBaseReturnReasonPayload/page.mdx": "2024-10-03T00:11:53.303Z",
   "references/user/IMessageAggregator/methods/user.IMessageAggregator.getMessages/page.mdx": "2024-10-03T00:12:20.668Z",
   "references/user/interfaces/user.IModuleService/page.mdx": "2024-10-03T00:12:20.657Z",
-  "references/user/interfaces/user.MessageAggregatorFormat/page.mdx": "2024-10-03T00:12:20.662Z"
+  "references/user/interfaces/user.MessageAggregatorFormat/page.mdx": "2024-10-03T00:12:20.662Z",
+  "app/troubleshooting/dist-imports/page.mdx": "2024-10-03T09:19:37.639Z"
 }
