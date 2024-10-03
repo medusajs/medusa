@@ -11,7 +11,7 @@
     "!dist/**/__fixtures__"
   ],
   "bin": {
-    "medusa-db": "./dist/mikro-orm-cli/bin.js"
+    "medusa-mikro-orm": "./dist/mikro-orm-cli/bin.js"
   },
   "exports": {
     ".": "./dist/index.js",

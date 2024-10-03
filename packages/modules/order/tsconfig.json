@@ -8,8 +8,5 @@
       "@types": ["./src/types"],
       "@utils": ["./src/utils"]
     }
-  },
-  "ts-node": {
-    "transpileOnly": true
   }
 }
