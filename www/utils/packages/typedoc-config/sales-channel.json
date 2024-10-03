@@ -2,5 +2,10 @@
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
     "../../../../packages/modules/sales-channel/tsconfig.json"
+  ],
+  "include": ["../../../../packages/modules/sales-channel/src"],
+  "exclude": [
+    "../../../../packages/modules/sales-channel/dist", 
+    "../../../../packages/modules/sales-channel/node_modules"
   ]
 }

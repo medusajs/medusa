@@ -7,7 +7,7 @@ import { TypeList, WorkflowDiagram } from "docs-ui"
 
 # removeRemoteLinkStep - Medusa Workflows API Reference
 
-This documentation provides a reference to the `removeRemoteLinkStep`. It belongs to the `@medusajs/core-flows` package.
+This documentation provides a reference to the `removeRemoteLinkStep`. It belongs to the `@medusajs/medusa/core-flows` package.
 
 This step deletes linked records of a record.
 
@@ -18,13 +18,13 @@ Learn more in the [Remote Link documentation](https://docs.medusajs.com/v2/advan
 ```ts
 import { 
   createWorkflow
-} from "@medusajs/framework/workflows-sdk"
+} from "@medusajs/workflows-sdk"
 import {
   removeRemoteLinkStep
 } from "@medusajs/core-flows"
 import {
   Modules
-} from "@medusajs/framework/utils"
+} from "@medusajs/utils"
 
 const helloWorldWorkflow = createWorkflow(
   "hello-world",

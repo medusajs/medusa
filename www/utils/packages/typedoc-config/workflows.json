@@ -2,5 +2,10 @@
   "$schema": "http://json.schemastore.org/tsconfig",
   "extends": [
     "../../../../packages/core/workflows-sdk/tsconfig.json"
+  ],
+  "include": ["../../../../packages/core/workflows-sdk/src"],
+  "exclude": [
+    "../../../../packages/core/workflows-sdk/dist", 
+    "../../../../packages/core/workflows-sdk/node_modules"
   ]
 }
