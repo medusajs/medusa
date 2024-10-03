@@ -15,10 +15,10 @@ import {
   prepareAdjustmentsFromPromotionActionsStep,
   removeLineItemAdjustmentsStep,
   removeShippingMethodAdjustmentsStep,
+  updateCartPromotionsStep,
 } from "../steps"
-import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
-import { CartDTO } from "@medusajs/types"
+import { CartDTO } from "@medusajs/framework/types"
 
 export type UpdateCartPromotionsWorkflowInput = {
   cart_id?: string
