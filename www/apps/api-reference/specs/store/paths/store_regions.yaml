@@ -35,6 +35,8 @@ get:
           if a field is prefixed with `+` it will be added to the default
           fields, using `-` will remove it from the default fields. without
           prefix it will replace the entire default fields.
+        externalDocs:
+          url: '#select-fields-and-relations'
     - name: offset
       in: query
       description: The number of items to skip when retrieving a list.
@@ -43,6 +45,8 @@ get:
         type: number
         title: offset
         description: The number of items to skip when retrieving a list.
+        externalDocs:
+          url: '#pagination'
     - name: limit
       in: query
       description: Limit the number of items returned in the list.
@@ -51,6 +55,8 @@ get:
         type: number
         title: limit
         description: Limit the number of items returned in the list.
+        externalDocs:
+          url: '#pagination'
     - name: order
       in: query
       description: >-
@@ -159,7 +165,7 @@ get:
           schema:
             allOf:
               - type: object
-                description: SUMMARY
+                description: The paginated list of regions.
                 required:
                   - limit
                   - offset
@@ -168,23 +174,25 @@ get:
                   limit:
                     type: number
                     title: limit
-                    description: The region's limit.
+                    description: The maximum number of items returned.
                   offset:
                     type: number
                     title: offset
-                    description: The region's offset.
+                    description: >-
+                      The number of items skipped before retrieving the returned
+                      items.
                   count:
                     type: number
                     title: count
-                    description: The region's count.
+                    description: The total number of items.
               - type: object
-                description: SUMMARY
+                description: The paginated list of regions.
                 required:
                   - regions
                 properties:
                   regions:
                     type: array
-                    description: The region's regions.
+                    description: The list of regions.
                     items:
                       $ref: ../components/schemas/StoreRegion.yaml
     '400':

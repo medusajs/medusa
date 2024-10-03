@@ -7,9 +7,6 @@
  *   - id
  *   - shipping_method_id
  *   - shipping_method
- *   - claim_id
- *   - exchange_id
- *   - return_id
  *   - created_at
  *   - updated_at
  * properties:

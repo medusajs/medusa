@@ -11,7 +11,6 @@
  *   - external_id
  *   - description
  *   - inventory_item_id
- *   - inventory_item
  * properties:
  *   id:
  *     type: string
@@ -42,8 +41,7 @@
  *     title: inventory_item_id
  *     description: The ID of the inventory item this reservation is associated with.
  *   inventory_item:
- *     type: object
- *     description: The associated inventory item.
+ *     $ref: "#/components/schemas/AdminInventoryItem"
  *   metadata:
  *     type: object
  *     description: The reservation's metadata, can hold custom key-value pairs.

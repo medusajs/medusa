@@ -6563,6 +6563,218 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"children": [
+				{
+					"id": 74,
+					"name": "__joinerConfig",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isOptional": true
+					},
+					"signatures": [
+						{
+							"id": 75,
+							"name": "__joinerConfig",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [],
+								"modifierTags": [
+									"@ignore"
+								]
+							},
+							"type": {
+								"type": "reference",
+								"target": 147,
+								"name": "ModuleJoinerConfig",
+								"package": "@medusajs/types"
+							}
+						}
+					]
+				},
+				{
+					"id": 76,
+					"name": "__hooks",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [],
+						"modifierTags": [
+							"@ignore"
+						]
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 77,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 78,
+									"name": "onApplicationStart",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 79,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"signatures": [
+												{
+													"id": 80,
+													"name": "__type",
+													"variant": "signature",
+													"kind": 4096,
+													"flags": {},
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Promise"
+														},
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "void"
+															}
+														],
+														"name": "Promise",
+														"package": "typescript"
+													}
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 81,
+									"name": "onApplicationShutdown",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 82,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"signatures": [
+												{
+													"id": 83,
+													"name": "__type",
+													"variant": "signature",
+													"kind": 4096,
+													"flags": {},
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Promise"
+														},
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "void"
+															}
+														],
+														"name": "Promise",
+														"package": "typescript"
+													}
+												}
+											]
+										}
+									}
+								},
+								{
+									"id": 84,
+									"name": "onApplicationPrepareShutdown",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {
+										"isOptional": true
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 85,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"signatures": [
+												{
+													"id": 86,
+													"name": "__type",
+													"variant": "signature",
+													"kind": 4096,
+													"flags": {},
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+															"qualifiedName": "Promise"
+														},
+														"typeArguments": [
+															{
+																"type": "intrinsic",
+																"name": "void"
+															}
+														],
+														"name": "Promise",
+														"package": "typescript"
+													}
+												}
+											]
+										}
+									}
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										78,
+										81,
+										84
+									]
+								}
+							]
+						}
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						76
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						74
+					]
+				}
+			],
 			"extendedBy": [
 				{
 					"type": "reference",
@@ -6654,6 +6866,30 @@
 							]
 						}
 					}
+				},
+				{
+					"id": 245,
+					"name": "internal",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "will prevent the info log to be displayed about those events"
+							}
+						],
+						"modifierTags": [
+							"@internal"
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
 				}
 			],
 			"groups": [
@@ -6661,7 +6897,8 @@
 					"title": "Properties",
 					"children": [
 						240,
-						241
+						241,
+						245
 					]
 				}
 			]
@@ -7552,6 +7789,58 @@
 			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
 			"qualifiedName": "IModuleService"
 		},
+		"74": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "IModuleService.__joinerConfig"
+		},
+		"75": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "IModuleService.__joinerConfig"
+		},
+		"76": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "IModuleService.__hooks"
+		},
+		"77": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"78": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.onApplicationStart"
+		},
+		"79": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"80": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"81": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.onApplicationShutdown"
+		},
+		"82": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"83": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"84": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.onApplicationPrepareShutdown"
+		},
+		"85": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"86": {
+			"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
 		"87": {
 			"sourceFileName": "../../../../packages/core/types/src/api-key/mutations/api-key.ts",
 			"qualifiedName": "CreateApiKeyDTO"
@@ -8175,6 +8464,10 @@
 		"243": {
 			"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
 			"qualifiedName": "__type.__index"
+		},
+		"245": {
+			"sourceFileName": "../../../../packages/core/types/src/shared-context.ts",
+			"qualifiedName": "MessageAggregatorFormat.internal"
 		},
 		"246": {
 			"sourceFileName": "../../../../packages/core/types/src/event-bus/common.ts",

@@ -63,10 +63,6 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: confirmExchangeRequestWorkflow
- * requestBody:
- *   content:
- *     application/json:
- *       schema: {}
  * 
 */
 

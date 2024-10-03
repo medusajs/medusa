@@ -10,7 +10,7 @@ import type { Client } from "pg"
 const ADMIN_EMAIL = "admin@medusa-test.com"
 const STORE_CORS = "http://localhost:8000,https://docs.medusajs.com"
 const ADMIN_CORS =
-  "http://localhost:7000,http://localhost:7001,https://docs.medusajs.com"
+  "http://localhost:5173,http://localhost:9000,https://docs.medusajs.com"
 const AUTH_CORS = ADMIN_CORS
 const DEFAULT_REDIS_URL = "redis://localhost:6379"
 
