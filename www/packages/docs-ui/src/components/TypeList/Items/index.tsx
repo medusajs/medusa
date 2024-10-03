@@ -42,7 +42,7 @@ const TypeListItem = ({
   sectionTitle,
   referenceType = "method",
 }: TypeListItemProps) => {
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const pathname = usePathname()
   const {
     config: { baseUrl, basePath },

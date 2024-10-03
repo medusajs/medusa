@@ -1,7 +1,7 @@
 /**
  * @schema CreateOrderReturnReason
  * type: object
- * description: SUMMARY
+ * description: The details of the return reason to create.
  * x-schemaName: CreateOrderReturnReason
  * required:
  *   - value

@@ -20,7 +20,7 @@ import { useArea } from "@/providers/area"
 import SectionDivider from "../../Section/Divider"
 import clsx from "clsx"
 import { Feedback, Loading, Link } from "docs-ui"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import formatReportLink from "@/utils/format-report-link"
 import { SchemaObject, TagObject } from "@/types/openapi"
 import useSWR from "swr"
@@ -49,11 +49,12 @@ const MDXContentClient = dynamic<MDXContentClientProps>(
 
 const TagSection = ({ tag }: TagSectionProps) => {
   const { activePath, setActivePath } = useSidebar()
+  const router = useRouter()
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
   const pathname = usePathname()
-  const { scrollableElement, scrollToElement } = useScrollController()
+  const { scrollableElement, scrollToTop } = useScrollController()
   const { data } = useSWR<{
     schema: SchemaObject
   }>(
@@ -84,10 +85,14 @@ const TagSection = ({ tag }: TagSectionProps) => {
         // ensure that the hash link doesn't change if it links to an inner path
         const currentHashArr = location.hash.replace("#", "").split("_")
         if (currentHashArr.length < 2 || currentHashArr[0] !== slugTagName) {
-          // can't use next router as it doesn't support
-          // changing url without scrolling
-          history.replaceState({}, "", `#${slugTagName}`)
-          setActivePath(slugTagName)
+          if (location.hash !== slugTagName) {
+            router.push(`#${slugTagName}`, {
+              scroll: false,
+            })
+          }
+          if (activePath !== slugTagName) {
+            setActivePath(slugTagName)
+          }
         }
       }
     },
@@ -98,8 +103,11 @@ const TagSection = ({ tag }: TagSectionProps) => {
       const tagName = activePath.split("_")
       if (tagName.length === 1 && tagName[0] === slugTagName) {
         const elm = document.getElementById(tagName[0])
-        if (elm && !checkElementInViewport(elm, 10)) {
-          scrollToElement(elm)
+        if (elm && !checkElementInViewport(elm, 0)) {
+          scrollToTop(
+            elm.offsetTop + (elm.offsetParent as HTMLElement)?.offsetTop,
+            0
+          )
         }
       } else if (tagName.length > 1 && tagName[0] === slugTagName) {
         setLoadPaths(true)

@@ -6,5 +6,9 @@
   "include": [
     "../../../../packages/modules/product/src",
     "../../../../packages/core/utils/src/product"
+  ],
+  "exclude": [
+    "../../../../packages/modules/product/dist", 
+    "../../../../packages/modules/product/node_modules"
   ]
 }

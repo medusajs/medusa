@@ -79,7 +79,7 @@ const TagSectionSchema = ({ schema, tagName }: TagSectionSchemaProps) => {
   useEffect(() => {
     if (schemaSlug === (activePath || location.hash.replace("#", ""))) {
       const elm = document.getElementById(schemaSlug) as HTMLElement
-      if (!checkElementInViewport(elm, 10)) {
+      if (!checkElementInViewport(elm, 0)) {
         scrollToElement(elm)
       }
     }

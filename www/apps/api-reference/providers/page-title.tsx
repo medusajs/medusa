@@ -12,7 +12,7 @@ type PageTitleProviderProps = {
 }
 
 const PageTitleProvider = ({ children }: PageTitleProviderProps) => {
-  const { activePath, getActiveItem } = useSidebar()
+  const { activePath, activeItem } = useSidebar()
   const { area } = useArea()
 
   useEffect(() => {
@@ -21,7 +21,6 @@ const PageTitleProvider = ({ children }: PageTitleProviderProps) => {
     if (!activePath?.length) {
       document.title = titleSuffix
     } else {
-      const activeItem = getActiveItem()
       if (activeItem?.path === activePath) {
         document.title = `${activeItem?.title} - ${titleSuffix}`
       } else {
@@ -34,7 +33,7 @@ const PageTitleProvider = ({ children }: PageTitleProviderProps) => {
         }
       }
     }
-  }, [activePath, area, getActiveItem])
+  }, [activePath, area, activeItem])
 
   return (
     <PageTitleContext.Provider value={null}>
