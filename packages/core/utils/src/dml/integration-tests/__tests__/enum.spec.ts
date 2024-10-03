@@ -82,7 +82,7 @@ describe("EntityBuilder | enum", () => {
       id: user1.id,
     })
 
-    expect(mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
+    expect(await mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
       id: user1.id,
       username: "User 1",
       role: "admin",
