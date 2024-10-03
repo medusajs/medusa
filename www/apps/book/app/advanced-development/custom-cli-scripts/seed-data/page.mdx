@@ -41,19 +41,19 @@ import { faker } from "@faker-js/faker"
 import { 
   ContainerRegistrationKeys, 
   Modules, 
-  ProductStatus
-} from "@medusajs/framework/utils";
+  ProductStatus,
+} from "@medusajs/framework/utils"
 import { 
   createInventoryLevelsWorkflow,
-  createProductsWorkflow
-} from "@medusajs/medusa/core-flows";
+  createProductsWorkflow,
+} from "@medusajs/medusa/core-flows"
 
-export default async function seedDummyProducts ({
-  container
+export default async function seedDummyProducts({
+  container,
 }: ExecArgs) {
   const salesChannelModuleService = container.resolve(
     Modules.SALES_CHANNEL
-  );
+  )
   const logger = container.resolve(
     ContainerRegistrationKeys.LOGGER
   )
@@ -61,13 +61,13 @@ export default async function seedDummyProducts ({
     ContainerRegistrationKeys.QUERY
   )
 
-  let defaultSalesChannel = await salesChannelModuleService
+  const defaultSalesChannel = await salesChannelModuleService
     .listSalesChannels({
       name: "Default Sales Channel",
-    });
+    })
 
-  const sizeOptions = ["S", "M", "L", "XL"];
-  const colorOptions = ["Black", "White"];
+  const sizeOptions = ["S", "M", "L", "XL"]
+  const colorOptions = ["Black", "White"]
   const currency_code = "eur"
   const productsNum = 50
 
@@ -85,7 +85,7 @@ Next, replace the `TODO` with the following:
 
 ```ts title="src/scripts/demo-products.ts"
 const productsData = new Array(productsNum).fill(0).map((_, index) => {
-  const title = faker.commerce.product() + '_' + index
+  const title = faker.commerce.product() + "_" + index
   return {
     title,
     is_giftcard: true,
@@ -104,12 +104,12 @@ const productsData = new Array(productsNum).fill(0).map((_, index) => {
     images: [
       {
         url: faker.image.urlPlaceholder({
-          text: title
+          text: title,
         }),
       },
       {
         url: faker.image.urlPlaceholder({
-          text: title
+          text: title,
         }),
       },
     ],
@@ -142,7 +142,7 @@ Then, replace the new `TODO` with the following:
 ```ts title="src/scripts/demo-products.ts"
 const { result: products } = await createProductsWorkflow(container).run({
   input: {
-    products: productsData
+    products: productsData,
   },
 })
 
@@ -156,16 +156,16 @@ You create the generated products using the `createProductsWorkflow` imported pr
 Only thing left is to create inventory levels for the products. So, replace the last `TODO` with the following:
 
 ```ts title="src/scripts/demo-products.ts"
-logger.info("Seeding inventory levels.");
+logger.info("Seeding inventory levels.")
 
 const { data: stockLocations } = await query.graph({
   entity: "stock_location",
-  fields: ["id"]
+  fields: ["id"],
 })
 
 const { data: inventoryItems } = await query.graph({
-  entity: 'inventory_item',
-  fields: ['id']
+  entity: "inventory_item",
+  fields: ["id"],
 })
 
 const inventoryLevels = inventoryItems.map((inventoryItem) => ({
@@ -176,11 +176,11 @@ const inventoryLevels = inventoryItems.map((inventoryItem) => ({
 
 await createInventoryLevelsWorkflow(container).run({
   input: {
-    inventory_levels: inventoryLevels
+    inventory_levels: inventoryLevels,
   },
 })
 
-logger.info("Finished seeding inventory levels data.");
+logger.info("Finished seeding inventory levels data.")
 ```
 
 You use Query to retrieve the stock location, to use the first location in the application, and the inventory items.
