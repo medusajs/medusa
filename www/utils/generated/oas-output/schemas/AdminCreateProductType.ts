@@ -1,7 +1,7 @@
 /**
  * @schema AdminCreateProductType
  * type: object
- * description: The product's details.
+ * description: The details of the product type to create.
  * x-schemaName: AdminCreateProductType
  * required:
  *   - value

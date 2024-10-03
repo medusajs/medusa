@@ -1,7 +1,7 @@
 /**
  * @schema AdminPromotionRule
  * type: object
- * description: The target rule's target rules.
+ * description: The promotion rule's details.
  * x-schemaName: AdminPromotionRule
  * required:
  *   - id
@@ -10,18 +10,19 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The target rule's ID.
+ *     description: The promotion rule's ID.
  *   description:
  *     type: string
  *     title: description
- *     description: The target rule's description.
+ *     description: The promotion rule's description.
  *   attribute:
  *     type: string
  *     title: attribute
- *     description: The target rule's attribute.
+ *     description: The promotion rule's attribute.
+ *     example: customer_group_id
  *   operator:
  *     type: string
- *     description: The target rule's operator.
+ *     description: The rule's operator.
  *     enum:
  *       - gt
  *       - lt
@@ -32,7 +33,9 @@
  *       - gte
  *   values:
  *     type: array
- *     description: The target rule's values.
+ *     description: The rule's values.
+ *     example:
+ *       - "cusgroup_123"
  *     items:
  *       $ref: "#/components/schemas/BasePromotionRuleValue"
  * 

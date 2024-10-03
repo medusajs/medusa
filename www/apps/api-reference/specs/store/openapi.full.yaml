@@ -5550,36 +5550,36 @@ paths:
                   description: A product category's ID.
         - name: currency_code
           in: query
-          description: The product's currency code.
+          description: The currency code to retrieve prices in.
           required: false
           schema:
             type: string
             title: currency_code
-            description: The product's currency code.
+            description: The currency code to retrieve prices in.
         - name: variants
           in: query
-          description: The product's variants.
+          description: Filter the products' variants.
           required: false
           schema:
             type: object
-            description: The product's variants.
+            description: Filter the products' variants.
             x-schemaName: StoreProductVariantParams
             properties:
               options:
                 type: object
-                description: The variant's options.
+                description: Filter by the variants' options.
                 required:
                   - value
                   - option_id
                 properties:
-                  value:
-                    type: string
-                    title: value
-                    description: The option's value.
                   option_id:
                     type: string
                     title: option_id
-                    description: The option's option id.
+                    description: The ID of the option to filter by.
+                  value:
+                    type: string
+                    title: value
+                    description: Filter by a value of the option.
       x-codeSamples:
         - lang: Shell
           label: cURL
@@ -6382,7 +6382,7 @@ components:
           $ref: '#/components/schemas/AdminApiKey'
     AdminApplicationMethod:
       type: object
-      description: The promotion's application method.
+      description: The application method's details.
       x-schemaName: AdminApplicationMethod
       required:
         - id
@@ -6405,43 +6405,44 @@ components:
           description: The application method's ID.
         type:
           type: string
-          description: The application method's type.
+          description: The application method's type. If it's `fixed`, the promotion discounts a fixed amount. If it's `percentage`, the promotion discounts a percentage.
           enum:
             - fixed
             - percentage
         target_type:
           type: string
-          description: The application method's target type.
+          description: Which item does the promotion apply to. `items` mean the promotion applies to the cart's items; `shipping_methods` means the promotion applies to the cart's shipping methods; `order` means the promotion applies on the entire order.
           enum:
             - items
             - shipping_methods
             - order
         allocation:
           type: string
-          description: The application method's allocation.
+          description: How is the promotion amount discounted. `each` means the discounted amount is applied on each applicable item; `across` means the discounted amount is split accross the applicable items.
           enum:
             - each
             - across
         value:
           type: number
           title: value
-          description: The application method's value.
+          description: The amount to be discounted.
         currency_code:
           type: string
           title: currency_code
           description: The application method's currency code.
+          example: usd
         max_quantity:
           type: number
           title: max_quantity
-          description: The application method's max quantity.
+          description: The max quantity allowed in the cart for the associated promotion to be applied.
         buy_rules_min_quantity:
           type: number
           title: buy_rules_min_quantity
-          description: The application method's buy rules min quantity.
+          description: The minimum quantity required for a `buyget` promotion to be applied. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `2`.
         apply_to_quantity:
           type: number
           title: apply_to_quantity
-          description: The application method's apply to quantity.
+          description: The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
     AdminBatchProductRequest:
       type: object
       description: The products to create, update, or delete.
@@ -6738,11 +6739,7 @@ components:
           title: updated_at
           description: The claim's update date.
         order:
-          type: string
-          title: order
-          description: The order's details.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/AdminOrder'
         type:
           type: string
           description: The claim's type.
@@ -6825,11 +6822,7 @@ components:
         - claim
       properties:
         order:
-          type: string
-          title: order
-          description: The order change's order.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/Order'
         claim:
           $ref: '#/components/schemas/AdminClaim'
     AdminClaimPreviewResponse:
@@ -7580,7 +7573,7 @@ components:
           description: The product tag's metadata, used to store custom key-value pairs.
     AdminCreateProductType:
       type: object
-      description: The product's details.
+      description: The details of the product type to create.
       x-schemaName: AdminCreateProductType
       required:
         - value
@@ -7679,12 +7672,12 @@ components:
             Color: Black
         inventory_items:
           type: array
-          description: The variant's inventory items.
+          description: The variant's inventory items to create.
           items:
             $ref: '#/components/schemas/AdminCreateProductVariantInventoryKit'
     AdminCreateProductVariantInventoryKit:
       type: object
-      description: The inventory item's inventory items.
+      description: The details of a variant's inventory item.
       x-schemaName: AdminCreateProductVariantInventoryKit
       required:
         - inventory_item_id
@@ -7692,11 +7685,11 @@ components:
         inventory_item_id:
           type: string
           title: inventory_item_id
-          description: The inventory item's inventory item id.
+          description: The inventory item's ID.
         required_quantity:
           type: number
           title: required_quantity
-          description: The inventory item's required quantity.
+          description: The number of units a single quantity is equivalent to. For example, if a customer orders one quantity of the variant, Medusa checks the availability of the quantity multiplied by the value set for `required_quantity`. When the customer orders the quantity, Medusa reserves the ordered quantity multiplied by the value set for `required_quantity`.
     AdminCreateProductVariantPrice:
       type: object
       description: The details of a variant's price.
@@ -7735,7 +7728,8 @@ components:
             - region_id
     AdminCreatePromotionRule:
       type: object
-      description: A buy rule's details.
+      description: The promotion rule's details.
+      x-schemaName: AdminCreatePromotionRule
       required:
         - operator
         - attribute
@@ -7755,7 +7749,7 @@ components:
         description:
           type: string
           title: description
-          description: The buy rule's description.
+          description: The rule's description.
         attribute:
           type: string
           title: attribute
@@ -7774,7 +7768,6 @@ components:
                 title: values
                 description: An attribute value.
                 example: prod_123
-      x-schemaName: AdminCreatePromotionRule
     AdminCreateRefundReason:
       type: object
       description: The refund reason's details.
@@ -7889,10 +7882,10 @@ components:
         parent_return_reason_id:
           type: string
           title: parent_return_reason_id
-          description: The return reason's parent return reason id.
+          description: The ID of the parent return reason.
         metadata:
           type: object
-          description: The return reason's metadata.
+          description: The return reason's metadata, can hold custom key-value pairs.
     AdminCreateSalesChannel:
       type: object
       description: The sales channel's details.
@@ -7947,7 +7940,7 @@ components:
                 description: The label's URL.
     AdminCreateShippingOption:
       type: object
-      description: The shipping option's type.
+      description: The shipping option's details.
       x-schemaName: AdminCreateShippingOption
       required:
         - label
@@ -7968,7 +7961,7 @@ components:
           description: The type's code.
     AdminCreateShippingOptionRule:
       type: object
-      description: The rule's rules.
+      description: The details of the shipping option rule.
       x-schemaName: AdminCreateShippingOptionRule
       required:
         - operator
@@ -7977,7 +7970,7 @@ components:
       properties:
         operator:
           type: string
-          description: The rule's operator.
+          description: The operator used to check whether a rule applies.
           enum:
             - gt
             - lt
@@ -7990,18 +7983,21 @@ components:
         attribute:
           type: string
           title: attribute
-          description: The rule's attribute.
+          description: The name of a property or table that the rule applies to.
+          example: customer_group
         value:
           oneOf:
             - type: string
               title: value
-              description: The rule's value.
+              description: A value of the attribute that enables this rule.
+              example: cusgroup_123
             - type: array
-              description: The rule's value.
+              description: Values of the attribute that enable this rule.
               items:
                 type: string
                 title: value
-                description: The value's details.
+                description: A value of the attribute that enables this rule.
+                example: cusgroup_123
     AdminCreateShippingProfile:
       type: object
       description: The shipping profile's details.
@@ -9228,11 +9224,7 @@ components:
           title: deleted_at
           description: The date the exchange was deleted.
         order:
-          type: string
-          title: order
-          description: The order's details.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/AdminOrder'
         allow_backorder:
           type: boolean
           title: allow_backorder
@@ -9268,11 +9260,8 @@ components:
         - exchange
       properties:
         order:
-          type: string
-          title: order
-          description: The order change's order.
-          externalDocs:
-            url: '#pagination'
+          description: The details of the associated order.
+          $ref: '#/components/schemas/Order'
         exchange:
           $ref: '#/components/schemas/AdminExchange'
     AdminExchangePreviewResponse:
@@ -10798,7 +10787,7 @@ components:
           $ref: '#/components/schemas/AdminOrderChange'
     AdminOrderFulfillment:
       type: object
-      description: The fulfillment's fulfillments.
+      description: The fulfillment's details.
       x-schemaName: AdminOrderFulfillment
       required:
         - id
@@ -10872,10 +10861,10 @@ components:
         requires_shipping:
           type: boolean
           title: requires_shipping
-          description: The fulfillment's requires shipping.
+          description: Whether the fulfillment requires shipping.
     AdminOrderLineItem:
       type: object
-      description: The item's items.
+      description: The item's details.
       x-schemaName: AdminOrderLineItem
       required:
         - title
@@ -11713,11 +11702,7 @@ components:
         - order
       properties:
         order:
-          type: string
-          title: order
-          description: A preview of an order if a change, such as exchange, return, edit, or claim is applied on it.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/AdminOrderPreview'
     AdminOrderResponse:
       type: object
       description: An order's details.
@@ -11726,11 +11711,7 @@ components:
         - order
       properties:
         order:
-          type: string
-          title: order
-          description: The order's details.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/AdminOrder'
     AdminOrderReturnResponse:
       type: object
       description: The order return details.
@@ -11740,11 +11721,7 @@ components:
         - return
       properties:
         order:
-          type: string
-          title: order
-          description: The order change's order.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/Order'
         return:
           $ref: '#/components/schemas/AdminReturn'
     AdminOrderShippingMethod:
@@ -12047,7 +12024,7 @@ components:
           $ref: '#/components/schemas/AdminPaymentCollection'
     AdminPaymentProvider:
       type: object
-      description: The payment provider's payment providers.
+      description: The payment provider's details.
       x-schemaName: AdminPaymentProvider
       required:
         - is_enabled
@@ -13635,47 +13612,47 @@ components:
       type: object
       description: The product option's details.
       x-schemaName: AdminProductOption
+      required:
+        - id
+        - title
       properties:
         id:
           type: string
           title: id
-          description: The option's ID.
+          description: The product option's ID.
         title:
           type: string
           title: title
-          description: The option's title.
+          description: The product option's title.
         product:
           type: object
         product_id:
           type: string
           title: product_id
-          description: The option's product id.
+          description: The ID of the product this option belongs to.
         values:
           type: array
-          description: The option's values.
+          description: The product option's values.
           items:
             type: object
         metadata:
           type: object
-          description: The option's metadata.
+          description: The product option's metadata, can hold custom key-value pairs.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The option's created at.
+          description: The date the product option was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The option's updated at.
+          description: The date the product option was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The option's deleted at.
-      required:
-        - id
-        - title
+          description: The date the product option was deleted.
     AdminProductOptionDeleteResponse:
       type: object
       description: The details of the product option deletion.
@@ -14275,7 +14252,7 @@ components:
           $ref: '#/components/schemas/AdminProductVariant'
     AdminPromotion:
       type: object
-      description: The application method's promotion.
+      description: The promotion's details.
       x-schemaName: AdminPromotion
       required:
         - id
@@ -14295,6 +14272,7 @@ components:
           type: string
           title: code
           description: The promotion's code.
+          example: OFF50
         type:
           type: string
           description: The promotion's type.
@@ -14304,11 +14282,11 @@ components:
         is_automatic:
           type: boolean
           title: is_automatic
-          description: The promotion's is automatic.
+          description: Whether the promotion is applied on a cart automatically if it matches the promotion's rules.
         campaign_id:
           type: string
           title: campaign_id
-          description: The promotion's campaign id.
+          description: The ID of the campaign this promotion belongs to.
         campaign:
           $ref: '#/components/schemas/AdminCampaign'
     AdminPromotionResponse:
@@ -14322,7 +14300,7 @@ components:
           $ref: '#/components/schemas/AdminPromotion'
     AdminPromotionRule:
       type: object
-      description: The target rule's target rules.
+      description: The promotion rule's details.
       x-schemaName: AdminPromotionRule
       required:
         - id
@@ -14331,18 +14309,19 @@ components:
         id:
           type: string
           title: id
-          description: The target rule's ID.
+          description: The promotion rule's ID.
         description:
           type: string
           title: description
-          description: The target rule's description.
+          description: The promotion rule's description.
         attribute:
           type: string
           title: attribute
-          description: The target rule's attribute.
+          description: The promotion rule's attribute.
+          example: customer_group_id
         operator:
           type: string
-          description: The target rule's operator.
+          description: The rule's operator.
           enum:
             - gt
             - lt
@@ -14353,7 +14332,9 @@ components:
             - gte
         values:
           type: array
-          description: The target rule's values.
+          description: The rule's values.
+          example:
+            - cusgroup_123
           items:
             $ref: '#/components/schemas/BasePromotionRuleValue'
     AdminRefund:
@@ -18950,7 +18931,7 @@ components:
         - updated_at
     BaseOrderShippingDetail:
       type: object
-      description: The shipping method's detail.
+      description: Details of changes to a shipping method.
       x-schemaName: BaseOrderShippingDetail
       required:
         - id
@@ -18962,35 +18943,35 @@ components:
         id:
           type: string
           title: id
-          description: The detail's ID.
+          description: The ID of the new changes to the shipping method.
         shipping_method_id:
           type: string
           title: shipping_method_id
-          description: The detail's shipping method id.
+          description: The ID of the shipping method.
         shipping_method:
           type: object
         claim_id:
           type: string
           title: claim_id
-          description: The detail's claim id.
+          description: The ID of the associated claim.
         exchange_id:
           type: string
           title: exchange_id
-          description: The detail's exchange id.
+          description: The ID of the associated exchange.
         return_id:
           type: string
           title: return_id
-          description: The detail's return id.
+          description: The ID of the associated return.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The detail's created at.
+          description: The date the shipping method change was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The detail's updated at.
+          description: The date the shipping method change was updated.
     BaseOrderShippingMethod:
       type: object
       description: The shipping method's details.
@@ -19832,6 +19813,42 @@ components:
       type: object
       description: The product option value's details.
       x-schemaName: BaseProductOptionValue
+      required:
+        - id
+        - value
+      properties:
+        id:
+          type: string
+          title: id
+          description: The value's ID.
+        value:
+          type: string
+          title: value
+          description: The value.
+        option:
+          type: object
+        option_id:
+          type: string
+          title: option_id
+          description: The ID of the option this value belongs to.
+        metadata:
+          type: object
+          description: The value's metadata, can hold custom key-value pairs.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the value was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the value was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the value was deleted.
     BaseProductTag:
       type: object
       description: The tag's tags.
@@ -20007,7 +20024,7 @@ components:
             $ref: '#/components/schemas/BasePromotionRuleValue'
     BasePromotionRuleValue:
       type: object
-      description: The value's values.
+      description: The rule value's details.
       x-schemaName: BasePromotionRuleValue
       required:
         - id
@@ -20019,7 +20036,7 @@ components:
         value:
           type: string
           title: value
-          description: The value's details.
+          description: The value.
     BaseRefund:
       type: object
       description: The refund's details.
@@ -23140,7 +23157,7 @@ components:
           description: The date that the transaction was updated.
     RefundReason:
       type: object
-      description: The refund's refund reason.
+      description: The refund reason's details.
       x-schemaName: RefundReason
       required:
         - id
@@ -23163,17 +23180,17 @@ components:
           description: The refund reason's description.
         metadata:
           type: object
-          description: The refund reason's metadata.
+          description: The refund reason's metadata, can hold custom key-value pairs.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The refund reason's created at.
+          description: The date the refund reason was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The refund reason's updated at.
+          description: The date the refund reason was updated.
     RefundReasonResponse:
       type: object
       description: The refund reason's details.
@@ -23873,7 +23890,7 @@ components:
           items:
             allOf:
               - type: object
-                description: The tax line's tax lines.
+                description: The tax line's details.
                 x-schemaName: BaseLineItemTaxLine
                 required:
                   - item
@@ -23888,20 +23905,20 @@ components:
                 properties:
                   item:
                     type: object
-                    description: The tax line's item.
-                    x-schemaName: BaseCartLineItem
+                    title: item
+                    description: The details of the item that the tax line belongs to.
                   item_id:
                     type: string
                     title: item_id
-                    description: The tax line's item id.
+                    description: The ID of the line item this tax line belongs to.
                   total:
                     type: number
                     title: total
-                    description: The tax line's total.
+                    description: The item's total including taxes and promotions.
                   subtotal:
                     type: number
                     title: subtotal
-                    description: The tax line's subtotal.
+                    description: The item's total excluding taxes, including promotions.
                   id:
                     type: string
                     title: id
@@ -23913,38 +23930,38 @@ components:
                   tax_rate_id:
                     type: string
                     title: tax_rate_id
-                    description: The tax line's tax rate id.
+                    description: The ID of the applied tax rate.
                   code:
                     type: string
                     title: code
-                    description: The tax line's code.
+                    description: The code that the tax rate is identified by.
                   rate:
                     type: number
                     title: rate
-                    description: The tax line's rate.
+                    description: The charged rate.
                   provider_id:
                     type: string
                     title: provider_id
-                    description: The tax line's provider id.
+                    description: The ID of the tax provider used to calculate the tax line.
                   created_at:
                     type: string
                     format: date-time
                     title: created_at
-                    description: The tax line's created at.
+                    description: The date the tax line was created.
                   updated_at:
                     type: string
                     format: date-time
                     title: updated_at
-                    description: The tax line's updated at.
+                    description: The date the tax line was updated.
               - type: object
-                description: The tax line's tax lines.
+                description: The tax line's details.
                 required:
                   - item
                 properties:
                   item:
                     type: object
-                    description: The tax line's item.
-                    x-schemaName: StoreCartLineItem
+                    title: item
+                    description: The details of the item that the tax line belongs to.
             description: The tax line's details
         adjustments:
           type: array
@@ -23952,7 +23969,7 @@ components:
           items:
             allOf:
               - type: object
-                description: The adjustment's adjustments.
+                description: The adjustment's details.
                 x-schemaName: BaseLineItemAdjustment
                 required:
                   - item
@@ -23965,12 +23982,12 @@ components:
                 properties:
                   item:
                     type: object
-                    description: The adjustment's item.
-                    x-schemaName: BaseCartLineItem
+                    title: item
+                    description: The details of the item that the adjustment belongs to.
                   item_id:
                     type: string
                     title: item_id
-                    description: The adjustment's item id.
+                    description: The ID of the item that the adjustment belongs to.
                   id:
                     type: string
                     title: id
@@ -23986,7 +24003,7 @@ components:
                   cart_id:
                     type: string
                     title: cart_id
-                    description: The adjustment's cart id.
+                    description: The ID of the associated cart.
                   description:
                     type: string
                     title: description
@@ -23994,30 +24011,30 @@ components:
                   promotion_id:
                     type: string
                     title: promotion_id
-                    description: The adjustment's promotion id.
+                    description: The ID of the applied promotion.
                   provider_id:
                     type: string
                     title: provider_id
-                    description: The adjustment's provider id.
+                    description: The adjustment's provider ID.
                   created_at:
                     type: string
                     format: date-time
                     title: created_at
-                    description: The adjustment's created at.
+                    description: The date the adjustment was created.
                   updated_at:
                     type: string
                     format: date-time
                     title: updated_at
-                    description: The adjustment's updated at.
+                    description: The date the adjustment was updated.
               - type: object
-                description: The adjustment's adjustments.
+                description: The adjustment's details.
                 required:
                   - item
                 properties:
                   item:
                     type: object
-                    description: The adjustment's item.
-                    x-schemaName: StoreCartLineItem
+                    title: item
+                    description: The details of the item that the adjustment belongs to.
             description: The adjustment's details.
         cart:
           type: object
@@ -24159,7 +24176,7 @@ components:
           items:
             allOf:
               - type: object
-                description: The tax line's tax lines.
+                description: The tax line's details
                 x-schemaName: BaseShippingMethodTaxLine
                 required:
                   - shipping_method
@@ -24174,20 +24191,20 @@ components:
                 properties:
                   shipping_method:
                     type: object
-                    description: The tax line's shipping method.
-                    x-schemaName: BaseCartShippingMethod
+                    title: shipping_method
+                    description: The details of the method that the tax line belongs to.
                   shipping_method_id:
                     type: string
                     title: shipping_method_id
-                    description: The tax line's shipping method id.
+                    description: The ID of the shipping method this tax line belongs to.
                   total:
                     type: number
                     title: total
-                    description: The tax line's total.
+                    description: The method's total including taxes and promotions.
                   subtotal:
                     type: number
                     title: subtotal
-                    description: The tax line's subtotal.
+                    description: The method's total excluding taxes, including promotions.
                   id:
                     type: string
                     title: id
@@ -24199,38 +24216,38 @@ components:
                   tax_rate_id:
                     type: string
                     title: tax_rate_id
-                    description: The tax line's tax rate id.
+                    description: The ID of the applied tax rate.
                   code:
                     type: string
                     title: code
-                    description: The tax line's code.
+                    description: The code that the tax rate is identified by.
                   rate:
                     type: number
                     title: rate
-                    description: The tax line's rate.
+                    description: The charged rate.
                   provider_id:
                     type: string
                     title: provider_id
-                    description: The tax line's provider id.
+                    description: The ID of the tax provider used to calculate the tax line.
                   created_at:
                     type: string
                     format: date-time
                     title: created_at
-                    description: The tax line's created at.
+                    description: The date the tax line was created.
                   updated_at:
                     type: string
                     format: date-time
                     title: updated_at
-                    description: The tax line's updated at.
+                    description: The date the tax line was updated.
               - type: object
-                description: The tax line's tax lines.
+                description: The tax line's details.
                 required:
                   - shipping_method
                 properties:
                   shipping_method:
                     type: object
-                    description: The tax line's shipping method.
-                    x-schemaName: StoreCartShippingMethod
+                    title: shipping_method
+                    description: The details of the method that the tax line belongs to.
             description: The tax line's details.
         adjustments:
           type: array
@@ -24238,7 +24255,7 @@ components:
           items:
             allOf:
               - type: object
-                description: The adjustment's adjustments.
+                description: The adjustment's details.
                 x-schemaName: BaseShippingMethodAdjustment
                 required:
                   - shipping_method
@@ -24251,12 +24268,8 @@ components:
                 properties:
                   shipping_method:
                     type: object
-                    description: The adjustment's shipping method.
-                    x-schemaName: BaseCartShippingMethod
-                  shipping_method_id:
-                    type: string
-                    title: shipping_method_id
-                    description: The adjustment's shipping method id.
+                    title: shipping_method
+                    description: The details of the method that the adjustment belongs to.
                   id:
                     type: string
                     title: id
@@ -24272,7 +24285,7 @@ components:
                   cart_id:
                     type: string
                     title: cart_id
-                    description: The adjustment's cart id.
+                    description: The ID of the associated cart.
                   description:
                     type: string
                     title: description
@@ -24280,30 +24293,30 @@ components:
                   promotion_id:
                     type: string
                     title: promotion_id
-                    description: The adjustment's promotion id.
+                    description: The ID of the applied promotion.
                   provider_id:
                     type: string
                     title: provider_id
-                    description: The adjustment's provider id.
+                    description: The adjustment's provider ID.
                   created_at:
                     type: string
                     format: date-time
                     title: created_at
-                    description: The adjustment's created at.
+                    description: The date the adjustment was created.
                   updated_at:
                     type: string
                     format: date-time
                     title: updated_at
-                    description: The adjustment's updated at.
+                    description: The date the adjustment was updated.
               - type: object
-                description: The adjustment's adjustments.
+                description: The adjustment's details.
                 required:
                   - shipping_method
                 properties:
                   shipping_method:
                     type: object
-                    description: The adjustment's shipping method.
-                    x-schemaName: StoreCartShippingMethod
+                    title: shipping_method
+                    description: The details of the method that the adjustment belongs to.
             description: The adjustment's details.
         created_at:
           type: string
@@ -25094,11 +25107,7 @@ components:
         - order
       properties:
         order:
-          type: string
-          title: order
-          description: The order's details.
-          externalDocs:
-            url: '#pagination'
+          $ref: '#/components/schemas/StoreOrder'
     StorePaymentCollection:
       type: object
       description: The payment collection's details.
@@ -25192,7 +25201,7 @@ components:
           $ref: '#/components/schemas/StorePaymentCollection'
     StorePaymentProvider:
       type: object
-      description: The payment provider's payment providers.
+      description: The payment provider's details
       x-schemaName: StorePaymentProvider
       required:
         - id
@@ -25850,10 +25859,11 @@ components:
           type: string
           title: currency_code
           description: The region's currency code.
+          example: usd
         automatic_taxes:
           type: boolean
           title: automatic_taxes
-          description: The region's automatic taxes.
+          description: Whether taxes are calculated automatically during checkout for carts that belong to this region.
         countries:
           type: array
           description: The region's countries.
@@ -25866,17 +25876,17 @@ components:
             $ref: '#/components/schemas/AdminPaymentProvider'
         metadata:
           type: object
-          description: The region's metadata.
+          description: The region's metadata, can hold custom key-value pairs.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The region's created at.
+          description: The date the region was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The region's updated at.
+          description: The date the region was updated.
     StoreRegionCountry:
       type: object
       description: The country's details.
@@ -25975,7 +25985,7 @@ components:
           description: The date the return was updated.
     StoreReturnItem:
       type: object
-      description: The item's items.
+      description: The return item's details.
       x-schemaName: StoreReturnItem
       properties:
         id:
@@ -25997,22 +26007,22 @@ components:
         reason_id:
           type: string
           title: reason_id
-          description: The item's reason id.
+          description: The ID of the item's reason.
         note:
           type: string
           title: note
-          description: The item's note.
+          description: A note with more details on why the item is returned.
         item_id:
           type: string
           title: item_id
-          description: The item's item id.
+          description: The ID of the item in the order.
         return_id:
           type: string
           title: return_id
-          description: The item's return id.
+          description: The ID of the return this item belongs to.
         metadata:
           type: object
-          description: The item's metadata.
+          description: The item's metadata, can hold custom key-value pairs.
       required:
         - id
         - quantity
@@ -26161,7 +26171,7 @@ components:
             $ref: '#/components/schemas/StoreShippingOption'
     StoreShippingOptionType:
       type: object
-      description: The shipping option's details.
+      description: The shipping option type's details.
       x-schemaName: StoreShippingOptionType
       required:
         - id
@@ -26176,7 +26186,7 @@ components:
         id:
           type: string
           title: id
-          description: The shipping option's ID.
+          description: The type's ID.
         label:
           type: string
           title: label
@@ -26192,22 +26202,22 @@ components:
         shipping_option_id:
           type: string
           title: shipping_option_id
-          description: The type's shipping option id.
+          description: The ID of the associated shipping option.
         created_at:
           type: string
           format: date-time
           title: created_at
-          description: The type's created at.
+          description: The date the type was created.
         updated_at:
           type: string
           format: date-time
           title: updated_at
-          description: The type's updated at.
+          description: The date the type was updated.
         deleted_at:
           type: string
           format: date-time
           title: deleted_at
-          description: The type's deleted at.
+          description: The date the type was deleted.
     StoreUpdateCartLineItem:
       type: object
       description: The details to update in the line item.

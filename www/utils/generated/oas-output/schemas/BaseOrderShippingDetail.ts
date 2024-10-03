@@ -1,7 +1,7 @@
 /**
  * @schema BaseOrderShippingDetail
  * type: object
- * description: The shipping method's detail.
+ * description: Details of changes to a shipping method.
  * x-schemaName: BaseOrderShippingDetail
  * required:
  *   - id
@@ -13,35 +13,35 @@
  *   id:
  *     type: string
  *     title: id
- *     description: The detail's ID.
+ *     description: The ID of the new changes to the shipping method.
  *   shipping_method_id:
  *     type: string
  *     title: shipping_method_id
- *     description: The detail's shipping method id.
+ *     description: The ID of the shipping method.
  *   shipping_method:
  *     $ref: "#/components/schemas/BaseOrderShippingMethod"
  *   claim_id:
  *     type: string
  *     title: claim_id
- *     description: The detail's claim id.
+ *     description: The ID of the associated claim.
  *   exchange_id:
  *     type: string
  *     title: exchange_id
- *     description: The detail's exchange id.
+ *     description: The ID of the associated exchange.
  *   return_id:
  *     type: string
  *     title: return_id
- *     description: The detail's return id.
+ *     description: The ID of the associated return.
  *   created_at:
  *     type: string
  *     format: date-time
  *     title: created_at
- *     description: The detail's created at.
+ *     description: The date the shipping method change was created.
  *   updated_at:
  *     type: string
  *     format: date-time
  *     title: updated_at
- *     description: The detail's updated at.
+ *     description: The date the shipping method change was updated.
  * 
 */
 

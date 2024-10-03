@@ -1,7 +1,7 @@
 /**
  * @schema AdminPromotion
  * type: object
- * description: The application method's promotion.
+ * description: The promotion's details.
  * x-schemaName: AdminPromotion
  * required:
  *   - id
@@ -21,6 +21,7 @@
  *     type: string
  *     title: code
  *     description: The promotion's code.
+ *     example: OFF50
  *   type:
  *     type: string
  *     description: The promotion's type.
@@ -30,11 +31,11 @@
  *   is_automatic:
  *     type: boolean
  *     title: is_automatic
- *     description: The promotion's is automatic.
+ *     description: Whether the promotion is applied on a cart automatically if it matches the promotion's rules.
  *   campaign_id:
  *     type: string
  *     title: campaign_id
- *     description: The promotion's campaign id.
+ *     description: The ID of the campaign this promotion belongs to.
  *   campaign:
  *     $ref: "#/components/schemas/AdminCampaign"
  * 

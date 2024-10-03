@@ -1,7 +1,7 @@
 /**
  * @schema AdminOrderFulfillment
  * type: object
- * description: The fulfillment's fulfillments.
+ * description: The fulfillment's details.
  * x-schemaName: AdminOrderFulfillment
  * required:
  *   - id
@@ -75,7 +75,7 @@
  *   requires_shipping:
  *     type: boolean
  *     title: requires_shipping
- *     description: The fulfillment's requires shipping.
+ *     description: Whether the fulfillment requires shipping.
  * 
 */
 

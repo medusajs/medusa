@@ -86,7 +86,7 @@
  *       Color: Black
  *   inventory_items:
  *     type: array
- *     description: The variant's inventory items.
+ *     description: The variant's inventory items to create.
  *     items:
  *       $ref: "#/components/schemas/AdminCreateProductVariantInventoryKit"
  * 

@@ -1,7 +1,7 @@
 /**
  * @schema AdminPaymentProvider
  * type: object
- * description: The payment provider's payment providers.
+ * description: The payment provider's details.
  * x-schemaName: AdminPaymentProvider
  * required:
  *   - is_enabled

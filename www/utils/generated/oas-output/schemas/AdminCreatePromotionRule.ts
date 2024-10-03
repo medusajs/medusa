@@ -1,7 +1,8 @@
 /**
  * @schema AdminCreatePromotionRule
  * type: object
- * description: A buy rule's details.
+ * description: The promotion rule's details.
+ * x-schemaName: AdminCreatePromotionRule
  * required:
  *   - operator
  *   - attribute
@@ -21,7 +22,7 @@
  *   description:
  *     type: string
  *     title: description
- *     description: The buy rule's description.
+ *     description: The rule's description.
  *   attribute:
  *     type: string
  *     title: attribute
@@ -40,7 +41,6 @@
  *           title: values
  *           description: An attribute value.
  *           example: prod_123
- * x-schemaName: AdminCreatePromotionRule
  * 
 */
 

@@ -22,10 +22,10 @@
  *   parent_return_reason_id:
  *     type: string
  *     title: parent_return_reason_id
- *     description: The return reason's parent return reason id.
+ *     description: The ID of the parent return reason.
  *   metadata:
  *     type: object
- *     description: The return reason's metadata.
+ *     description: The return reason's metadata, can hold custom key-value pairs.
  * 
 */
 

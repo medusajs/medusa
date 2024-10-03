@@ -1070,36 +1070,36 @@ get:
               description: A product category's ID.
     - name: currency_code
       in: query
-      description: The product's currency code.
+      description: The currency code to retrieve prices in.
       required: false
       schema:
         type: string
         title: currency_code
-        description: The product's currency code.
+        description: The currency code to retrieve prices in.
     - name: variants
       in: query
-      description: The product's variants.
+      description: Filter the products' variants.
       required: false
       schema:
         type: object
-        description: The product's variants.
+        description: Filter the products' variants.
         x-schemaName: StoreProductVariantParams
         properties:
           options:
             type: object
-            description: The variant's options.
+            description: Filter by the variants' options.
             required:
               - value
               - option_id
             properties:
-              value:
-                type: string
-                title: value
-                description: The option's value.
               option_id:
                 type: string
                 title: option_id
-                description: The option's option id.
+                description: The ID of the option to filter by.
+              value:
+                type: string
+                title: value
+                description: Filter by a value of the option.
   x-codeSamples:
     - lang: Shell
       label: cURL

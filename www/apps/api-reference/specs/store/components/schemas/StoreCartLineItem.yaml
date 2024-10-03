@@ -122,7 +122,7 @@ properties:
     items:
       allOf:
         - type: object
-          description: The tax line's tax lines.
+          description: The tax line's details.
           x-schemaName: BaseLineItemTaxLine
           required:
             - item
@@ -137,20 +137,20 @@ properties:
           properties:
             item:
               type: object
-              description: The tax line's item.
-              x-schemaName: BaseCartLineItem
+              title: item
+              description: The details of the item that the tax line belongs to.
             item_id:
               type: string
               title: item_id
-              description: The tax line's item id.
+              description: The ID of the line item this tax line belongs to.
             total:
               type: number
               title: total
-              description: The tax line's total.
+              description: The item's total including taxes and promotions.
             subtotal:
               type: number
               title: subtotal
-              description: The tax line's subtotal.
+              description: The item's total excluding taxes, including promotions.
             id:
               type: string
               title: id
@@ -162,38 +162,38 @@ properties:
             tax_rate_id:
               type: string
               title: tax_rate_id
-              description: The tax line's tax rate id.
+              description: The ID of the applied tax rate.
             code:
               type: string
               title: code
-              description: The tax line's code.
+              description: The code that the tax rate is identified by.
             rate:
               type: number
               title: rate
-              description: The tax line's rate.
+              description: The charged rate.
             provider_id:
               type: string
               title: provider_id
-              description: The tax line's provider id.
+              description: The ID of the tax provider used to calculate the tax line.
             created_at:
               type: string
               format: date-time
               title: created_at
-              description: The tax line's created at.
+              description: The date the tax line was created.
             updated_at:
               type: string
               format: date-time
               title: updated_at
-              description: The tax line's updated at.
+              description: The date the tax line was updated.
         - type: object
-          description: The tax line's tax lines.
+          description: The tax line's details.
           required:
             - item
           properties:
             item:
               type: object
-              description: The tax line's item.
-              x-schemaName: StoreCartLineItem
+              title: item
+              description: The details of the item that the tax line belongs to.
       description: The tax line's details
   adjustments:
     type: array
@@ -201,7 +201,7 @@ properties:
     items:
       allOf:
         - type: object
-          description: The adjustment's adjustments.
+          description: The adjustment's details.
           x-schemaName: BaseLineItemAdjustment
           required:
             - item
@@ -214,12 +214,12 @@ properties:
           properties:
             item:
               type: object
-              description: The adjustment's item.
-              x-schemaName: BaseCartLineItem
+              title: item
+              description: The details of the item that the adjustment belongs to.
             item_id:
               type: string
               title: item_id
-              description: The adjustment's item id.
+              description: The ID of the item that the adjustment belongs to.
             id:
               type: string
               title: id
@@ -235,7 +235,7 @@ properties:
             cart_id:
               type: string
               title: cart_id
-              description: The adjustment's cart id.
+              description: The ID of the associated cart.
             description:
               type: string
               title: description
@@ -243,30 +243,30 @@ properties:
             promotion_id:
               type: string
               title: promotion_id
-              description: The adjustment's promotion id.
+              description: The ID of the applied promotion.
             provider_id:
               type: string
               title: provider_id
-              description: The adjustment's provider id.
+              description: The adjustment's provider ID.
             created_at:
               type: string
               format: date-time
               title: created_at
-              description: The adjustment's created at.
+              description: The date the adjustment was created.
             updated_at:
               type: string
               format: date-time
               title: updated_at
-              description: The adjustment's updated at.
+              description: The date the adjustment was updated.
         - type: object
-          description: The adjustment's adjustments.
+          description: The adjustment's details.
           required:
             - item
           properties:
             item:
               type: object
-              description: The adjustment's item.
-              x-schemaName: StoreCartLineItem
+              title: item
+              description: The details of the item that the adjustment belongs to.
       description: The adjustment's details.
   cart:
     type: object

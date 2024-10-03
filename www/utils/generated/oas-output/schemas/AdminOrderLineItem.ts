@@ -1,7 +1,7 @@
 /**
  * @schema AdminOrderLineItem
  * type: object
- * description: The item's items.
+ * description: The item's details.
  * x-schemaName: AdminOrderLineItem
  * required:
  *   - title
