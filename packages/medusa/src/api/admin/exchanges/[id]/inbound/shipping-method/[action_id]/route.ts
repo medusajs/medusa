@@ -9,7 +9,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { defaultAdminDetailsReturnFields } from "../../../../../returns/query-config"
 import { AdminPostExchangesShippingActionReqSchemaType } from "../../../../validators"
 import { AdminOrderPreview, HttpTypes } from "@medusajs/framework/types"

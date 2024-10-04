@@ -6,7 +6,7 @@ import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchRegion } from "../helpers"
 import { AdminGetRegionParamsType, AdminUpdateRegionType } from "../validators"
 import { HttpTypes } from "@medusajs/framework/types"

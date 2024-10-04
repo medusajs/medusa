@@ -1,5 +1,5 @@
 import { MedusaError } from "@medusajs/framework/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { refetchOrder } from "../helpers"
 import { defaultAdminOrderFields } from "../query-config"
 import { HttpTypes } from "@medusajs/framework/types"

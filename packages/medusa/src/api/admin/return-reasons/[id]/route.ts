@@ -11,8 +11,8 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
-import { refetchEntity } from "../../../utils/refetch-entity"
+  refetchEntity,
+} from "@medusajs/framework/http"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,

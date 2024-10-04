@@ -45,7 +45,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 32.3379 -66.5442)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="34.813"
@@ -53,7 +53,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 34.813 -64.0694)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="37.2876"
@@ -61,7 +61,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 37.2876 -61.5945)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="39.7627"
@@ -69,7 +69,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 39.7627 -59.1196)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="42.2373"
@@ -77,7 +77,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 42.2373 -56.6447)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="44.7124"
@@ -85,7 +85,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 44.7124 -54.1699)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="47.187"
@@ -93,7 +93,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 47.187 -51.695)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="49.6621"
@@ -101,7 +101,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 49.6621 -49.2201)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="52.1367"
@@ -109,7 +109,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 52.1367 -46.7452)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="54.6118"
@@ -117,7 +117,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 54.6118 -44.2704)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="57.0869"
@@ -125,7 +125,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 57.0869 -41.7955)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="59.5615"
@@ -133,7 +133,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 59.5615 -39.3206)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="62.0366"
@@ -141,7 +141,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 62.0366 -36.8458)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="64.5112"
@@ -149,7 +149,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 64.5112 -34.3709)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="66.9863"
@@ -157,7 +157,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 66.9863 -31.896)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="69.4609"
@@ -165,7 +165,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 69.4609 -29.4211)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="71.936"
@@ -173,7 +173,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 71.936 -26.9463)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="74.4106"
@@ -181,7 +181,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 74.4106 -24.4714)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="76.8857"
@@ -189,7 +189,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 76.8857 -21.9965)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="79.3604"
@@ -197,7 +197,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 79.3604 -19.5216)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="81.8354"
@@ -205,7 +205,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 81.8354 -17.0468)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="84.3105"
@@ -213,7 +213,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 84.3105 -14.5719)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="86.7852"
@@ -221,7 +221,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 86.7852 -12.097)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="89.2603"
@@ -229,7 +229,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 89.2603 -9.62215)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="91.7349"
@@ -237,7 +237,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 91.7349 -7.14726)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="94.21"
@@ -245,7 +245,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 94.21 -4.67239)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="96.6846"
@@ -253,7 +253,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 96.6846 -2.19753)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="99.1597"
@@ -261,7 +261,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 99.1597 0.277344)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="101.634"
@@ -269,7 +269,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 101.634 2.75223)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="104.109"
@@ -277,7 +277,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 104.109 5.2271)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="106.584"
@@ -285,7 +285,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 106.584 7.70197)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="109.059"
@@ -293,7 +293,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 109.059 10.1768)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="111.534"
@@ -301,7 +301,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 111.534 12.6517)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="114.009"
@@ -309,7 +309,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 114.009 15.1266)"
-          fill="#BFDBFE"
+          fill={color}
         />
         <rect
           x="116.484"
@@ -317,7 +317,7 @@ export const ShadedBgIcon = ({
           width="1.5"
           height="96"
           transform="rotate(45 116.484 17.6015)"
-          fill="#BFDBFE"
+          fill={color}
         />
       </g>
       <defs>

@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -178,18 +176,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "region_id"
-          ],
+          "columnNames": ["region_id"],
           "composite": false,
           "keyName": "IDX_payment_collection_region_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_payment_collection_deleted_at",
           "primary": false,
@@ -197,9 +191,7 @@
         },
         {
           "keyName": "payment_collection_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -310,9 +302,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_payment_method_token_deleted_at",
           "primary": false,
@@ -320,9 +310,7 @@
         },
         {
           "keyName": "payment_method_token_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -358,9 +346,7 @@
       "indexes": [
         {
           "keyName": "payment_provider_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -395,10 +381,7 @@
       "indexes": [
         {
           "keyName": "payment_collection_payment_providers_pkey",
-          "columnNames": [
-            "payment_collection_id",
-            "payment_provider_id"
-          ],
+          "columnNames": ["payment_collection_id", "payment_provider_id"],
           "composite": true,
           "primary": true,
           "unique": true
@@ -408,26 +391,18 @@
       "foreignKeys": {
         "payment_collection_payment_providers_payment_coll_aa276_foreign": {
           "constraintName": "payment_collection_payment_providers_payment_coll_aa276_foreign",
-          "columnNames": [
-            "payment_collection_id"
-          ],
+          "columnNames": ["payment_collection_id"],
           "localTableName": "public.payment_collection_payment_providers",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.payment_collection",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "payment_collection_payment_providers_payment_provider_id_foreign": {
           "constraintName": "payment_collection_payment_providers_payment_provider_id_foreign",
-          "columnNames": [
-            "payment_provider_id"
-          ],
+          "columnNames": ["payment_provider_id"],
           "localTableName": "public.payment_collection_payment_providers",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.payment_provider",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -582,18 +557,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "payment_collection_id"
-          ],
+          "columnNames": ["payment_collection_id"],
           "composite": false,
           "keyName": "IDX_payment_session_payment_collection_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_payment_session_deleted_at",
           "primary": false,
@@ -601,9 +572,7 @@
         },
         {
           "keyName": "payment_session_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -613,13 +582,9 @@
       "foreignKeys": {
         "payment_session_payment_collection_id_foreign": {
           "constraintName": "payment_session_payment_collection_id_foreign",
-          "columnNames": [
-            "payment_collection_id"
-          ],
+          "columnNames": ["payment_collection_id"],
           "localTableName": "public.payment_session",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.payment_collection",
           "updateRule": "cascade"
         }
@@ -792,36 +757,28 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_payment_deleted_at",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "payment_collection_id"
-          ],
+          "columnNames": ["payment_collection_id"],
           "composite": false,
           "keyName": "IDX_payment_payment_collection_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "payment_session_id"
-          ],
+          "columnNames": ["payment_session_id"],
           "composite": false,
           "keyName": "IDX_payment_payment_session_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "payment_session_id"
-          ],
+          "columnNames": ["payment_session_id"],
           "composite": false,
           "keyName": "payment_payment_session_id_unique",
           "primary": false,
@@ -829,9 +786,7 @@
         },
         {
           "keyName": "IDX_payment_provider_id",
-          "columnNames": [
-            "provider_id"
-          ],
+          "columnNames": ["provider_id"],
           "composite": false,
           "primary": false,
           "unique": false,
@@ -839,9 +794,7 @@
         },
         {
           "keyName": "payment_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -851,25 +804,17 @@
       "foreignKeys": {
         "payment_payment_collection_id_foreign": {
           "constraintName": "payment_payment_collection_id_foreign",
-          "columnNames": [
-            "payment_collection_id"
-          ],
+          "columnNames": ["payment_collection_id"],
           "localTableName": "public.payment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.payment_collection",
           "updateRule": "cascade"
         },
         "payment_payment_session_id_foreign": {
           "constraintName": "payment_payment_session_id_foreign",
-          "columnNames": [
-            "payment_session_id"
-          ],
+          "columnNames": ["payment_session_id"],
           "localTableName": "public.payment",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.payment_session",
           "updateRule": "cascade"
         }
@@ -968,18 +913,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "payment_id"
-          ],
+          "columnNames": ["payment_id"],
           "composite": false,
           "keyName": "IDX_capture_payment_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_capture_deleted_at",
           "primary": false,
@@ -987,9 +928,7 @@
         },
         {
           "keyName": "capture_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -999,13 +938,9 @@
       "foreignKeys": {
         "capture_payment_id_foreign": {
           "constraintName": "capture_payment_id_foreign",
-          "columnNames": [
-            "payment_id"
-          ],
+          "columnNames": ["payment_id"],
           "localTableName": "public.capture",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.payment",
           "deleteRule": "cascade",
           "updateRule": "cascade"
@@ -1088,9 +1023,7 @@
       "indexes": [
         {
           "keyName": "refund_reason_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1210,18 +1143,14 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "payment_id"
-          ],
+          "columnNames": ["payment_id"],
           "composite": false,
           "keyName": "IDX_refund_payment_id",
           "primary": false,
           "unique": false
         },
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_refund_deleted_at",
           "primary": false,
@@ -1229,9 +1158,7 @@
         },
         {
           "keyName": "refund_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -1241,26 +1168,18 @@
       "foreignKeys": {
         "refund_payment_id_foreign": {
           "constraintName": "refund_payment_id_foreign",
-          "columnNames": [
-            "payment_id"
-          ],
+          "columnNames": ["payment_id"],
           "localTableName": "public.refund",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.payment",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
         "refund_refund_reason_id_foreign": {
           "constraintName": "refund_refund_reason_id_foreign",
-          "columnNames": [
-            "refund_reason_id"
-          ],
+          "columnNames": ["refund_reason_id"],
           "localTableName": "public.refund",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.refund_reason",
           "deleteRule": "set null",
           "updateRule": "cascade"

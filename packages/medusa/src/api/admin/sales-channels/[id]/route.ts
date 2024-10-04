@@ -6,7 +6,7 @@ import { MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchSalesChannel } from "../helpers"
 import {
   AdminGetSalesChannelParamsType,

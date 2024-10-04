@@ -1,12 +1,12 @@
 {
-	"id": 34425,
+	"id": 55,
 	"name": "fulfillment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 34426,
+			"id": 56,
 			"name": "AbstractFulfillmentProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -25,7 +25,7 @@
 			},
 			"children": [
 				{
-					"id": 34427,
+					"id": 57,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,21 +58,21 @@
 					}
 				},
 				{
-					"id": 34435,
+					"id": 65,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34436,
+							"id": 66,
 							"name": "new AbstractFulfillmentProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 34426,
+								"target": 56,
 								"name": "AbstractFulfillmentProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -80,14 +80,14 @@
 					]
 				},
 				{
-					"id": 34439,
+					"id": 69,
 					"name": "getFulfillmentOptions",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34440,
+							"id": 70,
 							"name": "getFulfillmentOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -157,14 +157,14 @@
 					}
 				},
 				{
-					"id": 34441,
+					"id": 71,
 					"name": "validateFulfillmentData",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34442,
+							"id": 72,
 							"name": "validateFulfillmentData",
 							"variant": "signature",
 							"kind": 4096,
@@ -223,7 +223,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async validateFulfillmentData(\n    optionData: any, \n    data: any, \n    context: any\n  ): Promise<any> {\n    // assuming your client retrieves an ID from the\n    // third-party service\n    const externalId = await this.client.getId()\n  \n    return {\n      ...data,\n      externalId\n    }\n  }\n}\n```"
+												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async validateFulfillmentData(\n    optionData: any,\n    data: any,\n    context: any\n  ): Promise<any> {\n    // assuming your client retrieves an ID from the\n    // third-party service\n    const externalId = await this.client.getId()\n\n    return {\n      ...data,\n      externalId\n    }\n  }\n}\n```"
 											}
 										]
 									}
@@ -231,7 +231,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34443,
+									"id": 73,
 									"name": "optionData",
 									"variant": "param",
 									"kind": 32768,
@@ -258,7 +258,7 @@
 									}
 								},
 								{
-									"id": 34444,
+									"id": 74,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -285,7 +285,7 @@
 									}
 								},
 								{
-									"id": 34445,
+									"id": 75,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -333,14 +333,14 @@
 					}
 				},
 				{
-					"id": 34446,
+					"id": 76,
 					"name": "validateOption",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34447,
+							"id": 77,
 							"name": "validateOption",
 							"variant": "signature",
 							"kind": 4096,
@@ -399,7 +399,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34448,
+									"id": 78,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -447,14 +447,14 @@
 					}
 				},
 				{
-					"id": 34449,
+					"id": 79,
 					"name": "canCalculate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34450,
+							"id": 80,
 							"name": "canCalculate",
 							"variant": "signature",
 							"kind": 4096,
@@ -463,7 +463,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method indicates whether a shippin option's price is calculated during \ncheckout or is fixed."
+										"text": "This method indicates whether a shippin option's price is calculated during\ncheckout or is fixed."
 									}
 								],
 								"blockTags": [
@@ -489,7 +489,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34451,
+									"id": 81,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -545,14 +545,14 @@
 					}
 				},
 				{
-					"id": 34452,
+					"id": 82,
 					"name": "calculatePrice",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34453,
+							"id": 83,
 							"name": "calculatePrice",
 							"variant": "signature",
 							"kind": 4096,
@@ -567,7 +567,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "canCalculate",
-										"target": 34449,
+										"target": 79,
 										"tsLinkText": ""
 									},
 									{
@@ -598,7 +598,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async calculatePrice(optionData: any, data: any, cart: any): Promise<number> {\n    // assuming the client can calculate the price using\n    // the third-party service\n    const price = await this.client.calculate(data)\n  \n    return price\n  }\n}\n```"
+												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async calculatePrice(optionData: any, data: any, cart: any): Promise<number> {\n    // assuming the client can calculate the price using\n    // the third-party service\n    const price = await this.client.calculate(data)\n\n    return price\n  }\n}\n```"
 											}
 										]
 									}
@@ -606,7 +606,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34454,
+									"id": 84,
 									"name": "optionData",
 									"variant": "param",
 									"kind": 32768,
@@ -633,7 +633,7 @@
 									}
 								},
 								{
-									"id": 34455,
+									"id": 85,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -660,7 +660,7 @@
 									}
 								},
 								{
-									"id": 34456,
+									"id": 86,
 									"name": "cart",
 									"variant": "param",
 									"kind": 32768,
@@ -708,14 +708,14 @@
 					}
 				},
 				{
-					"id": 34457,
+					"id": 87,
 					"name": "createFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34458,
+							"id": 88,
 							"name": "createFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -724,7 +724,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used when a fulfillment is created. If the method returns in the object a \n"
+										"text": "This method is used when a fulfillment is created. If the method returns in the object a\n"
 									},
 									{
 										"kind": "code",
@@ -774,7 +774,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async createFulfillment(\n    data: any, \n    items: any, \n    order: any, \n    fulfillment: any\n  ): Promise<any> {\n    // assuming the client creates a fulfillment\n    // in the third-party service\n    const externalData = await this.client.create(\n      fulfillment,\n      items\n    )\n  \n    return {\n      data: {\n        ...data,\n        ...externalData\n      }\n    }\n  }\n}\n```"
+												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async createFulfillment(\n    data: any,\n    items: any,\n    order: any,\n    fulfillment: any\n  ): Promise<any> {\n    // assuming the client creates a fulfillment\n    // in the third-party service\n    const externalData = await this.client.create(\n      fulfillment,\n      items\n    )\n\n    return {\n      data: {\n        ...data,\n        ...externalData\n      }\n    }\n  }\n}\n```"
 											}
 										]
 									}
@@ -782,7 +782,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34459,
+									"id": 89,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -809,7 +809,7 @@
 									}
 								},
 								{
-									"id": 34460,
+									"id": 90,
 									"name": "items",
 									"variant": "param",
 									"kind": 32768,
@@ -828,7 +828,7 @@
 									}
 								},
 								{
-									"id": 34461,
+									"id": 91,
 									"name": "order",
 									"variant": "param",
 									"kind": 32768,
@@ -847,7 +847,7 @@
 									}
 								},
 								{
-									"id": 34462,
+									"id": 92,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -895,14 +895,14 @@
 					}
 				},
 				{
-					"id": 34463,
+					"id": 93,
 					"name": "cancelFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34464,
+							"id": 94,
 							"name": "cancelFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -928,7 +928,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34465,
+									"id": 95,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -976,14 +976,14 @@
 					}
 				},
 				{
-					"id": 34466,
+					"id": 96,
 					"name": "getFulfillmentDocuments",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34467,
+							"id": 97,
 							"name": "getFulfillmentDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1018,7 +1018,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34468,
+									"id": 98,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1077,14 +1077,14 @@
 					}
 				},
 				{
-					"id": 34469,
+					"id": 99,
 					"name": "createReturnFulfillment",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34470,
+							"id": 100,
 							"name": "createReturnFulfillment",
 							"variant": "signature",
 							"kind": 4096,
@@ -1093,7 +1093,7 @@
 								"summary": [
 									{
 										"kind": "text",
-										"text": "This method is used when a fulfillment is created for a return. If the method returns in the object a \n"
+										"text": "This method is used when a fulfillment is created for a return. If the method returns in the object a\n"
 									},
 									{
 										"kind": "code",
@@ -1143,7 +1143,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async createReturnFulfillment(fulfillment: any): Promise<any> {\n    // assuming the client creates a fulfillment for a return\n    // in the third-party service\n    const externalData = await this.client.createReturn(\n      fulfillment\n    )\n  \n    return {\n      data: {\n        ...fulfillment.data,\n        ...externalData\n      }\n    }\n  }\n}\n```"
+												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async createReturnFulfillment(fulfillment: any): Promise<any> {\n    // assuming the client creates a fulfillment for a return\n    // in the third-party service\n    const externalData = await this.client.createReturn(\n      fulfillment\n    )\n\n    return {\n      data: {\n        ...fulfillment.data,\n        ...externalData\n      }\n    }\n  }\n}\n```"
 											}
 										]
 									}
@@ -1151,7 +1151,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34471,
+									"id": 101,
 									"name": "fulfillment",
 									"variant": "param",
 									"kind": 32768,
@@ -1199,14 +1199,14 @@
 					}
 				},
 				{
-					"id": 34472,
+					"id": 102,
 					"name": "getReturnDocuments",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34473,
+							"id": 103,
 							"name": "getReturnDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1241,7 +1241,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34474,
+									"id": 104,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1300,14 +1300,14 @@
 					}
 				},
 				{
-					"id": 34475,
+					"id": 105,
 					"name": "getShipmentDocuments",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34476,
+							"id": 106,
 							"name": "getShipmentDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1342,7 +1342,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34477,
+									"id": 107,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -1401,14 +1401,14 @@
 					}
 				},
 				{
-					"id": 34478,
+					"id": 108,
 					"name": "retrieveDocuments",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 34479,
+							"id": 109,
 							"name": "retrieveDocuments",
 							"variant": "signature",
 							"kind": 4096,
@@ -1435,7 +1435,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async retrieveDocuments(\n    fulfillmentData: any, \n    documentType: any\n  ): Promise<void> {\n    // assuming the client retrieves documents\n    // from a third-party service\n    return await this.client.documents(\n      fulfillmentData,\n      documentType\n    )\n  }\n}\n```"
+												"text": "```ts\nclass MyFulfillmentProviderService extends AbstractFulfillmentProviderService {\n  // ...\n  async retrieveDocuments(\n    fulfillmentData: any,\n    documentType: any\n  ): Promise<void> {\n    // assuming the client retrieves documents\n    // from a third-party service\n    return await this.client.documents(\n      fulfillmentData,\n      documentType\n    )\n  }\n}\n```"
 											}
 										]
 									}
@@ -1443,7 +1443,7 @@
 							},
 							"parameters": [
 								{
-									"id": 34480,
+									"id": 110,
 									"name": "fulfillmentData",
 									"variant": "param",
 									"kind": 32768,
@@ -1470,7 +1470,7 @@
 									}
 								},
 								{
-									"id": 34481,
+									"id": 111,
 									"name": "documentType",
 									"variant": "param",
 									"kind": 32768,
@@ -1530,30 +1530,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						34435
+						65
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						34427
+						57
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						34439,
-						34441,
-						34446,
-						34449,
-						34452,
-						34457,
-						34463,
-						34466,
-						34469,
-						34472,
-						34475,
-						34478
+						69,
+						71,
+						76,
+						79,
+						82,
+						87,
+						93,
+						96,
+						99,
+						102,
+						105,
+						108
 					]
 				}
 			],
@@ -1574,193 +1574,193 @@
 		{
 			"title": "Classes",
 			"children": [
-				34426
+				56
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"34425": {
+		"55": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": ""
 		},
-		"34426": {
+		"56": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService"
 		},
-		"34427": {
+		"57": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.identifier"
 		},
-		"34439": {
+		"69": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentOptions"
 		},
-		"34440": {
+		"70": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentOptions"
 		},
-		"34441": {
+		"71": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateFulfillmentData"
 		},
-		"34442": {
+		"72": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateFulfillmentData"
 		},
-		"34443": {
+		"73": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "optionData"
 		},
-		"34444": {
+		"74": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"34445": {
+		"75": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "context"
 		},
-		"34446": {
+		"76": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateOption"
 		},
-		"34447": {
+		"77": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.validateOption"
 		},
-		"34448": {
+		"78": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"34449": {
+		"79": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.canCalculate"
 		},
-		"34450": {
+		"80": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.canCalculate"
 		},
-		"34451": {
+		"81": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"34452": {
+		"82": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.calculatePrice"
 		},
-		"34453": {
+		"83": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.calculatePrice"
 		},
-		"34454": {
+		"84": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "optionData"
 		},
-		"34455": {
+		"85": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"34456": {
+		"86": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "cart"
 		},
-		"34457": {
+		"87": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createFulfillment"
 		},
-		"34458": {
+		"88": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createFulfillment"
 		},
-		"34459": {
+		"89": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"34460": {
+		"90": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "items"
 		},
-		"34461": {
+		"91": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "order"
 		},
-		"34462": {
+		"92": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillment"
 		},
-		"34463": {
+		"93": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.cancelFulfillment"
 		},
-		"34464": {
+		"94": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.cancelFulfillment"
 		},
-		"34465": {
+		"95": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillment"
 		},
-		"34466": {
+		"96": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentDocuments"
 		},
-		"34467": {
+		"97": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getFulfillmentDocuments"
 		},
-		"34468": {
+		"98": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"34469": {
+		"99": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createReturnFulfillment"
 		},
-		"34470": {
+		"100": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.createReturnFulfillment"
 		},
-		"34471": {
+		"101": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillment"
 		},
-		"34472": {
+		"102": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getReturnDocuments"
 		},
-		"34473": {
+		"103": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getReturnDocuments"
 		},
-		"34474": {
+		"104": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"34475": {
+		"105": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getShipmentDocuments"
 		},
-		"34476": {
+		"106": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.getShipmentDocuments"
 		},
-		"34477": {
+		"107": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "data"
 		},
-		"34478": {
+		"108": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.retrieveDocuments"
 		},
-		"34479": {
+		"109": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.retrieveDocuments"
 		},
-		"34480": {
+		"110": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "fulfillmentData"
 		},
-		"34481": {
+		"111": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "documentType"
 		}
@@ -1770,7 +1770,7 @@
 			"1": "../../../../packages/core/utils/src/fulfillment/provider.ts"
 		},
 		"reflections": {
-			"1": 34425
+			"1": 55
 		}
 	}
 }

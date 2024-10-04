@@ -3,7 +3,7 @@ import { HttpTypes, OrderDTO } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../types/routing"
+} from "@medusajs/framework/http"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminOrderFilters>,

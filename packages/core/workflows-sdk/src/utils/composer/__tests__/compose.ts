@@ -1903,7 +1903,7 @@ describe("Workflow composer", function () {
       action: "step1",
       handlerType: "invoke",
       error: expect.objectContaining({
-        message:  "invoke fail",
+        message: "invoke fail",
       }),
     })
 
@@ -2216,7 +2216,9 @@ describe("Workflow composer", function () {
       throwOnError: false,
     })
 
-    const eventBusMock = container.resolve(Modules.EVENT_BUS)
+    const eventBusMock = container.resolve<IEventBusModuleService>(
+      Modules.EVENT_BUS
+    )
 
     expect(eventBusMock.emit).toHaveBeenCalledTimes(1)
     expect(eventBusMock.releaseGroupedEvents).toHaveBeenCalledTimes(0)

@@ -1,5 +1,5 @@
-import { PaginatedResponse } from "../../common";
-import { StoreCurrency } from "./entities";
+import { PaginatedResponse } from "../../common"
+import { StoreCurrency } from "./entities"
 
 export interface StoreCurrencyResponse {
   currency: StoreCurrency

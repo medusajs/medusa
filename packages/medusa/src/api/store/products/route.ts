@@ -3,7 +3,7 @@ import {
   isPresent,
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
-import { MedusaResponse } from "../../../types/routing"
+import { MedusaResponse } from "@medusajs/framework/http"
 import { wrapVariantsWithInventoryQuantity } from "../../utils/middlewares"
 import { RequestWithContext, wrapProductsWithTaxPrices } from "./helpers"
 import { HttpTypes } from "@medusajs/framework/types"

@@ -24,7 +24,7 @@ export const sidebar = numberSidebarItems(
         {
           type: "link",
           path: "/basics/project-directories-files",
-          title: "Project Directories and Files",
+          title: "Project Conventions",
         },
         {
           type: "link",
@@ -33,13 +33,13 @@ export const sidebar = numberSidebarItems(
         },
         {
           type: "link",
-          path: "/basics/api-routes",
-          title: "API Routes",
+          path: "/basics/modules",
+          title: "Modules",
         },
         {
           type: "link",
-          path: "/basics/modules-and-services",
-          title: "Modules and Services",
+          path: "/basics/api-routes",
+          title: "API Routes",
         },
         {
           type: "link",
@@ -50,11 +50,6 @@ export const sidebar = numberSidebarItems(
           type: "link",
           path: "/basics/modules-directory-structure",
           title: "Modules Directory Structure",
-        },
-        {
-          type: "link",
-          path: "/basics/data-models",
-          title: "Data Models",
         },
         {
           type: "link",

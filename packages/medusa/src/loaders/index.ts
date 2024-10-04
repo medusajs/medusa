@@ -5,8 +5,8 @@ import {
 } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
-  promiseAll,
   GraphQLSchema,
+  promiseAll,
 } from "@medusajs/framework/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
