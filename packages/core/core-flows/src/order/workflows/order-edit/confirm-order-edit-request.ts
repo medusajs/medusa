@@ -4,7 +4,11 @@ import {
   OrderDTO,
   OrderPreviewDTO,
 } from "@medusajs/framework/types"
-import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
+import {
+  ChangeActionType,
+  MathBN,
+  OrderChangeStatus,
+} from "@medusajs/framework/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -155,24 +159,30 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             return
           }
 
+          const updateAction = itemAction.actions!.find(
+            (a) => a.action === ChangeActionType.ITEM_UPDATE
+          )
+
           const quantity: BigNumberInput =
             itemAction.raw_quantity ?? itemAction.quantity
 
-          // const updateAction = itemAction.actions!.find(
-          //   (a) => a.action === ChangeActionType.ITEM_UPDATE
-          // )
-          //
-          // if (updateAction) {
-          //   quantity = MathBN.sub(quantity, ordItem.raw_quantity)
-          //   if (MathBN.lte(quantity, 0)) {
-          //     return
-          //   }
-          // }
+          const newQuantity = updateAction
+            ? MathBN.sub(quantity, ordItem.raw_quantity)
+            : quantity
+
+          if (MathBN.lte(newQuantity, 0)) {
+            return
+          }
+
+          const reservationQuantity = MathBN.sub(
+            newQuantity,
+            ordItem.raw_fulfilled_quantity
+          )
 
           allItems.push({
             id: ordItem.id,
             variant_id: ordItem.variant_id,
-            quantity,
+            quantity: reservationQuantity,
           })
           allVariants.push(ordItem.variant)
         })
