@@ -76,6 +76,15 @@ module.exports = defineConfig({
 })
 \`\`\`
 `,
+      `## 5. Test it Out
+
+Before you use your fulfillment provider, in the Medusa Admin:
+
+1. Add the fulfillment provider to a location.
+2. Add in the location a delivery shipping option that uses the provider.
+
+Then, place an order, choosing the shipping option you created during checkout, and create a fulfillment in the Medusa Admin. The fulfillment is created using your provider.
+`,
     ],
   },
 }
