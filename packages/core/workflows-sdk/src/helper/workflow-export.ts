@@ -6,7 +6,13 @@ import {
   TransactionHandlerType,
   TransactionState,
 } from "@medusajs/orchestration"
-import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
+import {
+  Context,
+  IEventBusModuleService,
+  LoadedModule,
+  Logger,
+  MedusaContainer,
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   isPresent,
@@ -514,7 +520,7 @@ function attachOnFinishReleaseEvents(
     const flowEventGroupId = transaction.getFlow().metadata?.eventGroupId
 
     const logger =
-      (flow.container as MedusaContainer).resolve(
+      (flow.container as MedusaContainer).resolve<Logger>(
         ContainerRegistrationKeys.LOGGER,
         { allowUnregistered: true }
       ) || console
@@ -539,10 +545,11 @@ function attachOnFinishReleaseEvents(
 
     await onFinish?.(args)
 
-    const eventBusService = (flow.container as MedusaContainer).resolve(
-      Modules.EVENT_BUS,
-      { allowUnregistered: true }
-    )
+    const eventBusService = (
+      flow.container as MedusaContainer
+    ).resolve<IEventBusModuleService>(Modules.EVENT_BUS, {
+      allowUnregistered: true,
+    })
 
     if (!eventBusService || !flowEventGroupId) {
       return
