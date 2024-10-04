@@ -17,7 +17,7 @@ The Medusa application's API route error handler then wraps your thrown error in
 For example:
 
 ```ts
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import { MedusaError } from "@medusajs/framework/utils"
 
 export const GET = async (
@@ -257,7 +257,7 @@ import {
   MedusaNextFunction, 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@medusajs/framework"
 import { MedusaError } from "@medusajs/framework/utils"
 
 export default defineMiddlewares({

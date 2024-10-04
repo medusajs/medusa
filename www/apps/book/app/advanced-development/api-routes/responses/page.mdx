@@ -17,7 +17,7 @@ export const jsonHighlights = [
 ]
 
 ```ts title="src/api/custom/route.ts" highlights={jsonHighlights}
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 
 export const GET = async (
   req: MedusaRequest,
@@ -52,7 +52,7 @@ export const statusHighlight = [
 ]
 
 ```ts title="src/api/custom/route.ts" highlights={statusHighlight}
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 
 export const GET = async (
   req: MedusaRequest,
@@ -84,7 +84,7 @@ export const streamHighlights = [
 ]
 
 ```ts highlights={streamHighlights}
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 
 export const GET = async (
   req: MedusaRequest,

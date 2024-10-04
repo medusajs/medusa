@@ -287,7 +287,7 @@ Create the file `src/api/admin/digital-products/route.ts` with the following con
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@medusajs/framework"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
@@ -743,7 +743,7 @@ export const uploadHighlights = [
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@medusajs/framework"
 import { uploadFilesWorkflow } from "@medusajs/medusa/core-flows"
 import { MedusaError } from "@medusajs/framework/utils"
 
@@ -1780,7 +1780,7 @@ The workflow returns the Medusa order and the digital product order, if created.
 Next, create the file `src/api/store/carts/[id]/complete/route.ts` with the following content:
 
 ```ts title="src/api/store/carts/[id]/complete/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework"
 import createDigitalProductOrderWorkflow from "../../../../../workflows/create-digital-product-order"
 
 export const POST = async (
@@ -2091,7 +2091,7 @@ export const previewRouteHighlights = [
 import { 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@medusajs/framework"
 import {
   Modules,
 } from "@medusajs/framework/utils"
@@ -2157,7 +2157,7 @@ export const purchasedDpHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@medusajs/framework"
 import { 
   ContainerRegistrationKeys,
 } from "@medusajs/framework/utils"
@@ -2213,7 +2213,7 @@ export const downloadUrlHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/framework/http"
+} from "@medusajs/framework"
 import { 
   Modules,
   ContainerRegistrationKeys,
