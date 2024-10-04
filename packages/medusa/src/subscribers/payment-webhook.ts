@@ -42,7 +42,7 @@ export default async function paymentWebhookhandler({
     return
   }
 
-  if (!event.data) {
+  if (!processedEvent.data) {
     return
   }
 
