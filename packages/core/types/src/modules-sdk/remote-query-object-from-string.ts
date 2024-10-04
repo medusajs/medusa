@@ -1,3 +1,4 @@
+import { IndexOrderBy } from "../index/query-config/query-input-config-order-by"
 import { ObjectToRemoteQueryFields } from "./object-to-remote-query-fields"
 import { RemoteQueryEntryPoints } from "./remote-query-entry-points"
 import { RemoteQueryFilters } from "./to-remote-query"
@@ -35,6 +36,7 @@ export type RemoteQueryInput<TEntry extends string> = {
   pagination?: {
     skip: number
     take?: number
+    order?: IndexOrderBy<TEntry>
   }
   filters?: RemoteQueryFilters<TEntry>
   context?: any
