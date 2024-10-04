@@ -1,11 +1,9 @@
 import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
-  ConfigModule,
   ExternalModuleDeclaration,
   ILinkMigrationsPlanner,
   InternalModuleDeclaration,
   LoadedModule,
-  Logger,
   MedusaContainer,
   ModuleBootstrapDeclaration,
   ModuleDefinition,
@@ -40,17 +38,6 @@ import { createQuery, RemoteQuery } from "./remote-query"
 import { MODULE_RESOURCE_TYPE, MODULE_SCOPE } from "./types"
 
 const LinkModulePackage = MODULE_PACKAGE_NAMES[Modules.LINK]
-
-declare module "@medusajs/types" {
-  export interface ModuleImplementations {
-    [ContainerRegistrationKeys.REMOTE_LINK]: RemoteLink
-    [ContainerRegistrationKeys.CONFIG_MODULE]: ConfigModule
-    [ContainerRegistrationKeys.PG_CONNECTION]: Knex<any>
-    [ContainerRegistrationKeys.REMOTE_QUERY]: RemoteQueryFunction
-    [ContainerRegistrationKeys.QUERY]: Omit<RemoteQueryFunction, symbol>
-    [ContainerRegistrationKeys.LOGGER]: Logger
-  }
-}
 
 export type RunMigrationFn = () => Promise<void>
 export type RevertMigrationFn = (moduleNames: string[]) => Promise<void>
