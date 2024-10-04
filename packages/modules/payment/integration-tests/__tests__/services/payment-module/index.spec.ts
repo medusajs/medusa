@@ -636,21 +636,28 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
             )
           })
 
-          it("should fail to capture already captured payment", async () => {
+          it("should return payment if payment is already captured", async () => {
             await service.capturePayment({
               amount: 100,
               payment_id: "pay-id-1",
             })
 
-            const error = await service
-              .capturePayment({
-                amount: 100,
-                payment_id: "pay-id-1",
-              })
-              .catch((e) => e)
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
 
-            expect(error.message).toEqual(
-              "You cannot capture more than the authorized amount substracted by what is already captured."
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+                captures: [
+                  expect.objectContaining({
+                    amount: 100,
+                  }),
+                ],
+                captured_at: expect.any(Date),
+              })
             )
           })
 
