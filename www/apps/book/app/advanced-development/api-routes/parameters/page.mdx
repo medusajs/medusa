@@ -20,7 +20,7 @@ export const singlePathHighlights = [
 import type {
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 
 export const GET = async (
   req: MedusaRequest,
@@ -49,7 +49,7 @@ export const multiplePathHighlights = [
 import type {
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 
 export const GET = async (
   req: MedusaRequest,
@@ -81,7 +81,7 @@ export const queryHighlights = [
 import type {
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 
 export const GET = async (
   req: MedusaRequest,
@@ -112,7 +112,7 @@ export const bodyHighlights = [
 import type {
   MedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 
 type HelloWorldReq = {
   name: string

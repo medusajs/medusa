@@ -76,6 +76,25 @@ module.exports = defineConfig({
 })
 \`\`\`
 `,
+      `## 5. Test it Out
+
+To test out your authentication provider, use any of the [Authentication Routes](https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route), using your provider's ID as a path parameter.
+
+For example, to get a registration token for an admin user, send a \`POST\` request to \`/auth/user/my-auth/register\` replacing \`my-auth\` with your authentication provider's ID:
+
+\`\`\`bash
+curl -X POST http://localhost:9000/auth/user/my-auth/register
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "email": "Whitney_Schultz@gmail.com",
+  "password": "supersecret"
+}'
+\`\`\`
+
+Change the request body to pass the data required for your authentication provider to register the user.
+
+If registration is successful, the response will have a \`token\` property.
+      `,
     ],
   },
 }

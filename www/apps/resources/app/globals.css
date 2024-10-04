@@ -16,6 +16,14 @@
     @apply bg-medusa-bg-highlight;
   }
 
+  * {
+    scrollbar-color: var(--docs-border-base) var(--docs-bg-base);
+  }
+
+  aside * {
+    scrollbar-color: var(--docs-border-base) var(--docs-bg-subtle);
+  }
+
   body[data-modal="opened"] {
     @apply !overflow-hidden;
   }
