@@ -82,6 +82,10 @@ module.exports = defineConfig({
 })
 \`\`\`
 `,
+      `## 5. Test it Out
+
+To test out your file provider, use the Medusa Admin or the [Upload API route](https://docs.medusajs.com/v2/api/admin#uploads_postuploads) to upload a file.
+`,
     ],
   },
 }
