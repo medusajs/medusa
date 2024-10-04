@@ -117,11 +117,9 @@ export const createCartWorkflow = createWorkflow(
         }
 
         // If there is only one country in the region, we prepare a shipping address with that country's code.
-        if (!data.input.shipping_address) {
-          if (data.region.countries.length === 1) {
-            data_.shipping_address = {
-              country_code: data.region.countries[0].iso_2,
-            }
+        if (!data.input.shipping_address && data.region.countries.length === 1) {
+          data_.shipping_address = {
+            country_code: data.region.countries[0].iso_2,
           }
         }
 
