@@ -34,11 +34,7 @@ export function toRemoteQuery<const TEntity extends string>(
     entity: TEntity | keyof RemoteQueryEntryPoints
     fields: RemoteQueryInput<TEntity>["fields"]
     filters?: RemoteQueryFilters<TEntity>
-    pagination?: {
-      skip?: number
-      take?: number
-      order?: RemoteQueryInput<TEntity>["pagination"]["order"]
-    }
+    pagination?: Partial<RemoteQueryInput<TEntity>["pagination"]>
     context?: Record<string, any>
   },
   entitiesMap: Map<string, any>
