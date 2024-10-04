@@ -164,6 +164,16 @@ const nextConfig = {
         destination: "/advanced-development/architecture/architectural-modules",
         permanent: true,
       },
+      {
+        source: "/basics/modules-and-services",
+        destination: "/basics/modules",
+        permanent: true
+      },
+      {
+        source: "/basics/data-models",
+        destination: "/basics/modules",
+        permanent: true
+      }
     ]
   },
 }
