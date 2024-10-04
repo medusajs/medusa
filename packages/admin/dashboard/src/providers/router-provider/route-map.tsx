@@ -27,6 +27,10 @@ export const RouteMap: RouteObject[] = [
     lazy: () => import("../../routes/login"),
   },
   {
+    path: "/reset-password",
+    lazy: () => import("../../routes/reset-password"),
+  },
+  {
     path: "*",
     lazy: () => import("../../routes/no-match"),
   },

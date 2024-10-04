@@ -95,6 +95,29 @@ export class Auth {
     this.client.clearToken()
   }
 
+  resetPassword = async (
+    actor: string,
+    provider: string,
+    body: { identifier: string }
+  ) => {
+    await this.client.fetch(`/auth/${actor}/${provider}/reset-password`, {
+      method: "POST",
+      body,
+      headers: { accept: "text/plain" }, // 201 Created response
+    })
+  }
+
+  updateProvider = async (
+    actor: string,
+    provider: string,
+    body: Record<string, unknown>
+  ) => {
+    await this.client.fetch(`/auth/${actor}/${provider}/update`, {
+      method: "POST",
+      body,
+    })
+  }
+
   private setToken_ = async (token: string) => {
     // By default we just set the token in the configured storage, if configured to use sessions we convert it into session storage instead.
     if (this.config?.auth?.type === "session") {
