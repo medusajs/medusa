@@ -1533,6 +1533,168 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should remove tax lines on cart items and shipping methods when country changes and there is no tax region for that country", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.createRegions({
+            name: "us",
+            currency_code: "usd",
+            countries: ["us"],
+          })
+
+          const otherRegion = await regionModule.createRegions({
+            name: "Italy",
+            currency_code: "eur",
+            countries: ["it"],
+          })
+
+          const shippingProfile =
+            await fulfillmentModule.createShippingProfiles({
+              name: "Test",
+              type: "default",
+            })
+
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
+            name: "Test",
+            type: "test-type",
+            service_zones: [
+              {
+                name: "Test",
+                geo_zones: [
+                  { type: "country", country_code: "us" },
+                  { type: "country", country_code: "it" },
+                ],
+              },
+            ],
+          })
+
+          const shippingOption = await fulfillmentModule.createShippingOptions({
+            name: "Test shipping option",
+            service_zone_id: fulfillmentSet.service_zones[0].id,
+            shipping_profile_id: shippingProfile.id,
+            provider_id: "manual_test-provider",
+            price_type: "flat",
+            type: {
+              label: "Test type",
+              description: "Test description",
+              code: "test-code",
+            },
+          })
+
+          const cart = await cartModule.createCarts({
+            currency_code: "eur",
+            email: "tony@stark.com",
+            items: [
+              {
+                id: "item-1",
+                unit_price: 2000,
+                quantity: 1,
+                title: "Test item",
+                product_id: "prod_tshirt",
+              } as any,
+            ],
+          })
+
+          // Manually inserting shipping methods here since the cart does not
+          // currently support it. Move to API when ready.
+          await cartModule.addShippingMethods(cart.id, [
+            {
+              amount: 500,
+              name: "express",
+              shipping_option_id: shippingOption.id,
+            },
+          ])
+
+          let response = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              region_id: region.id,
+              shipping_address: {
+                country_code: "us",
+              },
+            },
+            storeHeaders
+          )
+
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "usd",
+              region_id: region.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 2000,
+                  quantity: 1,
+                  title: "Test item",
+                  tax_lines: [
+                    // Uses the california default rate
+                    expect.objectContaining({
+                      description: "US Default Rate",
+                      code: "US_DEF",
+                      rate: 2,
+                      provider_id: "system",
+                    }),
+                  ],
+                }),
+              ]),
+              shipping_methods: expect.arrayContaining([
+                expect.objectContaining({
+                  shipping_option_id: shippingOption.id,
+                  amount: 500,
+                  tax_lines: [
+                    expect.objectContaining({
+                      description: "US Default Rate",
+                      code: "US_DEF",
+                      rate: 2,
+                      provider_id: "system",
+                    }),
+                  ],
+                  adjustments: [],
+                }),
+              ]),
+            })
+          )
+
+          response = await api.post(
+            `/store/carts/${response.data.cart.id}`,
+            {
+              region_id: otherRegion.id,
+              shipping_address: {
+                country_code: "it",
+              },
+            },
+            storeHeaders
+          )
+
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "eur",
+              region_id: otherRegion.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 2000,
+                  quantity: 1,
+                  title: "Test item",
+                  tax_lines: [
+                    // Italy has no tax region, so we clear the tax lines
+                  ],
+                }),
+              ]),
+              shipping_methods: expect.arrayContaining([
+                expect.objectContaining({
+                  shipping_option_id: shippingOption.id,
+                  amount: 500,
+                  tax_lines: [
+                    // Italy has no tax region, so we clear the tax lines
+                  ],
+                  adjustments: [],
+                }),
+              ]),
+            })
+          )
+        })
+
         it("should remove invalid shipping methods", async () => {
           await setupTaxStructure(taxModule)
 
