@@ -1,4 +1,5 @@
 import { isObject } from "./is-object"
+import * as util from "node:util"
 
 /**
  * In most casees, JSON.parse(JSON.stringify(obj)) is enough to deep copy an object.
@@ -23,6 +24,10 @@ export function deepCopy<
   }
 
   if (isObject(obj)) {
+    if (util.types.isProxy(obj)) {
+      return obj as unknown as TOutput
+    }
+
     const copy: Record<any, any> = {}
     for (let attr in obj) {
       if (obj.hasOwnProperty(attr)) {
