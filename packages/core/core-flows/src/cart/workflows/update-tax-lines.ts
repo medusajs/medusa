@@ -1,14 +1,11 @@
 import {
-  CartDTO,
   CartLineItemDTO,
   CartShippingMethodDTO,
 } from "@medusajs/framework/types"
 import {
+  WorkflowData,
   createWorkflow,
   transform,
-  when,
-  WorkflowData,
-  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { getItemTaxLinesStep, setTaxLinesForItemsStep } from "../steps"
@@ -60,8 +57,7 @@ const cartFields = [
 ]
 
 export type UpdateTaxLinesWorkflowInput = {
-  cart_id?: string
-  cart?: CartDTO
+  cart_id: string
   items?: CartLineItemDTO[]
   shipping_methods?: CartShippingMethodDTO[]
   force_tax_calculation?: boolean
@@ -73,43 +69,30 @@ export const updateTaxLinesWorkflowId = "update-tax-lines"
  */
 export const updateTaxLinesWorkflow = createWorkflow(
   updateTaxLinesWorkflowId,
-  (input: WorkflowData<UpdateTaxLinesWorkflowInput>) => {
-    const potentialCart = when({ input }, ({ input }) => {
-      if (!input.cart_id && !input.cart) {
-        throw new Error("Either cart_id or cart must be provided")
-      }
-      return !input.cart
-    }).then(() => {
-      return useRemoteQueryStep({
-        entry_point: "cart",
-        fields: cartFields,
-        variables: {
-          id: input.cart_id,
-        },
-        list: false,
-      })
-    })
-
-    const cart = transform({ potentialCart, input }, (data) => {
-      return data.input.cart || data.potentialCart
+  (input: WorkflowData<UpdateTaxLinesWorkflowInput>): WorkflowData<void> => {
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: cartFields,
+      variables: {
+        id: input.cart_id,
+      },
+      list: false,
     })
 
     const taxLineItems = getItemTaxLinesStep(
       transform({ input, cart }, (data) => ({
         cart: data.cart,
-        items: data.input.items || data.cart.items || [],
+        items: data.input.items || data.cart.items,
         shipping_methods:
-          data.input.shipping_methods || data.cart.shipping_methods || [],
+          data.input.shipping_methods || data.cart.shipping_methods,
         force_tax_calculation: data.input.force_tax_calculation,
       }))
     )
 
-    const taxLines = setTaxLinesForItemsStep({
+    setTaxLinesForItemsStep({
       cart,
       item_tax_lines: taxLineItems.lineItemTaxLines,
       shipping_tax_lines: taxLineItems.shippingMethodsTaxLines,
     })
-
-    return new WorkflowResponse(taxLines)
   }
 )

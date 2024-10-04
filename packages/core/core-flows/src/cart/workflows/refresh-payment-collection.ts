@@ -1,16 +1,14 @@
-import { isPresent, MathBN } from "@medusajs/framework/utils"
+import { MathBN, isPresent } from "@medusajs/framework/utils"
 import {
+  WorkflowData,
   createWorkflow,
   parallelize,
   transform,
   when,
-  WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
-import {
-  deletePaymentSessionsWorkflow,
-  updatePaymentCollectionStep,
-} from "../../payment-collection"
+import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
+import { updatePaymentCollectionStep } from "../../payment-collection"
+import { deletePaymentSessionsWorkflow } from "../../payment-collection/workflows/delete-payment-sessions"
 
 export type RefreshPaymentCollectionForCartWorklowInput = {
   cart_id: string
@@ -23,7 +21,9 @@ export const refreshPaymentCollectionForCartWorkflowId =
  */
 export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
   refreshPaymentCollectionForCartWorkflowId,
-  (input: WorkflowData<RefreshPaymentCollectionForCartWorklowInput>) => {
+  (
+    input: WorkflowData<RefreshPaymentCollectionForCartWorklowInput>
+  ): WorkflowData<void> => {
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: [
@@ -34,8 +34,8 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
         "raw_total",
         "payment_collection.id",
         "payment_collection.raw_amount",
-        "payment_collection.currency_code",
         "payment_collection.amount",
+        "payment_collection.currency_code",
         "payment_collection.payment_sessions.id",
       ],
       variables: { id: input.cart_id },

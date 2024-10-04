@@ -4,12 +4,10 @@ import {
   CreateShippingMethodTaxLineDTO,
   ICartModuleService,
   ItemTaxLineDTO,
-  LineItemTaxLineDTO,
-  ShippingMethodTaxLineDTO,
   ShippingTaxLineDTO,
 } from "@medusajs/framework/types"
-import { Modules, promiseAll } from "@medusajs/framework/utils"
-import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export interface SetTaxLinesForItemsStepInput {
   cart: CartWorkflowDTO
@@ -27,39 +25,42 @@ export const setTaxLinesForItemsStep = createStep(
     const { cart, item_tax_lines, shipping_tax_lines } = data
     const cartService = container.resolve<ICartModuleService>(Modules.CART)
 
-    const existingShippingMethodTaxLines =
+    const getShippingTaxLinesPromise =
       await cartService.listShippingMethodTaxLines({
         shipping_method_id: shipping_tax_lines.map((t) => t.shipping_line_id),
       })
 
-    const existingLineItemTaxLines = await cartService.listLineItemTaxLines({
+    const getItemTaxLinesPromise = await cartService.listLineItemTaxLines({
       item_id: item_tax_lines.map((t) => t.line_item_id),
     })
 
     const itemsTaxLinesData = normalizeItemTaxLinesForCart(item_tax_lines)
     const setItemTaxLinesPromise = itemsTaxLinesData.length
       ? cartService.setLineItemTaxLines(cart.id, itemsTaxLinesData)
-      : ([] as LineItemTaxLineDTO[])
+      : 0
 
     const shippingTaxLinesData =
       normalizeShippingTaxLinesForCart(shipping_tax_lines)
     const setShippingTaxLinesPromise = shippingTaxLinesData.length
-      ? cartService.setShippingMethodTaxLines(cart.id, shippingTaxLinesData)
-      : ([] as ShippingMethodTaxLineDTO[])
+      ? await cartService.setShippingMethodTaxLines(
+          cart.id,
+          shippingTaxLinesData
+        )
+      : 0
 
-    const [lineItemTaxLines, shippingMethodsTaxLines] = (await promiseAll([
-      setItemTaxLinesPromise,
-      setShippingTaxLinesPromise,
-    ])) as [LineItemTaxLineDTO[], ShippingMethodTaxLineDTO[]]
+    const [existingShippingMethodTaxLines, existingLineItemTaxLines] =
+      await Promise.all([
+        getShippingTaxLinesPromise,
+        getItemTaxLinesPromise,
+        setItemTaxLinesPromise,
+        setShippingTaxLinesPromise,
+      ])
 
-    return new StepResponse(
-      { lineItemTaxLines, shippingMethodsTaxLines },
-      {
-        cart,
-        existingLineItemTaxLines,
-        existingShippingMethodTaxLines,
-      }
-    )
+    return new StepResponse(null, {
+      cart,
+      existingLineItemTaxLines,
+      existingShippingMethodTaxLines,
+    })
   },
   async (revertData, { container }) => {
     if (!revertData) {
@@ -71,7 +72,7 @@ export const setTaxLinesForItemsStep = createStep(
 
     const cartService = container.resolve<ICartModuleService>(Modules.CART)
 
-    if (existingLineItemTaxLines?.length) {
+    if (existingLineItemTaxLines) {
       await cartService.setLineItemTaxLines(
         cart.id,
         existingLineItemTaxLines.map((taxLine) => ({

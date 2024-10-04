@@ -3,7 +3,6 @@ import {
   createWorkflow,
   parallelize,
   transform,
-  when,
   WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
@@ -18,11 +17,9 @@ import {
 } from "../steps"
 import { updateCartPromotionsStep } from "../steps/update-cart-promotions"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
-import { CartDTO } from "@medusajs/framework/types"
 
 export type UpdateCartPromotionsWorkflowInput = {
-  cart_id?: string
-  cart?: CartDTO
+  cart_id: string
   promo_codes?: string[]
   action?:
     | PromotionActions.ADD
@@ -36,25 +33,14 @@ export const updateCartPromotionsWorkflowId = "update-cart-promotions"
  */
 export const updateCartPromotionsWorkflow = createWorkflow(
   updateCartPromotionsWorkflowId,
-  (input: WorkflowData<UpdateCartPromotionsWorkflowInput>) => {
-    const potentialCart = when({ input }, ({ input }) => {
-      if (!input.cart_id && !input.cart) {
-        throw new Error("Either cart_id or cart must be provided")
-      }
-      return !input.cart
-    }).then(() => {
-      return useRemoteQueryStep({
-        entry_point: "cart",
-        fields: cartFieldsForRefreshSteps,
-        variables: {
-          id: input.cart_id,
-        },
-        list: false,
-      }) as CartDTO
-    })
-
-    const cart = transform({ potentialCart, input }, (data) => {
-      return data.input.cart || data.potentialCart
+  (
+    input: WorkflowData<UpdateCartPromotionsWorkflowInput>
+  ): WorkflowData<void> => {
+    const cart = useRemoteQueryStep({
+      entry_point: "cart",
+      fields: cartFieldsForRefreshSteps,
+      variables: { id: input.cart_id },
+      list: false,
     })
 
     const promo_codes = transform({ input }, (data) => {
@@ -94,7 +80,7 @@ export const updateCartPromotionsWorkflow = createWorkflow(
         shippingMethodAdjustmentsToCreate,
       }),
       updateCartPromotionsStep({
-        id: cart.id,
+        id: input.cart_id,
         promo_codes: computedPromotionCodes,
         action: PromotionActions.REPLACE,
       })
