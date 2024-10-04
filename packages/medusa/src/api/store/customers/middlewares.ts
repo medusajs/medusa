@@ -3,17 +3,19 @@ import * as QueryConfig from "./query-config"
 import {
   StoreCreateCustomer,
   StoreCreateCustomerAddress,
-  StoreGetCustomerParams,
   StoreGetCustomerAddressesParams,
+  StoreGetCustomerAddressParams,
+  StoreGetCustomerParams,
   StoreUpdateCustomer,
   StoreUpdateCustomerAddress,
-  StoreGetCustomerAddressParams,
 } from "./validators"
 
 import { MiddlewareRoute } from "@medusajs/framework/http"
 import { authenticate } from "../../../utils/middlewares/authenticate-middleware"
-import { validateAndTransformBody } from "../../utils/validate-body"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 
 export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {

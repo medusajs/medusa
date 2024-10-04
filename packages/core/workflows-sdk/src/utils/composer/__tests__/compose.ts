@@ -6,19 +6,19 @@ import {
 } from "@medusajs/orchestration"
 import { IEventBusModuleService } from "@medusajs/types"
 import {
-  Modules,
   composeMessage,
   createMedusaContainer,
+  Modules,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
-  StepResponse,
-  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
+  StepResponse,
   transform,
+  WorkflowResponse,
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
 import { createHook } from "../create-hook"
@@ -2216,7 +2216,9 @@ describe("Workflow composer", function () {
       throwOnError: false,
     })
 
-    const eventBusMock = container.resolve(Modules.EVENT_BUS)
+    const eventBusMock = container.resolve<IEventBusModuleService>(
+      Modules.EVENT_BUS
+    )
 
     expect(eventBusMock.emit).toHaveBeenCalledTimes(1)
     expect(eventBusMock.releaseGroupedEvents).toHaveBeenCalledTimes(0)

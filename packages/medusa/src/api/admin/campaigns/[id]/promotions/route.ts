@@ -1,7 +1,7 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 
 import { addOrRemoveCampaignPromotionsWorkflow } from "@medusajs/core-flows"
 import { HttpTypes, LinkMethodRequest } from "@medusajs/framework/types"

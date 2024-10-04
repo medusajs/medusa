@@ -7,7 +7,6 @@ const defaultStoreCustomersFields = [
   "phone",
   "metadata",
   "has_account",
-  "created_by",
   "deleted_at",
   "created_at",
   "updated_at",

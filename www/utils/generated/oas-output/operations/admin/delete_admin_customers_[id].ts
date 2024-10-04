@@ -30,7 +30,7 @@
  *       application/json:
  *         schema:
  *           type: object
- *           description: SUMMARY
+ *           description: The deletion's details.
  *           required:
  *             - id
  *             - object
@@ -60,7 +60,7 @@
  *     $ref: "#/components/responses/invalid_request_error"
  *   "500":
  *     $ref: "#/components/responses/500_error"
- * x-workflow: deleteCustomersWorkflow
+ * x-workflow: removeCustomerAccountWorkflow
  * 
 */
 

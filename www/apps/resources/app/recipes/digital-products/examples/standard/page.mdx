@@ -170,7 +170,7 @@ class DigitalProductModuleService extends MedusaService({
 export default DigitalProductModuleService
 ```
 
-The service extends the [service factory](https://docs.medusajs.com/v2/advanced-development/modules/service-factory), which provides basic data-management features.
+The service extends the [service factory](!docs!/advanced-development/modules/service-factory), which provides basic data-management features.
 
 ### Create Module Definition
 
@@ -204,8 +204,8 @@ module.exports = defineConfig({
 
 ### Further Reads
 
-- [How to Create a Module](!docs!/basics/modules-and-services)
-- [How to Create a Data Model](!docs!/basics/data-models)
+- [How to Create a Module](!docs!/basics/modules)
+- [How to Create a Data Model](!docs!/basics/modules#1-create-data-model)
 
 ---
 
@@ -255,7 +255,7 @@ This defines a link between `DigitalProductOrder` and the Order Module’s `Orde
 
 ### Further Read
 
-- [How to Define Module Links](!docs!/advanced-development/modules/module-links)
+- [How to Define Module Links](!docs!/advanced-development/module-links)
 
 ---
 
@@ -287,7 +287,7 @@ Create the file `src/api/admin/digital-products/route.ts` with the following con
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
@@ -362,7 +362,7 @@ Make sure to replace `{token}` with the JWT token you retrieved.
 ### Further Reads
 
 - [How to Create an API Route](!docs!/basics/api-routes)
-- [Learn more about Query](!docs!/advanced-development/modules/query)
+- [Learn more about Query](!docs!/advanced-development/module-links/query)
 
 ---
 
@@ -611,7 +611,7 @@ You’ll test out the workflow in the next section.
 
 - [How to Create a Workflow](!docs!/basics/workflows)
 - [What is the Compensation Function](!docs!/advanced-development/workflows/compensation-function)
-- [Learn more about the remote link function](!docs!/advanced-development/modules/remote-link)
+- [Learn more about the remote link function](!docs!/advanced-development/module-links/remote-link)
 
 ---
 
@@ -690,7 +690,7 @@ Finally, create the file `src/api/middlewares.ts` with the following content:
 import { defineMiddlewares } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
-} from "@medusajs/medusa/api/utils/validate-body"
+} from "@medusajs/framework/utils"
 import { createDigitalProductsSchema } from "./validation-schemas"
 
 export default defineMiddlewares({
@@ -743,7 +743,7 @@ export const uploadHighlights = [
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { uploadFilesWorkflow } from "@medusajs/medusa/core-flows"
 import { MedusaError } from "@medusajs/framework/utils"
 
@@ -1780,7 +1780,7 @@ The workflow returns the Medusa order and the digital product order, if created.
 Next, create the file `src/api/store/carts/[id]/complete/route.ts` with the following content:
 
 ```ts title="src/api/store/carts/[id]/complete/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import createDigitalProductOrderWorkflow from "../../../../../workflows/create-digital-product-order"
 
 export const POST = async (
@@ -2039,7 +2039,7 @@ Create the file `src/subscribers/handle-digital-order.ts` with the following con
 import type {
   SubscriberArgs,
   SubscriberConfig,
-} from "@medusajs/medusa"
+} from "@medusajs/framework"
 import { 
   fulfillDigitalOrderWorkflow,
 } from "../workflows/fulfill-digital-order"
@@ -2091,7 +2091,7 @@ export const previewRouteHighlights = [
 import { 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import {
   Modules,
 } from "@medusajs/framework/utils"
@@ -2157,7 +2157,7 @@ export const purchasedDpHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { 
   ContainerRegistrationKeys,
 } from "@medusajs/framework/utils"
@@ -2213,7 +2213,7 @@ export const downloadUrlHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { 
   Modules,
   ContainerRegistrationKeys,

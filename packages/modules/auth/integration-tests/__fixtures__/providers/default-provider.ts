@@ -1,8 +1,8 @@
 import {
-  AuthIdentityDTO,
-  AuthIdentityProviderService,
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityDTO,
+  AuthIdentityProviderService,
 } from "@medusajs/framework/types"
 import {
   AbstractAuthModuleProvider,

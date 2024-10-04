@@ -150,8 +150,8 @@ module.exports = defineConfig({
 
 ### Further Reads
 
-- [How to Create a Module](!docs!/basics/modules-and-services)
-- [How to Create Data Models](!docs!/basics/data-models)
+- [How to Create a Module](!docs!/basics/modules)
+- [How to Create Data Models](!docs!/basics/modules#1-create-data-model)
 
 ---
 
@@ -203,7 +203,7 @@ This adds a list link between the `Vendor` and `Order` data models, indicating t
 
 ### Further Read
 
-- [How to Define Module Links](!docs!/advanced-development/modules/module-links)
+- [How to Define Module Links](!docs!/advanced-development/module-links)
 
 ---
 
@@ -359,7 +359,7 @@ export const vendorRouteSchemaHighlights = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { z } from "zod"
 import MarketplaceModuleService from "../../modules/marketplace/service"
@@ -567,7 +567,7 @@ export const retrieveProductHighlights = [
 ]
 
 ```ts title="src/api/vendors/products/route.ts" highlights={retrieveProductHighlights}
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { 
   ContainerRegistrationKeys,
 } from "@medusajs/framework/utils"
@@ -712,7 +712,7 @@ import {
 } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
-} from "@medusajs/medusa/api/utils/validate-body"
+} from "@medusajs/framework/utils"
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
@@ -778,8 +778,8 @@ curl 'http://localhost:9000/vendors/products' \
 
 ### Further Reads
 
-- [How to use Query](!docs!/advanced-development/modules/query)
-- [How to use the Remote Link](!docs!/advanced-development/modules/remote-link)
+- [How to use Query](!docs!/advanced-development/module-links/query)
+- [How to use the Remote Link](!docs!/advanced-development/module-links/remote-link)
 
 ---
 
@@ -1205,7 +1205,7 @@ Create the file `src/api/store/carts/[id]/complete/route.ts` with the following 
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import createVendorOrdersWorkflow from "../../../../../workflows/marketplace/create-vendor-orders"
 
 export const POST = async (
@@ -1249,7 +1249,7 @@ export const getOrderHighlights = [
 ]
 
 ```ts title="src/api/vendors/orders/route.ts" highlights={getOrderHighlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { getOrdersListWorkflow } from "@medusajs/medusa/core-flows"
 import MarketplaceModuleService from "../../../modules/marketplace/service"
@@ -1361,7 +1361,7 @@ For example, you can link sales channels to vendors or other settings.
 
 <Note>
 
-[Learn more about module links](!docs!/advanced-development/modules/module-links).
+[Learn more about module links](!docs!/advanced-development/module-links).
 
 </Note>
 

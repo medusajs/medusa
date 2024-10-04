@@ -22,9 +22,11 @@ export class OrchestratorBuilder {
     this.steps = {
       depth: -1,
       parent: null,
-      next: steps
+      next: Object.keys(steps ?? {}).length
         ? JSON.parse(
-            JSON.stringify((steps.action ? steps : steps.next) as InternalStep)
+            JSON.stringify(
+              (steps!.action ? steps : steps!.next) as InternalStep
+            )
           )
         : undefined,
     }

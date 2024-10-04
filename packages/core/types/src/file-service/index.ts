@@ -2,7 +2,7 @@ import stream from "stream"
 
 /**
  * @interface
- * 
+ *
  * Details of a file upload's result.
  */
 export type FileServiceUploadResult = {
@@ -19,7 +19,7 @@ export type FileServiceUploadResult = {
 
 /**
  * @interface
- * 
+ *
  * The relevant details to upload a file through a stream.
  */
 export type FileServiceGetUploadStreamResult = {
@@ -44,7 +44,7 @@ export type FileServiceGetUploadStreamResult = {
 
 /**
  * @interface
- * 
+ *
  * The details of a file to retrieve.
  */
 export type GetUploadedFileType = {
@@ -61,7 +61,7 @@ export type GetUploadedFileType = {
 
 /**
  * @interface
- * 
+ *
  * The details of the file to remove.
  */
 export type DeleteFileType = {
@@ -75,7 +75,7 @@ export type DeleteFileType = {
 
 /**
  * @interface
- * 
+ *
  * The details of the file being uploaded through a stream.
  */
 export type UploadStreamDescriptorType = {

@@ -1,15 +1,15 @@
 type: object
-description: SUMMARY
+description: The details to update in a product option.
 x-schemaName: AdminUpdateProductOption
 properties:
   title:
     type: string
     title: title
-    description: The product's title.
+    description: The option's title.
   values:
     type: array
-    description: The product's values.
+    description: The option's values.
     items:
       type: string
       title: values
-      description: The value's values.
+      description: An option value.

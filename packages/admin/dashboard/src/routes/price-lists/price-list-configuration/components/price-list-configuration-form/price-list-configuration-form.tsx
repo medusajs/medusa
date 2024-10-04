@@ -90,13 +90,20 @@ export const PriceListConfigurationForm = ({
   const { mutateAsync } = useUpdatePriceList(priceList.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    const groupIds = values.customer_group_id.map((group) => group.id)
+    const rules = { ...priceList.rules } // preserve other rules set on the PL
+
+    if (groupIds.length) {
+      rules["customer_group_id"] = groupIds
+    } else {
+      delete rules["customer_group_id"]
+    }
+
     await mutateAsync(
       {
         starts_at: values.starts_at?.toISOString() || null,
         ends_at: values.ends_at?.toISOString() || null,
-        rules: {
-          customer_group_id: values.customer_group_id.map((group) => group.id),
-        },
+        rules: rules,
       },
       {
         onSuccess: () => {

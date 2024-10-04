@@ -40,7 +40,7 @@ export interface AdminCreateShippingOption {
 
 export interface AdminUpdateShippingOptionRule
   extends AdminCreateShippingOptionRule {
-  id?: string
+  id: string
 }
 
 export interface AdminUpdateShippingOptionPriceWithCurrency {

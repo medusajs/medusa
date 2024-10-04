@@ -10,6 +10,7 @@
  *   - shipped_at
  *   - delivered_at
  *   - canceled_at
+ *   - requires_shipping
  *   - data
  *   - provider_id
  *   - shipping_option_id
@@ -71,6 +72,10 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the fulfillment was updated.
+ *   requires_shipping:
+ *     type: boolean
+ *     title: requires_shipping
+ *     description: Whether the fulfillment requires shipping.
  * 
 */
 

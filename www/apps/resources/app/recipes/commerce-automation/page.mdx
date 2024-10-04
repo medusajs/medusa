@@ -36,13 +36,13 @@ The `inventory-item.updated` event is currently not emitted.
 
 <CardList items={[
   {
-    href: "!docs!/basics/modules-and-services",
+    href: "!docs!/basics/modules",
     title: "Create a Module",
     text: "Learn how to create a module in Medusa.",
     icon: AcademicCapSolid,
   },
   {
-    href: "!docs!/basics/data-models",
+    href: "!docs!/basics/modules#1-create-data-model",
     title: "Create a Data Model",
     text: "Learn how to create a data model.",
     icon: AcademicCapSolid,
@@ -180,7 +180,7 @@ export const restockModelHighlights = [
   import type { 
     MedusaRequest, 
     MedusaResponse,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework/http"
   import RestockNotificationModuleService 
     from "../../../modules/restock-notification/service"
 
@@ -242,7 +242,7 @@ export const subscriberHighlights = [
   import type {
     SubscriberArgs,
     SubscriberConfig,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework"
   import { 
     IInventoryService, 
     INotificationModuleService, 
@@ -762,7 +762,7 @@ The `order.placed` event is currently not emitted.
   import type {
     SubscriberArgs,
     SubscriberConfig,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework"
   import { 
     Modules,
   } from "@medusajs/framework/utils"
@@ -876,7 +876,7 @@ export const newsletterHighlights = [
   import type {
     SubscriberArgs,
     SubscriberConfig,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework"
   import { 
     Modules,
   } from "@medusajs/framework/utils"

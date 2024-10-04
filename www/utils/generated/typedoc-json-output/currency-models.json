@@ -1,12 +1,12 @@
 {
-	"id": 1986,
+	"id": 2182,
 	"name": "currency-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1987,
+			"id": 2183,
 			"name": "Currency",
 			"variant": "declaration",
 			"kind": 32,
@@ -24,14 +24,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 1988,
+									"id": 2184,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 1989,
+											"id": 2185,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -67,7 +67,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1990,
+											"id": 2186,
 											"name": "symbol",
 											"variant": "declaration",
 											"kind": 1024,
@@ -92,7 +92,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1991,
+											"id": 2187,
 											"name": "symbol_native",
 											"variant": "declaration",
 											"kind": 1024,
@@ -117,7 +117,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1992,
+											"id": 2188,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -142,7 +142,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1993,
+											"id": 2189,
 											"name": "decimal_digits",
 											"variant": "declaration",
 											"kind": 1024,
@@ -167,7 +167,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1994,
+											"id": 2190,
 											"name": "rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -196,12 +196,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												1989,
-												1990,
-												1991,
-												1992,
-												1993,
-												1994
+												2185,
+												2186,
+												2187,
+												2188,
+												2189,
+												2190
 											]
 										}
 									]
@@ -210,14 +210,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 1995,
+									"id": 2191,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 1996,
+											"id": 2192,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -245,7 +245,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1997,
+											"id": 2193,
 											"name": "symbol",
 											"variant": "declaration",
 											"kind": 1024,
@@ -262,7 +262,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1998,
+											"id": 2194,
 											"name": "symbol_native",
 											"variant": "declaration",
 											"kind": 1024,
@@ -279,7 +279,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 1999,
+											"id": 2195,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -296,7 +296,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 2000,
+											"id": 2196,
 											"name": "decimal_digits",
 											"variant": "declaration",
 											"kind": 1024,
@@ -313,7 +313,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 2001,
+											"id": 2197,
 											"name": "rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -334,12 +334,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												1996,
-												1997,
-												1998,
-												1999,
-												2000,
-												2001
+												2192,
+												2193,
+												2194,
+												2195,
+												2196,
+												2197
 											]
 										}
 									]
@@ -348,14 +348,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 2002,
+									"id": 2198,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 2003,
+											"id": 2199,
 											"name": "raw_rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -375,7 +375,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												2003
+												2199
 											]
 										}
 									]
@@ -406,81 +406,81 @@
 		{
 			"title": "Variables",
 			"children": [
-				1987
+				2183
 			]
 		}
 	],
 	"packageName": "@medusajs/currency",
 	"symbolIdMap": {
-		"1986": {
+		"2182": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"1987": {
+		"2183": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "default"
 		},
-		"1988": {
+		"2184": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object"
 		},
-		"1989": {
+		"2185": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.code"
 		},
-		"1990": {
+		"2186": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.symbol"
 		},
-		"1991": {
+		"2187": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.symbol_native"
 		},
-		"1992": {
+		"2188": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.name"
 		},
-		"1993": {
+		"2189": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.decimal_digits"
 		},
-		"1994": {
+		"2190": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.rounding"
 		},
-		"1995": {
+		"2191": {
 			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
 			"qualifiedName": "__type"
 		},
-		"1996": {
+		"2192": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "code"
 		},
-		"1997": {
+		"2193": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "symbol"
 		},
-		"1998": {
+		"2194": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "symbol_native"
 		},
-		"1999": {
+		"2195": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "name"
 		},
-		"2000": {
+		"2196": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "decimal_digits"
 		},
-		"2001": {
+		"2197": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "rounding"
 		},
-		"2002": {
+		"2198": {
 			"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-big-number-properties.ts",
 			"qualifiedName": "__type"
 		},
-		"2003": {
+		"2199": {
 			"sourceFileName": "",
 			"qualifiedName": "raw_rounding"
 		}
@@ -490,7 +490,7 @@
 			"1": "../../../../packages/modules/currency/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 1986
+			"1": 2182
 		}
 	}
 }

@@ -1,11 +1,10 @@
 export default function checkElementInViewport(
   element: Element,
-  percentage = 100,
-  height?: number
+  percentage = 100
 ) {
   const rect = element.getBoundingClientRect()
   const windowHeight: number | undefined =
-    height || window.innerHeight || document.documentElement.clientHeight
+    window.innerHeight || document.documentElement.clientHeight
 
   return !(
     Math.floor(100 - ((rect.top >= 0 ? 0 : rect.top) / +-rect.height) * 100) <

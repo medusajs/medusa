@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -91,9 +89,7 @@
       "indexes": [
         {
           "keyName": "notification_provider_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -220,11 +216,7 @@
           "primary": false,
           "nullable": false,
           "default": "'pending'",
-          "enumItems": [
-            "pending",
-            "success",
-            "failure"
-          ],
+          "enumItems": ["pending", "success", "failure"],
           "mappedType": "enum"
         },
         "provider_id": {
@@ -298,9 +290,7 @@
         },
         {
           "keyName": "notification_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -310,13 +300,9 @@
       "foreignKeys": {
         "notification_provider_id_foreign": {
           "constraintName": "notification_provider_id_foreign",
-          "columnNames": [
-            "provider_id"
-          ],
+          "columnNames": ["provider_id"],
           "localTableName": "public.notification",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.notification_provider",
           "deleteRule": "set null",
           "updateRule": "cascade"

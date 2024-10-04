@@ -2,7 +2,7 @@ import {
   RemoteQueryEntryPoints,
   RemoteQueryFilters,
   RemoteQueryGraph,
-  RemoteQueryObjectConfig,
+  RemoteQueryInput,
 } from "@medusajs/types"
 import { isObject, QueryContext } from "@medusajs/utils"
 import { parseAndAssignFilters } from "./parse-filters"
@@ -14,6 +14,7 @@ const ARGUMENTS = "__args"
  * convert a specific API configuration to a remote query object
  *
  * @param config
+ * @param entitiesMap
  *
  * @example
  * const remoteQueryObject = toRemoteQuery({
@@ -31,11 +32,12 @@ const ARGUMENTS = "__args"
 export function toRemoteQuery<const TEntity extends string>(
   config: {
     entity: TEntity | keyof RemoteQueryEntryPoints
-    fields: RemoteQueryObjectConfig<TEntity>["fields"]
+    fields: RemoteQueryInput<TEntity>["fields"]
     filters?: RemoteQueryFilters<TEntity>
     pagination?: {
       skip?: number
       take?: number
+      order?: RemoteQueryInput<TEntity>["pagination"]["order"]
     }
     context?: Record<string, any>
   },
@@ -112,7 +114,7 @@ export function toRemoteQuery<const TEntity extends string>(
   }
 
   if (config.pagination) {
-    joinerQuery[entity][ARGUMENTS] ??= {}
+    joinerQuery[entity][ARGUMENTS] ??= {} as any
     joinerQuery[entity][ARGUMENTS] = {
       ...joinerQuery[entity][ARGUMENTS],
       ...config.pagination,
