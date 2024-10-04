@@ -549,6 +549,16 @@ export class TransactionOrchestrator extends EventEmitter {
 
     step.changeState(TransactionStepState.TIMEOUT)
 
+    if (error?.stack) {
+      const workflowId = transaction.modelId
+      const stepAction = step.definition.action
+      const sourcePath = transaction.getFlow().metadata?.sourcePath
+      const sourceStack = sourcePath
+        ? `\n⮑ \sat ${sourcePath}: [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+        : `\n⮑ \sat [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+      error.stack += sourceStack
+    }
+
     transaction.addError(
       step.definition.action!,
       TransactionHandlerType.INVOKE,
@@ -602,13 +612,21 @@ export class TransactionOrchestrator extends EventEmitter {
       step.changeStatus(TransactionStepStatus.PERMANENT_FAILURE)
 
       if (!isTimeout) {
-        transaction.addError(
-          step.definition.action!,
-          step.isCompensating()
-            ? TransactionHandlerType.COMPENSATE
-            : TransactionHandlerType.INVOKE,
-          error
-        )
+        const handlerType = step.isCompensating()
+          ? TransactionHandlerType.COMPENSATE
+          : TransactionHandlerType.INVOKE
+
+        if (error?.stack) {
+          const workflowId = transaction.modelId
+          const stepAction = step.definition.action
+          const sourcePath = transaction.getFlow().metadata?.sourcePath
+          const sourceStack = sourcePath
+            ? `\n⮑ \sat ${sourcePath}: [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+            : `\n⮑ \sat [${workflowId} -> ${stepAction} (${TransactionHandlerType.INVOKE})]`
+          error.stack += sourceStack
+        }
+
+        transaction.addError(step.definition.action!, handlerType, error)
       }
 
       if (!step.isCompensating()) {

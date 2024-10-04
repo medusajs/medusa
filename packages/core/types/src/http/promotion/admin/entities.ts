@@ -1,11 +1,11 @@
-import { 
+import {
   BaseApplicationMethod,
-  BasePromotion, 
-  BasePromotionRule, 
-  BaseRuleAttributeOptions, 
-  BaseRuleOperatorOptions, 
-  BaseRuleValueOptions
-} from "../common";
+  BasePromotion,
+  BasePromotionRule,
+  BaseRuleAttributeOptions,
+  BaseRuleOperatorOptions,
+  BaseRuleValueOptions,
+} from "../common"
 
 export interface AdminPromotion extends BasePromotion {
   application_method?: AdminApplicationMethod

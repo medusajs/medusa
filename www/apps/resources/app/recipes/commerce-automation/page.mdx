@@ -81,7 +81,7 @@ export const restockModelHighlights = [
 ]
 
   ```ts title="src/modules/restock-notification/models/restock-notification.ts" highlights={restockModelHighlights}
-  import { model } from "@medusajs/utils"
+  import { model } from "@medusajs/framework/utils"
 
   const RestockNotification = model.define("restock_notification", {
     id: model.id().primaryKey(),
@@ -125,7 +125,7 @@ export const restockModelHighlights = [
   Then, create the module's main service at `src/modules/restock-notification/service.ts` with the following content:
 
   ```ts title="src/modules/restock-notification/service.ts"
-  import { MedusaService } from "@medusajs/utils"
+  import { MedusaService } from "@medusajs/framework/utils"
   import RestockNotification from "./models/restock-notification"
 
   class RestockNotificationModuleService extends MedusaService({
@@ -143,7 +143,7 @@ export const restockModelHighlights = [
 
   ```ts title="src/modules/restock-notification/index.ts"
   import RestockNotificationModuleService from "./service"
-  import { Module } from "@medusajs/utils"
+  import { Module } from "@medusajs/framework/utils"
 
   export default Module("restock-notification", {
     service: RestockNotificationModuleService,
@@ -180,7 +180,7 @@ export const restockModelHighlights = [
   import type { 
     MedusaRequest, 
     MedusaResponse,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework/http"
   import RestockNotificationModuleService 
     from "../../../modules/restock-notification/service"
 
@@ -242,20 +242,20 @@ export const subscriberHighlights = [
   import type {
     SubscriberArgs,
     SubscriberConfig,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework"
   import { 
     IInventoryService, 
     INotificationModuleService, 
     RemoteQueryFunction,
-  } from "@medusajs/types"
+  } from "@medusajs/framework/types"
   import { 
     ContainerRegistrationKeys, 
     Modules, 
     remoteQueryObjectFromString,
-  } from "@medusajs/utils"
+  } from "@medusajs/framework/utils"
   import { 
     RemoteLink,
-  } from "@medusajs/modules-sdk"
+  } from "@medusajs/framework/modules-sdk"
   import RestockNotificationModuleService 
     from "../modules/restock-notification/service"
 
@@ -462,18 +462,18 @@ export const syncProductsWorkflowHighlight = [
   ```ts title="src/workflows/sync-products.ts" highlights={syncProductsWorkflowHighlight} collapsibleLines="1-16" expandButtonLabel="Show Imports"
   import { 
     Modules
-  } from "@medusajs/utils"
+  } from "@medusajs/framework/utils"
   import { 
     IProductModuleService, 
     IStoreModuleService, 
     ProductDTO, 
     StoreDTO
-  } from "@medusajs/types"
+  } from "@medusajs/framework/types"
   import { 
     StepResponse, 
     createStep, 
     createWorkflow,
-  } from "@medusajs/workflows-sdk"
+  } from "@medusajs/framework/workflows-sdk"
 
   type RetrieveStoreStepInput = {
     id: string
@@ -616,7 +616,7 @@ export const syncProductsWorkflowHighlight = [
   Then, create a scheduled job at `src/jobs/sync-products.ts` that executes the workflow at the specified interval:
 
   ```ts
-  import { MedusaContainer } from "@medusajs/types"
+  import { MedusaContainer } from "@medusajs/framework/types"
   import { 
     syncProductsWorkflow,
   } from "../workflows/sync-products"
@@ -762,14 +762,14 @@ The `order.placed` event is currently not emitted.
   import type {
     SubscriberArgs,
     SubscriberConfig,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework"
   import { 
     Modules,
-  } from "@medusajs/utils"
+  } from "@medusajs/framework/utils"
   import { 
     ICustomerModuleService, 
     IOrderModuleService,
-  } from "@medusajs/types"
+  } from "@medusajs/framework/types"
 
   export default async function orderCreatedHandler({
     event: { data },
@@ -876,16 +876,16 @@ export const newsletterHighlights = [
   import type {
     SubscriberArgs,
     SubscriberConfig,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework"
   import { 
     Modules,
-  } from "@medusajs/utils"
+  } from "@medusajs/framework/utils"
   import { 
     ICustomerModuleService, 
     IProductModuleService, 
     IStoreModuleService,
     INotificationModuleService,
-  } from "@medusajs/types"
+  } from "@medusajs/framework/types"
 
   export default async function productCreateHandler({
     container,

@@ -25,7 +25,12 @@ export type ChangeActionType =
   | "WRITE_OFF_ITEM"
   | "REINSTATE_ITEM"
 
-export type OrderChangeStatus = "confirmed" | "declined" | "requested" | "pending" | "canceled"
+export type OrderChangeStatus =
+  | "confirmed"
+  | "declined"
+  | "requested"
+  | "pending"
+  | "canceled"
 
 /**
  * @interface
@@ -115,7 +120,7 @@ export type OrderSummaryDTO = {
 
   /**
    * The raw pending difference of the order.
-   * 
+   *
    * @ignore
    */
   raw_pending_difference: BigNumberRawValue
@@ -279,14 +284,14 @@ export interface OrderShippingMethodTaxLineDTO extends OrderTaxLineDTO {
 
   /**
    * The raw total tax relative to the shipping method.
-   * 
+   *
    * @ignore
    */
   raw_total: BigNumberRawValue
 
   /**
    * The raw subtotal tax relative to the shipping method.
-   * 
+   *
    * @ignore
    */
   raw_subtotal: BigNumberRawValue
@@ -320,14 +325,14 @@ export interface OrderLineItemTaxLineDTO extends OrderTaxLineDTO {
 
   /**
    * The raw total tax relative to the item.
-   * 
+   *
    * @ignore
    */
   raw_total: BigNumberRawValue
 
   /**
    * The raw subtotal tax relative to the item.
-   * 
+   *
    * @ignore
    */
   raw_subtotal: BigNumberRawValue
@@ -444,7 +449,7 @@ export interface OrderShippingMethodDTO {
 
   /**
    * The raw price of the shipping method.
-   * 
+   *
    * @ignore
    */
   raw_amount: BigNumberRawValue
@@ -535,56 +540,56 @@ export interface OrderShippingMethodDTO {
 
   /**
    * The raw original total of the order shipping method.
-   * 
+   *
    * @ignore
    */
   raw_original_total: BigNumberRawValue
 
   /**
    * The raw original subtotal of the order shipping method.
-   * 
+   *
    * @ignore
    */
   raw_original_subtotal: BigNumberRawValue
 
   /**
    * The raw original tax total of the order shipping method.
-   * 
+   *
    * @ignore
    */
   raw_original_tax_total: BigNumberRawValue
 
   /**
    * The raw total of the order shipping method.
-   * 
+   *
    * @ignore
    */
   raw_total: BigNumberRawValue
 
   /**
    * The raw subtotal of the order shipping method.
-   * 
+   *
    * @ignore
    */
   raw_subtotal: BigNumberRawValue
 
   /**
    * The raw tax total of the order shipping method.
-   * 
+   *
    * @ignore
    */
   raw_tax_total: BigNumberRawValue
 
   /**
    * The raw discount total of the order shipping method.
-   * 
+   *
    * @ignore
    */
   raw_discount_total: BigNumberRawValue
 
   /**
    * The raw discount tax total of the order shipping method.
-   * 
+   *
    * @ignore
    */
   raw_discount_tax_total: BigNumberRawValue
@@ -661,91 +666,91 @@ export interface OrderLineItemTotalsDTO {
 
   /**
    * The raw original total of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_original_total: BigNumberRawValue
 
   /**
    * The raw original subtotal of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_original_subtotal: BigNumberRawValue
 
   /**
    * The raw original tax total of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_original_tax_total: BigNumberRawValue
 
   /**
    * The raw item total of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_item_total: BigNumberRawValue
 
   /**
    * The raw item subtotal of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_item_subtotal: BigNumberRawValue
 
   /**
    * The raw item tax total of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_item_tax_total: BigNumberRawValue
 
   /**
    * The raw total of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_total: BigNumberRawValue
 
   /**
    * The raw subtotal of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_subtotal: BigNumberRawValue
 
   /**
    * The raw tax total of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_tax_total: BigNumberRawValue
 
   /**
    * The raw discount total of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_discount_total: BigNumberRawValue
 
   /**
    * The raw discount tax total of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_discount_tax_total: BigNumberRawValue
 
   /**
    * The raw refundable total of the order line item..
-   * 
+   *
    * @ignore
    */
   raw_refundable_total: BigNumberRawValue
 
   /**
    * The raw  refundable total per unit of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_refundable_total_per_unit: BigNumberRawValue
@@ -857,7 +862,7 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
 
   /**
    * The raw compare at unit price of the line item.
-   * 
+   *
    * @ignore
    */
   raw_compare_at_unit_price?: BigNumberRawValue
@@ -869,7 +874,7 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
 
   /**
    * The raw unit price of the line item.
-   * 
+   *
    * @ignore
    */
   raw_unit_price: BigNumberRawValue
@@ -881,7 +886,7 @@ export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {
 
   /**
    * The raw quantity of the line item.
-   * 
+   *
    * @ignore
    */
   raw_quantity: BigNumberRawValue
@@ -949,7 +954,7 @@ export interface OrderItemDTO {
 
   /**
    * The raw quantity of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_quantity: BigNumberRawValue
@@ -961,7 +966,7 @@ export interface OrderItemDTO {
 
   /**
    * The raw fulfilled quantity of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_fulfilled_quantity: BigNumberRawValue
@@ -973,7 +978,7 @@ export interface OrderItemDTO {
 
   /**
    * The raw delivered quantity of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_delivered_quantity: BigNumberRawValue
@@ -985,7 +990,7 @@ export interface OrderItemDTO {
 
   /**
    * The raw shipped quantity of the order line item.
-   * 
+   *
    * @ignore
    */
   raw_shipped_quantity: BigNumberRawValue
@@ -997,7 +1002,7 @@ export interface OrderItemDTO {
 
   /**
    * The raw quantity of return requested for the order line item.
-   * 
+   *
    * @ignore
    */
   raw_return_requested_quantity: BigNumberRawValue
@@ -1009,7 +1014,7 @@ export interface OrderItemDTO {
 
   /**
    * The raw quantity of return received for the order line item.
-   * 
+   *
    * @ignore
    */
   raw_return_received_quantity: BigNumberRawValue
@@ -1021,7 +1026,7 @@ export interface OrderItemDTO {
 
   /**
    * The raw quantity of return dismissed for the order line item.
-   * 
+   *
    * @ignore
    */
   raw_return_dismissed_quantity: BigNumberRawValue
@@ -1033,7 +1038,7 @@ export interface OrderItemDTO {
 
   /**
    * The raw quantity of written off for the order line item.
-   * 
+   *
    * @ignore
    */
   raw_written_off_quantity: BigNumberRawValue
@@ -1295,154 +1300,154 @@ export interface OrderDTO {
 
   /**
    * The raw original item total of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_item_total: BigNumberRawValue
 
   /**
    * The raw original item subtotal of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_item_subtotal: BigNumberRawValue
 
   /**
    * The raw original item tax total of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_item_tax_total: BigNumberRawValue
 
   /**
    * The raw item total of the order.
-   * 
+   *
    * @ignore
    */
   raw_item_total: BigNumberRawValue
 
   /**
    * The raw item subtotal of the order.
-   * 
+   *
    * @ignore
    */
   raw_item_subtotal: BigNumberRawValue
 
   /**
    * The raw item tax total of the order.
-   * 
+   *
    * @ignore
    */
   raw_item_tax_total: BigNumberRawValue
 
   /**
    * The raw original total of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_total: BigNumberRawValue
 
   /**
    * The raw original subtotal of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_subtotal: BigNumberRawValue
 
   /**
    * The raw original tax total of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_tax_total: BigNumberRawValue
 
   /**
    * The raw total of the order.
-   * 
+   *
    * @ignore
    */
   raw_total: BigNumberRawValue
 
   /**
    * The raw subtotal of the order. (Excluding taxes)
-   * 
+   *
    * @ignore
    */
   raw_subtotal: BigNumberRawValue
 
   /**
    * The raw tax total of the order.
-   * 
+   *
    * @ignore
    */
   raw_tax_total: BigNumberRawValue
 
   /**
    * The raw discount total of the order.
-   * 
+   *
    * @ignore
    */
   raw_discount_total: BigNumberRawValue
 
   /**
    * The raw discount tax total of the order.
-   * 
+   *
    * @ignore
    */
   raw_discount_tax_total: BigNumberRawValue
 
   /**
    * The raw gift card total of the order.
-   * 
+   *
    * @ignore
    */
   raw_gift_card_total: BigNumberRawValue
 
   /**
    * The raw gift card tax total of the order.
-   * 
+   *
    * @ignore
    */
   raw_gift_card_tax_total: BigNumberRawValue
 
   /**
    * The raw shipping total of the order.
-   * 
+   *
    * @ignore
    */
   raw_shipping_total: BigNumberRawValue
 
   /**
    * The raw shipping subtotal of the order.
-   * 
+   *
    * @ignore
    */
   raw_shipping_subtotal: BigNumberRawValue
 
   /**
    * The raw shipping tax total of the order.
-   * 
+   *
    * @ignore
    */
   raw_shipping_tax_total: BigNumberRawValue
 
   /**
    * The raw original shipping total of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_shipping_total: BigNumberRawValue
 
   /**
    * The raw original shipping subtotal of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_shipping_subtotal: BigNumberRawValue
 
   /**
    * The raw original shipping tax total of the order.
-   * 
+   *
    * @ignore
    */
   raw_original_shipping_tax_total: BigNumberRawValue
@@ -1615,7 +1620,7 @@ export interface OrderReturnItemDTO {
 
   /**
    * The raw quantity of the item to return.
-   * 
+   *
    * @ignore
    */
   raw_quantity: BigNumberRawValue
@@ -1627,7 +1632,7 @@ export interface OrderReturnItemDTO {
 
   /**
    * The raw received quantity of the return item.
-   * 
+   *
    * @ignore
    */
   raw_received_quantity?: BigNumberRawValue
@@ -1689,7 +1694,7 @@ export interface OrderClaimItemDTO {
 
   /**
    * The raw quantity of the order claim item
-   * 
+   *
    * @ignore
    */
   raw_quantity: BigNumberRawValue
@@ -1781,7 +1786,7 @@ export interface OrderExchangeItemDTO {
 
   /**
    * The raw quantity of the order exchange item
-   * 
+   *
    * @ignore
    */
   raw_quantity: BigNumberRawValue
@@ -2336,7 +2341,7 @@ export interface OrderTransactionDTO {
 
   /**
    * The raw amount of the transaction
-   * 
+   *
    * @ignore
    */
   raw_amount: BigNumberRawValue
@@ -2395,7 +2400,7 @@ export interface OrderTransactionDTO {
 
   /**
    * The raw amount of the transaction
-   * 
+   *
    * @ignore
    */
   raw_amount: BigNumberRawValue

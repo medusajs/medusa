@@ -7,7 +7,7 @@ import { TypeList } from "docs-ui"
 
 # transform - Workflows API Reference
 
-This documentation provides a reference to the `transform` . It belongs to the `@medusajs/workflows-sdk` package.
+This documentation provides a reference to the `transform` . It belongs to the `@medusajs/framework/workflows-sdk` package.
 
 This function transforms the output of other utility functions.
 
@@ -23,32 +23,27 @@ If you're also retrieving the output of a hook and want to check if its value is
 ```ts
 import {
   createWorkflow,
-  transform
-} from "@medusajs/workflows-sdk"
+  transform,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
 import { step1, step2 } from "./steps"
 
 type WorkflowInput = {
   name: string
 }
 
-type WorkflowOutput = {
-  message: string
-}
-
-const myWorkflow = createWorkflow<
-    WorkflowInput,
-    WorkflowOutput
-  >
-  ("hello-world", (input) => {
+const myWorkflow = createWorkflow(
+  "hello-world", 
+  (input: WorkflowInput) => {
     const str1 = step1(input)
     const str2 = step2(input)
 
-    return transform({
+    const message = transform({
       str1,
       str2
-    }, (input) => ({
-      message: `${input.str1}${input.str2}`
-    }))
+    }, (input) => `${input.str1}${input.str2}`)
+
+    return new WorkflowResponse(message)
 })
 ```
 

@@ -11,8 +11,9 @@ import { OrchestrationUtils } from "@medusajs/utils"
  * @example
  * import {
  *   createWorkflow,
- *   parallelize
- * } from "@medusajs/workflows-sdk"
+ *   parallelize,
+ *   WorkflowResponse
+ * } from "@medusajs/framework/workflows-sdk"
  * import {
  *   createProductStep,
  *   getProductStep,
@@ -24,10 +25,9 @@ import { OrchestrationUtils } from "@medusajs/utils"
  *   title: string
  * }
  *
- * const myWorkflow = createWorkflow<
- *   WorkflowInput,
- *   Product
- * >("my-workflow", (input) => {
+ * const myWorkflow = createWorkflow(
+ *   "my-workflow",
+ *   (input: WorkflowInput) => {
  *    const product = createProductStep(input)
  *
  *    const [prices, productSalesChannel] = parallelize(
@@ -36,7 +36,7 @@ import { OrchestrationUtils } from "@medusajs/utils"
  *    )
  *
  *    const id = product.id
- *    return getProductStep(product.id)
+ *    return new WorkflowResponse(getProductStep(product.id))
  *  }
  * )
  */

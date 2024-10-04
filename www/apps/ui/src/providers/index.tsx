@@ -1,9 +1,6 @@
 "use client"
 
 import {
-  ColorModeProvider,
-  MobileProvider,
-  ModalProvider,
   AnalyticsProvider,
   ScrollControllerProvider,
   SiteConfigProvider,
@@ -21,19 +18,13 @@ const Providers = ({ children }: ProvidersProps) => {
   return (
     <AnalyticsProvider writeKey={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}>
       <SiteConfigProvider config={siteConfig}>
-        <MobileProvider>
-          <ColorModeProvider>
-            <ModalProvider>
-              <ScrollControllerProvider scrollableSelector="#main">
-                <SidebarProvider>
-                  <MainNavProvider>
-                    <SearchProvider>{children}</SearchProvider>
-                  </MainNavProvider>
-                </SidebarProvider>
-              </ScrollControllerProvider>
-            </ModalProvider>
-          </ColorModeProvider>
-        </MobileProvider>
+        <ScrollControllerProvider scrollableSelector="#main">
+          <SidebarProvider>
+            <MainNavProvider>
+              <SearchProvider>{children}</SearchProvider>
+            </MainNavProvider>
+          </SidebarProvider>
+        </ScrollControllerProvider>
       </SiteConfigProvider>
     </AnalyticsProvider>
   )

@@ -1,5 +1,5 @@
 {
-	"id": 4323,
+	"id": 4413,
 	"name": "fulfillment-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 4324,
+			"id": 4414,
 			"name": "FulfillmentAddress",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 4325,
+					"id": 4415,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4326,
+							"id": 4416,
 							"name": "new FulfillmentAddress",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 4324,
+								"target": 4414,
 								"name": "FulfillmentAddress",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -48,7 +48,7 @@
 					]
 				},
 				{
-					"id": 4346,
+					"id": 4436,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -64,7 +64,7 @@
 					}
 				},
 				{
-					"id": 4327,
+					"id": 4417,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -75,7 +75,7 @@
 					}
 				},
 				{
-					"id": 4328,
+					"id": 4418,
 					"name": "company",
 					"variant": "declaration",
 					"kind": 1024,
@@ -96,7 +96,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4329,
+					"id": 4419,
 					"name": "first_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -117,7 +117,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4330,
+					"id": 4420,
 					"name": "last_name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -138,7 +138,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4331,
+					"id": 4421,
 					"name": "address_1",
 					"variant": "declaration",
 					"kind": 1024,
@@ -159,7 +159,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4332,
+					"id": 4422,
 					"name": "address_2",
 					"variant": "declaration",
 					"kind": 1024,
@@ -180,7 +180,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4333,
+					"id": 4423,
 					"name": "city",
 					"variant": "declaration",
 					"kind": 1024,
@@ -201,7 +201,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4334,
+					"id": 4424,
 					"name": "country_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -222,7 +222,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4335,
+					"id": 4425,
 					"name": "province",
 					"variant": "declaration",
 					"kind": 1024,
@@ -243,7 +243,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4336,
+					"id": 4426,
 					"name": "postal_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -264,7 +264,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4337,
+					"id": 4427,
 					"name": "phone",
 					"variant": "declaration",
 					"kind": 1024,
@@ -283,957 +283,6 @@
 						]
 					},
 					"defaultValue": "null"
-				},
-				{
-					"id": 4338,
-					"name": "metadata",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Record"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									},
-									{
-										"type": "intrinsic",
-										"name": "unknown"
-									}
-								],
-								"name": "Record",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 4339,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 4340,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 4341,
-					"name": "deleted_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Date"
-								},
-								"name": "Date",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 4342,
-					"name": "onCreate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4343,
-							"name": "onCreate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				},
-				{
-					"id": 4344,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4345,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						4325
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						4346,
-						4327,
-						4328,
-						4329,
-						4330,
-						4331,
-						4332,
-						4333,
-						4334,
-						4335,
-						4336,
-						4337,
-						4338,
-						4339,
-						4340,
-						4341
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						4342,
-						4344
-					]
-				}
-			]
-		},
-		{
-			"id": 4375,
-			"name": "FulfillmentItem",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 4376,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4377,
-							"name": "new FulfillmentItem",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 4375,
-								"name": "FulfillmentItem",
-								"package": "@medusajs/fulfillment",
-								"qualifiedName": "default"
-							}
-						}
-					]
-				},
-				{
-					"id": 4395,
-					"name": "[OptionalProps]",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
-							"qualifiedName": "SoftDeletableModelDateColumns"
-						},
-						"name": "SoftDeletableModelDateColumns",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 4378,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4379,
-					"name": "title",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4380,
-					"name": "sku",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4381,
-					"name": "barcode",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4382,
-					"name": "quantity",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "intrinsic",
-								"name": "number"
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../../../packages/core/utils/src/totals/big-number.ts",
-									"qualifiedName": "BigNumber"
-								},
-								"name": "BigNumber",
-								"package": "@medusajs/utils"
-							}
-						]
-					}
-				},
-				{
-					"id": 4383,
-					"name": "raw_quantity",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/core/types/src/totals/big-number.ts",
-							"qualifiedName": "BigNumberRawValue"
-						},
-						"name": "BigNumberRawValue",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 4384,
-					"name": "line_item_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 4385,
-					"name": "inventory_item_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 4386,
-					"name": "fulfillment_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4387,
-					"name": "fulfillment",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": 4347,
-						"name": "Fulfillment",
-						"package": "@medusajs/fulfillment",
-						"qualifiedName": "default"
-					}
-				},
-				{
-					"id": 4388,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 4389,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 4390,
-					"name": "deleted_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Date"
-								},
-								"name": "Date",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 4391,
-					"name": "onCreate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4392,
-							"name": "onCreate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				},
-				{
-					"id": 4393,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4394,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						4376
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						4395,
-						4378,
-						4379,
-						4380,
-						4381,
-						4382,
-						4383,
-						4384,
-						4385,
-						4386,
-						4387,
-						4388,
-						4389,
-						4390
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						4391,
-						4393
-					]
-				}
-			]
-		},
-		{
-			"id": 4396,
-			"name": "FulfillmentLabel",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 4397,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4398,
-							"name": "new FulfillmentLabel",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 4396,
-								"name": "FulfillmentLabel",
-								"package": "@medusajs/fulfillment",
-								"qualifiedName": "default"
-							}
-						}
-					]
-				},
-				{
-					"id": 4412,
-					"name": "[OptionalProps]",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
-							"qualifiedName": "SoftDeletableModelDateColumns"
-						},
-						"name": "SoftDeletableModelDateColumns",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 4399,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4400,
-					"name": "tracking_number",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4401,
-					"name": "tracking_url",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4402,
-					"name": "label_url",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4403,
-					"name": "fulfillment_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4404,
-					"name": "fulfillment",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": 4347,
-						"name": "Fulfillment",
-						"package": "@medusajs/fulfillment",
-						"qualifiedName": "default"
-					}
-				},
-				{
-					"id": 4405,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 4406,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 4407,
-					"name": "deleted_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Date"
-								},
-								"name": "Date",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 4408,
-					"name": "onCreate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4409,
-							"name": "onCreate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				},
-				{
-					"id": 4410,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4411,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						4397
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						4412,
-						4399,
-						4400,
-						4401,
-						4402,
-						4403,
-						4404,
-						4405,
-						4406,
-						4407
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						4408,
-						4410
-					]
-				}
-			]
-		},
-		{
-			"id": 4413,
-			"name": "FulfillmentProvider",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 4414,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4415,
-							"name": "new FulfillmentProvider",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 4413,
-								"name": "FulfillmentProvider",
-								"package": "@medusajs/fulfillment",
-								"qualifiedName": "default"
-							}
-						}
-					]
-				},
-				{
-					"id": 4416,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4417,
-					"name": "is_enabled",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					},
-					"defaultValue": "true"
-				},
-				{
-					"id": 4418,
-					"name": "onCreate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4419,
-							"name": "onCreate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				},
-				{
-					"id": 4420,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4421,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						4414
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						4416,
-						4417
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						4418,
-						4420
-					]
-				}
-			]
-		},
-		{
-			"id": 4422,
-			"name": "FulfillmentSet",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 4423,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 4424,
-							"name": "new FulfillmentSet",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 4422,
-								"name": "FulfillmentSet",
-								"package": "@medusajs/fulfillment",
-								"qualifiedName": "default"
-							}
-						}
-					]
-				},
-				{
-					"id": 4437,
-					"name": "[OptionalProps]",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
-							"qualifiedName": "SoftDeletableModelDateColumns"
-						},
-						"name": "SoftDeletableModelDateColumns",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 4425,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4426,
-					"name": "name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 4427,
-					"name": "type",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
 				},
 				{
 					"id": 4428,
@@ -1273,36 +322,6 @@
 				},
 				{
 					"id": 4429,
-					"name": "service_zones",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 4458,
-								"name": "ServiceZone",
-								"package": "@medusajs/fulfillment",
-								"qualifiedName": "default"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 4430,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1318,7 +337,7 @@
 					}
 				},
 				{
-					"id": 4431,
+					"id": 4430,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1334,7 +353,7 @@
 					}
 				},
 				{
-					"id": 4432,
+					"id": 4431,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1360,14 +379,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4433,
+					"id": 4432,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4434,
+							"id": 4433,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1380,14 +399,14 @@
 					]
 				},
 				{
-					"id": 4435,
+					"id": 4434,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4436,
+							"id": 4435,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1404,56 +423,63 @@
 				{
 					"title": "Constructors",
 					"children": [
-						4423
+						4415
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4437,
+						4436,
+						4417,
+						4418,
+						4419,
+						4420,
+						4421,
+						4422,
+						4423,
+						4424,
 						4425,
 						4426,
 						4427,
 						4428,
 						4429,
 						4430,
-						4431,
-						4432
+						4431
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4433,
-						4435
+						4432,
+						4434
 					]
 				}
 			]
 		},
 		{
-			"id": 4347,
-			"name": "Fulfillment",
+			"id": 4466,
+			"name": "FulfillmentItem",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 4348,
+					"id": 4467,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4349,
-							"name": "new Fulfillment",
+							"id": 4468,
+							"name": "new FulfillmentItem",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 4347,
-								"name": "Fulfillment",
+								"target": 4466,
+								"name": "FulfillmentItem",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
 							}
@@ -1461,7 +487,7 @@
 					]
 				},
 				{
-					"id": 4374,
+					"id": 4486,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1479,7 +505,7 @@
 					}
 				},
 				{
-					"id": 4350,
+					"id": 4469,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1490,7 +516,981 @@
 					}
 				},
 				{
-					"id": 4351,
+					"id": 4470,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4471,
+					"name": "sku",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4472,
+					"name": "barcode",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4473,
+					"name": "quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "intrinsic",
+								"name": "number"
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../../../packages/core/utils/src/totals/big-number.ts",
+									"qualifiedName": "BigNumber"
+								},
+								"name": "BigNumber",
+								"package": "@medusajs/utils"
+							}
+						]
+					}
+				},
+				{
+					"id": 4474,
+					"name": "raw_quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/types/src/totals/big-number.ts",
+							"qualifiedName": "BigNumberRawValue"
+						},
+						"name": "BigNumberRawValue",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 4475,
+					"name": "line_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4476,
+					"name": "inventory_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4477,
+					"name": "fulfillment_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4478,
+					"name": "fulfillment",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 4437,
+						"name": "Fulfillment",
+						"package": "@medusajs/fulfillment",
+						"qualifiedName": "default"
+					}
+				},
+				{
+					"id": 4479,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4480,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4481,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4482,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4483,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 4484,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4485,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						4467
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4486,
+						4469,
+						4470,
+						4471,
+						4472,
+						4473,
+						4474,
+						4475,
+						4476,
+						4477,
+						4478,
+						4479,
+						4480,
+						4481
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						4482,
+						4484
+					]
+				}
+			]
+		},
+		{
+			"id": 4487,
+			"name": "FulfillmentLabel",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 4488,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4489,
+							"name": "new FulfillmentLabel",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 4487,
+								"name": "FulfillmentLabel",
+								"package": "@medusajs/fulfillment",
+								"qualifiedName": "default"
+							}
+						}
+					]
+				},
+				{
+					"id": 4503,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableModelDateColumns"
+						},
+						"name": "SoftDeletableModelDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 4490,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4491,
+					"name": "tracking_number",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4492,
+					"name": "tracking_url",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4493,
+					"name": "label_url",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4494,
+					"name": "fulfillment_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4495,
+					"name": "fulfillment",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 4437,
+						"name": "Fulfillment",
+						"package": "@medusajs/fulfillment",
+						"qualifiedName": "default"
+					}
+				},
+				{
+					"id": 4496,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4497,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4498,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4499,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4500,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 4501,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4502,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						4488
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4503,
+						4490,
+						4491,
+						4492,
+						4493,
+						4494,
+						4495,
+						4496,
+						4497,
+						4498
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						4499,
+						4501
+					]
+				}
+			]
+		},
+		{
+			"id": 4504,
+			"name": "FulfillmentProvider",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 4505,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4506,
+							"name": "new FulfillmentProvider",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 4504,
+								"name": "FulfillmentProvider",
+								"package": "@medusajs/fulfillment",
+								"qualifiedName": "default"
+							}
+						}
+					]
+				},
+				{
+					"id": 4507,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4508,
+					"name": "is_enabled",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "true"
+				},
+				{
+					"id": 4509,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4510,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 4511,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4512,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						4505
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4507,
+						4508
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						4509,
+						4511
+					]
+				}
+			]
+		},
+		{
+			"id": 4513,
+			"name": "FulfillmentSet",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 4514,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4515,
+							"name": "new FulfillmentSet",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 4513,
+								"name": "FulfillmentSet",
+								"package": "@medusajs/fulfillment",
+								"qualifiedName": "default"
+							}
+						}
+					]
+				},
+				{
+					"id": 4528,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableModelDateColumns"
+						},
+						"name": "SoftDeletableModelDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 4516,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4517,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4518,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4519,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4520,
+					"name": "service_zones",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 4549,
+								"name": "ServiceZone",
+								"package": "@medusajs/fulfillment",
+								"qualifiedName": "default"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 4521,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4522,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4523,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4524,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4525,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 4526,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4527,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						4514
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4528,
+						4516,
+						4517,
+						4518,
+						4519,
+						4520,
+						4521,
+						4522,
+						4523
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						4524,
+						4526
+					]
+				}
+			]
+		},
+		{
+			"id": 4437,
+			"name": "Fulfillment",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 4438,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4439,
+							"name": "new Fulfillment",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 4437,
+								"name": "Fulfillment",
+								"package": "@medusajs/fulfillment",
+								"qualifiedName": "default"
+							}
+						}
+					]
+				},
+				{
+					"id": 4465,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableModelDateColumns"
+						},
+						"name": "SoftDeletableModelDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 4440,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4441,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1501,7 +1501,7 @@
 					}
 				},
 				{
-					"id": 4352,
+					"id": 4442,
 					"name": "packed_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1527,7 +1527,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4353,
+					"id": 4443,
 					"name": "shipped_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1553,7 +1553,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4354,
+					"id": 4444,
 					"name": "marked_shipped_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1574,7 +1574,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4355,
+					"id": 4445,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1595,7 +1595,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4356,
+					"id": 4446,
 					"name": "delivered_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1621,7 +1621,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4357,
+					"id": 4447,
 					"name": "canceled_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1647,7 +1647,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4358,
+					"id": 4448,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1683,7 +1683,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4359,
+					"id": 4449,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1694,7 +1694,7 @@
 					}
 				},
 				{
-					"id": 4360,
+					"id": 4450,
 					"name": "shipping_option_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1715,7 +1715,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4361,
+					"id": 4451,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1751,7 +1751,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4362,
+					"id": 4452,
 					"name": "shipping_option",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1765,7 +1765,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 4476,
+								"target": 4567,
 								"name": "ShippingOption",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -1774,35 +1774,47 @@
 					}
 				},
 				{
-					"id": 4363,
+					"id": 4453,
 					"name": "provider",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 4413,
+						"target": 4504,
 						"name": "FulfillmentProvider",
 						"package": "@medusajs/fulfillment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 4364,
+					"id": 4454,
 					"name": "delivery_address",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 4324,
+						"target": 4414,
 						"name": "FulfillmentAddress",
 						"package": "@medusajs/fulfillment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 4365,
+					"id": 4455,
+					"name": "requires_shipping",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "true"
+				},
+				{
+					"id": 4456,
 					"name": "items",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1816,7 +1828,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 4375,
+								"target": 4466,
 								"name": "FulfillmentItem",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -1832,7 +1844,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 4366,
+					"id": 4457,
 					"name": "labels",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1846,7 +1858,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 4396,
+								"target": 4487,
 								"name": "FulfillmentLabel",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -1862,7 +1874,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 4367,
+					"id": 4458,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1878,7 +1890,7 @@
 					}
 				},
 				{
-					"id": 4368,
+					"id": 4459,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1894,7 +1906,7 @@
 					}
 				},
 				{
-					"id": 4369,
+					"id": 4460,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1920,14 +1932,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4370,
+					"id": 4461,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4371,
+							"id": 4462,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1940,14 +1952,14 @@
 					]
 				},
 				{
-					"id": 4372,
+					"id": 4463,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4373,
+							"id": 4464,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1964,67 +1976,68 @@
 				{
 					"title": "Constructors",
 					"children": [
-						4348
+						4438
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4374,
-						4350,
-						4351,
-						4352,
-						4353,
-						4354,
-						4355,
-						4356,
-						4357,
-						4358,
-						4359,
-						4360,
-						4361,
-						4362,
-						4363,
-						4364,
-						4365,
-						4366,
-						4367,
-						4368,
-						4369
+						4465,
+						4440,
+						4441,
+						4442,
+						4443,
+						4444,
+						4445,
+						4446,
+						4447,
+						4448,
+						4449,
+						4450,
+						4451,
+						4452,
+						4453,
+						4454,
+						4455,
+						4456,
+						4457,
+						4458,
+						4459,
+						4460
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4370,
-						4372
+						4461,
+						4463
 					]
 				}
 			]
 		},
 		{
-			"id": 4438,
+			"id": 4529,
 			"name": "GeoZone",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 4439,
+					"id": 4530,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4440,
+							"id": 4531,
 							"name": "new GeoZone",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 4438,
+								"target": 4529,
 								"name": "GeoZone",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -2033,7 +2046,7 @@
 					]
 				},
 				{
-					"id": 4457,
+					"id": 4548,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2051,7 +2064,7 @@
 					}
 				},
 				{
-					"id": 4441,
+					"id": 4532,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2062,7 +2075,7 @@
 					}
 				},
 				{
-					"id": 4442,
+					"id": 4533,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2078,7 +2091,7 @@
 					}
 				},
 				{
-					"id": 4443,
+					"id": 4534,
 					"name": "country_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2089,7 +2102,7 @@
 					}
 				},
 				{
-					"id": 4444,
+					"id": 4535,
 					"name": "province_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2110,7 +2123,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4445,
+					"id": 4536,
 					"name": "city",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2131,7 +2144,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4446,
+					"id": 4537,
 					"name": "service_zone_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2142,7 +2155,7 @@
 					}
 				},
 				{
-					"id": 4447,
+					"id": 4538,
 					"name": "postal_expression",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2178,7 +2191,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4448,
+					"id": 4539,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2214,21 +2227,21 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4449,
+					"id": 4540,
 					"name": "service_zone",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 4458,
+						"target": 4549,
 						"name": "ServiceZone",
 						"package": "@medusajs/fulfillment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 4450,
+					"id": 4541,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2244,7 +2257,7 @@
 					}
 				},
 				{
-					"id": 4451,
+					"id": 4542,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2260,7 +2273,7 @@
 					}
 				},
 				{
-					"id": 4452,
+					"id": 4543,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2286,14 +2299,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4453,
+					"id": 4544,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4454,
+							"id": 4545,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -2306,14 +2319,14 @@
 					]
 				},
 				{
-					"id": 4455,
+					"id": 4546,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4456,
+							"id": 4547,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2330,59 +2343,59 @@
 				{
 					"title": "Constructors",
 					"children": [
-						4439
+						4530
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4457,
-						4441,
-						4442,
-						4443,
-						4444,
-						4445,
-						4446,
-						4447,
-						4448,
-						4449,
-						4450,
-						4451,
-						4452
+						4548,
+						4532,
+						4533,
+						4534,
+						4535,
+						4536,
+						4537,
+						4538,
+						4539,
+						4540,
+						4541,
+						4542,
+						4543
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4453,
-						4455
+						4544,
+						4546
 					]
 				}
 			]
 		},
 		{
-			"id": 4458,
+			"id": 4549,
 			"name": "ServiceZone",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 4459,
+					"id": 4550,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4460,
+							"id": 4551,
 							"name": "new ServiceZone",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 4458,
+								"target": 4549,
 								"name": "ServiceZone",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -2391,7 +2404,7 @@
 					]
 				},
 				{
-					"id": 4475,
+					"id": 4566,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2409,7 +2422,7 @@
 					}
 				},
 				{
-					"id": 4461,
+					"id": 4552,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2420,7 +2433,7 @@
 					}
 				},
 				{
-					"id": 4462,
+					"id": 4553,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2431,7 +2444,7 @@
 					}
 				},
 				{
-					"id": 4463,
+					"id": 4554,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2467,7 +2480,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4464,
+					"id": 4555,
 					"name": "fulfillment_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2478,21 +2491,21 @@
 					}
 				},
 				{
-					"id": 4465,
+					"id": 4556,
 					"name": "fulfillment_set",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 4422,
+						"target": 4513,
 						"name": "FulfillmentSet",
 						"package": "@medusajs/fulfillment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 4466,
+					"id": 4557,
 					"name": "geo_zones",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2506,7 +2519,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 4438,
+								"target": 4529,
 								"name": "GeoZone",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -2522,7 +2535,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 4467,
+					"id": 4558,
 					"name": "shipping_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2536,7 +2549,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 4476,
+								"target": 4567,
 								"name": "ShippingOption",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -2552,7 +2565,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 4468,
+					"id": 4559,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2568,7 +2581,7 @@
 					}
 				},
 				{
-					"id": 4469,
+					"id": 4560,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2584,7 +2597,7 @@
 					}
 				},
 				{
-					"id": 4470,
+					"id": 4561,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2610,14 +2623,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4471,
+					"id": 4562,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4472,
+							"id": 4563,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -2630,14 +2643,14 @@
 					]
 				},
 				{
-					"id": 4473,
+					"id": 4564,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4474,
+							"id": 4565,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2654,57 +2667,57 @@
 				{
 					"title": "Constructors",
 					"children": [
-						4459
+						4550
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4475,
-						4461,
-						4462,
-						4463,
-						4464,
-						4465,
-						4466,
-						4467,
-						4468,
-						4469,
-						4470
+						4566,
+						4552,
+						4553,
+						4554,
+						4555,
+						4556,
+						4557,
+						4558,
+						4559,
+						4560,
+						4561
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4471,
-						4473
+						4562,
+						4564
 					]
 				}
 			]
 		},
 		{
-			"id": 4502,
+			"id": 4593,
 			"name": "ShippingOptionRule",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 4503,
+					"id": 4594,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4504,
+							"id": 4595,
 							"name": "new ShippingOptionRule",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 4502,
+								"target": 4593,
 								"name": "ShippingOptionRule",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -2713,7 +2726,7 @@
 					]
 				},
 				{
-					"id": 4518,
+					"id": 4609,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2731,7 +2744,7 @@
 					}
 				},
 				{
-					"id": 4505,
+					"id": 4596,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2742,7 +2755,7 @@
 					}
 				},
 				{
-					"id": 4506,
+					"id": 4597,
 					"name": "attribute",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2753,7 +2766,7 @@
 					}
 				},
 				{
-					"id": 4507,
+					"id": 4598,
 					"name": "operator",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2797,7 +2810,7 @@
 					}
 				},
 				{
-					"id": 4508,
+					"id": 4599,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2825,7 +2838,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4509,
+					"id": 4600,
 					"name": "shipping_option_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2836,21 +2849,21 @@
 					}
 				},
 				{
-					"id": 4510,
+					"id": 4601,
 					"name": "shipping_option",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 4476,
+						"target": 4567,
 						"name": "ShippingOption",
 						"package": "@medusajs/fulfillment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 4511,
+					"id": 4602,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2866,7 +2879,7 @@
 					}
 				},
 				{
-					"id": 4512,
+					"id": 4603,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2882,7 +2895,7 @@
 					}
 				},
 				{
-					"id": 4513,
+					"id": 4604,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2908,14 +2921,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4514,
+					"id": 4605,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4515,
+							"id": 4606,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -2928,14 +2941,14 @@
 					]
 				},
 				{
-					"id": 4516,
+					"id": 4607,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4517,
+							"id": 4608,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2952,56 +2965,56 @@
 				{
 					"title": "Constructors",
 					"children": [
-						4503
+						4594
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4518,
-						4505,
-						4506,
-						4507,
-						4508,
-						4509,
-						4510,
-						4511,
-						4512,
-						4513
+						4609,
+						4596,
+						4597,
+						4598,
+						4599,
+						4600,
+						4601,
+						4602,
+						4603,
+						4604
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4514,
-						4516
+						4605,
+						4607
 					]
 				}
 			]
 		},
 		{
-			"id": 4519,
+			"id": 4610,
 			"name": "ShippingOptionType",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 4520,
+					"id": 4611,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4521,
+							"id": 4612,
 							"name": "new ShippingOptionType",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 4519,
+								"target": 4610,
 								"name": "ShippingOptionType",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -3010,7 +3023,7 @@
 					]
 				},
 				{
-					"id": 4534,
+					"id": 4625,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3028,7 +3041,7 @@
 					}
 				},
 				{
-					"id": 4522,
+					"id": 4613,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3039,7 +3052,7 @@
 					}
 				},
 				{
-					"id": 4523,
+					"id": 4614,
 					"name": "label",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3050,7 +3063,7 @@
 					}
 				},
 				{
-					"id": 4524,
+					"id": 4615,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3071,7 +3084,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4525,
+					"id": 4616,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3082,21 +3095,21 @@
 					}
 				},
 				{
-					"id": 4526,
+					"id": 4617,
 					"name": "shipping_option",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 4476,
+						"target": 4567,
 						"name": "ShippingOption",
 						"package": "@medusajs/fulfillment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 4527,
+					"id": 4618,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3112,7 +3125,7 @@
 					}
 				},
 				{
-					"id": 4528,
+					"id": 4619,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3128,7 +3141,7 @@
 					}
 				},
 				{
-					"id": 4529,
+					"id": 4620,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3154,14 +3167,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4530,
+					"id": 4621,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4531,
+							"id": 4622,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -3174,14 +3187,14 @@
 					]
 				},
 				{
-					"id": 4532,
+					"id": 4623,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4533,
+							"id": 4624,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -3198,55 +3211,55 @@
 				{
 					"title": "Constructors",
 					"children": [
-						4520
+						4611
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4534,
-						4522,
-						4523,
-						4524,
-						4525,
-						4526,
-						4527,
-						4528,
-						4529
+						4625,
+						4613,
+						4614,
+						4615,
+						4616,
+						4617,
+						4618,
+						4619,
+						4620
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4530,
-						4532
+						4621,
+						4623
 					]
 				}
 			]
 		},
 		{
-			"id": 4476,
+			"id": 4567,
 			"name": "ShippingOption",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 4477,
+					"id": 4568,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4478,
+							"id": 4569,
 							"name": "new ShippingOption",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 4476,
+								"target": 4567,
 								"name": "ShippingOption",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -3255,7 +3268,7 @@
 					]
 				},
 				{
-					"id": 4501,
+					"id": 4592,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3273,7 +3286,7 @@
 					}
 				},
 				{
-					"id": 4479,
+					"id": 4570,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3284,7 +3297,7 @@
 					}
 				},
 				{
-					"id": 4480,
+					"id": 4571,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3295,7 +3308,7 @@
 					}
 				},
 				{
-					"id": 4481,
+					"id": 4572,
 					"name": "price_type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3311,7 +3324,7 @@
 					}
 				},
 				{
-					"id": 4482,
+					"id": 4573,
 					"name": "service_zone_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3322,7 +3335,7 @@
 					}
 				},
 				{
-					"id": 4483,
+					"id": 4574,
 					"name": "shipping_profile_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3342,7 +3355,7 @@
 					}
 				},
 				{
-					"id": 4484,
+					"id": 4575,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3353,7 +3366,7 @@
 					}
 				},
 				{
-					"id": 4485,
+					"id": 4576,
 					"name": "shipping_option_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3374,7 +3387,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4486,
+					"id": 4577,
 					"name": "data",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3410,7 +3423,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4487,
+					"id": 4578,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3446,21 +3459,21 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4488,
+					"id": 4579,
 					"name": "service_zone",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 4458,
+						"target": 4549,
 						"name": "ServiceZone",
 						"package": "@medusajs/fulfillment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 4489,
+					"id": 4580,
 					"name": "shipping_profile",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3474,7 +3487,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 4535,
+								"target": 4626,
 								"name": "ShippingProfile",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -3483,7 +3496,7 @@
 					}
 				},
 				{
-					"id": 4490,
+					"id": 4581,
 					"name": "provider",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3497,7 +3510,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 4413,
+								"target": 4504,
 								"name": "FulfillmentProvider",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -3506,21 +3519,21 @@
 					}
 				},
 				{
-					"id": 4491,
+					"id": 4582,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 4519,
+						"target": 4610,
 						"name": "ShippingOptionType",
 						"package": "@medusajs/fulfillment",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 4492,
+					"id": 4583,
 					"name": "rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3534,7 +3547,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 4502,
+								"target": 4593,
 								"name": "ShippingOptionRule",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -3550,7 +3563,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 4493,
+					"id": 4584,
 					"name": "fulfillments",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3564,7 +3577,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 4347,
+								"target": 4437,
 								"name": "Fulfillment",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -3580,7 +3593,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 4494,
+					"id": 4585,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3596,7 +3609,7 @@
 					}
 				},
 				{
-					"id": 4495,
+					"id": 4586,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3612,7 +3625,7 @@
 					}
 				},
 				{
-					"id": 4496,
+					"id": 4587,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3638,14 +3651,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4497,
+					"id": 4588,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4498,
+							"id": 4589,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -3658,14 +3671,14 @@
 					]
 				},
 				{
-					"id": 4499,
+					"id": 4590,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4500,
+							"id": 4591,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -3682,65 +3695,65 @@
 				{
 					"title": "Constructors",
 					"children": [
-						4477
+						4568
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4501,
-						4479,
-						4480,
-						4481,
-						4482,
-						4483,
-						4484,
-						4485,
-						4486,
-						4487,
-						4488,
-						4489,
-						4490,
-						4491,
-						4492,
-						4493,
-						4494,
-						4495,
-						4496
+						4592,
+						4570,
+						4571,
+						4572,
+						4573,
+						4574,
+						4575,
+						4576,
+						4577,
+						4578,
+						4579,
+						4580,
+						4581,
+						4582,
+						4583,
+						4584,
+						4585,
+						4586,
+						4587
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4497,
-						4499
+						4588,
+						4590
 					]
 				}
 			]
 		},
 		{
-			"id": 4535,
+			"id": 4626,
 			"name": "ShippingProfile",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 4536,
+					"id": 4627,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4537,
+							"id": 4628,
 							"name": "new ShippingProfile",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 4535,
+								"target": 4626,
 								"name": "ShippingProfile",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -3749,7 +3762,7 @@
 					]
 				},
 				{
-					"id": 4550,
+					"id": 4641,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3767,7 +3780,7 @@
 					}
 				},
 				{
-					"id": 4538,
+					"id": 4629,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3778,7 +3791,7 @@
 					}
 				},
 				{
-					"id": 4539,
+					"id": 4630,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3789,7 +3802,7 @@
 					}
 				},
 				{
-					"id": 4540,
+					"id": 4631,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3800,7 +3813,7 @@
 					}
 				},
 				{
-					"id": 4541,
+					"id": 4632,
 					"name": "shipping_options",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3814,7 +3827,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 4476,
+								"target": 4567,
 								"name": "ShippingOption",
 								"package": "@medusajs/fulfillment",
 								"qualifiedName": "default"
@@ -3830,7 +3843,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 4542,
+					"id": 4633,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3866,7 +3879,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4543,
+					"id": 4634,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3882,7 +3895,7 @@
 					}
 				},
 				{
-					"id": 4544,
+					"id": 4635,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3898,7 +3911,7 @@
 					}
 				},
 				{
-					"id": 4545,
+					"id": 4636,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3924,14 +3937,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 4546,
+					"id": 4637,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4547,
+							"id": 4638,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -3944,14 +3957,14 @@
 					]
 				},
 				{
-					"id": 4548,
+					"id": 4639,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 4549,
+							"id": 4640,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -3968,28 +3981,28 @@
 				{
 					"title": "Constructors",
 					"children": [
-						4536
+						4627
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						4550,
-						4538,
-						4539,
-						4540,
-						4541,
-						4542,
-						4543,
-						4544,
-						4545
+						4641,
+						4629,
+						4630,
+						4631,
+						4632,
+						4633,
+						4634,
+						4635,
+						4636
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						4546,
-						4548
+						4637,
+						4639
 					]
 				}
 			]
@@ -3999,836 +4012,840 @@
 		{
 			"title": "Classes",
 			"children": [
-				4324,
-				4375,
-				4396,
-				4413,
-				4422,
-				4347,
-				4438,
-				4458,
-				4502,
-				4519,
-				4476,
-				4535
+				4414,
+				4466,
+				4487,
+				4504,
+				4513,
+				4437,
+				4529,
+				4549,
+				4593,
+				4610,
+				4567,
+				4626
 			]
 		}
 	],
 	"packageName": "@medusajs/fulfillment",
 	"symbolIdMap": {
-		"4323": {
+		"4413": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"4324": {
+		"4414": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default"
 		},
-		"4327": {
+		"4417": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.id"
 		},
-		"4328": {
+		"4418": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.company"
 		},
-		"4329": {
+		"4419": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.first_name"
 		},
-		"4330": {
+		"4420": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.last_name"
 		},
-		"4331": {
+		"4421": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.address_1"
 		},
-		"4332": {
+		"4422": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.address_2"
 		},
-		"4333": {
+		"4423": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.city"
 		},
-		"4334": {
+		"4424": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.country_code"
 		},
-		"4335": {
+		"4425": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.province"
 		},
-		"4336": {
+		"4426": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.postal_code"
 		},
-		"4337": {
+		"4427": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.phone"
 		},
-		"4338": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.metadata"
-		},
-		"4339": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.created_at"
-		},
-		"4340": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.updated_at"
-		},
-		"4341": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.deleted_at"
-		},
-		"4342": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4343": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4344": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4345": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4346": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
-			"qualifiedName": "default.[OptionalProps]"
-		},
-		"4347": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default"
-		},
-		"4350": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.id"
-		},
-		"4351": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.location_id"
-		},
-		"4352": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.packed_at"
-		},
-		"4353": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.shipped_at"
-		},
-		"4354": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.marked_shipped_by"
-		},
-		"4355": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.created_by"
-		},
-		"4356": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.delivered_at"
-		},
-		"4357": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.canceled_at"
-		},
-		"4358": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.data"
-		},
-		"4359": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.provider_id"
-		},
-		"4360": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.shipping_option_id"
-		},
-		"4361": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.metadata"
-		},
-		"4362": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.shipping_option"
-		},
-		"4363": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.provider"
-		},
-		"4364": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.delivery_address"
-		},
-		"4365": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.items"
-		},
-		"4366": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.labels"
-		},
-		"4367": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.created_at"
-		},
-		"4368": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.updated_at"
-		},
-		"4369": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.deleted_at"
-		},
-		"4370": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4371": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4372": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4373": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4374": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
-			"qualifiedName": "default.[OptionalProps]"
-		},
-		"4375": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default"
-		},
-		"4378": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.id"
-		},
-		"4379": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.title"
-		},
-		"4380": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.sku"
-		},
-		"4381": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.barcode"
-		},
-		"4382": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.quantity"
-		},
-		"4383": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.raw_quantity"
-		},
-		"4384": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.line_item_id"
-		},
-		"4385": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.inventory_item_id"
-		},
-		"4386": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.fulfillment_id"
-		},
-		"4387": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.fulfillment"
-		},
-		"4388": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.created_at"
-		},
-		"4389": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.updated_at"
-		},
-		"4390": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.deleted_at"
-		},
-		"4391": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4392": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4393": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4394": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4395": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
-			"qualifiedName": "default.[OptionalProps]"
-		},
-		"4396": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default"
-		},
-		"4399": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.id"
-		},
-		"4400": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.tracking_number"
-		},
-		"4401": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.tracking_url"
-		},
-		"4402": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.label_url"
-		},
-		"4403": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.fulfillment_id"
-		},
-		"4404": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.fulfillment"
-		},
-		"4405": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.created_at"
-		},
-		"4406": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.updated_at"
-		},
-		"4407": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.deleted_at"
-		},
-		"4408": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4409": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4410": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4411": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4412": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
-			"qualifiedName": "default.[OptionalProps]"
-		},
-		"4413": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "default"
-		},
-		"4416": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "default.id"
-		},
-		"4417": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "default.is_enabled"
-		},
-		"4418": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4419": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "default.onCreate"
-		},
-		"4420": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4421": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
-			"qualifiedName": "default.onInit"
-		},
-		"4422": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "default"
-		},
-		"4425": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "default.id"
-		},
-		"4426": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "default.name"
-		},
-		"4427": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "default.type"
-		},
 		"4428": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.metadata"
 		},
 		"4429": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "default.service_zones"
-		},
-		"4430": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"4431": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+		"4430": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"4432": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+		"4431": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.deleted_at"
 		},
+		"4432": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.onCreate"
+		},
 		"4433": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.onCreate"
 		},
 		"4434": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
-			"qualifiedName": "default.onCreate"
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.onInit"
 		},
 		"4435": {
-			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
 			"qualifiedName": "default.onInit"
 		},
 		"4436": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/address.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"4437": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default"
+		},
+		"4440": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.id"
+		},
+		"4441": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.location_id"
+		},
+		"4442": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.packed_at"
+		},
+		"4443": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.shipped_at"
+		},
+		"4444": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.marked_shipped_by"
+		},
+		"4445": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.created_by"
+		},
+		"4446": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.delivered_at"
+		},
+		"4447": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.canceled_at"
+		},
+		"4448": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.data"
+		},
+		"4449": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.provider_id"
+		},
+		"4450": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.shipping_option_id"
+		},
+		"4451": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"4452": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.shipping_option"
+		},
+		"4453": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.provider"
+		},
+		"4454": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.delivery_address"
+		},
+		"4455": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.requires_shipping"
+		},
+		"4456": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.items"
+		},
+		"4457": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.labels"
+		},
+		"4458": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"4459": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"4460": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"4461": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4462": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4463": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4464": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4465": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"4466": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default"
+		},
+		"4469": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.id"
+		},
+		"4470": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.title"
+		},
+		"4471": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.sku"
+		},
+		"4472": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.barcode"
+		},
+		"4473": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.quantity"
+		},
+		"4474": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.raw_quantity"
+		},
+		"4475": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.line_item_id"
+		},
+		"4476": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.inventory_item_id"
+		},
+		"4477": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.fulfillment_id"
+		},
+		"4478": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.fulfillment"
+		},
+		"4479": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"4480": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"4481": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"4482": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4483": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4484": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4485": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4486": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-item.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"4487": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default"
+		},
+		"4490": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.id"
+		},
+		"4491": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.tracking_number"
+		},
+		"4492": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.tracking_url"
+		},
+		"4493": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.label_url"
+		},
+		"4494": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.fulfillment_id"
+		},
+		"4495": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.fulfillment"
+		},
+		"4496": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"4497": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"4498": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"4499": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4500": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4501": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4502": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4503": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-label.ts",
+			"qualifiedName": "default.[OptionalProps]"
+		},
+		"4504": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default"
+		},
+		"4507": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.id"
+		},
+		"4508": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.is_enabled"
+		},
+		"4509": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4510": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4511": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4512": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-provider.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4513": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default"
+		},
+		"4516": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.id"
+		},
+		"4517": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.name"
+		},
+		"4518": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.type"
+		},
+		"4519": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.metadata"
+		},
+		"4520": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.service_zones"
+		},
+		"4521": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"4522": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"4523": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"4524": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4525": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"4526": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4437": {
+		"4527": {
+			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"4528": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/fulfillment-set.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"4438": {
+		"4529": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default"
 		},
-		"4441": {
+		"4532": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.id"
 		},
-		"4442": {
+		"4533": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.type"
 		},
-		"4443": {
+		"4534": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.country_code"
 		},
-		"4444": {
+		"4535": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.province_code"
 		},
-		"4445": {
+		"4536": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.city"
 		},
-		"4446": {
+		"4537": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.service_zone_id"
 		},
-		"4447": {
+		"4538": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.postal_expression"
 		},
-		"4448": {
+		"4539": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"4449": {
+		"4540": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.service_zone"
 		},
-		"4450": {
+		"4541": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"4451": {
+		"4542": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"4452": {
+		"4543": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"4453": {
+		"4544": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4454": {
+		"4545": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4455": {
+		"4546": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4456": {
+		"4547": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4457": {
+		"4548": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/geo-zone.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"4458": {
+		"4549": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default"
 		},
-		"4461": {
+		"4552": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.id"
 		},
-		"4462": {
+		"4553": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.name"
 		},
-		"4463": {
+		"4554": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"4464": {
+		"4555": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.fulfillment_set_id"
 		},
-		"4465": {
+		"4556": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.fulfillment_set"
 		},
-		"4466": {
+		"4557": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.geo_zones"
 		},
-		"4467": {
+		"4558": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.shipping_options"
 		},
-		"4468": {
+		"4559": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"4469": {
+		"4560": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"4470": {
+		"4561": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"4471": {
+		"4562": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4472": {
+		"4563": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4473": {
+		"4564": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4474": {
+		"4565": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4475": {
+		"4566": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/service-zone.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"4476": {
+		"4567": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default"
 		},
-		"4479": {
+		"4570": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.id"
 		},
-		"4480": {
+		"4571": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.name"
 		},
-		"4481": {
+		"4572": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.price_type"
 		},
-		"4482": {
+		"4573": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.service_zone_id"
 		},
-		"4483": {
+		"4574": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.shipping_profile_id"
 		},
-		"4484": {
+		"4575": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.provider_id"
 		},
-		"4485": {
+		"4576": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.shipping_option_type_id"
 		},
-		"4486": {
+		"4577": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.data"
 		},
-		"4487": {
+		"4578": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"4488": {
+		"4579": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.service_zone"
 		},
-		"4489": {
+		"4580": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.shipping_profile"
 		},
-		"4490": {
+		"4581": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.provider"
 		},
-		"4491": {
+		"4582": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.type"
 		},
-		"4492": {
+		"4583": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.rules"
 		},
-		"4493": {
+		"4584": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.fulfillments"
 		},
-		"4494": {
+		"4585": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"4495": {
+		"4586": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"4496": {
+		"4587": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"4497": {
+		"4588": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4498": {
+		"4589": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4499": {
+		"4590": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4500": {
+		"4591": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4501": {
+		"4592": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"4502": {
+		"4593": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default"
 		},
-		"4505": {
+		"4596": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.id"
 		},
-		"4506": {
+		"4597": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.attribute"
 		},
-		"4507": {
+		"4598": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.operator"
 		},
-		"4508": {
+		"4599": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.value"
 		},
-		"4509": {
+		"4600": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.shipping_option_id"
 		},
-		"4510": {
+		"4601": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.shipping_option"
 		},
-		"4511": {
+		"4602": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"4512": {
+		"4603": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"4513": {
+		"4604": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"4514": {
+		"4605": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4515": {
+		"4606": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4516": {
+		"4607": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4517": {
+		"4608": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4518": {
+		"4609": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-rule.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"4519": {
+		"4610": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default"
 		},
-		"4522": {
+		"4613": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.id"
 		},
-		"4523": {
+		"4614": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.label"
 		},
-		"4524": {
+		"4615": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.description"
 		},
-		"4525": {
+		"4616": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.code"
 		},
-		"4526": {
+		"4617": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.shipping_option"
 		},
-		"4527": {
+		"4618": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"4528": {
+		"4619": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"4529": {
+		"4620": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"4530": {
+		"4621": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4531": {
+		"4622": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4532": {
+		"4623": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4533": {
+		"4624": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4534": {
+		"4625": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-option-type.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"4535": {
+		"4626": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default"
 		},
-		"4538": {
+		"4629": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.id"
 		},
-		"4539": {
+		"4630": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.name"
 		},
-		"4540": {
+		"4631": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.type"
 		},
-		"4541": {
+		"4632": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.shipping_options"
 		},
-		"4542": {
+		"4633": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"4543": {
+		"4634": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"4544": {
+		"4635": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"4545": {
+		"4636": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"4546": {
+		"4637": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4547": {
+		"4638": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"4548": {
+		"4639": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4549": {
+		"4640": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"4550": {
+		"4641": {
 			"sourceFileName": "../../../../packages/modules/fulfillment/src/models/shipping-profile.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}
@@ -4838,7 +4855,7 @@
 			"1": "../../../../packages/modules/fulfillment/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 4323
+			"1": 4413
 		}
 	}
 }

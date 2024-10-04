@@ -23,7 +23,7 @@ This chapter covers how to define a link between the `Brand` and `Product`data m
   ]}
 />
 
-Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines and exports the link using the `defineLink` function imported from `@medusajs/utils`.
+Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines and exports the link using the `defineLink` function imported from `@medusajs/framework/utils`.
 
 So, create the file `src/links/product-brand.ts` with the following content:
 
@@ -34,8 +34,8 @@ export const highlights = [
 
 ```ts title="src/links/product-brand.ts" highlights={highlights}
 import BrandModule from "../modules/brand"
-import ProductModule from "@medusajs/product"
-import { defineLink } from "@medusajs/utils"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
 
 export default defineLink(
   {

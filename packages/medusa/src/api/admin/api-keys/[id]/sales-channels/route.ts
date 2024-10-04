@@ -4,7 +4,7 @@ import { ApiKeyType, MedusaError } from "@medusajs/framework/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchApiKey } from "../../helpers"
 
 export const POST = async (

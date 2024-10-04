@@ -2,6 +2,27 @@ import { defineJoinerConfig } from "@medusajs/utils"
 import { MedusaModule } from "../../medusa-module"
 import { ModuleJoinerConfig } from "@medusajs/types"
 
+const customModuleJoinerConfig = defineJoinerConfig("custom_user", {
+  schema: `
+    type CustomProduct {
+      id: ID
+      title: String
+      product: Product
+    }
+    
+    type Product {
+      id: ID
+      title: String
+    }
+  `,
+  alias: [
+    {
+      name: ["custom_products", "custom_product"],
+      entity: "CustomProduct",
+    },
+  ],
+})
+
 const productJoinerConfig = defineJoinerConfig("product", {
   schema: `
     type Product {
@@ -154,6 +175,7 @@ const linkProductVariantPriceSet = {
 
 MedusaModule.setJoinerConfig("product", productJoinerConfig)
 MedusaModule.setJoinerConfig("pricing", pricingJoinerConfig)
+MedusaModule.setJoinerConfig("customProduct", customModuleJoinerConfig)
 MedusaModule.setJoinerConfig(
   "link-product-variant-price-set",
   linkProductVariantPriceSet

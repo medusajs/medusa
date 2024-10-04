@@ -8,7 +8,9 @@ import { queryClient } from "../../../lib/query-client"
 import { detailsFields } from "./const"
 
 const locationQuery = (id: string) => ({
-  queryKey: stockLocationsQueryKeys.detail(id),
+  queryKey: stockLocationsQueryKeys.detail(id, {
+    fields: detailsFields,
+  }),
   queryFn: async () => {
     return await sdk.admin.stockLocation
       .retrieve(id, {

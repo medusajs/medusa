@@ -3,21 +3,20 @@ description: The order's details.
 x-schemaName: AdminOrder
 required:
   - payment_collections
+  - items
+  - shipping_methods
+  - currency_code
   - id
+  - created_at
+  - updated_at
+  - email
   - version
   - region_id
   - customer_id
   - sales_channel_id
-  - email
-  - currency_code
-  - items
-  - shipping_methods
   - payment_status
   - fulfillment_status
   - summary
-  - metadata
-  - created_at
-  - updated_at
   - original_item_total
   - original_item_subtotal
   - original_item_tax_total
@@ -50,7 +49,7 @@ properties:
     type: array
     description: The order's fulfillments.
     items:
-      $ref: ./BaseOrderFulfillment.yaml
+      $ref: ./AdminOrderFulfillment.yaml
   sales_channel:
     $ref: ./AdminSalesChannel.yaml
   customer:
@@ -96,12 +95,12 @@ properties:
     type: array
     description: The order's items.
     items:
-      $ref: ./BaseOrderLineItem.yaml
+      $ref: ./AdminOrderLineItem.yaml
   shipping_methods:
     type: array
     description: The order's shipping methods.
     items:
-      $ref: ./BaseOrderShippingMethod.yaml
+      $ref: ./AdminOrderShippingMethod.yaml
   payment_status:
     type: string
     description: The order's payment status.

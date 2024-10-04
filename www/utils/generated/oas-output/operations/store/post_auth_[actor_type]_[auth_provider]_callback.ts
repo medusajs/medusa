@@ -27,7 +27,7 @@
  *   - lang: Shell
  *     label: Google Provider
  *     source: curl -X POST '{backend_url}/auth/customer/google/callback?code=123'
- *   - lang: Shell
+ *   - lang: Bash
  *     label: GitHub Provider
  *     source: curl -X POST '{backend_url}/auth/customer/github/callback?code=123'
  * tags:

@@ -21,7 +21,7 @@ When the Medusa application starts, these providers are registered and can be us
 For example:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -29,11 +29,11 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.FULFILLMENT]: {
-      resolve: "@medusajs/fulfillment",
+      resolve: "@medusajs/medusa/fulfillment",
       options: {
         providers: [
           {
-            resolve: `@medusajs/fulfillment-manual`,
+            resolve: `@medusajs/medusa/fulfillment-manual`,
             id: "manual",
             options: {
               // provider options...

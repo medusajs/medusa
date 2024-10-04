@@ -12,7 +12,7 @@ In this chapter, you’ll learn about what the service factory is and how to use
 
 Medusa provides a service factory that your module’s main service can extend.
 
-The service factory generates data management methods for your data models, so you don't have to implement these methods manually.
+The service factory generates data management methods for your data models in the database, so you don't have to implement these methods manually.
 
 <Note title="Extend the service factory when" type="success">
 
@@ -34,7 +34,7 @@ export const highlights = [
 ]
 
 ```ts title="src/modules/hello/service.ts" highlights={highlights}
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
 class HelloModuleService extends MedusaService({
@@ -54,7 +54,7 @@ In the example above, since the `HelloModuleService` extends `MedusaService`, it
 
 ### Generated Methods
 
-The service factory generates data-management methods for each of the data models provided in the first parameter.
+The service factory generates methods to manage the records of each of the data models provided in the first parameter in the database.
 
 The method's names are the operation's name, suffixed by the data model's key in the object parameter passed to `MedusaService`.
 
@@ -284,7 +284,7 @@ If you implement the `constructor` of your service, make sure to call `super` pa
 For example:
 
 ```ts highlights={[["8"]]}
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import MyCustom from "./models/my-custom"
 
 class HelloModuleService extends MedusaService({

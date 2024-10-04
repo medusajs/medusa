@@ -10,7 +10,7 @@ import {
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../types/routing"
+} from "@medusajs/framework/http"
 import { refetchPromotion } from "../helpers"
 import {
   AdminGetPromotionParamsType,

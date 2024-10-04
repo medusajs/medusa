@@ -1,4 +1,9 @@
-import { BatchResponse, DeleteResponse, DeleteResponseWithParent, PaginatedResponse } from "../../common"
+import {
+  BatchResponse,
+  DeleteResponse,
+  DeleteResponseWithParent,
+  PaginatedResponse,
+} from "../../common"
 import {
   AdminProduct,
   AdminProductOption,
@@ -60,7 +65,9 @@ export type AdminProductOptionListResponse = PaginatedResponse<{
 export interface AdminProductOptionDeleteResponse
   extends DeleteResponseWithParent<"product_option", AdminProduct> {}
 
-export type AdminProductVariantInventoryResponse = AdminProductVariantInventoryLink | AdminProductVariantInventoryLink[]
+export type AdminProductVariantInventoryResponse =
+  | AdminProductVariantInventoryLink
+  | AdminProductVariantInventoryLink[]
 
 export interface AdminProductVariantInventoryBatchResponse {
   created: AdminProductVariantInventoryResponse

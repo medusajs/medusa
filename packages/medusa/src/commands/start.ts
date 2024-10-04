@@ -4,10 +4,12 @@ import { track } from "medusa-telemetry"
 import { scheduleJob } from "node-schedule"
 
 import {
+  dynamicImport,
+  FileSystem,
   gqlSchemaToTypes,
   GracefulShutdownServer,
 } from "@medusajs/framework/utils"
-import http, { IncomingMessage, ServerResponse } from "http"
+import http from "http"
 import { logger } from "@medusajs/framework/logger"
 
 import loaders from "../loaders"
@@ -15,6 +17,7 @@ import { MedusaModule } from "@medusajs/framework/modules-sdk"
 
 const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
+const INSTRUMENTATION_FILE = "instrumentation.js"
 
 /**
  * Imports the "instrumentation.js" file from the root of the
@@ -22,25 +25,32 @@ const CRON_SCHEDULE = EVERY_SIXTH_HOUR
  * of this file is optional, hence we ignore "ENOENT"
  * errors.
  */
-async function registerInstrumentation(directory: string) {
-  try {
-    const instrumentation = await import(
-      path.join(directory, "instrumentation.js")
+export async function registerInstrumentation(directory: string) {
+  const fileSystem = new FileSystem(directory)
+  const exists = await fileSystem.exists(INSTRUMENTATION_FILE)
+  if (!exists) {
+    return
+  }
+
+  const instrumentation = await dynamicImport(
+    path.join(directory, INSTRUMENTATION_FILE)
+  )
+  if (typeof instrumentation.register === "function") {
+    logger.info("OTEL registered")
+    instrumentation.register()
+  } else {
+    logger.info(
+      "Skipping instrumentation registration. No register function found."
     )
-    if (typeof instrumentation.register === "function") {
-      logger.info("OTEL registered")
-      instrumentation.register()
-    }
-  } catch (error) {
-    if (
-      !["ENOENT", "MODULE_NOT_FOUND", "ERR_MODULE_NOT_FOUND"].includes(
-        error.code
-      )
-    ) {
-      throw error
-    }
   }
 }
+
+/**
+ * Wrap request handler inside custom implementation to enabled
+ * instrumentation.
+ */
+// eslint-disable-next-line no-var
+export var traceRequestHandler: (...args: any[]) => Promise<any> = void 0 as any
 
 async function start({ port, directory, types }) {
   async function internalStart() {
@@ -50,16 +60,20 @@ async function start({ port, directory, types }) {
     const app = express()
 
     const http_ = http.createServer(async (req, res) => {
-      await start.traceRequestHandler(
-        async () => {
-          return new Promise((resolve) => {
-            res.on("finish", resolve)
-            app(req, res)
-          })
-        },
-        req,
-        res
-      )
+      await new Promise((resolve) => {
+        res.on("finish", resolve)
+        if (traceRequestHandler) {
+          void traceRequestHandler(
+            async () => {
+              app(req, res)
+            },
+            req,
+            res
+          )
+        } else {
+          app(req, res)
+        }
+      })
     })
 
     try {
@@ -118,18 +132,6 @@ async function start({ port, directory, types }) {
   }
 
   await internalStart()
-}
-
-/**
- * Wrap request handler inside custom implementation to enabled
- * instrumentation.
- */
-start.traceRequestHandler = async (
-  requestHandler: () => Promise<void>,
-  _: IncomingMessage,
-  __: ServerResponse
-) => {
-  return await requestHandler()
 }
 
 export default start

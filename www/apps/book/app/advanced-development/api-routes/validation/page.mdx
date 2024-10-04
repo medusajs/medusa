@@ -41,7 +41,7 @@ The `PostStoreCustomSchema` variable is a Zod schema that indicates the request 
 
 ## Step 2: Add Validation Middleware
 
-To use this schema for validating the body parameters of requests to `/custom`, use the `validateAndTransformBody` middleware provided by `@medusajs/medusa`. It accepts the Zod schema as a parameter.
+To use this schema for validating the body parameters of requests to `/custom`, use the `validateAndTransformBody` middleware provided by `@medusajs/framework/utils`. It accepts the Zod schema as a parameter.
 
 For example, create the file `src/api/middlewares.ts` with the following content:
 
@@ -49,7 +49,7 @@ For example, create the file `src/api/middlewares.ts` with the following content
 import { defineMiddlewares } from "@medusajs/medusa"
 import { 
   validateAndTransformBody,
-} from "@medusajs/medusa/dist/api/utils/validate-body"
+} from "@medusajs/framework/utils"
 import { PostStoreCustomSchema } from "./custom/validators"
 
 export default defineMiddlewares({
@@ -87,7 +87,7 @@ export const routeHighlights = [
 ]
 
 ```ts title="src/api/custom/route.ts" highlights={routeHighlights}
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { z } from "zod"
 import { PostStoreCustomSchema } from "./validators"
 

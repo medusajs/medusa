@@ -36,9 +36,9 @@ export const highlights = [
 import type {
   SubscriberArgs,
   SubscriberConfig,
-} from "@medusajs/medusa"
-import { Modules } from "@medusajs/utils"
-import { INotificationModuleService } from "@medusajs/types"
+} from "@medusajs/framework"
+import { Modules } from "@medusajs/framework/utils"
+import { INotificationModuleService } from "@medusajs/framework/types"
 
 export default async function productCreateHandler({
   event: { data },

@@ -1,6 +1,8 @@
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { validateAndTransformBody } from "../../utils/validate-body"
-import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  validateAndTransformBody,
+  validateAndTransformQuery,
+} from "@medusajs/framework"
 import * as QueryConfig from "./query-config"
 import {
   AdminGetStoreParams,

@@ -33,7 +33,8 @@
  *     description: The shipping option's name.
  *   price_type:
  *     type: string
- *     description: The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated fulfillment provider.
+ *     description: The shipping option's price type. If it's `flat`, the price is fixed and is set in the `prices` property. If it's `calculated`, the price is calculated on checkout by the associated
+ *       fulfillment provider.
  *     enum:
  *       - calculated
  *       - flat
@@ -54,7 +55,7 @@
  *     title: shipping_option_type_id
  *     description: The ID of the associated shipping option type.
  *   type:
- *     $ref: "#/components/schemas/AdminShippingOption"
+ *     $ref: "#/components/schemas/AdminShippingOptionType"
  *   shipping_profile_id:
  *     type: string
  *     title: shipping_profile_id

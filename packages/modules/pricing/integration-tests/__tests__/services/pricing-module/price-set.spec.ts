@@ -402,6 +402,93 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
         })
 
+        it("should update price set prices and preserve price list prices", async () => {
+          const priceSetBefore = await service.retrievePriceSet(id, {
+            relations: ["prices"],
+          })
+
+          const [pl] = await service.createPriceLists([
+            {
+              title: "test",
+              description: "test",
+
+              prices: [
+                {
+                  amount: 400,
+                  currency_code: "EUR",
+                  price_set_id: priceSetBefore.id,
+                },
+              ],
+            },
+          ])
+
+          const updateResponse = await service.updatePriceSets(
+            priceSetBefore.id,
+            {
+              prices: [
+                { amount: 100, currency_code: "USD" },
+                { amount: 200, currency_code: "EUR" },
+              ],
+            }
+          )
+
+          const priceSetAfter = await service.retrievePriceSet(id, {
+            relations: ["prices"],
+          })
+
+          expect(priceSetBefore.prices).toHaveLength(1)
+          expect(priceSetBefore.prices?.[0]).toEqual(
+            expect.objectContaining({
+              amount: 500,
+              currency_code: "USD",
+            })
+          )
+
+          // Price list prices are not present in this response
+          expect(priceSetAfter.prices).toHaveLength(2)
+          expect(priceSetAfter.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "USD",
+              }),
+              expect.objectContaining({
+                amount: 200,
+                currency_code: "EUR",
+              }),
+            ])
+          )
+          expect(updateResponse.prices).toHaveLength(2)
+          expect(updateResponse.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 100,
+                currency_code: "USD",
+              }),
+              expect.objectContaining({
+                amount: 200,
+                currency_code: "EUR",
+              }),
+            ])
+          )
+
+          const plAfter = await service.retrievePriceList(pl.id, {
+            relations: ["prices"],
+          })
+
+          // Price list prices are preserved
+          expect(plAfter.prices).toHaveLength(1)
+          expect(plAfter.prices).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                amount: 400,
+                currency_code: "EUR",
+                price_set_id: priceSetBefore.id,
+              }),
+            ])
+          )
+        })
+
         it("should upsert the later price when setting a price set with existing equivalent rules", async () => {
           await service.updatePriceSets(id, {
             prices: [

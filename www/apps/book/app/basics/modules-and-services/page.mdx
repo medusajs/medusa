@@ -10,19 +10,11 @@ In this chapter, you’ll learn about modules, their main service, and how to cr
 
 A module is a package of reusable commerce or architectural functionalities. It's integrated as a building block in your Medusa application, without implications on the existing setup.
 
-You create a module to introduce custom features, extend existing ones, or integrate third-party services.
+A module has a service, which is a class that can connect to the database or third-party systems to provide custom features. The service's methods are then used by other resources, such as API routes.
 
 ---
 
 ## How to Create a Module?
-
-<Note title="Steps Summary">
-
-1. Create module's main service.
-2. Create module definition.
-3. Add module to Medusa's configurations.
-
-</Note>
 
 Modules are created in a sub-directory of `src/modules`.
 
@@ -52,7 +44,7 @@ For example, create the file `src/modules/hello/index.ts` with the following con
 
 ```ts title="src/modules/hello/index.ts" highlights={[["7", "", "The main service of the module."]]}
 import HelloModuleService from "./service"
-import { Module } from "@medusajs/utils"
+import { Module } from "@medusajs/framework/utils"
 
 export const HELLO_MODULE = "helloModuleService"
 
@@ -61,7 +53,7 @@ export default Module(HELLO_MODULE, {
 })
 ```
 
-You use the `Module` function imported from `@medusajs/utils` to create the module definition. It requires two parameters:
+You use the `Module` function imported from `@medusajs/framework/utils` to create the module definition. It requires two parameters:
 
 1. The module's name.
 2. An object with a required property `service` indicating the module's main service.
@@ -110,7 +102,7 @@ Resolving a module's service is essential to use its methods that perform action
 For example, create the API route `src/api/custom/route.ts` with the following content:
 
 ```ts title="src/api/custom/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import HelloModuleService from "../../modules/hello/service"
 import { HELLO_MODULE } from "../../modules/hello"
 
@@ -154,7 +146,8 @@ You’ll receive the following response:
 
 <Note title="Use modules when" type="success">
 
-- You're implementing a custom commerce feature. For example, you're implementing digital products.
+- You're adding new tables to the database, as explained in later chapters.
+- You're integrating a third-party system for commerce or architectural features.
 - You want to re-use your custom commerce functionalities across Medusa applications or use them in other environments, such as Edge functions and Next.js apps.
 
 </Note>

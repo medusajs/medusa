@@ -175,10 +175,13 @@ const CreateView = ({
   const { t } = useTranslation()
   const [invalid, setInvalid] = useState(false)
 
+  const [params] = useSearchParams()
+  const isFirstRun = params.get("first_run") === "true" // true when the invite page is open during a "create medusa app" run
+
   const form = useForm<z.infer<typeof CreateAccountSchema>>({
     resolver: zodResolver(CreateAccountSchema),
     defaultValues: {
-      email: invite.email || "",
+      email: isFirstRun ? "" : invite.email || "",
       first_name: "",
       last_name: "",
       password: "",
