@@ -662,7 +662,7 @@ export const completeCartHighlights = [
 import { 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { 
   ContainerRegistrationKeys,
   MedusaError,
@@ -977,7 +977,7 @@ export const listSubscriptionsAdminHighlight = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
@@ -1038,7 +1038,7 @@ export const getSubscriptionsAdminHighlight = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
@@ -2119,7 +2119,7 @@ Create the file `src/api/store/customers/me/subscriptions/route.ts` with the fol
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
@@ -2183,7 +2183,7 @@ Then, create the file `src/api/store/customers/me/subscriptions/[id]/route.ts` w
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import SubscriptionModuleService from "../../../../../../modules/subscription/service"
 import { 
   SUBSCRIPTION_MODULE,

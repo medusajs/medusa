@@ -126,7 +126,7 @@ export const createRouteHighlights = [
 import type { 
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import createManagerWorkflow from "../../workflows/create-manager"
 
@@ -222,7 +222,7 @@ For example, create the file `src/api/manager/me/route.ts` with the following co
 import { 
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import ManagerModuleService from "../../../modules/manager/service"
 
 export async function GET(

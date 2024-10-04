@@ -16,4 +16,4 @@ jobs:
           https://api.github.com/repos/medusajs/medusa-starter-default/actions/workflows/update-preview-deps.yml/dispatches \
           -d '{"ref":"master"}'
   generate-references:
-    uses: ./.github/workflows/generate-preview-references.yml
+    uses: ./.github/workflows/generate-rc-references.yml
