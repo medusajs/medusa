@@ -27,7 +27,7 @@ A service's constructor accepts as a first parameter an object used to resolve r
 For example:
 
 ```ts highlights={[["4"], ["10"]]}
-import { Logger } from "@medusajs/medusa"
+import { Logger } from "@medusajs/framework/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -56,7 +56,7 @@ For example:
 import {
   LoaderOptions,
 } from "@medusajs/framework/modules-sdk"
-import { Logger } from "@medusajs/medusa"
+import { Logger } from "@medusajs/framework/types"
 
 export default async function helloWorldLoader({
   container,
