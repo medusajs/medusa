@@ -1,3 +1,3 @@
-import { BaseExchange } from "../common";
+import { BaseExchange } from "../common"
 
 export interface AdminExchange extends BaseExchange {}

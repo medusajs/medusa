@@ -4,14 +4,13 @@
  * description: The return's details.
  * x-schemaName: StoreReturn
  * required:
- *   - id
- *   - order_id
- *   - order_version
- *   - display_id
  *   - items
- *   - received_at
+ *   - order_id
+ *   - id
  *   - created_at
+ *   - display_id
  *   - canceled_at
+ *   - received_at
  * properties:
  *   id:
  *     type: string
@@ -37,18 +36,10 @@
  *     type: string
  *     title: claim_id
  *     description: The ID of the associated claim.
- *   order_version:
- *     type: number
- *     title: order_version
- *     description: The version of the order when the return is applied.
  *   display_id:
  *     type: number
  *     title: display_id
  *     description: The return's display ID.
- *   no_notification:
- *     type: boolean
- *     title: no_notification
- *     description: Whether the customer should receive updates about changes in the return.
  *   refund_amount:
  *     type: number
  *     title: refund_amount
@@ -57,7 +48,7 @@
  *     type: array
  *     description: The return's items.
  *     items:
- *       $ref: "#/components/schemas/BaseReturnItem"
+ *       $ref: "#/components/schemas/StoreReturnItem"
  *   received_at:
  *     type: string
  *     title: received_at

@@ -37,14 +37,10 @@
  *         "email": "admin@medusa-test.com",
  *         "password": "supersecret"
  *       }'
- *   - lang: Shell
+ *   - lang: Bash
  *     label: Google Provider
  *     source:  |-
  *       curl -X POST '{backend_url}/auth/user/google'
- *   - lang: Shell
- *     label: GitHub Provider
- *     source:  |-
- *       curl -X POST '{backend_url}/auth/user/github'
  * tags:
  *   - Auth
  * responses:

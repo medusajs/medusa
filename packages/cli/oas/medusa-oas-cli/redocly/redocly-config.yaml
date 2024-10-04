@@ -22,6 +22,7 @@ decorators:
         - AdminProduct
       BaseProduct:
         - BaseProduct
+        - BaseProductVariant
       StoreProduct:
         - StoreProductCategory
         - StoreProduct
@@ -107,6 +108,29 @@ decorators:
         - BaseProduct
       OrderItem:
         - OrderLineItem
+      AdminOrderChangeAction:
+        - AdminOrderChange
+      AdminPaymentSession:
+        - AdminPaymentCollection
+      AdminProductOption:
+        - AdminProduct
+        - AdminProductOptionValue
+      AdminPromotion:
+        - AdminApplicationMethod
+      BaseOrderItemDetail:
+        - BaseOrderLineItem
+      BaseOrderShippingDetail:
+        - BaseOrderShippingMethod
+      StorePaymentSession:
+        - StorePaymentCollection
+      StoreProductOption:
+        - StoreProduct
+      StoreProductOptionValue:
+        - StoreProductOption
+      AdminPayment:
+        - AdminPaymentCollection
+      StoreProductVariant:
+        - StoreProduct
 theme:
   openapi:
     theme:

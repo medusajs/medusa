@@ -25,7 +25,10 @@ import {
   installNextjsStarter,
   startNextjsStarter,
 } from "../utils/nextjs-utils.js"
-import { getNodeVersion, MIN_SUPPORTED_NODE_VERSION } from "@medusajs/utils"
+import {
+  getNodeVersion,
+  MIN_SUPPORTED_NODE_VERSION,
+} from "../utils/node-version.js"
 
 const slugify = slugifyType.default
 

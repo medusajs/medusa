@@ -2,7 +2,7 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 import { createInventoryLevelsWorkflow } from "@medusajs/core-flows"
 import {

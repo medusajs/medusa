@@ -1,6 +1,6 @@
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
 } from "@medusajs/framework/utils"
 import {

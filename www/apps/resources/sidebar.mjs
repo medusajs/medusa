@@ -2125,11 +2125,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
-                path: "/troubleshooting/pnpm-errors",
-                title: "pnpm Errors",
-              },
-              {
-                type: "link",
                 path: "/troubleshooting/general-errors",
                 title: "General Errors",
               },
@@ -2149,6 +2144,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 path: "/troubleshooting/database-errors",
                 title: "Database Errors",
               },
+              {
+                type: "link",
+                path: "/troubleshooting/dist-imports",
+                title: "Importing from /dist"
+              }
             ],
           },
           {

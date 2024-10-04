@@ -14,7 +14,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
   import { IApiKeyModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
   import { IApiKeyModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 
@@ -112,7 +112,7 @@ export async function GET(request: Request) {
   <CodeTab label="Medusa API Router" value="medusa">
 
 ```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { IApiKeyModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
@@ -173,7 +173,7 @@ export async function POST(request: Request, { params }: ContextType) {
   <CodeTab label="Medusa API Router" value="medusa">
 
   ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
   import { IApiKeyModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 
@@ -233,7 +233,7 @@ export async function POST(request: Request, { params }: ContextType) {
   import { 
     AuthenticatedMedusaRequest, 
     MedusaResponse,
-  } from "@medusajs/medusa"
+  } from "@medusajs/framework/http"
   import { IApiKeyModuleService } from "@medusajs/framework/types"
   import { Modules } from "@medusajs/framework/utils"
 

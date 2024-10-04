@@ -1,7 +1,7 @@
 import {
-  AuthIdentityDTO,
   AuthenticationInput,
   AuthenticationResponse,
+  AuthIdentityDTO,
 } from "./common"
 
 // This interface currently won't allow for linking multiple providers to a single auth entity. That flow is more complex and not supported yet.

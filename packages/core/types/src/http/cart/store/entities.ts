@@ -20,7 +20,8 @@ export interface StoreCart extends Omit<BaseCart, "items"> {
   payment_collection?: StorePaymentCollection
   region?: StoreRegion
 }
-export interface StoreCartLineItem extends Omit<BaseCartLineItem, "product" | "variant" | "cart"> {
+export interface StoreCartLineItem
+  extends Omit<BaseCartLineItem, "product" | "variant" | "cart"> {
   product?: StoreProduct
   variant?: StoreProductVariant
   cart: StoreCart

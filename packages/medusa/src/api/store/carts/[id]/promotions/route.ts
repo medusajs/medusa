@@ -1,6 +1,6 @@
 import { updateCartPromotionsWorkflow } from "@medusajs/core-flows"
 import { PromotionActions } from "@medusajs/framework/utils"
-import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { refetchCart } from "../../helpers"
 import {
   StoreAddCartPromotionsType,

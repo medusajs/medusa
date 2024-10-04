@@ -23,6 +23,7 @@
  *     type: object
  *     description: The tax region's default tax rate.
  *     required:
+ *       - code
  *       - name
  *     properties:
  *       rate:
