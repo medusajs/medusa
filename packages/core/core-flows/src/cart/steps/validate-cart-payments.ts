@@ -34,6 +34,7 @@ export const validateCartPaymentsStep = createStep(
     const processablePaymentStatuses = [
       PaymentSessionStatus.PENDING,
       PaymentSessionStatus.REQUIRES_MORE,
+      PaymentSessionStatus.AUTHORIZED, // E.g. payment was authorized, but the cart was not completed
     ]
 
     const paymentsToProcess = paymentCollection.payment_sessions?.filter((ps) =>
