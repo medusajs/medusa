@@ -4,11 +4,7 @@ import {
   OrderDTO,
   OrderPreviewDTO,
 } from "@medusajs/framework/types"
-import {
-  ChangeActionType,
-  MathBN,
-  OrderChangeStatus,
-} from "@medusajs/framework/utils"
+import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowResponse,
   createStep,
@@ -25,6 +21,7 @@ import {
   throwIfOrderChangeIsNotActive,
 } from "../../utils/order-validation"
 import { createOrUpdateOrderPaymentCollectionWorkflow } from "../create-or-update-order-payment-collection"
+import { deleteReservationsByLineItemsStep } from "../../../reservation"
 
 export type ConfirmOrderEditRequestWorkflowInput = {
   order_id: string
@@ -132,6 +129,12 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
       throw_if_key_not_found: true,
     }).config({ name: "order-items-query" })
 
+    const lineItemIds = transform({ orderItems }, (data) =>
+      data.orderItems.items.map(({ id }) => id)
+    )
+
+    deleteReservationsByLineItemsStep(lineItemIds)
+
     const { variants, items } = transform(
       { orderItems, orderPreview },
       ({ orderItems, orderPreview }) => {
@@ -152,18 +155,19 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             return
           }
 
-          let quantity: BigNumberInput =
+          const quantity: BigNumberInput =
             itemAction.raw_quantity ?? itemAction.quantity
 
-          const updateAction = itemAction.actions!.find(
-            (a) => a.action === ChangeActionType.ITEM_UPDATE
-          )
-          if (updateAction) {
-            quantity = MathBN.sub(quantity, ordItem.raw_quantity)
-            if (MathBN.lte(quantity, 0)) {
-              return
-            }
-          }
+          // const updateAction = itemAction.actions!.find(
+          //   (a) => a.action === ChangeActionType.ITEM_UPDATE
+          // )
+          //
+          // if (updateAction) {
+          //   quantity = MathBN.sub(quantity, ordItem.raw_quantity)
+          //   if (MathBN.lte(quantity, 0)) {
+          //     return
+          //   }
+          // }
 
           allItems.push({
             id: ordItem.id,
