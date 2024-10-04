@@ -24,7 +24,6 @@ import {
   ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
-import type { Knex } from "@mikro-orm/knex"
 import { asValue } from "awilix"
 import { MODULE_PACKAGE_NAMES } from "./definitions"
 import {

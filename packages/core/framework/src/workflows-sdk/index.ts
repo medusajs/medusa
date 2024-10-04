@@ -1,3 +1,3 @@
-import "./types/container"
+import "../types/container"
 
 export * from "@medusajs/workflows-sdk"

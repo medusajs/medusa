@@ -1,4 +1,4 @@
-import "./types/container"
+import "../types/container"
 
 export * from "./express-loader"
 export * from "./router"

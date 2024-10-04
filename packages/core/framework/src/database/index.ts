@@ -1,2 +1,2 @@
-import "./types/container"
+import "../types/container"
 export * from "./pg-connection-loader"
