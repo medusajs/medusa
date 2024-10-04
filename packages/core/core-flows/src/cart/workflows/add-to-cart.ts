@@ -110,7 +110,7 @@ export const addToCartWorkflow = createWorkflow(
 
     const newlyCreatedAndUpdatedItems = transform(
       { createdItems, updatedItems },
-      ({ createdItems, updatedItems }) => {
+      ({ createdItems = [], updatedItems = [] }) => {
         return [...createdItems, ...updatedItems]
       }
     )
