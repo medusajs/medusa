@@ -1,4 +1,4 @@
-import { IndexOrderBy } from "../index_data/query-config/query-input-config-order-by"
+import { IndexOrderBy } from "../index-data/query-config/query-input-config-order-by"
 import { ObjectToRemoteQueryFields } from "./object-to-remote-query-fields"
 import { RemoteQueryEntryPoints } from "./remote-query-entry-points"
 import { RemoteQueryFilters } from "./to-remote-query"
