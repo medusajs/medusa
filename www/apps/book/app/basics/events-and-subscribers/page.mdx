@@ -25,7 +25,7 @@ A subscriber is created in a TypeScript or JavaScript file under the `src/subscr
 For example, create the file `src/subscribers/product-created.ts` with the following content:
 
 ```ts title="src/subscribers/product-created.ts"
-import { type SubscriberConfig } from "@medusajs/medusa"
+import { type SubscriberConfig } from "@medusajs/framework"
 
 // subscriber function
 export default async function productCreateHandler() {
@@ -89,7 +89,7 @@ export const highlights = [
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights}
-import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
+import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
 import { IProductModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 

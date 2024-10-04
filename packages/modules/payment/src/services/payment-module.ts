@@ -27,6 +27,7 @@ import {
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
   UpsertPaymentCollectionDTO,
+  WebhookActionResult,
 } from "@medusajs/framework/types"
 import {
   BigNumber,
@@ -37,7 +38,6 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  PaymentActions,
   PaymentCollectionStatus,
   PaymentSessionStatus,
   promiseAll,
@@ -425,20 +425,19 @@ export default class PaymentModuleService
           "amount",
           "raw_amount",
           "currency_code",
+          "authorized_at",
           "payment_collection_id",
         ],
+        relations: ["payment", "payment_collection"],
       },
       sharedContext
     )
 
     // this method needs to be idempotent
-    if (session.authorized_at) {
-      const payment = await this.paymentService_.retrieve(
-        { session_id: session.id },
-        { relations: ["payment_collection"] },
-        sharedContext
-      )
-      return await this.baseRepository_.serialize(payment, { populate: true })
+    if (session.payment && session.authorized_at) {
+      return await this.baseRepository_.serialize(session.payment, {
+        populate: true,
+      })
     }
 
     let { data, status } = await this.paymentProviderService_.authorizePayment(
@@ -849,45 +848,16 @@ export default class PaymentModuleService
   }
 
   @InjectManager()
-  async processEvent(
+  async getWebhookActionAndData(
     eventData: ProviderWebhookPayload,
     @MedusaContext() sharedContext?: Context
-  ): Promise<void> {
+  ): Promise<WebhookActionResult> {
     const providerId = `pp_${eventData.provider}`
 
-    const event = await this.paymentProviderService_.getWebhookActionAndData(
+    return await this.paymentProviderService_.getWebhookActionAndData(
       providerId,
       eventData.payload
     )
-
-    if (event.action === PaymentActions.NOT_SUPPORTED) {
-      return
-    }
-
-    switch (event.action) {
-      case PaymentActions.SUCCESSFUL: {
-        const [payment] = await this.listPayments(
-          {
-            payment_session_id: event.data.session_id,
-          },
-          {},
-          sharedContext
-        )
-        if (payment && !payment.captured_at) {
-          await this.capturePayment(
-            { payment_id: payment.id, amount: event.data.amount },
-            sharedContext
-          )
-        }
-        break
-      }
-      case PaymentActions.AUTHORIZED:
-        await this.authorizePaymentSession(
-          event.data.session_id,
-          {},
-          sharedContext
-        )
-    }
   }
 
   @InjectManager()

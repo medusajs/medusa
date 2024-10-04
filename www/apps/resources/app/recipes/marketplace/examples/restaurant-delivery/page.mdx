@@ -170,8 +170,8 @@ module.exports = defineConfig({
 
 ### Further Reads
 
-- [How to Create a Module](!docs!/basics/modules-and-services)
-- [How to Create a Data Model](!docs!/basics/data-models)
+- [How to Create a Module](!docs!/basics/modules)
+- [How to Create a Data Model](!docs!/basics/modules#1-create-data-model)
 
 ---
 
@@ -553,7 +553,7 @@ export const createRestaurantRouteHighlights = [
 ]
 
 ```ts title="src/api/restaurants/route.ts" highlights={createRestaurantRouteHighlights} collapsibleLines="1-10" expandMoreLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { 
   CreateRestaurantDTO,
@@ -629,7 +629,7 @@ In the file `src/api/restaurants/route.ts` add the following API route:
 
 ```ts title="src/api/restaurants/route.ts"
 // other imports...
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { 
   ContainerRegistrationKeys, 
   QueryContext,
@@ -908,7 +908,7 @@ Then, create the file `src/api/users/route.ts` with the following content:
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import {
   createUserWorkflow,
   CreateUserWorkflowInput,
@@ -1175,7 +1175,7 @@ Finally, add the API route that uses the workflow at `src/api/restaurants/[id]/a
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { 
   deleteRestaurantAdminWorkflow,
 } from "../../../../../workflows/restaurant/workflows/delete-restaurant-admin"
@@ -1311,7 +1311,7 @@ In the workflow, you:
 Create the file `src/api/restaurants/[id]/products/route.ts` with the following content:
 
 ```ts title="src/api/restaurants/[id]/products/route.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { 
   AdminCreateProduct,
 } from "@medusajs/medusa/api/admin/products/validators"
@@ -2080,7 +2080,7 @@ export const createDeliveryRouteHighlights = [
 ]
 
 ```ts title="src/api/store/deliveries/route.ts" highlights={createDeliveryRouteHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import zod from "zod"
 import { DELIVERY_MODULE } from "../../../modules/delivery"
@@ -2509,7 +2509,7 @@ export const acceptRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/accept/route.ts" highlights={acceptRouteHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { notifyRestaurantStepId } from "../../../../workflows/delivery/steps/notify-restaurant"
@@ -2574,7 +2574,7 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaNextFunction, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import {
   ContainerRegistrationKeys,
 } from "@medusajs/framework/utils"
@@ -2755,7 +2755,7 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { 
   claimDeliveryWorkflow,
 } from "../../../../workflows/delivery/workflows/claim-delivery"
@@ -2843,7 +2843,7 @@ export const prepareRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/prepare/route.ts" highlights={prepareRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { 
@@ -2933,7 +2933,7 @@ export const readyRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/ready/route.ts" highlights={readyRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { 
@@ -3025,7 +3025,7 @@ export const pickUpRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/pick-up/route.ts" highlights={pickUpRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { 
@@ -3076,7 +3076,7 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaNextFunction, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { DELIVERY_MODULE } from "../../modules/delivery"
 
 export const isDeliveryDriver = async (
@@ -3165,7 +3165,7 @@ export const completeRouteHighlights = [
 ]
 
 ```ts title="src/api/deliveries/[id]/complete/route.ts" highlights={completeRouteHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { MedusaError } from "@medusajs/framework/utils"
 import { DeliveryStatus } from "../../../../modules/delivery/types"
 import { 
@@ -3258,7 +3258,7 @@ So, create the file `src/api/deliveries/subscribe/route.ts` with the following c
 import { 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import {
   Modules,
 } from "@medusajs/framework/utils"
@@ -3337,7 +3337,7 @@ The storefront UI will also need to retrieve the delivery. So, you’ll create a
 Create the file `src/api/deliveries/[id]/route.ts` with the following content:
 
 ```ts title="src/api/deliveries/[id]/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { DELIVERY_MODULE } from "../../../../modules/delivery"
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {

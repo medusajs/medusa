@@ -1,29 +1,3 @@
-import type {
-  IApiKeyModuleService,
-  IAuthModuleService,
-  ICacheService,
-  ICartModuleService,
-  ICurrencyModuleService,
-  ICustomerModuleService,
-  IEventBusModuleService,
-  IFileModuleService,
-  IFulfillmentModuleService,
-  IInventoryService,
-  INotificationModuleService,
-  IOrderModuleService,
-  IPaymentModuleService,
-  IPricingModuleService,
-  IProductModuleService,
-  IPromotionModuleService,
-  IRegionModuleService,
-  ISalesChannelModuleService,
-  IStockLocationService,
-  IStoreModuleService,
-  ITaxModuleService,
-  IUserModuleService,
-  IWorkflowEngineService,
-} from "@medusajs/types"
-
 export enum Modules {
   AUTH = "Auth",
   CACHE = "Cache",
@@ -53,32 +27,3 @@ export enum Modules {
 }
 
 export const ModuleRegistrationName = Modules
-
-declare module "@medusajs/types" {
-  export interface ModuleImplementations {
-    [Modules.AUTH]: IAuthModuleService
-    [Modules.CACHE]: ICacheService
-    [Modules.CART]: ICartModuleService
-    [Modules.CUSTOMER]: ICustomerModuleService
-    [Modules.EVENT_BUS]: IEventBusModuleService
-    [Modules.INVENTORY]: IInventoryService
-    [Modules.PAYMENT]: IPaymentModuleService
-    [Modules.PRICING]: IPricingModuleService
-    [Modules.PRODUCT]: IProductModuleService
-    [Modules.PROMOTION]: IPromotionModuleService
-    [Modules.SALES_CHANNEL]: ISalesChannelModuleService
-    [Modules.TAX]: ITaxModuleService
-    [Modules.FULFILLMENT]: IFulfillmentModuleService
-    [Modules.STOCK_LOCATION]: IStockLocationService
-    [Modules.USER]: IUserModuleService
-    [Modules.WORKFLOW_ENGINE]: IWorkflowEngineService
-    [Modules.REGION]: IRegionModuleService
-    [Modules.ORDER]: IOrderModuleService
-    [Modules.API_KEY]: IApiKeyModuleService
-    [Modules.STORE]: IStoreModuleService
-    [Modules.CURRENCY]: ICurrencyModuleService
-    [Modules.FILE]: IFileModuleService
-    [Modules.NOTIFICATION]: INotificationModuleService
-    [Modules.INDEX]: any // TODO: define index module interface
-  }
-}
