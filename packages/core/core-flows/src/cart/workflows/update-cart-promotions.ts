@@ -65,14 +65,6 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       return data.input.action || PromotionActions.ADD
     })
 
-    const promo_codes = transform({ input }, (data) => {
-      return (data.input.promo_codes || []) as string[]
-    })
-
-    const action = transform({ input }, (data) => {
-      return data.input.action || PromotionActions.ADD
-    })
-
     const promotionCodesToApply = getPromotionCodesToApply({
       cart: cart,
       promo_codes,
