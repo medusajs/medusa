@@ -1,7 +1,7 @@
+import { RemoteQueryInput } from "../../modules-sdk/remote-query-object-from-string"
+import { IndexServiceEntryPoints } from "../index-service-entry-points"
 import { ObjectToIndexFields } from "./query-input-config-fields"
 import { IndexFilters } from "./query-input-config-filters"
-import { IndexOrderBy } from "./query-input-config-order-by"
-import { IndexServiceEntryPoints } from "../index-service-entry-points"
 
 export type IndexQueryConfig<TEntry extends string> = {
   fields: ObjectToIndexFields<
@@ -13,11 +13,7 @@ export type IndexQueryConfig<TEntry extends string> = {
       >[]
   filters?: IndexFilters<TEntry>
   joinFilters?: IndexFilters<TEntry>
-  pagination?: {
-    skip?: number
-    take?: number
-    order?: IndexOrderBy<TEntry>
-  }
+  pagination?: Partial<RemoteQueryInput<TEntry>["pagination"]>
   keepFilteredEntities?: boolean
 }
 

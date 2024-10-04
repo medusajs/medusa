@@ -1,6 +1,6 @@
 import { Prettify } from "../../common"
+import { IndexOperatorMap as OperatorMap } from "../index-operator-map"
 import { IndexServiceEntryPoints } from "../index-service-entry-points"
-import { OperatorMap } from "../operator-map"
 import {
   CleanupObject,
   Depth,
