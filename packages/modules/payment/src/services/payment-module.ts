@@ -583,7 +583,7 @@ export default class PaymentModuleService
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PaymentDTO> {
-    const [payment, isFullyCaptured] = await this.capturePayment_(
+    const { payment, isFullyCaptured, capture } = await this.capturePayment_(
       data,
       sharedContext
     )
@@ -595,7 +595,9 @@ export default class PaymentModuleService
         sharedContext
       )
     } catch (error) {
-      await super.deleteCaptures(data.payment_id, sharedContext)
+      if (capture?.id) {
+        await super.deleteCaptures({ id: capture.id }, sharedContext)
+      }
       throw error
     }
 
@@ -615,7 +617,11 @@ export default class PaymentModuleService
   private async capturePayment_(
     data: CreateCaptureDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[Payment, boolean]> {
+  ): Promise<{
+    payment: Payment
+    isFullyCaptured: boolean
+    capture?: Capture
+  }> {
     const payment = await this.paymentService_.retrieve(
       data.payment_id,
       {
@@ -626,6 +632,7 @@ export default class PaymentModuleService
           "payment_collection_id",
           "amount",
           "raw_amount",
+          "captured_at",
           "canceled_at",
         ],
         relations: ["captures.raw_amount"],
@@ -646,14 +653,7 @@ export default class PaymentModuleService
     }
 
     if (payment.captured_at) {
-      return [
-        (await this.retrievePayment(
-          data.payment_id,
-          { relations: ["captures"] },
-          sharedContext
-        )) as unknown as Payment,
-        true,
-      ]
+      return { payment, isFullyCaptured: true }
     }
 
     const capturedAmount = payment.captures.reduce((captureAmount, next) => {
@@ -677,7 +677,7 @@ export default class PaymentModuleService
     )
     const isFullyCaptured = MathBN.gte(totalCaptured, authorizedAmount)
 
-    await this.captureService_.create(
+    const capture = await this.captureService_.create(
       {
         payment: data.payment_id,
         amount: data.amount,
@@ -686,7 +686,7 @@ export default class PaymentModuleService
       sharedContext
     )
 
-    return [payment, isFullyCaptured]
+    return { payment, isFullyCaptured, capture }
   }
   @InjectManager()
   private async capturePaymentFromProvider_(

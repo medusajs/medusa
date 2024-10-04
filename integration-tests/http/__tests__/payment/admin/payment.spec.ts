@@ -1,11 +1,12 @@
 import { ClaimType } from "@medusajs/utils"
-import { adminHeaders } from "../../../../helpers/create-admin-user"
-
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { createAdminUser } from "../../../../helpers/create-admin-user"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 import { createOrderSeeder } from "../../fixtures/order"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
@@ -76,6 +77,92 @@ medusaIntegrationTestRunner({
           })
         )
         expect(response.status).toEqual(200)
+      })
+
+      it("should throw if capture amount is greater than authorized amount", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        const response = await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          { amount: 75 },
+          adminHeaders
+        )
+
+        expect(response.data.payment).toEqual(
+          expect.objectContaining({
+            id: payment.id,
+            captured_at: null, // not fully captured yet
+            captures: [
+              expect.objectContaining({
+                id: expect.any(String),
+                amount: 75,
+              }),
+            ],
+            refunds: [],
+            amount: 100,
+          })
+        )
+        expect(response.status).toEqual(200)
+
+        const errResponse = await api
+          .post(
+            `/admin/payments/${payment.id}/capture`,
+            { amount: 75 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(errResponse.response.data.message).toEqual(
+          "You cannot capture more than the authorized amount substracted by what is already captured."
+        )
+      })
+
+      it("should return payment if payment is already fully captured", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        const response = await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        expect(response.data.payment).toEqual(
+          expect.objectContaining({
+            id: payment.id,
+            captured_at: expect.any(String),
+            captures: [
+              expect.objectContaining({
+                id: expect.any(String),
+                amount: 100,
+              }),
+            ],
+            refunds: [],
+            amount: 100,
+          })
+        )
+        expect(response.status).toEqual(200)
+
+        const anotherResponse = await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        expect(anotherResponse.data.payment).toEqual(
+          expect.objectContaining({
+            id: payment.id,
+            captured_at: expect.any(String),
+            captures: [
+              expect.objectContaining({
+                id: expect.any(String),
+                amount: 100,
+              }),
+            ],
+            refunds: [],
+            amount: 100,
+          })
+        )
+        expect(anotherResponse.status).toEqual(200)
       })
 
       it("should refund a captured payment", async () => {
