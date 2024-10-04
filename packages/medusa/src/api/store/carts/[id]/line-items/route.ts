@@ -3,16 +3,17 @@ import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { refetchCart } from "../../helpers"
 import { StoreAddCartLineItemType } from "../../validators"
 import { HttpTypes } from "@medusajs/framework/types"
+import { defaultStoreCartFields } from "../../query-config"
 
 export const POST = async (
   req: MedusaRequest<StoreAddCartLineItemType>,
   res: MedusaResponse<HttpTypes.StoreCartResponse>
 ) => {
-  const cart = await refetchCart(
-    req.params.id,
-    req.scope,
-    req.remoteQueryConfig.fields
-  )
+  const cart = await refetchCart(req.params.id, req.scope, [
+    ...defaultStoreCartFields,
+    "region_id",
+    "items.product.id",
+  ])
 
   const workflowInput = {
     items: [req.validatedBody],
