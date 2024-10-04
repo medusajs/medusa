@@ -1,3 +1,5 @@
+import "../types/container"
+
 export * from "./express-loader"
 export * from "./router"
 export * from "./types"
