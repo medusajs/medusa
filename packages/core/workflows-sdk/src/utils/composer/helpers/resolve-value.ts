@@ -71,8 +71,6 @@ export async function resolveValue(input, transactionContext) {
     ? input
     : input?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
     ? deepCopy(input.output)
-    : util.types.isProxy(input)
-    ? input
     : deepCopy(input)
 
   const result = copiedInput?.__type
