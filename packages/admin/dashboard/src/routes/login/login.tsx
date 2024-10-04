@@ -6,7 +6,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
 import { Form } from "../../components/common/form"
-
+import { LogoBox } from "../../components/common/logo-box"
+import { useSignInWithEmailPass } from "../../hooks/api/auth"
 import { useSignInWithEmailPassword } from "../../hooks/api/auth"
 
 import after from "virtual:medusa/widgets/login/after"
@@ -34,7 +35,7 @@ export const Login = () => {
     },
   })
 
-  const { mutateAsync, isPending } = useSignInWithEmailPassword()
+  const { mutateAsync, isPending } = useSignInWithEmailPass()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
     try {
