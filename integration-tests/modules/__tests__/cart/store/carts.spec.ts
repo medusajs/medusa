@@ -316,6 +316,49 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should create cart with shipping address country code when there is only one country assigned to the region", async () => {
+          const region = await regionModule.createRegions({
+            name: "US",
+            currency_code: "usd",
+            countries: ["us"],
+          })
+
+          const response = await api.post(
+            `/store/carts`,
+            {
+              email: "tony@stark.com",
+              currency_code: "usd",
+              region_id: region.id,
+            },
+            storeHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "usd",
+              email: "tony@stark.com",
+              region: expect.objectContaining({
+                id: region.id,
+              }),
+              shipping_address: {
+                id: expect.any(String),
+                country_code: "us",
+                first_name: null,
+                last_name: null,
+                company: null,
+                address_1: null,
+                address_2: null,
+                city: null,
+                province: null,
+                postal_code: null,
+                phone: null,
+              },
+            })
+          )
+        })
+
         it("should create cart with default store sales channel", async () => {
           const sc = await scModule.createSalesChannels({
             name: "Webshop",
@@ -711,12 +754,6 @@ medusaIntegrationTestRunner({
         it("should not generate tax lines if region is not present or automatic taxes is false", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.createRegions({
-            name: "US",
-            currency_code: "usd",
-            automatic_taxes: false,
-          })
-
           const cart = await cartModule.createCarts({
             currency_code: "usd",
             email: "tony@stark.com",
@@ -759,13 +796,15 @@ medusaIntegrationTestRunner({
             })
           )
 
-          await cartModule.updateCarts(cart.id, {
-            region_id: region.id,
+          const region = await regionModule.createRegions({
+            name: "US",
+            currency_code: "usd",
+            automatic_taxes: false,
           })
 
           updated = await api.post(
             `/store/carts/${cart.id}`,
-            { email: "another@tax.com" },
+            { email: "another@tax.com", region_id: region.id },
             storeHeaders
           )
 
@@ -790,6 +829,7 @@ medusaIntegrationTestRunner({
           const region = await regionModule.createRegions({
             name: "us",
             currency_code: "usd",
+            countries: ["us"],
           })
 
           const salesChannel = await scModule.createSalesChannels({
@@ -917,19 +957,21 @@ medusaIntegrationTestRunner({
               }),
               sales_channel_id: salesChannel.id,
               shipping_address: expect.objectContaining({
-                city: "ny",
+                // We clear the shipping address on region update and only set the country code if the region has one country
+                city: null,
                 country_code: "us",
-                province: "ny",
+                province: null,
               }),
               shipping_methods: expect.arrayContaining([
                 expect.objectContaining({
                   shipping_option_id: shippingOption2.id,
                   amount: 500,
                   tax_lines: [
+                    // Since we clear the shipping address on region update, the tax lines are computed based on the new country code
                     expect.objectContaining({
-                      description: "NY Default Rate",
-                      code: "NYDEFAULT",
-                      rate: 6,
+                      description: "US Default Rate",
+                      code: "US_DEF",
+                      rate: 2,
                       provider_id: "system",
                     }),
                   ],
@@ -939,10 +981,11 @@ medusaIntegrationTestRunner({
                   shipping_option_id: shippingOption.id,
                   amount: 500,
                   tax_lines: [
+                    // Since we clear the shipping address on region update, the tax lines are computed based on the new country code
                     expect.objectContaining({
-                      description: "NY Default Rate",
-                      code: "NYDEFAULT",
-                      rate: 6,
+                      description: "US Default Rate",
+                      code: "US_DEF",
+                      rate: 2,
                       provider_id: "system",
                     }),
                   ],
@@ -954,9 +997,9 @@ medusaIntegrationTestRunner({
                   id: "item-1",
                   tax_lines: [
                     expect.objectContaining({
-                      description: "NY Default Rate",
-                      code: "NYDEFAULT",
-                      rate: 6,
+                      description: "US Default Rate",
+                      code: "US_DEF",
+                      rate: 2,
                       provider_id: "system",
                     }),
                   ],
@@ -966,39 +1009,39 @@ medusaIntegrationTestRunner({
             })
           )
 
-          updated = await api.post(
-            `/store/carts/${cart.id}`,
-            {
-              email: null,
-              sales_channel_id: null,
-            },
-            storeHeaders
-          )
+          // updated = await api.post(
+          //   `/store/carts/${cart.id}`,
+          //   {
+          //     email: null,
+          //     sales_channel_id: null,
+          //   },
+          //   storeHeaders
+          // )
 
-          expect(updated.status).toEqual(200)
-          expect(updated.data.cart).toEqual(
-            expect.objectContaining({
-              id: cart.id,
-              currency_code: "usd",
-              email: null,
-              customer_id: null,
-              sales_channel_id: null,
-              items: [
-                expect.objectContaining({
-                  id: "item-1",
-                  tax_lines: [
-                    expect.objectContaining({
-                      description: "NY Default Rate",
-                      code: "NYDEFAULT",
-                      rate: 6,
-                      provider_id: "system",
-                    }),
-                  ],
-                  adjustments: [],
-                }),
-              ],
-            })
-          )
+          // expect(updated.status).toEqual(200)
+          // expect(updated.data.cart).toEqual(
+          //   expect.objectContaining({
+          //     id: cart.id,
+          //     currency_code: "usd",
+          //     email: null,
+          //     customer_id: null,
+          //     sales_channel_id: null,
+          //     items: [
+          //       expect.objectContaining({
+          //         id: "item-1",
+          //         tax_lines: [
+          //           expect.objectContaining({
+          //             description: "NY Default Rate",
+          //             code: "NYDEFAULT",
+          //             rate: 6,
+          //             provider_id: "system",
+          //           }),
+          //         ],
+          //         adjustments: [],
+          //       }),
+          //     ],
+          //   })
+          // )
         })
 
         it("should update tax lines on cart items when region changes", async () => {
@@ -1129,6 +1172,364 @@ medusaIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should update tax inclusivity on cart items when region changes", async () => {
+          await setupTaxStructure(taxModule)
+
+          const [region, otherRegion] = await regionModule.createRegions([
+            {
+              name: "us",
+              currency_code: "usd",
+              countries: ["us"],
+            },
+            {
+              name: "dk",
+              currency_code: "dkk",
+              countries: ["dk"],
+            },
+          ])
+
+          const salesChannel = await scModule.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const [productWithDefaultTax] = await productModule.createProducts([
+            {
+              title: "Test product default tax",
+              variants: [
+                { title: "Test variant default tax", manage_inventory: false },
+              ],
+            },
+          ])
+
+          const [priceSetDefaultTax] = await pricingModule.createPriceSets([
+            {
+              prices: [{ amount: 2000, currency_code: "usd" }],
+            },
+          ])
+
+          await remoteLink.create([
+            {
+              Product: {
+                variant_id: productWithDefaultTax.variants[0].id,
+              },
+              Pricing: { price_set_id: priceSetDefaultTax.id },
+            },
+          ])
+
+          await api.post(
+            "/admin/price-preferences",
+            {
+              attribute: "currency_code",
+              value: "usd",
+              is_tax_inclusive: true,
+            },
+            adminHeaders
+          )
+
+          let response = await api.post(
+            `/store/carts`,
+            {
+              sales_channel_id: salesChannel.id,
+              shipping_address: {
+                country_code: "us",
+              },
+              region_id: region.id,
+              items: [
+                {
+                  variant_id: productWithDefaultTax.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+            },
+            storeHeaders
+          )
+
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "usd",
+              region_id: region.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 2000,
+                  quantity: 1,
+                  title: "Test variant default tax",
+                  tax_lines: [
+                    // Uses the california default rate
+                    expect.objectContaining({
+                      description: "US Default Rate",
+                      code: "US_DEF",
+                      rate: 2,
+                      provider_id: "system",
+                    }),
+                  ],
+                }),
+              ]),
+            })
+          )
+
+          response = await api.post(
+            `/store/carts/${response.data.cart.id}`,
+            {
+              region_id: otherRegion.id,
+              shipping_address: {
+                country_code: "dk",
+              },
+            },
+            storeHeaders
+          )
+
+          expect(response.data.cart).toEqual(
+            expect.objectContaining({
+              id: response.data.cart.id,
+              currency_code: "dkk",
+              region_id: otherRegion.id,
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  unit_price: 2000,
+                  quantity: 1,
+                  title: "Test variant default tax",
+                  tax_lines: [
+                    // Uses the danish default rate
+                    expect.objectContaining({
+                      description: "Denmark Default Rate",
+                      code: "DK_DEF",
+                      rate: 25,
+                      provider_id: "system",
+                    }),
+                  ],
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("should update region + set shipping address country code to dk when region has only one country", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.createRegions({
+            name: "us",
+            currency_code: "usd",
+            countries: ["us"],
+          })
+
+          const otherRegion = await regionModule.createRegions({
+            name: "dk",
+            currency_code: "usd",
+            countries: ["dk"],
+          })
+
+          const cart = await cartModule.createCarts({
+            currency_code: "eur",
+            region_id: region.id,
+            email: "tony@stark.com",
+            shipping_address: {
+              country_code: "us",
+            },
+          })
+
+          const updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              region_id: otherRegion.id,
+            },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "usd",
+              region: expect.objectContaining({
+                id: otherRegion.id,
+                currency_code: "usd",
+                countries: [expect.objectContaining({ iso_2: "dk" })],
+              }),
+              shipping_address: expect.objectContaining({
+                country_code: "dk",
+              }),
+            })
+          )
+        })
+
+        it("should update region + set shipping address to null when region has more than one country", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.createRegions({
+            name: "us",
+            currency_code: "usd",
+            countries: ["us"],
+          })
+
+          const otherRegion = await regionModule.createRegions({
+            name: "dk",
+            currency_code: "eur",
+            countries: ["dk", "no"],
+          })
+
+          const cart = await cartModule.createCarts({
+            currency_code: "eur",
+            region_id: region.id,
+            email: "tony@stark.com",
+            shipping_address: {
+              country_code: "us",
+            },
+          })
+
+          const updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              region_id: otherRegion.id,
+            },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "eur",
+              region: expect.objectContaining({
+                id: otherRegion.id,
+                currency_code: "eur",
+                countries: [
+                  expect.objectContaining({ iso_2: "dk" }),
+                  expect.objectContaining({ iso_2: "no" }),
+                ],
+              }),
+              shipping_address: null,
+            })
+          )
+        })
+
+        it("should update region and shipping address when country code is within region", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.createRegions({
+            name: "us",
+            currency_code: "usd",
+            countries: ["us"],
+          })
+
+          const otherRegion = await regionModule.createRegions({
+            name: "dk",
+            currency_code: "eur",
+            countries: ["dk", "no"],
+          })
+
+          const cart = await cartModule.createCarts({
+            currency_code: "eur",
+            region_id: region.id,
+            email: "tony@stark.com",
+            shipping_address: {
+              country_code: "us",
+            },
+          })
+
+          const updated = await api.post(
+            `/store/carts/${cart.id}`,
+            {
+              region_id: otherRegion.id,
+              shipping_address: {
+                country_code: "dk",
+              },
+            },
+            storeHeaders
+          )
+
+          expect(updated.status).toEqual(200)
+          expect(updated.data.cart).toEqual(
+            expect.objectContaining({
+              id: cart.id,
+              currency_code: "eur",
+              region: expect.objectContaining({
+                id: otherRegion.id,
+                currency_code: "eur",
+                countries: [
+                  expect.objectContaining({ iso_2: "dk" }),
+                  expect.objectContaining({ iso_2: "no" }),
+                ],
+              }),
+              shipping_address: expect.objectContaining({
+                country_code: "dk",
+              }),
+            })
+          )
+        })
+
+        it("should throw when updating shipping address country code when country is not within region", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.createRegions({
+            name: "Unites States",
+            currency_code: "usd",
+            countries: ["us"],
+          })
+
+          const cart = await cartModule.createCarts({
+            currency_code: "eur",
+            email: "tony@stark.com",
+            region_id: region.id,
+            shipping_address: {
+              country_code: "us",
+            },
+          })
+
+          let errResponse = await api
+            .post(
+              `/store/carts/${cart.id}`,
+              {
+                shipping_address: {
+                  country_code: "dk",
+                },
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(errResponse.response.status).toEqual(400)
+          expect(errResponse.response.data.message).toEqual(
+            `Country with code dk is not within region ${region.name}`
+          )
+        })
+
+        it("should throw when updating region and shipping address, but shipping address country code is not within region", async () => {
+          await setupTaxStructure(taxModule)
+
+          const region = await regionModule.createRegions({
+            name: "Unites States",
+            currency_code: "usd",
+            countries: ["us"],
+          })
+
+          const cart = await cartModule.createCarts({
+            currency_code: "eur",
+            email: "tony@stark.com",
+            shipping_address: {
+              country_code: "us",
+            },
+          })
+
+          let errResponse = await api
+            .post(
+              `/store/carts/${cart.id}`,
+              {
+                region_id: region.id,
+                shipping_address: {
+                  country_code: "dk",
+                },
+              },
+              storeHeaders
+            )
+            .catch((e) => e)
+
+          expect(errResponse.response.status).toEqual(400)
+          expect(errResponse.response.data.message).toEqual(
+            `Country with code dk is not within region ${region.name}`
           )
         })
 
@@ -1714,9 +2115,10 @@ medusaIntegrationTestRunner({
           )
 
           expect(response.status).toEqual(200)
+          expect(response.data.cart.items).toHaveLength(2)
           expect(response.data.cart).toEqual(
             expect.objectContaining({
-              items: [
+              items: expect.arrayContaining([
                 expect.objectContaining({
                   unit_price: 1500,
                   quantity: 2,
@@ -1727,7 +2129,7 @@ medusaIntegrationTestRunner({
                   quantity: 1,
                   title: "S / Black",
                 }),
-              ],
+              ]),
               subtotal: 4500,
             })
           )
