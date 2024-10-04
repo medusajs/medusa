@@ -1,10 +1,10 @@
 import {
+  IndexOrderBy,
   RemoteQueryEntryPoints,
   RemoteQueryFilters,
   RemoteQueryGraph,
   RemoteQueryObjectConfig,
 } from "@medusajs/types"
-import { IndexOrderBy } from "@medusajs/types/dist/index/query-config/query-input-config-order-by"
 import { QueryContext, QueryFilter, isObject } from "@medusajs/utils"
 import { parseAndAssignFilters } from "./parse-filters"
 
