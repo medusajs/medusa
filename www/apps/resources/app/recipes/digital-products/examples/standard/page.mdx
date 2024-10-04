@@ -1444,7 +1444,7 @@ class DigitalProductFulfillmentService extends AbstractFulfillmentProviderServic
     super()
   }
 
-  async getFulfillmentOptions(): Promise<Record<string, unknown>[]> {
+  async getFulfillmentOptions(): Promise<FulfillmentOption[]> {
     return [
       {
         id: "digital-fulfillment",

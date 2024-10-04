@@ -2268,8 +2268,9 @@ import { Delivery } from "../models/delivery"
 
 export type Delivery = InferTypeOf<typeof Delivery>
 
-export type UpdateDelivery = Partial<Delivery> & {
+export type UpdateDelivery = Partial<Omit<Delivery, "driver">> & {
   id: string;
+  driver_id?: string
 }
 ```
 
