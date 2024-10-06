@@ -40,6 +40,7 @@ export const TaxRegionDetail = () => {
       data={taxRegion}
       showJSON
       hasOutlet
+      // showMetadata // TOOD -> enable when tax region update is added to the API
       widgets={{
         after,
         before,

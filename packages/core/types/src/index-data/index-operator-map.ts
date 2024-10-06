@@ -1,4 +1,4 @@
-export type OperatorMap<T> = {
+export type IndexOperatorMap<T> = {
   $eq: T
   $lt: T
   $lte: T
