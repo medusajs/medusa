@@ -234,6 +234,11 @@ export const RouteMap: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/categories/category-organize"),
                   },
+                  {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import("../../routes/categories/categories-metadata"),
+                  },
                 ],
               },
             ],
@@ -623,6 +628,11 @@ export const RouteMap: RouteObject[] = [
                         "../../routes/reservations/reservation-detail/components/edit-reservation"
                       ),
                   },
+                  {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import("../../routes/reservations/reservation-metadata"),
+                  },
                 ],
               },
             ],
@@ -680,6 +690,11 @@ export const RouteMap: RouteObject[] = [
                       import(
                         "../../routes/inventory/inventory-detail/components/adjust-inventory"
                       ),
+                  },
+                  {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import("../../routes/inventory/inventory-metadata"),
                   },
                   {
                     // TODO: create reservation
@@ -765,6 +780,10 @@ export const RouteMap: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/regions/region-add-countries"),
                   },
+                  {
+                    path: "metadata/edit",
+                    lazy: () => import("../../routes/regions/region-metadata"),
+                  },
                 ],
               },
             ],
@@ -820,6 +839,10 @@ export const RouteMap: RouteObject[] = [
                     path: "edit",
                     lazy: () => import("../../routes/users/user-edit"),
                   },
+                  {
+                    path: "metadata/edit",
+                    lazy: () => import("../../routes/users/user-metadata"),
+                  },
                 ],
               },
             ],
@@ -865,6 +888,13 @@ export const RouteMap: RouteObject[] = [
                     lazy: () =>
                       import(
                         "../../routes/sales-channels/sales-channel-add-products"
+                      ),
+                  },
+                  {
+                    path: "metadata/edit",
+                    lazy: () =>
+                      import(
+                        "../../routes/sales-channels/sales-channel-metadata"
                       ),
                   },
                 ],

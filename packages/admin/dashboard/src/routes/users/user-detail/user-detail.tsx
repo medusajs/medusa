@@ -7,6 +7,7 @@ import { userLoader } from "./loader"
 
 import after from "virtual:medusa/widgets/user/details/after"
 import before from "virtual:medusa/widgets/user/details/before"
+import { SingleColumnPage } from "../../../components/layout/pages"
 
 export const UserDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof userLoader>>
@@ -34,7 +35,16 @@ export const UserDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <SingleColumnPage
+      widgets={{
+        before,
+        after,
+      }}
+      data={user}
+      hasOutlet
+      showMetadata
+      showJSON
+    >
       {before.widgets.map((w, i) => (
         <div key={i}>
           <w.Component data={user} />
@@ -46,8 +56,6 @@ export const UserDetail = () => {
           <w.Component data={user} />
         </div>
       ))}
-      <JsonViewSection data={user} />
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }
