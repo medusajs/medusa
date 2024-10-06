@@ -47,7 +47,7 @@ export function formatOrder<T = any>(
         quantity: detail.quantity,
         raw_quantity: detail.raw_quantity,
         unit_price: detail.unit_price ?? orderItem.item.unit_price,
-        raw_unit_price: detail.raw_unit_price,
+        raw_unit_price: detail.raw_unit_price ?? orderItem.item.raw_unit_price,
         detail,
       }
     })
