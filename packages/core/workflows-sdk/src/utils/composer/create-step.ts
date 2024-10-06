@@ -6,7 +6,7 @@ import {
 } from "@medusajs/orchestration"
 import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { StepResponse, resolveValue } from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import { createStepHandler } from "./helpers/create-step-handler"
 import { proxify } from "./helpers/proxy"
 import {
@@ -287,11 +287,11 @@ function wrapConditionalStep(
     const args = await resolveValue(input, stepArguments)
     const canContinue = await condition(args, stepArguments)
 
-    if (stepArguments.step.definition?.async) {
-      stepArguments.step.definition.backgroundExecution = true
-    }
-
     if (!canContinue) {
+      if (stepArguments.step.definition?.async) {
+        stepArguments.step.definition.backgroundExecution = true
+      }
+
       return StepResponse.skip()
     }
 
