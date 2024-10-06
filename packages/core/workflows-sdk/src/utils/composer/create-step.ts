@@ -287,11 +287,11 @@ function wrapConditionalStep(
     const args = await resolveValue(input, stepArguments)
     const canContinue = await condition(args, stepArguments)
 
-    if (!canContinue) {
-      if (stepArguments.step.definition?.async) {
-        stepArguments.step.definition.backgroundExecution = true
-      }
+    if (stepArguments.step.definition?.async) {
+      stepArguments.step.definition.backgroundExecution = true
+    }
 
+    if (!canContinue) {
       return StepResponse.skip()
     }
 
