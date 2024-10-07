@@ -45,7 +45,8 @@ export const deletePaymentSessionsStep = createStep(
     const sessions = await service.listPaymentSessions({ id: ids }, { select })
     const sessionMap = new Map(sessions.map((s) => [s.id, s]))
 
-    const promises = []
+    const promises: Promise<void>[] = []
+
     for (const id of ids) {
       const session = sessionMap.get(id)!
 
