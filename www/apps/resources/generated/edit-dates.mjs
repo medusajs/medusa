@@ -2223,5 +2223,7 @@ export const generatedEditDates = {
   "references/user/IMessageAggregator/methods/user.IMessageAggregator.getMessages/page.mdx": "2024-10-03T00:12:20.668Z",
   "references/user/interfaces/user.IModuleService/page.mdx": "2024-10-03T00:12:20.657Z",
   "references/user/interfaces/user.MessageAggregatorFormat/page.mdx": "2024-10-03T00:12:20.662Z",
-  "app/troubleshooting/dist-imports/page.mdx": "2024-10-03T09:19:37.639Z"
+  "app/troubleshooting/dist-imports/page.mdx": "2024-10-03T09:19:37.639Z",
+  "app/commerce-modules/auth/reset-password/page.mdx": "2024-09-25T09:36:26.592Z",
+  "app/storefront-development/customers/reset-password/page.mdx": "2024-09-25T10:21:46.647Z"
 }

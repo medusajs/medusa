@@ -140,6 +140,10 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/reset-password/page.mdx",
+    "pathname": "/commerce-modules/auth/reset-password"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/concepts/page.mdx",
     "pathname": "/commerce-modules/cart/concepts"
   },
@@ -774,6 +778,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/storefront-development/customers/register/page.mdx",
     "pathname": "/storefront-development/customers/register"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/reset-password/page.mdx",
+    "pathname": "/storefront-development/customers/reset-password"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/customers/retrieve/page.mdx",
