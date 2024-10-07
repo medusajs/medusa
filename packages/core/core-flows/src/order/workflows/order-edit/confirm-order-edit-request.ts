@@ -155,6 +155,9 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
           let quantity: BigNumberInput =
             itemAction.raw_quantity ?? itemAction.quantity
 
+          let unit_price: BigNumberInput =
+            itemAction.raw_unit_price ?? itemAction.unit_price
+
           const updateAction = itemAction.actions!.find(
             (a) => a.action === ChangeActionType.ITEM_UPDATE
           )
@@ -169,6 +172,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             id: ordItem.id,
             variant_id: ordItem.variant_id,
             quantity,
+            unit_price,
           })
           allVariants.push(ordItem.variant)
         })

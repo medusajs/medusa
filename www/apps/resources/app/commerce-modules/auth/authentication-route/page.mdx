@@ -4,11 +4,11 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn about the authentication routes and how to use them to create or log-in users.
+In this document, you'll learn about the authentication routes and how to use them to create and log-in users, and reset their password.
 
 <Note>
 
-These routes are added by Medusa's application layer, not the Auth Module.
+These routes are added by Medusa's HTTP layer, not the Auth Module.
 
 </Note>
 
@@ -117,7 +117,7 @@ Use that token in the header of subsequent requests to send authenticated reques
 
 ---
 
-## Auth Route
+## Login Route
 
 The Medusa application defines an API route at `/auth/{actor_type}/{provider}` that authenticates a user of an actor type. It returns a JWT token that can be passed in [the header of subsequent requests](!api!/store#authentication) to send authenticated requests.
 
@@ -239,3 +239,105 @@ If the token was refreshed successfully, you'll receive a `token` field in the r
 ```
 
 Use that token in the header of subsequent requests to send authenticated requests.
+
+---
+
+## Reset Password Routes
+
+To reset a user's password:
+
+1. Generate a token using the [Generate Reset Password Token API route](#generate-reset-password-token-route).
+    - The API route emits the `auth.password_reset` event, passing the token in the payload.
+    - You can create a subscriber, as seen in [this guide](../reset-password/page.mdx), that listens to the event and send a notification to the user.
+2. Pass the token to the [Reset Password API route](#reset-password-route) to reset the password.
+    - The URL in the user's notification should direct them to a frontend URL, which sends a request to this route.
+
+<Note title="Example">
+
+[Storefront Development: How to Reset a Customer's Password.](../../../storefront-development/customers/reset-password/page.mdx)
+
+</Note>
+
+### Generate Reset Password Token Route
+
+The Medusa application defines an API route at `/auth/{actor_type}/{auth_provider}/reset-password` that emits the `auth.password_reset` event, passing the token in the payload.
+
+```bash
+curl -X POST http://localhost:9000/auth/{actor_type}/{providers}/reset-password
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "identifier": "Whitney_Schultz@gmail.com"
+}'
+```
+
+<Note>
+
+This API route is useful for providers like `emailpass` that store a user's password and use it for authentication.
+
+</Note>
+
+#### Path Parameters
+
+Its path parameters are:
+
+- `{actor_type}`: the actor type of the user you're authenticating. For example, `customer`.
+- `{provider}`: the auth provider to handle the authentication. For example, `emailpass`.
+
+#### Request Body Parameters
+
+This route accepts in the request body an object having the following property:
+
+- `identifier`: The user's identifier in the specified auth provider. For example, for the `emailpass` auth provider, you pass the user's email.
+
+#### Response Fields
+
+If the authentication is successful, the request returns a `201` response code.
+
+### Reset Password Route
+
+The Medusa application defines an API route at `/auth/{actor_type}/{auth_provider}/update` that accepts a token and, if valid, updates the user's password.
+
+```bash
+curl -X POST http://localhost:9000/auth/{actor_type}/{providers}/update?token=123
+-H 'Content-Type: application/json' \
+--data-raw '{
+  "email": "Whitney_Schultz@gmail.com",
+  "password": "supersecret"
+}'
+```
+
+<Note>
+
+This API route is useful for providers like `emailpass` that store a user's password and use it for logging them in.
+
+</Note>
+
+#### Path Parameters
+
+Its path parameters are:
+
+- `{actor_type}`: the actor type of the user you're authenticating. For example, `customer`.
+- `{provider}`: the auth provider to handle the authentication. For example, `emailpass`.
+
+#### Query Parameters
+
+The route accepts a `token` query parameter, which is the token generated using the [Generate Reset Password Token route](#generate-reset-password-token-route).
+
+### Request Body Parameters
+
+This route accepts in the request body an object that has the data necessary for the provider to update the user's password.
+
+For the `emailpass` provider, you must pass the following properties:
+
+- `email`: The user's email.
+- `password`: The new password.
+
+### Response Fields
+
+If the authentication is successful, the request returns an object with a `success` property set to `true`:
+
+```json
+{
+  "success": "true"
+}
+```
