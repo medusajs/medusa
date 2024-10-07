@@ -21,7 +21,7 @@ function getExtensionDirectoryPath() {
    * When using ts-node we will read resources from "src" directory
    * otherwise from "dist" directory.
    */
-  return process[Symbol.for("ts-node.register.instance")] ? "src" : "dist"
+  return "src"
 }
 
 /**

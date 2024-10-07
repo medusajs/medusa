@@ -16,9 +16,15 @@ export function normalizeImportPathWithSource(
    * happen under the hood.
    */
   if (normalizePath?.startsWith("./")) {
-    const sourceDir = process[Symbol.for("ts-node.register.instance")]
-      ? "src"
-      : "dist"
+    /**
+     * If someone is using the correct path pointing to the "src" directory
+     * then we are all good. Otherwise we will point to the "src" directory.
+     *
+     * In case of the production output. The app should be executed from within
+     * the "./build" directory and the "./build" directory will have the
+     * "./src" directory inside it.
+     */
+    let sourceDir = normalizePath.startsWith("./src") ? "./" : "./src"
     normalizePath = join(process.cwd(), sourceDir, normalizePath)
   }
 
