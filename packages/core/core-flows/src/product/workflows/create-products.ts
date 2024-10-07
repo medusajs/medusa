@@ -36,7 +36,7 @@ const validateProductInputStep = createStep(
     const { products } = data
 
     for (const product of products) {
-      if (!isPresent(product.options) || !Object.keys(product.options).length) {
+      if (!product.options?.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Product options are not provided for ${product.title}`
