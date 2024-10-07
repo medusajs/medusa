@@ -1,5 +1,5 @@
 import { WorkflowStepHandlerArguments } from "@medusajs/orchestration"
-import { deepCopy, OrchestrationUtils } from "@medusajs/utils"
+import { OrchestrationUtils } from "@medusajs/utils"
 import { ApplyStepOptions } from "../create-step"
 import {
   CreateWorkflowComposerContext,
@@ -94,9 +94,8 @@ export function createStepHandler<
           const stepOutput = (stepArguments.invoke[stepName] as any)?.output
           const invokeResult =
             stepOutput?.__type === OrchestrationUtils.SymbolWorkflowStepResponse
-              ? stepOutput.compensateInput &&
-                deepCopy(stepOutput.compensateInput)
-              : stepOutput && deepCopy(stepOutput)
+              ? stepOutput.compensateInput
+              : stepOutput
 
           const args = [invokeResult, executionContext]
           const output = await compensateFn.apply(this, args)
