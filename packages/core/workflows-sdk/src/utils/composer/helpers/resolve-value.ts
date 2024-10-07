@@ -31,7 +31,7 @@ async function resolveProperty(property, transactionContext) {
     res = property
   }
 
-  return deepCopy(res)
+  return res
 }
 
 /**
@@ -57,9 +57,8 @@ export async function resolveValue(input, transactionContext) {
     }
 
     for (const key of Object.keys(inputTOUnwrap)) {
-      parentRef[key] = await resolveProperty(
-        inputTOUnwrap[key],
-        transactionContext
+      parentRef[key] = deepCopy(
+        await resolveProperty(inputTOUnwrap[key], transactionContext)
       )
 
       if (typeof parentRef[key] === "object") {
