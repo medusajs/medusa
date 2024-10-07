@@ -51,6 +51,7 @@ export type AdminPostOrderEditsAddItemsReqSchemaType = z.infer<
 
 export const AdminPostOrderEditsItemsActionReqSchema = z.object({
   quantity: z.number().optional(),
+  unit_price: z.number().optional(),
   internal_note: z.string().nullish().optional(),
 })
 
@@ -60,6 +61,7 @@ export type AdminPostOrderEditsItemsActionReqSchemaType = z.infer<
 
 export const AdminPostOrderEditsUpdateItemQuantityReqSchema = z.object({
   quantity: z.number(),
+  unit_price: z.number().optional(),
   internal_note: z.string().nullish().optional(),
 })
 

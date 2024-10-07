@@ -4,8 +4,8 @@
  * summary: Retrieve Registration JWT Token
  * description: This API route retrieves a registration JWT token of a customer that hasn't been registered yet. The token is used in the header of requests that create a customer.
  * externalDocs:
- *   url: https://docs.medusajs.com/v2/resources/commerce-modules/auth/authentication-route#1-basic-authentication-flow
- *   description: Learn about the basic authentication flow.
+ *   url: https://docs.medusajs.com/v2/storefront-development/customers/register
+ *   description: "Storefront development: How to register a customer"
  * x-authenticated: false
  * parameters:
  *   - name: auth_provider
@@ -22,6 +22,9 @@
  *         type: object
  *         title: input
  *         description: The input data necessary for authentication. For example, for email-pass authentication, pass `email` and `password` properties.
+ *         example:
+ *           email: "customer@gmail.com"
+ *           password: "supersecret"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

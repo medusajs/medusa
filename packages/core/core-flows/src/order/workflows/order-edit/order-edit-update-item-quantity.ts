@@ -84,6 +84,7 @@ export const orderEditUpdateItemQuantityWorkflow = createWorkflow(
           details: {
             reference_id: item.id,
             quantity: item.quantity,
+            unit_price: item.unit_price,
           },
         }))
       }
