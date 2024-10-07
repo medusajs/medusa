@@ -1,12 +1,12 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
+  createMedusaContainer,
+  isDefined,
+  isString,
   MedusaContext,
   MedusaContextType,
   MedusaError,
   MedusaModuleType,
-  createMedusaContainer,
-  isDefined,
-  isString,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import {
@@ -107,9 +107,17 @@ export class LocalWorkflow {
         return resolved
       }
 
+      const wrappableMethods = Object.getOwnPropertyNames(resolved).filter(
+        (key) => key !== "constructor"
+      )
+
       return new Proxy(resolved, {
         get: function (target, prop) {
-          if (typeof target[prop] !== "function") {
+          const shouldWrap =
+            wrappableMethods.includes(prop as string) &&
+            typeof target[prop] === "function"
+
+          if (!shouldWrap) {
             return target[prop]
           }
 
