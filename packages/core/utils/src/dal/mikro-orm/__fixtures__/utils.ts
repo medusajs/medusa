@@ -402,7 +402,7 @@ class SearchableEntity1 {
   deleted_at: Date | null
 
   @Searchable()
-  @Property()
+  @Property({ columnType: "text" })
   searchableField: string
 
   @Searchable()
@@ -430,7 +430,7 @@ class SearchableEntity2 {
   deleted_at: Date | null
 
   @Searchable()
-  @Property()
+  @Property({ columnType: "text" })
   searchableField: string
 
   @ManyToOne(() => SearchableEntity1, { mapToPk: true })
@@ -450,12 +450,12 @@ export {
   Entity2,
   Entity2WithUnDecoratedProp,
   InternalCircularDependencyEntity1,
-  RecursiveEntity1,
-  RecursiveEntity2,
-  SearchableEntity1,
-  SearchableEntity2,
   Product,
   ProductOption,
   ProductOptionValue,
   ProductVariant,
+  RecursiveEntity1,
+  RecursiveEntity2,
+  SearchableEntity1,
+  SearchableEntity2,
 }
