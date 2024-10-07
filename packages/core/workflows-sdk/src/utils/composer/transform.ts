@@ -182,10 +182,7 @@ export function transform(
       }
     }
 
-    const allValues = await resolveValue(values, transactionContext)
-    const stepValue = allValues
-      ? JSON.parse(JSON.stringify(allValues))
-      : allValues
+    const stepValue = await resolveValue(values, transactionContext)
 
     let finalResult
     for (let i = 0; i < functions.length; i++) {

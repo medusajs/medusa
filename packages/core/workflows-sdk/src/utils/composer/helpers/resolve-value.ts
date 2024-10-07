@@ -3,31 +3,35 @@ import { deepCopy, OrchestrationUtils, promiseAll } from "@medusajs/utils"
 async function resolveProperty(property, transactionContext) {
   const { invoke: invokeRes } = transactionContext
 
+  let res
+
   if (property?.__type === OrchestrationUtils.SymbolInputReference) {
-    return transactionContext.payload
+    res = transactionContext.payload
   } else if (
     property?.__type === OrchestrationUtils.SymbolMedusaWorkflowResponse
   ) {
-    return await resolveValue(property.$result, transactionContext)
+    res = await resolveValue(property.$result, transactionContext)
   } else if (
     property?.__type === OrchestrationUtils.SymbolWorkflowStepTransformer
   ) {
-    return await property.__resolver(transactionContext)
+    res = await property.__resolver(transactionContext)
   } else if (property?.__type === OrchestrationUtils.SymbolWorkflowStep) {
     const output =
       invokeRes[property.__step__]?.output ?? invokeRes[property.__step__]
     if (output?.__type === OrchestrationUtils.SymbolWorkflowStepResponse) {
-      return output.output
+      res = output.output
+    } else {
+      res = output
     }
-
-    return output
   } else if (
     property?.__type === OrchestrationUtils.SymbolWorkflowStepResponse
   ) {
-    return property.output
+    res = property.output
   } else {
-    return property
+    res = property
   }
+
+  return deepCopy(res)
 }
 
 /**
@@ -68,8 +72,8 @@ export async function resolveValue(input, transactionContext) {
 
   const copiedInput =
     input?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
-      ? deepCopy(input.output)
-      : deepCopy(input)
+      ? input.output
+      : input
 
   const result = copiedInput?.__type
     ? await resolveProperty(copiedInput, transactionContext)
