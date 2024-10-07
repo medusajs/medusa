@@ -6,7 +6,7 @@ import {
 } from "@medusajs/orchestration"
 import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { StepResponse, resolveValue } from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import { createStepHandler } from "./helpers/create-step-handler"
 import { proxify } from "./helpers/proxy"
 import {

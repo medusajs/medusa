@@ -159,6 +159,10 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             return
           }
 
+          const unitPrice: BigNumberInput =
+            itemAction.raw_unit_price ?? itemAction.unit_price
+
+
           const updateAction = itemAction.actions!.find(
             (a) => a.action === ChangeActionType.ITEM_UPDATE
           )
@@ -183,6 +187,7 @@ export const confirmOrderEditRequestWorkflow = createWorkflow(
             id: ordItem.id,
             variant_id: ordItem.variant_id,
             quantity: reservationQuantity,
+            unit_price: unitPrice
           })
           allVariants.push(ordItem.variant)
         })

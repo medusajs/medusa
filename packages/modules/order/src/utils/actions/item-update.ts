@@ -13,6 +13,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
       (item) => item.id === action.details.reference_id
     )
 
+    const unitPrice = action.details.unit_price
     const existing = currentOrder.items[existingIndex]
 
     existing.detail.quantity ??= 0
@@ -25,6 +26,13 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
     const quant = new BigNumber(action.details.quantity)
     existing.quantity = quant
     existing.detail.quantity = quant
+
+    if (unitPrice) {
+      const unitPriceBN = new BigNumber(unitPrice)
+
+      existing.unit_price = unitPriceBN
+      existing.detail.unit_price = unitPriceBN
+    }
 
     setActionReference(existing, action, options)
 
