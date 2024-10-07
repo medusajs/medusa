@@ -3,8 +3,12 @@ import {
   Logger,
   PaymentSessionDTO,
 } from "@medusajs/framework/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  promiseAll,
+} from "@medusajs/framework/utils"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 export interface DeletePaymentSessionStepInput {
   ids: string[]
@@ -29,31 +33,40 @@ export const deletePaymentSessionsStep = createStep(
       return new StepResponse([], null)
     }
 
-    for (const id of ids) {
-      const select = [
-        "provider_id",
-        "currency_code",
-        "amount",
-        "data",
-        "context",
-        "payment_collection.id",
-      ]
+    const select = [
+      "provider_id",
+      "currency_code",
+      "amount",
+      "data",
+      "context",
+      "payment_collection.id",
+    ]
 
-      const [session] = await service.listPaymentSessions({ id }, { select })
+    const sessions = await service.listPaymentSessions({ id: ids }, { select })
+    const sessionMap = new Map(sessions.map((s) => [s.id, s]))
+
+    const promises = []
+    for (const id of ids) {
+      const session = sessionMap.get(id)!
 
       // As this requires an external method call, we will try to delete as many successful calls
       // as possible and pass them over to the compensation step to be recreated if any of the
       // payment sessions fails to delete.
-      try {
-        await service.deletePaymentSession(id)
+      const promise = service
+        .deletePaymentSession(id)
+        .then((res) => {
+          deleted.push(session)
+        })
+        .catch((e) => {
+          logger.error(
+            `Encountered an error when trying to delete payment session - ${id} - ${e}`
+          )
+        })
 
-        deleted.push(session)
-      } catch (e) {
-        logger.error(
-          `Encountered an error when trying to delete payment session - ${id} - ${e}`
-        )
-      }
+      promises.push(promise)
     }
+
+    await promiseAll(promises)
 
     return new StepResponse(
       deleted.map((d) => d.id),

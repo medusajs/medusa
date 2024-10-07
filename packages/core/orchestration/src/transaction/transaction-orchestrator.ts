@@ -1148,7 +1148,9 @@ export class TransactionOrchestrator extends EventEmitter {
           queue.push({ obj: obj[key], level: [...level] })
         } else if (key === "action") {
           if (actionNames.has(obj.action)) {
-            throw new Error(`Step ${obj.action} is already defined in workflow.`)
+            throw new Error(
+              `Step ${obj.action} is already defined in workflow.`
+            )
           }
 
           actionNames.add(obj.action)
