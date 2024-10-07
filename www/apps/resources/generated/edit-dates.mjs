@@ -2223,5 +2223,14 @@ export const generatedEditDates = {
   "references/user/IMessageAggregator/methods/user.IMessageAggregator.getMessages/page.mdx": "2024-10-03T00:12:20.668Z",
   "references/user/interfaces/user.IModuleService/page.mdx": "2024-10-03T00:12:20.657Z",
   "references/user/interfaces/user.MessageAggregatorFormat/page.mdx": "2024-10-03T00:12:20.662Z",
-  "app/troubleshooting/dist-imports/page.mdx": "2024-10-03T09:19:37.639Z"
+  "app/troubleshooting/dist-imports/page.mdx": "2024-10-03T09:19:37.639Z",
+  "app/admin-components/components/action-menu/page.mdx": "2024-10-07T11:16:26.178Z",
+  "app/admin-components/components/container/page.mdx": "2024-10-07T11:15:58.824Z",
+  "app/admin-components/components/header/page.mdx": "2024-10-07T11:16:47.407Z",
+  "app/admin-components/components/json-view-section/page.mdx": "2024-10-07T11:15:58.833Z",
+  "app/admin-components/components/section-row/page.mdx": "2024-10-07T11:15:58.832Z",
+  "app/admin-components/components/table/page.mdx": "2024-10-07T11:15:58.833Z",
+  "app/admin-components/page.mdx": "2024-10-07T11:09:49.493Z",
+  "app/admin-components/layouts/single-column/page.mdx": "2024-10-07T11:16:06.435Z",
+  "app/admin-components/layouts/two-column/page.mdx": "2024-10-07T11:16:10.092Z"
 }

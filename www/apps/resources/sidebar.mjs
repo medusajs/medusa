@@ -1598,47 +1598,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    type: "separator",
-  },
-  {
-    type: "category",
-    title: "SDKs and Tools",
-    children: [
-      {
-        type: "link",
-        path: "/create-medusa-app",
-        title: "create-medusa-app",
-      },
-      {
-        type: "link",
-        path: "/medusa-cli",
-        title: "Medusa CLI",
-        isChildSidebar: true,
-        childSidebarTitle: "Medusa CLI Reference",
-        children: [
-          {
-            type: "link",
-            path: "/medusa-cli",
-            title: "Overview",
-          },
-          {
-            type: "separator",
-          },
-          {
-            type: "category",
-            title: "Commands",
-            autogenerate_path: "medusa-cli/commands",
-          },
-        ],
-      },
-      {
-        type: "link",
-        path: "/nextjs-starter",
-        title: "Next.js Starter",
-      },
-    ],
-  },
-  {
     type: "link",
     path: "/architectural-modules",
     title: "Architectural Modules",
@@ -1797,6 +1756,47 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Redis",
           },
         ],
+      },
+    ],
+  },
+  {
+    type: "separator",
+  },
+  {
+    type: "category",
+    title: "SDKs and Tools",
+    children: [
+      {
+        type: "link",
+        path: "/create-medusa-app",
+        title: "create-medusa-app",
+      },
+      {
+        type: "link",
+        path: "/medusa-cli",
+        title: "Medusa CLI",
+        isChildSidebar: true,
+        childSidebarTitle: "Medusa CLI Reference",
+        children: [
+          {
+            type: "link",
+            path: "/medusa-cli",
+            title: "Overview",
+          },
+          {
+            type: "separator",
+          },
+          {
+            type: "category",
+            title: "Commands",
+            autogenerate_path: "medusa-cli/commands",
+          },
+        ],
+      },
+      {
+        type: "link",
+        path: "/nextjs-starter",
+        title: "Next.js Starter",
       },
     ],
   },
@@ -2064,17 +2064,17 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
-    type: "link",
-    path: "/references/medusa-config",
-    title: "Medusa Configurations",
-  },
-  {
     type: "separator",
   },
   {
     type: "category",
     title: "General",
     children: [
+      {
+        type: "link",
+        path: "/references/medusa-config",
+        title: "Medusa Configurations",
+      },
       {
         type: "link",
         path: "/upgrade-guides",
@@ -2147,8 +2147,8 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               {
                 type: "link",
                 path: "/troubleshooting/dist-imports",
-                title: "Importing from /dist"
-              }
+                title: "Importing from /dist",
+              },
             ],
           },
           {
@@ -2206,6 +2206,38 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
+    type: "separator",
+  },
+  {
+    type: "category",
+    title: "Admin",
+    children: [
+      {
+        type: "link",
+        path: "/admin-widget-injection-zones",
+        title: "Admin Widget Injection Zones",
+      },
+      {
+        type: "link",
+        path: "/admin-components",
+        title: "Admin Components",
+        isChildSidebar: true,
+        children: [
+          {
+            type: "category",
+            title: "Layouts",
+            autogenerate_path: "/admin-components/layouts",
+          },
+          {
+            type: "category",
+            title: "Components",
+            autogenerate_path: "/admin-components/components",
+          },
+        ],
+      },
+    ],
+  },
+  {
     type: "category",
     title: "Lists",
     children: [
@@ -2218,11 +2250,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         type: "link",
         path: "/events-reference",
         title: "Events List",
-      },
-      {
-        type: "link",
-        path: "/admin-widget-injection-zones",
-        title: "Admin Widget Injection Zones",
       },
     ],
   },
