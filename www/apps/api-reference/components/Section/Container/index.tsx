@@ -14,9 +14,12 @@ const SectionContainer = forwardRef<HTMLDivElement, SectionContainerProps>(
     ref
   ) {
     return (
-      <div className={clsx("relative pb-7", !noTopPadding && "pt-7")} ref={ref}>
+      <div
+        className={clsx("relative pb-4 md:pb-7", !noTopPadding && "pt-7")}
+        ref={ref}
+      >
         {children}
-        {!noDivider && <SectionDivider className="-left-1.5 lg:!-left-4" />}
+        {!noDivider && <SectionDivider className="-left-1.5 lg:!-left-full" />}
       </div>
     )
   }

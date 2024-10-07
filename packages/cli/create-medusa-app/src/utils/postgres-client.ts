@@ -1,4 +1,5 @@
 import pg from "pg"
+
 const { Client } = pg
 
 export const DEFAULT_HOST = "localhost"

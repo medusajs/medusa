@@ -4,7 +4,7 @@ import { HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { AdminPostOrderEditsAddItemsReqSchemaType } from "../../validators"
 
 export const POST = async (

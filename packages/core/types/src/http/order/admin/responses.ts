@@ -22,5 +22,5 @@ export interface AdminDraftOrderResponse {
 }
 
 export type AdminDraftOrderListResponse = PaginatedResponse<{
-  draft_orders: AdminOrder
+  draft_orders: AdminOrder[]
 }>

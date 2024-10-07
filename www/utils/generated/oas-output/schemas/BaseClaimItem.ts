@@ -43,6 +43,17 @@
  *   raw_quantity:
  *     type: object
  *     description: The quantity claimed.
+ *     properties:
+ *       value:
+ *         oneOf:
+ *           - type: string
+ *             title: value
+ *             description: The raw quantity's value.
+ *           - type: number
+ *             title: value
+ *             description: The raw quantity's value.
+ *     required:
+ *       - value
  *   metadata:
  *     type: object
  *     description: The item's metadata, can hold custom key-value pairs.

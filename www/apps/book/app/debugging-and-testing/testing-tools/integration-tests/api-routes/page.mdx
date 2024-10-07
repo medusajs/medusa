@@ -22,7 +22,7 @@ In this chapter, you'll learn how to write integration tests for API routes usin
 Consider the following API route created at `src/api/custom/route.ts`:
 
 ```ts title="src/api/custom/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 
 export async function GET(
   req: MedusaRequest,
@@ -93,7 +93,7 @@ This runs your Medusa application and runs the tests available under the `src/in
 Suppose you have a `hello` module whose main service extends the service factory, and that has the following model:
 
 ```ts title="src/modules/hello/models/my-custom.ts"
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
@@ -223,7 +223,7 @@ The `afterAll` hook resolves the `HelloModuleService` and use its `deleteMyCusto
 Consider a `/custom/:id` API route created at `src/api/custom/[id]/route.ts`:
 
 ```ts title="src/api/custom/[id]/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import HelloModuleService from "../../../modules/hello/service"
 
 export async function DELETE(

@@ -1,7 +1,7 @@
 import inquirer from "inquirer"
 import { exec } from "child_process"
 import execute from "./execute.js"
-import { FactBoxOptions, displayFactBox } from "./facts.js"
+import { displayFactBox, FactBoxOptions } from "./facts.js"
 import fs from "fs"
 import path from "path"
 import { customAlphabet } from "nanoid"
@@ -37,7 +37,7 @@ export async function installNextjsStarter({
   abortController,
   factBoxOptions,
   verbose = false,
-  processManager
+  processManager,
 }: InstallOptions): Promise<string> {
   factBoxOptions.interval = displayFactBox({
     ...factBoxOptions,
@@ -72,7 +72,7 @@ export async function installNextjsStarter({
     )
     const execOptions = {
       signal: abortController?.signal,
-      cwd: nextjsDirectory
+      cwd: nextjsDirectory,
     }
     await processManager.runProcess({
       process: async () => {

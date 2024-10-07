@@ -20,10 +20,10 @@ const fulfillmentProviderOptions: FormattingOptionsType = {
 Start by creating a new directory for your module. For example, \`src/modules/my-fulfillment\`.`,
       `## 2. Create the Fulfillment Provider Service
 
-Create the file \`src/modules/my-fulfillment/service.ts\` that holds the module's main service. It must extend the \`AbstractFulfillmentProviderService\` class imported from \`@medusajs/utils\`:
+Create the file \`src/modules/my-fulfillment/service.ts\` that holds the module's main service. It must extend the \`AbstractFulfillmentProviderService\` class imported from \`@medusajs/framework/utils\`:
 
 \`\`\`ts title="src/modules/my-fulfillment/service.ts"
-import { AbstractFulfillmentProviderService } from "@medusajs/utils"
+import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
 
 class MyFulfillmentProviderService extends AbstractFulfillmentProviderService {
   // TODO implement methods
@@ -51,7 +51,7 @@ This exports the module's definition, indicating that the \`MyFulfillmentProvide
 To use your Fulfillment Module Provider, add it to the \`providers\` array of the Fulfillment Module:
 
 \`\`\`js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -59,7 +59,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.FULFILLMENT]: {
-      resolve: "@medusajs/fulfillment",
+      resolve: "@medusajs/framework/fulfillment",
       options: {
         providers: [
           {
@@ -75,6 +75,15 @@ module.exports = defineConfig({
   }
 })
 \`\`\`
+`,
+      `## 5. Test it Out
+
+Before you use your fulfillment provider, in the Medusa Admin:
+
+1. Add the fulfillment provider to a location.
+2. Add in the location a delivery shipping option that uses the provider.
+
+Then, place an order, choosing the shipping option you created during checkout, and create a fulfillment in the Medusa Admin. The fulfillment is created using your provider.
 `,
     ],
   },

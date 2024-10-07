@@ -6,7 +6,7 @@
  * required:
  *   - location
  * properties:
- *   token:
+ *   location:
  *     type: string
  *     title: location
  *     description: The location to redirect the user to for further authentication with the third-party provider.

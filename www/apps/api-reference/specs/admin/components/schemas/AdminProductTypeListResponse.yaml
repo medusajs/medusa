@@ -1,5 +1,5 @@
 type: object
-description: SUMMARY
+description: The paginated list of product types.
 x-schemaName: AdminProductTypeListResponse
 required:
   - limit
@@ -10,17 +10,17 @@ properties:
   limit:
     type: number
     title: limit
-    description: The product type's limit.
+    description: The maximum number of items returned.
   offset:
     type: number
     title: offset
-    description: The product type's offset.
+    description: The number of items skipped before retrieving the returned items.
   count:
     type: number
     title: count
-    description: The product type's count.
+    description: The total number of items.
   product_types:
     type: array
-    description: The product type's product types.
+    description: The list of product types.
     items:
       $ref: ./AdminProductType.yaml

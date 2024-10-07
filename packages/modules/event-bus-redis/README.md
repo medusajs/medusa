@@ -55,7 +55,7 @@ module.exports = {
     {
       resolve: "@medusajs/event-bus-redis",
       options: {
-        redisUrl: "redis:.."
+        redisUrl: "redis:..",
       },
     },
   ],
@@ -67,13 +67,13 @@ module.exports = {
 
 The module can be configured with the following options:
 
-| Option    | Type       | Description                                                                                                                                             | Default     |
-| --------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `redisUrl`  | `string`  | URL of the Redis instance to connect to.                                                                                              | `events-worker` |
-| `queueName`   | `string?` | Name of the BullMQ queue.                                                                                                            | `events-queue`      |
-| `queueOptions`    | `object?`  | Options for the BullMQ queue. See BullMQ's [documentation](https://api.docs.bullmq.io/interfaces/QueueOptions.html). | `{}`     |
-| `redisOptions` | `object?`  | Options for the Redis instance. See `io-redis`'s [documentation](https://luin.github.io/ioredis/index.html#RedisOptions)                                                | `{}` |
+| Option         | Type      | Description                                                                                                              | Default         |
+| -------------- | --------- | ------------------------------------------------------------------------------------------------------------------------ | --------------- |
+| `redisUrl`     | `string`  | URL of the Redis instance to connect to.                                                                                 | `events-worker` |
+| `queueName`    | `string?` | Name of the BullMQ queue.                                                                                                | `events-queue`  |
+| `queueOptions` | `object?` | Options for the BullMQ queue. See BullMQ's [documentation](https://api.docs.bullmq.io/interfaces/QueueOptions.html).     | `{}`            |
+| `redisOptions` | `object?` | Options for the Redis instance. See `io-redis`'s [documentation](https://luin.github.io/ioredis/index.html#RedisOptions) | `{}`            |
 
 **Info**: See how the options are applied in the [RedisEventBusService](https://github.com/medusajs/medusa/blob/0c1d1d590463fa30b083c4312293348bdf6596be/packages/event-bus-redis/src/services/event-bus-redis.ts#L52) and [loader](https://github.com/medusajs/medusa/blob/0c1d1d590463fa30b083c4312293348bdf6596be/packages/event-bus-redis/src/loaders/index.ts).
 
-If you do not provide a `redisUrl` in the module options, the server will fail to start. 
+If you do not provide a `redisUrl` in the module options, the server will fail to start.

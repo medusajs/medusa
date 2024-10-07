@@ -7,7 +7,7 @@ import { TypeList } from "docs-ui"
 
 # parallelize - Workflows API Reference
 
-This documentation provides a reference to the `parallelize` . It belongs to the `@medusajs/workflows-sdk` package.
+This documentation provides a reference to the `parallelize` . It belongs to the `@medusajs/framework/workflows-sdk` package.
 
 This function is used to run multiple steps in parallel. The result of each step will be returned as part of the result array.
 
@@ -16,8 +16,9 @@ This function is used to run multiple steps in parallel. The result of each step
 ```ts
 import {
   createWorkflow,
-  parallelize
-} from "@medusajs/workflows-sdk"
+  parallelize,
+  WorkflowResponse
+} from "@medusajs/framework/workflows-sdk"
 import {
   createProductStep,
   getProductStep,
@@ -29,10 +30,9 @@ interface WorkflowInput {
   title: string
 }
 
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  Product
->("my-workflow", (input) => {
+const myWorkflow = createWorkflow(
+  "my-workflow", 
+  (input: WorkflowInput) => {
    const product = createProductStep(input)
 
    const [prices, productSalesChannel] = parallelize(
@@ -41,7 +41,7 @@ const myWorkflow = createWorkflow<
    )
 
    const id = product.id
-   return getProductStep(product.id)
+   return new WorkflowResponse(getProductStep(product.id))
  }
 )
 ```

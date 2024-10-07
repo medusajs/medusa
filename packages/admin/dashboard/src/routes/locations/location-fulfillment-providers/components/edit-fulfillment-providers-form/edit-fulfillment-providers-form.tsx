@@ -69,7 +69,7 @@ export const LocationEditFulfillmentProvidersForm = ({
 
   const { fulfillment_providers, count, isLoading, isError, error } =
     useFulfillmentProviders(
-      { ...searchParams },
+      { ...searchParams, is_enabled: true },
       { placeholderData: keepPreviousData }
     )
 

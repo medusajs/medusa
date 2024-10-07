@@ -1,6 +1,6 @@
 "use client"
 
-import { useScrollController, useSidebar } from "docs-ui"
+import { useScrollController, useSidebar, H2 as UiH2 } from "docs-ui"
 import { useEffect, useMemo, useRef, useState } from "react"
 import getSectionId from "../../../utils/get-section-id"
 
@@ -39,9 +39,9 @@ const H2 = ({ children, ...props }: H2Props) => {
   }, [id])
 
   return (
-    <h2 {...props} id={id} ref={headingRef}>
+    <UiH2 {...props} id={id} passRef={headingRef}>
       {children}
-    </h2>
+    </UiH2>
   )
 }
 

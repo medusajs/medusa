@@ -1,9 +1,9 @@
 import {
   LoaderOptions,
-  ModulesSdkTypes,
   ModuleProvider,
+  ModulesSdkTypes,
 } from "@medusajs/framework/types"
-import { Lifetime, asFunction, asValue } from "awilix"
+import { asFunction, asValue, Lifetime } from "awilix"
 import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
 import {
   AuthIdentifiersRegistrationName,

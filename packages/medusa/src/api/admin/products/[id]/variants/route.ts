@@ -3,12 +3,9 @@ import { AdditionalData, HttpTypes } from "@medusajs/framework/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
-} from "../../../../../types/routing"
+} from "@medusajs/framework/http"
 import { wrapVariantsWithInventoryQuantity } from "../../../../utils/middlewares"
-import {
-  refetchEntities,
-  refetchEntity,
-} from "../../../../utils/refetch-entity"
+import { refetchEntities, refetchEntity } from "@medusajs/framework/http"
 import {
   remapKeysForProduct,
   remapKeysForVariant,

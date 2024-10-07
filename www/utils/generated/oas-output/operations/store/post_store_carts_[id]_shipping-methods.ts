@@ -33,6 +33,8 @@
  *       title: fields
  *       description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
  *         fields. without prefix it will replace the entire default fields.
+ *       externalDocs:
+ *         url: "#select-fields-and-relations"
  * requestBody:
  *   content:
  *     application/json:
@@ -51,7 +53,7 @@
  *             description: Any additional data relevant for the third-party fulfillment provider to process the shipment.
  *             externalDocs:
  *               url: https://docs.medusajs.com/v2/resources/storefront-development/checkout/shipping#data-request-body-parameter
- *               description: Learn more about the `data` parameter.
+ *               description: Learn more about the data parameter.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

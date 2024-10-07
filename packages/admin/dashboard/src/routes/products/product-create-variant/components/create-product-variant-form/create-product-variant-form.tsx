@@ -74,10 +74,13 @@ export const CreateProductVariantForm = ({
       return {}
     }
 
-    return regions.reduce((acc, reg) => {
-      acc[reg.id] = reg.currency_code
-      return acc
-    }, {} as Record<string, string>)
+    return regions.reduce(
+      (acc, reg) => {
+        acc[reg.id] = reg.currency_code
+        return acc
+      },
+      {} as Record<string, string>
+    )
   }, [regions])
 
   const isManageInventoryEnabled = useWatch({
@@ -210,12 +213,12 @@ export const CreateProductVariantForm = ({
         options: data.options,
         prices: Object.entries(data.prices ?? {})
           .map(([currencyOrRegion, value]) => {
-            const ret: AdminCreateProductVariantPrice = {}
-            const amount = castNumber(value)
-
-            if (isNaN(amount) || value === "") {
+            if (value === "" || value === undefined) {
               return undefined
             }
+
+            const ret: AdminCreateProductVariantPrice = {}
+            const amount = castNumber(value)
 
             if (currencyOrRegion.startsWith("reg_")) {
               ret.rules = { region_id: currencyOrRegion }

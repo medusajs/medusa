@@ -136,7 +136,11 @@ export interface BaseProductVariantParams
     BaseFilterable<BaseProductVariantParams> {
   q?: string
   id?: string | string[]
-  sku?: string | string[]
-  product_id?: string | string[]
-  options?: Record<string, string>
+  options?: {
+    value: string
+    option_id: string
+  }
+  created_at?: OperatorMap<string>
+  updated_at?: OperatorMap<string>
+  deleted_at?: OperatorMap<string>
 }

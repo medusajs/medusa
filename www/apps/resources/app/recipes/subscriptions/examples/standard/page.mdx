@@ -71,7 +71,7 @@ export const subscriptionHighlights = [
 ]
 
 ```ts title="src/modules/subscription/models/subscription.ts" highlights={subscriptionHighlights}
-import { model } from "@medusajs/utils"
+import { model } from "@medusajs/framework/utils"
 import { SubscriptionInterval, SubscriptionStatus } from "../types"
 
 const Subscription = model.define("subscription", {
@@ -121,7 +121,7 @@ export enum SubscriptionInterval {
 Create the module’s main service in the file `src/modules/subscription/service.ts` with the following content:
 
 ```ts title="src/modules/subscription/service.ts"
-import { MedusaService } from "@medusajs/utils"
+import { MedusaService } from "@medusajs/framework/utils"
 import Subscription from "./models/subscription"
 
 class SubscriptionModuleService extends MedusaService({
@@ -139,7 +139,7 @@ The main service extends the service factory to provide data-management features
 Create the file `src/modules/subscription/index.ts` that holds the module’s definition:
 
 ```ts title="src/modules/subscription/index.ts"
-import { Module } from "@medusajs/utils"
+import { Module } from "@medusajs/framework/utils"
 import SubscriptionModuleService from "./service"
 
 export const SUBSCRIPTION_MODULE = "subscriptionModuleService"
@@ -168,8 +168,8 @@ module.exports = defineConfig({
 
 ### Further Read
 
-- [How to Create a Module](!docs!/basics/modules-and-services)
-- [How to Create a Data Model](!docs!/basics/data-models)
+- [How to Create a Module](!docs!/basics/modules)
+- [How to Create a Data Model](!docs!/basics/modules#1-create-data-model)
 - [Learn more about the service factory](!docs!/advanced-development/modules/service-factory).
 
 ---
@@ -183,9 +183,9 @@ In this step, you’ll define links between the Subscription Module’s `Subscri
 To link a subscription to the cart used to make the purchase, create the file `src/links/subscription-cart.ts` with the following content:
 
 ```ts title="src/links/subscription-cart.ts"
-import { defineLink } from "@medusajs/utils"
+import { defineLink } from "@medusajs/framework/utils"
 import SubscriptionModule from "../modules/subscription"
-import CartModule from "@medusajs/cart"
+import CartModule from "@medusajs/medusa/cart"
 
 export default defineLink(
   SubscriptionModule.linkable.subscription,
@@ -206,9 +206,9 @@ When you create a new order for the subscription, you’ll retrieve the linked c
 To link a subscription to the customer who purchased it, create the file `src/links/subscription-customer.ts` with the following content:
 
 ```ts title="src/links/subscription-customer.ts"
-import { defineLink } from "@medusajs/utils"
+import { defineLink } from "@medusajs/framework/utils"
 import SubscriptionModule from "../modules/subscription"
-import CustomerModule from "@medusajs/customer"
+import CustomerModule from "@medusajs/medusa/customer"
 
 export default defineLink(
   {
@@ -226,9 +226,9 @@ This defines a list link to the `Subscription` data model, since a customer may 
 To link a subscription to the orders created for it, create the file `src/links/subscription-order.ts` with the following content:
 
 ```ts title="src/links/subscription-order.ts"
-import { defineLink } from "@medusajs/utils"
+import { defineLink } from "@medusajs/framework/utils"
 import SubscriptionModule from "../modules/subscription"
-import OrderModule from "@medusajs/order"
+import OrderModule from "@medusajs/medusa/order"
 
 export default defineLink(
   SubscriptionModule.linkable.subscription,
@@ -243,7 +243,7 @@ This defines a list link to the `Order` data model since a subscription has mult
 
 ### Further Reads
 
-- [How to Define a Link](!docs!/advanced-development/modules/module-links)
+- [How to Define a Link](!docs!/advanced-development/module-links)
 
 ---
 
@@ -363,7 +363,7 @@ The `getExpirationDate` method accepts a subscription’s date, interval, and pe
 Before overriding the `createSubscriptions` method, add the following types to `src/modules/subscription/types/index.ts`:
 
 ```ts title="src/modules/subscription/types/index.ts"
-import { InferTypeOf } from "@medusajs/types"
+import { InferTypeOf } from "@medusajs/framework/types"
 import Subscription from "../models/subscription"
 
 // ...
@@ -381,7 +381,7 @@ export type SubscriptionData = InferTypeOf<typeof Subscription>
 
 <Note title="Tip">
 
-Since the `Subscription` data model is a variable, use the `InferTypeOf` utility imported from `@medusajs/types` to infer its type.
+Since the `Subscription` data model is a variable, use the `InferTypeOf` utility imported from `@medusajs/framework/types` to infer its type.
 
 </Note>
 
@@ -444,7 +444,7 @@ The workflow accepts a cart’s ID, and it has three steps:
 2. Create a subscription.
 3. Link the subscription to the order, cart, and customer.
 
-Medusa provides the first and last steps in the `@medusajs/core-flows` package, so you only need to implement the second step.
+Medusa provides the first and last steps in the `@medusajs/medusa/core-flows` package, so you only need to implement the second step.
 
 ### Create a Subscription Step (Second Step)
 
@@ -458,9 +458,9 @@ export const createSubscriptionsHighlights = [
 ]
 
 ```ts title="src/workflows/create-subscription/steps/create-subscription.ts" highlights={createSubscriptionsHighlights} collapsibleLines="1-7" expandMoreLabel="Show Imports"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
-import { Modules } from "@medusajs/utils"
-import { LinkDefinition } from "@medusajs/types"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
+import { Modules } from "@medusajs/framework/utils"
+import { LinkDefinition } from "@medusajs/framework/types"
 import { SubscriptionInterval } from "../../../modules/subscription/types"
 import SubscriptionModuleService from "../../../modules/subscription/service"
 import { SUBSCRIPTION_MODULE } from "../../../modules/subscription"
@@ -584,11 +584,11 @@ export const createSubscriptionWorkflowHighlights = [
 import { 
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   createRemoteLinkStep,
   completeCartWorkflow,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import { 
   SubscriptionInterval,
 } from "../../modules/subscription/types"
@@ -632,9 +632,9 @@ export default createSubscriptionWorkflow
 
 This workflow accepts the cart’s ID, along with the subscription details. It executes the following steps:
 
-1. `completeCartWorkflow` from `@medusajs/core-flows` that completes a cart and creates an order.
+1. `completeCartWorkflow` from `@medusajs/medusa/core-flows` that completes a cart and creates an order.
 2. `createSubscriptionStep`, which is the step you created previously.
-3. `createRemoteLinkStep` from `@medusajs/core-flows`, which accepts links to create. These links are in the `linkDefs` array returned by the previous step.
+3. `createRemoteLinkStep` from `@medusajs/medusa/core-flows`, which accepts links to create. These links are in the `linkDefs` array returned by the previous step.
 
 The workflow returns the created subscription and order.
 
@@ -642,7 +642,7 @@ The workflow returns the created subscription and order.
 
 - [How to Create a Workflow](!docs!/basics/workflows)
 - [Learn more about the compensation function](!docs!/advanced-development/workflows/compensation-function)
-- [How to use the Remote Link](!docs!/advanced-development/modules/remote-link)
+- [How to use the Remote Link](!docs!/advanced-development/module-links/remote-link)
 
 ---
 
@@ -662,11 +662,11 @@ export const completeCartHighlights = [
 import { 
   MedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import { 
   ContainerRegistrationKeys,
   MedusaError,
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import createSubscriptionWorkflow from "../../../../../workflows/create-subscription"
 
 export const POST = async (
@@ -728,7 +728,7 @@ After installation, create the file `src/modules/checkout/components/subscriptio
 ```tsx title="src/modules/checkout/components/subscriptions/index.tsx" badgeLabel="Storefront" badgeColor="orange" collapsibleLines="1-13" expandMoreLabel="Show Imports"
 "use client"
 
-import { StoreCart } from "@medusajs/types"
+import { StoreCart } from "@medusajs/framework/types"
 import { Button, clx, Heading, Text } from "@medusajs/ui"
 import { CheckCircleSolid } from "@medusajs/icons"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
@@ -977,8 +977,8 @@ export const listSubscriptionsAdminHighlight = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -1038,8 +1038,8 @@ export const getSubscriptionsAdminHighlight = [
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -1089,7 +1089,7 @@ Before creating the UI routes, create the file `src/admin/types/index.ts` that h
 import { 
   OrderDTO,
   CustomerDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 export enum SubscriptionStatus {
   ACTIVE = "active",
@@ -1452,13 +1452,13 @@ graph TD
   capturePaymentStep["capturePaymentStep (Medusa)"] --> updateSubscriptionStep
 ```
 
-1. Retrieve the subscription’s linked cart. Medusa provides a `useRemoteQueryStep` in the `@medusajs/core-flows` package that can be used as a step.
-2. Create a payment collection for the new order. Medusa provides a `createPaymentCollectionsStep` in the `@medusajs/core-flows` package that you can use.
-3. Create payment sessions in the payment collection. Medusa provides a `createPaymentSessionsWorkflow` in the `@medusajs/core-flows` package that can be used as a step.
-4. Authorize the payment session. Medusa also provides the `authorizePaymentSessionStep` in the `@medusajs/core-flows` package, which can be used.
+1. Retrieve the subscription’s linked cart. Medusa provides a `useRemoteQueryStep` in the `@medusajs/medusa/core-flows` package that can be used as a step.
+2. Create a payment collection for the new order. Medusa provides a `createPaymentCollectionsStep` in the `@medusajs/medusa/core-flows` package that you can use.
+3. Create payment sessions in the payment collection. Medusa provides a `createPaymentSessionsWorkflow` in the `@medusajs/medusa/core-flows` package that can be used as a step.
+4. Authorize the payment session. Medusa also provides the `authorizePaymentSessionStep` in the `@medusajs/medusa/core-flows` package, which can be used.
 5. Create the subscription’s new order.
-6. Create links between the subscription and the order using the `createRemoteLinkStep` provided in the `@medusajs/core-flows` package.
-7. Capture the order’s payment using the `capturePaymentStep` provided by Medusa in the `@medusajs/core-flows` package.
+6. Create links between the subscription and the order using the `createRemoteLinkStep` provided in the `@medusajs/medusa/core-flows` package.
+7. Capture the order’s payment using the `capturePaymentStep` provided by Medusa in the `@medusajs/medusa/core-flows` package.
 8. Update the subscription’s `last_order_date` and `next_order_date` properties.
 
 You’ll only implement the fifth and eighth steps.
@@ -1481,17 +1481,17 @@ export const createSubscriptionOrderStep1Highlights = [
 ]
 
 ```ts title="src/workflows/create-subscription-order/steps/create-subscription-order.ts" highlights={createSubscriptionOrderStep1Highlights} collapsibleLines="1-15" expandMoreLabel="Show Imports"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { 
   CartWorkflowDTO,
   PaymentCollectionDTO,
   IOrderModuleService,
   LinkDefinition,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { 
   Modules,
-} from "@medusajs/utils"
-import { createOrdersWorkflow } from "@medusajs/core-flows"
+} from "@medusajs/framework/utils"
+import { createOrdersWorkflow } from "@medusajs/medusa/core-flows"
 import { SubscriptionData } from "../../../modules/subscription/types"
 import { SUBSCRIPTION_MODULE } from "../../../modules/subscription"
 
@@ -1536,7 +1536,7 @@ const createSubscriptionOrderStep = createStep(
 export default createSubscriptionOrderStep
 ```
 
-This creates a `createSubscriptionOrderStep` that uses the `createOrdersWorkflow`, which Medusa provides in the `@medusajs/core-flows` package. The step returns the created order and an array of links to be created.
+This creates a `createSubscriptionOrderStep` that uses the `createOrdersWorkflow`, which Medusa provides in the `@medusajs/medusa/core-flows` package. The step returns the created order and an array of links to be created.
 
 In this step, you use a `getOrderData` function to format the order’s input data.
 
@@ -1666,7 +1666,7 @@ export const updateSubscriptionStepHighlights = [
 import { 
   createStep, 
   StepResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   SUBSCRIPTION_MODULE,
 } from "../../../modules/subscription"
@@ -1750,25 +1750,25 @@ export const createSubscriptionOrderWorkflowHighlights = [
 import { 
   createWorkflow,
   WorkflowResponse,
-} from "@medusajs/workflows-sdk"
+} from "@medusajs/framework/workflows-sdk"
 import { 
   useRemoteQueryStep,
   createPaymentSessionsWorkflow,
   createRemoteLinkStep,
   capturePaymentStep,
-} from "@medusajs/core-flows"
+} from "@medusajs/medusa/core-flows"
 import { 
   CartWorkflowDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { 
   SubscriptionData,
 } from "../../modules/subscription/types"
 import { 
   authorizePaymentSessionStep,
-} from "@medusajs/core-flows/dist/payment/steps/authorize-payment-session"
+} from "@medusajs/medusa/core-flows"
 import { 
   createPaymentCollectionsStep,
-} from "@medusajs/core-flows/dist/definition/cart/steps/create-payment-collection"
+} from "@medusajs/medusa/core-flows"
 import createSubscriptionOrderStep from "./steps/create-subscription-order"
 import updateSubscriptionStep from "./steps/update-subscription"
 
@@ -1889,7 +1889,7 @@ export const createSubscriptionOrdersJob1Highlights = [
 ]
 
 ```ts title="src/jobs/create-subscription-orders.ts" highlights={createSubscriptionOrdersJob1Highlights} collapsibleLines="1-7" expandMoreLabel="Show Imports"
-import { MedusaContainer } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/framework/types"
 import SubscriptionModuleService from "../modules/subscription/service"
 import { SUBSCRIPTION_MODULE } from "../modules/subscription"
 import moment from "moment"
@@ -2033,7 +2033,7 @@ export const expireSubscriptionOrdersJobHighlights = [
 ]
 
 ```ts title="src/jobs/expire-subscription-orders.ts" highlights={expireSubscriptionOrdersJobHighlights} collapsibleLines="1-6" expandMoreLabel="Show Imports"
-import { MedusaContainer } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/framework/types"
 import SubscriptionModuleService from "../modules/subscription/service"
 import { SUBSCRIPTION_MODULE } from "../modules/subscription"
 import moment from "moment"
@@ -2119,8 +2119,8 @@ Create the file `src/api/store/customers/me/subscriptions/route.ts` with the fol
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+} from "@medusajs/framework/http"
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -2183,7 +2183,7 @@ Then, create the file `src/api/store/customers/me/subscriptions/[id]/route.ts` w
 import { 
   AuthenticatedMedusaRequest, 
   MedusaResponse,
-} from "@medusajs/medusa"
+} from "@medusajs/framework/http"
 import SubscriptionModuleService from "../../../../../../modules/subscription/service"
 import { 
   SUBSCRIPTION_MODULE,

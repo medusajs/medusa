@@ -18,10 +18,10 @@ Start by creating a new directory for your module. For example, `src/modules/my-
 
 ## 2. Create the Payment Provider Service
 
-Create the file `src/modules/my-payment/service.ts` that holds the module's main service. It must extend the `AbstractPaymentProvider` class imported from `@medusajs/utils`:
+Create the file `src/modules/my-payment/service.ts` that holds the module's main service. It must extend the `AbstractPaymentProvider` class imported from `@medusajs/framework/utils`:
 
 ```ts title="src/modules/my-payment/service.ts"
-import { AbstractPaymentProvider } from "@medusajs/utils"
+import { AbstractPaymentProvider } from "@medusajs/framework/utils"
 
 type Options = {
   apiKey: string
@@ -54,8 +54,8 @@ The provider can also access the module's options as a second parameter.
 ```ts
 import {
   AbstractPaymentProvider
-} from "@medusajs/utils"
-import { Logger } from "@medusajs/types"
+} from "@medusajs/framework/utils"
+import { Logger } from "@medusajs/framework/types"
 
 type InjectedDependencies = {
   logger: Logger
@@ -96,7 +96,7 @@ export default MyPaymentProviderService
 
 #### Parameters
 
-<TypeList types={[{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"The module's container used to resolve resources.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"TConfig","description":"The options passed to the payment module provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="new AbstractPaymentProvider"/>
+<TypeList types={[{"name":"container","type":"[MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"The module's container used to resolve resources.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"registerAdd","type":"`<T>`(`name`: `string`, `registration`: T) => [MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"createScope","type":"() => [MedusaContainer](../../../medusa/types/medusa.MedusaContainer-1/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config","type":"TConfig","description":"The options passed to the payment module provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/v2/advanced-development/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="new AbstractPaymentProvider"/>
 
 ### validateOptions
 
@@ -127,7 +127,7 @@ In this method, use the third-party provider to capture the payment.
 import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -183,7 +183,7 @@ import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
   PaymentSessionStatus
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -241,7 +241,7 @@ This method cancels a payment.
 import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -286,7 +286,7 @@ in the third-party session, before authorizing or capturing the payment later.
 import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -345,7 +345,7 @@ Use this to delete or cancel the payment in the third-party service.
 import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -390,7 +390,7 @@ This method gets the status of a payment session based on the status in the thir
 // other imports...
 import {
   PaymentSessionStatus
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -441,7 +441,7 @@ This method refunds an amount of a payment previously captured.
 import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -496,7 +496,7 @@ Retrieves the payment's data from the third-party service.
 import {
   PaymentProviderError,
   PaymentProviderSessionResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -543,7 +543,7 @@ import {
   UpdatePaymentProviderSession,
   PaymentProviderError,
   PaymentProviderSessionResponse,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -609,11 +609,11 @@ Learn more in [this documentation](https://docs.medusajs.com/v2/resources/commer
 // other imports...
 import {
   BigNumber
-} from "@medusajs/utils"
+} from "@medusajs/framework/utils"
 import {
   ProviderWebhookPayload,
   WebhookActionResult
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 class MyPaymentProviderService extends AbstractPaymentProvider<
   Options
@@ -696,7 +696,7 @@ This exports the module's definition, indicating that the `MyPaymentProviderServ
 To use your Payment Module Provider, add it to the `providers` array of the Payment Module:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/utils")
+const { Modules } = require("@medusajs/framework/utils")
 
 // ...
 
@@ -704,7 +704,7 @@ module.exports = defineConfig({
   // ...
   modules: {
     [Modules.PAYMENT]: {
-      resolve: "@medusajs/payment",
+      resolve: "@medusajs/framework/payment",
       options: {
         providers: [
           {
@@ -721,3 +721,17 @@ module.exports = defineConfig({
   }
 })
 ```
+
+---
+
+## 5. Test it Out
+
+Before you use your payment provider, enable it in a region using the Medusa Admin.
+
+Then, go through checkout to place an order. Your payment provider is used to authorize the payment.
+
+---
+
+## Useful Guides
+
+- [Storefront Guide: how to implement UI for your payment provider during checkout](https://docs.medusajs.com/v2/resources/storefront-development/checkout/payment)

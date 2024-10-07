@@ -22,7 +22,7 @@
  *     example: customer_group_id
  *   operator:
  *     type: string
- *     description: The updated's operator.
+ *     description: The rule's operator.
  *     enum:
  *       - gt
  *       - lt
@@ -33,7 +33,7 @@
  *       - gte
  *   values:
  *     type: array
- *     description: The updated's values.
+ *     description: The rule's values.
  *     example:
  *       - "cusgroup_123"
  *     items:

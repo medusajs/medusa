@@ -15,7 +15,7 @@ type MainNavProviderProps = {
 }
 
 export const MainNavProvider = ({ children }: MainNavProviderProps) => {
-  const isBrowser = useIsBrowser()
+  const { isBrowser } = useIsBrowser()
   const navigationDropdownItems = useMemo(
     () =>
       getNavDropdownItems({

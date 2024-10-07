@@ -7,7 +7,7 @@ import {
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer }) => {

@@ -19,7 +19,8 @@
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "incremental": false
   },
   "include": ["${configDir}/src"],
   "exclude": ["${configDir}/dist", "${configDir}/node_modules"]
