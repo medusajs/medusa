@@ -9,6 +9,8 @@ import { regionLoader } from "./loader"
 import after from "virtual:medusa/widgets/region/details/after"
 import before from "virtual:medusa/widgets/region/details/before"
 import { usePricePreferences } from "../../../hooks/api/price-preferences"
+import { SingleColumnPage } from "../../../components/layout/pages"
+import { UserGeneralSection } from "../../users/user-detail/components/user-general-section"
 
 export const RegionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -56,7 +58,16 @@ export const RegionDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <SingleColumnPage
+      widgets={{
+        before,
+        after,
+      }}
+      data={region}
+      hasOutlet
+      showMetadata
+      showJSON
+    >
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
@@ -76,8 +87,6 @@ export const RegionDetail = () => {
           </div>
         )
       })}
-      <JsonViewSection data={region} />
-      <Outlet />
-    </div>
+    </SingleColumnPage>
   )
 }

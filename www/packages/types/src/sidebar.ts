@@ -25,6 +25,7 @@ export type SidebarItemCategory = SidebarItemCommon & {
   type: "category"
   onOpen?: () => void
   initialOpen?: boolean
+  showLoadingIfEmpty?: boolean
 }
 
 export type SidebarItemSubCategory = SidebarItemCommon & {

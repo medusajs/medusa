@@ -7,6 +7,7 @@ import { Bannerv2, MainNav, useIsBrowser } from ".."
 
 export type MainContentLayoutProps = {
   mainWrapperClasses?: string
+  contentClassName?: string
   showBanner?: boolean
   children: React.ReactNode
 }
@@ -15,6 +16,7 @@ export const MainContentLayout = ({
   children,
   mainWrapperClasses,
   showBanner = true,
+  contentClassName,
 }: MainContentLayoutProps) => {
   const { isBrowser } = useIsBrowser()
   const { desktopSidebarOpen } = useSidebar()
@@ -57,7 +59,8 @@ export const MainContentLayout = ({
         <div
           className={clsx(
             "flex justify-center",
-            "pt-docs_4 lg:pt-docs_6 pb-docs_8 lg:pb-docs_4"
+            "pt-docs_4 lg:pt-docs_6 pb-docs_8 lg:pb-docs_4",
+            contentClassName
           )}
         >
           {children}
