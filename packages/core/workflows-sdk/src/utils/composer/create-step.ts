@@ -6,7 +6,7 @@ import {
 } from "@medusajs/orchestration"
 import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { StepResponse, resolveValue } from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import { createStepHandler } from "./helpers/create-step-handler"
 import { proxify } from "./helpers/proxy"
 import {
@@ -150,55 +150,62 @@ export function applyStep<
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
-      config: (localConfig: LocalStepConfig) => {
-        const newStepName = localConfig.name ?? stepName
-        const newConfig = {
-          ...stepConfig,
-          ...localConfig,
-        }
+    }
 
-        delete localConfig.name
-
-        this.handlers.set(newStepName, handler)
-
-        this.flow.replaceAction(stepConfig.uuid!, newStepName, newConfig)
-        this.isAsync ||= !!(newConfig.async || newConfig.compensateAsync)
-
-        ret.__step__ = newStepName
-        WorkflowManager.update(this.workflowId, this.flow, this.handlers)
-
-        const confRef = proxify(ret)
-
-        if (global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]) {
-          const flagSteps =
-            global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
-              .steps
-
-          const idx = flagSteps.findIndex((a) => a.__step__ === ret.__step__)
-          if (idx > -1) {
-            flagSteps.splice(idx, 1)
-          }
-          flagSteps.push(confRef)
-        }
-
-        return confRef as StepFunction<TInvokeInput, TInvokeResultOutput>
-      },
+    const refRet = proxify(ret) as WorkflowData<TInvokeResultOutput> & {
       if: (
         input: any,
         condition: (...args: any) => boolean | WorkflowData
-      ): WorkflowData<TInvokeResultOutput> => {
-        if (typeof condition !== "function") {
-          throw new Error("Condition must be a function")
-        }
-
-        wrapConditionalStep(input, condition, handler)
-        this.handlers.set(ret.__step__, handler)
-
-        return proxify(ret)
-      },
+      ) => WorkflowData<TInvokeResultOutput>
     }
 
-    const refRet = proxify(ret) as WorkflowData<TInvokeResultOutput>
+    refRet.config = (localConfig: LocalStepConfig) => {
+      const newStepName = localConfig.name ?? stepName
+      const newConfig = {
+        async: false,
+        compensateAsync: false,
+        ...stepConfig,
+        ...localConfig,
+      }
+
+      delete localConfig.name
+
+      this.handlers.set(newStepName, handler)
+
+      this.flow.replaceAction(stepConfig.uuid!, newStepName, newConfig)
+      this.isAsync ||= !!(newConfig.async || newConfig.compensateAsync)
+
+      ret.__step__ = newStepName
+      WorkflowManager.update(this.workflowId, this.flow, this.handlers)
+
+      //const confRef = proxify(ret)
+
+      if (global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]) {
+        const flagSteps =
+          global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition].steps
+
+        const idx = flagSteps.findIndex((a) => a.__step__ === ret.__step__)
+        if (idx > -1) {
+          flagSteps.splice(idx, 1)
+        }
+        flagSteps.push(refRet)
+      }
+
+      return refRet as StepFunction<TInvokeInput, TInvokeResultOutput>
+    }
+    refRet.if = (
+      input: any,
+      condition: (...args: any) => boolean | WorkflowData
+    ): WorkflowData<TInvokeResultOutput> => {
+      if (typeof condition !== "function") {
+        throw new Error("Condition must be a function")
+      }
+
+      wrapConditionalStep(input, condition, handler)
+      this.handlers.set(ret.__step__, handler)
+
+      return refRet
+    }
 
     if (global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]) {
       global[
