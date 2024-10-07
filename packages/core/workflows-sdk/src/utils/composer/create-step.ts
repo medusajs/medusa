@@ -159,7 +159,12 @@ export function applyStep<
       ) => WorkflowData<TInvokeResultOutput>
     }
 
-    refRet.config = (localConfig: LocalStepConfig) => {
+    refRet.config = (
+      localConfig: { name?: string } & Omit<
+        TransactionStepsDefinition,
+        "next" | "uuid" | "action"
+      >
+    ) => {
       const newStepName = localConfig.name ?? stepName
       const newConfig = {
         async: false,
@@ -191,7 +196,7 @@ export function applyStep<
         flagSteps.push(refRet)
       }
 
-      return refRet as StepFunction<TInvokeInput, TInvokeResultOutput>
+      return refRet
     }
     refRet.if = (
       input: any,
