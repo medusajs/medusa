@@ -117,7 +117,10 @@ export const createCartWorkflow = createWorkflow(
         }
 
         // If there is only one country in the region, we prepare a shipping address with that country's code.
-        if (!data.input.shipping_address && data.region.countries.length === 1) {
+        if (
+          !data.input.shipping_address &&
+          data.region.countries.length === 1
+        ) {
           data_.shipping_address = {
             country_code: data.region.countries[0].iso_2,
           }
@@ -157,18 +160,20 @@ export const createCartWorkflow = createWorkflow(
     const carts = createCartsStep([cartToCreate])
     const cart = transform({ carts }, (data) => data.carts?.[0])
 
-    updateTaxLinesWorkflow.runAsStep({
-      input: {
-        cart_id: cart.id,
-      },
-    })
+    parallelize(
+      updateTaxLinesWorkflow.runAsStep({
+        input: {
+          cart_id: cart.id,
+        },
+      }),
 
-    updateCartPromotionsWorkflow.runAsStep({
-      input: {
-        cart_id: cart.id,
-        promo_codes: input.promo_codes,
-      },
-    })
+      updateCartPromotionsWorkflow.runAsStep({
+        input: {
+          cart_id: cart.id,
+          promo_codes: input.promo_codes,
+        },
+      })
+    )
 
     refreshPaymentCollectionForCartWorkflow.runAsStep({
       input: {

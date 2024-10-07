@@ -1,8 +1,9 @@
 import { MedusaError } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
   createWorkflow,
+  parallelize,
   transform,
+  WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import {
@@ -110,17 +111,19 @@ export const addShippingMethodToWorkflow = createWorkflow(
       shipping_methods: shippingMethodInput,
     })
 
-    updateTaxLinesWorkflow.runAsStep({
-      input: {
-        cart_id: input.cart_id,
-        shipping_methods: shippingMethodsToAdd,
-      },
-    })
+    parallelize(
+      updateTaxLinesWorkflow.runAsStep({
+        input: {
+          cart_id: input.cart_id,
+          shipping_methods: shippingMethodsToAdd,
+        },
+      }),
 
-    updateCartPromotionsWorkflow.runAsStep({
-      input: {
-        cart_id: input.cart_id,
-      },
-    })
+      updateCartPromotionsWorkflow.runAsStep({
+        input: {
+          cart_id: input.cart_id,
+        },
+      })
+    )
   }
 )
