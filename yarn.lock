@@ -5246,6 +5246,7 @@ __metadata:
     "@swc/core": ^1.7.28
     "@swc/jest": ^0.2.36
     awilix: ^8.0.1
+    expect-type: ^0.20.0
     jest: ^29.7.0
     json-2-csv: ^5.5.4
     pg: ^8.13.0
