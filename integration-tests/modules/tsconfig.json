@@ -1,8 +1,11 @@
 {
   "extends": "../../_tsconfig.base.json",
-  "include": ["src", "./medusa/**/*"],
+  "compilerOptions": {
+    "rootDir": "./"
+  },
+  "include": ["**/*", "./medusa/**/*"],
   "exclude": [
-    "./dist/**/*",
+    "dist",
     "__tests__",
     "helpers",
     "./**/helpers",
@@ -10,4 +13,3 @@
     "node_modules"
   ]
 }
-

@@ -14,7 +14,7 @@ function createFileContentHash(path, files): string {
 }
 
 function getExtensionDirectoryPath() {
-  return "dist"
+  return "src"
 }
 
 /**
