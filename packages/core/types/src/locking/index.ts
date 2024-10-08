@@ -1,23 +1,22 @@
-import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 
-export interface ILockingModuleService extends IModuleService {
+export interface ILockingProvider {
   execute<T>(
-    key: string,
+    keys: string | string[],
     job: () => Promise<T>,
-    timeoutSeconds?: number,
+    args?: {
+      timeout?: number
+    },
     sharedContext?: Context
-  )
+  ): Promise<T>
   acquire(
-    key: string,
-    ownerId?: string,
-    expire?: number,
+    keys: string | string[],
+    args?: {
+      ownerId?: string | null
+      expire?: number
+    },
     sharedContext?: Context
   ): Promise<void>
-  release(
-    key: string,
-    ownerId?: string,
-    sharedContext?: Context
-  ): Promise<boolean>
-  releaseAll(ownerId?: string, sharedContext?: Context): Promise<void>
+  release(keys: string | string[], ownerId?: string | null): Promise<boolean>
+  releaseAll(ownerId?: string | null): Promise<void>
 }

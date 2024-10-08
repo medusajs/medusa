@@ -24,6 +24,7 @@ export const Modules = {
   FILE: "File",
   NOTIFICATION: "Notification",
   INDEX: "Index",
+  LOCKING: "Locking",
 } as const
 
 /**
