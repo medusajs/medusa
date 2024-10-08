@@ -140,6 +140,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 type: "link",
+                path: "/commerce-modules/auth/reset-password",
+                title: "Handle Password Reset Event",
+              },
+              {
+                type: "link",
                 path: "/references/auth/provider",
                 title: "Create Auth Provider Module",
               },
@@ -2033,6 +2038,11 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             type: "link",
             path: "/storefront-development/customers/third-party-login",
             title: "Third-Party (Social) Login",
+          },
+          {
+            type: "link",
+            path: "/storefront-development/customers/reset-password",
+            title: "Reset Password",
           },
           {
             type: "link",

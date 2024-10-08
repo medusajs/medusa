@@ -141,7 +141,7 @@ export const generatedEditDates = {
   "app/nextjs-starter/page.mdx": "2024-07-01T10:21:19+03:00",
   "app/recipes/b2b/page.mdx": "2024-10-03T13:07:44.153Z",
   "app/recipes/commerce-automation/page.mdx": "2024-10-03T13:07:44.147Z",
-  "app/recipes/digital-products/examples/standard/page.mdx": "2024-10-03T13:07:44.153Z",
+ "app/recipes/digital-products/examples/standard/page.mdx": "2024-10-04T09:44:55.176Z",
   "app/recipes/digital-products/page.mdx": "2024-10-03T13:07:44.147Z",
   "app/recipes/ecommerce/page.mdx": "2024-06-09T15:18:43+02:00",
   "app/recipes/integrate-ecommerce-stack/page.mdx": "2024-10-03T13:07:44.146Z",
@@ -152,7 +152,7 @@ export const generatedEditDates = {
   "app/recipes/oms/page.mdx": "2024-07-01T10:21:19+03:00",
   "app/recipes/personalized-products/page.mdx": "2024-10-03T13:07:44.153Z",
   "app/recipes/pos/page.mdx": "2024-10-03T13:07:13.964Z",
-  "app/recipes/subscriptions/examples/standard/page.mdx": "2024-10-03T13:07:44.164Z",
+  "app/recipes/subscriptions/examples/standard/page.mdx": "2024-10-04T11:13:47.459Z",
   "app/recipes/subscriptions/page.mdx": "2024-10-03T13:07:44.155Z",
   "app/recipes/page.mdx": "2024-07-11T15:56:41+00:00",
   "app/service-factory-reference/methods/create/page.mdx": "2024-07-31T17:01:33+03:00",
@@ -642,7 +642,7 @@ export const generatedEditDates = {
   "app/medusa-cli/commands/start/page.mdx": "2024-08-28T10:44:19.952Z",
   "app/medusa-cli/commands/telemtry/page.mdx": "2024-08-28T11:25:08.553Z",
   "app/medusa-cli/commands/user/page.mdx": "2024-08-28T10:44:52.489Z",
-  "app/recipes/marketplace/examples/restaurant-delivery/page.mdx": "2024-10-03T13:07:44.153Z",
+  "app/recipes/marketplace/examples/restaurant-delivery/page.mdx": "2024-10-04T10:28:51.698Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCustomerGroup/page.mdx": "2024-08-30T00:11:02.074Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateReservation/page.mdx": "2024-08-30T00:11:02.342Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminCustomerGroup/page.mdx": "2024-10-03T00:11:52.871Z",
@@ -2223,5 +2223,7 @@ export const generatedEditDates = {
   "references/user/IMessageAggregator/methods/user.IMessageAggregator.getMessages/page.mdx": "2024-10-03T00:12:20.668Z",
   "references/user/interfaces/user.IModuleService/page.mdx": "2024-10-03T00:12:20.657Z",
   "references/user/interfaces/user.MessageAggregatorFormat/page.mdx": "2024-10-03T00:12:20.662Z",
-  "app/troubleshooting/dist-imports/page.mdx": "2024-10-03T09:19:37.639Z"
+  "app/troubleshooting/dist-imports/page.mdx": "2024-10-03T09:19:37.639Z",
+  "app/commerce-modules/auth/reset-password/page.mdx": "2024-09-25T09:36:26.592Z",
+  "app/storefront-development/customers/reset-password/page.mdx": "2024-09-25T10:21:46.647Z"
 }
