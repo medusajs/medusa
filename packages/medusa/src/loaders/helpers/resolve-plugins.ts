@@ -14,14 +14,7 @@ function createFileContentHash(path, files): string {
 }
 
 function getExtensionDirectoryPath() {
-  /**
-   * Grab directory for loading resources inside a starter kit from
-   * the medusa-config file.
-   *
-   * When using ts-node we will read resources from "src" directory
-   * otherwise from "dist" directory.
-   */
-  return "src"
+  return "dist"
 }
 
 /**
