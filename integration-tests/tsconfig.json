@@ -1,11 +1,5 @@
 {
   "extends": "../_tsconfig.base.json",
   "include": ["**/*"],
-  "exclude": [
-    "dist",
-    "./**/helpers",
-    "./**/__snapshots__",
-    "node_modules"
-  ]
+  "exclude": ["dist", "./**/helpers", "./**/__snapshots__", "node_modules"]
 }
-
