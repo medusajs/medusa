@@ -37,11 +37,11 @@ To add the `custom_name` property to the `Customer` data model, you'll create in
 Create the file `src/modules/hello/models/custom.ts` with the following content:
 
 ```ts title="src/modules/hello/models/custom.ts"
-import { model } from "@medusajs/framework/utils";
+import { model } from "@medusajs/framework/utils"
 
 export const Custom = model.define("custom", {
   id: model.id().primaryKey(),
-  custom_name: model.text()
+  custom_name: model.text(),
 })
 ```
 
@@ -68,7 +68,7 @@ Learn more about module links in [this guide](!docs!/module-links).
 Create the file `src/links/customer-custom.ts` with the following content:
 
 ```ts title="src/links/customer-custom.ts"
-import { defineLink } from "@medusajs/framework/utils";
+import { defineLink } from "@medusajs/framework/utils"
 import HelloModule from "../modules/hello"
 import CustomerModule from "@medusajs/medusa/customer"
 
@@ -234,29 +234,29 @@ export const createCustomFromCustomerWorkflow = createWorkflow(
   (input: CreateCustomFromCustomerWorkflowInput) => {
     const customName = transform(
       {
-        input
+        input,
       },
       (data) => data.input.additional_data.custom_name || ""
     )
 
     const custom = createCustomStep({
-      custom_name: customName
+      custom_name: customName,
     })
 
     when(({ custom }), ({ custom }) => custom !== undefined)
       .then(() => {
         createRemoteLinkStep([{
           [Modules.CUSTOMER]: {
-            customer_id: input.customer.id
+            customer_id: input.customer.id,
           },
           [HELLO_MODULE]: {
-            custom_id: custom.id
-          }
+            custom_id: custom.id,
+          },
         }])
       })
 
     return new WorkflowResponse({
-      custom
+      custom,
     })
   }
 )
@@ -282,19 +282,19 @@ To consume the hook, create the file `src/workflow/hooks/customer-created.ts` wi
 import { createCustomersWorkflow } from "@medusajs/medusa/core-flows"
 import { 
   createCustomFromCustomerWorkflow, 
-  CreateCustomFromCustomerWorkflowInput
+  CreateCustomFromCustomerWorkflowInput,
 } from "../create-custom-from-customer"
 
 createCustomersWorkflow.hooks.customersCreated(
 	async ({ customers, additional_data }, { container }) => {
     const workflow = createCustomFromCustomerWorkflow(container)
     
-    for (let customer of customers) {
+    for (const customer of customers) {
       await workflow.run({
         input: {
           customer,
-          additional_data
-        } as CreateCustomFromCustomerWorkflowInput
+          additional_data,
+        } as CreateCustomFromCustomerWorkflowInput,
       })
     }
 	}
@@ -376,8 +376,8 @@ const { data: [customer] } = await query.graph({
   entity: "customer",
   fields: ["*", "custom.*"],
   filters: {
-    id: customer_id
-  }
+    id: customer_id,
+  },
 })
 ```
 
@@ -446,7 +446,7 @@ export const updateCustomStep = createStep(
 
     const custom = await helloModuleService.updateCustoms({
       id,
-      custom_name
+      custom_name,
     })
 
     return new StepResponse(custom, prevData)
@@ -526,10 +526,10 @@ export const updateCustomFromCustomerWorkflow = createWorkflow(
       fields: ["custom.*"],
       variables: {
         filters: {
-          id: input.customer.id
-        }
+          id: input.customer.id,
+        },
       },
-      list: false
+      list: false,
     })
 
     // TODO create, update, or delete Custom record
@@ -546,23 +546,23 @@ Next, replace the `TODO` with the following:
 ```ts title="src/workflows/update-custom-from-customer/index.ts"
 const created = when({
   input,
-  customerData
+  customerData,
 }, (data) => 
   !data.customerData.custom && 
   data.input.additional_data?.custom_name?.length > 0
 )
 .then(() => {
   const custom = createCustomStep({
-    custom_name: input.additional_data.custom_name
+    custom_name: input.additional_data.custom_name,
   })
 
   createRemoteLinkStep([{
     [Modules.CUSTOMER]: {
-      customer_id: input.customer.id
+      customer_id: input.customer.id,
     },
     [HELLO_MODULE]: {
-      custom_id: custom.id
-    }
+      custom_id: custom.id,
+    },
   }])
 
   return custom
@@ -580,7 +580,7 @@ Next, replace the new `TODO` with the following:
 ```ts title="src/workflows/update-custom-from-customer/index.ts"
 const deleted = when({
   input,
-  customerData
+  customerData,
 }, (data) => 
   data.customerData.custom && (
     data.input.additional_data?.custom_name === null || 
@@ -589,13 +589,13 @@ const deleted = when({
 )
 .then(() => {
   deleteCustomStep({
-    custom: customerData.custom
+    custom: customerData.custom,
   })
 
   dismissRemoteLinkStep({
     [HELLO_MODULE]: {
-      custom_id: customerData.custom.id
-    }
+      custom_id: customerData.custom.id,
+    },
   })
 
   return customerData.custom.id
@@ -611,12 +611,12 @@ Finally, replace the new `TODO` with the following:
 ```ts title="src/workflows/update-custom-from-customer/index.ts"
 const updated = when({
   input,
-  customerData
+  customerData,
 }, (data) => data.customerData.custom && data.input.additional_data?.custom_name?.length > 0)
 .then(() => {
   const custom = updateCustomStep({
     id: customerData.custom.id,
-    custom_name: input.additional_data.custom_name
+    custom_name: input.additional_data.custom_name,
   })
 
   return custom
@@ -625,7 +625,7 @@ const updated = when({
 return new WorkflowResponse({
   created,
   updated,
-  deleted
+  deleted,
 })
 ```
 
@@ -643,19 +643,19 @@ Create the file `src/workflows/hooks/customer-updated.ts` with the following con
 import { updateCustomersWorkflow } from "@medusajs/medusa/core-flows"
 import { 
   UpdateCustomFromCustomerStepInput, 
-  updateCustomFromCustomerWorkflow
+  updateCustomFromCustomerWorkflow,
 } from "../update-custom-from-customer"
 
 updateCustomersWorkflow.hooks.customersUpdated(
 	async ({ customers, additional_data }, { container }) => {
     const workflow = updateCustomFromCustomerWorkflow(container)
     
-    for (let customer of customers) {
+    for (const customer of customers) {
       await workflow.run({
         input: {
           customer,
-          additional_data
-        } as UpdateCustomFromCustomerStepInput
+          additional_data,
+        } as UpdateCustomFromCustomerStepInput,
       })
     }
 	}
