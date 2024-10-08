@@ -1,170 +1,193 @@
+import path from "path"
+import { rm } from "node:fs/promises"
+import type tsStatic from "typescript"
+import { logger } from "@medusajs/framework/logger"
 import { ConfigModule } from "@medusajs/framework/types"
 import { getConfigFile } from "@medusajs/framework/utils"
-import { transformFile } from "@swc/core"
-import { existsSync } from "node:fs"
-import { copyFile, mkdir, readdir, rm, writeFile } from "node:fs/promises"
-import path from "path"
 
-type BuildArgs = {
-  directory: string
-}
+const ADMIN_FOLDER = "src/admin"
+const INTEGRATION_TESTS_FOLDER = "integration-tests"
 
-type FileConfig = {
-  inputDir: string
-  outputDir: string
-  targetExtension?: string
-}
-
-const INPUT_DIR = "./src"
-const OUTPUT_DIR = "./dist"
-
-const COMPILE_EXTENSIONS = [".ts", ".tsx", ".js", ".jsx"]
-const IGNORE_EXTENSIONS = [".md"]
-
+/**
+ * Removes the directory and its children recursively and
+ * ignores any errors
+ */
 async function clean(path: string) {
   await rm(path, { recursive: true }).catch(() => {})
 }
 
-async function findFiles(dir: string): Promise<string[]> {
-  try {
-    const files = await readdir(dir, { withFileTypes: true })
-    const paths = await Promise.all(
-      files.map(async (file) => {
-        const res = path.join(dir, file.name)
-        return file.isDirectory() ? findFiles(res) : res
-      })
-    )
-    return paths.flat()
-  } catch (e) {
-    console.error(`Failed to read directory ${dir}`)
-    console.error(e)
-    throw e
-  }
-}
-
-const getOutputPath = (file: string, config: FileConfig) => {
-  const { inputDir, outputDir, targetExtension } = config
-
-  const inputDirName = path.basename(inputDir)
-  const outputDirName = path.basename(outputDir)
-
-  const relativePath = file.replace(inputDirName, outputDirName)
-  let outputPath = relativePath
-
-  if (targetExtension) {
-    const currentExtension = path.extname(outputPath)
-    outputPath = outputPath.replace(currentExtension, targetExtension)
-  }
-
-  return outputPath.replaceAll(path.sep, "/")
-}
-
-const writeToOut = async (
-  file: string,
-  content: string,
-  config: FileConfig
-) => {
-  const outputPath = getOutputPath(file, config)
-
-  await mkdir(outputPath.replace(/\/[^/]+$/, ""), { recursive: true })
-  await writeFile(outputPath, content)
-}
-
-async function copyToOut(file: string, config: FileConfig) {
-  const outputPath = getOutputPath(file, config)
-
-  await mkdir(outputPath.replace(/\/[^/]+$/, ""), { recursive: true })
-  await copyFile(file, outputPath)
-}
-
-const medusaTransform = async (file: string) => {
-  if (COMPILE_EXTENSIONS.some((ext) => file.endsWith(ext))) {
-    const outputPath = getOutputPath(file, {
-      inputDir: INPUT_DIR,
-      outputDir: OUTPUT_DIR,
-    })
-    const output = await transformFile(file, {
-      sourceFileName: path.relative(path.dirname(outputPath), file),
-      sourceMaps: "inline",
-      module: {
-        type: "commonjs",
-      },
-      jsc: {
-        parser: {
-          syntax: "typescript",
-          decorators: true,
-        },
-        transform: {
-          decoratorMetadata: true,
-        },
-        target: "es2021",
-        externalHelpers: true,
-      },
-    })
-    await writeToOut(file, output.code, {
-      inputDir: INPUT_DIR,
-      outputDir: OUTPUT_DIR,
-      targetExtension: ".js",
-    })
-  } else if (!IGNORE_EXTENSIONS.some((ext) => file.endsWith(ext))) {
-    // Copy non-ts files
-    await copyToOut(file, { inputDir: INPUT_DIR, outputDir: OUTPUT_DIR })
-  }
-}
-
-export default async function ({ directory }: BuildArgs) {
-  const started = Date.now()
-
-  const { configModule, error } = getConfigFile<ConfigModule>(
+/**
+ * Loads the medusa config file or exits with an error
+ */
+function loadMedusaConfig(directory: string) {
+  /**
+   * Parsing the medusa config file to ensure it is error
+   * free
+   */
+  const { configModule, configFilePath, error } = getConfigFile<ConfigModule>(
     directory,
     "medusa-config"
   )
-
   if (error) {
     console.error(`Failed to load medusa-config.js`)
     console.error(error)
-    process.exit(1)
+    return
   }
 
-  const input = path.join(directory, INPUT_DIR)
-  const dist = path.join(directory, OUTPUT_DIR)
+  return { configFilePath, configModule }
+}
 
+/**
+ * Parses the tsconfig file or exits with an error in case
+ * the file is invalid
+ */
+function parseTSConfig(projectRoot: string, ts: typeof tsStatic) {
+  let tsConfigErrors: null | tsStatic.Diagnostic = null
+
+  const tsConfig = ts.getParsedCommandLineOfConfigFile(
+    path.join(projectRoot, "tsconfig.json"),
+    {
+      inlineSourceMap: true,
+      excludes: [],
+    },
+    {
+      ...ts.sys,
+      useCaseSensitiveFileNames: true,
+      getCurrentDirectory: () => projectRoot,
+      onUnRecoverableConfigFileDiagnostic: (error) => (tsConfigErrors = error),
+    }
+  )
+
+  if (tsConfigErrors) {
+    const compilerHost = ts.createCompilerHost({})
+    console.error(
+      ts.formatDiagnosticsWithColorAndContext([tsConfigErrors], compilerHost)
+    )
+    return
+  }
+
+  if (tsConfig!.errors.length) {
+    const compilerHost = ts.createCompilerHost({})
+    console.error(
+      ts.formatDiagnosticsWithColorAndContext(tsConfig!.errors, compilerHost)
+    )
+    return
+  }
+
+  return tsConfig!
+}
+
+/**
+ * Builds the backend project using TSC
+ */
+async function buildBackend(projectRoot: string): Promise<boolean> {
+  logger.info("Compiling backend source...")
+
+  const ts = await import("typescript")
+  const tsConfig = parseTSConfig(projectRoot, ts)
+  if (!tsConfig) {
+    logger.error("Unable to compile backend source")
+    return false
+  }
+
+  const distFolder = tsConfig.options.outDir ?? "build"
+  const dist = path.isAbsolute(distFolder)
+    ? distFolder
+    : path.join(projectRoot, distFolder)
+
+  logger.info(`Removing existing "${path.relative(projectRoot, dist)}" folder`)
   await clean(dist)
 
-  const files = await findFiles(input)
+  /**
+   * Ignoring admin and integration tests from the compiled
+   * files
+   */
+  const filesToCompile = tsConfig.fileNames.filter((fileName) => {
+    return (
+      !fileName.includes(`${ADMIN_FOLDER}/`) &&
+      !fileName.includes(`${INTEGRATION_TESTS_FOLDER}/`)
+    )
+  })
 
-  await Promise.all(files.map(medusaTransform))
+  const program = ts.createProgram(filesToCompile, {
+    ...tsConfig.options,
+    ...{
+      /**
+       * Disable inline source maps when the user has enabled
+       * source maps within the config file
+       */
+      inlineSourceMap: !tsConfig.options.sourceMap,
+    },
+  })
+  const emitResult = program.emit()
+  const diagnostics = ts
+    .getPreEmitDiagnostics(program)
+    .concat(emitResult.diagnostics)
 
-  const sources: string[] = []
-
-  const projectSource = path.join(directory, "src", "admin")
-
-  if (existsSync(projectSource)) {
-    sources.push(projectSource)
+  /**
+   * Log errors (if any)
+   */
+  if (diagnostics.length) {
+    console.error(
+      ts.formatDiagnosticsWithColorAndContext(
+        diagnostics,
+        ts.createCompilerHost({})
+      )
+    )
   }
 
+  if (emitResult.emitSkipped) {
+    logger.warn("Backend build completed without emitting any output")
+    return false
+  }
+
+  if (diagnostics.length) {
+    logger.warn("Backend build completed with errors")
+  } else {
+    logger.info("Backend build completed successfully")
+  }
+
+  return true
+}
+
+/**
+ * Builds the frontend project using the "@medusajs/admin-bundler"
+ */
+async function buildFrontend(projectRoot: string): Promise<boolean> {
+  const configFile = loadMedusaConfig(projectRoot)
+  if (!configFile) {
+    return false
+  }
+
+  const adminSource = path.join(projectRoot, ADMIN_FOLDER)
   const adminOptions = {
     disable: false,
     path: "/app" as const,
-    outDir: "./build",
-    sources,
-    ...configModule.admin,
+    outDir: "./dist",
+    sources: [adminSource],
+    ...configFile.configModule.admin,
   }
 
-  if (!adminOptions.disable) {
-    try {
-      const { build: buildProductionBuild } = await import(
-        "@medusajs/admin-bundler"
-      )
-
-      await buildProductionBuild(adminOptions)
-    } catch (error) {
-      console.error("Failed to build admin")
-      console.error(error)
-    }
+  if (adminOptions.disable) {
+    return false
   }
 
-  const time = Date.now() - started
+  try {
+    logger.info("Compiling frontend source...")
+    const { build: buildProductionBuild } = await import(
+      "@medusajs/admin-bundler"
+    )
+    await buildProductionBuild(adminOptions)
+    logger.info("Frontend build completed successfully")
+    return true
+  } catch (error) {
+    logger.error("Unable to compile frontend source")
+    console.error(error)
+    return false
+  }
+}
 
-  console.log(`Build completed in ${time}ms`)
+export default async function ({ directory }: { directory: string }) {
+  console.log("Starting build...")
+  await Promise.all([buildBackend(directory), buildFrontend(directory)])
 }
