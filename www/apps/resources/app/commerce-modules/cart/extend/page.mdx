@@ -31,11 +31,11 @@ To add the `custom_name` property to the `Cart` data model, you'll create in the
 Create the file `src/modules/hello/models/custom.ts` with the following content:
 
 ```ts title="src/modules/hello/models/custom.ts"
-import { model } from "@medusajs/framework/utils";
+import { model } from "@medusajs/framework/utils"
 
 export const Custom = model.define("custom", {
   id: model.id().primaryKey(),
-  custom_name: model.text()
+  custom_name: model.text(),
 })
 ```
 
@@ -62,7 +62,7 @@ Learn more about module links in [this guide](!docs!/module-links).
 Create the file `src/links/cart-custom.ts` with the following content:
 
 ```ts title="src/links/cart-custom.ts"
-import { defineLink } from "@medusajs/framework/utils";
+import { defineLink } from "@medusajs/framework/utils"
 import HelloModule from "../modules/hello"
 import CartModule from "@medusajs/medusa/cart"
 
@@ -228,29 +228,29 @@ export const createCustomFromCartWorkflow = createWorkflow(
   (input: CreateCustomFromCartWorkflowInput) => {
     const customName = transform(
       {
-        input
+        input,
       },
       (data) => data.input.additional_data?.custom_name || ""
     )
 
     const custom = createCustomStep({
-      custom_name: customName
+      custom_name: customName,
     })
 
     when(({ custom }), ({ custom }) => custom !== undefined)
       .then(() => {
         createRemoteLinkStep([{
           [Modules.CART]: {
-            cart_id: input.cart.id
+            cart_id: input.cart.id,
           },
           [HELLO_MODULE]: {
-            custom_id: custom.id
-          }
+            custom_id: custom.id,
+          },
         }])
       })
 
     return new WorkflowResponse({
-      custom
+      custom,
     })
   }
 )
@@ -276,14 +276,14 @@ To consume the hook, create the file `src/workflow/hooks/cart-created.ts` with t
 import { createCartWorkflow } from "@medusajs/medusa/core-flows"
 import { 
   createCustomFromCartWorkflow, 
-  CreateCustomFromCartWorkflowInput
+  CreateCustomFromCartWorkflowInput,
 } from "../create-custom-from-cart"
 
 createCartWorkflow.hooks.cartCreated(
 	async (hookData, { container }) => {
     await createCustomFromCartWorkflow(container)
       .run({
-        input: hookData as CreateCustomFromCartWorkflowInput
+        input: hookData as CreateCustomFromCartWorkflowInput,
       })
 	}
 )
@@ -364,8 +364,8 @@ const { data: [cart] } = await query.graph({
   entity: "cart",
   fields: ["*", "custom.*"],
   filters: {
-    id: cart_id
-  }
+    id: cart_id,
+  },
 })
 ```
 
@@ -434,7 +434,7 @@ export const updateCustomStep = createStep(
 
     const custom = await helloModuleService.updateCustoms({
       id,
-      custom_name
+      custom_name,
     })
 
     return new StepResponse(custom, prevData)
@@ -514,10 +514,10 @@ export const updateCustomFromCartWorkflow = createWorkflow(
       fields: ["custom.*"],
       variables: {
         filters: {
-          id: input.cart.id
-        }
+          id: input.cart.id,
+        },
       },
-      list: false
+      list: false,
     })
 
     // TODO create, update, or delete Custom record
@@ -534,23 +534,23 @@ Next, replace the `TODO` with the following:
 ```ts title="src/workflows/update-custom-from-cart/index.ts"
 const created = when({
   input,
-  cartData
+  cartData,
 }, (data) => 
   !data.cartData.custom && 
   data.input.additional_data?.custom_name?.length > 0
 )
 .then(() => {
   const custom = createCustomStep({
-    custom_name: input.additional_data.custom_name
+    custom_name: input.additional_data.custom_name,
   })
 
   createRemoteLinkStep([{
     [Modules.CART]: {
-      cart_id: input.cart.id
+      cart_id: input.cart.id,
     },
     [HELLO_MODULE]: {
-      custom_id: custom.id
-    }
+      custom_id: custom.id,
+    },
   }])
 
   return custom
@@ -568,7 +568,7 @@ Next, replace the new `TODO` with the following:
 ```ts title="src/workflows/update-custom-from-cart/index.ts"
 const deleted = when({
   input,
-  cartData
+  cartData,
 }, (data) => 
   data.cartData.custom && (
     data.input.additional_data?.custom_name === null || 
@@ -577,13 +577,13 @@ const deleted = when({
 )
 .then(() => {
   deleteCustomStep({
-    custom: cartData.custom
+    custom: cartData.custom,
   })
 
   dismissRemoteLinkStep({
     [HELLO_MODULE]: {
-      custom_id: cartData.custom.id
-    }
+      custom_id: cartData.custom.id,
+    },
   })
 
   return cartData.custom.id
@@ -599,12 +599,12 @@ Finally, replace the new `TODO` with the following:
 ```ts title="src/workflows/update-custom-from-cart/index.ts"
 const updated = when({
   input,
-  cartData
+  cartData,
 }, (data) => data.cartData.custom && data.input.additional_data?.custom_name?.length > 0)
 .then(() => {
   const custom = updateCustomStep({
     id: cartData.custom.id,
-    custom_name: input.additional_data.custom_name
+    custom_name: input.additional_data.custom_name,
   })
 
   return custom
@@ -613,7 +613,7 @@ const updated = when({
 return new WorkflowResponse({
   created,
   updated,
-  deleted
+  deleted,
 })
 ```
 
@@ -628,19 +628,19 @@ You can now consume the `cartUpdated` and execute the workflow you created.
 Create the file `src/workflows/hooks/cart-updated.ts` with the following content:
 
 ```ts title="src/workflows/hooks/cart-updated.ts"
-import { updateCartWorkflow } from "@medusajs/medusa/core-flows";
+import { updateCartWorkflow } from "@medusajs/medusa/core-flows"
 import { 
   UpdateCustomFromCartStepInput, 
-  updateCustomFromCartWorkflow
-} from "../update-custom-from-cart";
+  updateCustomFromCartWorkflow,
+} from "../update-custom-from-cart"
 
 updateCartWorkflow.hooks.cartUpdated(
   async (hookData, { container }) => {
     await updateCustomFromCartWorkflow(container)
       .run({
-        input: hookData as UpdateCustomFromCartStepInput
+        input: hookData as UpdateCustomFromCartStepInput,
       })
-  },
+  }
 )
 ```
 
