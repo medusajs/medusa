@@ -15,11 +15,10 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IApiKeyModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
-  const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
+  const apiKeyModuleService = request.scope.resolve(
     Modules.API_KEY
   )
 
@@ -70,11 +69,10 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IApiKeyModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
-  const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
+  const apiKeyModuleService = request.scope.resolve(
     Modules.API_KEY
   )
 
@@ -113,14 +111,13 @@ export async function GET(request: Request) {
 
 ```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IApiKeyModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) {
-  const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
+  const apiKeyModuleService = request.scope.resolve(
     Modules.API_KEY
   )
 
@@ -174,11 +171,10 @@ export async function POST(request: Request, { params }: ContextType) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IApiKeyModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
-  const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
+  const apiKeyModuleService = request.scope.resolve(
     Modules.API_KEY
   )
 
@@ -234,14 +230,13 @@ import {
   AuthenticatedMedusaRequest, 
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { IApiKeyModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   request: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) {
-  const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
+  const apiKeyModuleService = request.scope.resolve(
     Modules.API_KEY
   )
 

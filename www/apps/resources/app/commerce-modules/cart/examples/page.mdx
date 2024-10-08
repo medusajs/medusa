@@ -15,14 +15,13 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ICartModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -89,14 +88,13 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ICartModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -137,14 +135,13 @@ export async function GET(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ICartModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -197,14 +194,13 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ICartModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -255,14 +251,13 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ICartModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -313,14 +308,13 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ICartModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -373,14 +367,13 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ICartModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -417,14 +410,13 @@ export async function DELETE(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ICartModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 
@@ -437,16 +429,15 @@ export async function DELETE(
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-  import { ICartModuleService } from "@medusajs/framework/types"
-  import { Modules } from "@medusajs/framework/utils"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
+import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const cartModuleService: ICartModuleService = req.scope.resolve(
+  const cartModuleService = req.scope.resolve(
     Modules.CART
   )
 

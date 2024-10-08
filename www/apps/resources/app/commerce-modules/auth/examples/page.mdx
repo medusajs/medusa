@@ -33,7 +33,7 @@ export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -136,7 +136,7 @@ export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -226,14 +226,13 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IAuthModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -282,14 +281,13 @@ export async function POST(request: Request) {
 
 ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IAuthModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function GET(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -328,14 +326,13 @@ export async function GET(request: Request) {
 
   ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IAuthModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function POST(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
@@ -394,14 +391,13 @@ export async function POST(request: Request, { params }: ContextType) {
 
   ```ts
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { IAuthModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 export async function DELETE(
   req: MedusaRequest,
   res: MedusaResponse
 ): Promise<void> {
-  const authModuleService: IAuthModuleService = req.scope.resolve(
+  const authModuleService = req.scope.resolve(
     Modules.AUTH
   )
 
