@@ -2302,6 +2302,137 @@ export default class OrderModuleService<
     return await this.revertLastChange_(order, sharedContext)
   }
 
+  @InjectManager()
+  async undoLastChange(
+    orderId: string,
+    @MedusaContext() sharedContext?: Context
+  ) {
+    const order = await super.retrieveOrder(
+      orderId,
+      {
+        select: ["id", "version"],
+      },
+      sharedContext
+    )
+
+    if (order.version < 2) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order with id ${orderId} has no previous versions`
+      )
+    }
+
+    return await this.undoLastChange_(order, sharedContext)
+  }
+
+  @InjectTransactionManager()
+  protected async undoLastChange_(
+    order: OrderDTO,
+    sharedContext?: Context
+  ): Promise<void> {
+    const currentVersion = order.version
+
+    // Order Changes
+    const orderChanges = await this.orderChangeService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+
+    const orderChangesIds = orderChanges.map((change) => {
+      return {
+        id: change.id,
+        status: OrderChangeStatus.PENDING,
+        confirmed_at: null,
+        declined_at: null,
+        canceled_at: null,
+        requested_at: null,
+        confirmed_by: null,
+        declined_by: null,
+        canceled_by: null,
+        requested_by: null,
+      }
+    })
+
+    await this.orderChangeService_.update(orderChangesIds, sharedContext)
+
+    // Order Changes Actions
+    const orderChangesActions = await this.orderChangeActionService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+    const orderChangeActionsIds = orderChangesActions.map((action) => {
+      return {
+        id: action.id,
+        applied: false,
+      }
+    })
+
+    await this.orderChangeActionService_.update(
+      orderChangeActionsIds,
+      sharedContext
+    )
+
+    // Order Summary
+    const orderSummary = await this.orderSummaryService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+    const orderSummaryIds = orderSummary.map((summary) => summary.id)
+
+    await this.orderSummaryService_.softDelete(orderSummaryIds, sharedContext)
+
+    // Order Items
+    const orderItems = await this.orderItemService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+    const orderItemIds = orderItems.map((summary) => summary.id)
+
+    await this.orderItemService_.softDelete(orderItemIds, sharedContext)
+
+    // Order Shipping
+    const orderShippings = await this.orderShippingService_.list(
+      {
+        order_id: order.id,
+        version: currentVersion,
+      },
+      { select: ["id", "version"] },
+      sharedContext
+    )
+    const orderShippingIds = orderShippings.map((sh) => sh.id)
+
+    await this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
+
+    // Order
+    await this.orderService_.update(
+      {
+        selector: {
+          id: order.id,
+        },
+        data: {
+          version: order.version - 1,
+        },
+      },
+      sharedContext
+    )
+  }
+
   @InjectTransactionManager()
   protected async revertLastChange_(
     order: OrderDTO,

@@ -30,6 +30,6 @@ export const confirmOrderChanges = createStep(
     }
 
     const orderModuleService = container.resolve(Modules.ORDER)
-    await orderModuleService.revertLastVersion(orderId)
+    await orderModuleService.undoLastChange(orderId)
   }
 )
