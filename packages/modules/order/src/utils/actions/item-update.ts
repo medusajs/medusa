@@ -18,7 +18,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
 
     existing.detail.quantity ??= 0
 
-    const quantityDiff = MathBN.sub(
+    let quantityDiff = MathBN.sub(
       action.details.quantity,
       existing.detail.quantity
     )
@@ -28,14 +28,28 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_UPDATE, {
     existing.detail.quantity = quant
 
     if (unitPrice) {
-      const unitPriceBN = new BigNumber(unitPrice)
+      const currentUnitPriceBN = MathBN.convert(unitPrice)
+      const originalUnitPriceBn = MathBN.convert(
+        existing.detail.unit_price ?? existing.unit_price
+      )
 
-      existing.unit_price = unitPriceBN
-      existing.detail.unit_price = unitPriceBN
+      const currentQuantityBn = MathBN.convert(action.details.quantity)
+      const originalQuantityBn = MathBN.convert(
+        existing.detail.quantity ?? existing.quantity
+      )
+
+      const originalTotal = MathBN.mult(originalUnitPriceBn, originalQuantityBn)
+      const currentTotal = MathBN.mult(currentUnitPriceBN, currentQuantityBn)
+
+      existing.unit_price = currentUnitPriceBN
+      existing.detail.unit_price = currentUnitPriceBN
+
+      setActionReference(existing, action, options)
+
+      return MathBN.sub(currentTotal, originalTotal)
     }
 
     setActionReference(existing, action, options)
-
     return MathBN.mult(existing.unit_price, quantityDiff)
   },
   validate({ action, currentOrder }) {
