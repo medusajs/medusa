@@ -1058,10 +1058,12 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
                 manage_inventory: true,
                 inventory_items: [
                   {
@@ -1099,16 +1101,19 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
                 manage_inventory: true,
+                options: { size: "x" },
                 inventory_items: [],
               },
               {
                 title: "Custom inventory 2",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
                 manage_inventory: false,
               },
             ],
@@ -1296,9 +1301,11 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Test create",
+              options: [{ title: "size", values: ["x", "l"] }],
               variants: [
                 {
                   title: "Price with rules",
+                  options: { size: "l" },
                   prices: [
                     {
                       currency_code: "usd",
@@ -2105,11 +2112,13 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
                 manage_inventory: true,
+                options: { size: "l" },
                 inventory_items: [
                   {
                     inventory_item_id: inventoryItem1.id,
@@ -2216,10 +2225,12 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
                 manage_inventory: true,
                 inventory_items: [
                   {

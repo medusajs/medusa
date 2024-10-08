@@ -853,9 +853,11 @@ medusaIntegrationTestRunner({
               "/admin/products",
               {
                 title: "product 1",
+                options: [{ title: "size", values: ["large"] }],
                 variants: [
                   {
                     title: "variant 1",
+                    options: { size: "large" },
                     prices: [{ currency_code: "usd", amount: 100 }],
                     inventory_items: [
                       {

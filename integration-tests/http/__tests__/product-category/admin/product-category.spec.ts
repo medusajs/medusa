@@ -176,12 +176,12 @@ medusaIntegrationTestRunner({
         )
       })
 
-      it('gets the metadata of a category', async () => {
+      it("gets the metadata of a category", async () => {
         await api.post(
           `/admin/product-categories/${productCategory.id}`,
           {
             metadata: {
-              test: "test"
+              test: "test",
             },
           },
           adminHeaders
@@ -193,7 +193,9 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.product_category.metadata).toEqual({ test: "test" })
+        expect(response.data.product_category.metadata).toEqual({
+          test: "test",
+        })
       })
     })
 
@@ -1341,6 +1343,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "product 1",
+            options: [{ title: "size", values: ["x", "l"] }],
             categories: [{ id: productCategory.id }],
           },
           adminHeaders
@@ -1350,6 +1353,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "product 2",
+            options: [{ title: "color", values: ["r", "g"] }],
           },
           adminHeaders
         )
