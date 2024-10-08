@@ -1,5 +1,5 @@
 import path from "path"
-import { rm } from "node:fs/promises"
+import { rm, copyFile, access, constants } from "node:fs/promises"
 import type tsStatic from "typescript"
 import { logger } from "@medusajs/framework/logger"
 import { ConfigModule } from "@medusajs/framework/types"
@@ -7,6 +7,26 @@ import { getConfigFile } from "@medusajs/framework/utils"
 
 const ADMIN_FOLDER = "src/admin"
 const INTEGRATION_TESTS_FOLDER = "integration-tests"
+
+/**
+ * Copies the file to the destination without throwing any
+ * errors if the source file is missing
+ */
+async function copy(source: string, destination: string) {
+  let sourceExists = false
+  try {
+    await access(source, constants.F_OK)
+    sourceExists = true
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      throw error
+    }
+  }
+
+  if (sourceExists) {
+    await copyFile(path.join(source), path.join(destination))
+  }
+}
 
 /**
  * Removes the directory and its children recursively and
@@ -119,6 +139,7 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
       inlineSourceMap: !tsConfig.options.sourceMap,
     },
   })
+
   const emitResult = program.emit()
   const diagnostics = ts
     .getPreEmitDiagnostics(program)
@@ -146,6 +167,25 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
   } else {
     logger.info("Backend build completed successfully")
   }
+
+  /**
+   * Copying package manager files
+   */
+  await copy(
+    path.join(projectRoot, "package.json"),
+    path.join(dist, "package.json")
+  )
+  await copy(path.join(projectRoot, "yarn.lock"), path.join(dist, "yarn.lock"))
+  await copy(path.join(projectRoot, "pnpm.lock"), path.join(dist, "pnpm.lock"))
+  await copy(
+    path.join(projectRoot, "package-lock.json"),
+    path.join(dist, "package-lock.json")
+  )
+
+  /**
+   * Copying .env file
+   */
+  await copy(path.join(projectRoot, ".env"), path.join(dist, ".env"))
 
   return true
 }
@@ -188,6 +228,6 @@ async function buildFrontend(projectRoot: string): Promise<boolean> {
 }
 
 export default async function ({ directory }: { directory: string }) {
-  console.log("Starting build...")
+  logger.info("Starting build...")
   await Promise.all([buildBackend(directory), buildFrontend(directory)])
 }
