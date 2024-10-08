@@ -667,10 +667,12 @@ medusaIntegrationTestRunner({
             title: "Test Giftcard",
             is_giftcard: true,
             description: "test-giftcard-description",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
               },
             ],
           }
@@ -1345,10 +1347,12 @@ medusaIntegrationTestRunner({
             images: [{ url: "test-image.png" }, { url: "test-image-2.png" }],
             collection_id: baseCollection.id,
             tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
+            options: [{ title: "size", values: ["large"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "large" },
               },
             ],
           }
@@ -1375,14 +1379,17 @@ medusaIntegrationTestRunner({
             images: [{ url: "test-image.png" }, { url: "test-image-2.png" }],
             collection_id: baseCollection.id,
             tags: [{ id: baseTag1.id }, { id: baseTag2.id }],
+            options: [{ title: "size", values: ["l", x] }],
             variants: [
               {
                 title: "Test variant 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
               },
               {
                 title: "Test variant 2",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
               },
             ],
           }
@@ -1423,10 +1430,12 @@ medusaIntegrationTestRunner({
             title: "Test Giftcard",
             is_giftcard: true,
             description: "test-giftcard-description",
+            options: [{ title: "size", values: ["large"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "large" },
               },
             ],
           }
@@ -2256,10 +2265,12 @@ medusaIntegrationTestRunner({
           const payload = {
             title: "Test product - 1",
             handle: "test-1",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Custom inventory 1",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "l" },
                 manage_inventory: true,
                 inventory_items: [
                   {
@@ -2466,10 +2477,12 @@ medusaIntegrationTestRunner({
           const payload = {
             title: baseProduct.title,
             handle: baseProduct.handle,
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
               },
             ],
           }
@@ -2496,10 +2509,12 @@ medusaIntegrationTestRunner({
             title: baseProduct.title,
             handle: baseProduct.handle,
             description: "test-product-description",
+            options: [{ title: "size", values: ["x", "l"] }],
             variants: [
               {
                 title: "Test variant",
                 prices: [{ currency_code: "usd", amount: 100 }],
+                options: { size: "x" },
               },
             ],
           }

@@ -88,14 +88,17 @@ medusaIntegrationTestRunner({
                 create: [
                   {
                     title: "test1",
+                    options: [{ title: "size", values: ["x", "l"] }],
                     variants: [
                       {
                         title: "variant1",
                         prices: [{ amount: 100, currency_code: "EUR" }],
+                        options: { size: "x" },
                       },
                       {
                         title: "variant2",
                         prices: [{ amount: 100, currency_code: "EUR" }],
+                        options: { size: "l" },
                       },
                     ],
                   },
@@ -110,6 +113,7 @@ medusaIntegrationTestRunner({
                   {
                     title: "variant3",
                     product_id: product1.id,
+                    options: [{ title: "size", values: ["x", "l"] }],
                     prices: [{ amount: 100, currency_code: "EUR" }],
                   },
                 ],
