@@ -101,6 +101,7 @@ function parseTSConfig(projectRoot: string, ts: typeof tsStatic) {
  * Builds the backend project using TSC
  */
 async function buildBackend(projectRoot: string): Promise<boolean> {
+  const startTime = process.hrtime()
   logger.info("Compiling backend source...")
 
   const ts = await import("typescript")
@@ -157,15 +158,12 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
     )
   }
 
+  /**
+   * Exit early if no output is written to the disk
+   */
   if (emitResult.emitSkipped) {
     logger.warn("Backend build completed without emitting any output")
     return false
-  }
-
-  if (diagnostics.length) {
-    logger.warn("Backend build completed with errors")
-  } else {
-    logger.info("Backend build completed successfully")
   }
 
   /**
@@ -186,6 +184,14 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
    * Copying .env file
    */
   await copy(path.join(projectRoot, ".env"), path.join(dist, ".env"))
+  const duration = process.hrtime(startTime)
+  const seconds = (duration[0] + duration[1] / 1e9).toFixed(2)
+
+  if (diagnostics.length) {
+    logger.warn(`Backend build completed with errors (${seconds}s)`)
+  } else {
+    logger.info(`Backend build completed successfully (${seconds}s)`)
+  }
 
   return true
 }
@@ -194,6 +200,7 @@ async function buildBackend(projectRoot: string): Promise<boolean> {
  * Builds the frontend project using the "@medusajs/admin-bundler"
  */
 async function buildFrontend(projectRoot: string): Promise<boolean> {
+  const startTime = process.hrtime()
   const configFile = loadMedusaConfig(projectRoot)
   if (!configFile) {
     return false
@@ -218,7 +225,10 @@ async function buildFrontend(projectRoot: string): Promise<boolean> {
       "@medusajs/admin-bundler"
     )
     await buildProductionBuild(adminOptions)
-    logger.info("Frontend build completed successfully")
+    const duration = process.hrtime(startTime)
+    const seconds = (duration[0] + duration[1] / 1e9).toFixed(2)
+
+    logger.info(`Frontend build completed successfully (${seconds}s)`)
     return true
   } catch (error) {
     logger.error("Unable to compile frontend source")
