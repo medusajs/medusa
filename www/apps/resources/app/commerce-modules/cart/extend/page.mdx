@@ -331,7 +331,7 @@ For example:
 
 ```bash
 curl -X POST 'localhost:9000/store/carts/{cart_id}?fields=+custom.*' \
---header 'x-publishable-api-key: {publishable_api_key}' \
+-H 'x-publishable-api-key: {publishable_api_key}'
 ```
 
 Make sure to replace `{cart_id}` with the cart's ID, and `{publishable_api_key}` with your publishable API key, which you can retrieve from the Medusa Admin.
